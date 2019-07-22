@@ -1,86 +1,6 @@
 <?php
 
-/**
- * Return pretty stacktrace in Java style.
- *
- * @param Exception $ex
- * @param array $seen
- * @return string
- */
-function javaTrace($ex, $seen = null)
-{
-    $starter = $seen ? 'Caused by: ' : '';
-    $result = array();
-    if (!$seen) {
-        $seen = array();
-    }
-    $trace  = $ex->getTrace();
-    $prev   = $ex->getPrevious();
-    $result[] = sprintf('%s%s: %s', $starter, get_class($ex), $ex->getMessage());
-    $file = $ex->getFile();
-    $line = $ex->getLine();
-    while (true) {
-        $current = "$file:$line";
-        if (is_array($seen) && in_array($current, $seen)) {
-            $result[] = sprintf(' ... %d more', count($trace)+1);
-            break;
-        }
-        $result[] = sprintf(
-            ' at %s%s%s(%s%s%s)',
-            count($trace) && array_key_exists('class', $trace[0]) ? str_replace('\\', '.', $trace[0]['class']) : '',
-            count($trace) && array_key_exists('class', $trace[0]) && array_key_exists('function', $trace[0]) ? '.' : '',
-            count($trace) && array_key_exists('function', $trace[0]) ? str_replace('\\', '.', $trace[0]['function']) : '(main)',
-            $line === null ? $file : basename($file),
-            $line === null ? '' : ':',
-            $line === null ? '' : $line
-        );
-        if (is_array($seen)) {
-            $seen[] = "$file:$line";
-        }
-        if (!count($trace)) {
-            break;
-        }
-        $file = array_key_exists('file', $trace[0]) ? $trace[0]['file'] : 'Unknown Source';
-        $line = array_key_exists('file', $trace[0]) && array_key_exists('line', $trace[0]) && $trace[0]['line'] ? $trace[0]['line'] : null;
-        array_shift($trace);
-    }
-    $result = join("\n", $result);
-    if ($prev) {
-        $result  .= "\n" . javaTrace($prev, $seen);
-    }
-    return $result;
-}
-
-/**
- * Rollback $oCurrentTransaction if $oError has a certain code.
- *
- * @param string $currentTable
- * @param Exception $oError
- * @param CDbTransaction $oCurrentTransaction
- * @return void
- */
-function handleError($currentTable, $oError, $oCurrentTransaction)
-{
-    /** @var string */
-    $code = $oError->getCode();
-    if ($code == '42S01' || $code == '42000') {
-        $oCurrentTransaction->rollback();
-        var_dump(javaTrace($oError));
-        return;
-    }
-    /* disabled so installer can skip showing errors if tables already exist
-    $oCurrentTransaction->rollback();
-    throw new CHttpException(500, "Table: {$currentTable}  \n".$oError->getMessage());
-    */
-}
-
-/**
- * @param CDbConnection $oDB
- * @return bool
- * @throws CHttpException
- */
-function createDatabase($oDB)
-{
+function createDatabase($oDB){
     /**
     * Populate the database for a limesurvey installation
     * Rules:
@@ -103,7 +23,7 @@ function createDatabase($oDB)
     }
 
     $oTransaction = $oDB->beginTransaction();
-    try {
+    try{
         //answers table
         $oDB->createCommand()->createTable('{{answers}}', array(
             'aid' =>  "pk",
@@ -125,13 +45,6 @@ function createDatabase($oDB)
         ), $options);
         $oDB->createCommand()->createIndex('{{answer_l10ns_idx}}', '{{answer_l10ns}}', ['aid', 'language'], true);
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('answers', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
             'id' =>         'autoincrement',
@@ -148,13 +61,7 @@ function createDatabase($oDB)
 
         $oDB->createCommand()->createIndex('{{assessments_idx2}}', '{{assessments}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{assessments_idx3}}', '{{assessments}}', 'gid', false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('assessments', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // boxes
         $oDB->createCommand()->createTable('{{boxes}}', array(
             'id' => "pk",
@@ -167,16 +74,10 @@ function createDatabase($oDB)
             'usergroup' => "integer NOT NULL "
         ), $options);
         
-        foreach ($boxesData=LsDefaultDataSets::getBoxesData() as $box) {
+        foreach( $boxesData=LsDefaultDataSets::getBoxesData() as $box){
             $oDB->createCommand()->insert("{{boxes}}", $box);
         }
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('boxes', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
+       
         // conditions
         $oDB->createCommand()->createTable('{{conditions}}', array(
             'cid' => 'pk',
@@ -190,13 +91,7 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{conditions_idx}}', '{{conditions}}', 'qid', false);
         $oDB->createCommand()->createIndex('{{conditions_idx3}}', '{{conditions}}', 'cqid', false);
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('conditions', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // defaultvalues
         $oDB->createCommand()->createTable('{{defaultvalues}}', array(
             'dvid' =>  "pk",
@@ -206,13 +101,7 @@ function createDatabase($oDB)
             'specialtype' =>  "string(20) NOT NULL default ''",
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('defaultvalues', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // defaultvalue_l10ns
         $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
             'id' =>  "pk",
@@ -221,13 +110,7 @@ function createDatabase($oDB)
             'defaultvalue' =>  "text",
         ));
         $oDB->createCommand()->createIndex('{{idx1_defaultvalue_ls}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('defaultvalue_l10ns', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // expression_errors
         $oDB->createCommand()->createTable('{{expression_errors}}', array(
             'id' =>  "pk",
@@ -241,13 +124,7 @@ function createDatabase($oDB)
             'eqn' =>  "text",
             'prettyprint' =>  "text",
         ), $options);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('expression_errors', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // failed_login_attempts
         $oDB->createCommand()->createTable('{{failed_login_attempts}}', array(
             'id' =>  "pk",
@@ -257,13 +134,6 @@ function createDatabase($oDB)
         ), $options);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('failed_login_attempts', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         $oDB->createCommand()->createTable('{{groups}}', array(
             'gid' =>  "pk",
             'sid' =>  "integer NOT NULL default '0'",
@@ -273,14 +143,7 @@ function createDatabase($oDB)
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
         
- 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('groups', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
+        
         $oDB->createCommand()->createTable('{{group_l10ns}}', array(
             'id' =>  "pk",
             'gid' =>  "integer NOT NULL",
@@ -290,13 +153,6 @@ function createDatabase($oDB)
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_l10ns}}', ['gid', 'language'], true);
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('group_l10ns', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
             'id' =>  "pk",
@@ -309,13 +165,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
         $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder'], false);
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('labels', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // label_l10ns
         $oDB->createCommand()->createTable('{{label_l10ns}}', array(
             'id' =>  "pk",
@@ -324,13 +173,6 @@ function createDatabase($oDB)
             'language' =>  "string(20) NOT NULL DEFAULT 'en'"
         ), $options);
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('label_l10ns', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // labelsets
         $oDB->createCommand()->createTable('{{labelsets}}', array(
             'lid' => 'pk',
@@ -339,13 +181,6 @@ function createDatabase($oDB)
         ), $options);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('labelsets', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // notifications
         $oDB->createCommand()->createTable('{{notifications}}', array(
             'id' =>  "pk",
@@ -365,13 +200,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx1_notifications}}', '{{notifications}}', 'hash', false);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('notifications', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //  participants
         $oDB->createCommand()->createTable('{{participants}}', array(
             'participant_id' =>  "string(50) NOT NULL",
@@ -390,13 +218,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx3_participants}}', '{{participants}}', 'language', false);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('participants', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // participant_attribute
         $oDB->createCommand()->createTable('{{participant_attribute}}', array(
             'participant_id' =>  "string(50) NOT NULL",
@@ -407,13 +228,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->addPrimaryKey('{{participant_attribute_pk}}', '{{participant_attribute}}', ['participant_id', 'attribute_id']);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('participant_attribute', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // participant_attribute_names_lang
         $oDB->createCommand()->createTable('{{participant_attribute_names_lang}}', array(
             'attribute_id' =>  "integer NOT NULL",
@@ -424,13 +238,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->addPrimaryKey('{{participant_attribute_names_lang_pk}}', '{{participant_attribute_names_lang}}', ['attribute_id', 'lang']);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('participant_attribute_names_lang', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
 
         // participant_attribute_names
         $oDB->createCommand()->createTable('{{participant_attribute_names}}', array(
@@ -446,8 +253,16 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx_participant_attribute_names}}', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
         $aCoreAttributes = array('firstname', 'lastname', 'email');
 
-        $sEncrypted = 'N';
-        foreach ($aCoreAttributes as $attribute) {
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        // check if sodium library exists
+        if ($sodium->bLibraryExists === true){
+            $sEncrypted = 'Y';
+        } else {
+            $sEncrypted = 'N';
+        }
+
+        foreach($aCoreAttributes as $attribute){
             $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
                 'attribute_type'    => 'TB',
                 'defaultname'       => $attribute,
@@ -458,13 +273,6 @@ function createDatabase($oDB)
         }
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('participant_attribute_names', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //participant_attribute_values
         $oDB->createCommand()->createTable('{{participant_attribute_values}}', array(
             'value_id' => "pk",
@@ -474,13 +282,6 @@ function createDatabase($oDB)
 
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('participant_attribute_values', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //participant_shares
         $oDB->createCommand()->createTable('{{participant_shares}}', array(
             'participant_id' =>  "string(50) NOT NULL",
@@ -492,13 +293,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->addPrimaryKey('{{participant_shares_pk}}', '{{participant_shares}}', ['participant_id', 'share_uid'], false);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('participant_shares', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // permissions
         $oDB->createCommand()->createTable('{{permissions}}', array(
             'id' =>  "pk",
@@ -517,13 +311,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx1_permissions}}', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('permissions', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // permissiontemplates
         $oDB->createCommand()->createTable("{{permissiontemplates}}", [
             'ptid' =>  "pk",
@@ -536,14 +323,6 @@ function createDatabase($oDB)
 
         $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
 
-
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('permissions', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // plugins
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
@@ -557,13 +336,6 @@ function createDatabase($oDB)
         ), $options);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('plugins', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // plugin_settings
         $oDB->createCommand()->createTable('{{plugin_settings}}', array(
             'id' => "pk",
@@ -575,13 +347,6 @@ function createDatabase($oDB)
         ), $options);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('plugin_settings', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // questions
         $oDB->createCommand()->createTable('{{questions}}', array(
             'qid' =>  "pk",
@@ -606,32 +371,21 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
         $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
-
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('questions', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
+        
         // question language settings
         $oDB->createCommand()->createTable('{{question_l10ns}}', array(
             'id' =>  "pk",
             'qid' =>  "integer NOT NULL",
             'question' =>  "text NOT NULL",
-            'help' =>  "TEXT DEFAULT NULL",
-            'script' => " TEXT DEFAULT NULL",
+            'help' =>  "text",
+            'script' => " text NULL default NULL",
             'language' =>  "string(20) NOT NULL"
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_question_ls}}', '{{question_l10ns}}', ['qid', 'language'], true);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('question_l10ns', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
+
+
         // question_attributes
         $oDB->createCommand()->createTable('{{question_attributes}}', array(
             'qaid' => "pk",
@@ -645,13 +399,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx2_question_attributes}}', '{{question_attributes}}', 'attribute', false);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('question_attributes', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // quota
         $oDB->createCommand()->createTable('{{quota}}', array(
             'id' => "pk",
@@ -666,13 +413,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx1_quota}}', '{{quota}}', 'sid', false);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('quota', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //quota_languagesettings
         $oDB->createCommand()->createTable('{{quota_languagesettings}}', array(
             'quotals_id' => "pk",
@@ -685,13 +425,6 @@ function createDatabase($oDB)
         ), $options);
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('quota_languagesettings', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // quota_members
         $oDB->createCommand()->createTable('{{quota_members}}', array(
             'id' => "pk",
@@ -705,13 +438,6 @@ function createDatabase($oDB)
 
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('quota_members', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // saved_control
         $oDB->createCommand()->createTable('{{saved_control}}', array(
             'scid' => "pk",
@@ -731,13 +457,6 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx2_saved_control}}', '{{saved_control}}', 'srid');
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('saved_control', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // sessions
 
         $oDB->createCommand()->createTable('{{sessions}}', array(
@@ -748,13 +467,7 @@ function createDatabase($oDB)
 
         $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('sessions_pk', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // settings_global
 
         $oDB->createCommand()->createTable('{{settings_global}}', array(
@@ -765,13 +478,7 @@ function createDatabase($oDB)
         $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('settings_global', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //settings_user
 
         $oDB->createCommand()->createTable('{{settings_user}}', array(
@@ -790,13 +497,6 @@ function createDatabase($oDB)
 
 
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('settings_user', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
 
         //Surveymenu
 
@@ -823,20 +523,13 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
         $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-        foreach ($surveyMenuRowData as $surveyMenuRow) {
-            if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-                unset($surveyMenuRow['id']);
+            foreach ($surveyMenuRowData as $surveyMenuRow) {
+                if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+                    unset($surveyMenuRow['id']);
+                }
+                $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
             }
-            $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
-        }
         
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('surveymenu', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // Surveymenu entries
 
         $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
@@ -873,19 +566,14 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
         $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
         
-        foreach ($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
+        foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
             if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
                 unset($surveyMenuEntryRow['id']);
             }
             $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
+            
         }
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('surveymenu_entries', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // surveys
         $oDB->createCommand()->createTable('{{surveys}}', array(
             'sid' => "integer NOT NULL",
@@ -955,13 +643,7 @@ function createDatabase($oDB)
 
         $oDB->createCommand()->createIndex('{{idx1_surveys}}', '{{surveys}}', 'owner_id', false);
         $oDB->createCommand()->createIndex('{{idx2_surveys}}', '{{surveys}}', 'gsid', false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('surveys', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
 
         // surveys_groups
         $oDB->createCommand()->createTable('{{surveys_groups}}', array(
@@ -981,17 +663,11 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx1_surveys_groups}}', '{{surveys_groups}}', 'name', false);
         $oDB->createCommand()->createIndex('{{idx2_surveys_groups}}', '{{surveys_groups}}', 'title', false);
 
-        foreach ($surveyGroupData=LsDefaultDataSets::getSurveygroupData() as $surveyGroup) {
+        foreach($surveyGroupData=LsDefaultDataSets::getSurveygroupData() as $surveyGroup){
             $oDB->createCommand()->insert("{{surveys_groups}}", $surveyGroup);
         }
 
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('surveys_groups', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // surveys_groupsettings
         $oDB->createCommand()->createTable('{{surveys_groupsettings}}', array(
             'gsid' => "integer NOT NULL",
@@ -1113,7 +789,7 @@ function createDatabase($oDB)
                 "assessments" => "I",
                 "usecaptcha" => "E",
                 "bounce_email" => "inherit",
-                "attributedescriptions" => null,
+                "attributedescriptions" => NULL,
                 "emailresponseto" => "inherit",
                 "emailnotificationto" => "inherit",
                 "tokenlength" => -1,
@@ -1127,15 +803,9 @@ function createDatabase($oDB)
                 "navigationdelay" => -1,
                 "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
-        );
+        );      
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('surveys_groupsettings', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
 
         // surveys_languagesettings
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
@@ -1171,13 +841,8 @@ function createDatabase($oDB)
         $oDB->createCommand()->addPrimaryKey('{{surveys_languagesettings_pk}}', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
 
         $oDB->createCommand()->createIndex('{{idx1_surveys_languagesettings}}', '{{surveys_languagesettings}}', 'surveyls_title', false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('surveys_languagesettings', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
+
         // survey_links
         $oDB->createCommand()->createTable('{{survey_links}}', array(
             'participant_id' => "string(50) NOT NULL",
@@ -1189,13 +854,9 @@ function createDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{survey_links_pk}}', '{{survey_links}}', ['participant_id','token_id','survey_id']);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('survey_links', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
+
+
         // survey_url_parameters
         $oDB->createCommand()->createTable('{{survey_url_parameters}}', array(
             'id' => "pk",
@@ -1204,13 +865,6 @@ function createDatabase($oDB)
             'targetqid' => "integer NULL",
             'targetsqid' => "integer NULL",
         ), $options);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('survey_url_parameters', $e, $oTransaction);
-    }
-
-    $oTransaction = $oDB->beginTransaction();
-    try {
 
         // templates
         $oDB->createCommand()->createTable('{{templates}}', array(
@@ -1243,16 +897,10 @@ function createDatabase($oDB)
         $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder',
         'description','last_update','owner_id','extends'];
 
-        foreach ($templateData=LsDefaultDataSets::getTemplatesData() as $template) {
-            $oDB->createCommand()->insert("{{templates}}", $template);
+        foreach($templateData=LsDefaultDataSets::getTemplatesData() as $template){
+            $oDB->createCommand()->insert("{{templates}}", $template );
         }
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('templates', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // template_configuration
         $oDB->createCommand()->createTable('{{template_configuration}}', array(
             'id' => "pk",
@@ -1277,20 +925,13 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
         $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
-        foreach ($templateConfigurationData=LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
-            $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
+        foreach($templateConfigurationData=LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
+            $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
         }
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('template_configuration', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //tutorials
         $oDB->createCommand()->createTable(
-            '{{tutorials}}',
-            [
+            '{{tutorials}}',[
                 'tid' =>  'pk',
                 'name' =>  'string(128)',
                 'title' =>  'string(192)',
@@ -1303,13 +944,7 @@ function createDatabase($oDB)
             ], $options
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('tutorials', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
             'tid' => 'integer NOT NULL',
@@ -1318,13 +953,7 @@ function createDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('map_tutorial_users', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //tutorial entry groups
         $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
             'teid' => 'integer NOT NULL',
@@ -1336,17 +965,10 @@ function createDatabase($oDB)
         $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid','tid']);
         $oDB->createCommand()->createIndex('{{idx1_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'uid', false);
         $oDB->createCommand()->createIndex('{{idx2_tutorial_entry_relation}}', '{{tutorial_entry_relation}}', 'sid', false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('tutorial_entry_relation', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //tutorial entries
         $oDB->createCommand()->createTable(
-            '{{tutorial_entries}}',
-            [
+            '{{tutorial_entries}}',[
                 'teid' =>  'pk',
                 'ordering' =>  'integer',
                 'title' =>  'text',
@@ -1354,13 +976,7 @@ function createDatabase($oDB)
                 'settings' => 'text'
             ], $options
         );
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('tutorial_entries', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //user_in_groups
         $oDB->createCommand()->createTable('{{user_in_groups}}', array(
             'ugid' => "integer NOT NULL",
@@ -1368,13 +984,7 @@ function createDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{user_in_groups_pk}}', '{{user_in_groups}}', ['ugid','uid']);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('user_in_groups', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         //user_in_permissionrole
         $oDB->createCommand()->createTable('{{user_in_permissionrole}}', array(
             'ptid' => "integer NOT NULL",
@@ -1382,13 +992,7 @@ function createDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{user_in_permissionrole_pk}}', '{{user_in_permissionrole}}', ['ptid','uid']);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('user_in_groups', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // users
         $oDB->createCommand()->createTable('{{users}}', array(
             'uid' => "pk",
@@ -1410,13 +1014,8 @@ function createDatabase($oDB)
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
         $oDB->createCommand()->createIndex('{{idx2_users}}', '{{users}}', 'email', false);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('users', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
+
         //user_groups
         $oDB->createCommand()->createTable('{{user_groups}}', array(
             'ugid' => "pk",
@@ -1426,15 +1025,9 @@ function createDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
-        $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('user_groups', $e, $oTransaction);
-    }
 
-    $oTransaction = $oDB->beginTransaction();
-    try {
         // asset version
-        $oDB->createCommand()->createTable('{{asset_version}}', array(
+        $oDB->createCommand()->createTable('{{asset_version}}',array(
             'id' => 'pk',
             'path' => 'text NOT NULL',
             'version' => 'integer NOT NULL',
@@ -1449,7 +1042,8 @@ function createDatabase($oDB)
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
         $oTransaction->commit();
-    } catch (Exception $e) {
-        handleError('asset_version', $e, $oTransaction);
+    }catch(Exception $e){
+        $oTransaction->rollback();
+        throw new CHttpException(500, $e->getMessage());
     }
 }
