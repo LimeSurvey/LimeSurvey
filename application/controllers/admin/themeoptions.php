@@ -117,14 +117,20 @@ class themeoptions  extends Survey_Common_Action
         $aResults = array();
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            
+
             foreach($aTemplates as $template){
                 $model = $this->loadModel($template);
                 $templatename = $model->template_name;
                 $aResults[$template]['title'] = $templatename;  
 
                 if (!Template::hasInheritance($templatename)) {   
-                    $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
+                    if ($templatename != getGlobalSetting('defaulttheme')){
+                        $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
+                    }else{
+                        $aResults[$template]['result'] = false;
+                        $aResults[$template]['error'] = gT('Error!! You cannot uninstall the default template');
+                    }
+                  
                 } else {   
                     $aResults[$template]['result'] = false;
                     $aResults[$template]['error'] = gT('Error!! Some templates inherit from it');

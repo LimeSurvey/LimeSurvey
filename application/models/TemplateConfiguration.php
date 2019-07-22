@@ -605,9 +605,7 @@ class TemplateConfiguration extends TemplateConfig
         }
         $gsid          = Yii::app()->request->getQuery('id', null);
         $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->template_name));
-        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
         $sExtendUrl    = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
-        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/', array("gsid"=>$gsid));
         $sOptionUrl    = (App()->getController()->action->id == "surveysgroups")?Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gsid)):Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
 
         $sEditorLink = "<a
@@ -629,16 +627,6 @@ class TemplateConfiguration extends TemplateConfig
                 </a>";
         }
 
-        $sUninstallLink = '<a
-            id="remove_fromdb_link_'.$this->template_name.'"
-            href="'.$sUninstallUrl.'"
-            data-post=\'{ "templatename": "'.$this->template_name.'" }\'
-            data-text="'.gT('This will reset all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
-            title="'.gT('Uninstall this theme').'"
-            class="btn btn-danger btn-block selector--ConfirmModal">
-                <span class="icon-trash"></span>
-                '.gT('Uninstall').'
-            </a>';
 
          $sExtendLink = '<a
             id="extendthis_'.$this->template_name.'"
@@ -657,40 +645,16 @@ class TemplateConfiguration extends TemplateConfig
                 '.gT('Extend').'
             </a>';
 
-        $sResetLink = '<a
-                id="remove_fromdb_link_'.$this->template_name.'"
-                href="'.$sResetUrl.'"
-                data-post=\'{ "templatename": "'.$this->template_name.'" }\'
-                data-text="'.gT('This will reload the configuration file of this theme.').'<br>'.gT('Do you want to continue?').'"
-                title="'.gT('Reset this theme').'"
-                class="btn btn-warning btn-block selector--ConfirmModal">
-                    <span class="icon-trash"></span>
-                    '.gT('Reset').'
-            </a>';
+       
 
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
             $sButtons = $sEditorLink.$OptionLink.$sExtendLink;
 
-            if ($this->template_name != getGlobalSetting('defaulttheme')) {
-                $sButtons .= $sUninstallLink;
-            } else {
-                $sButtons .= '
-                    <a
-                        class="btn btn-danger btn-block"
-                        disabled
-                        data-toggle="tooltip"
-                        title="' . gT('You cannot uninstall the default template.').'"
-                    >
-                        <span class="icon-trash"></span>
-                        '.gT('Uninstall').'
-                    </a>
-                ';
-            }
         }
 
-        $sButtons .= $sResetLink;
+       
 
 
         return $sButtons;
