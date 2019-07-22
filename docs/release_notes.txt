@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.7 (build 190627) to 3.17.8 (build 190722) July 22, 2019
+-Fixed issue: redirection after adding ComfortUpdate Key (Eddy Lackmann)
+-Fixed issue #15040: Adding ComfortUpdate key at  leads to blank screen (Eddy Lackmann)
+-Fixed issue #14989: Problem can't upload file on some server (Denis Chenu)
+-Fixed issue #14975: Limesurvey users with limited rights get "undefined" error message when trying to upload a file at the survey theme options (Dominik Vitt)
+-Fixed issue #14964 : use Survey::model in command plugin reset theme (Denis Chenu)
+-Fixed issue #14829: Green bar after calculating storage (Olle Haerstedt)
+#Updated translation: Romanian by cdorin
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by RayhaneK
+#Updated translation: Arabic by RayhaneK
 
 Changes from 3.17.6 (build 190624) to 3.17.7 (build 190627) June 27, 2019
 -Fixed issue #14187: In IE, for an Array question the radio buttons disappear when resizing the page to the point the answers start to stack (Dominik Vitt)
