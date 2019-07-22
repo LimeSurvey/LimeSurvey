@@ -6,12 +6,15 @@
  *
  * @var $aResults   The array containing the result of each survey deletion
  */
+if (!isset($tableLabels)) {
+    $tableLabels = array('ID','Title','Status');
+}
 ?>
 <table class="table table-striped">
     <thead>
-        <th><?php eT('Survey ID');?></th>
-        <th><?php eT('Survey title');?></th>
-        <th><?php eT('Status');?></th>
+        <?php foreach($tableLabels as $label):?>
+            <th><?php echo $label?></th>
+        <?php endforeach;?>
     </thead>
     <tbody>
         <?php foreach($aResults as $iSid => $result):?>
@@ -28,7 +31,13 @@
                     </td>
                 <?php else: ?>
                     <td class="text-warning">
-                        <?php eT('Error'); ?>
+                        <?php ;
+                            if(isset($result['error'])){
+                                echo $result['error'] ;
+                            }else{
+                                eT('Error!!!');
+                            }
+                        ; ?>
                     </td>
                 <?php endif;?>
             </tr>

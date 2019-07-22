@@ -6,9 +6,6 @@
  */
 ?>
 <!-- Set hidden url for ajax post in listActions JS.   -->
-<input type="hidden" id="return-selected-item" name="return-selected"  data-state='on' data-url="<?php echo App()->createUrl('/admin/survey/sa/renderItemsSelected/'); ?>">
-
-
 <!-- Rendering massive action widget -->
 <?php
     $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
