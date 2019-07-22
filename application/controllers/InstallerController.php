@@ -374,9 +374,8 @@ class InstallerController extends CController
 
         $aData['adminoutputForm'] = '';
 
-        //$this->load->dbforge();
-        if ($oModel->createDatabase()) {
-            //Database has been successfully created
+        try {
+            $oModel->createDatabase();
 
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
@@ -391,8 +390,15 @@ class InstallerController extends CController
                 'label' => gT("Populate database"),
                 'name' => 'createdbstep2',
             );
-        } else {
+
+            $aData['title'] = gT("Database settings");
+            $aData['descp'] = gT("Database settings");
+            $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
+            $aData['progressValue'] = 60;
+            $this->render('/installer/populatedb_view', $aData);
+        } catch (Exception $e) {
             $oModel->addError('dbname', gT('Try again! Creation of database failed.'));
+            $oModel->addError('dbname', $e->getMessage());
 
             $aData['title'] = gT('Database configuration');
             $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
@@ -402,12 +408,6 @@ class InstallerController extends CController
 
             $this->render('/installer/dbconfig_view', $aData);
         }
-
-        $aData['title'] = gT("Database settings");
-        $aData['descp'] = gT("Database settings");
-        $aData['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
-        $aData['progressValue'] = 60;
-        $this->render('/installer/populatedb_view', $aData);
     }
 
     /**
@@ -425,7 +425,6 @@ class InstallerController extends CController
         $model = $this->getModelFromSession();
         $model->dbConnect();
 
-
         $aData['model'] = $model;
         $aData['title'] = gT("Database configuration");
         $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
@@ -436,14 +435,16 @@ class InstallerController extends CController
         $result = $model->setupTables();
         if ($result === true) {
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
-        } else if (is_string($result)) {
-            $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
-            $sConfirmation .= '<li>'.htmlspecialchars($result).'</li>';
-            $sConfirmation .= '</ul>';
-            Yii::app()->session['populateerror'] = $sConfirmation;
+        } elseif (is_array($result)) {
+            $errors = [];
+            $errors[] = gT('There were errors when trying to populate the database:');
+            foreach ($result as $error) {
+                $errors[] = $error;
+            }
+            Yii::app()->session['populateerror'] = $errors;
             $this->redirect(array('installer/database'));
         } else {
-            throw new UnexpectedValueException('_setup_tables is expected to return true or an array of strings');
+            throw new UnexpectedValueException('setupTables is expected to return true or an array of strings');
         }
 
         Yii::app()->session['tablesexist'] = true;
@@ -795,36 +796,6 @@ class InstallerController extends CController
         $this->checkDefaultExtensions();
 
         return $bProceed;
-    }
-
-    /**
-     * Installer::_setup_tables()
-     * Function that actually modify the database.
-     * @param string $sFileName
-     * @param array $aDbConfig
-     * @return string[]|true True if everything was okay, otherwise array of error messages.
-     */
-    public function _setup_tables($sFileName, $aDbConfig = array())
-    {
-        $aDbConfig = empty($aDbConfig) ? $this->_getDatabaseConfig() : $aDbConfig;
-        extract($aDbConfig);
-        try {
-            switch ($sDatabaseType) {
-                case 'mysql':
-                case 'mysqli':
-                $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($sDatabaseName)." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
-                break;
-            }
-        } catch (Exception $e) {
-            return array($e->getMessage());
-        }
-        require_once($sFileName);
-        try {
-            createDatabase($this->connection);
-        } catch (Exception $e) {
-            return array($e->getMessage());
-        }
-        return true;
     }
 
     /**

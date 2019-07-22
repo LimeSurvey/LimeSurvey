@@ -581,24 +581,23 @@ class InstallerConfigForm extends CFormModel
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function createDatabase() {
-        $bCreateDB = true; // We are thinking positive
         $query = $this->createDbQuery();
         try {
             $this->db->createCommand($query)->execute();
         } catch (Exception $e) {
-            $bCreateDB = false;
+            throw new Exception(
+                'Could not create database: ' . $query . '. Please check your credentials.'
+            );
         }
 
-        if ($bCreateDB) {
-            $this->useDbName = true;
-            // reconnect to set database name & status
-            $this->dbConnect();
-        }
+        $this->useDbName = true;
+        // reconnect to set database name & status
+        $this->dbConnect();
 
         return $bCreateDB;
-
     }
 
 
@@ -621,7 +620,7 @@ class InstallerConfigForm extends CFormModel
 
     /**
      * Function that actually modify the database.
-     * @return string|boolean True if everything was okay, otherwise error message.
+     * @return string[]|boolean True if everything was okay, otherwise error message.
      */
     public function setupTables()
     {
@@ -638,7 +637,7 @@ class InstallerConfigForm extends CFormModel
                     break;
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            return array($e->getMessage());
         }
         $fileName = dirname(APPPATH).'/installer/create-database.php';
         require_once($fileName);
@@ -662,6 +661,4 @@ class InstallerConfigForm extends CFormModel
         }
         return null;
     }
-
-
 }
