@@ -76,11 +76,27 @@ class Permissiontemplates extends CActiveRecord
         if ($oModel == null) {
             $oModel = new UserInPermissionrole();
             $oModel->ptid = $ptid;
+            $oModel->uid = $iUserId;
         }
         
         return $oModel->save();
     }
 
+    public function clearUser($iUserId) {
+        $aModels = UserInPermissionrole::model()->findAllByAttributes(['uid' => $iUserId]);
+
+        if (safecount($aModels) == 0) {
+            return true;
+        }
+
+        return array_reduce(
+            $aModels, 
+            function ($cur,  $oModel) { 
+                return $cur && $oModel->delete(); 
+            },
+            true
+        );
+    }
 
     /**
      * @return string

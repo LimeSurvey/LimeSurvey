@@ -11,7 +11,7 @@
             'enableAjaxValidation'=>false,
             'enableClientValidation'=>false,
         ));?>
-   
+        <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
         <div class="row">
             <div class="col-xs-12 alert alert-info">
                 <?=gT("Careful: Applying a role to the user will overwrite any individual permissions given to the user!")?>
@@ -19,17 +19,16 @@
         </div>
         <div class="form-group">
             <label for="roleselector"><?=gT("Select role to apply to users")?></label>
-            <?php $this->widget(
-                'yiiwheels.widgets.select2.WhSelect2', 
-                array(
-                    'name' => 'roleselector',
-                    'asDropDownList' => true,
-                    'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
-                    'data' => $aPossibleRoles,
-                    'value' => $aCurrentRoles,
-                    )
-                );
-            ?>
+            <select name="roleselector[]" id="roleselector" class="form-control select" multiple>
+                <?php foreach($aPossibleRoles as $key => $name) {
+                    echo sprintf(
+                        "<option value='%s' %s> %s </option>", 
+                        $key,
+                        in_array($key, $aCurrentRoles) ? 'selected' : '',
+                        $name
+                    );
+                } ?>
+            </select>
         </div>        
         <div class="row ls-space margin top-15">
             <hr />

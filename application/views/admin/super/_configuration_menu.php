@@ -214,7 +214,18 @@
                         </a>
                     </li>
 
-                    <?php endif;?>
+                <?php endif;?>
+
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
+
+                    <!-- Create/edit user groups -->
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/roles/"); ?>">
+                            <?php eT("Create/edit user roles");?>
+                        </a>
+                    </li>
+
+                <?php endif;?>
 
                 <!-- Central participant database -->
                 <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')

@@ -498,39 +498,49 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
         $setRoleUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/addrole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
-        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership', ['userid' => $this->uid]);
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
         $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
         
 
         $userDetail = ""
             ."<button 
-                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
 
         $editPermissionButton = ""
             ."<button 
-                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
         $addRoleButton = ""
             ."<button 
-                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
                 data-href='".$setRoleUrl."'><i class='fa fa-users'></i></button>";
         $editTemplatePermissionButton = ""
             ."<button 
-                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
                 data-href='".$setTemplatePermissionsUrl."'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             ."<button 
-                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""
-            ."<button 
-                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--changeowner' 
-                data-href='".$changeOwnershipUrl."'><i class='fa fa-hand-rock-o'></i></button>";
+        ."<button 
+                id='UserManagement--takeown-".$this->uid."' 
+                class='btn btn-sm btn-default' 
+                data-toggle='modal' 
+                data-target='#confirmation-modal' 
+                data-url='".$changeOwnershipUrl."' 
+                data-userid='".$this->uid."' 
+                data-user='".$this->full_name."' 
+                data-action='deluser' 
+                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\"))()' 
+                data-message='".gt('Do you want to take ownerschip of this user?')."'>
+                    <i class='fa fa-hand-rock-o'></i>
+              </button>";
         $deleteUserButton = ""
             ."<button 
                 id='UserManagement--delete-".$this->uid."' 
-                class='btn btn-xs btn-danger' 
+                class='btn btn-sm btn-danger' 
                 data-toggle='modal' 
                 data-target='#confirmation-modal' 
                 data-url='".$deleteUrl."' 
@@ -549,13 +559,14 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // and Except deleting themselves and changing permissions when they are forced superadmin
             if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
-                return join("\n",[$userDetail, $editUserButton]);
+                return join("",[$userDetail, $editUserButton]);
             }
             return join("",[
-                $userDetail, 
                 $editUserButton, 
                 $editPermissionButton, 
-                $addRoleButton, 
+                $addRoleButton,
+                "\n",
+                $userDetail, 
                 $editTemplatePermissionButton, 
                 $this->parent_id != Yii::app()->session['loginID'] ? $takeOwnershipButton : '', 
                 $deleteUserButton]);
@@ -621,7 +632,7 @@ class User extends LSActiveRecord
         }
         
         
-        return join("\n",$buttonArray);
+        return join("", $buttonArray);
     }
 
     public function getParentUserName()
@@ -675,7 +686,8 @@ class User extends LSActiveRecord
                 "name" => 'managementButtons',
                 "type" => 'raw',
                 "header" => gT("Action"),
-                'filter' => false
+                'filter' => false,
+                'htmlOptions' => ["style" => "white-space: pre;"]
             ),
             array(
                 "name" => 'uid',

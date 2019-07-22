@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             <label for="roleselector"><?=gT("Select role to apply to users")?></label>
-            <select class="form-control select post-value" name="roleselector" id="roleselector">
+            <select class="form-control select post-value" name="roleselector" id="roleselector" multiple>
                 <?php foreach($aPermissiontemplates as $oPermissiontemplate) {
                     echo "<option value='".$oPermissiontemplate->ptid."'>".$oPermissiontemplate->name."</option>";
                 } ?>
