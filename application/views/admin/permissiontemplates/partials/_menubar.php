@@ -8,9 +8,6 @@
                 <button disabled title="<?=gT("Soon to be added")?>" data-href="<?=App()->createUrl("admin/roles/sa/importroles")?>" data-toggle="modal" title="<?php eT('Impot permission role from XML'); ?>" class="btn btn-default RoleControl--action--openmodal">
                     <i class="fa fa-upload text-success"></i> <?php eT("Import (XML)"); ?>
                 </button>
-                <button disabled title="<?=gT("Soon to be added")?>"  data-href="<?=App()->createUrl("admin/roles/sa/exportusers")?>" data-toggle="modal" title="<?php eT('Export permission roles to XML'); ?>" class="btn btn-default RoleControl--action--openmodal">
-                    <i class="fa fa-upload text-success"></i> <?php eT("Export (XML)");?>
-                </button>
             <?php } ?>
         </div>
     </div>

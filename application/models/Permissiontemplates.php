@@ -128,6 +128,7 @@ class Permissiontemplates extends CActiveRecord
     {
         $detailUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/viewrole', ['ptid' => $this->ptid]);
         $editUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
+        $exportRoleUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/setpermissions', ['ptid' => $this->ptid]);
         $deleteUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/deleteconfirm');
         
@@ -145,6 +146,11 @@ class Permissiontemplates extends CActiveRecord
             ."<button 
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
+                
+        $exportRoleButton = ""
+            ."<a class='btn btn-sm btn-default RoleControl--action--link'
+                href='".$exportRoleUrl."'><i class='fa fa-download'></i></a>";
+                
         $deleteRoleButton = ""
             ."<button 
                 id='RoleControl--delete-".$this->ptid."' 
@@ -163,6 +169,7 @@ class Permissiontemplates extends CActiveRecord
             $roleDetail, 
             $editPermissionButton, 
             $editRoleButton, 
+            $exportRoleButton, 
             $deleteRoleButton
         ]);
     }
@@ -209,6 +216,44 @@ class Permissiontemplates extends CActiveRecord
         );
 
         return $cols;
+    }
+
+    public function compileExportXML () {
+        $xml = new SimpleXMLElement('<limepermissionrole/>');
+
+        //Meta section
+        $meta = $xml->addChild('meta');
+        $meta->addChild('name', '<![CDATA['.$this->name.']]>');
+        $meta->addChild('description', '<![CDATA['.$this->description.']]>');
+        $meta->addChild('date', date('Y-m-d H:i:s'));
+        $meta->addChild('createdOn', Yii::app()->getConfig('sitename'));
+        $meta->addChild('createdBy', Yii::app()->user->id);
+
+        
+        // Get base permissions
+        $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+
+        //Permission section
+        $permission = $xml->addChild('permissions');
+        foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions) {
+            $curKeyRow = $permission->addChild($sPermissionKey);
+            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue) {
+                $curKeyRow->addChild(
+                    $sCRUDKey, 
+                    ($this->getHasPermission($sPermissionKey, $sCRUDKey) ? 1 : 0)  
+                );
+            }
+        }
+        
+        return $xml;
+    }
+
+    public function importFromXML ($xmlEntitiy) {
+       return true;
+    }
+
+    public function getHasPermission($sPermission, $sCRUD) {
+        return Permission::model()->hasRolePermission($this->ptid, $sPermission, $sCRUD);
     }
 
 	/**

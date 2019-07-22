@@ -223,6 +223,16 @@ class PermissiontemplatesController extends Survey_Common_Action
 
     }
 
+    public function runexport($ptid) {
+        $oModel = $this->loadModel($ptid);
+        $oXML = $oModel->compileExportXML();
+        $filename = preg_replace("/[^a-zA-Z0-9-_]*/",'',$oModel->name);
+
+        header('Content-type: application/xml');
+        header('Content-Disposition: attachment; filename="'.$filename.'.xml"');
+        print($oXML->asXML());
+        Yii::app()->end();
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
