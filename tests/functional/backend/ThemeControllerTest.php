@@ -2,17 +2,13 @@
 
 namespace ls\tests\controllers;
 
-use ls\tests\TestBaseClass;
 use ls\tests\TestBaseClassWeb;
 use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\Exception\NoSuchElementException;
-use Facebook\WebDriver\Exception\StaleElementReferenceException;
-use Facebook\WebDriver\Exception\UnknownServerException;
-use Facebook\WebDriver\Exception\TimeOutException;
-use Facebook\WebDriver\Exception\ElementNotVisibleException;
 use Facebook\WebDriver\Remote\LocalFileDetector;
+
 /**
+ * This test must be run as the web server user, e.g. "sudo -u www-data ..."
+ *
  * @since 2017-10-15
  * @group tempcontr
  * @group theme1
@@ -40,6 +36,20 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         // Browser login.
         self::adminLogin($username, $password);
+
+        \Yii::import('application.controllers.admin.themes', true);
+        \Yii::import('application.helpers.globalsettings_helper', true);
+
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $_POST['templatename'] = 'vanilla_version_1';
+        $contr->delete();
+        unset($_POST['templatename']);
+
+        $_POST['templatename'] = 'vanilla_version_renamed';
+        $contr->delete();
+        unset($_POST['templatename']);
+
+        //$flashes = \Yii::app()->session['aFlashMessage'];
     }
 
     /**
@@ -49,8 +59,6 @@ class ThemeControllerTest extends TestBaseClassWeb
     public function testCopyTemplate()
     {
         \Yii::app()->session['loginID'] = 1;
-        \Yii::import('application.controllers.admin.themes', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
 
         // Clean up from last test.
         $templateName = 'foobartest';
@@ -102,7 +110,9 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         // Delete theme vanilla_version_1 if present.
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
-        $contr->delete('vanilla_version_1');
+        $_POST['templatename'] = 'vanilla_version_1';
+        $contr->delete();
+        unset($_POST['templatename']);
 
         //foreach (App()->session['aFlashMessage'] as $flash) {
             //var_dump($flash['message']);
@@ -110,7 +120,9 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         // ...and the renamed theme.
         $contr = new \themes(new \ls\tests\DummyController('dummyid'));
-        $contr->delete('vanilla_version_renamed');
+        $_POST['templatename'] = 'vanilla_version_renamed';
+        $contr->delete();
+        unset($_POST['templatename']);
 
         //foreach (App()->session['aFlashMessage'] as $flash) {
             //var_dump($flash['message']);
@@ -254,7 +266,8 @@ class ThemeControllerTest extends TestBaseClassWeb
 
             // Check that file is last in list.
             $files = $w->findElements(WebDriverBy::className('other-files-filename'));
-            $this->assertEquals($files[count($files) - 1]->getText(), 'dalahorse.jpg');
+            $text = $files[count($files) - 1]->getText();
+            $this->assertEquals($text, 'dalahorse.jpg', 'Did not find dalahorse, but ' . $text);
 
             // Delete file.
             $deleteButtons = $w->findElements(WebDriverBy::className('other-files-delete-button'));

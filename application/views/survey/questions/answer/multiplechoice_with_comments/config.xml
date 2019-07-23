@@ -33,195 +33,118 @@
         </preview>
     </files>
 
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+        <attribute>other</attribute>
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <!--        <attribute>clear_default</attribute>-->
+        <attribute>preg</attribute>
+    </generalattributes>
+
     <!-- Question attributes -->
     <attributes>
+        <!-- Display Attributes START -->
         <attribute>
-            <name>array_filter</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question.</help>
-            <caption>Array filter</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>array_filter_exclude</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question.</help>
-            <caption>Array filter exclusion</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>array_filter_style</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>buttongroup</inputtype>
+            <name>choice_input_columns</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default></default>
             <options>
                 <option>
-                    <value>0</value>
-                    <text>Hidden</text>
+                    <value></value>
+                    <text>Default</text>
                 </option>
                 <option>
                     <value>1</value>
-                    <text>Disabled</text>
+                    <text>8%</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>17%</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>25%</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>33%</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>41%</text>
+                </option>
+                <option>
+                    <value>6</value>
+                    <text>50%</text>
+                </option>
+                <option>
+                    <value>7</value>
+                    <text>58%</text>
+                </option>
+                <option>
+                    <value>8</value>
+                    <text>67%</text>
+                </option>
+                <option>
+                    <value>9</value>
+                    <text>75%</text>
+                </option>
+                <option>
+                    <value>10</value>
+                    <text>83%</text>
+                </option>
+                <option>
+                    <value>11</value>
+                    <text>92%</text>
+                </option>
+                <option>
+                    <value>12</value>
+                    <text>100%</text>
                 </option>
             </options>
-            <default>0</default>
-            <help>Specify how array-filtered sub-questions should be displayed</help>
-            <caption>Array filter style</caption>
+            <help>Relative width of checkbox wrapper element</help>
+            <caption>Choice column width</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>assessment_value</name>
-            <category>Logic</category>
+            <name>other_replace_text</name>
+            <category>Display</category>
             <sortorder>100</sortorder>
-            <default>1</default>
-            <inputtype>integer</inputtype>
-            <help>If one of the subquestions is marked then for each marked subquestion this value is added as assessment.</help>
-            <caption>Assessment value</caption>
-            <i18n></i18n>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
+            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
-            <expression></expression>
         </attribute>
         <attribute>
-            <name>commented_checkbox</name>
-            <category>Logic</category>
-            <sortorder>110</sortorder>
+            <name>random_order</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
             <inputtype>singleselect</inputtype>
             <options>
                 <option>
-                    <value>allways</value>
-                    <text>No control on checkbox</text>
-                </option>
-                <option>
-                    <value>checked</value>
-                    <text>Checkbox is checked</text>
-                </option>
-                <option>
-                    <value>unchecked</value>
-                    <text>Checkbox is unchecked</text>
-                </option>
-            </options>
-            <default>checked</default>
-            <help>Choose when user can add a comment</help>
-            <caption>Comment only when</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>commented_checkbox_auto</name>
-            <category>Logic</category>
-            <sortorder>111</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
                     <value>0</value>
                     <text>No</text>
                 </option>
                 <option>
                     <value>1</value>
                     <text>Yes</text>
-                </option>
-            </options>
-            <default>1</default>
-            <help>Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).</help>
-            <caption>Remove text or uncheck checkbox automatically</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>em_validation_q</name>
-            <category>Logic</category>
-            <sortorder>200</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>2</expression>
-            <help>Enter a boolean equation to validate the whole question.</help>
-            <caption>Question validation equation</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>em_validation_q_tip</name>
-            <category>Logic</category>
-            <sortorder>210</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
-            <caption>Question validation tip</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>exclude_all_others</name>
-            <category>Logic</category>
-            <sortorder>130</sortorder>
-            <inputtype>text</inputtype>
-            <help>Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon.</help>
-            <caption>Exclusive option</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>exclude_all_others_auto</name>
-            <category>Logic</category>
-            <sortorder>131</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
                 </option>
             </options>
             <default>0</default>
-            <help>If the participant marks all options, uncheck all and check the option set in the &amp;quot;Exclusive option&amp;quot; setting</help>
-            <caption>Auto-check exclusive option if all others are checked</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>statistics_showgraph</name>
-            <category>Statistics</category>
-            <inputtype>switch</inputtype>
-            <sortorder>101</sortorder>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-            </options>
-            <help>Display a chart in the statistics?</help>
-            <caption>Display chart</caption>
-            <default>1</default>
+            <help>Present subquestions/answer options in random order</help>
+            <caption>Random order</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -279,116 +202,13 @@
             <sortorder>102</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
+                may use expressions - remember this part is static.
+            </help>
             <caption>CSS class(es)</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>max_answers</name>
-            <category>Logic</category>
-            <sortorder>11</sortorder>
-            <inputtype>text</inputtype>
-            <expression>2</expression>
-            <help>Limit the number of possible answers</help>
-            <caption>Maximum answers</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>min_answers</name>
-            <category>Logic</category>
-            <sortorder>10</sortorder>
-            <inputtype>text</inputtype>
-            <expression>2</expression>
-            <help>Ensure a minimum number of possible answers (0=No limit)</help>
-            <caption>Minimum answers</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>other_comment_mandatory</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Make the &amp;#039;Other:&amp;#039; comment field mandatory when the &amp;#039;Other:&amp;#039; option is active</help>
-            <caption>&amp;#039;Other:&amp;#039; comment mandatory</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>other_numbers_only</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Allow only numerical input for &amp;#039;Other&amp;#039; text</help>
-            <caption>Numbers only for &amp;#039;Other&amp;#039;</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>other_replace_text</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
-            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>page_break</name>
-            <category>Other</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
-            <caption>Insert page break in printable view</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
         </attribute>
         <attribute>
             <name>printable_help</name>
@@ -402,52 +222,6 @@
             <caption>Relevance help for printable survey</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>public_statistics</name>
-            <category>Statistics</category>
-            <sortorder>80</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Show statistics of this question in the public statistics page</help>
-            <caption>Show in public statistics</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>random_order</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Present subquestions/answer options in random order</help>
-            <caption>Random order</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
         </attribute>
         <attribute>
             <name>text_input_columns</name>
@@ -517,67 +291,295 @@
             <expression></expression>
         </attribute>
         <attribute>
-            <name>choice_input_columns</name>
+            <name>question_template</name>
             <category>Display</category>
-            <sortorder>90</sortorder>
-            <inputtype>singleselect</inputtype>
-            <default></default>
+            <sortorder>100</sortorder>
+            <inputtype>question_template</inputtype>
+            <default>core</default>
+            <help>Use a customized question theme for this question</help>
+            <caption>Question theme</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Display Attributes END -->
+        <!-- Logic Attributes START -->
+        <attribute>
+            <name>min_answers</name>
+            <category>Logic</category>
+            <sortorder>10</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Ensure a minimum number of possible answers (0=No limit)</help>
+            <caption>Minimum answers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>max_answers</name>
+            <category>Logic</category>
+            <sortorder>11</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Limit the number of possible answers</help>
+            <caption>Maximum answers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>array_filter</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question.</help>
+            <caption>Array filter</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_style</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>buttongroup</inputtype>
             <options>
                 <option>
-                    <value></value>
-                    <text>Default</text>
+                    <value>0</value>
+                    <text>Hidden</text>
                 </option>
                 <option>
                     <value>1</value>
-                    <text>8%</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>17%</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>25%</text>
-                </option>
-                <option>
-                    <value>4</value>
-                    <text>33%</text>
-                </option>
-                <option>
-                    <value>5</value>
-                    <text>41%</text>
-                </option>
-                <option>
-                    <value>6</value>
-                    <text>50%</text>
-                </option>
-                <option>
-                    <value>7</value>
-                    <text>58%</text>
-                </option>
-                <option>
-                    <value>8</value>
-                    <text>67%</text>
-                </option>
-                <option>
-                    <value>9</value>
-                    <text>75%</text>
-                </option>
-                <option>
-                    <value>10</value>
-                    <text>83%</text>
-                </option>
-                <option>
-                    <value>11</value>
-                    <text>92%</text>
-                </option>
-                <option>
-                    <value>12</value>
-                    <text>100%</text>
+                    <text>Disabled</text>
                 </option>
             </options>
-            <help>Relative width of checkbox wrapper element</help>
-            <caption>Choice column width</caption>
+            <default>0</default>
+            <help>Specify how array-filtered sub-questions should be displayed</help>
+            <caption>Array filter style</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_exclude</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question.</help>
+            <caption>Array filter exclusion</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>other_numbers_only</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Allow only numerical input for &amp;#039;Other&amp;#039; text</help>
+            <caption>Numbers only for &amp;#039;Other&amp;#039;</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>commented_checkbox_auto</name>
+            <category>Logic</category>
+            <sortorder>111</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>1</default>
+            <help>Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).</help>
+            <caption>Remove text or uncheck checkbox automatically</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>commented_checkbox</name>
+            <category>Logic</category>
+            <sortorder>110</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>allways</value>
+                    <text>No control on checkbox</text>
+                </option>
+                <option>
+                    <value>checked</value>
+                    <text>Checkbox is checked</text>
+                </option>
+                <option>
+                    <value>unchecked</value>
+                    <text>Checkbox is unchecked</text>
+                </option>
+            </options>
+            <default>checked</default>
+            <help>Choose when user can add a comment</help>
+            <caption>Comment only when</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>assessment_value</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <default>1</default>
+            <inputtype>integer</inputtype>
+            <help>If one of the subquestions is marked then for each marked subquestion this value is added as assessment.</help>
+            <caption>Assessment value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>exclude_all_others</name>
+            <category>Logic</category>
+            <sortorder>130</sortorder>
+            <inputtype>text</inputtype>
+            <help>Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon.</help>
+            <caption>Exclusive option</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>random_group</name>
+            <category>Logic</category>
+            <sortorder>180</sortorder>
+            <inputtype>text</inputtype>
+            <help>Place questions into a specified randomization group, all questions included in the specified
+                group will appear in a random order
+            </help>
+            <caption>Randomization group name</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>exclude_all_others_auto</name>
+            <category>Logic</category>
+            <sortorder>131</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>If the participant marks all options, uncheck all and check the option set in the &amp;quot;Exclusive option&amp;quot; setting</help>
+            <caption>Auto-check exclusive option if all others are checked</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>em_validation_q</name>
+            <category>Logic</category>
+            <sortorder>200</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>2</expression>
+            <help>Enter a boolean equation to validate the whole question.</help>
+            <caption>Question validation equation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>other_comment_mandatory</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Make the &amp;#039;Other:&amp;#039; comment field mandatory when the &amp;#039;Other:&amp;#039; option is active</help>
+            <caption>&amp;#039;Other:&amp;#039; comment mandatory</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>em_validation_q_tip</name>
+            <category>Logic</category>
+            <sortorder>210</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>This is a hint text that will be shown to the participant describing the question validation
+                equation.
+            </help>
+            <caption>Question validation tip</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <!-- Logic Attributes END -->
+        <!-- Other Attributes START -->
+        <attribute>
+            <name>page_break</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <caption>Insert page break in printable view</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -614,31 +616,81 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
+        <!-- Other Attributes END -->
+        <!-- Statistics Attributes START -->
         <attribute>
-            <name>random_group</name>
-            <category>Logic</category>
-            <sortorder>180</sortorder>
-            <inputtype>text</inputtype>
-            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
-            <caption>Randomization group name</caption>
+            <name>public_statistics</name>
+            <category>Statistics</category>
+            <sortorder>80</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Show statistics of this question in the public statistics page</help>
+            <caption>Show in public statistics</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>question_template</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>question_template</inputtype>
-            <default>core</default>
-            <help>Use a customized question theme for this question</help>
-            <caption>Question theme</caption>
+            <name>statistics_graphtype</name>
+            <category>Statistics</category>
+            <inputtype>singleselect</inputtype>
+            <sortorder>102</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Bar chart</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Pie chart</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Radar</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Line</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>PolarArea</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>Doughnut</text>
+                </option>
+            </options>
+            <help>Select the type of chart to be displayed</help>
+            <caption>Chart type</caption>
+            <default>0</default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
+        <!-- Statistics Attributes END -->
+        <!-- Timer Attributes START -->
+        <!-- Timer Attributes END -->
+        <!-- Input Attributes START -->
+        <!-- Input Attributes END -->
+        <!-- Location Attributes START -->
+        <!-- Location Attributes END -->
+        <!-- File metadata Attributes START -->
+        <!-- File meta Attributes END -->
+        <!-- Slider Attributes START -->
+        <!-- Slider Attributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->

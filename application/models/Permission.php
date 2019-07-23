@@ -550,7 +550,7 @@ class Permission extends LSActiveRecord
      * @param $iUserID integer User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null, $iPermissionRoleId = null)
     {
         // TODO: in entry script, if CConsoleApplication, set user as superadmin
         if (is_null($iUserID) && Yii::app() instanceof CConsoleApplication) {
@@ -569,6 +569,7 @@ class Permission extends LSActiveRecord
         $oEvent->set('sPermission', $sPermission);
         $oEvent->set('sCRUD', $sCRUD);
         $oEvent->set('iUserID', $iUserID);
+        $oEvent->set('iPermissionRoleId', $iPermissionRoleId);
         App()->getPluginManager()->dispatchEvent($oEvent);
         $pluginbPermission = $oEvent->get('bPermission');
 
@@ -592,13 +593,13 @@ class Permission extends LSActiveRecord
         /* Always return false for guests */
         // TODO: should not be necessary
         $iUserID = self::getUserId($iUserID);
-        if (!$iUserID) {
+        if (!$iUserID && $iUserID!==0) {
             return false;
         }
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
         // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID == $this->getOwnerId($iEntityID, $sEntityName)) {
+        if ($iUserID == $this->getOwnerId($iEntityID, $sEntityName) && $sEntityName != 'role') {
             return true;
         }
 
@@ -624,6 +625,18 @@ class Permission extends LSActiveRecord
         }
         if (self::isForcedSuperAdmin($iUserID) || $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) {
             return true;
+        }
+
+        /* Find the roles the user is part of and return thoese permissions */
+        /* Ignore roles for surveypermissions */
+        // @TODO add surveypermission to roles
+        $aRoles = self::getUserRole($iUserID);
+        if(safecount($aRoles)>0 && $sEntityName != 'survey') {
+            $allowed = false;
+            foreach ($aRoles as $role) {
+                $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
+            }
+            return $allowed;
         }
 
         /* Check in permission DB and static it */
@@ -661,9 +674,9 @@ class Permission extends LSActiveRecord
      * @param $iUserID integer User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasGlobalPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasGlobalPermission($sPermission, $sCRUD = 'read', $iUserID = null, $iPermissionRoleId = null)
     {
-        return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
+        return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID, $iPermissionRoleId);
     }
 
     /**
@@ -690,6 +703,18 @@ class Permission extends LSActiveRecord
             $sGlobalCRUD = 'update';
         }
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+    }
+
+    /**
+     * Returns true if a role has permission to read/create/update a certain template
+     * @param string $roleId
+     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer $iUserID integer User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    public function hasRolePermission($iRoleId, $sPermission, $sCRUD = 'read')
+    {
+        return $this->hasPermission($iRoleId, 'role', $sPermission, $sCRUD, 0);
     }
 
     /**
@@ -723,13 +748,23 @@ class Permission extends LSActiveRecord
      */
     public static function getUserId($iUserID = null)
     {
-        if (is_null($iUserID)) {
+        if (is_null($iUserID) && $iUserID!==0) {
             if (Yii::app() instanceof CConsoleApplication) {
                 throw new Exception('Permission must not be tested with console application.');
             }
             $iUserID = Yii::app()->session['loginID'];
         }
         return $iUserID;
+    }
+    /**
+     * get the connected user role
+     * @param integer $iUserID user id
+     * @return int roleId
+     * @throws Exception
+     */
+    public static function getUserRole($iUserID)
+    {
+        return UserInPermissionrole::model()->getRoleForUser($iUserID);
     }
 
     /**

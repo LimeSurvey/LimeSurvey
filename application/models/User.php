@@ -73,7 +73,8 @@ class User extends LSActiveRecord
             'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
             'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id')),
             'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid'),
-            'groups' => array(self::MANY_MANY, 'UserGroup', '{{user_in_groups}}(uid,ugid)')
+            'groups' => array(self::MANY_MANY, 'UserGroup', '{{user_in_groups}}(uid,ugid)'),
+            'roles' => array(self::MANY_MANY, 'Permissiontemplates', '{{user_in_permissionrole}}(uid,ptid)')
         );
     }
 
@@ -495,8 +496,9 @@ class User extends LSActiveRecord
         $detailUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/viewuser', ['userid' => $this->uid]);
         $editUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/editusermodal', ['userid' => $this->uid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
+        $setRoleUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/addrole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
-        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership', ['userid' => $this->uid]);
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
         $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
         
 
@@ -509,6 +511,10 @@ class User extends LSActiveRecord
             ."<button 
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
+        $addRoleButton = ""
+            ."<button 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
+                data-href='".$setRoleUrl."'><i class='fa fa-users'></i></button>";
         $editTemplatePermissionButton = ""
             ."<button 
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
@@ -518,9 +524,19 @@ class User extends LSActiveRecord
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""
-            ."<button 
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--changeowner' 
-                data-href='".$changeOwnershipUrl."'><i class='fa fa-hand-rock-o'></i></button>";
+        ."<button 
+                id='UserManagement--takeown-".$this->uid."' 
+                class='btn btn-sm btn-default' 
+                data-toggle='modal' 
+                data-target='#confirmation-modal' 
+                data-url='".$changeOwnershipUrl."' 
+                data-userid='".$this->uid."' 
+                data-user='".$this->full_name."' 
+                data-action='deluser' 
+                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\"))()' 
+                data-message='".gt('Do you want to take ownerschip of this user?')."'>
+                    <i class='fa fa-hand-rock-o'></i>
+              </button>";
         $deleteUserButton = ""
             ."<button 
                 id='UserManagement--delete-".$this->uid."' 
@@ -543,12 +559,14 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // and Except deleting themselves and changing permissions when they are forced superadmin
             if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
-                return join("\n",[$userDetail, $editUserButton]);
+                return join("",[$userDetail, $editUserButton]);
             }
-            return join("\n",[
-                $userDetail, 
+            return join("",[
                 $editUserButton, 
                 $editPermissionButton, 
+                $addRoleButton,
+                "\n",
+                $userDetail, 
                 $editTemplatePermissionButton, 
                 $this->parent_id != Yii::app()->session['loginID'] ? $takeOwnershipButton : '', 
                 $deleteUserButton]);
@@ -614,7 +632,7 @@ class User extends LSActiveRecord
         }
         
         
-        return join("\n",$buttonArray);
+        return join("", $buttonArray);
     }
 
     public function getParentUserName()
@@ -624,6 +642,17 @@ class User extends LSActiveRecord
         }
         // root user, no parent
         return null;
+    }
+
+    public function getRoleList()
+    {
+        $list = array_map(
+            function($oRoleMapping){
+                return $oRoleMapping->name;
+            },
+            $this->roles
+        );
+        return join(', ', $list);
     }
 
     public function getLastloginFormatted() {
@@ -657,7 +686,8 @@ class User extends LSActiveRecord
                 "name" => 'managementButtons',
                 "type" => 'raw',
                 "header" => gT("Action"),
-                'filter' => false
+                'filter' => false,
+                'htmlOptions' => ["style" => "white-space: pre;"]
             ),
             array(
                 "name" => 'uid',
@@ -679,7 +709,6 @@ class User extends LSActiveRecord
                 "name" =>"created",
                 "header" => gT("Created on"),
                 "value" => '$data->formattedDateCreated',
-    
             ),
             array(
                 "name" =>"parentUserName",
@@ -696,6 +725,11 @@ class User extends LSActiveRecord
             $cols[] = array(
                 "name" => 'groupList',
                 "header" => gT("Usergroups"),
+                'filter' => false
+            );
+            $cols[] = array(
+                "name" => 'roleList',
+                "header" => gT("Applied role"),
                 'filter' => false
             );
         }
@@ -759,7 +793,7 @@ class User extends LSActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
-
+        
         $criteria->compare('full_name',$this->searched_value,true);
         $criteria->compare('users_name',$this->searched_value,true, 'OR');
         $criteria->compare('email',$this->searched_value,true, 'OR');

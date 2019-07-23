@@ -21,6 +21,7 @@ before_script:
     # Test
     #- sudo apt-get update
     #- sudo apt-get upgrade
+    - echo $archive_url
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini

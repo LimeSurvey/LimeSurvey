@@ -75,6 +75,34 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
+     /**
+     * render selected items for massive action
+     * @return void
+     */
+
+    public function renderItemsSelected()
+    {
+        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));   
+        $aResults = [];
+        $tableLabels= array(gT('Survey ID'),gT('Survey Title') ,gT('Status'));
+        foreach ($aSurveys as $iSurveyID) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+                $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = 'selected';
+            }
+        }
+        
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Seleted'),
+                'tableLabels'  => $tableLabels
+            )
+        );      
+    }
+
     /**
      * @todo
      */
@@ -319,8 +347,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         foreach ($aSIDs as $iSurveyID){
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $oSurvey->gsid = $iSurveyGroupId;
-            $aResults[$iSurveyID] = $oSurvey->save();
+            $oSurvey->gsid = $iSurveyGroupId;           
+            $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result']= $oSurvey->save();
         }
 
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT("Success")));
@@ -515,6 +544,7 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['hidden'] = isset($question->questionAttributes['hidden']) && !empty($question->questionAttributes['hidden']->value);
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->questionL10ns[$baselang]->question, true);
                         $curGroup['questions'][] = $curQuestion;
                     }
@@ -986,6 +1016,11 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
         // set values from database to survey attributes 
+
+        if (empty($survey)) {
+            throw new Exception('Found no survey with id ' . $iSurveyID);
+        }
+
         $survey->setOptionsFromDatabase();
 
         //Get all languages

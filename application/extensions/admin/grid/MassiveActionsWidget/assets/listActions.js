@@ -25,7 +25,8 @@ var onClickListAction =  function () {
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType = $that.data('actionType');
+    var actionType     = $that.data('actionType');   
+    var selectedList   = $(".selected-items-list");
 
     if( $oCheckedItems == '[]' ) {
         //If no item selected, the error modal "please select first an item" is shown
@@ -33,7 +34,8 @@ var onClickListAction =  function () {
         $('#error-first-select').modal();
         return;
     }
-
+    
+    
     // TODO : Switch action (post, session, ajax...)
 
     // For actions without modal, doing a redirection
@@ -106,6 +108,31 @@ var onClickListAction =  function () {
     var $oldModalTitle     = $modalTitle.text();
     var $oldModalBody      = $modalBody.html();
     var $oldModalButtons   = $modal.find('.modal-footer-buttons');     // Modal footer with yes/no buttons
+    var $modalShowSelected = $modal.data('show-selected');
+    var $modalSelectedUrl = $modal.data('selected-url');
+    
+    //Display selected data in modals after clicked on action
+    if($modalShowSelected == 'yes' && $modalSelectedUrl ){  
+        
+        //set csrfToken for ajaxpost
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        
+        //clear selected list view 
+        selectedList.empty();
+
+        //ajaxpost to set data in the selected items div 
+        $.ajax({
+            url :$modalSelectedUrl,
+            type : 'POST',
+            data : {$oCheckedItems,csrfToken},
+            success: function(html, statut){    
+                selectedList.html(html);
+            },
+            error: function(requestObject, error, errorThrown){
+                    console.log(error);
+            }
+        });           
+    }
 
     // When user close the modal, we put it back to its original state
     $modal.on('hidden.bs.modal', function (e) {
@@ -159,6 +186,7 @@ var onClickListAction =  function () {
         $oldModalButtons.hide();                                    // Hide the 'Yes/No' buttons
         $modalClose.show();                                         // Show the 'close' button
         $ajaxLoader.show();                                         // Show the ajax loader
+        selectedList.empty();                                       //clear selected Item list
 
         // Ajax request
         $.ajax({

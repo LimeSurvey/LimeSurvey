@@ -524,6 +524,21 @@ return array(
         )
     ),
 
+    'permissionroles' => array(
+        'devBaseUrl' => 'assets/packages/permissionroles/',
+        'basePath' => 'core.permissionroles',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/permissionroles.css'
+        ),
+        'js' => array(
+            'js/permissionroles.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+
     'usermanagement' => array(
         'devBaseUrl' => 'assets/packages/usermanagement/',
         'basePath' => 'core.usermanagement',

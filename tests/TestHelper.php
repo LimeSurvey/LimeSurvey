@@ -249,6 +249,7 @@ class TestHelper extends TestCase
      */
     public function updateDbFromVersion($version, $connection = null)
     {
+
         if (is_null($connection)) {
             $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
             $this->assertNotEmpty($connection, 'Could connect to new database');
@@ -267,10 +268,7 @@ class TestHelper extends TestCase
 
         // Check error messages.
         $flashes = \Yii::app()->user->getFlashes();
-        if ($flashes) {
-            print_r($flashes);
-        }
-        $this->assertEmpty($flashes, 'No flash error messages');
+        $this->assertEmpty($flashes, 'No flash error messages: ' . json_encode($flashes));
         $this->assertTrue($result, 'Upgrade successful');
 
         return $connection;

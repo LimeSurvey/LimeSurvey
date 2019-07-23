@@ -44,6 +44,8 @@
             'actionType' => 'modal',
             'modalType' => 'yes-no',
             'keepopen' => 'yes',
+            'showSelected'  => 'yes',
+            'selectedUrl'   => App()->createUrl('/admin/questions/sa/renderItemsSelected/'),       
             'sModalTitle' => gT('Delete question(s)'),
             'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );

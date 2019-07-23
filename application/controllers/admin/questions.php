@@ -1890,4 +1890,40 @@ class questions extends Survey_Common_Action
             )
         );
     }
+    
+    /**
+     * render selected items for massive action widget
+     * @return void
+     */
+
+    public function renderItemsSelected()
+    {
+       
+        $aQidsAndLang = json_decode(Yii::app()->request->getPost('$oCheckedItems')); ;
+        $aResults     = [];
+        $tableLabels  = array(gT('Question ID'),gT('Question Title') ,gT('Status'));
+
+        foreach ($aQidsAndLang as $sQidAndLang) {
+            $aQidAndLang = explode(',', $sQidAndLang);
+            $iQid        = $aQidAndLang[0];
+            
+            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
+            $sBaseLanguage  = $oSurvey->language;
+
+            if (is_object($oQuestion)) {
+                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0),0,100);    
+                $aResults[$iQid]['result'] = 'selected';
+            }
+        } 
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items', 
+            array(
+                'aResults'     =>  $aResults, 
+                'successLabel' =>  gT('Selected'),
+                'tableLabels'  =>  $tableLabels
+                )
+        );
+    }
 }

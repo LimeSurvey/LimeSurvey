@@ -33,15 +33,224 @@
         </preview>
     </files>
 
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+        <attribute>other</attribute>
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <!--        <attribute>clear_default</attribute>-->
+        <attribute>preg</attribute>
+    </generalattributes>
+
     <!-- Question attributes -->
     <attributes>
+        <!-- Display Attributes START -->
         <attribute>
-            <name>display_rows</name>
+            <name>category_separator</name>
             <category>Display</category>
             <sortorder>100</sortorder>
-            <inputtype>integer</inputtype>
-            <help>How many rows to display</help>
-            <caption>Display rows</caption>
+            <inputtype>text</inputtype>
+            <help>Category separator</help>
+            <caption>Category separator</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>alphasort</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Sort the answer options alphabetically</help>
+            <caption>Sort answers alphabetically</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>dropdown_prefix</name>
+            <category>Display</category>
+            <sortorder>201</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>None</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Order - like 3)</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Accelerator keys for list items</help>
+            <caption>Prefix for list items</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>dropdown_size</name>
+            <category>Display</category>
+            <sortorder>200</sortorder>
+            <inputtype>text</inputtype>
+            <default></default>
+            <help>For list dropdown boxes, show up to this many rows</help>
+            <caption>Height of dropdown</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>other_replace_text</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
+            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>random_order</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Present subquestions/answer options in random order</help>
+            <caption>Random order</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hide_tip</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide the tip that is normally shown with a question</help>
+            <caption>Hide tip</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>cssclass</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
+                may use expressions - remember this part is static.
+            </help>
+            <caption>CSS class(es)</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>printable_help</name>
+            <category>Display</category>
+            <sortorder>201</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <default></default>
+            <help>In the printable version replace the relevance equation with this explanation text.</help>
+            <caption>Relevance help for printable survey</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>question_template</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>question_template</inputtype>
+            <default>core</default>
+            <help>Use a customized question theme for this question</help>
+            <caption>Question theme</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Display Attributes END -->
+        <!-- Logic Attributes START -->
+        <attribute>
+            <name>random_group</name>
+            <category>Logic</category>
+            <sortorder>180</sortorder>
+            <inputtype>text</inputtype>
+            <help>Place questions into a specified randomization group, all questions included in the specified
+                group will appear in a random order
+            </help>
+            <caption>Randomization group name</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -60,151 +269,120 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
+            <name>other_comment_mandatory</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Make the &amp;#039;Other:&amp;#039; comment field mandatory when the &amp;#039;Other:&amp;#039;
+                option is active
+            </help>
+            <caption>&amp;#039;Other:&amp;#039; comment mandatory</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>em_validation_q_tip</name>
             <category>Logic</category>
             <sortorder>210</sortorder>
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
+            <help>This is a hint text that will be shown to the participant describing the question validation
+                equation.
+            </help>
             <caption>Question validation tip</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
+        <!-- Logic Attributes END -->
+        <!-- Other Attributes START -->
         <attribute>
-            <name>em_validation_sq</name>
-            <category>Logic</category>
-            <sortorder>220</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>2</expression>
-            <help>Enter a boolean equation to validate each sub-question.</help>
-            <caption>Sub-question validation equation</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>em_validation_sq_tip</name>
-            <category>Logic</category>
-            <sortorder>230</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
-            <caption>Sub-question validation tip</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>location_city</name>
-            <readonly_when_active>1</readonly_when_active>
-            <category>Location</category>
+            <name>page_break</name>
+            <category>Other</category>
             <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <default>0</default>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-            </options>
-            <help>Store the city?</help>
-            <caption>Save city</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>location_state</name>
-            <readonly_when_active>1</readonly_when_active>
-            <category>Location</category>
-            <sortorder>100</sortorder>
-            <default>0</default>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-            </options>
-            <help>Store the state?</help>
-            <caption>Save state</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>location_postal</name>
-            <readonly_when_active>1</readonly_when_active>
-            <category>Location</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <default>0</default>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-            </options>
-            <help>Store the postal code?</help>
-            <caption>Save postal code</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>location_country</name>
-            <readonly_when_active>1</readonly_when_active>
-            <category>Location</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <default>0</default>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-            </options>
-            <help>Store the country?</help>
-            <caption>Save country</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>statistics_showmap</name>
-            <category>Statistics</category>
             <inputtype>switch</inputtype>
-            <sortorder>100</sortorder>
             <options>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
                 <option>
                     <value>0</value>
                     <text>No</text>
                 </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
             </options>
-            <help>Show a map in the statistics?</help>
-            <caption>Display map</caption>
-            <default>1</default>
+            <default>0</default>
+            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <caption>Insert page break in printable view</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>scale_export</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Default</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Nominal</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Ordinal</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Scale</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Set a specific SPSS export scale type for this question</help>
+            <caption>SPSS export scale type</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Other Attributes END -->
+        <!-- Statistics Attributes START -->
+        <attribute>
+            <name>public_statistics</name>
+            <category>Statistics</category>
+            <sortorder>80</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Show statistics of this question in the public statistics page</help>
+            <caption>Show in public statistics</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -272,347 +450,163 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
+        <!-- Statistics Attributes END -->
+        <!-- Timer Attributes START -->
         <attribute>
-            <name>location_mapservice</name>
-            <category>Location</category>
-            <sortorder>90</sortorder>
-            <inputtype>buttongroup</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Off</text>
-                </option>
-                <option>
-                    <value>100</value>
-                    <text>OpenStreetMap via MapQuest</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Google Maps</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Activate this to show a map above the input field where the user can select a location</help>
-            <caption>Use mapping service</caption>
+            <name>time_limit_timer_style</name>
+            <category>Timer</category>
+            <sortorder>100</sortorder>
+            <inputtype>textarea</inputtype>
+            <help>CSS Style for the message that displays in the countdown timer during the countdown</help>
+            <caption>Time limit timer CSS style</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>location_mapwidth</name>
-            <category>Location</category>
+            <name>time_limit_message_delay</name>
+            <category>Timer</category>
             <sortorder>102</sortorder>
-            <inputtype>text</inputtype>
-            <default>500</default>
-            <help>Map width in pixel</help>
-            <caption>Map width</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>location_mapheight</name>
-            <category>Location</category>
-            <sortorder>103</sortorder>
-            <inputtype>text</inputtype>
-            <default>300</default>
-            <help>Map height in pixel</help>
-            <caption>Map height</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>location_nodefaultfromip</name>
-            <category>Location</category>
-            <sortorder>91</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Yes</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>No</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Get the default location using the user&amp;#039;s IP address?</help>
-            <caption>IP as default location</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>location_defaultcoordinates</name>
-            <category>Location</category>
-            <sortorder>101</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <help>Default coordinates of the map when the page first loads. Format: latitude [space] longtitude</help>
-            <caption>Default position</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>location_mapzoom</name>
-            <category>Location</category>
-            <sortorder>101</sortorder>
-            <inputtype>text</inputtype>
-            <default>11</default>
-            <help>Map zoom level</help>
-            <caption>Zoom level</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>hide_tip</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Hide the tip that is normally shown with a question</help>
-            <caption>Hide tip</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>hidden</name>
-            <category>Display</category>
-            <sortorder>101</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
-            <caption>Always hide this question</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>cssclass</name>
-            <category>Display</category>
-            <sortorder>102</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
-            <caption>CSS class(es)</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>maximum_chars</name>
-            <category>Input</category>
-            <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
-            <default></default>
-            <help>Maximum characters allowed</help>
-            <caption>Maximum characters</caption>
+            <help>Display the &amp;#039;time limit expiry message&amp;#039; for this many seconds before performing
+                the &amp;#039;time limit action&amp;#039; (defaults to 1 second if left blank)
+            </help>
+            <caption>Time limit expiry message display time</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>numbers_only</name>
-            <category>Other</category>
-            <sortorder>150</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Allow only numerical input</help>
-            <caption>Numbers only</caption>
+            <name>time_limit_message</name>
+            <category>Timer</category>
+            <sortorder>104</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>The message to display when the time limit has expired (a default message will display if this
+                setting is left blank)
+            </help>
+            <caption>Time limit expiry message</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>time_limit_message_style</name>
+            <category>Timer</category>
+            <sortorder>106</sortorder>
+            <inputtype>textarea</inputtype>
+            <help>CSS style for the &amp;#039;time limit expiry message&amp;#039;</help>
+            <caption>Time limit message CSS style</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>input_size</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
+            <name>time_limit_warning</name>
+            <category>Timer</category>
+            <sortorder>108</sortorder>
             <inputtype>integer</inputtype>
-            <default></default>
-            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
-            <caption>Text input size</caption>
+            <help>Display a &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining in the
+                countdown (warning will not display if left blank)
+            </help>
+            <caption>1st time limit warning message timer</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>page_break</name>
-            <category>Other</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
-            <caption>Insert page break in printable view</caption>
+            <name>time_limit_warning_display_time</name>
+            <category>Timer</category>
+            <sortorder>110</sortorder>
+            <inputtype>integer</inputtype>
+            <help>The &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not turn
+                off if this setting is left blank)
+            </help>
+            <caption>1st time limit warning message display time</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
         <attribute>
-            <name>prefix</name>
-            <category>Display</category>
-            <sortorder>10</sortorder>
-            <inputtype>text</inputtype>
+            <name>time_limit_warning_message</name>
+            <category>Timer</category>
+            <sortorder>112</sortorder>
+            <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>Add a prefix to the answer field</help>
-            <caption>Answer prefix</caption>
+            <help>The message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will display
+                if this is left blank)
+            </help>
+            <caption>1st time limit warning message</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
-            <name>suffix</name>
-            <category>Display</category>
-            <sortorder>11</sortorder>
-            <inputtype>text</inputtype>
+            <name>time_limit_warning_style</name>
+            <category>Timer</category>
+            <sortorder>114</sortorder>
+            <inputtype>textarea</inputtype>
+            <help>CSS style used when the &amp;#039;time limit warning&amp;#039; message is displayed</help>
+            <caption>1st time limit warning CSS style</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2</name>
+            <category>Timer</category>
+            <sortorder>116</sortorder>
+            <inputtype>integer</inputtype>
+            <help>Display the 2nd &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining
+                in the countdown (warning will not display if left blank)
+            </help>
+            <caption>2nd time limit warning message timer</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2_display_time</name>
+            <category>Timer</category>
+            <sortorder>118</sortorder>
+            <inputtype>integer</inputtype>
+            <help>The 2nd &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not
+                turn off if this setting is left blank)
+            </help>
+            <caption>2nd time limit warning message display time</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>time_limit_warning_2_message</name>
+            <category>Timer</category>
+            <sortorder>120</sortorder>
+            <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>Add a suffix to the answer field</help>
-            <caption>Answer suffix</caption>
+            <help>The 2nd message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will
+                display if this is left blank)
+            </help>
+            <caption>2nd time limit warning message</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
-            <name>placeholder</name>
-            <category>Display</category>
-            <sortorder>12</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.</help>
-            <caption>Placeholder answer</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>placeholder</name>
-            <category>Display</category>
-            <sortorder>12</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>Placeholder</help>
-            <caption>Placeholder</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>text_input_width</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <default></default>
-            <options>
-                <option>
-                    <value></value>
-                    <text>Default</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>8%</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>17%</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>25%</text>
-                </option>
-                <option>
-                    <value>4</value>
-                    <text>33%</text>
-                </option>
-                <option>
-                    <value>5</value>
-                    <text>41%</text>
-                </option>
-                <option>
-                    <value>6</value>
-                    <text>50%</text>
-                </option>
-                <option>
-                    <value>7</value>
-                    <text>58%</text>
-                </option>
-                <option>
-                    <value>8</value>
-                    <text>67%</text>
-                </option>
-                <option>
-                    <value>9</value>
-                    <text>75%</text>
-                </option>
-                <option>
-                    <value>10</value>
-                    <text>83%</text>
-                </option>
-                <option>
-                    <value>11</value>
-                    <text>92%</text>
-                </option>
-                <option>
-                    <value>12</value>
-                    <text>100%</text>
-                </option>
-            </options>
-            <help>Relative width of the text input wrapper element</help>
-            <caption>Text input box width</caption>
+            <name>time_limit_warning_2_style</name>
+            <category>Timer</category>
+            <sortorder>122</sortorder>
+            <inputtype>textarea</inputtype>
+            <help>CSS style used when the 2nd &amp;#039;time limit warning&amp;#039; message is displayed</help>
+            <caption>2nd time limit warning CSS style</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -715,175 +709,7 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
-        <attribute>
-            <name>time_limit_timer_style</name>
-            <category>Timer</category>
-            <sortorder>100</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS Style for the message that displays in the countdown timer during the countdown</help>
-            <caption>Time limit timer CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_message_delay</name>
-            <category>Timer</category>
-            <sortorder>102</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Display the &amp;#039;time limit expiry message&amp;#039; for this many seconds before performing the &amp;#039;time limit action&amp;#039; (defaults to 1 second if left blank)</help>
-            <caption>Time limit expiry message display time</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_message</name>
-            <category>Timer</category>
-            <sortorder>104</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The message to display when the time limit has expired (a default message will display if this setting is left blank)</help>
-            <caption>Time limit expiry message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>time_limit_message_style</name>
-            <category>Timer</category>
-            <sortorder>106</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS style for the &amp;#039;time limit expiry message&amp;#039;</help>
-            <caption>Time limit message CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning</name>
-            <category>Timer</category>
-            <sortorder>108</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Display a &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining in the countdown (warning will not display if left blank)</help>
-            <caption>1st time limit warning message timer</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_display_time</name>
-            <category>Timer</category>
-            <sortorder>110</sortorder>
-            <inputtype>integer</inputtype>
-            <help>The &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not turn off if this setting is left blank)</help>
-            <caption>1st time limit warning message display time</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_message</name>
-            <category>Timer</category>
-            <sortorder>112</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will display if this is left blank)</help>
-            <caption>1st time limit warning message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_style</name>
-            <category>Timer</category>
-            <sortorder>114</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS style used when the &amp;#039;time limit warning&amp;#039; message is displayed</help>
-            <caption>1st time limit warning CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2</name>
-            <category>Timer</category>
-            <sortorder>116</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Display the 2nd &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining in the countdown (warning will not display if left blank)</help>
-            <caption>2nd time limit warning message timer</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2_display_time</name>
-            <category>Timer</category>
-            <sortorder>118</sortorder>
-            <inputtype>integer</inputtype>
-            <help>The 2nd &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not turn off if this setting is left blank)</help>
-            <caption>2nd time limit warning message display time</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2_message</name>
-            <category>Timer</category>
-            <sortorder>120</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The 2nd message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will display if this is left blank)</help>
-            <caption>2nd time limit warning message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2_style</name>
-            <category>Timer</category>
-            <sortorder>122</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS style used when the 2nd &amp;#039;time limit warning&amp;#039; message is displayed</help>
-            <caption>2nd time limit warning CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>random_group</name>
-            <category>Logic</category>
-            <sortorder>180</sortorder>
-            <inputtype>text</inputtype>
-            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
-            <caption>Randomization group name</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>question_template</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>question_template</inputtype>
-            <default>core</default>
-            <help>Use a customized question theme for this question</help>
-            <caption>Question theme</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
+        <!-- Timer Attributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->

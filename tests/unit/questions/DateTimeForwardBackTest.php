@@ -16,6 +16,7 @@ class DateTimeForwardBackTest extends TestBaseClass
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
         $_POST = [];
         $_SESSION = [];
 
@@ -80,7 +81,7 @@ class DateTimeForwardBackTest extends TestBaseClass
         $query = 'SELECT * FROM {{survey_' . self::$surveyId . '}}';
         $result = \Yii::app()->db->createCommand($query)->queryAll();
         $this->assertNotEmpty($result, 'Something got saved');
-        $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00', 'Answer in database is 10:00');
+        $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00:00', 'Answer in database is 10:00');
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
@@ -88,7 +89,5 @@ class DateTimeForwardBackTest extends TestBaseClass
         );
         $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
         $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');
-
-        self::$testHelper->deactivateSurvey(self::$surveyId);
     }
 }

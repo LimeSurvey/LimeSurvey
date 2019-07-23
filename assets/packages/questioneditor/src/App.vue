@@ -46,6 +46,10 @@ export default {
         },
         allowSwitchEditing(){
             return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
+        },
+        currentAlerts: {
+            get() {return this.$store.state.alerts;},
+            set(tmpAlerts) { this.$store.commit('setAlerts', tmpAlerts); }
         }
     },
     methods: {
@@ -107,14 +111,14 @@ export default {
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: result.data.message, class: 'well-lg bg-primary text-center'});
+                    this.$store.commit('addAlert', {message: result.data.message, id: 'well-alert', class: 'well-lg bg-primary text-center questioneditor-alert-pan'});
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", class: 'well-lg bg-danger text-center'});
+                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", id: 'well-alert', class: 'well-lg bg-danger text-center questioneditor-alert-pan'});
                     setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
@@ -149,6 +153,11 @@ export default {
     },
     
     mounted() {
+        let tmpAlerts = this.$store.state.alerts.filter((alert) => {
+            return !alert.shown
+        });
+        this.$store.commit('setAlerts', tmpAlerts)
+
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
@@ -182,10 +191,11 @@ export default {
         <transition name="slide-fade">
             <div class="ls-flex ls-flex-row" v-show="showAlerts">
                 <div 
-                    v-for="alert in $store.state.alerts"
+                    v-for="alert in currentAlerts"
                     :key="alert.key"
                     class="col-xs-12 alert" 
-                    :class="alert.class" 
+                    :class="alert.class"
+                    v-on:load="alert.shown=true"
                 >
                     <button 
                         type="button" 
@@ -201,6 +211,7 @@ export default {
         </transition>
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
             <button 
+                id="questionOverviewButton"
                 @click.prevent.stop="triggerEditQuestion" 
                 :class="editQuestion ? 'btn-default' : 'btn-primary'"
                 class="btn "
@@ -208,6 +219,7 @@ export default {
                 {{'Question overview'| translate}}
             </button>
             <button 
+                id="questionEditorButton"
                 @click.prevent.stop="triggerEditQuestion" 
                 :class="editQuestion ? 'btn-primary' : 'btn-default'"
                 class="btn "

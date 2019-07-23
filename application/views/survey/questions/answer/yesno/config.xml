@@ -33,8 +33,213 @@
         </preview>
     </files>
 
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+        <attribute>other</attribute>
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <!--        <attribute>clear_default</attribute>-->
+        <attribute>preg</attribute>
+    </generalattributes>
+
     <!-- Question attributes -->
     <attributes>
+        <!-- Display Attributes START -->
+        <attribute>
+            <name>display_type</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Button group</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Radio list</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Use button group or radio list</help>
+            <caption>Display type</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hide_tip</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide the tip that is normally shown with a question</help>
+            <caption>Hide tip</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>cssclass</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
+                may use expressions - remember this part is static.
+            </help>
+            <caption>CSS class(es)</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>printable_help</name>
+            <category>Display</category>
+            <sortorder>201</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <default></default>
+            <help>In the printable version replace the relevance equation with this explanation text.</help>
+            <caption>Relevance help for printable survey</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>question_template</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>question_template</inputtype>
+            <default>core</default>
+            <help>Use a customized question theme for this question</help>
+            <caption>Question theme</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Display Attributes END -->
+        <!-- Logic Attributes START -->
+        <!-- Logic Attributes END -->
+        <!-- Other Attributes START -->
+        <attribute>
+            <name>page_break</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <caption>Insert page break in printable view</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>scale_export</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Default</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Nominal</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Ordinal</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Scale</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Set a specific SPSS export scale type for this question</help>
+            <caption>SPSS export scale type</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Other Attributes END -->
+        <!-- Statistics Attributes START -->
+        <attribute>
+            <name>public_statistics</name>
+            <category>Statistics</category>
+            <sortorder>80</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Show statistics of this question in the public statistics page</help>
+            <caption>Show in public statistics</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
         <attribute>
             <name>statistics_showgraph</name>
             <category>Statistics</category>
@@ -97,202 +302,17 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <attribute>
-            <name>hide_tip</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Hide the tip that is normally shown with a question</help>
-            <caption>Hide tip</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>hidden</name>
-            <category>Display</category>
-            <sortorder>101</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
-            <caption>Always hide this question</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>cssclass</name>
-            <category>Display</category>
-            <sortorder>102</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
-            <caption>CSS class(es)</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>page_break</name>
-            <category>Other</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
-            <caption>Insert page break in printable view</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>printable_help</name>
-            <category>Display</category>
-            <sortorder>201</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <default></default>
-            <help>In the printable version replace the relevance equation with this explanation text.</help>
-            <caption>Relevance help for printable survey</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>public_statistics</name>
-            <category>Statistics</category>
-            <sortorder>80</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Show statistics of this question in the public statistics page</help>
-            <caption>Show in public statistics</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>scale_export</name>
-            <category>Other</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Default</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Nominal</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>Ordinal</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>Scale</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Set a specific SPSS export scale type for this question</help>
-            <caption>SPSS export scale type</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>random_group</name>
-            <category>Logic</category>
-            <sortorder>180</sortorder>
-            <inputtype>text</inputtype>
-            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
-            <caption>Randomization group name</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>display_type</name>
-            <category>Display</category>
-            <sortorder>90</sortorder>
-            <inputtype>buttongroup</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Button group</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Radio list</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Use button group or radio list</help>
-            <caption>Display type</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>question_template</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>question_template</inputtype>
-            <default>core</default>
-            <help>Use a customized question theme for this question</help>
-            <caption>Question theme</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
+        <!-- Statistics Attributes END -->
+        <!-- Timer Attributes START -->
+        <!-- Timer Attributes END -->
+        <!-- Input Attributes START -->
+        <!-- Input Attributes END -->
+        <!-- Location Attributes START -->
+        <!-- Location Attributes END -->
+        <!-- File metadata Attributes START -->
+        <!-- File meta Attributes END -->
+        <!-- Slider Attributes START -->
+        <!-- Slider Attributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->

@@ -57,7 +57,7 @@ export default {
             
         },
         showSubquestionEdit(){
-            return this.$store.state.currentQuestion.typeInformation.subquestions == 1;
+            return this.$store.state.currentQuestion.typeInformation.subquestions >= 1;
         },
         showAnswerOptionEdit(){
             return this.$store.state.currentQuestion.typeInformation.answerscales >= 1;

@@ -70,24 +70,19 @@ $internalConfig = array(
 
 
 
-
+    
     'modules'=>array(
-            'yourmodule'=array(
-            'class' => 'Use a yii Alias',
-
-        )
-
-            'gii'=>array(
-                'class'=>'system.gii.GiiModule',
-                'password'=>'toto',
-                    'newFileMode'=>0666,
-                    'newDirMode'=>0777,
-            ),
+        'gii'=>array(
+            'class'=>'system.gii.GiiModule',
+            'password'=>'toto',
+            'newFileMode'=>0666,
+            'newDirMode'=>0777,
         ),
-
-
-
+    ),
+    
     */
+
+
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
@@ -289,6 +284,7 @@ $internalConfig = array(
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
+                'templateResourceUrl'                => 'LS_Twig_Extension::templateResourceUrl',
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
                 'ngT'                     => 'ngT',
@@ -401,6 +397,7 @@ $internalConfig = array(
                     'assetPublish',
                     'image',
                     'imageSrc',
+                    'templateResourceUrl',
                     'sprintf',
                     'gT',
                     'ngT',

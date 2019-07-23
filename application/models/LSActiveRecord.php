@@ -99,8 +99,7 @@ class LSActiveRecord extends CActiveRecord
     {
         Yii::trace(get_class($this).'.findAll()', 'system.db.ar.CActiveRecord');
         $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
-        $records = $this->query($criteria, true, false); //Notice the third parameter 'false'
-        return $records->decrypt();
+        return $this->query($criteria, true, false); //Notice the third parameter 'false'
     }
 
 

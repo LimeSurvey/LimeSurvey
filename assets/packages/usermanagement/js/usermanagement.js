@@ -223,11 +223,16 @@ var UserManagement = function () {
         });
     };
 
+    var wireRoleSet = function () {
+        $('#roleselector').select2();
+    }
+
     var applyModalHtml = function (html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
         wirePasswordOptions();
         wirePermissions();
         wireTemplatePermissions();
+        wireRoleSet();
         wireForm();
     }
 

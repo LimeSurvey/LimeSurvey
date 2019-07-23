@@ -68,6 +68,121 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
+    /**
+     * Reset all selected themes from massive action
+     * @return void 
+     */
+
+    public function resetMultiple()
+    {   
+        $aTemplates = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults = array();
+
+        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+
+            foreach($aTemplates as $template){
+                $model = $this->loadModel($template);
+                $templatename = $model->template_name;
+                $aResults[$template]['title'] = $templatename; 
+                $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
+                TemplateManifest::importManifest($templatename);
+            }
+            //set Modal table labels
+            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+
+            Yii::app()->getController()->renderPartial(
+                'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
+                array
+                (
+                    'aResults'     => $aResults,
+                    'successLabel' => gT('Has been reset'),
+                    'tableLabels'  => $tableLabels
+                    
+                ));
+        } else {
+
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+        }
+
+    }
+
+    /**
+     * Uninstall all selected themes from massive action 
+     *@return void 
+     */
+
+    public function uninstallMultiple()
+    {
+        $aTemplates = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults = array();
+
+        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+
+            foreach($aTemplates as $template){
+                $model = $this->loadModel($template);
+                $templatename = $model->template_name;
+                $aResults[$template]['title'] = $templatename;  
+
+                if (!Template::hasInheritance($templatename)) {   
+                    if ($templatename != getGlobalSetting('defaulttheme')){
+                        $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
+                    }else{
+                        $aResults[$template]['result'] = false;
+                        $aResults[$template]['error'] = gT('Error!! You cannot uninstall the default template');
+                    }
+                  
+                } else {   
+                    $aResults[$template]['result'] = false;
+                    $aResults[$template]['error'] = gT('Error!! Some templates inherit from it');
+                }
+            }
+            //set Modal table labels
+            $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
+
+            Yii::app()->getController()->renderPartial(
+                'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
+                array
+                (
+                    'aResults'     => $aResults,
+                    'successLabel' => gT('Uninstalled'),
+                    'tableLabels'  => $tableLabels
+                ));
+            
+        } else {
+
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+        }
+    }
+
+    
+     /**
+     * render selected items for massive action modal
+     * @return void
+     */
+
+    public function renderSelectedItems()
+    {
+        $aTemplates = json_decode(Yii::app()->request->getPost('$oCheckedItems'));   
+        $aResults = array();
+        foreach($aTemplates as $template){
+
+            $model = $this->loadModel($template);
+            $aResults[$template]['title'] = $model->template_name;
+            $aResults[$template]['result'] = gT('Selected');
+        }
+        //set Modal table labels
+        $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Seleted'),
+                'tableLabels'  => $tableLabels,
+            )
+        );        
+    }
+
 
     /**
      * Updates a particular model (globally)

@@ -313,6 +313,33 @@ class LS_Twig_Extension extends Twig_Extension
         return $sUrlImgAsset;
     }
 
+    /**
+     * @var $resourcePath string : the needed resource
+     * @var $default string : the default resource if needed resssource didn't exist
+     * @return string|false
+     */
+    public static function templateResourceUrl($resourcePath, $default = false)
+    {
+        /* get extension of file in allowedthemeuploads */
+        $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
+        $info = pathinfo($resourcePath);
+        if(!isset($info['extension']) || !in_array(strtolower($info['extension']),$aAllowExtensions) ) {
+            if($default) {
+                return self::templateResourceUrl($default);
+            }
+            return false;
+        }
+        // Reccurence on templates to find the file
+        $oTemplate = self::getTemplateForRessource($resourcePath);
+        if(empty($oTemplate)) {
+            /* Didn't allow file out of template (diff with image) */
+            return false;
+        }
+        $sFullPath = $oTemplate->path.$resourcePath;
+        $resourceAsset = self::assetPublish($sFullPath);
+        return $resourceAsset;
+    }
+
 
     /**
      * Get the parsed output of the expression manger for a specific string
@@ -371,7 +398,6 @@ class LS_Twig_Extension extends Twig_Extension
         $oRTemplate = Template::getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
-
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
@@ -379,7 +405,11 @@ class LS_Twig_Extension extends Twig_Extension
             }
             $oRTemplate = $oMotherTemplate;
         }
-
+        $sRessourcePath = realpath($oRTemplate->path.$sRessource);
+        $sTemplatePath = realpath($oRTemplate->path);
+        if(substr($sTemplatePath, 0, strlen($sTemplatePath)) !== $sTemplatePath) {
+            return false;
+        }
         return $oRTemplate;
     }
 
