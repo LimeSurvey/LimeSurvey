@@ -72,7 +72,7 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 !/plugins/mailSenderToFrom/
-
+!/plugins/customToken/
 
 #ignore old styles
 /styles/

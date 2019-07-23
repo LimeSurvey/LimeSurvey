@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>customToken</name>
+        <type>plugin</type>
+        <creationDate>2019-07-22</creationDate>
+        <last_update>2019-07-22</last_update>
+        <author>Tools for Research</author>
+        <authorUrl>https://www.toolsforresearch.com</authorUrl>
+        <version>1.0.0</version>
+        <license>MIT</license>
+        <description><![CDATA[Numeric, non-ambiguous or CAPITAL tokens]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>
