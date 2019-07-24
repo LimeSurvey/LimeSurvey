@@ -220,17 +220,17 @@ abstract class Token extends Dynamic
      * Generates a token for this object.
      * @throws CHttpException
      */
-    public function generateToken()
+    public function generateToken($tokenlength = NULL)
     {
-        $iTokenLength = $this->survey->tokenlength;
-        $this->token = $this::generateRandomToken($iTokenLength);
+        $iTokenLength = $tokenlength ? $tokenlength : $this->survey->tokenlength;
+        $this->token = $this->_generateRandomToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
-            $this->token = $this::generateRandomToken($iTokenLength);
+            $this->token = $this->_generateRandomToken($iTokenLength);
             $counter++;
             // This is extremely unlikely.
-            if ($counter > 10) {
-                throw new CHttpException(500, 'Failed to create unique token in 10 attempts.');
+            if ($counter > 50) {
+                throw new CHttpException(500, 'Failed to create unique token in 50 attempts.');
             }
         }
     }
@@ -241,9 +241,17 @@ abstract class Token extends Dynamic
      * @param integer $iTokenLength
      * @return string
      */
-    public static function generateRandomToken($iTokenLength)
+    private function _generateRandomToken($iTokenLength)
     {
-        return str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        $token = str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        $event = new PluginEvent('afterGenerateToken');
+        $event->set('surveyId', $this->getSurveyId());
+        $event->set('iTokenLength', $iTokenLength);
+        $event->set('oToken', $this);
+        $event->set('token', $token);
+        App()->pluginManager->dispatchEvent($event);
+        $token = $event->get('token');
+        return $token;
     }
 
     /**
@@ -293,7 +301,7 @@ abstract class Token extends Dynamic
         foreach ($tkresult as $tkrow) {
             $bIsValidToken = false;
             while ($bIsValidToken == false && $invalidtokencount < 50) {
-                $newtoken = $this::generateRandomToken($iTokenLength);
+                $newtoken = $this->_generateRandomToken($iTokenLength);
                 if (!isset($existingtokens[$newtoken])) {
                     $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;
