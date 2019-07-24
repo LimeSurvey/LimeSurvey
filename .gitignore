@@ -72,10 +72,10 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 !/plugins/mailSenderToFrom/
+!/plugins/customToken/
 !/plugins/expressionQuestionHelp/
 !/plugins/expressionFixedDbVar/
 !/plugins/expressionQuestionForAll/
-
 
 #ignore old styles
 /styles/

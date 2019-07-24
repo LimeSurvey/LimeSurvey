@@ -985,15 +985,7 @@ class tokens extends Survey_Common_Action
                 $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->lastname);
                 $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->email);
 
-                $attempts = 0;
-                do {
-                    $token->token = Token::generateRandomToken($aData['tokenlength']);
-                    $attempts++;
-                } while (isset($existingtokens[$token->token]) && $attempts < 50);
-
-                if ($attempts == 50) {
-                    throw new Exception('Something is wrong with your random generator.');
-                }
+                $token->generateToken($aData['tokenlength']);
 
                 $existingtokens[$token->token] = true;
                 $token->encryptSave();
