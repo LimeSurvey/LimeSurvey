@@ -8998,19 +8998,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                         // Check for and adjust ',' and '.' in numbers
                         $isOnlyNum = isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1';
-                        if ($radixchange && $isOnlyNum)
-                        {
+                        if ($radixchange && $isOnlyNum) {
                             // Convert from comma back to decimal
-                            // Also make sure to be able to convert numbers like 1.100,10
-                            $value = preg_replace('|\.|', '', $value);
                             $value = preg_replace('|\,|', '.', $value);
                         }
-                        elseif (!$radixchange && $isOnlyNum)
-                        {
-                            // Still have to remove all ',' introduced by the thousand separator
-                            $value = preg_replace('|\,|', '', $value);
-                        }
-
                         switch($type) // fix value before set it in $_SESSION : the data is reset when show it again to user.trying to save in DB : date only, but think it must be leave like it and filter oinly when save in DB
                         {
                             case Question::QT_D_DATE: //DATE
