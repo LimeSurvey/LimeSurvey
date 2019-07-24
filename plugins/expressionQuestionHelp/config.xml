@@ -7,7 +7,7 @@
         <last_update>2019-04-05</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>0.0.0</version>
+        <version>1.0.0</version>
         <license>GPL</license>
         <description><![CDATA[Add QCODE.help for expression Manager.]]></description>
     </metadata>

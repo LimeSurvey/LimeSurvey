@@ -74,6 +74,7 @@
 !/plugins/mailSenderToFrom/
 !/plugins/expressionQuestionHelp/
 !/plugins/expressionFixedDbVar/
+!/plugins/expressionQuestionForAll/
 
 
 #ignore old styles
