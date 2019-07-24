@@ -997,13 +997,6 @@ function do_list_radio($ia)
         $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeparator = $sSeparator['separator'];
 
-        if ($aQuestionAttributes['other_numbers_only'] == 1) {
-            $oth_checkconditionFunction = 'fixnum_checkconditions';
-        } else {
-            $oth_checkconditionFunction = 'checkconditions';
-        }
-
-
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '-oth-') {
             $checkedState = CHECKED;
         } else {
@@ -1043,8 +1036,8 @@ function do_list_radio($ia)
             'othertext'=>$othertext,
             'checkedState'=>$checkedState,
             'kpclass'=>$kpclass,
-            'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
             'checkconditionFunction'=>$checkconditionFunction,
+            'numbers_only' => ($aQuestionAttributes['other_numbers_only'] == 1),
             ), true);
 
         $inputnames[] = $thisfieldname;

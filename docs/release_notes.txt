@@ -35,6 +35,43 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 4.0.0-RC1 (build 190509) to 4.0.0-RC2 (build 190723) July 23, 2019
+-New feature: Add massive action Widget for 'Reset' & 'Unsinstall' on Survey theme list. (Eddy Lackmann)
+-New feature #14414: Twig function for theme ressource url (Denis Chenu)
+-New feature: Apply roles to overwrite userpermissions (lacrioque)
+-New feature: hidden questions have now a class `question-hidden´ (lacrioque)
+-New feature: Save question attribute values as default question type values (Dominik Vitt)
+-New feature: sidepanel questiontree items have now data-attributes to filter and style against. (lacrioque)
+-Fixed issue: 10 Point array question not working (lacrioque)
+-Fixed issue #13684: fixed values on Multiple Choice Questions (M/P) having null values when exclusive is selected (Patrick Teichmann)
+-Fixed issue #14730: help-block not alert for attribute help (lacrioque)
+-Fixed issue #14731: Question design preview don't use Survey templateFixed issue #15041: Unable to open Settings tab on admin menu after saving questionDev: Broke live reloading in the question editor (lacrioque)
+-Fixed issue #14829: Green bar after calculating storage (Olle Haerstedt)
+-Fixed issue #14870: Survey panel integration not displayed (lacrioque)
+-Fixed issue #14964 : use Survey::model in command plugin reset theme (Denis Chenu)
+-Fixed issue #14975: Limesurvey users with limited rights get "undefined" error message when trying to upload a file at the survey theme options (Dominik Vitt)
+-Fixed issue #14979: "Global Survey Settings", "Create Survey", and survey settings: Inconsistent headings and missing icons (lacrioque)
+-Fixed issue #14989: Problem can't upload file on some server (Denis Chenu)
+-Fixed issue #15015: [Minor] Question summary didn't show Text error (lacrioque)
+-Fixed issue #15032: Changing question type does not work with the simple question type selector (lacrioque)
+-Fixed issue #15040: Adding ComfortUpdate key at  leads to blank screen (Eddy Lackmann)
+-Fixed issue #15045: Unable to activate AuditLog plugin with old config.php file (Denis Chenu)
+-Fixed issue #15054: Multiple numerical question - cannot be stored (lacrioque)
+-Fixed issue #15055: Ranking question type cannot be saved/stored (lacrioque)
+-Fixed issue #15065: Generatetokens throws exception: Call to a member function decrypt() on array (Dominik Vitt)
+-Fixed issue: Buttongroups not working (lacrioque)
+-Fixed issue: Live reloading working again (lacrioque)
+-Fixed issue: Question title no displayed correctly in panel integration (lacrioque)
+-Fixed issue: redirection after adding ComfortUpdate Key (Eddy Lackmann)
+-Fixed issue: Setting participant attribute to be encrypted causes error "502 Bad Gateway" (Dominik Vitt)
+-Fixed issue: unable to change question theme (lacrioque)
+-Fixed issue wrong error display after changing survey group with MassiveAction 'Survey Group' (Eddy Lackmann)
+#Updated translation: Arabic by RayhaneK
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Romanian by cdorin
+
 Changes from 4.0.0-beta (build 190509) to 4.0.0-RC1 (build 190509) May 09, 2019
 -New feature #10038: maintenance mode (Dominik Vitt)
 -New feature #12127: priority for plugins (Denis Chenu)
@@ -553,6 +590,20 @@ Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 201
 
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
+
+Changes from 3.17.7 (build 190627) to 3.17.8 (build 190722) July 22, 2019
+-Fixed issue: redirection after adding ComfortUpdate Key (Eddy Lackmann)
+-Fixed issue #15040: Adding ComfortUpdate key at  leads to blank screen (Eddy Lackmann)
+-Fixed issue #14989: Problem can't upload file on some server (Denis Chenu)
+-Fixed issue #14975: Limesurvey users with limited rights get "undefined" error message when trying to upload a file at the survey theme options (Dominik Vitt)
+-Fixed issue #14964 : use Survey::model in command plugin reset theme (Denis Chenu)
+-Fixed issue #14829: Green bar after calculating storage (Olle Haerstedt)
+#Updated translation: Romanian by cdorin
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Arabic by RayhaneK
+#Updated translation: Arabic by RayhaneK
 
 Changes from 3.17.7 (build 190604) to 4.0.0-alpha (build 190408) April 08, 2019
 -New feature : allow to update cc, bcc or add attachemnts in beforeEmail event

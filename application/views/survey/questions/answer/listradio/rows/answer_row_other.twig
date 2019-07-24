@@ -11,7 +11,6 @@
  * @var $checkedState
  * @var $kpclass
  * @var $sValue
- * @var $oth_checkconditionFunction
  * @var $checkconditionFunction
  */
 #}
@@ -26,7 +25,6 @@
         name="{{ name }}"
         id="SOTH{{ name }}"
         {{ checkedState }}
-        onclick="{{ checkconditionFunction }}(this.value, this.name, this.type)"
         />
 
         <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
@@ -41,9 +39,14 @@
         name="{{ name }}other"
         title="{{ flatString(processString(othertext,1),1) }}"
         {{ answer_other }}
-        onkeyup="if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };"
         aria-labelledby="label-id-{{ name }}"
+        {% if numbers_only %} data-number="1" {% endif %}
         />
     </div>
+    <script>
+        $("#answer{{ name }}othertext").on("keyup",function(){
+            if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };
+        });
+    </script>
 </li>
 <!-- end of answer_row_other -->
