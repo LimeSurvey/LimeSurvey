@@ -643,6 +643,7 @@ class questionedit extends Survey_Common_Action
 
     private function _getCompiledQuestionData(&$oQuestion)
     {
+        LimeExpressionManager::StartProcessingPage(false, true);
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
         $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);
@@ -676,7 +677,7 @@ class questionedit extends Survey_Common_Action
                 LimeExpressionManager::GetLastPrettyPrintExpression()
             );
         }
-
+        LimeExpressionManager::FinishProcessingPage();
         return [
             'question' => $aQuestionDefinition,
             'questiongroup' => $aQuestionGroupDefinition,
