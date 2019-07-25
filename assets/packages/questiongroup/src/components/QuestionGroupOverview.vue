@@ -30,7 +30,7 @@ export default {
             randomization_group
         },
         parsedRelevance(){
-            return this.$store.state.currentQuestionGroup.grelevance;
+            return this.$store.state.currentQuestionGroup.grelevance_expression;
         },
     },
     methods: {
@@ -98,7 +98,7 @@ ${scriptContent}
                     </div>
                     <div class="ls-flex-row wrap" :class="!!currentQuestionGroupRandomgroup ? 'col-6' : 'col-12'" v-show="(parsedRelevance!=1 && parsedRelevance!='')">
                         <div class="col-12">{{'Relevance'|translate}}</div>
-                        <div class="col-12 scoped-small-border"  v-html="parsedRelevance" />
+                        <div class="col-12 scoped-small-border scoped-showrelevance"  v-html="parsedRelevance" />
                     </div>
                 </li>
             </ul>
@@ -106,12 +106,44 @@ ${scriptContent}
     </div>
 </template>
 
-<style type="scss" scoped>
+<style lang="scss" scoped>
+
  .scoped-small-border{
      border: 1px solid rgba(184,184,184,0.8);
      padding: 1rem;
      border-radius: 4px;
  }
+
+.scoped-showrelevance {
+    padding-left: 1.8rem;
+    padding-right: 1.8rem;
+    position: relative;
+
+    &:before, 
+    &:after {
+        position: absolute;
+        width: 1.2rem;
+        height: 100%;
+        background-color: #dedede;
+        top: 0;
+        line-height: 200%;
+        font-size: 18px;
+        text-align: center;
+    }
+    &:before {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        left: 0;
+        content: '{';
+    }
+    &:after {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        right:0;
+        content: '}';
+    }
+}
+
 .scope-border-open-top {
     border-left: 1px solid #cfcfcf;
     border-right: 1px solid #cfcfcf;

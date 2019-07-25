@@ -1,11 +1,12 @@
 
 <script>
 import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
-import foreach from 'lodash/forEach';
 import keys from 'lodash/keys';
-import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';
+import filter from 'lodash/filter';
+import foreach from 'lodash/forEach';
 import isEmpty from 'lodash/isEmpty';
+import debounce from 'lodash/debounce';
 import isObject from 'lodash/isObject';
 
 import Aceeditor from '../helperComponents/AceEditor';
@@ -48,7 +49,7 @@ export default {
             }
         },
         currentRelevance :{
-            get(){ this.$store.state.currentQuestionGroup.grelevance; },
+            get(){ return this.$store.state.currentQuestionGroup.grelevance; },
             set(newValue) {
                 this.$store.commit('setCurrentQuestionGroupSetting', {setting: 'grelevance', newValue});
             }
