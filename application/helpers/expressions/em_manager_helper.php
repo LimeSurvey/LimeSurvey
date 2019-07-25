@@ -8302,6 +8302,7 @@
          */
         public static function setValueToKnowVar($var,$value)
         {
+            $LEM =& LimeExpressionManager::singleton();
             if(empty($LEM->knownVars[$var])) {
                 $LEM->knownVars[$var] = array(
                     'code'=>"",
@@ -8310,7 +8311,6 @@
                     'readWrite'=>'N',
                 );
             }
-            $LEM =& LimeExpressionManager::singleton();
             $LEM->knownVars[$var]['code'] = $value;
         }
 
