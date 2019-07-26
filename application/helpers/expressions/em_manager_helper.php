@@ -4401,7 +4401,10 @@
             $event->set('knownVars',$this->knownVars);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
-            $this->em->addRegexpExtraAttributes($event->get('newExpressionSuffixes'));
+            $newExpressionSuffixes = $event->get('newExpressionSuffixes');
+            if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
+                $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
+            }
             $this->knownVars = $result->get('knownVars');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
