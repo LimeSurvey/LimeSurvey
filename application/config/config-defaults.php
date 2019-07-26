@@ -658,6 +658,7 @@ $config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$co
 $config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
 $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
+$config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user themes
 $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; // The directory containing the user's question themes.
 $config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
 

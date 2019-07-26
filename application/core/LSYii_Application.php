@@ -79,11 +79,63 @@ class LSYii_Application extends CWebApplication
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'].DIRECTORY_SEPARATOR.'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
+
+
+
+
+        // LimeSurvey is configured to load custom Twig exstensions
+        if (array_key_exists('use_custom_twig_extensions',$baseConfig ) && $baseConfig ['use_custom_twig_extensions'] ){
+
+          $directory = new \RecursiveDirectoryIterator($baseConfig['usertwigextensionrootdir']);
+          $iterator = new \RecursiveIteratorIterator($directory);
+          $files = array();
+          foreach ($iterator as $info) {
+            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            if ($ext=='xml') {
+              $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
+            }
+          }
+
+
+
+          $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+
+          foreach ($CustomTwigExtensionsManifestFiles as $ctemFile){
+            $sXMLConfigFile        = file_get_contents( realpath ($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+
+            $aFunctions = (array) $oXMLConfig->xpath("//function");
+            $extensionClass =  (string) $oXMLConfig->metadata->name;
+
+            if (!empty($aFunctions) && !empty($extensionClass) ){
+
+              $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
+
+              foreach($aFunctions as $function){
+                $functionNameInTwig = (string) $function['twig-name'];
+                $functionNameInExt  = (string) $function['extension-name'];
+                $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] =  $functionNameInExt;
+                $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
+              }
+            }
+          }
+
+          libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        }
+
+
+
+
+
+
+
+
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
 
         /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
         $this->setConfigs();
+
 
         /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
          *  must do after reloading to have valid publicurl (the tempurl) */
@@ -93,6 +145,9 @@ class LSYii_Application extends CWebApplication
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
             App()->getAssetManager()->setBasePath($this->config['tempdir'].'/assets');
         }
+
+
+
     }
 
     /* @inheritdoc */
