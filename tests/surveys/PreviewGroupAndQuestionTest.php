@@ -24,12 +24,13 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
     public function testPreview()
     {
         $survey = \Survey::model()->findByPk(self::$surveyId);
-        $questionObjects = $survey->groups[1]->questions;
         $questions = [];
-        foreach ($questionObjects as $q) {
-            $questions[$q->title] = $q;
+        foreach($survey->groups as $group) {
+            $questionObjects = $group->questions;
+            foreach ($questionObjects as $q) {
+                $questions[$q->title] = $q;
+            }
         }
-
         /* Preview group with G2Q01 and set Q02=Y*/
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
