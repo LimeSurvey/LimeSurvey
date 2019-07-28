@@ -38,6 +38,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             'survey/index',
             [
                 'sid' => self::$surveyId,
+                'action' => 'previewgroup',
                 'gid' => $questions['G2Q01']['gid'],
             ]
         );
