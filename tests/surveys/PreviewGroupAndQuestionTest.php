@@ -24,7 +24,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
     public function testPreview()
     {
         $survey = \Survey::model()->findByPk(self::$surveyId);
-        $questionObjects = $survey->groups[0]->questions;
+        $questionObjects = $survey->groups[1]->questions;
         $questions = [];
         foreach ($questionObjects as $q) {
             $questions[$q->title] = $q;
