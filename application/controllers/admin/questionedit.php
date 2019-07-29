@@ -236,6 +236,28 @@ class questionedit extends Survey_Common_Action
     }
 
 
+    public function reloadQuestionData($iQuestionId=null, $type=null, $question_template='core')
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->_getQuestionObject($iQuestionId, $type);
+
+        $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, true, $question_template);
+        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true, $question_template);
+
+        $aLanguages = [];
+        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
+        array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, $aAllLanguages) {
+            $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
+        });
+
+        $this->renderJSON(array_merge($aQuestionInformationObject, [
+            'languages' => $aLanguages,
+            'mainLanguage' => $oQuestion->survey->language
+        ]));
+    }
+
     public function getQuestionData($iQuestionId=null, $type=null)
     {
         $iQuestionId = (int) $iQuestionId;
@@ -294,10 +316,10 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aQuestionTypeInformation);
     }
     
-    public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false)
+    public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false, $question_template='core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
-        $aGeneralOptionsArray = $oQuestion->getDataSetObject()->getGeneralSettingsArray($oQuestion->qid, $sQuestionType);
+        $aGeneralOptionsArray = $oQuestion->getDataSetObject()->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
 
         if ($returnArray === true) {
             return $aGeneralOptionsArray;
@@ -306,10 +328,10 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aGeneralOptionsArray);
     }
 
-    public function getAdvancedOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false)
+    public function getAdvancedOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false, $question_template='core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
-        $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getAdvancedOptions($oQuestion->qid, $sQuestionType);
+        $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getAdvancedOptions($oQuestion->qid, $sQuestionType, null, $question_template);
         if ($returnArray === true) {
             return $aAdvancedOptionsArray;
         }

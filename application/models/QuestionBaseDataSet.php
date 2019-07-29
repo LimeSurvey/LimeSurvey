@@ -26,7 +26,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @param string $sLanguage
      * @return array
      */
-    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null)
+    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template='core')
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
@@ -162,7 +162,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'question_template',
                 'formElementName' => false, //false means identical to id
                 'formElementHelp' => gT("Use a customized question theme for this question"),
-                'inputtype' => 'select',
+                'inputtype' => 'questiontheme',
                 'formElementValue' => (isset($aQuestionTemplateAttributes['value']) &&  $aQuestionTemplateAttributes['value'] !== '') ? $aQuestionTemplateAttributes['value'] : 'core',
                 'formElementOptions' => [
                     'classes' => ['form-control'],

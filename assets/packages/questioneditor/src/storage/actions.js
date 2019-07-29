@@ -139,9 +139,10 @@ export default {
     },
     reloadQuestion: (context) => {
         return new Promise((resolve,reject) => {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'reloadQuestionData' : '/reloadQuestionData';
             const parameters = {
-                type: context.state.currentQuestion.type || window.QuestionEditData.startType
+                type: context.state.currentQuestion.type || window.QuestionEditData.startType,
+                question_template: context.state.currentQuestionGeneralSettings.question_template || 'core'
             };
             
             if( window.QuestionEditData.qid != null) {
