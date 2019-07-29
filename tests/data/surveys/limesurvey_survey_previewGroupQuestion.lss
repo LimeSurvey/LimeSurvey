@@ -111,7 +111,7 @@
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
     <gid><![CDATA[896]]></gid>
-    <type><![CDATA[Y]]></type>
+    <type><![CDATA[S]]></type>
     <title><![CDATA[G2Q01]]></title>
     <question><![CDATA[Not hidden]]></question>
     <preg/>
@@ -525,7 +525,7 @@
     <showxquestions><![CDATA[Y]]></showxquestions>
     <showgroupinfo><![CDATA[B]]></showgroupinfo>
     <shownoanswer><![CDATA[N]]></shownoanswer>
-    <showqnumcode><![CDATA[X]]></showqnumcode>
+    <showqnumcode><![CDATA[B]]></showqnumcode>
     <bounceprocessing><![CDATA[N]]></bounceprocessing>
     <showwelcome><![CDATA[Y]]></showwelcome>
     <showprogress><![CDATA[Y]]></showprogress>
@@ -533,6 +533,8 @@
     <navigationdelay><![CDATA[0]]></navigationdelay>
     <nokeyboard><![CDATA[N]]></nokeyboard>
     <alloweditaftercompletion><![CDATA[N]]></alloweditaftercompletion>
+    <googleanalyticsstyle/>
+    <googleanalyticsapikey/>
    </row>
   </rows>
  </surveys>
@@ -549,20 +551,7 @@
    <fieldname>surveyls_policy_notice_label</fieldname>
    <fieldname>surveyls_url</fieldname>
    <fieldname>surveyls_urldescription</fieldname>
-   <fieldname>surveyls_email_invite_subj</fieldname>
-   <fieldname>surveyls_email_invite</fieldname>
-   <fieldname>surveyls_email_remind_subj</fieldname>
-   <fieldname>surveyls_email_remind</fieldname>
-   <fieldname>surveyls_email_register_subj</fieldname>
-   <fieldname>surveyls_email_register</fieldname>
-   <fieldname>surveyls_email_confirm_subj</fieldname>
-   <fieldname>surveyls_email_confirm</fieldname>
    <fieldname>surveyls_dateformat</fieldname>
-   <fieldname>surveyls_attributecaptions</fieldname>
-   <fieldname>email_admin_notification_subj</fieldname>
-   <fieldname>email_admin_notification</fieldname>
-   <fieldname>email_admin_responses_subj</fieldname>
-   <fieldname>email_admin_responses</fieldname>
    <fieldname>surveyls_numberformat</fieldname>
    <fieldname>attachments</fieldname>
   </fields>
