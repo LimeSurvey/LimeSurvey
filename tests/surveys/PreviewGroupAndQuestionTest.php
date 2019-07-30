@@ -213,7 +213,8 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
     }
 
     /**
-     * @return void
+     * @inheritdoc
+     * Log out to try to disable issue in Installer test
      */
     public static function tearDownAfterClass()
     {
