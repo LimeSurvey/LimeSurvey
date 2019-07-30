@@ -3066,6 +3066,10 @@ class remotecontrol_handle
                 // don't return an empty string
                 return $identity->errorMessage;
             }
+            var_dump($sPlugin);
+            var_dump($sUsername);
+            var_dump($sPassword);
+            var_dump('returning false in _doLogin');
             return false;
         } else {
             return true;
