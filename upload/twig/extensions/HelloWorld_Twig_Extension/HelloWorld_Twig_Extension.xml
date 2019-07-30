@@ -4,8 +4,7 @@
 
     (¯`·._.·(¯`·._.· HelloWorld Twig Extension Manifest  ·._.·´¯)·._.·´¯)
 
-    Base configuration for Vanilla Theme.
-    The content of this file is imported into DB when you install the template.
+    Base configuration for HelloWorld Twig Extension.
 
 -->
 
@@ -21,7 +20,7 @@
           <license>GNU General Public License version 2 or later</license>
           <version>1.0</version>
           <apiVersion>3</apiVersion>
-          <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
+          <description><![CDATA[<strong>HelloWorld Twig Extension</strong><br>A custom twig extension show case.]]></description>
           <last_update>2018-04-11 17:00:00</last_update>
       </metadata>
 
