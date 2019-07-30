@@ -218,7 +218,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
      */
     public static function tearDownAfterClass()
     {
-        $url = self::getUrl(['login', 'route'=>'authentication/sa/logaout']);
+        $url = self::getUrl(['login', 'route'=>'authentication/sa/logout']);
         self::openView($url);
         parent::tearDownAfterClass();
     }
