@@ -93,6 +93,6 @@ before_script:
   
 script:
     # Run tests.
-    - DOMAIN=localhost ./third_party/bin/phpunit --testdox
+    - DOMAIN=localhost ./third_party/bin/phpunit
 
 
