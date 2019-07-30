@@ -29,8 +29,6 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         if (!$password) {
             $password = 'password';
         }
-        // Permission to everything.
-        \Yii::app()->session['loginID'] = 1;
         // Browser login.
         self::adminLogin($username, $password);
     }
