@@ -90,7 +90,6 @@ export default {
                             :debug="generalSetting"
                             :readonly="isReadonly(generalSetting)"
                             @change="reactOnChange($event, generalSetting)"
-                            @triggerEvent="triggerEvent"
                             ></component>
                         </div>
                     </div>

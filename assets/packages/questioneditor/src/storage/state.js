@@ -27,5 +27,6 @@ export default {
     questionAdvancedSettingsCategory: '',
     activeLanguage: '',
     inTransfer: false,
-    alerts: []
+    alerts: [],
+    storedEvent: null
 };

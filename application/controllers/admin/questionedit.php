@@ -242,20 +242,29 @@ class questionedit extends Survey_Common_Action
         $oQuestion = $this->_getQuestionObject($iQuestionId, $type);
 
         $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, true, $question_template);
-        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true, $question_template);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid,  $type, true, $question_template);
+        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid,  $type, true, $question_template);
 
         $aLanguages = [];
         $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
         $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
+
         array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, $aAllLanguages) {
             $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
         });
 
-        $this->renderJSON(array_merge($aQuestionInformationObject, [
-            'languages' => $aLanguages,
-            'mainLanguage' => $oQuestion->survey->language
-        ]));
+        $this->renderJSON( 
+            array_merge(
+                $aCompiledQuestionData, 
+                [
+                    'languages' => $aLanguages,
+                    'mainLanguage' => $oQuestion->survey->language,
+                    'generalSettings' => $aQuestionGeneralOptions,
+                    'advancedSettings' => $aAdvancedOptions,
+                    'questiongroup' => $oQuestion->group->attributes
+                ]
+            )
+        );
     }
 
     public function getQuestionData($iQuestionId=null, $type=null)
