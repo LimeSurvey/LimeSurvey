@@ -4,6 +4,8 @@
 #
 
 language: php
+services:
+    - mysql
 php:
     - 7.2
     - 7.3
@@ -75,8 +77,6 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
-    # Check for syntax errors.
-
     # Test server.
     - wget localhost
     - cat index.html
@@ -96,5 +96,3 @@ before_script:
 script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit
-
-
