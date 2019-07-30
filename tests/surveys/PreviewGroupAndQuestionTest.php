@@ -216,11 +216,11 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
      * @inheritdoc
      * Log out to try to disable issue in Installer test
      */
-    public static function tearDownAfterClass()
-    {
-        $url = self::getUrl(['login', 'route'=>'authentication/sa/logaout']);
-        self::openView($url);
-        parent::tearDownAfterClass();
-    }
+    //~ public static function tearDownAfterClass()
+    //~ {
+        //~ $url = self::getUrl(['login', 'route'=>'authentication/sa/logaout']);
+        //~ self::openView($url);
+        //~ parent::tearDownAfterClass();
+    //~ }
 
 }
