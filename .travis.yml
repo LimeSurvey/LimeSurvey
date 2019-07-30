@@ -12,7 +12,8 @@ php:
 env:
   - DBENGINE=MYISAM
   - DBENGINE=INNODB
-
+services:
+    - mysql
 notifications:
   email:
     recipients:
@@ -31,6 +32,7 @@ before_script:
 
     # Install LimeSurvey.
     - mysql --version
+    - sudo service mysql status
     - touch enabletests
     # NB: PHPUnit 6.5.* is installed with composer.
     - composer install
