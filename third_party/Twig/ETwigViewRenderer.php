@@ -50,8 +50,10 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
      * Example: array('Twig_Extension_Sandbox', 'Twig_Extension_Text')
      */
     public $extensions = array();
-
-
+    /**
+     * @var array Custom LS Users Extensions
+     * Example: array('HelloWorld_Twig_Extension')
+     */
     public $user_extensions = array();
 
 
@@ -126,12 +128,10 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
         if (!empty($this->extensions)) {
             $this->addExtensions($this->extensions);
         }
-
         // Adding user custom extensions
         if (!empty($this->user_extensions)) {
             $this->addUserExtensions($this->user_extensions);
         }
-
         // Change lexer syntax
         if (!empty($this->lexerOptions)) {
             $this->setLexerOptions($this->lexerOptions);
@@ -216,7 +216,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
 
     /**
      * Adds custom user extensions
-     * @param array $extensions @see self::$extensions
+     * @param array $extensions @see self::$user_extensions
      */
     public function addUserExtensions($extensions)
     {

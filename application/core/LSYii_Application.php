@@ -80,55 +80,10 @@ class LSYii_Application extends CWebApplication
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
 
-
-
-
-        // LimeSurvey is configured to load custom Twig exstensions
+        /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions',$baseConfig ) && $baseConfig ['use_custom_twig_extensions'] ){
-
-          $directory = new \RecursiveDirectoryIterator($baseConfig['usertwigextensionrootdir']);
-          $iterator = new \RecursiveIteratorIterator($directory);
-          $files = array();
-          foreach ($iterator as $info) {
-            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
-            if ($ext=='xml') {
-              $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
-            }
-          }
-
-
-
-          $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-
-          foreach ($CustomTwigExtensionsManifestFiles as $ctemFile){
-            $sXMLConfigFile        = file_get_contents( realpath ($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-            $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-
-            $aFunctions = (array) $oXMLConfig->xpath("//function");
-            $extensionClass =  (string) $oXMLConfig->metadata->name;
-
-            if (!empty($aFunctions) && !empty($extensionClass) ){
-
-              $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
-
-              foreach($aFunctions as $function){
-                $functionNameInTwig = (string) $function['twig-name'];
-                $functionNameInExt  = (string) $function['extension-name'];
-                $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] =  $functionNameInExt;
-                $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
-              }
-            }
-          }
-
-          libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+          $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
         }
-
-
-
-
-
-
-
 
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
@@ -479,5 +434,61 @@ class LSYii_Application extends CWebApplication
             return false;
         }
         return $filePath;
+    }
+
+    /**
+     * Look for user custom twig extension in upload directory, and add load their manifest in Twig Application and its sandbox
+     * TODO: database uploader + admin interface grid view instead of XML parsing.
+     *
+     * @var string $sUsertwigextensionrootdir $baseConfig['usertwigextensionrootdir']
+     * @var array $aApplicationConfig the application configuration
+     */
+    public function getTwigCustomExtensionsConfig( $sUsertwigextensionrootdir, $aApplicationConfig )
+    {
+
+        // First we look for each custom extension manifest.
+        $directory = new \RecursiveDirectoryIterator($sUsertwigextensionrootdir);
+        $iterator = new \RecursiveIteratorIterator($directory);
+        $files = array();
+
+        foreach ($iterator as $info) {
+          $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+          if ($ext=='xml') {
+            $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
+          }
+        }
+
+        // Then we read each manifest and add their functions to Twig Component
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+
+        foreach ($CustomTwigExtensionsManifestFiles as $ctemFile){
+          $sXMLConfigFile        = file_get_contents( realpath ($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+          $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+
+          // Get the functions.
+          // TODO: get the tags, filters, etc
+          $aFunctions = (array) $oXMLConfig->xpath("//function");
+          $extensionClass =  (string) $oXMLConfig->metadata->name;
+
+          if (!empty($aFunctions) && !empty($extensionClass) ){
+
+            // We add the extension to twig user extensions to load
+            // See: https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/third_party/Twig/ETwigViewRenderer.php#L125-L133
+            $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
+
+            // Then we add the functions to the Twig Component and its sandbox
+            // See:  https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/application/config/internal.php#L233-#L398
+            foreach($aFunctions as $function){
+              $functionNameInTwig = (string) $function['twig-name'];
+              $functionNameInExt  = (string) $function['extension-name'];
+              $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] =  $functionNameInExt;
+              $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
+            }
+          }
+        }
+
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+
+        return $aApplicationConfig;
     }
 }
