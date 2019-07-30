@@ -1,7 +1,7 @@
 <phpunit bootstrap="tests/bootstrap.php" stderr="true" >
     <testsuites>
         <testsuite name="unit">
-            <directory>tests/functional</directory>
+            <file>tests/functional/frontend/MultipleChoiceNextPreviousTest.php</file>
             <file>tests/unit/helpers/RemoteControlTest.php</file>
         </testsuite>
     </testsuites>
