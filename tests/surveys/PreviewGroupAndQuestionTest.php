@@ -212,4 +212,14 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         return $questions;
     }
 
+    /**
+     * @return void
+     */
+    public static function tearDownAfterClass()
+    {
+        $url = self::getUrl(['login', 'route'=>'authentication/sa/logaout']);
+        self::openView($url);
+        parent::tearDownAfterClass();
+    }
+
 }
