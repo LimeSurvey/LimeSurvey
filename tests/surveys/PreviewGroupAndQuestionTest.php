@@ -35,17 +35,10 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         self::adminLogin($username, $password);
     }
 
-    public function testPreview()
+    /* Preview group with G2Q01*/
+    public function testPreviewGroup()
     {
-        $survey = \Survey::model()->findByPk(self::$surveyId);
-        $questions = [];
-        foreach($survey->groups as $group) {
-            $questionObjects = $group->questions;
-            foreach ($questionObjects as $q) {
-                $questions[$q->title] = $q;
-            }
-        }
-        /* Preview group with G2Q01*/
+        $questions = $this->_getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -80,15 +73,19 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
 
         }  catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/PreviewGroupAndQuestionTest.png';
+            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }
-        /* Preview group with G2Q01 and set Q02=Y*/
+        }    
+    }
+    /* Preview group with G2Q01 and prefill Q02=Y*/
+    public function testPreviewGroupPrefill()
+    {
+        $questions = $this->_getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -108,7 +105,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
 
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/PreviewGroupAndQuestionTest.png';
+            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
@@ -116,7 +113,12 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
         } 
-        /* Preview question with G3Q02*/
+    }
+
+    /* Preview question G3Q02*/
+    public function testPreviewQuestion()
+    {
+        $questions = $this->_getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -134,11 +136,24 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             /* Check question is visble */
             $this->assertTrue(self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G3Q02']['qid']))->isDisplayed(),"Question preview force relevance broken");
             /* Check filter is done */
-            $secondLineSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ002";
-            $this->assertFalse(self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),"Question preview force relevance broken");
+            $thirdLineSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ003";
+            $this->assertFalse(self::$webDriver->findElement(WebDriverBy::id('javatbd'.$thirdLineSGQA))->isDisplayed(),"Question preview force relevance broken");
+            /* Check EM js */
+            $checkboxToClickSGQA = self::$surveyId."X".$questions['G3Q02']['gid']."X".$questions['G3Q02']['qid']."SQ001";
+            $label = self::$webDriver->findElement(
+                WebDriverBy::cssSelector(
+                    sprintf(
+                        'label[for="%s"]',
+                        'answer' . $checkboxToClickSGQA
+                    )
+                )
+            );
+            $label->click();
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::id('javatbd'.$thirdLineSGQA))->isDisplayed(),"Question preview Expression javascript broken");
+            
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/PreviewGroupAndQuestionTest.png';
+            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
@@ -146,7 +161,12 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
         }
-        /* Preview question with G3Q02 and set Q03=Y*/
+    }
+
+    /* Preview question with G3Q02 and prefill Q03=Y*/
+    public function testPreviewQuestionPrefill()
+    {
+        $questions = $this->_getQuestions();        
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -169,7 +189,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertTrue(self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),"Question preview force relevance broken");
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/PreviewGroupAndQuestionTest.png';
+            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
@@ -178,4 +198,18 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             );
         } 
     }
+
+    private function _getQuestions()
+    {
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $questions = [];
+        foreach($survey->groups as $group) {
+            $questionObjects = $group->questions;
+            foreach ($questionObjects as $q) {
+                $questions[$q->title] = $q;
+            }
+        }
+        return $questions;
+    }
+
 }

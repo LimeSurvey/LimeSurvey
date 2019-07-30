@@ -18,7 +18,7 @@
   </fields>
   <rows>
    <row>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <sid><![CDATA[892498]]></sid>
     <group_name><![CDATA[Prefill part]]></group_name>
     <group_order><![CDATA[0]]></group_order>
@@ -28,7 +28,7 @@
     <grelevance/>
    </row>
    <row>
-    <gid><![CDATA[896]]></gid>
+    <gid><![CDATA[111]]></gid>
     <sid><![CDATA[892498]]></sid>
     <group_name><![CDATA[Preview group checking]]></group_name>
     <group_order><![CDATA[1]]></group_order>
@@ -38,7 +38,7 @@
     <grelevance><![CDATA[Q01.NAOK=="Y"]]></grelevance>
    </row>
    <row>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <sid><![CDATA[892498]]></sid>
     <group_name><![CDATA[Preview question checking]]></group_name>
     <group_order><![CDATA[2]]></group_order>
@@ -71,10 +71,10 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[13570]]></qid>
+    <qid><![CDATA[651]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <type><![CDATA[Y]]></type>
     <title><![CDATA[Q01]]></title>
     <question><![CDATA[Hide next group and question]]></question>
@@ -89,10 +89,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[13571]]></qid>
+    <qid><![CDATA[652]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[Q02]]></title>
     <question><![CDATA[Hide next question]]></question>
@@ -107,10 +107,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[13572]]></qid>
+    <qid><![CDATA[653]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[896]]></gid>
+    <gid><![CDATA[111]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[G2Q01]]></title>
     <question><![CDATA[Not hidden]]></question>
@@ -126,10 +126,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13573]]></qid>
+    <qid><![CDATA[654]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[896]]></gid>
+    <gid><![CDATA[111]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[G2Q02]]></title>
     <question><![CDATA[Hidden by Q01]]></question>
@@ -145,10 +145,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13574]]></qid>
+    <qid><![CDATA[655]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[896]]></gid>
+    <gid><![CDATA[111]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[G2Q03]]></title>
     <question><![CDATA[Hidden by Q02]]></question>
@@ -164,10 +164,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13575]]></qid>
+    <qid><![CDATA[656]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[896]]></gid>
+    <gid><![CDATA[111]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[G2Q04]]></title>
     <question><![CDATA[Hidden by G2Q01]]></question>
@@ -183,10 +183,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13576]]></qid>
+    <qid><![CDATA[657]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <type><![CDATA[Y]]></type>
     <title><![CDATA[Q03]]></title>
     <question><![CDATA[Hide sub question]]></question>
@@ -202,10 +202,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13577]]></qid>
+    <qid><![CDATA[658]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[Q04]]></title>
     <question><![CDATA[Array filter]]></question>
@@ -220,10 +220,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[13578]]></qid>
+    <qid><![CDATA[659]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[G3Q01]]></title>
     <question><![CDATA[Hidden by Q01]]></question>
@@ -239,10 +239,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13579]]></qid>
+    <qid><![CDATA[660]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[G3Q02]]></title>
     <question><![CDATA[Hidden by Q01, Sub question hidden by Q03]]></question>
@@ -258,10 +258,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13584]]></qid>
+    <qid><![CDATA[661]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[G3Q03]]></title>
     <question><![CDATA[Hidden by Q01, filter by Q04]]></question>
@@ -300,14 +300,15 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[13580]]></qid>
-    <parent_qid><![CDATA[13577]]></parent_qid>
+    <qid><![CDATA[662]]></qid>
+    <parent_qid><![CDATA[658]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[SQ001]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
@@ -315,14 +316,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[13581]]></qid>
-    <parent_qid><![CDATA[13577]]></parent_qid>
+    <qid><![CDATA[663]]></qid>
+    <parent_qid><![CDATA[658]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[895]]></gid>
+    <gid><![CDATA[110]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[SQ002]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
@@ -330,14 +332,15 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[13582]]></qid>
-    <parent_qid><![CDATA[13579]]></parent_qid>
+    <qid><![CDATA[664]]></qid>
+    <parent_qid><![CDATA[660]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[SQ001]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
@@ -346,14 +349,15 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13583]]></qid>
-    <parent_qid><![CDATA[13579]]></parent_qid>
+    <qid><![CDATA[665]]></qid>
+    <parent_qid><![CDATA[660]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[SQ002]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
@@ -362,14 +366,15 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13585]]></qid>
-    <parent_qid><![CDATA[13584]]></parent_qid>
+    <qid><![CDATA[666]]></qid>
+    <parent_qid><![CDATA[661]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ001]]></title>
     <question><![CDATA[SQ001]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
@@ -378,14 +383,15 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13586]]></qid>
-    <parent_qid><![CDATA[13584]]></parent_qid>
+    <qid><![CDATA[667]]></qid>
+    <parent_qid><![CDATA[661]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ002]]></title>
     <question><![CDATA[SQ002]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[2]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
@@ -394,19 +400,35 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[13587]]></qid>
-    <parent_qid><![CDATA[13584]]></parent_qid>
+    <qid><![CDATA[668]]></qid>
+    <parent_qid><![CDATA[661]]></parent_qid>
     <sid><![CDATA[892498]]></sid>
-    <gid><![CDATA[897]]></gid>
+    <gid><![CDATA[112]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[SQ003not]]></title>
     <question><![CDATA[SQ003 not in Q04]]></question>
     <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[3]]></question_order>
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
     <relevance><![CDATA[1]]></relevance>
+   </row>
+   <row>
+    <qid><![CDATA[669]]></qid>
+    <parent_qid><![CDATA[660]]></parent_qid>
+    <sid><![CDATA[892498]]></sid>
+    <gid><![CDATA[112]]></gid>
+    <type><![CDATA[T]]></type>
+    <title><![CDATA[SQ003]]></title>
+    <question><![CDATA[SQ003]]></question>
+    <other><![CDATA[N]]></other>
+    <question_order><![CDATA[3]]></question_order>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[!is_empty(G3Q02_SQ001.NAOK)]]></relevance>
    </row>
   </rows>
  </subquestions>
@@ -419,7 +441,7 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[13584]]></qid>
+    <qid><![CDATA[661]]></qid>
     <attribute><![CDATA[array_filter]]></attribute>
     <value><![CDATA[Q04]]></value>
    </row>
@@ -565,8 +587,10 @@
     <surveyls_endtext/>
     <surveyls_url/>
     <surveyls_urldescription/>
+    <surveyls_dateformat><![CDATA[1]]></surveyls_dateformat>
     <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
    </row>
   </rows>
  </surveys_languagesettings>
+
 </document>
