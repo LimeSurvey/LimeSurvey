@@ -30,7 +30,7 @@ before_script:
     - mysql --version
     - touch enabletests
     # NB: PHPUnit 6.5.* is installed with composer.
-    - composer update
+    - composer install
     - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload
@@ -73,7 +73,6 @@ before_script:
     - sudo service apache2 restart
 
     # Check for syntax errors.
-    # - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
 
     # Test server.
     - wget localhost
