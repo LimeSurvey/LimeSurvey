@@ -31,7 +31,6 @@ https://manual.limesurvey.org/Upgrading_from_a_previous_version
 
 Thank you to everyone who helped with this new release!
 
-
 CHANGE LOG
 ------------------------------------------------------
 
