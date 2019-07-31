@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.8 (build 190722) to 3.17.9 (build 190731) July 31, 2019
+-New feature: allow user to upload custom twig extensions (LouisGac)
+-Fixed issue [security]: File extension not filtered, possible XSS (reported by: Equipe web, Etat de Genève – www.ge.ch ) (LouisGac)
+-Fixed issue #15069: setting admin password with CLI database installation fails (Christian Rudolph)
+-Fixed issue #15060: Other option with number only erases decimal comma - with NO warning (Denis Chenu)
+
+
 Changes from 3.17.7 (build 190627) to 3.17.8 (build 190722) July 22, 2019
 -Fixed issue: redirection after adding ComfortUpdate Key (Eddy Lackmann)
 -Fixed issue #15040: Adding ComfortUpdate key at  leads to blank screen (Eddy Lackmann)
