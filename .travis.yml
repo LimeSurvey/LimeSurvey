@@ -26,6 +26,7 @@ before_script:
     #- sudo apt-get update
     #- sudo apt-get upgrade
     - echo $archive_url
+    - php -r 'var_dump(PHP_INT_SIZE);'
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
