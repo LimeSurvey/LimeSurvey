@@ -37,6 +37,10 @@ $internalConfig = array(
     'defaultController' => 'surveys',
 
     'aliases' => array(
+
+        // LimeSurvey's Yii modules
+        'modules' => realpath(__DIR__.'/../../modules'),
+
         // Third party path
         'third_party' => realpath(__DIR__.'/../../third_party'),
         'core' => realpath(__DIR__.'/../../assets/packages'),
@@ -62,25 +66,33 @@ $internalConfig = array(
     ),
 
     /*
-
-
     here you can load the different modules
     more about YII modules :
     https://www.yiiframework.com/doc/guide/1.1/en/basics.module
+    */
+    'modules' => array(
 
+        //Root Modules are real Yii Modules and can be initiate like this:
+        'HelloWorld' => array(
+          'class'=>'modules.root.HelloWorld.HelloWorldModule',
+        ),
 
-
-    
-    'modules'=>array(
+        /* Here you can unlock Gii
         'gii'=>array(
             'class'=>'system.gii.GiiModule',
-            'password'=>'toto',
+            'password'=>'YOURPASSWORD',
             'newFileMode'=>0666,
             'newDirMode'=>0777,
         ),
+        */
     ),
-    
-    */
+
+
+
+
+
+
+
 
 
 
