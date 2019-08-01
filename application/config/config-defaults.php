@@ -674,6 +674,7 @@ $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; /
 $config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
 $config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
+$config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";
 //Overwrite files with the same name on upload?
 $config['overwritefiles'] = 'off';
 
