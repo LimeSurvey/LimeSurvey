@@ -393,8 +393,13 @@ class questiongroups extends Survey_Common_Action
             "editorpreset" => Yii::app()->session['htmleditormode'],
         ];
 
+        $aQuestionGroup = $oQuestionGroup->attributes;
+        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
+        $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
+            LimeExpressionManager::GetLastPrettyPrintExpression()
+        );
         $this->renderJSON([
-            'questionGroup' => $oQuestionGroup,
+            'questionGroup' => $aQuestionGroup,
             'permissions' => $aPermissions, 
             'questonGroupI10N' => $i10N,
             'languages' => $aLanguages

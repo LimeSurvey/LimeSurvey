@@ -1086,19 +1086,21 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     App()->setLanguage($quexmllang);
 
     if ($labels) {
-              $Rows = Yii::app()->db->createCommand()
-                ->select('*')
-                ->from("{{labels}}")
-                ->where(" lid=:labels AND language=:language", array(':labels'=>$labels,  ':language'=>$quexmllang))
-                ->order('sortorder asc')
-                ->queryAll();
+        $Rows = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from("{{labels}} l")
+            ->join('{{label_l10ns}} ll', 'l.id=ll.label_id')
+            ->where("l.lid=:labels AND ll.language=:language", array(':labels' => $labels, ':language' => $quexmllang))
+            ->order('sortorder asc')
+            ->queryAll();
     } else {
-          $Rows = Yii::app()->db->createCommand()
-              ->select('code,answer as title,sortorder ')
-              ->from("{{answers}}")
-              ->where(" qid=:qid AND scale_id=:scale AND language=:language", array(':qid'=>$qid, ':scale'=>$scale, ':language'=>$quexmllang))
-              ->order('sortorder asc')
-              ->queryAll();
+        $Rows = Yii::app()->db->createCommand()
+            ->select('a.code,al.answer as title,sortorder ')
+            ->from("{{answers}} a")
+            ->join('{{answer_l10ns}} al', 'a.aid=al.aid')
+            ->where("a.qid=:qid AND a.scale_id=:scale AND al.language=:language", array(':qid' => $qid, ':scale' => $scale, ':language' => $quexmllang))
+            ->order('sortorder ASC')
+            ->queryAll();
 
     }
 
@@ -1109,12 +1111,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     foreach ($Rows as $Row) {
         $category = $dom->createElement("category");
 
-        if ($labels) {
-            $label = $dom->createElement("label", QueXMLCleanup($Row['title'], ''));
-            
-        } else {
-            $label = $dom->createElement("label", QueXMLCleanup($Row->answerL10ns[$quexmllang]->answer, ''));
-        }
+        $label = $dom->createElement("label", QueXMLCleanup($Row['title'], ''));
 
         $value = $dom->createElement("value", QueXMLCleanup($Row['code']));
 
@@ -1420,7 +1417,7 @@ function quexml_create_question($RowQ, $additional = false)
     $question = $dom->createElement("question");
 
     //create a new text element for each new line
-    $questiontext = explode('<br />', $RowQ->questionL10ns[$quexmllang]->question);
+    $questiontext = explode('<br />', $RowQ['question']);
     foreach ($questiontext as $qt) {
         $txt = QueXMLCleanup($qt);
         if (!empty($txt)) {
@@ -1449,9 +1446,9 @@ function quexml_create_question($RowQ, $additional = false)
         $question->appendChild($directive);
     }
 
-    if (Yii::app()->getConfig('quexmlshowprintablehelp') == true) {
+    if (App()->getConfig('quexmlshowprintablehelp') == true) {
 
-        $RowQ['printable_help'] = quexml_get_lengthth($qid, "printable_help", "", $quexmllang);
+        $RowQ['printable_help'] = quexml_get_lengthth($RowQ['qid'], "printable_help", "", $quexmllang);
 
         if (!empty($RowQ['printable_help'])) {
             $directive = $dom->createElement("directive");
@@ -1554,13 +1551,16 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
     //section == group
 
-    $Rows = Yii::app()->db->createCommand()
+
+    $Rows = App()->db->createCommand()
         ->select('*')
-        ->from("{{groups}}")
-        ->where('sid=:sid', array(':sid'=>$iSurveyID))
-        ->andWhere(' language=:lang', array(':lang'=>$quexmllang))
-        ->order('group_order asc')
+        ->from("{{groups}} g")
+        ->join('{{group_l10ns}} gl', 'g.gid=gl.gid')
+        ->where('g.sid=:sid', [':sid' => $iSurveyID])
+        ->andWhere('gl.language=:lang', [':lang' => $quexmllang])
+        ->order('group_order ASC')
         ->queryAll();
+
 
     //for each section
     foreach ($Rows as $Row) {
@@ -1601,11 +1601,12 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
         //boilerplate questions convert to sectionInfo elements
-        $Rows = Yii::app()->db->createCommand()
+        $Rows = App()->db->createCommand()
             ->select('*')
-            ->from("{{questions}}")
-            ->where("sid=:sid AND gid=:gid AND type LIKE 'X' AND language=:language", array(':sid'=>$iSurveyID, ':gid'=>$gid, ':language'=>$quexmllang))
-            ->order('question_order asc')
+            ->from("{{questions}} q")
+            ->join('{{question_l10ns}} ql', 'q.qid=ql.qid')
+            ->where("q.sid=:sid AND q.gid=:gid AND type LIKE 'X' AND ql.language=:language", array(':sid' => $iSurveyID, ':gid' => $gid, ':language' => $quexmllang))
+            ->order('question_order ASC')
             ->queryAll();
 
         foreach ($Rows as $RowQ) {
@@ -1613,7 +1614,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $RowQ['question'] = templatereplace($RowQ['question'], $RowQReplacements);
             $sectionInfo = $dom->createElement("sectionInfo");
             $position = $dom->createElement("position", "before");
-            $text = $dom->createElement("text", QueXMLCleanup($RowQ->questionL10ns[$quexmllang]->question));
+            $text = $dom->createElement("text", QueXMLCleanup($RowQ['question']));
             $administration = $dom->createElement("administration", "self");
             $sectionInfo->appendChild($position);
             $sectionInfo->appendChild($text);
@@ -1622,11 +1623,12 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         }
 
         //foreach question
-        $Rows = Yii::app()->db->createCommand()
+        $Rows = App()->db->createCommand()
             ->select('*')
-            ->from("{{questions}}")
-            ->where("sid=:sid AND gid=:gid AND  parent_qid=0  AND language=:language AND type NOT LIKE 'X'", array(':sid'=>$iSurveyID, ':gid'=>$gid, ':language'=>$quexmllang))
-            ->order('question_order asc')
+            ->from("{{questions}} q")
+            ->join('{{question_l10ns}} ql', 'q.qid=ql.qid')
+            ->where("q.sid=:sid AND q.gid=:gid AND q.parent_qid=0 AND ql.language=:language AND q.type NOT LIKE 'X'", [':sid' => $iSurveyID, ':gid' => $gid, ':language' => $quexmllang])
+            ->order('question_order ASC')
             ->queryAll();
 
         foreach ($Rows as $RowQ) {
@@ -1644,11 +1646,12 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
             //if this is a multi-flexi style question, create multiple questions
             if ($type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
-                $Rows = Yii::app()->db->createCommand()
+                $Rows = App()->db->createCommand()
                     ->select('*')
-                    ->from("{{questions}}")
-                    ->where("parent_qid=:qid AND scale_id=0 AND language=:language", array(':qid'=>$qid, ':language'=>$quexmllang))
-                    ->order('question_order asc')
+                    ->from("{{questions}} q")
+                    ->join('{{question_l10ns}} ql', 'q.qid=ql.qid')
+                    ->where("q.parent_qid=:qid AND q.scale_id=0 AND ql.language=:language", array(':qid' => $qid, ':language' => $quexmllang))
+                    ->order('question_order ASC')
                     ->queryAll();
 
                 foreach ($Rows as $SRow) {
@@ -1756,10 +1759,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
 
-                        $QROW = Yii::app()->db->createCommand()
+                        $QROW = App()->db->createCommand()
                             ->select('MAX(CHAR_LENGTH(code)) as sc')
-                            ->from("{{answers}}")
-                            ->where(" qid=:qid AND  language=:language", array(':qid'=>$qid, ':language'=>$quexmllang))
+                            ->from('{{answers}} a')
+                            ->join('{{answer_l10ns}} al', 'a.aid=al.aid')
+                            ->where('a.qid=:qid AND al.language=:language', [':qid' => $qid, ':language' => $quexmllang])
                             ->queryRow();
 
                         $response->appendChild(QueXMLCreateFree("integer", $QROW['sc'], ""));
@@ -2104,8 +2108,9 @@ function questionGetXMLStructure($xml, $gid, $qid)
 
     // Default values
     $query = "SELECT *
-    FROM {{defaultvalues}}
-    WHERE qid=$qid  order by language, scale_id";
+    FROM {{defaultvalues}} d
+    JOIN {{defaultvalue_l10ns}} dl on d.dvid=dl.dvid
+    WHERE d.qid=$qid order by dl.language, d.scale_id";
     buildXMLFromQuery($xml, $query);
 
 }

@@ -4,33 +4,39 @@
 #
 
 language: php
+services:
+    - mysql
 php:
     - 7.2
     - 7.3
 env:
   - DBENGINE=MYISAM
   - DBENGINE=INNODB
-
+services:
+    - mysql
 notifications:
   email:
     recipients:
       - secure: "1x0CmJbr8GWdS7OJ5PRchf0lDxNk4quRfbZ4Slu4GnEMh599Bo1jhsRZnc5ghOf9Yuwn4FzB4Oyfr6tIXP63FbUE2F4lhCwluxw7BWRmjvwMncctWqgDu7Jn3HRXlTdoVNhPlspBsbsNw7waeER6+jv6YFyMKH6gYXtUqloCuyrrhkLWetpj5qvGXmEV22Rhh0kLl9q/Khu0hI8eS022wLs1hQFurc4xbCvpSpcSzmxaD6gevKCuRiLJbG3QsT7lTAwm6U1QqSEMQP5QKhvQ01klttVD3KG2/F6Gs5pKhiNSKYmzeI5OqU7BggQQKCTBi1G0FNsqtFi+InwBoY09RrHpbGDzCOfeRqr/DQAiZKxt2p4d7OEwPcbojvHSG4gG3hIfScCyJGNVa9hZAfR7qyg1wcQdAUfZB+DFNE9FaYdXHFsjKtq/iHROqnS6FNFJF2hRR8diltDTdra5A81LuZcsA82WAj1PPT07kzzKfcbSHHfHaT2H8bzZ3LLd7rjUqW1hd5pK/TfhtPOLCiSLmcktbppcM5V64e9ZoPmywVsFD3GJ+kxBqQ6hx40JcyKkFmiU6WGoYurt/OhXMvRtkWVbeF52M7Mzpx9Iyh48mf3Xm55Q5GnYv0gKKgwYAllPOFXuNCk+DVcs4inpTvwQsCt/7W2RGwMIxlDhJ0+QySk="
     on_success: change
     on_failure: always 
+
 before_script:
     # Test
     #- sudo apt-get update
     #- sudo apt-get upgrade
     - echo $archive_url
+    - php -r 'var_dump(PHP_INT_SIZE);'
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
 
     # Install LimeSurvey.
     - mysql --version
+    - sudo service mysql status
     - touch enabletests
     # NB: PHPUnit 6.5.* is installed with composer.
-    - composer update
+    - composer install
     - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload
@@ -38,6 +44,7 @@ before_script:
     - chmod -R 777 tests/tmp
     # InnoDb needs large_file_prefix & Barracuda file format
     # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+    - sudo service mysql status
     - mysql -uroot -e "Show  variables like '%large%';"
     - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
     - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
@@ -72,9 +79,6 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
-    # Check for syntax errors.
-    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
-
     # Test server.
     - wget localhost
     - cat index.html
@@ -94,5 +98,3 @@ before_script:
 script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit
-
-

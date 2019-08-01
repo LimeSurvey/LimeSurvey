@@ -51,6 +51,13 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
      */
     public $extensions = array();
     /**
+     * @var array Custom LS Users Extensions
+     * Example: array('HelloWorld_Twig_Extension')
+     */
+    public $user_extensions = array();
+
+
+    /**
      * @var array Twig lexer options
      * @see http://twig.sensiolabs.org/doc/recipes.html#customizing-the-syntax
      * Example: Smarty-like syntax
@@ -120,6 +127,10 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
         // Adding custom extensions
         if (!empty($this->extensions)) {
             $this->addExtensions($this->extensions);
+        }
+        // Adding user custom extensions
+        if (!empty($this->user_extensions)) {
+            $this->addUserExtensions($this->user_extensions);
         }
         // Change lexer syntax
         if (!empty($this->lexerOptions)) {
@@ -202,6 +213,20 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
             $this->_twig->addExtension(new $extName());
         }
     }
+
+    /**
+     * Adds custom user extensions
+     * @param array $extensions @see self::$user_extensions
+     */
+    public function addUserExtensions($extensions)
+    {
+        foreach ($extensions as $extName) {
+            Yii::setPathOfAlias('extName', Yii::app()->getConfig('usertwigextensionrootdir') .'/'. $extName .'/');
+            Yii::import( "extName.*" );
+            $this->_twig->addExtension(new $extName());
+        }
+    }
+
 
     /**
      * Sets Twig lexer options to change templates syntax

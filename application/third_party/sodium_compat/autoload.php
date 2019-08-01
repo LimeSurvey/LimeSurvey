@@ -34,7 +34,7 @@ if (!is_callable('sodiumCompatAutoloader')) {
     }
 
     // Now that we have an autoloader, let's register it!
-    spl_autoload_register('sodiumCompatAutoloader');
+    spl_autoload_register('sodiumCompatAutoloader', true, true);
 }
 
 require_once dirname(__FILE__) . '/src/SodiumException.php';

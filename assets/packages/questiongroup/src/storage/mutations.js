@@ -31,12 +31,9 @@ export default {
     },
     //special and single settings
     setCurrentQuestionGroupSetting : (state, payload) => {
-        //const newCurrentQuestionGeneralSettings = state.currentQuestionGeneralSettings;
-        //newCurrentQuestionGeneralSettings[payload.settingName]['formElementValue'] = payload.newValue;
-        //state.currentQuestionGeneralSettings = newCurrentQuestionGeneralSettings;
         Vue.set(
-            state.setCurrentQuestionGroup,
-            payload.settingName,
+            state.currentQuestionGroup,
+            payload.setting,
             payload.newValue
         );
     },

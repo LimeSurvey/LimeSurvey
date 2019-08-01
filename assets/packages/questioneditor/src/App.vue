@@ -50,6 +50,17 @@ export default {
         currentAlerts: {
             get() {return this.$store.state.alerts;},
             set(tmpAlerts) { this.$store.commit('setAlerts', tmpAlerts); }
+        },
+        storedEvent() {
+            return this.$store.state.storedEvent;
+        }
+    },
+    watcher: {
+        storedEvent(newValue) {
+            if(newValue !== null) {
+                this.event = newValue;
+            }
+            this.$store.commit('setStoredEvent', null);
         }
     },
     methods: {
@@ -62,6 +73,13 @@ export default {
                 $('#questiongroupbarid').slideDown()
             }
             this.editQuestion = !this.editQuestion;
+        },
+        toggleLoading(force=null){
+            if(force===null) {
+                this.loading = !this.loading;
+                return;    
+            }
+            this.loading = force;
         },
         setEditQuestion(){
             if(!this.editQuestion) {
@@ -130,7 +148,10 @@ export default {
             tempQuestionObject.type = newValue;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' };
-            this.$store.dispatch('reloadQuestion').finally(()=>{
+            Promise.all([
+                this.$store.dispatch('getQuestionGeneralSettings'),
+                this.$store.dispatch('getQuestionAdvancedSettings')
+            ]).finally(()=>{
                 this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' };
             });
         },

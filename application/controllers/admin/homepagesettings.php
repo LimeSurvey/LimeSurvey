@@ -305,7 +305,7 @@ class homepagesettings extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             // We delete all the old boxes, and reinsert new ones
             Box::model()->deleteAll();
-            Boxes::model()->restoreDefaults();
+            Box::model()->restoreDefaults();
         }
         $this->getController()->redirect(array('admin/homepagesettings'));
     }

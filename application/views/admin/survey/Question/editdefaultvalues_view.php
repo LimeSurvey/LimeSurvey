@@ -199,3 +199,9 @@
         </div>
     </div>
 </div>
+
+<?php Yii::app()->getClientScript()->registerScript(
+    "defaultValuesShowBar",
+    "$('#questiongroupbarid').slideDown()",
+    LSYii_ClientScript::POS_POSTSCRIPT
+);

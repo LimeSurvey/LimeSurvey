@@ -1,10 +1,8 @@
 <phpunit bootstrap="tests/bootstrap.php" stderr="true" >
     <testsuites>
-        <testsuite name="functional">
-            <directory>tests/functional/</directory>
-        </testsuite>
         <testsuite name="unit">
-            <directory>tests/unit/</directory>
+            <directory>tests/unit</directory>
+            <directory>tests/functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>

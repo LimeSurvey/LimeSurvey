@@ -20,10 +20,7 @@
  *
  * @property integer $gid ID
  * @property integer $sid Survey ID
- * @property string $group_name Question group display name
  * @property integer $group_order Group order number (max 100 chars)
- * @property string $description Group display description
- * @property string $language Language code (eg: 'en')
  * @property string $randomization_group  Randomization group
  * @property string $grelevance Group's relevane equation
  *

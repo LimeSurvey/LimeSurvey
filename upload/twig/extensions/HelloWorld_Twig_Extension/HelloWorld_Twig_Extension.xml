@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+    (¯`·._.·(¯`·._.· HelloWorld Twig Extension Manifest  ·._.·´¯)·._.·´¯)
+
+    Base configuration for HelloWorld Twig Extension.
+
+-->
+
+<config>
+      <metadata>
+          <name>HelloWorld_Twig_Extension</name>
+          <title>HelloWorld Twig Extension</title>
+          <creationDate>26/07/2019</creationDate>
+          <author>Louis-Sébastien Gac Artigas</author>
+          <authorEmail>louis.gac@limesurvey.org</authorEmail>
+          <authorUrl>http://www.limesurvey.org</authorUrl>
+          <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+          <license>GNU General Public License version 2 or later</license>
+          <version>1.0</version>
+          <apiVersion>3</apiVersion>
+          <description><![CDATA[<strong>HelloWorld Twig Extension</strong><br>A custom twig extension show case.]]></description>
+          <last_update>2018-04-11 17:00:00</last_update>
+      </metadata>
+
+
+      <!-- This configuration will be added to the sandbox configuration -->
+      <!-- See: https://github.com/LimeSurvey/LimeSurvey/blob/aed6a700966dc3abd33b93309963a2779583cc30/application/config/internal.php#L297 -->
+      <!-- Read: https://twig.symfony.com/doc/2.x/tags/sandbox.html -->
+      <sandboxConfig>
+        <tags></tags>
+        <methods></methods>
+        <functions>
+          <function twig-name="helloWorld" extension-name="HelloWorld_Twig_Extension::helloWorld" />
+        </functions>
+        <properties></properties>
+        <filters></filters>
+      </sandboxConfig>
+</config>

@@ -141,13 +141,13 @@ class SurveyAdmin extends Survey_Common_Action
         $iGroupNumber    = 0;
         $iGroupSequence  = 0;
         $oQuestions      = Question::model()
-            ->with('groups')
+            ->with(['group', 'questionL10ns'])
             ->findAll(
                 array(
-                    'select'=>'t.qid,t.gid',
-                    'condition'=>"t.sid=:sid and t.language=:language and parent_qid=0",
-                    'order'=>'groups.group_order, question_order',
-                    'params'=>array(':sid'=>$iSurveyID, ':language'=>$oSurvey->language)
+                    'select' => 't.qid,t.gid',
+                    'condition' => "t.sid=:sid and questionL10ns.language=:language and parent_qid=0",
+                    'order' => 'group.group_order, question_order',
+                    'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
                 )
             );
 

@@ -26,7 +26,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @param string $sLanguage
      * @return array
      */
-    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null)
+    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
@@ -55,7 +55,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Always hide question => if available
         */
         $generalOptions = [
-            'question_template' => $this->getQuestionThemeOption(),
+            'question_template' => $this->getQuestionThemeOption($question_template),
             'gid' => $this->getQuestionGroupSelector(),
             'other' => $this->getOtherSwitch(),
             'mandatory' => $this->getMandatorySetting(),
@@ -143,7 +143,7 @@ abstract class QuestionBaseDataSet extends StaticModel
     }
 
     //Question theme
-    protected function getQuestionThemeOption()
+    protected function getQuestionThemeOption($currentSetQuestionTheme = null)
     {
         $aQuestionTemplateList = QuestionTemplate::getQuestionTemplateList($this->sQuestionType);
         $aQuestionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($this->oQuestion->qid, $this->sQuestionType, $this->oQuestion->survey->sid)['question_template'];
@@ -156,14 +156,20 @@ abstract class QuestionBaseDataSet extends StaticModel
             ];
         }
 
+        if ($currentSetQuestionTheme == null) {
+            $currentSetQuestionTheme = (isset($aQuestionTemplateAttributes['value']) &&  $aQuestionTemplateAttributes['value'] !== '') 
+            ? $aQuestionTemplateAttributes['value'] 
+            : 'core';
+        }
+
         return [
                 'name' => 'question_template',
                 'title' => gT('Question theme'),
                 'formElementId' => 'question_template',
                 'formElementName' => false, //false means identical to id
                 'formElementHelp' => gT("Use a customized question theme for this question"),
-                'inputtype' => 'select',
-                'formElementValue' => (isset($aQuestionTemplateAttributes['value']) &&  $aQuestionTemplateAttributes['value'] !== '') ? $aQuestionTemplateAttributes['value'] : 'core',
+                'inputtype' => 'questiontheme',
+                'formElementValue' => $currentSetQuestionTheme,
                 'formElementOptions' => [
                     'classes' => ['form-control'],
                     'options' => $aOptionsArray,

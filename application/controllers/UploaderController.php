@@ -167,6 +167,7 @@ class UploaderController extends SurveyController
             $valid_extensions_array = array_map('trim', $valid_extensions_array);
             $pathinfo = pathinfo($_FILES['uploadfile']['name']);
             $ext = strtolower($pathinfo['extension']);
+            $cleanExt = CHtml::encode($ext);
             $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
             $randfileloc = $sTempUploadDir.$randfilename;
 
@@ -174,9 +175,9 @@ class UploaderController extends SurveyController
             // it is also  checked at the client side, but jst double checking
             if (!in_array($ext, $valid_extensions_array)) {
                 $return = array(
-                    "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $ext)
-                );
+                                "success" => false,
+                                "msg" => sprintf(gT("Sorry, this file extension (%s) is not allowed!"), $cleanExt)
+                            );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
@@ -226,7 +227,7 @@ class UploaderController extends SurveyController
                                 "file_index"    => $filecount,
                                 "size"          => $size,
                                 "name"          => rawurlencode(basename($filename)),
-                                "ext"           => $ext,
+                                "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
                                 "msg"           => gT("The file has been successfully uploaded.")
                             );
@@ -254,7 +255,7 @@ class UploaderController extends SurveyController
                         "success" => true,
                         "size"    => $size,
                         "name"    => rawurlencode(basename($filename)),
-                        "ext"     => $ext,
+                        "ext"     => $cleanExt,
                         "filename"      => $randfilename,
                         "msg"     => gT("The file has been successfully uploaded.")
                     );

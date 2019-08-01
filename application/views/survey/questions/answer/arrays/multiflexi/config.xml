@@ -49,6 +49,19 @@
     <attributes>
         <!-- Display Attributes START -->
         <attribute>
+            <name>repeat_headings</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).</help>
+            <caption>Repeat answer options</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>reverse</name>
             <category>Display</category>
             <sortorder>100</sortorder>
@@ -103,6 +116,18 @@
             <default>0</default>
             <help>Present subquestions/answer options in random order</help>
             <caption>Random order</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>parent_order</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <caption>Get order from previous question</caption>
+            <help>Enter question ID to get subquestion order from a previous question</help>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

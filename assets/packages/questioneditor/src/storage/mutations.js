@@ -184,5 +184,8 @@ export default {
             element.key = i;
         });
         state.alerts = tmpAlerts;
+    },
+    setStoredEvent: (state, newEvent) => {
+        state.storedEvent = newEvent;
     }
 };

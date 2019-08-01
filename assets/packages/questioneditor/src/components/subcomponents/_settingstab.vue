@@ -16,6 +16,7 @@
     import SettingTextdisplay from '../_inputtypes/textdisplay.vue';
     import SettingTextarea from '../_inputtypes/textarea.vue';
     import SettingButtongroup from '../_inputtypes/buttongroup.vue';
+import SettingQuestiontheme from '../_inputtypes/questiontheme.vue';
     import StubSet from '../_inputtypes/stub.vue';
 
     export default {
@@ -39,6 +40,7 @@
         },
         components: {
             'setting-switch': SettingSwitch,
+            'setting-questiontheme': SettingQuestiontheme,
             'setting-text': SettingText,
             'setting-integer': SettingInteger,
             'setting-select': SettingSelect,

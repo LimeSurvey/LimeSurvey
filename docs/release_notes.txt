@@ -31,7 +31,6 @@ https://manual.limesurvey.org/Upgrading_from_a_previous_version
 
 Thank you to everyone who helped with this new release!
 
-
 CHANGE LOG
 ------------------------------------------------------
 
@@ -587,9 +586,14 @@ Changes from 4.0.0-beta (build 190509) to 4.0.0-RC1 (build 190509) May 09, 2019
 #Updated translation: Vietnamese by dnvservices
 
 Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 2019
-
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
+
+Changes from 3.17.8 (build 190722) to 3.17.9 (build 190731) July 31, 2019
+-New feature: allow user to upload custom twig extensions (LouisGac)
+-Fixed issue [security]: File extension not filtered, possible XSS (reported by: Equipe web, Etat de Genève – www.ge.ch ) (LouisGac)
+-Fixed issue #15069: setting admin password with CLI database installation fails (Christian Rudolph)
+-Fixed issue #15060: Other option with number only erases decimal comma - with NO warning (Denis Chenu)
 
 Changes from 3.17.7 (build 190627) to 3.17.8 (build 190722) July 22, 2019
 -Fixed issue: redirection after adding ComfortUpdate Key (Eddy Lackmann)
@@ -629,7 +633,6 @@ Changes from 3.17.7 (build 190604) to 4.0.0-alpha (build 190408) April 08, 2019
 -Fixed issue #10529: Unable to send email via some smtp server
 -Fixed issue #13001: Expression Manager evaluates answers to free text questions enclosed by "{" and "}" (Denis Chenu)
 
-
 Changes from 3.17.6 (build 190624) to 3.17.7 (build 190627) June 27, 2019
 -Fixed issue #14187: In IE, for an Array question the radio buttons disappear when resizing the page to the point the answers start to stack (Dominik Vitt)
 -Fixed issue #14604: Fixed invalid ajaxUpdate setting "true" causing issues for other scripts (Patrick Teichmann)
@@ -662,7 +665,6 @@ Changes from 3.17.6 (build 190624) to 3.17.7 (build 190627) June 27, 2019
 #Updated translation: Spanish (Spain) by oleggorfinkel, aesteban
 #Updated translation: Tajik by Iskandar_r
 #Updated translation: Turkish by kayazeren
-
 
 Changes from 3.17.5 (build 190604) to 3.17.6 (build 190624) June 24, 2019
 -Fixed issue [security]: Unauthorized admin can create new user using Authdb plugin (Dominik Vitt)

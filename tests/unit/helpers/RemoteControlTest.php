@@ -52,12 +52,11 @@ class RemoteControlTest extends TestBaseClass
             $plugin->name = 'Authdb';
             $plugin->active = 1;
             $plugin->save();
-            App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
         } else {
             $plugin->active = 1;
             $plugin->save();
         }
-
+        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
         // Clear login attempts.
         $query = sprintf('DELETE FROM {{failed_login_attempts}}');
         $dbo->createCommand($query)->execute();

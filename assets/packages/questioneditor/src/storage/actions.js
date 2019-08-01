@@ -84,8 +84,12 @@ export default {
         return new Promise((resolve, reject) => {
             const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getGeneralOptions' : '/getGeneralOptions';
             const parameters = {
-                sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType
+                sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
             };
+
+            if(context.state.currentQuestionGeneralSettings.question_template != undefined) {
+                parameters['question_template'] = context.state.currentQuestionGeneralSettings.question_template.formElementValue;
+            }
             
             if( window.QuestionEditData.qid != null) {
                 parameters.iQuestionId = window.QuestionEditData.qid
@@ -108,8 +112,12 @@ export default {
         return new Promise((resolve, reject) => {
             const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getAdvancedOptions' : '/getAdvancedOptions';
             const parameters = {
-                sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType
+                sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
             };
+            
+            if(context.state.currentQuestionGeneralSettings.question_template != undefined) {
+                parameters['question_template'] = context.state.currentQuestionGeneralSettings.question_template.formElementValue;
+            }
             
             if( window.QuestionEditData.qid != null) {
                 parameters.iQuestionId = window.QuestionEditData.qid
@@ -139,9 +147,10 @@ export default {
     },
     reloadQuestion: (context) => {
         return new Promise((resolve,reject) => {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'reloadQuestionData' : '/reloadQuestionData';
             const parameters = {
-                type: context.state.currentQuestion.type || window.QuestionEditData.startType
+                type: context.state.currentQuestion.type || window.QuestionEditData.startType,
+                question_template: context.state.currentQuestionGeneralSettings.question_template.formElementValue || 'core'
             };
             
             if( window.QuestionEditData.qid != null) {

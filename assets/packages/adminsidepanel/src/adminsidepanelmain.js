@@ -1,6 +1,6 @@
 //globals formId
 import Vue from "vue";
-Vue.config.devtools = true;
+Vue.config.devtools = false;
 
 import Sidebar from "./components/sidebar.vue";
 import getAppState from "./store/vuex-store.js";
