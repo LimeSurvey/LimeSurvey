@@ -30,18 +30,102 @@ class HelloWorld extends Survey_Common_Action
         return $this->sayHello();
       }
 
+
+      /**
+       * Says hello to user
+       *
+       * This method is for a full page module. You can reach it via: index.php?r=admin/HelloWorld/
+       *
+       * @param string $sWho who to say hello
+       * @return  array Populated parameters ready to be rendered inside the admin interface
+       */
+      public function sayHello($sWho="World")
+      {
+          // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
+          $this->_renderWrappedTemplate('HelloWorld', 'index', array(
+              'sWho'=>$sWho,
+            ));
+      }
+
+
+      /**
+       * Example of two functions to show inside the survey layout
+       *
+       */
+
+
+      /*
+       * This function is the root one. It will say "hello root" and nothing else. You can access it via :
+       * index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX
+       * where XXXXX is any valid survey id.
+       */
+      public function HelloWorldSurvey($surveyid)
+      {
+        // First, we get the survey model to get some information
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
+        // Then, we build the data array that will be passed to the view.
+        $aData = array();
+
+        // Those datas will controll the behaviour of the survey "layout"
+
+        // By providing a surveyid, we launch the survey "layout".
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L328-L338
+        $aData['surveyid'] = $surveyid;
+
+        // By providing a "title_bar", we the green top bar with the breadcrumb.
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L481-L486
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
+
+        // By providing a module subaction, we launch the breadcrumb
+        $aData['title_bar']['module_subaction'] = "HelloWorld";
+        $aData['title_bar']['module_subaction_url'] = App()->createUrl('admin/HelloWorld/sa/HelloWorldSurvey/', ['surveyid' => $oSurvey->sid]);
+
+        // Our own datas for our view
+        $aData['sWho'] = "root";
+
+        // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
+        $this->_renderWrappedTemplate('HelloWorld', 'HelloWorldSurvey', $aData, false);
+      }
+
+
     /**
      * Says hello to user
-     * @param string $sWho who to say hello
+     * @param string $sWho just to show you can pass parameters from url
      * @return  array Populated parameters ready to be rendered inside the admin interface
      */
-    public function sayHello($sWho="World")
+    public function sayHelloUser($sWho="World", $surveyid)
     {
+        // First, we get the survey model to get some information
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
+
+        // Then, we build the data array that will be passed to the view.
+        $aData = array();
+
+        // Those datas will controll the behaviour of the survey "layout"
+
+        // By providing a surveyid, we launch the survey "layout".
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L328-L338
+        $aData['surveyid'] = $surveyid;
+
+        // By providing a "title_bar", we the green top bar with the breadcrumb.
+        // see: https://github.com/LimeSurvey/LimeSurvey/blob/ae760dd3274a390b790c494f50826cb3a56f37c3/application/core/Survey_Common_Action.php#L481-L486
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
+
+        // By providing a module subaction, we launch the breadcrumb
+        $aData['title_bar']['module_subaction'] = "HelloWorld";
+        $aData['title_bar']['module_subaction_url'] = App()->createUrl('admin/HelloWorld/sa/HelloWorldSurvey/', [ 'surveyid' => $oSurvey->sid]);
+        $aData['title_bar']['module_current_action'] = 'sayHelloUser';
+
+        // Our own datas for our view
+        $aData['sWho'] = $sWho;
+        $aData['sUserName'] = Yii::app()->user->name;
+
         // Call to Survey_Common_Action::_renderWrappedTemplate that will generate the "Layout"
-        $this->_renderWrappedTemplate('HelloWorld', 'index', array(
-            'sWho'=>$sWho,
-        ));
+        $this->_renderWrappedTemplate('HelloWorld', 'sayHelloUser', $aData, false);
     }
+
 
     /**
      * Override Survey_Common_Action::renderCentralContents
