@@ -1,4 +1,4 @@
-<?php 
+<?php
     $extraClass = isset($extraClass) ? $extraClass : '';
     $title = isset($title) ? $title : '';
 ?>
@@ -56,11 +56,11 @@
                         <?php if(!$sSubaction && !isset($oQuestion)): ?>
                             <li class="marks_as_active">
                                 <?= (
-                                    $oQuestionGroup->isNewRecord 
-                                    ? gT('New question group') 
+                                    $oQuestionGroup->isNewRecord
+                                    ? gT('New question group')
                                     : viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1)
                                 ); ?>
-                            </li>                                                                     
+                            </li>
                         <?php else: ?>
                             <li>
                                 <div>
@@ -68,8 +68,8 @@
                                         <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1, 60, '...');?>
                                     </a>
                                 </div>
-                            </li>  
-                            <?php if(isset($sSubaction) && !isset($oQuestion)): ?>               
+                            </li>
+                            <?php if(isset($sSubaction) && !isset($oQuestion)): ?>
                                 <li class="marks_as_active">
                                     <?php echo gT($sSubaction)?>
                                 </li>
@@ -79,7 +79,7 @@
 
                     <?php //If we are in a question view render the breadcrumb with the question ?>
                     <?php if (isset($oQuestion)): ?>
-                        <?php //If the question view is active right now, don't link it?>    
+                        <?php //If the question view is active right now, don't link it?>
                         <?php if(!isset($sSubaction)): ?>
                             <li class="marks_as_active">
                                 <?php echo $oQuestion->title;?>
@@ -98,7 +98,7 @@
                             </li>
 
                         <?php endif; ?>
-                        
+
                     <?php endif; ?>
 
                     <?php if (isset($token)): ?>
@@ -110,6 +110,19 @@
                         <li class="marks_as_active">
                             <?php echo gT($active)?>
                         </li>
+                    <?php endif; ?>
+
+                    <?php if (isset($module_subaction)): ?>
+                        <li>
+                            <a id="breadcrumb__module--subaction" class="pjax animate" href="<?php echo $module_subaction_url?>">
+                                <?php echo $module_subaction; ?>
+                            </a>
+                        </li>
+                        <?php if (isset($module_current_action)): ?>
+                        <li class="marks_as_active">
+                            <?php echo $module_current_action; ?>
+                        </li>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                     </ol>
