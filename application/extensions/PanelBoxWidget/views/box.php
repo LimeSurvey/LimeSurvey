@@ -1,7 +1,7 @@
 <div class="<?php echo $sizeClass; ?> ls-flex-column ls-panelboxes-panelbox text-primary" >
-    <div class="panel panel-primary panel-clickable ls-panelboxes-panelbox-inner selector__<?=str_replace(' ', '_', strtolower($title))?>"
+    <div class="panel panel-primary panel-clickable ls-panelboxes-panelbox-inner selector__<?php echo CHtml::encode(str_replace(' ', '_', strtolower(strip_tags($title)))) ?>"
         id="panel-<?php echo $position; ?>"
-        data-url="<?php echo $url; ?>"
+        data-url="<?php echo CHtml::encode($url); ?>"
         <?php if ($external): ?>
             data-target="_blank"
         <?php endif; ?>

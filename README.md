@@ -41,7 +41,7 @@ The absolute minimal requirements are:
 We recommend the following setup
  - nginx 1.4.6
  - php 5.6.x
-    - with php-fpm, mbstring, gd2 with freetype, imap, ldap, zip, zlib and databse drivers
+    - with php-fpm, mbstring, gd2 with freetype, imap, ldap, zip, zlib and database drivers
  - mysql 5.5.50
 
 ## Manual
