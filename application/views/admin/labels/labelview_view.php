@@ -10,7 +10,7 @@
     <div class="pagetitle h3">
         <?php eT("Labels") ?>
         <?php if(isset($model->label_name)): ?> 
-            - <?=$model->label_name;?>
+            - <?php echo CHtml::encode($model->label_name); ?>
         <?php endif; ?>
     </div>
     <div class="container">
