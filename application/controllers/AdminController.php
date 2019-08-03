@@ -15,6 +15,7 @@
 class AdminController extends LSYii_Controller
 {
     public $layout = false;
+    public $aAdminModulesClasses = array();
     protected $user_id = 0;
 
     /**
@@ -172,7 +173,56 @@ class AdminController extends LSYii_Controller
             $aActions[$action] = "application.controllers.admin.{$class}";
         }
 
+        // We add to the list of Actions the Admin Modules actions
+        $aActions = array_merge($aActions, $this->getAdminModulesClasses());
+
         return $aActions;
+    }
+
+    /**
+     * Routes all the actions of admin modules to their respective places
+     *
+     * @access public
+     * @return array
+     */
+    public function getAdminModulesClasses()
+    {
+      $aActions = $this->getAdminModulesActionClasses();
+      $aAdminModulesClasses = array();
+      Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
+
+      foreach ($aActions as $action => $class) {
+          $aActions[$action] = "lsadminmodules.{$class}.controller.{$class}";
+        }
+
+      return $aActions;
+    }
+
+    /**
+     * This function returns an array similar to getActionClasses()
+     * It will generate it by reading the directories names inside of lsadminmodulesrootdir
+     * So, by convention, admin module action class must be indentical to directory name
+     *
+     */
+    public function getAdminModulesActionClasses()
+    {
+
+      // This function is called at least twice by page load. Once from AdminController, another one by Survey_Common_Action
+      if (empty($this->aAdminModulesClasses)){
+        $aAdminModulesClasses = array();
+        $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
+        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
+
+        foreach ($slsadminmodules as $fileinfo) {
+            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
+                $sModuleName =  $fileinfo->getFilename();
+                $aAdminModulesClasses[$sModuleName] = $sModuleName;
+            }
+        }
+        $this->aAdminModulesClasses = $aAdminModulesClasses;
+      }
+
+      return $this->aAdminModulesClasses;
     }
 
     public function getActionClasses()

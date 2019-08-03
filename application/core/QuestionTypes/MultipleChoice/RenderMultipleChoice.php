@@ -64,7 +64,6 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA.$oQuestion->title;
             $this->inputnames[] = $myfname;
-
             ////
             // Insert row
             // Display the answer row
@@ -74,9 +73,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'title'                   => $oQuestion->title,
                 'question'                => $oQuestion->questionL10ns[$this->sLanguage]->question,
                 'ansrow'                  => array_merge($oQuestion->attributes, $oQuestion->questionL10ns[$this->sLanguage]->attributes),
-                'checkedState'            => ($this->mSessionValue == 'Y' ? CHECKED : ''),
+                'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'') == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-                'sValue'                  => $this->mSessionValue,
+                'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],''),
                 'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
             );
         }
