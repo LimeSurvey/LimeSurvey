@@ -1534,9 +1534,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!$oQuestionGroupL10n->save()) {
                 throw new Exception(gT("Error while saving group: ").print_r($oQuestionGroupL10n->errors, true));
             }
-            $oQuestionGroupL10n = new QuestionGroupL10n();
-            $oQuestionGroupL10n->setAttributes($insertdata, false);
-            $oQuestionGroupL10n->save();
         }
     }
     
