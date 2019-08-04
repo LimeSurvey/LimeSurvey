@@ -67,6 +67,12 @@ class QuestionGroupL10n extends LSActiveRecord
         return array(
             array('group_name,description', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
+            array('gid', 'unique', 'criteria'=>array(
+                'condition'=>'language=:language',
+                'params'=>array(':language'=>$this->language)
+                ),
+                'message'=>sprintf(gT("Group ID (gid): “%s” already set with language ”%s”."),$this->gid,$this->language),
+            ),
         );
     }
 
@@ -75,7 +81,7 @@ class QuestionGroupL10n extends LSActiveRecord
     {
         return array(
             'language' => gt('Language'),
-            'group_name' => gt('Group name')
+            'group_name' => gt('Group name'),
         );
     }
     
