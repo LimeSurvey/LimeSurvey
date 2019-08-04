@@ -80,12 +80,16 @@ class expressionFixedDbVar extends PluginBase
         ),
     );
 
+    /** @var boolean $updated **/
+    private $updated = false;
+
     public function init()
     {
-        /* Core plugin : add an update variables */
+        /* Core plugin : add variables */
         $this->subscribe('setVariableExpressionEnd','addFixedDbVar');
-        $this->subscribe('afterResponseSave','afterResponseSave');
-        $this->subscribe('afterSurveyDynamicSave','afterResponseSave');
+        /* Core plugin : update variables just before public views */
+        $this->subscribe('getPluginTwigPath','beforeTwigViews');
+
         /* Option by survey */
         $this->subscribe('beforeSurveySettings');
         $this->subscribe('newSurveySettings');
@@ -113,17 +117,28 @@ class expressionFixedDbVar extends PluginBase
         $this->getEvent()->append('knownVars', $newKnowVars);
     }
 
-    public function afterResponseSave()
+    /**
+     * Update value just before views
+     */
+    public function beforeTwigViews()
     {
+        if($this->updated) {
+            return;
+        }
+        $this->updated = true;
+        $surveyId = LimeExpressionManager::getLEMsurveyId();
         $knownVarsToCreate = $this->_getAddedVars($this->event->get('surveyId'));
         if(empty($knownVarsToCreate)) {
             return;
         }
-        $oReponse = $this->getEvent()->get('model');
+        $oResponse = $this->api->getCurrentResponses();
+        if(empty($oResponse)) {
+            return;
+        }
         foreach($knownVarsToCreate as $var) {
             $column = $this->settings[$var]['column'];
-            if(isset($oReponse->$column)) {
-                LimeExpressionManager::setValueToKnowVar($var,$oReponse->$column);
+            if(isset($oResponse->$column)) {
+                LimeExpressionManager::setValueToKnowVar($var,$oResponse->$column);
             }
         }
     }
