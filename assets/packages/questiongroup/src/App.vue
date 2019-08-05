@@ -92,7 +92,7 @@ export default {
                 (reject) => {
                     this.toggleLoading();
                     $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                    window.LS.notifyFader("Questiongroup could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     //setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )

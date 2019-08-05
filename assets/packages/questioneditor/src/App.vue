@@ -129,14 +129,14 @@ export default {
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: result.data.message, id: 'well-alert', class: 'well-lg bg-primary text-center questioneditor-alert-pan'});
+                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", id: 'well-alert', class: 'well-lg bg-danger text-center questioneditor-alert-pan'});
+                    window.LS.notifyFader("Questiongroup could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
