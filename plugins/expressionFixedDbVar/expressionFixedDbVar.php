@@ -80,9 +80,6 @@ class expressionFixedDbVar extends PluginBase
         ),
     );
 
-    /** @var boolean $updated **/
-    private $updated = false;
-
     public function init()
     {
         /* Core plugin : add variables */
@@ -122,12 +119,16 @@ class expressionFixedDbVar extends PluginBase
      */
     public function beforeTwigViews()
     {
-        if($this->updated) {
+        static $updated = false;
+        if($updated) {
             return;
         }
-        $this->updated = true;
+        $updated = true;
         $surveyId = LimeExpressionManager::getLEMsurveyId();
-        $knownVarsToCreate = $this->_getAddedVars($this->event->get('surveyId'));
+        if(empty($surveyId)) {
+            return;
+        }
+        $knownVarsToCreate = $this->_getAddedVars($surveyId);
         if(empty($knownVarsToCreate)) {
             return;
         }
