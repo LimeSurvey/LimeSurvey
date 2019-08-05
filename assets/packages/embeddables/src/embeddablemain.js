@@ -29,7 +29,8 @@ $(document).on('ready pjax:scriptcomplete', function(){
         }
     )
 
-    $('oembed').on('click',  function() {
+    $('oembed').off('click.embeddable');
+    $('oembed').on('click.embeddable',  function() {
         $(this).find(".svgcontainer").remove();
         const url = $(this).attr('url');
         embedo.load(this, url)

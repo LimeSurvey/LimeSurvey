@@ -1885,7 +1885,8 @@
                 </div>`);
 	    }
 	  });
-	  $('oembed').on('click', function () {
+	  $('oembed').off('click.embeddable');
+	  $('oembed').on('click.embeddable', function () {
 	    $(this).find(".svgcontainer").remove();
 	    const url = $(this).attr('url');
 	    embedo$1.load(this, url).done(result => {
