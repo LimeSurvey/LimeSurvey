@@ -35,7 +35,7 @@ You can use any limesurvey / Yii models, helpers, functions, in it.
 Soon, we'll provide you a way to manage table creation / update in it.
 
 
-####  Default action
+### Default action
 
 Modules use the LS routing system, so you can access them via the normal routes. It means that if you provide only the name of the controller, the default action will be reached: public function index()
 
@@ -108,7 +108,7 @@ You will see:
 
 As you can see, this module offers its own top menu bar (the button "Hello User"), and use the breadcrumb system of survey edition (survey title (654523) => HelloWorld). Again, this breadcrumb system is a home made one, it's not using the Yii one. Again, we hope that in LS5 we can use the Yii Layout + breadcrumb system. In this module, you'll see how the top menu button call an action in the controller, render a specific view, and how you can use the breadcrumb to navigate back to the module landing page.
 
-## Reach the module landing page
+### Reach the module landing page
 
 As we've just see it, the landing page is reachable via the url:
 
@@ -130,7 +130,7 @@ https://www.yiiframework.com/doc/guide/1.1/en/database.ar
 
 Then, we build the array of data that will be parsed to the view. In LS architecture, this array of data is first parsed by Survey Common Action. It will look into it for specific data to know what to show or not in the layout.
 
-### Switch on survey edition layout
+#### Switch on survey edition layout
 
 If the array of data passed to the view contains a field "surveyid", Survey Common Helper will show the survey edition layout:
 
@@ -140,7 +140,7 @@ If the array of data passed to the view contains a field "surveyid", Survey Comm
 $aData['surveyid'] = $surveyid;
 ```
 
-### Show the green top bar
+#### Show the green top bar
 
 If the array of data passed to the view contains a field "title_bar", Survey Common Helper will show the survey green top bar:
 
@@ -159,7 +159,7 @@ https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c4
 
 So, if you want to see what you could do with the current edited survey, we suggest you to have a look to the methods of the survey / question / question group / token / etc models. Most of the time, your modules will consist in writting data in the survey related tables.  
 
-### Show the bread crumb
+#### Show the bread crumb
 
 If the array of data passed to the view contains a field "module_subaction" inside the field "title_bar", Survey Common Helper will show the bread crumb.
 
@@ -176,7 +176,7 @@ Notice we create the URL using the yii method App()->createUrl. This is importan
 To know more about the Yii createUrl method:
 https://www.yiiframework.com/doc/api/1.1/CController#createUrl-detail
 
-### render the view
+#### render the view
 
 As you can see, the function render the view:**modules/admin/HelloWorld/views/HelloWorldSurvey.php**
 We define ourself the top menu HTML in our view :
@@ -202,7 +202,7 @@ Notice that we use font awesome to generate the icon. For now, we're still using
 https://fontawesome.com/v4.7.0/
 
 
-## Reach the action "Say Hello to user"
+### Reach the action "Say Hello to user"
 
 As we've just see it, the landing page is reachable via the url:
 
@@ -214,7 +214,7 @@ https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c4
 
 The function is very similar to HelloWorld::HelloWorldSurvey(). So will just see the differences
 
-### Add a subaction in the breadcrumb
+#### Add a subaction in the breadcrumb
 
 
 If the array of data passed to the view contains a field "module_current_action" inside the field "title_bar", Survey Common Helper will show an additional acction in the breadcrumb.
@@ -228,7 +228,7 @@ This action has no url, since it will not be clickable. You can't provide a suba
 User can go back to the module landing page by clicking on the "HelloWorld" link in the bread crumb (just launch the module if you can't figure out by reading this, or have a look at the screenshot below)
 
 
-### Get the parameters from url
+#### Get the parameters from url
 
 Inside the button "Say Hello to user!" we defined a dumb parameter "sWho" that contains the string "foo"
 
@@ -242,7 +242,7 @@ We get if from url since it's defined in the Action signature ( public function 
 Notice here that we're not filtering it and this is wrong. In web development, you can't trust user input, never. Sinced it's just echoed inside the view, someone could use this to pass some javascript to our view and perform some XSS exploit. So you should filter it as HTML by using CHtml::encode.
 See: https://www.yiiframework.com/doc/api/1.1/CHtml#encode-detail
 
-### Get the name of the logged in user and pass it to the view
+#### Get the name of the logged in user and pass it to the view
 
 Then we get the name of the current logged in user.
 
@@ -255,7 +255,7 @@ This is a call to CUserdentity : https://www.yiiframework.com/doc/api/1.1/CUserI
 If you want to perform some permission checks, just use the permission moldel static methods.
 
 
-### render the view
+#### render the view
 
 As you can see, the function render the view:**modules/admin/HelloWorld/views/sayHelloUser.php**
 https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c46d213b/modules/admin/HelloWorld/views/sayHelloUser.php
