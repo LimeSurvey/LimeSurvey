@@ -100,7 +100,7 @@ Those kind of modules are the one shown in survey edition. For example: particip
 
 You can reach this full page helloWorld module via the url:
 
-** index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX**( XXXX being any valid survey id. )
+**index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX** ( XXXX being any valid survey id. )
 
 You will see:
 
@@ -112,7 +112,7 @@ As you can see, this module offers its own top menu bar (the button "Hello User"
 
 As we've just see it, the landing page is reachable via the url:
 
-** index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX**( XXXX being any valid survey id. )
+**index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX** ( XXXX being any valid survey id. )
 
 So, it call the method HelloWorld::HelloWorldSurvey() :
 
@@ -196,7 +196,7 @@ We define ourself the top menu HTML in our view :
 ```
 
 So you can basically do what ever you want. A top menu is a just a button calling a URL, being a route to an action in your controller. Here, the menu will call the url:
-**index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo**( XXXX being any valid survey id. )
+**index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo** ( XXXX being any valid survey id. )
 
 Notice that we use font awesome to generate the icon. For now, we're still using Font Awesome 4.7, so you can use any icon you'll find here:
 https://fontawesome.com/v4.7.0/
@@ -206,7 +206,7 @@ https://fontawesome.com/v4.7.0/
 
 As we've just see it, the landing page is reachable via the url:
 
-**index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo**( XXXX being any valid survey id. )
+**index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo** ( XXXX being any valid survey id. )
 
 So, it call the method HelloWorld::sayHelloUser() and pass it the value "foo":
 
