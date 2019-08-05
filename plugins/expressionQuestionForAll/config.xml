@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>expressionQuestionForAll</name>
+        <type>plugin</type>
+        <creationDate>2019-07-24</creationDate>
+        <last_update>2019-07-24</last_update>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.sondages.pro</authorUrl>
+        <version>1.0.0</version>
+        <license>GPL</license>
+        <description><![CDATA[Add QCODE.question for question with subquestion for expression Manager.]]></description>
+    </metadata>
+
+    <!-- Set priority before question.help -->
+    <priority>1</priority>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

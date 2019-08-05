@@ -228,6 +228,26 @@ class LimesurveyApi
     }
 
     /**
+     * Get the current Response
+     * @param integer $surveyId
+     * @return \Response|null
+     */
+    public function getCurrentResponses($surveyId = null)
+    {
+        if(empty($surveyId)) {
+            $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        }
+        if(empty($surveyId)) {
+            return;
+        }
+        $sessionSurvey = Yii::app()->session["survey_{$surveyId}"];
+        if(empty($sessionSurvey['srid'])) {
+            return;
+        }
+        return \Response::model($surveyId)->findByPk($sessionSurvey['srid']);
+    }
+
+    /**
      * @return \Response[]|null
      */
     public function getResponses($surveyId, $attributes = array(), $condition = '', $params = array())

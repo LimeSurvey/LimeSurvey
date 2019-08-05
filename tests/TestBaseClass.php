@@ -87,6 +87,29 @@ class TestBaseClass extends TestCase
         }
     }
 
+	/**
+	 * Get all question inside current survey, key is question code
+	 * @return array[]
+	 */
+	public function getAllSurveyQuestions()
+	{
+		if(empty(self::$surveyId)) {
+			throw new \Exception('getAllSurveyQuestions call without survey.');
+		}
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+		if(empty($survey)) {
+			throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
+		}
+        $questions = [];
+        foreach($survey->groups as $group) {
+            $questionObjects = $group->questions;
+            foreach ($questionObjects as $q) {
+                $questions[$q->title] = $q;
+            }
+        }
+        return $questions;
+	}
+
     /**
      * @return void
      */

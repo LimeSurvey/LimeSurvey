@@ -782,6 +782,15 @@
         }
 
         /**
+         * Get the current public language
+         * @return string;
+         */
+        public static function getEMlanguage()
+        {
+            return Yii::app()->session['LEMlang'];
+        }
+
+        /**
         * Do bulk-update/save of Condition to Relevance
         * @param integer|null $surveyId - if NULL, processes the entire database, otherwise just the specified survey
         * @param integer|null $qid - if specified, just updates that one question
@@ -4359,6 +4368,7 @@
                     }
                 }
             }
+
             // set default value for reserved 'this' variable
             $this->knownVars['this'] = array(
             'jsName_on'=>'',
@@ -4385,6 +4395,17 @@
             'subqtext'=>'',
             );
 
+            $event = new \LimeSurvey\PluginManager\PluginEvent('setVariableExpressionEnd');
+            $event->set('surveyId',$surveyid);
+            $event->set('language',self::getEMlanguage());
+            $event->set('knownVars',$this->knownVars);
+            $event->set('newExpressionSuffixes',array());
+            $result = App()->getPluginManager()->dispatchEvent($event);
+            $newExpressionSuffixes = $event->get('newExpressionSuffixes');
+            if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
+                $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
+            }
+            $this->knownVars = $result->get('knownVars');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
@@ -4835,7 +4856,7 @@
             array_shift($parts);
 
             if (count($parts) > 0) {
-                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[count($parts)-1])) {
+                if (preg_match('/^' . $LEM->em->getRegexpValidAttributes() . '$/',$parts[count($parts)-1])) {
                     $suffix = '.' . $parts[count($parts)-1];
                     array_pop($parts);
                 }
@@ -4949,7 +4970,6 @@
             $survey = Survey::model()->findByPk($surveyid);
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sid=$survey->sid;
-
             $LEM->sessid = 'survey_' . $survey->sid;
             $LEM->em->StartProcessingGroup($survey->sid);
             if (is_null($aSurveyOptions)) {
@@ -4976,7 +4996,6 @@
             $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
             $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
             $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : NULL);
-
             $LEM->debugLevel=$debugLevel;
             $_SESSION[$LEM->sessid]['LEMdebugLevel']=$debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
             switch ($surveyMode) {
@@ -4995,14 +5014,12 @@
                     $LEM->surveyMode = 'group';
                     break;
             }
-
             $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized']);
             $LEM->currentGroupSeq=-1;
             $LEM->currentQuestionSeq=-1;    // for question-by-question mode
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
-
             // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
             if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
                 $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
@@ -5067,10 +5084,10 @@
                 }
                 $LEM->_UpdateValuesInDatabase();
             }
-
+            
             return array(
-            'hasNext'=>true,
-            'hasPrevious'=>false,
+                'hasNext'=>true,
+                'hasPrevious'=>false,
             );
         }
 
@@ -8282,6 +8299,25 @@
         }
 
         /**
+         * Helper function to update a Read only value
+         * @param string $var
+         * @param string $value
+         */
+        public static function setValueToKnowVar($var,$value)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            if(empty($LEM->knownVars[$var])) {
+                $LEM->knownVars[$var] = array(
+                    'code'=>"",
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
+            $LEM->knownVars[$var]['code'] = $value;
+        }
+
+        /**
          * Add or replace fixed variable replacement for current page (or until self::resetTempVars was called)
          * @param array $vars 'replacement' => "fixed value"
          */
@@ -9144,6 +9180,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         }
 
         /**
+         * Return the regexp used to check if suffix is valid
+         * @return string
+         */
+        static public function getRegexpValidAttributes()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            return $LEM->em->getRegexpValidAttributes();
+        }
+
+        /**
          * @param integer $gseq
          * @param integer $qseq
          */
@@ -9178,7 +9224,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
 
             // Like JavaScript, if an answer is irrelevant, always return ''
-            if (preg_match('/^code|NAOK|shown|valueNAOK|value$/',$attr) && isset($var['qid']) && $var['qid']!='')
+            // pregmatch with $this->em->getRegexpValidAttributes() EXCEPT relevanceStatus
+            if (preg_match('/^code|NAOK|shown|valueNAOK|value$/',$attr) && !empty($var['qid']))
             {
                 if  (!$this->_GetVarAttribute($varName,'relevanceStatus',false,$gseq,$qseq))
                 {
@@ -9288,22 +9335,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         return (isset($var['jsName']) ? $var['jsName'] : $default);
                     }
                     // NB: No break needed
-                case 'sgqa':
-                case 'mandatory':
-                case 'qid':
-                case 'gid':
-                case 'grelevance':
-                case 'question':
-                case 'readWrite':
-                case 'relevance':
-                case 'rowdivid':
-                case 'type':
-                case 'qcode':
-                case 'gseq':
-                case 'qseq':
-                case 'ansList':
-                case 'scale_id':
-                    return (isset($var[$attr])) ? $var[$attr] : $default;
                 case 'shown':
                     if (isset($var['shown'])) {
                         return $var['shown'];    // for static values like TOKEN
@@ -9433,9 +9464,23 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                     // NB: No break needed
+                case 'sgqa':
+                case 'mandatory':
+                case 'qid':
+                case 'gid':
+                case 'grelevance':
+                case 'question':
+                case 'readWrite':
+                case 'relevance':
+                case 'rowdivid':
+                case 'type':
+                case 'qcode':
+                case 'gseq':
+                case 'qseq':
+                case 'ansList':
+                case 'scale_id':
                 default:
-                    print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
-                    return $default;
+                    return (isset($var[$attr])) ? $var[$attr] : $default;
                     // NB: No break needed
             }
         }
