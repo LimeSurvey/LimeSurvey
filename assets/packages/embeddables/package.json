@@ -1,0 +1,27 @@
+{
+  "name": "lsembeddables",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "GPL3.0",
+  "scripts": {
+    "dev": "env-cmd -e dev rollup -c",
+    "release": "env-cmd -e prod rollup -c",
+    "build": "yarn dev && yarn release"
+  },
+  "dependencies": {
+    "embedo": "^1.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "env-cmd": "^9.0.3",
+    "rollup": "^1.18.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-scss": "^1.0.1",
+    "rollup-plugin-terser": "^5.1.1",
+    "terser": "^4.1.3"
+  }
+}

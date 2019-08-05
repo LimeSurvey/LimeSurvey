@@ -51,6 +51,20 @@ return array(
             'fontawesome',
         )
     ),
+    'embeddables' => array(
+        'devBaseUrl'  => 'assets/packages/embeddables/',
+        'basePath' => 'core.embeddables',
+        'position' =>CClientScript::POS_END,
+        'css'=> array(
+            'build/embeddables'.$minVersion.'.css',
+        ),
+        'js'=>array(
+            'build/embeddables'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
     /* For public template extended functionnality (based on default template) */
     'template-core'=>array(
         'devBaseUrl'  => 'assets/packages/template-core/',
@@ -63,6 +77,7 @@ return array(
         ),
         'depends' => array(
             'limesurvey-public',
+            'embeddables'
         )
     ),
     'template-core-ltr'=>array( /* complement for ltr */
