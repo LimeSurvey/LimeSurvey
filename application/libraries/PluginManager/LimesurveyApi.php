@@ -229,11 +229,14 @@ class LimesurveyApi
 
     /**
      * Get the current Response
-     * @return \Response[]|null
+     * @param integer $surveyId
+     * @return \Response|null
      */
-    public function getCurrentResponses()
+    public function getCurrentResponses($surveyId = null)
     {
-        $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        if(empty($surveyId)) {
+            $surveyId = \LimeExpressionManager::getLEMsurveyId();
+        }
         if(empty($surveyId)) {
             return;
         }
