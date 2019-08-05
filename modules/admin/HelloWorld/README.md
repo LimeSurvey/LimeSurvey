@@ -22,7 +22,7 @@ Example of this kind of modules in LimeSurvey are the Global Settings page, or t
 
 You can reach this full page helloWorld module via the URL:
 
-** index.php?r=admin/HelloWorld/ **
+**index.php?r=admin/HelloWorld/**
 
 You will see:
 ![Full page HelloWorld Module](https://www.limesurvey.org/images/github/full-page-hello-world-module.png)
@@ -41,7 +41,7 @@ Modules use the LS routing system, so you can access them via the normal routes.
 
 You can reach the default action via the URL:
 
-** index.php?r=admin/HelloWorld/ **
+**index.php?r=admin/HelloWorld/**
 
 It will show the result of HelloWorld::index()
 https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c46d213b/modules/admin/HelloWorld/controller/HelloWorld.php#L24-L31
@@ -51,7 +51,7 @@ https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c4
 
 You can reach the action HelloWorldController::sayHello() via the url:
 
-** index.php?r=admin/HelloWorld/sa/sayHello/ **
+**index.php?r=admin/HelloWorld/sa/sayHello/**
 
 Since you don't provide any parameter, it will use the default value "world" . So it will tell you on screen "Hello World!"
 
@@ -62,7 +62,7 @@ https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c4
 
 You can reach the action HelloWorldController::sayHello() and pass it the parameter "lime" via the url:
 
-** index.php?r=admin/HelloWorld/sa/sayHello/sWho/lime **
+**index.php?r=admin/HelloWorld/sa/sayHello/sWho/lime**
 
 It will tell you "Hello Lime!"
 
@@ -82,7 +82,7 @@ It's pretty different from the normal Yii's renderPartial. That's because LimeSu
 You don't need to understand the logic in Survey_Common_Action. The only thing you need to understand is the signature of the function:
 The first parameter is the name of the directory inside your module where is the view, the second one in the name of the file of the view (without ".php"), the last one is the array of variables that will be available in the view ('foo'=> "bar" : means in your view you will have a variable called "$foo" that will contain the string "var")
 
-So the function sayHello() call the view : **modules/admin/HelloWorld/views/index.php**
+So the function sayHello() call the view :**modules/admin/HelloWorld/views/index.php**
 
 By the way, this why our module extends Survey_Common_Action.
 
@@ -100,7 +100,7 @@ Those kind of modules are the one shown in survey edition. For example: particip
 
 You can reach this full page helloWorld module via the url:
 
-**  index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX ** ( XXXX being any valid survey id. )
+** index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX**( XXXX being any valid survey id. )
 
 You will see:
 
@@ -112,7 +112,7 @@ As you can see, this module offers its own top menu bar (the button "Hello User"
 
 As we've just see it, the landing page is reachable via the url:
 
-**  index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX ** ( XXXX being any valid survey id. )
+** index.php?r=admin/HelloWorld/sa/HelloWorldSurvey&surveyid=XXXXX**( XXXX being any valid survey id. )
 
 So, it call the method HelloWorld::HelloWorldSurvey() :
 
@@ -178,7 +178,7 @@ https://www.yiiframework.com/doc/api/1.1/CController#createUrl-detail
 
 ### render the view
 
-As you can see, the function render the view: ** modules/admin/HelloWorld/views/HelloWorldSurvey.php **
+As you can see, the function render the view:**modules/admin/HelloWorld/views/HelloWorldSurvey.php**
 We define ourself the top menu HTML in our view :
 
 ```php
@@ -196,7 +196,7 @@ We define ourself the top menu HTML in our view :
 ```
 
 So you can basically do what ever you want. A top menu is a just a button calling a URL, being a route to an action in your controller. Here, the menu will call the url:
-** index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo** ( XXXX being any valid survey id. )
+**index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo**( XXXX being any valid survey id. )
 
 Notice that we use font awesome to generate the icon. For now, we're still using Font Awesome 4.7, so you can use any icon you'll find here:
 https://fontawesome.com/v4.7.0/
@@ -206,7 +206,7 @@ https://fontawesome.com/v4.7.0/
 
 As we've just see it, the landing page is reachable via the url:
 
-** index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo** ( XXXX being any valid survey id. )
+**index.php?r=admin/HelloWorld/sa/sayHelloUser&surveyid=XXXXX&sWho=foo**( XXXX being any valid survey id. )
 
 So, it call the method HelloWorld::sayHelloUser() and pass it the value "foo":
 
@@ -257,12 +257,12 @@ If you want to perform some permission checks, just use the permission moldel st
 
 ### render the view
 
-As you can see, the function render the view: ** modules/admin/HelloWorld/views/sayHelloUser.php **
+As you can see, the function render the view:**modules/admin/HelloWorld/views/sayHelloUser.php**
 https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c46d213b/modules/admin/HelloWorld/views/sayHelloUser.php
 
 It says hello to the logged in user, shows unsafely the value of the URL variable "sWho" and invite the user to go back to the module landing page by clicking on the link of the breadcrumb
 
-![Full page HelloWorld Module](https://www.limesurvey.org/images/github/say-hello-user-hello-world-module)
+![Full page HelloWorld Module](https://www.limesurvey.org/images/github/say-hello-user-hello-world-module.png)
 
 
 ## That's all for now !
