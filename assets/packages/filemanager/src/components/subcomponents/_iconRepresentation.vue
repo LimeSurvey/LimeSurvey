@@ -1,9 +1,14 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
-        <div class="ls-flex ls-flex-row wrap align-content-space-between align-items-space-between">
-            <div class="ls-flex ls-flex-column" v-for="file in $store.state.fileList" :key="file.shortName" :class="fileClass(file)">
+        <div class="ls-flex ls-flex-row wrap align-content-flex-start align-items-flex-start">
+            <div class="ls-flex ls-flex-column scoped-file-tile" v-for="file in $store.state.fileList" :key="file.shortName" :class="fileClass(file)">
                 <div class="ls-flex ls-flex-row align-content-center align-items-center">
-                    <i :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
+                    <template v-if="file.isImage">
+                        <img class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
+                    </template>
+                    <template v-else>
+                        <i :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
+                    </template>
                 </div>
                 <p>{{file.shortName}}</p>
                 <div class="ls-flex ls-flex-row">
@@ -98,10 +103,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .scoped-file-icon  {
-    border: 1px solid black;
-    box-shadow: 1px 2px 3px #939393;
-    margin: 1.1rem;
-    padding: 0.5rem;
-  }
+    @media (min-width: 769px) {
+        .scoped-file-tile {
+            max-width: 20%;
+        }
+    }
+    @media (max-width: 768px) {
+        .scoped-file-tile {
+            max-width: 50%;
+        }
+    }
+
+    .scoped-contain-image {
+        max-width: 100%;
+        max-height:100%;
+        display: block;
+    }
+    .scoped-file-icon  {
+        border: 1px solid black;
+        box-shadow: 1px 2px 3px #939393;
+        margin: 1.1rem;
+        padding: 0.5rem;
+    }
 </style>

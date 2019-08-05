@@ -13,15 +13,24 @@ export default {
     }
   },
   methods: {
+    onModalUploadFinished() {
+        this.$emit('loading');
+        this.$store.dispatch('getFileList').finally(
+        ()=>{this.$emit('endloading');}
+      );
+    },
     openUploadModal() {
       this.$modal.show(
         UploadModal,
         {},
         {
-          width: '75%',
-          height: '75%',
-          scrollable: true,
-          resizable: false
+            width: '75%',
+            height: '75%',
+            scrollable: true,
+            resizable: false
+        },
+        {
+            'before-close': this.onModalUploadFinished
         }
       );
     },

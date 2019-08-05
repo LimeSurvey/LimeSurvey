@@ -230,7 +230,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $folder = Yii::app()->request->getPost('folder');
         $iSurveyId = Yii::app()->request->getPost('surveyid', null);
 
-        if ($iSurveyId == 'null' || $iSurveyId == null) {
+        if (($iSurveyId == 'null' || $iSurveyId == null) && !preg_match("/generalfiles/", $folder)) {
             $iSurveyId = null;
             $folder = 'upload' . DIRECTORY_SEPARATOR . 'global';
         }
@@ -276,7 +276,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         if ($this->checkTargetExists($fullfilepath) && Yii::app()->getConfig('overwritefiles') == 0) {
             $ext = pathinfo($fullfilepath, PATHINFO_EXTENSION);
             $shorthash = hash('adler32', microtime());
-            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . ".", $fullfilepathRaw);
+            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . ".", $fullfilepath);
         }
 
         //$fullfilepath = realpath($fullfilepath);
@@ -391,7 +391,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $fileRelativePath = $folderPath . DIRECTORY_SEPARATOR . $file;
             $fileRealpath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $fileRelativePath;
             $fileIsDirectoy = @is_dir($fileRealpath);
-
+            $isImage =  !!exif_imagetype($fileRealpath);
             if ($fileIsDirectoy) {
                 continue;
             } else {
@@ -416,6 +416,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
             $directoryArray[$file] = [
                 'iconClass' => $iconClass,
+                'isImage' => $isImage,
                 'src' => $linkToImage,
                 'hash' => $hash,
                 'path' => $fileRelativePath,

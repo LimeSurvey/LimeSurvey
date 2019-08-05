@@ -7,7 +7,7 @@
       </div>
     </div>
     <component :is="fileviz"></component>
-    <modals-container/>
+    <modals-container />
   </div>
 </template>
 
