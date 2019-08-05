@@ -1492,7 +1492,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 if (!$questionGroup->save()) {
                     safeDie(gT("Error").": Failed to insert data [3]<br />");
                 }
-
                 $newgid = $questionGroup->gid;
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
@@ -1515,38 +1514,26 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                 continue;
             }
+            if (isset($aGIDReplacements[$insertdata['gid']])) {
+                $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
+            } else {
+                continue; //Skip invalid group ID
+            }
             // now translate any links
             $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
-
             if (isset($insertdata['description'])) {
                 $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             }
-
             // #14646: fix utf8 encoding issue
             if (!mb_detect_encoding($insertdata['group_name'], 'UTF-8', true)) {
                 $insertdata['group_name'] = utf8_encode($insertdata['group_name']);
             }
-
             // Insert the new group
-            if (isset($aGIDReplacements[$oldgid])) {
-                switchMSSQLIdentityInsert('groups', true);
-                $insertdata['gid'] = $aGIDReplacements[$oldgid];
-            }
-            $insertdata['gid'] = $aGIDReplacements[$oldgid];
             $oQuestionGroupL10n = new QuestionGroupL10n();
             $oQuestionGroupL10n->setAttributes($insertdata, false);
             if (!$oQuestionGroupL10n->save()) {
-                safeDie(gT("Error").": Failed to insert data [3] bla<br />");
+                throw new Exception(gT("Error while saving group: ").print_r($oQuestionGroupL10n->errors, true));
             }
-            if (!isset($aGIDReplacements[$oldgid])) {
-                $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
-                $results['groups']++;
-            } else {
-                continue; //Skip invalid group ID
-            }
-            $oQuestionGroupL10n = new QuestionGroupL10n();
-            $oQuestionGroupL10n->setAttributes($insertdata, false);
-            $oQuestionGroupL10n->save();
         }
     }
     
@@ -1777,7 +1764,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[$insertdata['qid']];
             } else {
-                continue; //Skip invalid group ID
+                continue; //Skip invalid question ID
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
