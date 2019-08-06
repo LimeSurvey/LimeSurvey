@@ -287,9 +287,12 @@ export default {
         width: 100%;
         justify-content: space-evenly;
         &>div {
-            max-width: 100%;
             flex-basis: auto;
             padding: 1px 2px;
+            transition: all 1s ease-in-out;
+            @media (min-width: 1279px) {
+                white-space: nowrap;
+            }
         }
         &.header-block>div {
             display: flex;
@@ -306,10 +309,12 @@ export default {
         &>i {
             font-size: 28px;
             line-height: 32px;
-            &:after{
-                content: ' |';
-                font-size: 24px;
-                vertical-align: text-bottom;
+            @media (min-width: 1279px) {
+                &:after{
+                    content: ' |';
+                    font-size: 24px;
+                    vertical-align: text-bottom;
+                }
             }
         }
     }

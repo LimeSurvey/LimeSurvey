@@ -29,7 +29,7 @@ export default {
     },
     watch: {
         delimiter(newDelimiter, oldDelimiter) {
-            this.unparseContent(newDelimiter);
+            this.unparseContent();
         }
     },
     methods: {
@@ -69,15 +69,14 @@ export default {
             this.$set(this.parsed, scale, newBlockObject);
             this.$log.log({parsed: this.parsed});
         },
-        unparseContent(delimiter = null ) {
-            delimiter = delimiter || this.delimiter;
+        unparseContent() {
 
-            foreach(this.parsed,(scaleArray, scale) => {
+            foreach(this.parsed, (scaleArray, scale) => {
                 this.$set(this.unparsed, scale, '');
                 let rows = [];
                 foreach(scaleArray, (rowContent, key) => {
-                    let row = key+''+delimiter;
-                    row+=rowContent.join(delimiter);
+                    let row = key+''+this.delimiter;
+                    row+=LS.ld.values(rowContent).join(this.delimiter);
                     rows.push(row);
                 });
                 this.$set(this.unparsed, scale, rows.join("\n"));

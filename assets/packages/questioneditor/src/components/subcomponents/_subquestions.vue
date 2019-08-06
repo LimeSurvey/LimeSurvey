@@ -146,10 +146,10 @@ export default {
         <div class="container-fluid scoped-main-subquestions-container">
             <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
-                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd(subquestionscale)">{{ "Quick add" | translate }}</button>
+                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd()">{{ "Quick add" | translate }}</button>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions(subquestionscale)">{{ "Reset" | translate }}</button>
+                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions()">{{ "Reset" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -297,7 +297,9 @@ export default {
             flex-basis: auto;
             padding: 1px 2px;
             transition: all 1s ease-in-out;
-            white-space: nowrap;
+            @media (min-width: 1279px) {
+                white-space: nowrap;
+            }
         }
         &.header-block {
             text-align: center;
@@ -310,10 +312,12 @@ export default {
         &>i {
             font-size: 28px;
             line-height: 32px;
-            &:after{
-                content: ' |';
-                font-size: 24px;
-                vertical-align: text-bottom;
+            @media (min-width: 1279px) {
+                &:after{
+                    content: ' |';
+                    font-size: 24px;
+                    vertical-align: text-bottom;
+                }
             }
         }
     }
@@ -321,12 +325,23 @@ export default {
         width:10%;
     }
     .scoped-content-block {
-        width:30%;
+        @media (min-width: 1279px) {
+            width:30%;
+        }
+        @media (max-width: 1279px) {
+            width:20%;
+        }
         flex-grow: 1;
     }
     .scoped-relevance-block {
-        width:10%;
-        max-width: 20%;
+        @media (min-width: 1279px) {
+            width:10%;
+            max-width: 20%;
+        }
+        @media (max-width: 1279px) {
+            width:20%;
+            max-width: 25%;
+        }
     }
     .scoped-actions-block {
         width:25%;
