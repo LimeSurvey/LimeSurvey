@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     <label class=" control-label"  for="description_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>"><?php eT("Description:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("description_{$aSurveyLanguageSettings['surveyls_language']}", $aSurveyLanguageSettings['surveyls_description'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
+                        <?php echo CHtml::textArea("description_{$aSurveyLanguageSettings['surveyls_language']}", htmlentities($aSurveyLanguageSettings['surveyls_description']),array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                         <?php echo getEditor("survey-desc","description_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Description:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                     </div>
@@ -116,7 +116,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     <label class=" control-label" for='welcome_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Welcome message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("welcome_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_welcometext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
+                        <?php echo CHtml::textArea("welcome_{$aSurveyLanguageSettings['surveyls_language']}",htmlentities($aSurveyLanguageSettings['surveyls_welcometext']),array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                         <?php echo getEditor("survey-welc","welcome_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Welcome:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                     </div>
@@ -128,7 +128,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     <label class=" control-label" for='endtext_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("End message:"); ?></label>
                     <div class="">
                     <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("endtext_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_endtext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
+                        <?php echo CHtml::textArea("endtext_{$aSurveyLanguageSettings['surveyls_language']}",htmlentities($aSurveyLanguageSettings['surveyls_endtext']),array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                         <?php echo getEditor("survey-endtext","endtext_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("End message:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                     </div>
