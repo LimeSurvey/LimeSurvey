@@ -73,8 +73,8 @@
 
   var forEachEls = function forEachEls(els, fn, ctx) {
     if (els instanceof HTMLCollection || els instanceof NodeList || els instanceof Array) {
-      return Array.prototype.from(els).forEach(function (el) {
-        return fn.call(ctx, el);
+      return Array.prototype.from(els).forEach(function (el, i) {
+        return fn.call(ctx, el, i);
       });
     } // assume simple dom element
 
@@ -564,12 +564,17 @@
 
         forEachEls(newEls, function (newEl, i) {
           var oldEl = oldEls[i];
+
+          if (oldEl == undefined) {
+            return;
+          }
+
           this.log.log("newEl", newEl, "oldEl", oldEl);
 
           if (switches[selector]) {
             switches[selector].call(this, oldEl, newEl, options, switchesOptions[selector]);
           } else {
-            defaultSwitches.outerHTML(oldEl, newEl, options);
+            defaultSwitches.outerHTML.call(this, oldEl, newEl, options);
           }
         }, _this);
       });
@@ -1556,7 +1561,7 @@
           var _this2 = this;
 
           var fnExecuteScripts = getExecuteScripts.apply(this);
-          var tmpEl = document.implementation.createHTMLDocument("pjax"); //Collector array to store the promises in
+          var tmpEl = window.document.implementation.createHTMLDocument("pjax"); //Collector array to store the promises in
 
           var collectForScriptcomplete = [Promise.resolve("basic resolve")]; //parse HTML attributes to copy them
           //since we are forced to use documentElement.innerHTML (outerHTML can't be used for <html>)
@@ -1600,9 +1605,9 @@
           // we clear focus on non form elements
 
 
-          if (document.activeElement && !document.activeElement.value) {
+          if (window.document.activeElement && !window.document.activeElement.value) {
             try {
-              document.activeElement.blur();
+              window.document.activeElement.blur();
             } catch (e) {// Nothing to do, just ignore any issues
             }
           }
