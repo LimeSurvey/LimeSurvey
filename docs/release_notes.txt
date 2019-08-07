@@ -33,6 +33,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC2 (build 190723) to 4.0.0-RC3 (build 190807) August 7, 2019
+-New feature: allow user to upload custom twig extensions (LouisGac)
+-New feature: allow survey modules to use breadcrumb (LouisGac)
+-New feature: Yii modules for LimeSurvey (LouisGac)
+-New feature: LimeSurvey admin module (LouisGac)
+-New feature : customToken plugin: numeric, non-ambiguous, CAPITAL tokens (Jan Ehrhardt)
+-New feature : add afterGenerateToken event with customToken plugin (Jan Ehrhardt)
+-New feature #8858: Extend EM so we can get the question text of multiple choice and array questions via questioncode.question (Denis Chenu)
+-New feature #8309: Please add variable to access question help text (Denis Chenu)
+-New feature #14445: Add placeholder for seed (Denis Chenu)
+-New feature  #14206: Allow plugin to update expression knowVars (Denis Chenu)
+-Fixed issue: triple reloading of media tags (lacrioque)
+-Fixed issue: switching delimiters in quick edit doesn't work (lacrioque)
+-Fixed issue: question themes attributes not refreshed (lacrioque)
+-Fixed issue [security]: File extension not filtered, possible XSS (LouisGac)
+-Fixed issue [security]: #15094 XSS in label title (Denis Chenu)
+-Fixed issue [security]: #15094 XSS in Boxes (thanks to Michele Cisternino) (Denis Chenu)
+-Fixed issue #15115: multiple save confirmations (lacrioque)
+-Fixed issue #15108: Insert media in question does not work (lacrioque)
+-Fixed issue #15091: Regenerating question codes not working (Patrick Teichmann)
+-Fixed issue #15089: File management - cannot upload images (lacrioque)
+-Fixed issue #15069: setting admin password with CLI database installation fails (Christian Rudolph)
+-Fixed issue #15060: Other option with number only erases decimal comma - with NO warning (Denis Chenu)
+-Fixed issue #15046: Delete group button : nothing happen (lacrioque)
+-Fixed issue #15024: viewquexml failing because of changed database language setup (Patrick Teichmann)
+-Fixed issue #15018: Reset home page settings causes crash (lacrioque)
+-Fixed issue #15015: [Minor] Question summary didn't show Text error (lacrioque)
+-Fixed issue #14960: Group relevance : not imported, not shown in survey_logic_file and not saved (lacrioque)
+-Fixed issue #14814: No save button on default value (lacrioque)
 
 Changes from 4.0.0-RC1 (build 190509) to 4.0.0-RC2 (build 190723) July 23, 2019
 -New feature: Add massive action Widget for 'Reset' & 'Unsinstall' on Survey theme list. (Eddy Lackmann)
