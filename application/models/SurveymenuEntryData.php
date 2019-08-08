@@ -68,7 +68,7 @@ class SurveymenuEntryData extends CFormModel
     public function linkCreator()
     {
         if( $this->linkExternal ) {
-            return $this->link;
+            return  Yii::app()->getController()->createAbsoluteUrl($this->link, $this->linkData);
         }
         return  Yii::app()->getController()->createUrl($this->link, $this->linkData);
         
