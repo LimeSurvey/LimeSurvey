@@ -7,7 +7,7 @@ import getAppState from "./store/vuex-store.js";
 import LOG from "./mixins/logSystem.js";
 
 //Ignore phpunits testing tags
-Vue.config.ignoredElements = ["x-test"];
+Vue.config.ignoredElements = ["x-test", "textarea"];
 
 Vue.use(LOG);
 Vue.mixin({
