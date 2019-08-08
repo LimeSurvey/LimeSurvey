@@ -29,7 +29,7 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
                     '#beginScripts'
                 ],
                 debug: window.debugState.backend,
-                forceRedirectOnFail: false,
+                forceRedirectOnFail: true,
                 reRenderCSS : true,
                 scriptloadtimeout: 1500,
             });
