@@ -298,6 +298,9 @@ class questiongroups extends Survey_Common_Action
         $aData['questiongroupbar']['buttonspreview'] = true;
         $aData['questiongroupbar']['savebutton']['form'] = true;
         $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
+        if (sanitize_paranoid_string(App()->request->getParam('sa') == 'add')) {
+            $aData['questiongroupbar']['importbutton'] = true;
+        }
 
         ///////////
         // sidemenu

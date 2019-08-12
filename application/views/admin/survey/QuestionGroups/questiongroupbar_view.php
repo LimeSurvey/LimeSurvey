@@ -71,6 +71,12 @@
                             <?=gT("Preview question group");?>
                         </a>
                     <?php endif; ?>
+                    <?php if (isset($questiongroupbar['importbutton']) && $questiongroupbar['importbutton']): ?>
+                        <a class="btn btn-default" href="<?php echo App()->createUrl('admin/questiongroups/sa/importview/surveyid/' . $surveyid); ?>" role="button">
+                            <span class="icon-import"></span>
+                            <?php eT('Import a group'); ?>
+                        </a>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         <?php endif;?>
