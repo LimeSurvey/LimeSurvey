@@ -89,15 +89,15 @@
                                     {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : oSurvey.language}) %}
                                     <li class="list-group-item">
                                         <div class="ls-flex-row col-12">
-                                            <div class="col-4">
-                                                {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                            <div class="col-6">
+                                                {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
-                                            <div class="col-8 selector__qrcode_container">
+                                            <div class="col-6">
                                                 <div class="row selector__qrcode_container">
-                                                    <div class="col-xs-6">
+                                                    <div class="col-6">
                                                         <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
                                                     </div>
-                                                    <div class="col-xs-6">
+                                                    <div class="col-6">
                                                         <div class="selector__qrcode" data-url="{{tmp_url}}"></div>
                                                     </div>
                                                 </div>
@@ -108,10 +108,10 @@
                                         {% set tmp_url = createAbsoluteUrl("survey/index", { "sid" : oSurvey.sid, "lang" : langname}) %}
                                         <li class="list-group-item">
                                             <div class="ls-flex-row col-12">
-                                                <div class="col-4">
-                                                    {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                                <div class="col-6">
+                                                    {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
-                                                <div class="col-8 ">
+                                                <div class="col-6">
                                                     <div class="row selector__qrcode_container">
                                                         <div class="col-6">
                                                             <button class="btn btn-default selector__qrcode_trigger">{{ gT("Generate QR-Code") }}</button>
@@ -131,7 +131,7 @@
                     <div class="row">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ gT("Share on Facebook:") }} 
+                                {{ gT("Share on Facebook:") }}
                                 <button class="btn btn-xs btn-warning pull-right facebook-button" id="selector_activateFacebookSharing">{{ gT("Enable") }}</button>
                             </div>
                             <div class="panel-body">
@@ -140,7 +140,7 @@
                                     <li class="list-group-item">
                                         <div class="ls-flex-row col-12">
                                             <div class="col-6">
-                                                {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                                {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
                                             <div class="col-6">
                                                 <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="fa fa-facebook-square"></i> {{ gT("Disabled") }}</button>
@@ -153,7 +153,7 @@
                                         <li class="list-group-item">
                                             <div class="ls-flex-row col-12">
                                                 <div class="col-6">
-                                                    {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                                    {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
                                                 <div class="col-6">
                                                     <button class="btn btn-disabled facebook-button selector_fb_share_disabled" disabled ><i class="fa fa-facebook-square"></i> {{ gT("Disabled") }}</button>
@@ -169,7 +169,7 @@
                     <div class="row">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                {{ gT("Share on Twitter:") }} 
+                                {{ gT("Share on Twitter:") }}
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group">
@@ -177,7 +177,7 @@
                                     <li class="list-group-item">
                                         <div class="ls-flex-row col-12">
                                             <div class="col-6">
-                                                {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                                {{ getLanguageNameFromCode(oSurvey.language, false)}}
                                             </div>
                                             <div class="col-6">
                                                 <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">
@@ -191,7 +191,7 @@
                                         <li class="list-group-item">
                                             <div class="ls-flex-row col-12">
                                                 <div class="col-6">
-                                                    {{ getLanguageNameFromCode(oSurvey.language, false)}} 
+                                                    {{ getLanguageNameFromCode(langname, false)}}
                                                 </div>
                                                 <div class="col-6">
                                                     <a class="btn btn-default twitter-button" target='_blank' href="https://twitter.com/intent/tweet?text={{ gT("Thanks for taking this survey!")|url_encode}}&url={{tmp_url|url_encode}}&hashtags=limesurvey,survey">

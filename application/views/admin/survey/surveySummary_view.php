@@ -57,7 +57,7 @@ $templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
         <?php } ?> 
         <div class="col-md-12 col-lg-6"> 
             <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
-        <?=Yii::app()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/'.$panel, get_defined_vars(), true)?> 
+        <?=App()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/'.$panel, get_defined_vars(), true)?>
         </div> 
     <?php }
 ?> 
