@@ -126,21 +126,61 @@ return array(
             'lslog',
         )
     ),
-    'adminpanel' => array(
-        'devBaseUrl' => 'assets/packages/adminpanel/',
-        'basePath' => 'core.adminpanel',
-        'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-            'build/surveysettings'.$minVersion.'.js',
-            'build/hammer'.$minVersion.'.js'
+    'adminsidepanel' => array(
+       'devBaseUrl' => 'assets/packages/adminsidepanel/',
+       'basePath' => 'core.adminsidepanel',
+       'position' =>CClientScript::POS_HEAD,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/adminsidepanel.js',
+            )
+            : array(
+                'build.min/js/adminsidepanel.js'
+            )
         ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
+    'panelintegration' => array(
+        'devBaseUrl' => 'assets/packages/panelintegration/',
+        'basePath' => 'core.panelintegration',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+             ? array(
+                 'build/js/panelintegration.js',
+             )
+             : array(
+                 'build.min/js/panelintegration.js'
+             )
+         ),
         'css' => array(
-            'build/lsadminpanel'.$minVersion.'.css'
+            'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
         )
-    ),
+     ),
+    // 'adminpanel' => array(
+    //     'devBaseUrl' => 'assets/packages/adminpanel/',
+    //     'basePath' => 'core.adminpanel',
+    //     'js' => array(
+    //         'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
+    //         'build/surveysettings'.$minVersion.'.js',
+    //         'build/hammer'.$minVersion.'.js'
+    //     ),
+    //     'css' => array(
+    //         'build/lsadminpanel'.$minVersion.'.css'
+    //     ),
+    //     'depends' => array(
+    //         'adminbasics'
+    //     )
+    // ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',

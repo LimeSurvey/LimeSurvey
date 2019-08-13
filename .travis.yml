@@ -10,6 +10,8 @@ php:
     - 7.1
     - 7.2
     - 7.3
+services:
+    - mysql
 
 notifications:
   email:
@@ -27,9 +29,10 @@ before_script:
 
     # Install LimeSurvey.
     - mysql --version
+    - sudo service mysql status
     - touch enabletests
     # NB: PHPUnit 6.5.* is installed with composer.
-    - composer update
+    - composer install
     - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload

@@ -1729,10 +1729,17 @@ class questions extends Survey_Common_Action
             $aUsedLanguages = explode(' ', $oLabelSet->languages);
         
             foreach ($aUsedLanguages as $sLanguage) {
-                $aResult[$sLanguage] = $oLabelSet->attributes;
+                $aResult[$sLanguage] = array_map(
+                    function($attribute) { return \viewHelper::flatten($attribute); },
+                    $oLabelSet->attributes
+                ); 
                 foreach ($oLabelSet->labels as $oLabel) {
-                    if($oLabel->language === $sLanguage)
-                        $aResult[$sLanguage]['labels'][] = $oLabel->attributes;
+                    if($oLabel->language === $sLanguage) {
+                        $aResult[$sLanguage]['labels'][] = array_map(
+                            function($attribute) { return \viewHelper::flatten($attribute); },
+                            $oLabel->attributes
+                        ); 
+                    }
                 };
                 $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
             };
@@ -1775,8 +1782,11 @@ class questions extends Survey_Common_Action
         // $resultdata = [];
         // create languagespecific array
         $aResults = [];
-        foreach ($resultdata as &$oResult) {
-            $aResults[] = $oResult->attributes;
+        foreach ($resultdata as $oResult) {
+            $aResults[] = array_map(
+                function($attribute) { return \viewHelper::flatten($attribute); },
+                $oResult->attributes
+            ); 
         }
         
         return Yii::app()->getController()->renderPartial(

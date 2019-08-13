@@ -1865,11 +1865,39 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _tabPanelIntegration($survey)
     {
-
-        App()->getClientScript()->registerPackage('jquery-datatable');
         $aData = [];
-        $oResult = Question::model()->getQuestionsWithSubQuestions($survey->sid, $survey->language, "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
-        $aData['questions'] = $oResult;
+        $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
+        $aQuestions = [];
+        foreach ($oResult as $aRecord) {
+            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
+        }
+        $aData['jsData'] = [
+            'i10n' => [
+                'ID' => gT('ID'),
+                'Action' => gT('Action'),
+                'Parameter' => gT('Parameter'),
+                'Target question' => gT('Target question'),
+                'Survey ID' => gT('Survey id'),
+                'Question ID' => gT('Question id'),
+                'Subquestion ID' => gT('Subquestion ID'),
+                'Add URL parameter' => gT('Add URL parameter'),
+                'Edit URL parameter' => gT('Edit URL parameter'),
+                'Add URL parameter' => gT('Add URL parameter'),
+                'Parameter' => gT('Parameter'),
+                'Target question' => gT('Target question'),
+                'No target question' => gT('(No target question)'),
+                'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
+                'No, cancel' => gT('No, cancel'),
+                'Yes, delete' => gT('Yes, delete'),
+                'Save' => gT('Save'),
+                'Cancel' => gT('Cancel'),
+            ],
+            "questionList" => $aQuestions,
+            "surveyid" => $survey->sid,            
+            "getParametersUrl" => Yii::app()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $survey->sid)),
+        ];
+
+        App()->getClientScript()->registerPackage('panelintegration');
         return $aData;
     }
 

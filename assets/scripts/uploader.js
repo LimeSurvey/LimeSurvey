@@ -162,8 +162,13 @@ function doFileUpload()
 
             // Once the file has been uploaded via AJAX,
             // the preview is appended to the list of files
-            var metadata = eval('(' + response + ')');
-
+            try{
+                var metadata = jQuery.parseJSON(response);
+            } catch(e) {
+                /* Suppose we get an HTML error ? Replace whole HTML (without head) */
+                $('body').html(response);
+                return;
+            }
             var count = parseInt($('#' + fieldname + '_licount').val());
             count++;
             $('#' + fieldname + '_licount').val(count);
