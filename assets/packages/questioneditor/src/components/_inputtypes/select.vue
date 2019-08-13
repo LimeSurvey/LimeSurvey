@@ -41,7 +41,7 @@
 
 <template>
     <div class="form-row">
-        <i 
+        <i
             class="fa fa-question pull-right" 
             @click="triggerShowHelp=!triggerShowHelp" 
             v-if="(elHelp.length>0) && !readonly" 
@@ -57,7 +57,7 @@
             :disabled="readonly"
         >
             <option 
-                v-for="(optionObject, i) in elOptions.options"
+                v-for="(optionObject, i) in elOptions.options.option"
                 :key="i"
                 :value="simpleValue(optionObject.value)"
             >
