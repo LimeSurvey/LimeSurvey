@@ -19,6 +19,9 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
+
+
+
 class GlobalSettings extends Survey_Common_Action
 {
 
@@ -103,7 +106,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
-        $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
+        $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
 
     /**
@@ -127,7 +130,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['templates'] = $this->getTemplateFolderStorage($uploaddir, $decimals);
 
         $html = Yii::app()->getController()->renderPartial(
-            '/admin/global_settings/_storage_ajax',
+            '/admin/globalsettings/_storage_ajax',
             $data,
             true
         );
@@ -437,7 +440,7 @@ class GlobalSettings extends Survey_Common_Action
             ]
         ];
         $aData['partial'] = $sPartial;
-        $this->_renderWrappedTemplate('global_settings', 'surveySettings', $aData);
+        $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
     public function surveysettingmenues() {

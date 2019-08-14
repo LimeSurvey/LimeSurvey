@@ -34,7 +34,7 @@ LS.renderBootstrapSwitch();
 <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>
 <div class="tab-content">
     <div id="overview" class="tab-pane  in active col-md-6 col-md-offset-1">
-            <?php $this->renderPartial("./global_settings/_overview", array(
+            <?php $this->renderPartial("./globalsettings/_overview", array(
                 'usercount'=>$usercount,
                 'surveycount'=>$surveycount,
                 'activesurveycount'=>$activesurveycount,
@@ -45,7 +45,7 @@ LS.renderBootstrapSwitch();
     </div>
 
     <div id="general" class="tab-pane col-md-10 col-md-offset-1">
-            <?php $this->renderPartial("./global_settings/_general", array(
+            <?php $this->renderPartial("./globalsettings/_general", array(
                 'aListOfThemeObjects' => $aListOfThemeObjects,
                 'aEncodings' => $aEncodings,
                 'thischaracterset' => $thischaracterset,
@@ -54,23 +54,23 @@ LS.renderBootstrapSwitch();
     </div>
 
     <div id="email" class="tab-pane col-md-10 col-md-offset-1">
-        <?php $this->renderPartial("./global_settings/_email"); ?>
+        <?php $this->renderPartial("./globalsettings/_email"); ?>
     </div>
 
     <div id="bounce" class="tab-pane col-md-10 col-md-offset-1">
-        <?php $this->renderPartial("./global_settings/_bounce"); ?>
+        <?php $this->renderPartial("./globalsettings/_bounce"); ?>
     </div>
 
     <div id="security" class="tab-pane col-md-10 col-md-offset-1">
-        <?php $this->renderPartial("./global_settings/_security"); ?>
+        <?php $this->renderPartial("./globalsettings/_security"); ?>
     </div>
 
     <div id="presentation" class="tab-pane col-md-10 col-md-offset-1">
-        <?php $this->renderPartial("./global_settings/_presentation"); ?>
+        <?php $this->renderPartial("./globalsettings/_presentation"); ?>
     </div>
 
     <div id="language" class="tab-pane col-md-10 col-md-offset-1">
-        <?php $this->renderPartial("./global_settings/_language", array(
+        <?php $this->renderPartial("./globalsettings/_language", array(
             'restrictToLanguages'=>$restrictToLanguages,
             'allLanguages'=>$allLanguages,
             'excludedLanguages'=>$excludedLanguages));
@@ -78,12 +78,12 @@ LS.renderBootstrapSwitch();
     </div>
 
     <div id="interfaces" class="tab-pane col-md-6 col-md-offset-1">
-        <?php $this->renderPartial("./global_settings/_interfaces"); ?>
+        <?php $this->renderPartial("./globalsettings/_interfaces"); ?>
     </div>
 
     <div id="storage" class="tab-pane col-md-6 col-md-offset-1">
         <?php
-            $this->renderPartial("./global_settings/_storage");
+            $this->renderPartial("./globalsettings/_storage");
         ?>
     </div>
 </div>
