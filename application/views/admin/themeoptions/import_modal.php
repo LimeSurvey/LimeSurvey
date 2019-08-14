@@ -19,7 +19,9 @@
                 <div class="modal-body">
                     <input type='hidden' name='lid' value='$lid' />
                     <input type='hidden' name='action' value='templateupload' />
-                    <input type='hidden' name='theme' value='<?php echo $themeType;?>' />
+                    <?php if (isset($themeType)): ?>
+                        <input type='hidden' name='theme' value='<?php echo $themeType; ?>'/>
+                    <?php endif; ?>
                     <div class="form-group">
                         <label for='the_file'>
                             <?php eT("Select template ZIP file:") ?>
