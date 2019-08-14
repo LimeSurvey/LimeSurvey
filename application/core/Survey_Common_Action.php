@@ -23,6 +23,9 @@
 * @author        LimeSurvey Team
 * @method        void index()
 */
+
+
+
 class Survey_Common_Action extends CAction
 {
     public function __construct($controller = null, $id = null)
@@ -67,9 +70,6 @@ class Survey_Common_Action extends CAction
         // ReflectionClass gets us the methods of the class and parent class
         // If the above method existence check passed, it might not be neceessary that it is of the action class
         $oMethod  = new ReflectionMethod($this, $sSubAction);
-        // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
-        // Merges it with actions from admin modules
-        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses() );
 
 
         // We're all good to go, let's execute it
@@ -247,6 +247,7 @@ class Survey_Common_Action extends CAction
      */
     protected function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
+
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
         if (!empty($sAction)) {
