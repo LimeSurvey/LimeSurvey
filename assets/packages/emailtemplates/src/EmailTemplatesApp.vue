@@ -1,3 +1,69 @@
+<template>
+    <div class="container-center scoped-new-emailTemplatesEditor">
+        <template v-show="!loading">
+            <div class="row" v-if="languageChangerEnabled">
+                <language-selector 
+                    elId="emailTemplatesEditor" 
+                    :aLanguages="$store.state.languages" 
+                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    @change="selectLanguage"
+                />
+            </div>
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-sm-12">
+                    <div class="scoped-flex-bysize">
+                        <div 
+                            v-for="(templateType,type) in possibletemplateTypes" 
+                            :key="type"
+                            class="scoped-tabbable-item btn btn-block btn-default"
+                            :class="currentTemplateType==type?'active':''"
+                            @click.prevent="setTemplateType(type)"
+                        >
+                            {{templateType.title|translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10 col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="ls-flex-row col-12">
+                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}:</label>
+                            </div>
+                            <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" />
+                            <input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/>
+                        </div>
+                        <div class="row">
+                            <div class="ls-flex-row col-12">
+                                <div class="ls-flex-item text-left">
+                                    <label class="">{{currentTemplateTypeData.body}}:</label>
+                                </div>
+                                <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
+                                    <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                </div>
+                            </div>
+                            <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" />
+                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"></lsckeditor>
+                            <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
+                        </div>
+                        <div class="row">
+                            <div class="ls-flex-row col-12">
+                                <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
+                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset current"}} </button>
+                                <!-- <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <div v-if="loading"><loader-widget id="emailtemplatesinternalloader" /></div>
+        <modals-container />
+    </div>
+</template>
+
 <script>
 import Mousetrap from 'mousetrap';
 import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
@@ -204,72 +270,6 @@ ${scriptContent}
     }
 }
 </script>
-
-<template>
-    <div class="container-center scoped-new-emailTemplatesEditor">
-        <template v-show="!loading">
-            <div class="row" v-if="languageChangerEnabled">
-                <language-selector 
-                    elId="emailTemplatesEditor" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row">
-                <hr />
-            </div>
-            <div class="row">
-                <div class="col-md-2 col-sm-12">
-                    <div class="scoped-flex-bysize">
-                        <div 
-                            v-for="(templateType,type) in possibletemplateTypes" 
-                            :key="type"
-                            class="scoped-tabbable-item btn btn-block btn-default"
-                            :class="currentTemplateType==type?'active':''"
-                            @click.prevent="setTemplateType(type)"
-                        >
-                            {{templateType.title|translate}}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-10 col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="ls-flex-row col-12">
-                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}:</label>
-                            </div>
-                            <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" />
-                            <input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/>
-                        </div>
-                        <div class="row">
-                            <div class="ls-flex-row col-12">
-                                <div class="ls-flex-item text-left">
-                                    <label class="">{{currentTemplateTypeData.body}}:</label>
-                                </div>
-                                <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
-                                    <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
-                                </div>
-                            </div>
-                            <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" />
-                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"></lsckeditor>
-                            <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
-                        </div>
-                        <div class="row">
-                            <div class="ls-flex-row col-12">
-                                <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
-                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset current"}} </button>
-                                <!-- <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </template>
-        <div v-if="loading"><loader-widget id="emailtemplatesinternalloader" /></div>
-        <modals-container />
-    </div>
-</template>
 
 <style lang="scss" scoped>
 
