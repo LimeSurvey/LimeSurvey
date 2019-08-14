@@ -590,6 +590,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ro']['dateformat'] = 1;
     $supportedLanguages['ro']['radixpoint'] = 1;
 
+    // Romansh
+    /*
+    $supportedLanguages['roh']['description'] = gT('Romansh');
+    $supportedLanguages['roh']['nativedescription'] = 'Rumantsch';
+    $supportedLanguages['roh']['rtl'] = false;
+    $supportedLanguages['roh']['dateformat'] = 1;
+    $supportedLanguages['roh']['radixpoint'] = 1;    
+    */
+    
     // Russian
     $supportedLanguages['ru']['description'] = gT('Russian');
     $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
@@ -682,7 +691,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sv']['rtl'] = false;
     $supportedLanguages['sv']['dateformat'] = 6;
     $supportedLanguages['sv']['radixpoint'] = 1;
-
+    
+    // Tagalog
+    $supportedLanguages['tl']['description'] = gT('Tagalog');
+    $supportedLanguages['tl']['nativedescription'] = 'Tagalog';
+    $supportedLanguages['tl']['rtl'] = false;
+    $supportedLanguages['tl']['dateformat'] = 1;
+    $supportedLanguages['tl']['radixpoint'] = 1;
+    
     // Tajik
     $supportedLanguages['tg']['description'] = gT('Tajik');
     $supportedLanguages['tg']['nativedescription'] = '&#x422;&#x43E;&#x4B7;&#x438;&#x43A;&#x4E3;';
@@ -710,13 +726,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['th']['rtl'] = false;
     $supportedLanguages['th']['dateformat'] = 5;
     $supportedLanguages['th']['radixpoint'] = 0;
-
-    // Tagalog
-    $supportedLanguages['tl']['description'] = gT('Tagalog');
-    $supportedLanguages['tl']['nativedescription'] = 'Tagalog';
-    $supportedLanguages['tl']['rtl'] = false;
-    $supportedLanguages['tl']['dateformat'] = 1;
-    $supportedLanguages['tl']['radixpoint'] = 1;
 
     //Ukrainian
     $supportedLanguages['uk']['description'] = gT('Ukrainian');
