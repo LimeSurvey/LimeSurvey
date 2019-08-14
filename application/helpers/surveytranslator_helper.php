@@ -740,6 +740,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ur']['rtl'] = true;
     $supportedLanguages['ur']['dateformat'] = 2;
     $supportedLanguages['ur']['radixpoint'] = 0;
+    
+    //Uyghur
+    $supportedLanguages['ug']['description'] = gT('Uyghur');
+    $supportedLanguages['ug']['nativedescription'] = 'ئۇيغۇرچە';
+    $supportedLanguages['ug']['rtl'] = true;
+    $supportedLanguages['ug']['dateformat'] = 6;
+    $supportedLanguages['ug']['radixpoint'] = 0;    
 
     // Vietnamese
     $supportedLanguages['vi']['description'] = gT('Vietnamese');
