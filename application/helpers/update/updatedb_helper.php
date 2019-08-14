@@ -2906,6 +2906,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>419),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        // TODO: update DB for QuestionThemes
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

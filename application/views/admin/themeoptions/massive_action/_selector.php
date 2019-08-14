@@ -1,16 +1,18 @@
 <?php
 /**
  * Render the selector for Surveythemes massive actions.
- *
+ * @var string $gridID
+ * @var string $dropupID
+ * @var string $pk
  */
 ?>
 
 <!-- Rendering massive action widget -->
 <?php
     $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
-        'pk'          => 'id',
-        'gridid'      => 'themeoptions-grid',
-        'dropupId'    => 'optionThemesListActions',
+        'pk'          => $pk,
+        'gridid'      => $gridID,
+        'dropupId'    => $dropupID,
         'dropUpText'  => gT('Selected theme(s)...'),
         'aActions'    => array(
             //reset
@@ -49,7 +51,7 @@
                 'modalType'     => 'yes-no',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
-                'selectedUrl'   => App()->createUrl('/admin/themeoptions/sa/renderSelectedItems/'),     
+                'selectedUrl'   => App()->createUrl('/admin/themeoptions/sa/renderSelectedItems/'),
                 'sModalTitle'   => gT('Uninstall themes'),
                 'htmlModalBody' => gT('Are you sure you want to uninstall the selected themes?'),
             )

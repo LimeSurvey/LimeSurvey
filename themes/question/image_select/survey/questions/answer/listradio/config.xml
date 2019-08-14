@@ -7,6 +7,7 @@
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadata>
         <name>image_select-listradio</name>
+        <title>Image Select List (radio)</title>
         <creationDate>23/12/2016</creationDate>
         <author>Markus Flür</author>
         <authorEmail>mfluer@limesurvey.org</authorEmail>
@@ -16,6 +17,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>List Radio with images.</description>
+        <type>L</type>
     </metadata>
 
     <!--

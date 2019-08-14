@@ -114,26 +114,37 @@ class themeoptions  extends Survey_Common_Action
     public function uninstallMultiple()
     {
         $aTemplates = json_decode(Yii::app()->request->getPost('sItems'));
+        $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
 
-            foreach($aTemplates as $template){
-                $model = $this->loadModel($template);
-                $templatename = $model->template_name;
-                $aResults[$template]['title'] = $templatename;  
+            foreach ($aTemplates as $template) {
+                $model = $this->loadModel($template, $gridid);
 
-                if (!Template::hasInheritance($templatename)) {   
-                    if ($templatename != getGlobalSetting('defaulttheme')){
-                        $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
-                    }else{
+                if ($gridid == 'questionthemes-grid') {
+                    $aResults[$template]['title'] = $model->name;
+                    $templatename = $model->name;
+                    $aResults[$template]['title'] = $templatename;
+
+                        $aResults[$template]['result'] = QuestionTheme::uninstall($templatename);
+
+                } elseif ($gridid == 'themeoptions-grid') {
+                    $aResults[$template]['title'] = $model->template_name;
+                    $templatename = $model->template_name;
+                    $aResults[$template]['title'] = $templatename;
+                    if (!Template::hasInheritance($templatename)) {
+                        if ($templatename != getGlobalSetting('defaulttheme')) {
+                            $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
+                        } else {
+                            $aResults[$template]['result'] = false;
+                            $aResults[$template]['error'] = gT('Error!! You cannot uninstall the default template');
+                        }
+
+                    } else {
                         $aResults[$template]['result'] = false;
-                        $aResults[$template]['error'] = gT('Error!! You cannot uninstall the default template');
+                        $aResults[$template]['error'] = gT('Error!! Some templates inherit from it');
                     }
-                  
-                } else {   
-                    $aResults[$template]['result'] = false;
-                    $aResults[$template]['error'] = gT('Error!! Some templates inherit from it');
                 }
             }
             //set Modal table labels
@@ -154,26 +165,37 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
-    
-     /**
+
+    /**
      * render selected items for massive action modal
+     *
      * @return void
+     * @throws CHttpException
+     * @throws CException
      */
 
     public function renderSelectedItems()
     {
-        $aTemplates = json_decode(Yii::app()->request->getPost('$oCheckedItems'));   
-        $aResults = array();
-        foreach($aTemplates as $template){
+        $aTemplates = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aResults = [];
+        $gridid = App()->request->getParam('$grididvalue');
 
-            $model = $this->loadModel($template);
-            $aResults[$template]['title'] = $model->template_name;
+        foreach($aTemplates as $template){
+            $aResults[$template]['title'] = '';
+            $model = $this->loadModel($template, $gridid);
+
+            if ($gridid == 'questionthemes-grid'){
+                $aResults[$template]['title'] = $model->name;
+            } elseif ($gridid == 'themeoptions-grid'){
+                $aResults[$template]['title'] = $model->template_name;
+            }
+
             $aResults[$template]['result'] = gT('Selected');
         }
         //set Modal table labels
         $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
 
-        Yii::app()->getController()->renderPartial(
+        App()->getController()->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
@@ -182,7 +204,6 @@ class themeoptions  extends Survey_Common_Action
             )
         );        
     }
-
 
     /**
      * Updates a particular model (globally)
@@ -285,15 +306,21 @@ class themeoptions  extends Survey_Common_Action
             $oSurveyTheme = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 
+            // Load Question Themes into DB
+            // TODO: Move to create-database and updatedb_helper
+//            QuestionTheme::loadAllQuestionXMLConfigurationsIntoDatabase();
+
+            $oQuestionTheme = new QuestionTheme;
+            $aData['oQuestionTheme'] = $oQuestionTheme;
 
             $canImport = true;
             $importErrorMessage = null;
 
-            if(!is_writable(Yii::app()->getConfig('tempdir'))) {
+            if(!is_writable(App()->getConfig('tempdir'))) {
                 $canImport = false;
                 $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
             }
-            else if (!is_writable(Yii::app()->getConfig('userthemerootdir'))) {
+            else if (!is_writable(App()->getConfig('userthemerootdir'))) {
                 $canImport = false;
                 $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
             }
@@ -358,13 +385,20 @@ class themeoptions  extends Survey_Common_Action
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
+     *
      * @param integer $id the ID of the model to be loaded
+     * @param null    $gridid
+     *
      * @return TemplateConfiguration the loaded model
      * @throws CHttpException
      */
-    public function loadModel($id)
+    public function loadModel($id, $gridid = null)
     {
-        $model = TemplateConfiguration::model()->findByPk($id);
+        if ( $gridid == 'questionthemes-grid') {
+            $model = QuestionTheme::model()->findByPk($id);
+        } else {
+            $model = TemplateConfiguration::model()->findByPk($id);
+        }
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -375,10 +409,17 @@ class themeoptions  extends Survey_Common_Action
 
     public function importManifest()
     {
-        $templatename = Yii::app()->request->getPost('templatename');
+        $templatename = App()->request->getPost('templatename');
+        $theme = App()->request->getPost('theme');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            TemplateManifest::importManifest($templatename);
-            $this->getController()->redirect(array("admin/themeoptions"));
+            if ($theme == 'questiontheme') {
+                $templateFolder = App()->request->getPost('templatefolder');
+                QuestionTheme::importManifest($templateFolder);
+                $this->getController()->redirect(array("admin/themeoptions"));
+            } else {
+                TemplateManifest::importManifest($templatename);
+                $this->getController()->redirect(array("admin/themeoptions"));
+            }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array("admin/themeoptions"));

@@ -7,6 +7,7 @@
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadata>
         <name>ranking_advanced</name>
+        <title>Ranking Advanced</title>
         <creationDate>15/11/2017</creationDate>
         <author>Markus Flür</author>
         <authorEmail>mfluer@limesurvey.org</authorEmail>
@@ -16,6 +17,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the ranking question</description>
+        <type>R</type>
     </metadata>
 
     <!--

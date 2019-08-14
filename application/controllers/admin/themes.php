@@ -175,27 +175,28 @@ class themes extends Survey_Common_Action
     public function upload()
     {
         $action = returnGlobal('action');
-        if ($action == 'templateuploadimagefile' && Yii::app()->request->getPost('surveyid') ) {
-            Yii::app()->getController()->forward("/admin/survey/sa/uploadimagefile/");
-            Yii::app()->end();
+        if ($action == 'templateuploadimagefile' && App()->request->getPost('surveyid') ) {
+            App()->getController()->forward("/admin/survey/sa/uploadimagefile/");
+            App()->end();
         }
-        $sTemplateName = Yii::app()->request->getPost('templatename');
+        $sTemplateName = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
-            Yii::app()->loadHelper('admin/template');
+            App()->loadHelper('admin/template');
+            $themeType = returnGlobal('theme');
             $lid = returnGlobal('lid');
             $uploadresult = "";
             $success = false;
             $debug = [];
             if ($action == 'templateuploadimagefile') {
-                // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
+                // $iTemplateConfigurationId = App()->request->getPost('templateconfig');
                 // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
                 $oTemplateConfiguration = Template::getInstance($sTemplateName);
 
                 $debug[] = $sTemplateName;
                 $debug[] = $oTemplateConfiguration;
-                if (Yii::app()->getConfig('demoMode')) {
+                if (App()->getConfig('demoMode')) {
                     $uploadresult = gT("Demo mode: Uploading images is disabled.");
-                    return Yii::app()->getController()->renderPartial(
+                    return App()->getController()->renderPartial(
                         '/admin/super/_renderJson',
                         array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
                         false,
@@ -205,7 +206,7 @@ class themes extends Survey_Common_Action
                 $debug[] = $_FILES;
                 if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
                     $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
-                    return Yii::app()->getController()->renderPartial(
+                    return App()->getController()->renderPartial(
                         '/admin/super/_renderJson',
                         array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
                         false,
@@ -214,7 +215,7 @@ class themes extends Survey_Common_Action
                 }
                 $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
                 if ($checkImage['check'] === false) {
-                    return Yii::app()->getController()->renderPartial(
+                    return App()->getController()->renderPartial(
                         '/admin/super/_renderJson',
                         array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
                         false,
@@ -236,11 +237,11 @@ class themes extends Survey_Common_Action
                     $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                 } else {
                     $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                    Yii::app()->user->setFlash('success', "Data saved!");
+                    App()->user->setFlash('success', "Data saved!");
                     $success = true;
                 };
 
-                return Yii::app()->getController()->renderPartial(
+                return App()->getController()->renderPartial(
                     '/admin/super/_renderJson',
                     array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
                     false,
@@ -249,7 +250,7 @@ class themes extends Survey_Common_Action
 
             } else if ($action == 'templateupload') {
 
-                Yii::app()->loadLibrary('admin.pclzip');
+                App()->loadLibrary('admin.pclzip');
 
                 // Redirect back if demo mode is set.
                 $this->checkDemoMode();
@@ -258,7 +259,15 @@ class themes extends Survey_Common_Action
                 $this->checkFileSizeError();
 
                 $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
-                $destdir = Yii::app()->getConfig('userthemerootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
+
+                if ($themeType == 'question') {
+                    $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+                } elseif ($themeType == 'survey') {
+                    $destdir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+                } else {
+                    App()->setFlashMessage(gT("This theme type is not allowed."), 'error');
+                    $this->getController()->redirect(array("admin/themeoptions"));
+                }
 
                 // Redirect back if $destdir is not writable OR if it already exists.
                 $this->checkDestDir($destdir, $sNewDirectoryName);
@@ -274,7 +283,7 @@ class themes extends Survey_Common_Action
                     $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
 
                     if ($aExtractResult === 0) {
-                        Yii::app()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
+                        App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                         rmdirr($destdir);
                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     } else {
@@ -294,19 +303,24 @@ class themes extends Survey_Common_Action
                         }
 
                         if (Template::checkIfTemplateExists($sNewDirectoryName)) {
-                            Yii::app()->user->setFlash('error', gT("Can not import a theme that already exists!"));
+                            App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                             rmdirr($destdir);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
                         }
-                        TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
+                        if (count($aImportedFilesInfo) == 0) {
+                            App()->user->setFlash('error', gT("This ZIP archive contains no valid template files. Import failed."));
+                            rmdirr($destdir);
+                            $this->getController()->redirect(array("admin/themes/sa/upload"));
+                        }
+                        // TODO: make proper import manifest for questiontheme in configuration class
+                        if ($themeType !== 'question') {
+                            TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
+                        }
                     }
 
-                    if (count($aImportedFilesInfo) == 0) {
-                        Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid template files. Import failed."));
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
-                    }
+
                 } else {
-                    Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+                    App()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
                     rmdirr($destdir);
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
                 }
@@ -325,11 +339,9 @@ class themes extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array("admin/themeoptions"));
         }
-
-
     }
 
     /**

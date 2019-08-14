@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @param $oDB DbConnection
+ *
+ * @throws CHttpException
+ * @throws CException
+ */
 function createDatabase($oDB){
     /**
     * Populate the database for a limesurvey installation
@@ -928,6 +934,33 @@ function createDatabase($oDB){
         foreach($templateConfigurationData=LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
             $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
         }
+
+        // question_themes
+        $oDB->createCommand()->createTable('{{question_themes}}', [
+            'id' => "pk",
+            'name' => "string(150) NOT NULL",
+            'visible' => "string(1) NULL",
+            'folder' => "string(255) NULL",
+            'title' => "string(100) NOT NULL",
+            'creation_date' => "datetime NULL",
+            'author' => "string(150) NULL",
+            'author_email' => "string(255) NULL",
+            'author_url' => "string(255) NULL",
+            'copyright' => "text",
+            'license' => "text",
+            'version' => "string(45) NULL",
+            'api_version' => "string(45) NOT NULL",
+            'view_folder' => "string(45) NOT NULL",
+            'files_folder' => "string(45) NOT NULL",
+            'description' => "text",
+            'last_update' => "datetime NULL",
+            'owner_id' => "integer NULL",
+            'theme_type' => "string(150)",
+            'type' => "string(150)",
+            'extends' => "string(150) NULL",
+        ], $options);
+
+        $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
         //tutorials
         $oDB->createCommand()->createTable(

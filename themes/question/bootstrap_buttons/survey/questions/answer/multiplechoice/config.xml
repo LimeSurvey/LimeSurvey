@@ -17,6 +17,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the Bootstrap buttons question theme</description>
+        <type>M</type>
     </metadata>
 
     <!--

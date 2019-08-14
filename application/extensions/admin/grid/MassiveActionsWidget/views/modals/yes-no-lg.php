@@ -1,5 +1,5 @@
 <!-- Modal confirmation for <?php echo $aAction['action'];?> -->
-<div id="massive-actions-modal-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
+<div id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>" class="modal fade" role="dialog" data-keepopen="<?php echo $aAction['keepopen'];?>">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">

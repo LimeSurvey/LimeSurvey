@@ -463,39 +463,39 @@ class LSYii_Application extends CWebApplication
         $files = array();
 
         foreach ($iterator as $info) {
-          $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
-          if ($ext=='xml') {
-            $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
-          }
+            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            if ($ext == 'xml') {
+                $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
+            }
         }
 
         // Then we read each manifest and add their functions to Twig Component
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
 
-        foreach ($CustomTwigExtensionsManifestFiles as $ctemFile){
-          $sXMLConfigFile        = file_get_contents( realpath ($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-          $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+        foreach ($CustomTwigExtensionsManifestFiles as $ctemFile) {
+            $sXMLConfigFile = file_get_contents(realpath($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $oXMLConfig = simplexml_load_string($sXMLConfigFile);
 
-          // Get the functions.
-          // TODO: get the tags, filters, etc
-          $aFunctions = (array) $oXMLConfig->xpath("//function");
-          $extensionClass =  (string) $oXMLConfig->metadata->name;
+            // Get the functions.
+            // TODO: get the tags, filters, etc
+            $aFunctions = (array)$oXMLConfig->xpath("//function");
+            $extensionClass = (string)$oXMLConfig->metadata->name;
 
-          if (!empty($aFunctions) && !empty($extensionClass) ){
+            if (!empty($aFunctions) && !empty($extensionClass)) {
 
-            // We add the extension to twig user extensions to load
-            // See: https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/third_party/Twig/ETwigViewRenderer.php#L125-L133
-            $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
+                // We add the extension to twig user extensions to load
+                // See: https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/third_party/Twig/ETwigViewRenderer.php#L125-L133
+                $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
 
-            // Then we add the functions to the Twig Component and its sandbox
-            // See:  https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/application/config/internal.php#L233-#L398
-            foreach($aFunctions as $function){
-              $functionNameInTwig = (string) $function['twig-name'];
-              $functionNameInExt  = (string) $function['extension-name'];
-              $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] =  $functionNameInExt;
-              $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
+                // Then we add the functions to the Twig Component and its sandbox
+                // See:  https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/application/config/internal.php#L233-#L398
+                foreach ($aFunctions as $function) {
+                    $functionNameInTwig = (string)$function['twig-name'];
+                    $functionNameInExt = (string)$function['extension-name'];
+                    $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] = $functionNameInExt;
+                    $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
+                }
             }
-          }
         }
 
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
