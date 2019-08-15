@@ -288,6 +288,8 @@
 
         /**
          * @param $pathToXML
+         *
+         * @return bool
          */
         public static function importManifest($pathToXML)
         {
@@ -296,7 +298,8 @@
             }
 
             $questionMetaData = self::getQuestionMetaData($pathToXML);
-            $questionType = self::getThemeType($pathToXML);
+            $questionAdditionalData = self::getThemeTypeAndExtendedType($pathToXML, $questionMetaData);
+            $questionMetaData = array_merge($questionMetaData, $questionAdditionalData);
 
             $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $questionMetaData['type']]);
             if ($questionTheme == null) {
@@ -318,36 +321,42 @@
                     'description' => $questionMetaData['description'],
                     'last_update' => 'todo insert time',
                     'owner_id' => 1,
-                    'theme_type' => $questionType,
+                    'theme_type' => $questionMetaData['themeType'],
                     'type' => $questionMetaData['type'],
-                    'extends' => $questionMetaData['type']
+                    'extends' => $questionMetaData['extends']
                 ], false);
-                $questionTheme->save();
+                if ($questionTheme->save()) {
+                    return $questionMetaData['title'];
+                };
             }
+            return null;
         }
 
         /**
-         * @param $pathToXML
+         * @param $pathToXML         *
+         * @param $questionMetaData
          *
          * @return string
          */
-        public static function getThemeType($pathToXML)
+        public static function getThemeTypeAndExtendedType($pathToXML, $questionMetaData)
         {
-            $questionType = '';
-
+            $questionAdditionalData = [];
             $coreQuestion = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
             $customCoreTheme = App()->getConfig('userquestionthemedir');
             $customUserTheme = App()->getConfig('userquestionthemerootdir');
-            if (substr($pathToXML, 0, strlen($coreQuestion) === $coreQuestion)) {
-                $questionType = 'Core theme';
+
+            $questionAdditionalData['extends'] = $questionMetaData['type'];
+            if (substr($pathToXML, 0, strlen($coreQuestion)) === $coreQuestion) {
+                $questionAdditionalData['themeType'] = 'Core theme';
+                $questionAdditionalData['extends'] = '';
             }
-            if (substr($pathToXML, 0, strlen($customCoreTheme) === $customCoreTheme)) {
-                $questionType = 'Core theme';
+            if (substr($pathToXML, 0, strlen($customCoreTheme)) === $customCoreTheme) {
+                $questionAdditionalData['themeType'] = 'Core theme';
             }
-            if (substr($pathToXML, 0, strlen($customUserTheme) === $customUserTheme)) {
-                $questionType = 'User theme';
+            if (substr($pathToXML, 0, strlen($customUserTheme)) === $customUserTheme) {
+                $questionAdditionalData['themeType'] = 'User theme';
             }
-            return $questionType;
+            return $questionAdditionalData;
         }
 
 
@@ -384,7 +393,7 @@
                     'version' => $questionMetaData['version'],
                     'api_version' => $questionMetaData['apiVersion'],
                     'description' => $questionMetaData['description'],
-                    'last_update' => 'now',
+                    'last_update' => 'todo now',
                     'owner_id' => 1,
                     'theme_type' => 'XML Theme',
                     'type' => $questionMetaData['type'],
@@ -438,6 +447,7 @@
             $sQuestionConfigFile = file_get_contents(realpath($pathToXML));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
+            $questionMetaData['folder'] = $pathToXML;
 
             libxml_disable_entity_loader($bOldEntityLoaderState);
             return $questionMetaData;

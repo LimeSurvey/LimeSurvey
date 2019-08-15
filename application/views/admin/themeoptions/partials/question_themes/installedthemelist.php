@@ -61,9 +61,9 @@
                     ),
 
                     array(
-                        'header' => gT('Type'),
-                        'name' => 'type',
-                        'value' => '$data->type',
+                        'header' => gT('Theme Type'),
+                        'name' => 'theme_type',
+                        'value' => '$data->theme_type',
                         'type' => 'raw',
                         'htmlOptions' => array('class' => 'col-md-2'),
                     ),

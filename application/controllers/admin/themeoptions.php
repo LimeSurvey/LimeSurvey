@@ -107,13 +107,15 @@ class themeoptions  extends Survey_Common_Action
     }
 
     /**
-     * Uninstall all selected themes from massive action 
-     *@return void 
+     * Uninstall all selected themes from massive action
+     *
+     * @return void
+     * @throws CException
      */
 
     public function uninstallMultiple()
     {
-        $aTemplates = json_decode(Yii::app()->request->getPost('sItems'));
+        $aTemplates = json_decode(App()->request->getPost('sItems'));
         $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
@@ -126,8 +128,7 @@ class themeoptions  extends Survey_Common_Action
                     $aResults[$template]['title'] = $model->name;
                     $templatename = $model->name;
                     $aResults[$template]['title'] = $templatename;
-
-                        $aResults[$template]['result'] = QuestionTheme::uninstall($templatename);
+                    $aResults[$template]['result'] = QuestionTheme::uninstall($templatename);
 
                 } elseif ($gridid == 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;
@@ -150,8 +151,8 @@ class themeoptions  extends Survey_Common_Action
             //set Modal table labels
             $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
 
-            Yii::app()->getController()->renderPartial(
-                'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
+            App()->getController()->renderPartial(
+                'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
                 array
                 (
                     'aResults'     => $aResults,
@@ -161,7 +162,7 @@ class themeoptions  extends Survey_Common_Action
             
         } else {
 
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
     }
 
@@ -407,6 +408,11 @@ class themeoptions  extends Survey_Common_Action
     }
 
 
+    /**
+     * Import the Theme Condigurations into the database
+     *
+     * @throws Exception
+     */
     public function importManifest()
     {
         $templatename = App()->request->getPost('templatename');
@@ -414,11 +420,16 @@ class themeoptions  extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($theme == 'questiontheme') {
                 $templateFolder = App()->request->getPost('templatefolder');
-                QuestionTheme::importManifest($templateFolder);
-                $this->getController()->redirect(array("admin/themeoptions"));
+                $themeName = QuestionTheme::importManifest($templateFolder);
+                if (isset($themeName)){
+                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been sucessfully installed'), "$themeName"), 'success');
+                } else {
+                    App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
+                }
+                $this->getController()->redirect(array("admin/themeoptions#questionthemes"));
             } else {
                 TemplateManifest::importManifest($templatename);
-                $this->getController()->redirect(array("admin/themeoptions"));
+                $this->getController()->redirect(array("admin/themeoptions#surveythemes"));
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
