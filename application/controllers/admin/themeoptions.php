@@ -70,27 +70,40 @@ class themeoptions  extends Survey_Common_Action
 
     /**
      * Reset all selected themes from massive action
-     * @return void 
+     *
+     * @return void
+     * @throws Exception
      */
 
     public function resetMultiple()
     {   
-        $aTemplates = json_decode(Yii::app()->request->getPost('sItems'));
+        $aTemplates = json_decode(App()->request->getPost('sItems'));
+        $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
 
             foreach($aTemplates as $template){
-                $model = $this->loadModel($template);
-                $templatename = $model->template_name;
-                $aResults[$template]['title'] = $templatename; 
-                $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
-                TemplateManifest::importManifest($templatename);
+                $model = $this->loadModel($template, $gridid);
+                if ($gridid == 'questionthemes-grid') {
+                    $templatename = $model->name;
+                    $templateid = $model->id;
+                    $templatefolder = $model->folder;
+                    $aResults[$template]['title'] = $templatename;
+                    $aResults[$template]['result'] = QuestionTheme::uninstall($templateid);
+                    QuestionTheme::importManifest($templatefolder);
+                } elseif ($gridid == 'themeoptions-grid'){
+                    $templatename = $model->template_name;
+                    $aResults[$template]['title'] = $templatename;
+                    $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
+                    TemplateManifest::importManifest($templatename);
+                }
+
             }
             //set Modal table labels
             $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
 
-            Yii::app()->getController()->renderPartial(
+            App()->getController()->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
                 array
                 (
@@ -101,7 +114,7 @@ class themeoptions  extends Survey_Common_Action
                 ));
         } else {
 
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
     }
@@ -127,8 +140,9 @@ class themeoptions  extends Survey_Common_Action
                 if ($gridid == 'questionthemes-grid') {
                     $aResults[$template]['title'] = $model->name;
                     $templatename = $model->name;
+                    $templateid = $model->id;
                     $aResults[$template]['title'] = $templatename;
-                    $aResults[$template]['result'] = QuestionTheme::uninstall($templatename);
+                    $aResults[$template]['result'] = QuestionTheme::uninstall($templateid);
 
                 } elseif ($gridid == 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;

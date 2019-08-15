@@ -497,10 +497,10 @@
         }
 
 
-        public static function uninstall($templatename)
+        public static function uninstall($templateid)
         {
             if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-                $oTemplate = self::model()->findByAttributes(array('name' => $templatename));
+                $oTemplate = self::model()->findByPk($templateid);
                 return $oTemplate->delete();
             }
             return false;
