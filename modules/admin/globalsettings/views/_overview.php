@@ -13,7 +13,7 @@
 ?>
 
 <?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> this view is rendered from globall setting module </p>
+  <p class="alert alert-info "> this subview is rendered from globall setting module. This message is shown only when debug mode is on </p>
 <?php endif;?>
 
 <br /><table class='table table-striped table-bordered'>
@@ -35,6 +35,13 @@
     <tr>
         <th ><?php eT("Deactivated survey participants tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
     </tr>
+
+    <?php if(YII_DEBUG ): ?>
+      <!-- If debug mode is on, we show the new parameter -->
+      <tr>
+          <th >Value of myNewParam :</th><td><?php echo $myNewParam; ?></td>
+      </tr>
+    <?php endif;?>
     <?php
         if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
         {
