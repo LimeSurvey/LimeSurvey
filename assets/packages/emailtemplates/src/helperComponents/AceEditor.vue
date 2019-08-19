@@ -23,7 +23,7 @@ export default {
     name: 'AceEditor',
     props: {
         value: {
-            type: Object,
+            type: String,
             required: true,
         },
         applyExternalChange: {type: Boolean, default: false},

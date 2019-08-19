@@ -111,7 +111,13 @@ export default {
                 } catch(e) {}
                 return returner;
             },
-            set(newValue) { this.$store.commit('setSubjectForCurrentState', newValue); },
+            set(newValue) { 
+                if (newValue.subject) {
+                    this.$store.commit('setSubjectForCurrentState', newValue.subject); 
+                } else {
+                    this.$store.commit('setSubjectForCurrentState', newValue); 
+                }
+            },
         },
         editorExtraOptions() { 
             return {'fieldtype': 'email_'+this.$store.state.currentTemplateType };
@@ -120,14 +126,20 @@ export default {
             get() { 
                 let returner = '';
                 try{    
-                    if(this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
+                    if (this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
                         let descriptor = this.currentTemplateTypeData.field.body;
                         returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
                     }
                 } catch(e) {}
                 return returner;
             },
-            set(newValue) { this.$store.commit('setEditorContentForCurrentState', newValue); },
+            set(newValue) { 
+                if (newValue.body) {
+                    this.$store.commit('setEditorContentForCurrentState', newValue.body); 
+                } else {
+                    this.$store.commit('setEditorContentForCurrentState', newValue); 
+                }
+            },
         },
         currentTemplateTypeData() {
             return this.$store.state.templateTypes[this.$store.state.currentTemplateType];
