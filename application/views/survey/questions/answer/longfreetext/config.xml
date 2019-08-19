@@ -710,6 +710,21 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <!-- Timer Attributes END -->
+        <!-- Input Atributes START -->
+        <attribute>
+            <name>maximum_chars</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Maximum characters allowed</help>
+            <caption>Maximum characters</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Input Atributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->

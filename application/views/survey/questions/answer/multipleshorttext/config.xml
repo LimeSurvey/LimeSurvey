@@ -310,6 +310,29 @@
         <!-- Logic Attributes END -->
         <!-- Other Attributes START -->
         <attribute>
+            <name>numbers_only</name>
+            <category>Other</category>
+            <sortorder>150</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Allow only numerical input</help>
+            <caption>Numbers only</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>page_break</name>
             <category>Other</category>
             <sortorder>100</sortorder>
@@ -710,6 +733,21 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <!-- Timer Attributes END -->
+        <!-- Input Atributes START -->
+        <attribute>
+            <name>maximum_chars</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Maximum characters allowed</help>
+            <caption>Maximum characters</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Input Atributes END -->
     </attributes>
 
     <!-- Core question js/css configuration -->
