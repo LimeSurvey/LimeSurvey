@@ -1,12 +1,30 @@
-<script>
+<template>
+    <div class="aceEditor--main">
+        <div class="aceEditor--topbar">
+            <div class="aceEditor--subcontainer" v-if="showThemeToggle">
+                <button @click="toggleDarkMode" class="btn btn-xs btn-default"> {{'Toggle dark mode'|translate}}</button>
+            </div>
+            <div class="aceEditor--subcontainer" v-if="showLangSelector">
+                <select class="aceEditor--langselect" v-model="lang">
+                    <option value="html">HTML</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="css">CSS</option>
+                </select>
+            </div>
+        </div>
+        <div class="aceEditor--editor" :id="thisId" ></div>
+    </div>
+</template>
 
+<script>
 import debounce from 'lodash/debounce';
 
 export default {
     name: 'AceEditor',
     props: {
         value: {
-            required: true
+            type: String,
+            required: true,
         },
         applyExternalChange: {type: Boolean, default: false},
         thisId: {
@@ -101,24 +119,6 @@ export default {
     }
 };
 </script>
-
-<template>
-    <div class="aceEditor--main">
-        <div class="aceEditor--topbar">
-            <div class="aceEditor--subcontainer" v-if="showThemeToggle">
-                <button @click="toggleDarkMode" class="btn btn-xs btn-default"> {{'Toggle dark mode'|translate}}</button>
-            </div>
-            <div class="aceEditor--subcontainer" v-if="showLangSelector">
-                <select class="aceEditor--langselect" v-model="lang">
-                    <option value="html">HTML</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="css">CSS</option>
-                </select>
-            </div>
-        </div>
-        <div class="aceEditor--editor" :id="thisId" ></div>
-    </div>
-</template>
 
 <style lang="scss" scoped>
     .aceEditor--main {
