@@ -865,7 +865,10 @@ class SurveyAdmin extends Survey_Common_Action
                 $survey->refurl = Yii::app()->request->getPost('refurl');
                 $survey->savetimings = Yii::app()->request->getPost('savetimings');
                 $survey->save();
-                Survey::model()->resetCache(); // Make sure the saved values will be picked up
+
+                // Make sure the saved values will be picked up
+                Survey::model()->resetCache();
+                $survey->setOptions();
             }
 
             $aResult = $surveyActivator->activate();
