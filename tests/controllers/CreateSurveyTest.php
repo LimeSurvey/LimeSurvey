@@ -123,7 +123,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $save = self::$webDriver->findElement(WebDriverBy::id('save-form-button'));
             $save->click();
 
-            sleep(1);
+            sleep(2);
 
             // Remove notification.
             // TODO: Since 2018-06-18, this does not longer work. "Cannot scroll into view". Could be
