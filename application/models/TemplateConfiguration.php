@@ -806,7 +806,12 @@ class TemplateConfiguration extends TemplateConfig
             return;
         }
         // Currently it's private and only used one time, before put this function in twig : must validate directory is inside rootdir
-        $checkImage = LSYii_ImageValidator::validateImage($file);
+        $parts = explode('.', $file);
+        $fileInfo = [
+            'type'     => count($parts) === 2 ? 'image/' . $parts[1] : 'wrong_path_format',
+            'tmp_name' => $file
+        ];
+        $checkImage = LSYii_ImageValidator::validateImage($fileInfo);
         if (!$checkImage['check']) {
             return;
         }

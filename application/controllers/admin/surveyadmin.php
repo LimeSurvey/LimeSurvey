@@ -2364,7 +2364,7 @@ class SurveyAdmin extends Survey_Common_Action
                 false
             );
         }
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
+        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImage['check'] === false) {
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
