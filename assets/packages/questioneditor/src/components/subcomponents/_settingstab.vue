@@ -16,7 +16,8 @@
     import SettingTextdisplay from '../_inputtypes/textdisplay.vue';
     import SettingTextarea from '../_inputtypes/textarea.vue';
     import SettingButtongroup from '../_inputtypes/buttongroup.vue';
-import SettingQuestiontheme from '../_inputtypes/questiontheme.vue';
+    import SettingQuestiontheme from '../_inputtypes/questiontheme.vue';
+    import SettingColumns from '../_inputtypes/columns.vue';
     import StubSet from '../_inputtypes/stub.vue';
 
     export default {
@@ -34,7 +35,8 @@ import SettingQuestiontheme from '../_inputtypes/questiontheme.vue';
                     'singleselect',
                     'textinput',
                     'buttongroup',
-                    'textarea'
+                    'textarea',
+                    'columns'
                 ],
             }
         },
@@ -48,6 +50,7 @@ import SettingQuestiontheme from '../_inputtypes/questiontheme.vue';
             'setting-textdisplay': SettingTextdisplay,
             'setting-textarea': SettingTextarea,
             'setting-buttongroup': SettingButtongroup,
+            'setting-columns': SettingColumns,
             'stub-set' : StubSet
         },
         computed: {
@@ -77,10 +80,10 @@ import SettingQuestiontheme from '../_inputtypes/questiontheme.vue';
         },
         methods: {
             reactOnChange(newValue, oAdvancedSettingObject) {
-                this.$store.commit('setQuestionAdvancedSetting', {newValue, settingName: oAdvancedSettingObject.formElementId});   
+                this.$store.commit('setQuestionAdvancedSetting', {newValue, settingName: oAdvancedSettingObject.formElementId});
             },
             getComponentName(componentRawName){
-                
+
                 componentRawName = componentRawName=='singleselect' ? 'select' : componentRawName;
                 if(this.aComponentArray.indexOf(componentRawName) > -1 ){
                     return 'setting-'+componentRawName;

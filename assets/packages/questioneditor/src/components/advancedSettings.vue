@@ -66,7 +66,7 @@ export default {
     methods: {
         selectCurrentTab(tabComponent, categoryName='') {
             this.currentTabComponent = tabComponent;
-            if(tabComponent == 'settings-tab') {
+            if(tabComponent === 'settings-tab') {
                 this.$store.commit('setQuestionAdvancedSettingsCategory',categoryName);
             }
         },
