@@ -16,7 +16,7 @@
 
 class UploaderController extends SurveyController
 {
-    function run($actionID)
+    public function run($actionID)
     {
         $surveyid = Yii::app()->session['LEMsid'];
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -45,7 +45,7 @@ class UploaderController extends SurveyController
         $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', $sFileName);
         $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', $sFieldName);
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
-// If one seems to be a hack: Bad request
+            // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
         }
         if ($sFileGetContent) {
@@ -58,7 +58,7 @@ class UploaderController extends SurveyController
                 throw new CHttpException(400); // See for debug > 1
             }
             if (is_file($sFileDir.$sFileGetContent)) {
-// Validate file before else 500 error by getMimeType
+                // Validate file before else 500 error by getMimeType
                 $mimeType = CFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
                 if (is_null($mimeType)) {
                     $mimeType = "application/octet-stream"; // Can not really get content if not image
@@ -88,8 +88,8 @@ class UploaderController extends SurveyController
                     $found = false;
                     foreach ($aFiles as $aFile) {
                         if ($aFile['filename'] == $sFileName) {
-                        $found = true;
-                        break;
+                            $found = true;
+                            break;
                         }
                         $iFileIndex++;
                     }
