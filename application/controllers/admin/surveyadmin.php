@@ -233,7 +233,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData          = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData          = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData          = array_merge($aData, $this->_tabTokens($esrow));
-        $aData          = array_merge($aData, $this->_tabPanelIntegration($survey));
+        $aData          = array_merge($aData, $this->_tabPanelIntegration($survey, $survey->language));
         $aData          = array_merge($aData, $this->_tabResourceManagement($survey));
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
@@ -1222,7 +1222,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData = array_merge($aData, $this->_tabPublicationAccess($survey));
             $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
             $aData = array_merge($aData, $this->_tabTokens($esrow));
-            $aData = array_merge($aData, $this->_tabPanelIntegration($survey));
+            $aData = array_merge($aData, $this->_tabPanelIntegration($survey, $sLang));
             $aData = array_merge($aData, $this->_tabResourceManagement($survey));
 
             $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
@@ -1863,13 +1863,14 @@ class SurveyAdmin extends Survey_Common_Action
      * @param Survey $survey
      * @return array
      */
-    private function _tabPanelIntegration($survey)
+    private function _tabPanelIntegration($survey, $sLang = null)
     {
+        $sLang = $sLang == null ? $survey->language : $sLang;
         $aData = [];
-        $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
+        $oResult = Question::model()->findAll("sid=:sid AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S') AND language = :lang", [":sid" => $survey->sid, ":lang" => $sLang]);
         $aQuestions = [];
         foreach ($oResult as $aRecord) {
-            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
+            $aQuestions[] = $aRecord->attributes;
         }
         $aData['jsData'] = [
             'i10n' => [
