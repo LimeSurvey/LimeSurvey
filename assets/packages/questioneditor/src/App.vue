@@ -64,15 +64,13 @@ export default {
         }
     },
     methods: {
-        triggerEditQuestion(){
-            if(this.editQuestion) {
-                $('#questionbarid').slideDown()
-                $('#questiongroupbarid').slideUp();
+        triggerEditQuestion(force = null){
+            if(force === null) {
+                this.editQuestion = !this.editQuestion;
             } else {
-                $('#questionbarid').slideUp();
-                $('#questiongroupbarid').slideDown()
+                this.editQuestion = force;
             }
-            this.editQuestion = !this.editQuestion;
+            LS.EventBus.$emit('doFadeEvent', this.editQuestion);
         },
         toggleLoading(force=null){
             if(force===null) {
@@ -83,9 +81,8 @@ export default {
         },
         setEditQuestion(){
             if(!this.editQuestion) {
-                $('#questionbarid').slideUp();
-                $('#questiongroupbarid').slideDown()
                 this.editQuestion = true;
+                LS.EventBus.$emit('doFadeEvent', true);
             }
         },
         applyHotkeys() {
@@ -161,10 +158,6 @@ export default {
         },
     },
     created(){
-        if(window.QuestionEditData.startInEditView) {
-            this.editQuestion = true;
-        }
-
         Promise.all([
             this.$store.dispatch('loadQuestion'),
             this.$store.dispatch('getQuestionTypes')
@@ -172,18 +165,17 @@ export default {
             this.loading = false;
         })
     },
-    
-    mounted() {
-        let tmpAlerts = this.$store.state.alerts.filter((alert) => {
-            return !alert.shown
-        });
-        this.$store.commit('setAlerts', tmpAlerts)
 
+    mounted() {
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
         $('#frmeditquestion').on('submit', (e)=>{
             e.preventDefault();
+        });
+
+        LS.EventBus.$on('saveButtonCalled', (payload) => {
+            this.submitCurrentState(payload.id == '#save-and-close-button');
         });
 
         $('#save-button').on('click', (e)=>{
@@ -197,11 +189,7 @@ export default {
         });
 
         if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
-            $('#questionbarid').css({'display': 'none'});
-            $('#questiongroupbarid').css({'display':''});
-        } else {
-            $('#questionbarid').css({'display': ''});
-            $('#questiongroupbarid').css({'display':'none'});
+           this.triggerEditQuestion(true);
         }
     }
 }
@@ -209,19 +197,19 @@ export default {
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <transition name="slide-fade">
+        <transition name="slide-fade-left">
             <div class="ls-flex ls-flex-row" v-show="showAlerts">
-                <div 
+                <div
                     v-for="alert in currentAlerts"
                     :key="alert.key"
-                    class="col-xs-12 alert" 
+                    class="col-xs-12 alert"
                     :class="alert.class"
                     v-on:load="alert.shown=true"
                 >
-                    <button 
-                        type="button" 
-                        class="close" 
-                        @click="$store.commit('removeAlert', alert.key)" 
+                    <button
+                        type="button"
+                        class="close"
+                        @click="$store.commit('removeAlert', alert.key)"
                         aria-label="Close"
                     >
                         <span aria-hidden="true">&times;</span>
@@ -231,17 +219,17 @@ export default {
             </div>
         </transition>
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-            <button 
+            <button
                 id="questionOverviewButton"
-                @click.prevent.stop="triggerEditQuestion" 
+                @click.prevent="triggerEditQuestion(false)"
                 :class="editQuestion ? 'btn-default' : 'btn-primary'"
                 class="btn "
             >
                 {{'Question overview'| translate}}
             </button>
-            <button 
+            <button
                 id="questionEditorButton"
-                @click.prevent.stop="triggerEditQuestion" 
+                @click.prevent="triggerEditQuestion(true)"
                 :class="editQuestion ? 'btn-primary' : 'btn-default'"
                 class="btn "
             >
@@ -260,11 +248,11 @@ export default {
             <div class="row">
                 <div class="form-group col-sm-6">
                     <label for="questionCode">{{'Code' | translate }}</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        id="questionCode" 
-                        :readonly="!(editQuestion || isCreateQuestion)" 
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="questionCode"
+                        :readonly="!(editQuestion || isCreateQuestion)"
                         v-model="currentQuestionCode"
                         @dblclick="setEditQuestion"
                     />
@@ -278,17 +266,17 @@ export default {
             </div>
             <div class="row">
                 <languageselector
-                    :elId="'question-language-changer'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    :elId="'question-language-changer'"
+                    :aLanguages="$store.state.languages"
+                    :parentCurrentLanguage="$store.state.activeLanguage"
                     @change="selectLanguage"
                 />
             </div>
             <div class="row">
-                <transition name="slide-fade">
+                <transition name="slide-fade-left">
                     <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
                 </transition>
-                <transition name="slide-fade">
+                <transition name="slide-fade-left">
                     <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
                 </transition>
                 <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>

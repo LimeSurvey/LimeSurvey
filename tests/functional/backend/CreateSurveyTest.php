@@ -123,7 +123,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $save = self::$webDriver->findElement(WebDriverBy::id('save-form-button'));
             $save->click();
 
-            sleep(1);
+            sleep(5);
 
             // Remove notification.
             // TODO: Since 2018-06-18, this does not longer work. "Cannot scroll into view". Could be
@@ -133,7 +133,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             //sleep(1);
 
             // Go to structure sidebar
-            $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton'));
+            $selectStructureSidebar = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton')
+                )
+            );
             $selectStructureSidebar->click();
 
             // Click "Add group".

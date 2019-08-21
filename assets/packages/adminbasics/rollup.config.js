@@ -21,12 +21,17 @@ if( ENVIRONEMENT=='production' ) {
       sourcemap: true,
     };
     plugins = [
-      replace({ENVENVIRONEMENT:ENVIRONEMENT,ENVDIRECTION:DIRECTION}),
-      babel({exclude: 'node_modules/**'}),
-      resolve(),
-      common(),
-      scss({failOnError: true, outputStyle: 'compressed', output: DIRECTION=='ltr' ? 'build/adminbasics.min.css' : 'build/adminbasics.rtl.min.css'}),
-      terser()
+        replace({
+            ENVENVIRONEMENT:ENVIRONEMENT,
+            'process.env.NODE_ENV': ENVIRONEMENT,
+            ENVDIRECTION:DIRECTION,
+            'process.env.VUE_ENV': JSON.stringify('browser')
+        }),
+        babel({exclude: 'node_modules/**'}),
+        resolve(),
+        common(),
+        scss({failOnError: true, outputStyle: 'compressed', output: DIRECTION=='ltr' ? 'build/adminbasics.min.css' : 'build/adminbasics.rtl.min.css'}),
+        terser()
     ];
 } else {
   output = {
@@ -35,11 +40,16 @@ if( ENVIRONEMENT=='production' ) {
     sourcemap: false,
   };
   plugins =  [
-    replace({ENVENVIRONEMENT:ENVIRONEMENT,ENVDIRECTION:DIRECTION}),
-      babel({exclude: 'node_modules/**'}),
-      resolve(),
-      common(),
-      scss({failOnError: true, outputStyle: 'expanded', output: DIRECTION=='ltr' ? 'build/adminbasics.css' : 'build/adminbasics.rtl.css'}),
+        replace({
+            ENVENVIRONEMENT:ENVIRONEMENT,
+            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
+            ENVDIRECTION:DIRECTION,
+            'process.env.VUE_ENV': JSON.stringify('browser')
+        }),
+        babel({exclude: 'node_modules/**'}),
+        resolve(),
+        common(),
+        scss({failOnError: true, outputStyle: 'expanded', output: DIRECTION=='ltr' ? 'build/adminbasics.css' : 'build/adminbasics.rtl.css'}),
     ];
 }
 

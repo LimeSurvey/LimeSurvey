@@ -513,6 +513,55 @@ class Survey_Common_Action extends CAction
         }
     }
 
+    public function _generaltopbar($aData) {
+        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = array_merge(
+            [
+                'type' => 'survey',
+                'sid' => $aData['sid'],
+                'gid' => $aData['gid'] ?? 0,
+                'qid' => $aData['qid'] ?? 0,
+                'showSaveButton' => false
+            ],
+            $aData['topBar']
+        );
+        $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
+    }
+    public function _generaltopbarAdditions($aData) {
+        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = array_merge(
+            [
+                'type' => 'survey',
+                'sid' => $aData['sid'],
+                'gid' => $aData['gid'] ?? 0,
+                'qid' => $aData['qid'] ?? 0,
+                'showSaveButton' => false
+            ],
+            $aData['topBar']
+        );
+        
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');
+        if (isset($aData['qid'])) {
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';
+        } else if (isset($aData['gid'])) {
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'group';
+        } else if (isset($aData['surveyid'])) {
+            $sid = $aData['sid'];
+            $oSurvey       = Survey::model()->findByPk($sid);
+            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
+                            Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
+                            Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
+            $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+            $oneLanguage  = (count($oSurvey->allLanguages) == 1);
+            $aData['respstatsread'] = $respstatsread;
+            $aData['surveyexport']  = $surveyexport;
+            $aData['onelanguage']   = $oneLanguage;
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'survey';
+        }
+        $this->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
+
+    }
+
     /**
      * Shows admin menu for question
      *

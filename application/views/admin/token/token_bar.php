@@ -15,7 +15,8 @@
 
                 <!-- Display tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'read')): ?>
-                    <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
+                    <a class="btn btn-default pjax" 
+                    href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
                         <span class="fa fa-list-alt text-success"></span>
                         <?php eT("Display participants"); ?>
                     </a>
@@ -60,7 +61,11 @@
 
                         <!-- from CSV file -->
                         <li>
-                           <a class="pjax"  href="<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
+                           <a class="pjax"  href="<?php echo 
+                           
+                           
+                           
+                           $this->createUrl("admin/tokens/sa/import/surveyid/$oSurvey->sid") ?>" >
                                <span class="icon-importcsv"></span>
                                <?php eT("CSV file"); ?>
                            </a>

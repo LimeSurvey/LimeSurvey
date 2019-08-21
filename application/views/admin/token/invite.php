@@ -8,8 +8,12 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Send email invitations"); ?></h3>
+            <a class="btn btn-default pull-right" href="#" role="button" id="send-invitation-button">
+                <span class="icon-invite" ></span>
+                <?php eT("Send invitations");?>
+            </a>
 
+    <h3><?php eT("Send email invitations"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>

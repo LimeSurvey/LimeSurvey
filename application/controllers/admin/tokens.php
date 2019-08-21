@@ -708,7 +708,7 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
 
-
+            $aData['topBar']['showSaveButton'] = true;
             $aData['sidemenu']['state'] = false;
 
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
@@ -915,6 +915,8 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['savebutton']['form'] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId);
 
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
@@ -1120,6 +1122,8 @@ class tokens extends Survey_Common_Action
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
         // load sodium library
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId);
         $sodium = Yii::app()->sodium;
         $aData['bEncrypted'] = $sodium->bLibraryExists;
         $this->_renderWrappedTemplate('token', array('managetokenattributes'), $aData);
@@ -1370,7 +1374,11 @@ class tokens extends Survey_Common_Action
         initKcfinder();
         Yii::app()->loadHelper('replacements');
 
-        $token = Token::model($iSurveyId)->find()->decrypt();
+        $oToken = Token::model($iSurveyId)->find();
+        $token = null;
+        if ($oToken !== null) {
+            $token = Token::model($iSurveyId)->find()->decrypt();
+        }
 
         $aExampleRow = isset($token) ? $token->attributes : array();
         $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -1394,6 +1402,9 @@ class tokens extends Survey_Common_Action
         $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
         $aData['ishtml'] = $bHtml;
+        $aData['reminderbutton'] = (Yii::app()->request->getParam('action') == "remind");
+                        
+                        
         $iMaxEmails = Yii::app()->getConfig('maxemails');
 
         // TODO: Rename 'ok' to something meaningful.
@@ -1676,6 +1687,8 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId);
 
         Yii::app()->loadConfig('ldap');
         Yii::app()->loadHelper('ldap');
@@ -1919,6 +1932,8 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokensimport.js');
         $aEncodings = aEncodingsArray();
 
@@ -2437,7 +2452,8 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['savebutton']['form'] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId);
         if ($ajax) {
             $aData['oSurvey'] = $oSurvey;
             $aData['ajax'] = true;
@@ -2566,6 +2582,7 @@ class tokens extends Survey_Common_Action
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
         $aData['subaction'] = gT('Survey participants');
+        $aData['topBar']['type'] = 'tokens';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 

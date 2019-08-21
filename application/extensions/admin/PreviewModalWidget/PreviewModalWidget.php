@@ -1,7 +1,7 @@
 <?php
 
 class PreviewModalWidget extends CWidget {
-    
+
     //The name the widget will be rendered to, please make sure it is unique!
     public $widgetsJsName = "";
     //The title the widgets modal will have
@@ -14,7 +14,7 @@ class PreviewModalWidget extends CWidget {
     public $debugKeyCheck = "Key: ";
     //The title of the preview window
     public $previewWindowTitle = "Preview";
-    
+
     //Either a group or an items array must be given
     public $groupStructureArray = [];
     public $itemsArray = [];
@@ -23,7 +23,7 @@ class PreviewModalWidget extends CWidget {
     public $value = null;
     //This may be the value also, but oftentimes you'd want this to be an easy to read title
     public $currentSelected = "";
-    
+
     //This is the option array that gets fed into the javascript.
     public $optionArray = [];
 
@@ -47,8 +47,8 @@ class PreviewModalWidget extends CWidget {
         $this->widgetsJsName = preg_replace('/[^a-zA-Z0-9_-]/','',$this->widgetsJsName);
         $this->registerScripts();
     }
-    
-    
+
+
     public function getModal($return=false){
         if(preg_match("/modal/",$this->renderType)){
             return $this->render($this->view, null, $return);
@@ -56,7 +56,7 @@ class PreviewModalWidget extends CWidget {
         echo "";
         return;
     }
-    
+
     public function getButtonOrSelect($return=false){
         if(preg_match("/modal/",$this->renderType)){
             return $this->render("open_modal_button", null, $return);
@@ -94,8 +94,8 @@ class PreviewModalWidget extends CWidget {
             'debug' => $this->debug,
             'viewType' => $this->view
             ]))
-        .'); 
-        runner_'.$this->widgetsJsName.'.bind();', 
+        .');
+        runner_'.$this->widgetsJsName.'.bind();',
         LSYii_ClientScript::POS_POSTSCRIPT);
     }
 }

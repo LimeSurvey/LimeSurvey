@@ -33,13 +33,14 @@ const SaveController = () => {
 
         return form;
     },
-    displayLoadingState = (el) => {
-        const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-        $(el).prop('disabled', true).append(loadingSpinner);
-    },
+    // displayLoadingState = (el) => {
+    //     const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+    //     $(el).prop('disabled', true).append(loadingSpinner);
+    // },
     stopDisplayLoadingState = () => {
         LOG.log('StopLoadingIconAnimation');
-        $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+        LS.EventBus.$emit('loadingFinished');
+        // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
     //###########PRIVATE
     checks = () => {
@@ -192,12 +193,12 @@ const SaveController = () => {
     return () => {
         forEach(checks(), (checkItem) => {
             let item = checkItem.check;
-            $(document).off(checkItem.on, item);
+            $(document).off(checkItem.on+'.centralsave', item);
 
             LOG.log('saveBindings', checkItem, $(item));
 
             if ($(item).length > 0) {
-                $(document).on(checkItem.on, item, checkItem.run);
+                $(document).on(checkItem.on+'.centralsave', item, checkItem.run);
                 LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });

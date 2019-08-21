@@ -13,7 +13,7 @@ Vue.use(Vuex);
 
 export default function(surveyId){
     const vuexLocal = new VuexPersistence({
-        key: 'lsdatasecedit_'+surveyId,
+        key: 'lstopbar_'+surveyId,
         storage: window.localStorage
     });
     

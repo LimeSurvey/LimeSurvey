@@ -54,7 +54,7 @@
         </ul>
     </div>
 
-    <div class="collapse navbar-collapse js-navbar-collapse pull-right">
+    <div class="collapse navbar-collapse js-navbar-collapse pull-right ls--selector--configuration-menu">
         <ul class="nav navbar-nav navbar-right">
 
             <!-- Help menu -->

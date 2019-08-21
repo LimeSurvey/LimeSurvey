@@ -4,6 +4,14 @@ const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const appName = 'questionedit';
 const entryPoint = ['./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 
+const EchoBuildTime = function(){
+    return function(){
+        this.plugin('done', function () {
+            const date = new Date();
+            console.log("\n###############\n Build at -> " + date.toLocaleString('de-DE') + "\n###############\n");
+        });
+    }
+}
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
     filenameHashing: false,
@@ -21,7 +29,7 @@ module.exports = {
         output: {
             filename: () => {return 'js/'+appName+'.js'},
         },
-        devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
+        devtool: process.env.NODE_ENV === 'production' ? 'none' : 'source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',
@@ -82,6 +90,9 @@ module.exports = {
         //     .use( 'raw-loader' )
         //     .loader( 'raw-loader' );
                 
+        config.plugin('timeStampAfterBuild')
+            .use(EchoBuildTime, [])
+        
         config.plugins
             .delete("html")
             .delete("prefetch")

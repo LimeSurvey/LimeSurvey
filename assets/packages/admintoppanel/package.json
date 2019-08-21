@@ -4,13 +4,22 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "yarn run dev && yarn run prod",
+    "prod": "vue-cli-service build",
+    "dev": "vue-cli-service build --mode developement",
+    "lint": "vue-cli-service lint",
+    "watch": "vue-cli-service build --mode=developement --watch"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "he": "^1.2.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
     "vue": "^2.6.10",
-    "vuex": "^3.0.1"
+    "vue-js-modal": "^1.3.31",
+    "vue-localstorage": "^0.6.2",
+    "vuex": "^3.0.1",
+    "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
@@ -19,6 +28,10 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "stylelint": "^10.1.0",
+    "stylelint-config-standard": "^18.3.0",
+    "stylelint-processor-html": "^1.0.0",
+    "stylelint-webpack-plugin": "^0.10.5",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
@@ -30,7 +43,23 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ],
+      "vue/html-indent": [
+        "error",
+        4,
+        {
+          "attribute": 1,
+          "baseIndent": 0,
+          "closeBracket": 0,
+          "alignAttributesVertically": true,
+          "ignores": []
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

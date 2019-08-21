@@ -36,16 +36,8 @@ export default {
     methods: {
         triggerEditQuestionGroup(){
             this.toggleLoading(true);
-            if(this.editQuestionGroup) {
-                $('#questiongroupbar--savebuttons').fadeOut(250, function(){
-                    $('#questiongroupbar--questiongroupbuttons').fadeIn(250);
-                });
-            } else {
-                $('#questiongroupbar--questiongroupbuttons').fadeOut(250, function(){
-                    $('#questiongroupbar--savebuttons').fadeIn(250);
-                });
-            }
             this.editQuestionGroup = !this.editQuestionGroup;
+            LS.EventBus.$emit('doFadeEvent', this.editQuestionGroup);
         },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
@@ -103,7 +95,7 @@ export default {
         },
     },
     created(){
-        this.$store.dispatch('loadQuestionGroup').then( 
+        this.$store.dispatch('loadQuestionGroup').then(
             (resolve) => {
                 $('#questiongroupbarid').css({'display':''});
                 if(this.$store.state.currentQuestionGroup.gid == null) {
@@ -126,7 +118,7 @@ export default {
         );
         this.$store.dispatch('getQuestionsForGroup');
     },
-    
+
     mounted() {
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
@@ -135,6 +127,10 @@ export default {
             e.preventDefault();
         });
 
+        LS.EventBus.$on('saveButtonCalled', (payload) => {
+            this.submitCurrentState(payload.id == '#save-and-close-button');
+        });
+        
         $('#save-button').on('click', (e)=>{
             this.submitCurrentState((this.$store.state.currentQuestionGroup.gid == null));
         });
@@ -142,6 +138,7 @@ export default {
         $('#save-and-close-button').on('click', (e)=>{
             this.submitCurrentState(true);
         });
+        
         if(window.QuestionGroupEditData.startInEditView) {
             this.triggerEditQuestionGroup();
         }
@@ -153,15 +150,15 @@ export default {
     <div class="container-center scoped-new-questioneditor">
         <template v-if="!loading">
             <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-                <button 
-                    @click.prevent.stop="triggerEditQuestionGroup" 
+                <button
+                    @click.prevent.stop="triggerEditQuestionGroup"
                     :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
                     class="btn "
                 >
                     {{'Question group overview'| translate}}
                 </button>
-                <button 
-                    @click.prevent.stop="triggerEditQuestionGroup" 
+                <button
+                    @click.prevent.stop="triggerEditQuestionGroup"
                     :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
                     class="btn "
                 >
@@ -178,17 +175,17 @@ export default {
             </div>
             <div class="row" >
                 <languageselector
-                    :elId="'questiongroup-language-changer'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    :elId="'questiongroup-language-changer'"
+                    :aLanguages="$store.state.languages"
+                    :parentCurrentLanguage="$store.state.activeLanguage"
                     @change="selectLanguage"
                 />
             </div>
             <div class="row scoped-contain-slider">
-                <transition name="slide-fade">
+                <transition name="slide-fade-left">
                     <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
                 </transition>
-                <transition name="slide-fade">
+                <transition name="slide-fade-left">
                     <question-group-editor v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
                 </transition>
             </div>
@@ -226,26 +223,4 @@ export default {
      border-radius: 4px;
  }
 
-.slide-fade-enter-active {
-  transition: all .4s ease;
-}
-.slide-fade-leave-active {
-  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  position:absolute;
-}
-.slide-fade-enter
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: transitionX(100%);
-  opacity: 0;
-}
-.slide-fade-enter-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: transitionX(0%);
-  opacity: 1;
-}
-.slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: transitionX(-100%);
-  opacity: 0;
-}
 </style>
