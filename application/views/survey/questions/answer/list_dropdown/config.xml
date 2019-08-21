@@ -107,19 +107,6 @@
             <expression></expression>
         </attribute>
         <attribute>
-            <name>dropdown_size</name>
-            <category>Display</category>
-            <sortorder>200</sortorder>
-            <inputtype>text</inputtype>
-            <default></default>
-            <help>For list dropdown boxes, show up to this many rows</help>
-            <caption>Height of dropdown</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
             <name>other_replace_text</name>
             <category>Display</category>
             <sortorder>100</sortorder>

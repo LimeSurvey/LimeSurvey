@@ -194,19 +194,6 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
-            <name>printable_help</name>
-            <category>Display</category>
-            <sortorder>201</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <default></default>
-            <help>In the printable version replace the relevance equation with this explanation text.</help>
-            <caption>Relevance help for printable survey</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
             <name>multiflexible_min</name>
             <category>Display</category>
             <sortorder>110</sortorder>

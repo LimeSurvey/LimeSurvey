@@ -49,112 +49,6 @@
     <attributes>
         <!-- Display Attributes START -->
         <attribute>
-            <name>category_separator</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <help>Category separator</help>
-            <caption>Category separator</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>alphasort</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Sort the answer options alphabetically</help>
-            <caption>Sort answers alphabetically</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>dropdown_prefix</name>
-            <category>Display</category>
-            <sortorder>201</sortorder>
-            <inputtype>buttongroup</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>None</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Order - like 3)</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Accelerator keys for list items</help>
-            <caption>Prefix for list items</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>dropdown_size</name>
-            <category>Display</category>
-            <sortorder>200</sortorder>
-            <inputtype>text</inputtype>
-            <default></default>
-            <help>For list dropdown boxes, show up to this many rows</help>
-            <caption>Height of dropdown</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>other_replace_text</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
-            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>random_order</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Present subquestions/answer options in random order</help>
-            <caption>Random order</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
             <name>hide_tip</name>
             <category>Display</category>
             <sortorder>100</sortorder>
@@ -215,17 +109,96 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
-            <name>printable_help</name>
+            <name>text_input_width</name>
             <category>Display</category>
-            <sortorder>201</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
             <default></default>
-            <help>In the printable version replace the relevance equation with this explanation text.</help>
-            <caption>Relevance help for printable survey</caption>
+            <options>
+                <option>
+                    <value></value>
+                    <text>Default</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>8%</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>17%</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>25%</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>33%</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>41%</text>
+                </option>
+                <option>
+                    <value>6</value>
+                    <text>50%</text>
+                </option>
+                <option>
+                    <value>7</value>
+                    <text>58%</text>
+                </option>
+                <option>
+                    <value>8</value>
+                    <text>67%</text>
+                </option>
+                <option>
+                    <value>9</value>
+                    <text>75%</text>
+                </option>
+                <option>
+                    <value>10</value>
+                    <text>83%</text>
+                </option>
+                <option>
+                    <value>11</value>
+                    <text>92%</text>
+                </option>
+                <option>
+                    <value>12</value>
+                    <text>100%</text>
+                </option>
+            </options>
+            <help>Relative width of the text input wrapper element</help>
+            <caption>Text input box width</caption>
+            <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>input_size</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
+            <caption>Text input size</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>display_rows</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <help>How many rows to display</help>
+            <caption>Display rows</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
         </attribute>
         <attribute>
             <name>question_template</name>
@@ -365,29 +338,6 @@
         </attribute>
         <!-- Other Attributes END -->
         <!-- Statistics Attributes START -->
-        <attribute>
-            <name>public_statistics</name>
-            <category>Statistics</category>
-            <sortorder>80</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Show statistics of this question in the public statistics page</help>
-            <caption>Show in public statistics</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
         <attribute>
             <name>statistics_showgraph</name>
             <category>Statistics</category>
