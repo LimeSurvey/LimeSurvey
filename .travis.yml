@@ -64,6 +64,7 @@ before_script:
     - sudo service apache2 restart
 
     # Check for syntax errors.
+    # TODO: Should be ! find ... instead of || true (when all warnings are fixed)
     - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
 
     # Test server.
