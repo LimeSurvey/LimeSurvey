@@ -426,7 +426,8 @@ class QuestionTemplate extends CFormModel
                             if (!empty($oConfig->files->preview->filename)){
                                 $fileName = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
                                 $previewPath = $sFullPathToQuestionTemplate."/assets/".$fileName;
-                                if(is_file($previewPath) && LSYii_ImageValidator::validateImage($previewPath)) {
+                                $check = LSYii_ImageValidator::validateImage($previewPath);
+                                if(is_file($previewPath) && $check['check']) {
                                     $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
                                 } else {
                                     /* Log it a theme.question.$oConfig->name as error, review ? */

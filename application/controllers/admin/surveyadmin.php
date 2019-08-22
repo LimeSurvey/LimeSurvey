@@ -1638,7 +1638,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @param Survey $survey
      * @return array
      */
-    private function _tabPanelIntegration($survey)
+    private function _tabPanelIntegration($survey, $sLang = null)
     {
         $aData = [];
         $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
@@ -2378,7 +2378,7 @@ class SurveyAdmin extends Survey_Common_Action
                 false
             );
         }
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
+        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImage['check'] === false) {
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',

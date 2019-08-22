@@ -28,17 +28,10 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
                     '#bottomScripts',
                     '#beginScripts'
                 ],
-                switches: {
-                    '#bottomScripts': switchOuterHTML,
-                    '#beginScripts': switchOuterHTML,
-                    '#pjax-content': switchInnerHTML,
-                    '#breadcrumb-container': switchOuterHTML,
-                },
                 debug: window.debugState.backend,
                 forceRedirectOnFail: true,
                 reRenderCSS : true,
                 scriptloadtimeout: 1500,
-                logObject : console.ls
             });
         }
 

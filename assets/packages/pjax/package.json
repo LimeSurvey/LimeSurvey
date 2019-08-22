@@ -1,0 +1,16 @@
+{
+  "name": "pjax",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": {
+    "name": "Markus Flür",
+    "email": "markus.fluer@limesurvey.org>"
+  },
+  "license": "GPL3.0",
+  "scripts": {
+      "build": "node ./build-tools/compile.js"
+  },
+  "devDependencies": {
+    "terser": "^4.1.3"
+  }
+}

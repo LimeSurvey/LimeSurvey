@@ -94,8 +94,8 @@ class UploaderController extends SurveyController
                     $found = false;
                     foreach ($aFiles as $aFile) {
                         if ($aFile['filename'] == $sFileName) {
-                        $found = true;
-                        break;
+                            $found = true;
+                            break;
                         }
                         $iFileIndex++;
                     }
