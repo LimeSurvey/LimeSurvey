@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "545b0def29248e2acd17";
+/******/ 	var hotCurrentHash = "88085e759f2e30250de8";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1478,6 +1478,14 @@ __webpack_require__.r(__webpack_exports__);
       var currentType = _this5.type;
 
       _this5.readGlobalObject(data);
+
+      if (!_this5.hasRunOnce) {
+        _this5.hasRunOnce = true;
+
+        _this5.setType();
+
+        return;
+      }
 
       if (currentType === _this5.type) {
         _this5.loading = false;
@@ -29617,9 +29625,9 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_localstorage__WEBPACK_IMPORTED_MODULE_3___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (function (surveyId) {
+/* harmony default export */ __webpack_exports__["default"] = (function (user_id, surveyId) {
   var vuexLocal = new vuex_persist__WEBPACK_IMPORTED_MODULE_2__["default"]({
-    key: 'lstopbar_' + surveyId,
+    key: 'lstopbar_' + user_id + '_' + surveyId,
     storage: window.localStorage
   });
   return new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({

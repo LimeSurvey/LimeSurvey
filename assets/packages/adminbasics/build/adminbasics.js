@@ -19079,9 +19079,9 @@
     });
     let key = null;
     const keyValuePairs = {};
-    forEach_1(window.location.search.substring(1).split('/'), (value, index) => {
+    window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach((value, index) => {
       if (value == 'sa') {
-        key = value;
+        key = false;
       }
 
       if (key !== null) {
@@ -19089,6 +19089,7 @@
           key = value;
         } else {
           keyValuePairs[key] = value;
+          key = false;
         }
       }
     });

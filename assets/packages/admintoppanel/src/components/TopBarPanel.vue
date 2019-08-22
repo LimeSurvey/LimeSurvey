@@ -196,6 +196,13 @@ export default {
             this.$log.log("reloadTopBar triggered with -> ", data);
             const currentType = this.type;
             this.readGlobalObject(data);
+
+            if(!this.hasRunOnce) {
+                this.hasRunOnce = true;
+                this.setType();
+                return;
+            }
+
             if(currentType === this.type) {
                 this.loading = false;
             } else {
