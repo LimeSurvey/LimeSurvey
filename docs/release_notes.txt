@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.10 (build 190821) to 3.17.11 (build 190822) August 22, 2019
+-Fixed issue: sidepanel breaking on surveys with a 5 digit id (lacrioque)
+-Fixed issue: adding and deleting os subquestion and answers broken (lacrioque)
+
+
 Changes from 3.17.9 (build 190731) to 3.17.10 (build 190821) August 21, 2019
 -New translation: Uyghur kindly provided by Namsiz Adam (Carsten Schmitz)
 -Fixed issue: cannot save questions anymore (lacrioque)
