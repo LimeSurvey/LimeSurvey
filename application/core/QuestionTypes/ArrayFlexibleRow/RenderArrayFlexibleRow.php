@@ -66,10 +66,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->setSubquestions();
         $this->setAnsweroptions();
 
-        $iCount = array_reduce($this->aSubQuestions[0], function($combined, $oSubquestion){
-            if(preg_match("/^[^|]+\|[^|]+$/",$this->oQuestion->questionL10ns[$this->sLanguage]->question)) { 
-                $combined++; 
-            } 
+        $iCount = array_reduce($this->aSubQuestions[0], function ($combined, $oSubQuestions) {
+            if (preg_match("/^[^|]+\|[^|]+$/", $oSubQuestions->questionL10ns[$this->sLanguage]->question)) {
+                $combined++;
+            }
             return $combined;
         }, 0);
         // $right_exists is a flag to find out if there are any right hand answer parts. 
@@ -168,8 +168,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ)); 
             $value = $this->getFromSurveySession($myfname);
 
-            if ($this->rightExists && (strpos($oQuestion->questionL10ns[$sSurveyLanguage]['question'], '|') !== false)) {
-                $aAnswertextArray = explode('|', $oQuestion->questionL10ns[$sSurveyLanguage]['question']);
+            if ($this->rightExists && (strpos($oQuestion->questionL10ns[$this->sLanguage]['question'], '|') !== false)) {
+                $aAnswertextArray = explode('|', $oQuestion->questionL10ns[$this->sLanguage]['question']);
                 $answertextright = $aAnswertextArray[1];
                 $answertext = $aAnswertextArray[0];
             } else {
