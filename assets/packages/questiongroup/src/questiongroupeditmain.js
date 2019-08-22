@@ -43,7 +43,7 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.QuestionGroupEditData.qid);
+const AppState = getAppState(window.QuestionGroupEditData.gid);
 const questionEditor = new Vue({
     el: '#advancedQuestionGroupEditor',
     store: AppState,
