@@ -172,8 +172,8 @@ const Lsadminsidepanel = (userid, surveyid) => {
 };
 
 const getSurveyidFromURL = function(){
-    const RegexCheck = window.location.href.match(/(surveyid|sid)(=|\/)(\d{4,6})/);
-    return RegexCheck[3];    
+    const RegexCheck = window.location.href.match(/(surveyid|sid)(=|\/)(\d*)/);
+    return RegexCheck[3];
 };
 
 $(document).ready(function(){
