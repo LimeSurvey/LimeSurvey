@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.12 (build 190823) to 3.17.13 (build 190824) August 24, 2019
+-Fixed issue #15185: Surveys with less or more then 4-6 digits will not display the sidepanel (Patrick Teichmann)
+
+
 Changes from 3.17.11 (build 190822) to 3.17.12 (build 190823) August 23, 2019
 -Fixed issue #15182: Sub Questions cannot be deleted (Patrick Teichmann)
 
