@@ -169,30 +169,29 @@ function deleteinput(e)
             }
         });
 
-        var info=$(this).closest('table').attr('id').split("_"),
-            language=info[1],
-            scale_id=info[2],
-            languages=langs.split(';');
+        var info = $(this).closest('table').attr('id').split("_"),
+            language = info[1],
+            scale_id = info[2],
+            languages = langs.split(';');
 
 
-            LS.ld.forEach(languages, function(curLanguage, x) {
-            var tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-            if (x==0)
+        LS.ld.forEach(languages, function (curLanguage, x) {
+            var tablerow = $('#tabpage_' + languages[x]).find('#answers_' + languages[x] + '_' + scale_id + ' .row_' + position);
+            if (x == 0)
             {
-                tablerow.fadeTo(400, 0, function(){
+                tablerow.fadeTo(400, 0, function () {
                     $(this).remove();
                     updaterowproperties();
                 });
-            }
-            else
+            } else
             {
                 tablerow.remove();
             }
+            deleteSubquestionrow($(tablerow));
         });
-        
-        deleteSubquestionrow($(tablerow));
-    }
-    else
+
+
+    } else
     {
         $.blockUI({message:"<p><br/>"+strCantDeleteLastAnswer+"</p>"});
         setTimeout(jQuery.unblockUI,1000);
