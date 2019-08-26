@@ -49,18 +49,6 @@
     <attributes>
         <!-- Display Attributes START -->
         <attribute>
-            <name>category_separator</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <help>Category separator</help>
-            <caption>Category separator</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
             <name>alphasort</name>
             <category>Display</category>
             <sortorder>100</sortorder>
@@ -82,54 +70,6 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
-        </attribute>
-        <attribute>
-            <name>dropdown_prefix</name>
-            <category>Display</category>
-            <sortorder>201</sortorder>
-            <inputtype>buttongroup</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>None</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Order - like 3)</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Accelerator keys for list items</help>
-            <caption>Prefix for list items</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>dropdown_size</name>
-            <category>Display</category>
-            <sortorder>200</sortorder>
-            <inputtype>text</inputtype>
-            <default></default>
-            <help>For list dropdown boxes, show up to this many rows</help>
-            <caption>Height of dropdown</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>other_replace_text</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
-            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
             <name>random_order</name>
@@ -228,6 +168,19 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
+            <name>display_columns</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>columns</inputtype>
+            <default></default>
+            <help>The answer options will be distributed across the number of columns set here</help>
+            <caption>Display columns</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>question_template</name>
             <category>Display</category>
             <sortorder>100</sortorder>
@@ -242,6 +195,76 @@
         </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
+        <attribute>
+            <name>array_filter</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question.</help>
+            <caption>Array filter</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_style</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Hidden</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Disabled</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Specify how array-filtered sub-questions should be displayed</help>
+            <caption>Array filter style</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_exclude</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question.</help>
+            <caption>Array filter exclusion</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>other_numbers_only</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Allow only numerical input for &amp;#039;Other&amp;#039; text</help>
+            <caption>Numbers only for &amp;#039;Other&amp;#039;</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
         <attribute>
             <name>random_group</name>
             <category>Logic</category>

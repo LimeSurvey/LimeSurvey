@@ -42,6 +42,10 @@
   border-radius: 6px 0 6px 6px;
 }
 
+#vue-apps-main-container {
+  min-height: 75vh;
+}
+
 .fa-stack.halfed {
   height: 1em;
   width: 1em;
@@ -89,21 +93,6 @@
 
 .animate-pulse .square:nth-of-type(4) {
   animation: pulse ease-in-out 1.8s infinite 1.4s;
-}
-
-@keyframes pulse {
-  00.000% {
-    box-shadow: 0 0 1em #0f3e12;
-  }
-  50.000% {
-    box-shadow: 0 0 0.3em #2db936;
-    height: 1em;
-    margin-top: 1em;
-    opacity: 0.8;
-  }
-  100.00% {
-    box-shadow: 0 0 1em #0f3e12;
-  }
 }
 
 .simpleWrapper {
@@ -4214,10 +4203,6 @@ textarea.form-control.input-text {
   display: none;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 .draggable-container {
   min-height: 300px;
 }
@@ -4322,6 +4307,10 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 /* Existing attribute column in CSV CPDB import */
 .centralatt {
+  min-height: 100px;
+}
+
+#cpdbatt {
   min-height: 100px;
 }
 

@@ -20,10 +20,10 @@
         ."<p>".gT("A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server. In that case the system will use the global default theme.",'json')."</p>"
         ."<p><b>".gT("Please note: This file does not contain any collected responses.",'json')."</b></p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/".$oSurvey->sid),
-        "download" => true
+        "download" => true,
     ];
     if(($respstatsread && $surveyexport)) {
-        $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive) 
+        $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive)
         ? [
             "key" => "surveyarchive",
             "description" => "".gT("Survey archive (.lsa)",'json'),
@@ -62,7 +62,7 @@
         <p>".gT("To find out more about queXML check out this page:",'json')
         ." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/".$oSurvey->sid),
-        "download" => true                            
+        "download" => true
     ];
 
     $aExportItemsArray["quexmlpdf"] =  [
@@ -123,7 +123,7 @@
                 "detailpage" => "",
                 "href" => '#',
                 "htmlclasses" => 'disabled',
-                "extraAttributes" => 'disabled="disabled" onclick="return false;"',            
+                "extraAttributes" => 'disabled="disabled" onclick="return false;"',
                 "download" => false,
                 "deactivated" => true
             ];
@@ -196,7 +196,7 @@
     ?>
 <div class="btn-group hidden-xs">
     <?=$oExportSelector->getModal(); ?>
-    
+
     <?=$oExportSelector->getButtonOrSelect(); ?>
 </div>
 <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>

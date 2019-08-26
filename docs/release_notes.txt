@@ -618,6 +618,48 @@ Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 201
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
 
+Changes from 3.17.9 (build 190731) to 3.17.10 (build 190821) August 21, 2019
+-New translation: Uyghur kindly provided by Namsiz Adam (Carsten Schmitz)
+-Fixed issue: cannot save questions anymore (lacrioque)
+-Fixed issue: Tagalog translation not available (Carsten Schmitz)
+-Fixed issue: Panel integration 500 error (lacrioque)
+-Fixed issue [security]: XSS with contructor statements in textedit (lacrioque)
+-Fixed issue [security]: Check both mime type and file extension when validating image (Olle Haerstedt) kindly reported by PAVOL MICHALEC/FREDERIK KOĽBÍK from ESET 
+ ( https://www.eset.sk )
+-Fixed issue [security]: #15137: XSS when use Predefined label sets (Denis Chenu) Reported by Michele Cisternino https://www.linkedin.com/in/michelecisternino/ (Denis Chenu)
+-Fixed issue [security]: #15094 XSS in label title (Denis Chenu) Reported by Michele Cisternino https://www.linkedin.com/in/michelecisternino/ (Denis Chenu)
+-Fixed issue [security]: #15094 XSS in Boxes (thanks to Michele Cisternino) (Denis Chenu)
+-Fixed issue #14921: Ranking question on mobile devices (problem with dragging/scrolling) (Markus Flür)
+-Fixed issue #14908: The Button "exit and clear survey entrys" should not be on the last page (endmessage) (Patrick Teichmann)
+-Fixed issue #14443: "Go to survey" menu icon not working in collapsed menu mode (lacrioque)
+#Updated translation: Uighur by c_schmitz
+#Updated translation: Turkish by kayazeren
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Swedish by eddylackmann
+#Updated translation: Russian by vipgroup
+#Updated translation: Romanian by cdorin, andreig
+#Updated translation: Portuguese (Brazil) by alfonso-peixoto
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Kurdish (Sorani) by AryaSarhan12
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann
+#Updated translation: German (Informal) by eddylackmann
+#Updated translation: French (France) by eddylackmann, b00z00, DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Danish by Mikkel
+#Updated translation: Croatian by rovinj
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by RayhaneK, Muhammad_Hosny
+#Updated translation: Amharic by cdorin
+
+
 Changes from 3.17.8 (build 190722) to 3.17.9 (build 190731) July 31, 2019
 -New feature: allow user to upload custom twig extensions (LouisGac)
 -Fixed issue [security]: File extension not filtered, possible XSS (reported by: Equipe web, Etat de Genève – www.ge.ch ) (LouisGac)

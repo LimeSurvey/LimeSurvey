@@ -62,7 +62,7 @@
                 :name="elName || elId" 
                 :id="elId" 
                 :max="elOptions.max || ''"
-                :min="elOptions.min || ''"
+                :min="elOptions.min || 1"
                 :readonly="readonly"
             />
             <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>

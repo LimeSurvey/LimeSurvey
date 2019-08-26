@@ -527,7 +527,13 @@ window.addEventListener('message', function(event) {
 
             // show "Exit and clear survey" button whenever there is 'srid' key set, 
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
-            if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
+            // additionally checks for submit page to compensate when srid is needed to render other views
+            if (
+                isset($_SESSION['survey_' . $surveyid]['srid'])
+                && $aDatas['aSurveyInfo']['active'] == 'Y'
+                && $aDatas['aSurveyInfo']['include_content'] !== 'submit'
+                && $aDatas['aSurveyInfo']['include_content'] !== 'submit_preview'
+            ) {
                 $aDatas['aSurveyInfo']['bShowClearAll'] = true;
             }
         }

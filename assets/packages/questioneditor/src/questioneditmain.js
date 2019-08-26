@@ -8,10 +8,8 @@ import Loader from './helperComponents/loader.vue';
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
 
+Vue.config.devtools = false;
 
-
-
-// import CKEditor from '@ckeditor/ckeditor5-vue';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];

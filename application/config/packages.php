@@ -223,18 +223,18 @@ return array(
        'devBaseUrl' => 'assets/packages/admintoppanel/',
        'basePath' => 'core.admintoppanel',
        'position' =>CClientScript::POS_END,
-    //    'js' => (
-    //        $debug > 0
-    //         ? array(
-    //             'build/js/admintoppanel.js',
-    //         )
-    //         : array(
-    //             'build.min/js/admintoppanel.js'
-    //         )
-    //     ),
-    //    'css' => array(
-    //        'build.min/css/main.css'
-    //    ),
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/admintoppanel.js',
+            )
+            : array(
+                'build.min/js/admintoppanel.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
        'depends' => array(
            'adminbasics'
        )
@@ -296,7 +296,8 @@ return array(
             'build.min/css/main.css'
         ),
         'depends' => array(
-            'adminbasics'
+            'adminbasics',
+            'admintoppanel'
         )
     ),
     'datasectextelements' => array(
@@ -316,7 +317,8 @@ return array(
             'build.min/css/main.css'
         ),
         'depends' => array(
-            'adminbasics'
+            'adminbasics',
+            'admintoppanel'
         )
     ),
     'questiongroupeditor' => array(
@@ -336,7 +338,8 @@ return array(
             'build.min/css/main.css'
         ),
         'depends' => array(
-            'adminbasics'
+            'adminbasics',
+            'admintoppanel'
         )
     ),
     'questioneditor' => array(
@@ -357,7 +360,9 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-            'ace'
+            'ace',
+            'admintoppanel'
+            
         )
     ),
     'labelsets' => array(

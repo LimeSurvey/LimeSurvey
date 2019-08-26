@@ -159,6 +159,18 @@
         </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
+        <attribute>
+            <name>random_group</name>
+            <category>Logic</category>
+            <sortorder>180</sortorder>
+            <inputtype>text</inputtype>
+            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
+            <caption>Randomization group name</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
         <!-- Logic Attributes END -->
         <!-- Other Attributes START -->
         <attribute>

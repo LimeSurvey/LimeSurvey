@@ -49,94 +49,27 @@
     <attributes>
         <!-- Display Attributes START -->
         <attribute>
-            <name>category_separator</name>
+            <name>slider_rating</name>
             <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>text</inputtype>
-            <help>Category separator</help>
-            <caption>Category separator</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>alphasort</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Sort the answer options alphabetically</help>
-            <caption>Sort answers alphabetically</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>dropdown_prefix</name>
-            <category>Display</category>
-            <sortorder>201</sortorder>
+            <sortorder>90</sortorder>
             <inputtype>buttongroup</inputtype>
             <options>
                 <option>
                     <value>0</value>
-                    <text>None</text>
+                    <text>Off</text>
                 </option>
                 <option>
                     <value>1</value>
-                    <text>Order - like 3)</text>
+                    <text>Stars</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Slider with emoticon</text>
                 </option>
             </options>
             <default>0</default>
-            <help>Accelerator keys for list items</help>
-            <caption>Prefix for list items</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>dropdown_size</name>
-            <category>Display</category>
-            <sortorder>200</sortorder>
-            <inputtype>text</inputtype>
-            <default></default>
-            <help>For list dropdown boxes, show up to this many rows</help>
-            <caption>Height of dropdown</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>random_order</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Present subquestions/answer options in random order</help>
-            <caption>Random order</caption>
+            <help>Use slider layout</help>
+            <caption>Use slider layout</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -320,37 +253,6 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <attribute>
-            <name>scale_export</name>
-            <category>Other</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Default</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Nominal</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>Ordinal</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>Scale</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Set a specific SPSS export scale type for this question</help>
-            <caption>SPSS export scale type</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
         <!-- Other Attributes END -->
         <!-- Statistics Attributes START -->
         <attribute>
@@ -440,263 +342,6 @@
         </attribute>
         <!-- Statistics Attributes END -->
         <!-- Timer Attributes START -->
-        <attribute>
-            <name>time_limit_timer_style</name>
-            <category>Timer</category>
-            <sortorder>100</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS Style for the message that displays in the countdown timer during the countdown</help>
-            <caption>Time limit timer CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_message_delay</name>
-            <category>Timer</category>
-            <sortorder>102</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Display the &amp;#039;time limit expiry message&amp;#039; for this many seconds before performing
-                the &amp;#039;time limit action&amp;#039; (defaults to 1 second if left blank)
-            </help>
-            <caption>Time limit expiry message display time</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_message</name>
-            <category>Timer</category>
-            <sortorder>104</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The message to display when the time limit has expired (a default message will display if this
-                setting is left blank)
-            </help>
-            <caption>Time limit expiry message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>time_limit_message_style</name>
-            <category>Timer</category>
-            <sortorder>106</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS style for the &amp;#039;time limit expiry message&amp;#039;</help>
-            <caption>Time limit message CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning</name>
-            <category>Timer</category>
-            <sortorder>108</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Display a &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining in the
-                countdown (warning will not display if left blank)
-            </help>
-            <caption>1st time limit warning message timer</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_display_time</name>
-            <category>Timer</category>
-            <sortorder>110</sortorder>
-            <inputtype>integer</inputtype>
-            <help>The &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not turn
-                off if this setting is left blank)
-            </help>
-            <caption>1st time limit warning message display time</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_message</name>
-            <category>Timer</category>
-            <sortorder>112</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will display
-                if this is left blank)
-            </help>
-            <caption>1st time limit warning message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_style</name>
-            <category>Timer</category>
-            <sortorder>114</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS style used when the &amp;#039;time limit warning&amp;#039; message is displayed</help>
-            <caption>1st time limit warning CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2</name>
-            <category>Timer</category>
-            <sortorder>116</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Display the 2nd &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining
-                in the countdown (warning will not display if left blank)
-            </help>
-            <caption>2nd time limit warning message timer</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2_display_time</name>
-            <category>Timer</category>
-            <sortorder>118</sortorder>
-            <inputtype>integer</inputtype>
-            <help>The 2nd &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not
-                turn off if this setting is left blank)
-            </help>
-            <caption>2nd time limit warning message display time</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2_message</name>
-            <category>Timer</category>
-            <sortorder>120</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The 2nd message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will
-                display if this is left blank)
-            </help>
-            <caption>2nd time limit warning message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>time_limit_warning_2_style</name>
-            <category>Timer</category>
-            <sortorder>122</sortorder>
-            <inputtype>textarea</inputtype>
-            <help>CSS style used when the 2nd &amp;#039;time limit warning&amp;#039; message is displayed</help>
-            <caption>2nd time limit warning CSS style</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit</name>
-            <category>Timer</category>
-            <sortorder>90</sortorder>
-            <inputtype>integer</inputtype>
-            <help>Limit time to answer question (in seconds)</help>
-            <caption>Time limit</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_action</name>
-            <category>Timer</category>
-            <sortorder>92</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>1</value>
-                    <text>Warn and move on</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>Move on without warning</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>Disable only</text>
-                </option>
-            </options>
-            <default>1</default>
-            <help>Action to perform when time limit is up</help>
-            <caption>Time limit action</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_disable_next</name>
-            <category>Timer</category>
-            <sortorder>94</sortorder>
-            <inputtype>switch</inputtype>
-            <default>0</default>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <help>Disable the next button until time limit expires</help>
-            <caption>Time limit disable next</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_disable_prev</name>
-            <category>Timer</category>
-            <sortorder>96</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Disable the prev button until the time limit expires</help>
-            <caption>Time limit disable prev</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>time_limit_countdown_message</name>
-            <category>Timer</category>
-            <sortorder>98</sortorder>
-            <inputtype>textarea</inputtype>
-            <expression>1</expression>
-            <i18n>1</i18n>
-            <help>The text message that displays in the countdown timer during the countdown</help>
-            <caption>Time limit countdown message</caption>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
         <!-- Timer Attributes END -->
     </attributes>
 

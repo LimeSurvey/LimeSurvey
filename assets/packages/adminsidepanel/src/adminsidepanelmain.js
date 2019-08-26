@@ -57,7 +57,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
         panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
         panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
-        $('#pjax-content').css({
+        $('#fullbody-container').css({
             //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
             'overflow-x': 'auto'

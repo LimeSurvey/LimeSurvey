@@ -141,7 +141,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid) 
+        <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid)
             && (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))): ?>
             <!-- ####### This is only shown when editing questions -->
             <div id="questiongroupbar--questionbuttons" class="text-left ls-flex-item">
@@ -278,4 +278,3 @@
         </div>
     </div>
 </div>
-

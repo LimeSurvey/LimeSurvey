@@ -1,0 +1,42 @@
+.topbarbutton {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.slide-left-leave-active,
+.slide-left-enter-active {
+    transition: 650ms;
+    position: absolute;
+}
+
+.slide-left-enter {
+    transform: translate(100%, 0);
+}
+
+.slide-left-leave-to {
+    transform: translate(-100%, 0);
+}
+
+.slide-down-leave-active {
+    transition: 350ms;
+    position: absolute;
+}
+
+.slide-down-enter-active {
+    transition: 450ms;
+    transition-delay: 100ms;
+}
+
+.slide-down-enter {
+    transform: translate(0, 50%);
+    opacity: 0;
+}
+
+.slide-down-enter-to {
+    opacity: 1
+}
+
+.slide-down-leave-to {
+    transform: translate(0%, -100%);
+    opacity: 0;
+}

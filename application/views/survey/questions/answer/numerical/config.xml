@@ -494,6 +494,272 @@
         <!-- File metadata Attributes START -->
         <!-- File meta Attributes END -->
         <!-- Slider Attributes START -->
+        <attribute>
+            <name>slider_layout</name>
+            <category>Slider</category>
+            <sortorder>1</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Use slider layout</help>
+            <caption>Use slider layout</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_min</name>
+            <category>Slider</category>
+            <sortorder>10</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.</help>
+            <caption>Slider minimum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_max</name>
+            <category>Slider</category>
+            <sortorder>11</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.</help>
+            <caption>Slider maximum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_accuracy</name>
+            <category>Slider</category>
+            <sortorder>30</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>You can use Expression manager, but this must be a number before showing the page else set to 1.</help>
+            <caption>Slider accuracy</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_showminmax</name>
+            <category>Slider</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Display min and max value under the slider</help>
+            <caption>Display slider min and max value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_separator</name>
+            <category>Slider</category>
+            <sortorder>110</sortorder>
+            <inputtype>text</inputtype>
+            <help>Answer|Left-slider-text|Right-slider-text separator character</help>
+            <default>|</default>
+            <caption>Slider left/right text separator</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_middlestart</name>
+            <category>Slider</category>
+            <sortorder>40</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).</help>
+            <caption>Slider starts at the middle position</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_default</name>
+            <category>Slider</category>
+            <sortorder>50</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Slider start as this value. You can use Expression manager, but this must be a number before showing the page.</help>
+            <caption>Slider initial value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_default_set</name>
+            <category>Slider</category>
+            <sortorder>51</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>1</default>
+            <help>When using slider initial value set this value at survey start.</help>
+            <caption>Slider initial value set at start</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_reset</name>
+            <category>Slider</category>
+            <sortorder>50</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.</help>
+            <caption>Allow reset the slider</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_orientation</name>
+            <category>Slider</category>
+            <sortorder>2</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Horizontal</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Vertical</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Set the orientation.</help>
+            <caption>Orientation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_reversed</name>
+            <category>Slider</category>
+            <sortorder>50</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Reverses the slider direction and repositions the min/max text accordingly.</help>
+            <caption>Reverse the slider direction</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_handle</name>
+            <category>Slider</category>
+            <sortorder>3</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Circle</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Square</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Triangle</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Custom</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Set the handle shape. &amp;#039;Custom&amp;#039; is defined in CSS using the Font Awesome font.</help>
+            <caption>Handle shape</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_custom_handle</name>
+            <category>Slider</category>
+            <sortorder>4</sortorder>
+            <inputtype>text</inputtype>
+            <default>f1ae</default>
+            <help>Accepts Font Awesome Unicode characters.</help>
+            <caption>Custom handle Unicode code</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
         <!-- Slider Attributes END -->
     </attributes>
 

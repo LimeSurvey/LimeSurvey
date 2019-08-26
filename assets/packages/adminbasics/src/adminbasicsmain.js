@@ -37,10 +37,11 @@ import {subquestionAndAnswersGlobalMethods} from './pages/subquestionandanswers'
 import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
-import confirmationModal from './parts/confirmationModal'; 
+import confirmationModal from './parts/confirmationModal';
 import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
 import notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
+import createUrl from './parts/createUrl';
 import saveBindings from './parts/save';
 import parameterGlobals from './parts/parameterGlobals';
 
@@ -51,6 +52,7 @@ import panelClickable from './components/panelclickable';
 import panelsAnimation from './components/panelsanimation';
 import notificationSystem from './components/notifications';
 import gridAction from './components/gridAction';
+import EventBus from './components/eventbus';
 import LOG from './components/lslog';
 
 const AdminCore = function(){
@@ -63,12 +65,12 @@ const AdminCore = function(){
     const eventsBound = {
         document: []
     };
-    
+
     const debug = () => {
         return {eventsBound, windowLS : window.LS }
     };
 
-    const 
+    const
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
             surveyGrid();
@@ -93,7 +95,7 @@ const AdminCore = function(){
                 'fn' : fn
             })
             eventsBound[root] = eventsBound[root] || [];
-            
+
             if(_.find(eventsBound[root], {fn, event, root, delay}) === undefined) {
                 eventsBound[root].push({fn, event, root, delay});
                 const events = _.map(event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : 'ready') );
@@ -101,7 +103,7 @@ const AdminCore = function(){
                 if(root == 'document') {
                     $(document).on(events.join(' '), call);
                 } else {
-                    $(root).on(events.join(' '), call); 
+                    $(root).on(events.join(' '), call);
                 }
             }
         },
@@ -140,15 +142,26 @@ const AdminCore = function(){
                 confirmDeletemodal,
                 panelClickable,
                 panelsAnimation,
-                initNotification : notificationSystem.initNotification
+                initNotification : notificationSystem.initNotification,
             }
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {notifyFader}, subquestionAndAnswersGlobalMethods, notificationSystem, gridAction);
-            
+            const LsNameSpace = _.merge(
+                BaseNameSpace, 
+                globalWindowMethods, 
+                parameterGlobals, 
+                AjaxHelper, 
+                {notifyFader}, 
+                {createUrl}, 
+                {EventBus},
+                subquestionAndAnswersGlobalMethods, 
+                notificationSystem, 
+                gridAction
+            );
+
             /*
             * Set the namespace to the global variable LS
             */
             window.LS = _.merge(window.LS, LsNameSpace, {pageLoadActions, ld: _, debug});
-            
+
             /* Set a variable to test if browser have HTML5 form ability
             * Need to be replaced by some polyfills see #8009
             */

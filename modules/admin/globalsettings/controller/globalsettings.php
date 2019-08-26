@@ -28,6 +28,8 @@ if (!defined('BASEPATH')) {
 class GlobalSettings extends \GlobalSettings
 {
 
+    public $myNewParam = "This was not in global setting core controller"; // Just an example to show how to override a parent method
+
     /**
      * A brand new helloworld function for GlobalSettings !
      *
@@ -43,6 +45,22 @@ class GlobalSettings extends \GlobalSettings
             'sWho'=>$sWho,
           ));
 
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    {
+        // We add ou new paramater to the data to parse to the view
+        $aData["myNewParam"] = $this->myNewParam;
+
+        // Then we just call the parent method
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

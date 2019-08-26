@@ -122,6 +122,8 @@ class questiongroups extends Survey_Common_Action
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveybar']['savebutton']['text'] = gt('Import');
             $aData['surveyid'] = $surveyid;
+            $aData['topBar']['sid'] = $iSurveyID;
+            $aData['topBar']['showSaveButton'] = true;
 
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
@@ -166,6 +168,8 @@ class questiongroups extends Survey_Common_Action
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
+            $aData['topBar']['sid'] = $iSurveyID;
+            $aData['topBar']['showSaveButton'] = true;
             $aData['surveybar']['saveandclosebutton']['form'] = true;
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
         } else {
@@ -279,12 +283,12 @@ class questiongroups extends Survey_Common_Action
 
         Yii::app()->getClientScript()->registerPackage('ace');
         Yii::app()->getClientScript()->registerPackage('questiongroupeditor');
-        
+
         $oQuestionGroup = $this->_getQuestionGroupObject($gid);
         $grow           = $oQuestionGroup->attributes;
 
         $grow = array_map('flattenText', $grow);
-                                                 
+
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
@@ -353,7 +357,7 @@ class questiongroups extends Survey_Common_Action
     {
         $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
         $oSurvey = Survey::model()->findByPk($surveyid);
-        
+
         $aLanguages = [];
         $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
         $aSurveyLanguages = $oSurvey->getAllLanguages();
@@ -377,17 +381,19 @@ class questiongroups extends Survey_Common_Action
             });
         } else {
             $i10N = [];
-            foreach ($oQuestionGroup->questionGroupL10ns as $lng => $oQuestionGroupi10n);
-            $i10N[$lng] = $oQuestionGroupi10n->attributes;
-            templatereplace($oQuestionGroupi10n->group_name, array(), $aReplacementData, 'Unspecified', false, null);
-            $i10N[$lng]['group_name_expression'] = viewHelper::stripTagsEM(
-                LimeExpressionManager::GetLastPrettyPrintExpression()
-            );
+            foreach ($oQuestionGroup->questionGroupL10ns as $lng => $oQuestionGroupi10n) {
+                $i10N[$lng] = $oQuestionGroupi10n->attributes;
 
-            templatereplace($oQuestionGroupi10n->description, array(), $aReplacementData, 'Unspecified', false, null);
-            $i10N[$lng]['description_expression'] = viewHelper::stripTagsEM(
-                LimeExpressionManager::GetLastPrettyPrintExpression()
-            );
+                templatereplace($oQuestionGroupi10n->group_name, array(), $aReplacementData, 'Unspecified', false, null);
+                $i10N[$lng]['group_name_expression'] = viewHelper::stripTagsEM(
+                    LimeExpressionManager::GetLastPrettyPrintExpression()
+                );
+                
+                templatereplace($oQuestionGroupi10n->description, array(), $aReplacementData, 'Unspecified', false, null);
+                $i10N[$lng]['description_expression'] = viewHelper::stripTagsEM(
+                    LimeExpressionManager::GetLastPrettyPrintExpression()
+                );
+            }
         }
 
         $aPermissions = [
@@ -429,7 +435,7 @@ class questiongroups extends Survey_Common_Action
         $questionGroup = App()->request->getPost('questionGroup', []);
         $questionGroupI10N = App()->request->getPost('questionGroupI10N', []);
         $iSurveyId = (int) $sid;
-        
+
         $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroup['gid']);
         if ($oQuestionGroup == null) {
             $oQuestionGroup = $this->_newQuestionGroup($questionGroup);
@@ -437,7 +443,7 @@ class questiongroups extends Survey_Common_Action
             $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup, $questionGroup);
         }
         //$this->_applyI10N($oQuestionGroup, $oQuestionGroupI10N);
-        
+
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
         $this->renderJSON([
@@ -524,6 +530,9 @@ class questiongroups extends Survey_Common_Action
             $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid; // Close button
 
+            $aData['topBar']['sid'] = $iSurveyID;
+            $aData['topBar']['gid'] = $gid;
+            $aData['topBar']['showSaveButton'] = true;
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
             $aData['subaction'] = gT('Edit group');
             $aData['surveyid'] = $surveyid;
@@ -561,14 +570,14 @@ class questiongroups extends Survey_Common_Action
             $grouparray = Yii::app()->request->getPost('grouparray', []);
             if (!empty($grouparray)) {
                 foreach ($grouparray as $aQuestiongroup) {
-                    
+
                     //first set up the ordering for questiongroups
                     $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
                     array_map(function ($oQuestiongroup) use ($aQuestiongroup, $success) {
                         $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                         $success = $success && $oQuestiongroup->save();
                     }, $oQuestiongroups);
-                    
+
                     $aQuestiongroup['questions'] = isset($aQuestiongroup['questions']) ? $aQuestiongroup['questions'] : [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
@@ -696,7 +705,32 @@ class questiongroups extends Survey_Common_Action
         }
     }
 
-    
+    public function getQuestionGroupTopBar($gid) {
+        $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
+        $sumcount  = safecount($oQuestionGroup->questions);
+        $activated = $oQuestionGroup->survey->active;
+        $languagelist = $oQuestionGroup->survey->allLanguages;
+        $ownsSaveButton = true;
+        $ownsSaveAndCloseButton = true;
+  
+        return Yii::app()->getController()->renderPartial(
+          '/admin/survey/topbar/question_group_topbar',
+          array(
+            'oSurvey' => $oQuestionGroup->survey,
+            'sid'     => $oQuestionGroup->sid,
+            'gid'     => $oQuestionGroup->gid,
+            'sumcount4' => $sumcount,
+            'languagelist' => $languagelist,
+            'activated' => $activated,
+            'ownsSaveButton'         => $ownsSaveButton,
+            'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
+          ),
+          false,
+          false
+        );
+      }
+  
+
     private function _getQuestionGroupObject($iQuestionGroupId=null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
@@ -720,7 +754,7 @@ class questiongroups extends Survey_Common_Action
                 'sid' => $iSurveyId,
         ], $aQuestionGroupData);
         unset($aQuestionGroupData['gid']);
-   
+
         $oQuestionGroup = new QuestionGroup();
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
@@ -731,7 +765,7 @@ class questiongroups extends Survey_Common_Action
         if ($saved == false) {
             throw new CException("Object creation failed, couldn't save.\n ERRORS:".print_r($oQuestionGroup->getErrors(), true));
         }
-        
+
         $i10N = [];
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $i10N[$sLanguage] = new QuestionGroupL10n();
@@ -743,10 +777,10 @@ class questiongroups extends Survey_Common_Action
             ], false);
             $i10N[$sLanguage]->save();
         }
-        
+
         return $oQuestionGroup;
     }
-    
+
     /**
      * Method to store and filter questionGroupData for editing a questionGroup
      */
@@ -805,6 +839,8 @@ class questiongroups extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'survey/QuestionGroups', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
+        $aData['topBar']['type'] = 'group';
+        $aData['topBar']['showSaveButton'] = true;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

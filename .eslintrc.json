@@ -7,6 +7,7 @@
         "$" : "on"
     },
     "rules": {
-        "semi": ["warn", "always"]
+        "semi": ["warn", "always"],
+        "indent": ["warn", 4]
     }
 }

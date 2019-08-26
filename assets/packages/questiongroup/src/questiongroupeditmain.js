@@ -1,13 +1,12 @@
 import Vue from 'vue';
 import LSCKEditor from '../../meta/LSCKVue/plugin'
-
-
 import App from './App.vue';
-
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
 
 import Loader from './helperComponents/loader.vue';
+
+Vue.config.devtools = false;
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
@@ -44,7 +43,7 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.QuestionGroupEditData.qid);
+const AppState = getAppState(window.QuestionGroupEditData.gid);
 const questionEditor = new Vue({
     el: '#advancedQuestionGroupEditor',
     store: AppState,

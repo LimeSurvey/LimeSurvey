@@ -157,6 +157,19 @@
             <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
+            <name>display_columns</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>columns</inputtype>
+            <default></default>
+            <help>The answer options will be distributed across the number of columns set here</help>
+            <caption>Display columns</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>input_size</name>
             <category>Display</category>
             <sortorder>100</sortorder>

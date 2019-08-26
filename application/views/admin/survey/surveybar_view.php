@@ -20,16 +20,7 @@
         <?php else : ?>
             <div class="col-md-8 col-xs-6">
         <?php endif; ?>
-
-        <?php App()->getController()->renderPartial(
-            '/admin/survey/surveybar_addgroupquestion',
-            [
-                'surveybar'      => $surveybar,
-                'oSurvey'        => $oSurvey,
-                'surveyHasGroup' => isset($surveyHasGroup) ? $surveyHasGroup : false
-            ]
-        ); ?>
-
+        
         <!-- Left buttons for survey summary -->
         <?php if (isset($surveybar['buttons']['view'])):?>
 

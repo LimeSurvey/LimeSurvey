@@ -1,7 +1,7 @@
 #
 # Note: If you ever need to debug Travis locally, see this
 # documentation: https://docs.travis-ci.com/user/common-build-problems/#Running-a-Container-Based-Docker-Image-Locally
-#
+# dummy
 
 language: php
 services:
