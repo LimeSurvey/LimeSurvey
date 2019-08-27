@@ -302,6 +302,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('iSessionExpirationTime', $iSessionExpirationTime);
         SettingGlobal::setSetting('ipInfoDbAPIKey', Yii::app()->getRequest()->getPost('ipInfoDbAPIKey'));
         SettingGlobal::setSetting('pdffontsize', $iPDFFontSize);
+        SettingGlobal::setSetting('pdfshowsurveytitle', Yii::app()->getRequest()->getPost('pdfshowsurveytitle') == '1' ? 'Y' : 'N');
         SettingGlobal::setSetting('pdfshowheader', Yii::app()->getRequest()->getPost('pdfshowheader') == '1' ? 'Y' : 'N');
         SettingGlobal::setSetting('pdflogowidth', $iPDFLogoWidth);
         SettingGlobal::setSetting('pdfheadertitle', Yii::app()->getRequest()->getPost('pdfheadertitle'));

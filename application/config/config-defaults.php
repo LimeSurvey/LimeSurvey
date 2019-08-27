@@ -382,6 +382,7 @@ $config['notsupportlanguages'] = array(
     );
 $config['pdffontsize']    = 9; //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P'; // Set L for Landscape or P for portrait format
+$config['pdfshowsurveytitle'] = 'Y'; // Show header in pdf answer export
 $config['pdfshowheader'] = 'N'; // Show header in pdf answer export
 $config['pdflogofile'] = 'logo_pdf.png'; // File name of logo for single answer export. Path is theme path, i.e. theme/default/logo_pdf.png.
                                             // If not found, resulting pdf doesn't have header. A large image implies slower pdf generation.

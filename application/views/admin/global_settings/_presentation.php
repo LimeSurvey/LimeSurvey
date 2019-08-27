@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
         <div class="form-group">
             <label class=" control-label"  for='shownoanswer'><?php eT("Show 'no answer' option for non-mandatory questions:"); ?></label>
@@ -103,6 +103,19 @@
                         "hide"=>gT("Off",'unescaped')
                     )
                 ));?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class=" control-label"  for='pdfshowsurveytitle'><?php eT("Show survey title in export PDFs:") ; ?></label>
+            <div class="">
+                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    'name' => 'pdfshowsurveytitle',
+                    'id'=>'pdfshowsurveytitle',
+                    'value' => getGlobalSetting('pdfshowsurveytitle')=='Y'?'1':0,
+                    'onLabel'=>gT('On'),
+                    'offLabel' => gT('Off')));
+                ?>
             </div>
         </div>
 
@@ -178,4 +191,3 @@
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
 <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>
-
