@@ -69,21 +69,20 @@ function deleteinput(e)
         // 2.) Remove the table row
         var x;
         classes=$(this).closest('tr').attr('class').split(' ');
-        for (x in classes)
-            {
-            if (classes[x].substr(0,3)=='row'){
-                position=classes[x].substr(4);
+        LS.ld.forEach(classes, function(curClass, x) {
+            if (curClass.substr(0,3)=='row'){
+                position=curClass.substr(4);
             }
-        }
+        });
+
         info=$(this).closest('table').attr('id').split("_");
         language=info[1];
         scale_id=info[2];
         languages=langs.split(';');
 
         var x;
-        for (x in languages)
-            {
-            tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
+        LS.ld.forEach(languages, function(curLng, x) {
+            tablerow=$('#tabpage_'+curLng).find('#answers_'+curLng+'_'+scale_id+' .row_'+position);
             if (x==0) {
                 tablerow.fadeTo(400, 0, function(){
                     $(this).remove();
@@ -93,7 +92,7 @@ function deleteinput(e)
             else {
                 tablerow.remove();
             }
-        }
+        });
     }
     else
         {
@@ -258,12 +257,12 @@ function aftermove(event,ui)
     // But first we have change the sortorder in translations, too
     var x;
     classes=ui.item.attr('class').split(' ');
-    for (x in classes)
-        {
-        if (classes[x].substr(0,3)=='row'){
-            oldindex=classes[x].substr(4);
+
+    LS.ld.forEach(classes, function(curClass,  x) {
+        if (curClass.substr(0,3)=='row'){
+            oldindex=curClass.substr(4);
         }
-    }
+    });
 
     var newindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;
 
@@ -273,10 +272,9 @@ function aftermove(event,ui)
 
     languages=langs.split(';');
     var x;
-    for (x in languages)
-        {
+    LS.ld.forEach(languages, function(curLng, x) {
         if (x>0) {
-            tablebody=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' tbody');
+            tablebody=$('#tabpage_'+curLng).find('#answers_'+curLng+'_'+scale_id+' tbody');
             if (newindex<oldindex)
                 {
                 tablebody.find('.row_'+newindex).before(tablebody.find('.row_'+oldindex));
@@ -286,7 +284,7 @@ function aftermove(event,ui)
                 tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
             }
         }
-    }
+    });
     updaterowproperties();
 }
 
@@ -691,9 +689,8 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         codeSigil.push(currentCharacter);
     }
     var tablerows = "";
-    for (var k in lsrows)
-    {
-        var thisrow=lsrows[k].splitCSV(separatorchar);
+    LS.ld.forEach(lsrows, function(value, k) {
+        var thisrow=value.splitCSV(separatorchar);
         if (thisrow.length<=languages.length)
         {
             var qCode = (parseInt(k)+1);
@@ -710,43 +707,39 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         }
         var quid = "new"+(Math.floor(Math.random()*10000));
 
-        for (var x in languages)
-        {
+        LS.ld.forEach(languages, function(curLanguage, x) {
             if (typeof thisrow[parseInt(x)+1]=='undefined')
             {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
-            var lang_active = languages[x];
 
-            if(!answers[lang_active]){
-                answers[lang_active] = [];
+            if(!answers[curLanguage]){
+                answers[curLanguage] = [];
             }
 
             if (lsreplace)
             {
-                $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
+                $('#answers_'+curLanguage+'_'+scale_id+' tbody').empty();
             }
-            answers[lang_active].push(
+            answers[curLanguage].push(
                {text: thisrow[(parseInt(x)+1)], code: thisrow[0], quid: quid}
             );
-        }
-
-        $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+        });
+    });
+    
+    LS.ld.forEach(languages, function(curLanguage, x) {
+        $('#answers_'+curLanguage+'_'+scale_id+' tbody').append(tablerows);
         // Unbind any previous events
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.answeroptions');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.answeroptions');
-        $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.answeroptions',debouncedAddInput);
-        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.answeroptions',deleteinput);
-    }
-
-    for (var x in languages)
-    {
-        var lang_active = languages[x];
+        $('#answers_'+curLanguage+'_'+scale_id+' .btnaddanswer').off('click.answeroptions');
+        $('#answers_'+curLanguage+'_'+scale_id+' .btndelanswer').off('click.answeroptions');
+        $('#answers_'+curLanguage+'_'+scale_id+' .answer').off('focus');
+        $('#answers_'+curLanguage+'_'+scale_id+' .btnaddanswer').on('click.answeroptions',debouncedAddInput);
+        $('#answers_'+curLanguage+'_'+scale_id+' .btndelanswer').on('click.answeroptions',deleteinput);
+        
         promises.push(
-            addinputQuickEdit(closestTable, lang_active, true, scale_id, codes)
-        )
-    }
+            addinputQuickEdit(closestTable, curLanguage, true, scale_id, codes)
+            );
+    });
 
     $.when.apply($, promises).done(
             function(){

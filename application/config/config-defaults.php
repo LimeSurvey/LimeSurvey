@@ -515,11 +515,11 @@ $config['ssl_emergency_override'] = false;
 /**
 * Sets if any part of LimeSUrvey may be embedded in an iframe
 * Valid values are allow, sameorigin
-* Default: allow
-* Recommended: sameorigin
+* Default / Recommended: sameorigin
+* To disable the header, set it to allow
 * Using 'deny' is currently not supported as it will disable the theme editor preview and probably file upload.
 */
-$config['x_frame_options'] = 'allow';
+$config['x_frame_options'] = 'sameorigin';
 
 
 // Get your IP Info DB key from http://ipinfodb.com/

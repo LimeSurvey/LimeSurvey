@@ -163,37 +163,35 @@ function deleteinput(e)
     {
         // 2.) Remove the table row
         var classes=$(this).closest('tr').attr('class').split(' ');
-        for (var x in classes)
-        {
-            if (classes[x].substr(0,3)=='row'){
-                position=classes[x].substr(4);
+        LS.ld.forEach(classes, function(curClass, x) {
+            if (curClass.substr(0,3)=='row'){
+                position=curClass.substr(4);
             }
-        }
-        var info=$(this).closest('table').attr('id').split("_"),
-            language=info[1],
-            scale_id=info[2],
-            languages=langs.split(';');
+        });
+
+        var info = $(this).closest('table').attr('id').split("_"),
+            language = info[1],
+            scale_id = info[2],
+            languages = langs.split(';');
 
 
-        for (var x in languages)
-        {
-            var tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-            if (x==0)
+        LS.ld.forEach(languages, function (curLanguage, x) {
+            var tablerow = $('#tabpage_' + languages[x]).find('#answers_' + languages[x] + '_' + scale_id + ' .row_' + position);
+            if (x == 0)
             {
-                tablerow.fadeTo(400, 0, function(){
+                tablerow.fadeTo(400, 0, function () {
                     $(this).remove();
                     updaterowproperties();
                 });
-            }
-            else
+            } else
             {
                 tablerow.remove();
             }
-        }
-        
-        deleteSubquestionrow($(tablerow));
-    }
-    else
+            deleteSubquestionrow($(tablerow));
+        });
+
+
+    } else
     {
         $.blockUI({message:"<p><br/>"+strCantDeleteLastAnswer+"</p>"});
         setTimeout(jQuery.unblockUI,1000);
@@ -343,8 +341,7 @@ function aftermove(event,ui)
         info=$that.closest('table').attr('id').split("_"),
         languages=langs.split(';');
 
-    for (var x in languages)
-    {
+    LS.ld.forEach(languages, function(curLanguage, x) {
         if (x>0)
         {
             var tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')'),
@@ -359,7 +356,7 @@ function aftermove(event,ui)
                 //tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
             }
         }
-    }
+    });
 }
 
 // This function adjusts the alternating table rows
@@ -769,10 +766,10 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
     if(isNaN(Number(currentCharacter))){
         codeSigil.push(currentCharacter);
     }
+
     var tablerows = "";
-    for (var k in lsrows)
-    {
-        var thisrow=lsrows[k].splitCSV(separatorchar);
+    LS.ld.forEach(lsrows, function(value, k) {
+        var thisrow=value.splitCSV(separatorchar);
 
 
         if (thisrow.length<=languages.length)
@@ -790,47 +787,44 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
             thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,20);
         }
         var quid = "new"+(Math.floor(Math.random()*10000));
-        for (var x in languages)
-        {
+
+        LS.ld.forEach(languages, function(curLanguage, x) {
+            
             if (typeof thisrow[parseInt(x)+1]=='undefined')
             {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
 
-            var lang_active = languages[x];
-            if(!answers[lang_active]){
-                answers[lang_active] = [];
+            if(!answers[curLanguage]){
+                answers[curLanguage] = [];
             }
             if (lsreplace)
             {
-                $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
+                $('#answers_'+curLanguage+'_'+scale_id+' tbody').empty();
             }
-            answers[lang_active].push(
+            answers[curLanguage].push(
                 {text: thisrow[(parseInt(x)+1)], code: thisrow[0], quid: quid}
             );
-        }
+        });
 
         //$('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
 
+    });
+    
+    LS.ld.forEach(languages, function(curLanguage, x) {
         // Unbind any previous events
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.subquestions');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.subquestions');
-        $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.subquestions', addinput);
-        $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.subquestions', deleteinput);
-    }
-    for (var x in languages)
-    {
-        if (typeof thisrow[parseInt(x)+1]=='undefined')
-        {
-            thisrow[parseInt(x)+1]=thisrow[1];
-        }
+        $('#answers_'+curLanguage+'_'+scale_id+' .btnaddanswer').off('click.subquestions');
+        $('#answers_'+curLanguage+'_'+scale_id+' .btndelanswer').off('click.subquestions');
+        $('#answers_'+curLanguage+'_'+scale_id+' .answer').off('focus');
+        $('#answers_'+curLanguage+'_'+scale_id+' .btnaddanswer').on('click.subquestions', addinput);
+        $('#answers_'+curLanguage+'_'+scale_id+' .btndelanswer').on('click.subquestions', deleteinput);
 
-        var lang_active = languages[x];
+
         promises.push(
-            addinputQuickEdit(closestTable, lang_active, (x==0), scale_id, codes)
+            addinputQuickEdit(closestTable, curLanguage, (x==0), scale_id, codes)
         );
-    }
+    });
+
     $.when.apply($,promises).done(
             function(){
                 /*$('#quickadd').dialog('close');*/

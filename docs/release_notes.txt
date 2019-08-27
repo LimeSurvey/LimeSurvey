@@ -618,6 +618,19 @@ Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 201
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
 
+
+Changes from 3.17.12 (build 190823) to 3.17.13 (build 190824) August 24, 2019
+-Fixed issue #15185: Surveys with less or more then 4-6 digits will not display the sidepanel (Patrick Teichmann)
+
+
+Changes from 3.17.11 (build 190822) to 3.17.12 (build 190823) August 23, 2019
+-Fixed issue #15182: Sub Questions cannot be deleted (Patrick Teichmann)
+
+
+Changes from 3.17.10 (build 190821) to 3.17.11 (build 190822) August 22, 2019
+-Fixed issue: sidepanel breaking on surveys with a 5 digit id (lacrioque)
+-Fixed issue: adding and deleting os subquestion and answers broken (lacrioque)
+
 Changes from 3.17.9 (build 190731) to 3.17.10 (build 190821) August 21, 2019
 -New translation: Uyghur kindly provided by Namsiz Adam (Carsten Schmitz)
 -Fixed issue: cannot save questions anymore (lacrioque)
