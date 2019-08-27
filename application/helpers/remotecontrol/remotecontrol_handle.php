@@ -2914,7 +2914,7 @@ class remotecontrol_handle
         $oFormattingOptions->output = 'file';
 
         $oExport = new ExportSurveyResultsService();
-        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, '');
+        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, '');
         return new BigFile($sTempFile, true, 'base64');
     }
 
@@ -2981,7 +2981,7 @@ class remotecontrol_handle
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue("$sToken"));
+        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue("$sToken"));
         return new BigFile($sTempFile, true, 'base64');
 
     }

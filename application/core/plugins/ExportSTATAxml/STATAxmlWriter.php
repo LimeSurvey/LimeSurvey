@@ -51,8 +51,7 @@ class STATAxmlWriter extends Writer
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_".$survey->id."_STATA.xml");
             header("Content-type: application/download; charset=US-ASCII");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
+            header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {
             $this->handle = fopen($this->filename, 'w');

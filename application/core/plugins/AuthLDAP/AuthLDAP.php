@@ -448,7 +448,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             if (($user->uid == 1 && !$this->get('allowInitialUser'))
                 || !Permission::model()->hasGlobalPermission('auth_ldap', 'read', $user->uid)
             ) {
-                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID));  // Error shown : user or password invalid - swe how a generic message to prevent disclosure if user exists or not
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID);  // Error shown : user or password invalid - swe how a generic message to prevent disclosure if user exists or not
                 return;
             }
         }

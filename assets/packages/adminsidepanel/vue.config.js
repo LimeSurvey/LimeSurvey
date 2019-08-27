@@ -1,12 +1,11 @@
 
 const appName = 'adminsidepanel';
-const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
+const entryPoint = ['@babel/polyfill','./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
     filenameHashing: false,
     runtimeCompiler: true,
-    
     configureWebpack: {
         entry: entryPoint,
         output: {

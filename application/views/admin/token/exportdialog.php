@@ -107,6 +107,23 @@
                         </div>
                     </div>
                     <?php } ?>
+<div class="form-group control-group " data-name="maskequations">
+                        <label class="default control-label" for="maskequations">
+                            <?php eT('Quote equations:'); ?>
+                        </label>
+                        <div class="default controls">
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => 'maskequations',
+                                'id'=>'maskequations',
+                                'value' => 1,
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
+                        </div>
+                        <div class="alert alert-warning controls" role="alert">
+                            <?php eT('Important: Quote all content that starts with an equal sign to prevent CSV injections.'); ?>
+                        </div>
+                    </div>                    
                 </div>
                 <div class="buttons control-group hidden"><button class="btn" type="submit" name="submit"><?php eT('Export tokens'); ?></button></div>
             </form>

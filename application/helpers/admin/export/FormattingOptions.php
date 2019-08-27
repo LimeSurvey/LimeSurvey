@@ -65,9 +65,16 @@ class FormattingOptions
     /**
      * What is the character to separate CSV fields
      *
-     * @var boolean
+     * @var string
      */
     public $csvFieldSeparator;
+    
+    /**
+     * Mask CSV/Excelt equation fields to prevent CSV injection attackts
+     *
+     * @var boolean
+     */
+    public $csvMaskEquations=false;    
 
     /**
      * Valid values are:
@@ -123,7 +130,7 @@ class FormattingOptions
         .$this->headerSpacesToUnderscores.','.$this->responseCompletionState
         .','.$this->responseMinRecord.','.$this->responseMaxRecord.','.$this->aResponses.','
         .$this->answerFormat.','.$this->convertY.','.$this->yValue.','
-        .$this->convertN.','.$this->nValue.','
+        .$this->convertN.','.$this->nValue.','.$this->csvMaskEquations.','
         .implode(',', $this->selectedColumns);
     }
 }
