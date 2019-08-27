@@ -306,7 +306,7 @@ class pdf extends TCPDF
 
     /**
      *
-     * 
+     *
      * @param string $text
      * @param $format
      * @deprecated
@@ -645,6 +645,8 @@ class pdf extends TCPDF
             $this->ln(6);
             $this->SetFontSize($this->_ibaseAnswerFontSize);
         }
+      }
+
     }
 
     /**
@@ -663,7 +665,7 @@ class pdf extends TCPDF
         if (!file_exists(K_PATH_IMAGES.$sLogoFileName)) {
             $sLogoFileName = '';
         }
-        if (Yii::app()->getConfig('pdfshowheader') == 'Y') {
+        if (getGlobalSetting('pdfshowheader') == 'Y') {
             $sHeaderTitle = Yii::app()->getConfig('pdfheadertitle');
             if ($sHeaderTitle == '') {
                 $sHeaderTitle = $sSiteName;
