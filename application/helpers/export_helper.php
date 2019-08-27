@@ -717,20 +717,21 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             foreach ($Row as $Key=>$Value) {
                 if (!isset($exclude[$Key])) {
                     if (!(is_null($Value))) {
-// If the $value is null don't output an element at all
+                        // If the $value is null don't output an element at all
                         if (is_numeric($Key[0])) {
                             // mask invalid element names with an underscore
                             $Key = '_'.$Key;
                         }
                         $Key = str_replace('#', '-', $Key);
                         if (!$xmlwriter->startElement($Key)) {
-// Remove invalid XML characters
                             safeDie('Invalid element key: '.$Key);
                         }
 
                         if ($Value !== '') {
+                            // Remove invalid XML characters
+                            $Value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value);
                             $Value = str_replace(']]>', ']] >', $Value);
-                            $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value));
+                            $xmlwriter->writeCData($Value);
                         }
                         $xmlwriter->endElement();
                     }
