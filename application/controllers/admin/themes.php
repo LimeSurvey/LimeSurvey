@@ -545,8 +545,14 @@ class themes extends Survey_Common_Action
     public function templatecopy()
     {
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
+        
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
+            
+            if(Template::isStandardTemplate($newname)){  
+                Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
+                $this->getController()->redirect(array("admin/themeoptions"));
+            }
 
             if ($newname && $copydir) {
                 // Copies all the files from one template directory to a new one
