@@ -196,7 +196,6 @@ export default {
             this.$log.log("reloadTopBar triggered with -> ", data);
             const currentType = this.type;
             this.readGlobalObject(data);
-<<<<<<< HEAD
 
             if(!this.hasRunOnce) {
                 this.hasRunOnce = true;
@@ -204,8 +203,6 @@ export default {
                 return;
             }
 
-=======
->>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
             if(currentType === this.type) {
                 this.loading = false;
             } else {

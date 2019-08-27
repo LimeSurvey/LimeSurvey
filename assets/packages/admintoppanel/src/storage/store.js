@@ -13,11 +13,7 @@ Vue.use(Vuex);
 
 export default function(user_id, surveyId){
     const vuexLocal = new VuexPersistence({
-<<<<<<< HEAD
         key: 'lstopbar_'+user_id+'_'+surveyId,
-=======
-        key: 'lstopbar_'+surveyId,
->>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
         storage: window.localStorage
     });
     

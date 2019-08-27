@@ -64,10 +64,14 @@
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
 <<<<<<< HEAD
+<<<<<<< HEAD
 /******/ 	var hotCurrentHash = "88085e759f2e30250de8";
 =======
 /******/ 	var hotCurrentHash = "545b0def29248e2acd17";
 >>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
+=======
+/******/ 	var hotCurrentHash = "88085e759f2e30250de8";
+>>>>>>> a528efc... Dev: small fixes for the topbar and the global js parameter setting
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1484,6 +1488,9 @@ __webpack_require__.r(__webpack_exports__);
       _this5.readGlobalObject(data);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a528efc... Dev: small fixes for the topbar and the global js parameter setting
       if (!_this5.hasRunOnce) {
         _this5.hasRunOnce = true;
 
@@ -1492,8 +1499,11 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
+=======
+>>>>>>> a528efc... Dev: small fixes for the topbar and the global js parameter setting
       if (currentType === _this5.type) {
         _this5.loading = false;
       } else {
@@ -29633,6 +29643,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_localstorage__WEBPACK_IMPORTED_MODULE_3___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* harmony default export */ __webpack_exports__["default"] = (function (user_id, surveyId) {
   var vuexLocal = new vuex_persist__WEBPACK_IMPORTED_MODULE_2__["default"]({
     key: 'lstopbar_' + user_id + '_' + surveyId,
@@ -29641,6 +29652,11 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
   var vuexLocal = new vuex_persist__WEBPACK_IMPORTED_MODULE_2__["default"]({
     key: 'lstopbar_' + surveyId,
 >>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
+=======
+/* harmony default export */ __webpack_exports__["default"] = (function (user_id, surveyId) {
+  var vuexLocal = new vuex_persist__WEBPACK_IMPORTED_MODULE_2__["default"]({
+    key: 'lstopbar_' + user_id + '_' + surveyId,
+>>>>>>> a528efc... Dev: small fixes for the topbar and the global js parameter setting
     storage: window.localStorage
   });
   return new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
