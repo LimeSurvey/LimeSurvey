@@ -228,13 +228,15 @@ abstract class Writer implements IWriter
         isset($fieldType) &&
         ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y')) {
             if (($value == 'N' || ($value == '' && !is_null($value))) && $oOptions->convertN) {
-                return $oOptions->nValue;
+                $value = $oOptions->nValue;
             } else if ($value == 'Y' && $oOptions->convertY) {
-                    return $oOptions->yValue;
-                }
+                $value = $oOptions->yValue;
+            }
         }
-
-        //This spot should only be reached if no transformation occurs.
+        // Quote equal signs to prevent CSV injection attacks
+        if ($oOptions->csvMaskEquations && isset($value[0]) && $value[0]=='=') {
+            $value="'".$value;
+        }
         return $value;
     }
 

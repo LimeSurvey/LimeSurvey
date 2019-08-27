@@ -19,7 +19,7 @@
 *
 * This controller performs export actions
 *
-* @package        LimeSurvey
+* @package       LimeSurvey
 * @subpackage    Backend
 */
 class export extends Survey_Common_Action
@@ -151,6 +151,7 @@ class export extends Survey_Common_Action
         $bConvertN = Yii::app()->request->getPost('convertn');
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
+        $bMaskEquations = Yii::app()->request->getPost('maskequations');
 
         $surveybaselang = $survey->language;
         $exportoutput = "";
@@ -269,7 +270,7 @@ class export extends Survey_Common_Action
         // the exportresults form
         $explang = Yii::app()->request->getPost('exportlang', $surveybaselang);
 
-        //Get together our FormattingOptions and then call into the exportSurvey
+        //Get together our FormattingOptions and then call into the exportResponses
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
@@ -280,6 +281,7 @@ class export extends Survey_Common_Action
         $options->convertY = $bConvertY;
         $options->yValue = ($bConvertY) ? $sYValue : null;
         $options->convertN = $bConvertN;
+        $options->csvMaskEquations = $bMaskEquations;
         $options->nValue = ($bConvertN) ? $sNValue : null;
         $options->headingTextLength = (Yii::app()->request->getPost('abbreviatedtext')) ? (int) Yii::app()->request->getPost('abbreviatedtextto') : null;
         $options->useEMCode = Yii::app()->request->getPost('emcode');
@@ -320,7 +322,7 @@ class export extends Survey_Common_Action
         }
 
         viewHelper::disableHtmlLogging();
-        $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
+        $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         Yii::app()->end();
     }

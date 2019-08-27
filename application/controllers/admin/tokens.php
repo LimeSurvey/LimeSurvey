@@ -1578,7 +1578,7 @@ class tokens extends Survey_Common_Action
      * @return void
      */
     public function exportdialog($iSurveyId)
-    {
+    {                
         $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
         $aData = array();
@@ -1629,6 +1629,7 @@ class tokens extends Survey_Common_Action
                 $sLanguageCode = sanitize_languagecode($oTokenLanguage->language);
                 $aFilterByLanguage[$sLanguageCode] = getLanguageNameFromCode($sLanguageCode, false);
             }
+            // The following array does not seem to be used at all by the view, yet
             $aData['aSettings'] = array(
                 'tokenstatus' => array(
                     'type' => 'select',
@@ -1666,8 +1667,13 @@ class tokens extends Survey_Common_Action
                 'tokendeleteexported' => array(
                     'type' => 'checkbox',
                     'label' => gT('Delete exported participants:'),
-                    'help' => 'Attention: If selected the exported entries are deleted permanently from the survey participants table.',
+                    'help' => gT('Warning: Deleted participants entries cannot be recovered.'),
                 ),
+                'maskequations' => array(
+                    'type' => 'checkbox',
+                    'label' => gT('Quote equations'),
+                    'help' => gT('Warning: Quotes all content that starts with an equal sign to prevent CSV injections'),
+                ),                
             );
             $this->_renderWrappedTemplate('token', array('exportdialog'), $aData);
         }

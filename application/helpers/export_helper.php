@@ -2106,6 +2106,9 @@ function tokensExport($iSurveyID)
     Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
     while ($brow = $bresult->read()) {
+        if (Yii::app()->request->getPost('maskequations')){
+            $brow=array_map('MaskFormula',(array) $brow);
+        }
         if (trim($brow['validfrom'] != '')) {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
             $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
@@ -2827,5 +2830,5 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
      if (isset($sValue[0]) && $sValue[0]=='=') {
         $sValue="'".$sValue;    
      }
-     
+     return $sValue;
  }
