@@ -244,7 +244,6 @@ export default {
     position: relative;
     padding-right: 6px;
     min-height: 50px;
-<<<<<<< HEAD
 }
 
 .scoped-topbar-nav {
@@ -253,21 +252,10 @@ export default {
     }
 }
 
-=======
-}
-
-.scoped-topbar-nav {
-    .navbar {
-        flex-wrap: wrap;
-    }
-}
-
->>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
 .navbar,
 .navbar-default {
     padding-left: 15px;
     border: none;
-<<<<<<< HEAD
 }
 
 .scoped-switch-floats {
@@ -286,26 +274,6 @@ export default {
     padding-left: 5px;
 }
 
-=======
-}
-
-.scoped-switch-floats {
-    .navbar-nav {
-        li {
-            float: right;
-        }
-    }
-}
-
-.nav > li {
-    margin-left: 2px;
-}
-
-.padding-left {
-    padding-left: 5px;
-}
-
->>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
 .right {
     align-self: flex-end;
 }

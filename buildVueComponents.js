@@ -189,8 +189,7 @@ if(!single) {
         if(verbose) {
             console.log(`|| === Started at ${startTime.toLocaleTimeString('de-DE')}`);
             console.log(`|| === Ended at ${endTime.toLocaleTimeString('de-DE')}`);
-            console.log(`|| === Total milliseconds ${difference}
-`);
+            console.log(`|| === Total milliseconds ${difference}`);
         }
         console.log(`|| === All build in ${minutes}:${seconds}.${milliseconds}`);
     });   
@@ -198,18 +197,18 @@ if(!single) {
 } else {
     let getSPosition = args.indexOf('-s');
     const componentToBuild = args[getSPosition+1];
-    console.log(`
-|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component ${componentToBuild}${(verbose ? ' and using verbose mode.' : '.')}`);
-
     componentToBuildArray = pathArray.filter((item) => { return item[0] == componentToBuild });
 
-    if(componentToBuildArray.length > 1 || componentToBuildArray.array == 0) {
+    if(componentToBuildArray.length > 1 || componentToBuildArray.array == 0 || componentToBuild == undefined) {
         console.error("|| ===  Component not found or ambiguous, possible options are:")
         pathArray.forEach((item) => {
             console.log(`||       => ${item[0]}, (${item[1]})`);
         });
         process.exit(1);
     }
+
+    console.log(`
+|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component ${componentToBuild}${(verbose ? ' and using verbose mode.' : '.')}`);
 
     const finalPromise = componentToBuildArray.reduce( 
         async (promise, item) => {
@@ -235,6 +234,11 @@ if(!single) {
         const minutes = String((difference*1000*60)%60).padStart(2,'0');
         const seconds = String((difference*1000)%60).padStart(2,'0');
         const milliseconds = String(difference%1000).padStart(4,'0');
+        if(verbose) {
+            console.log(`|| === Started at ${startTime.toLocaleTimeString('de-DE')}`);
+            console.log(`|| === Ended at ${endTime.toLocaleTimeString('de-DE')}`);
+            console.log(`|| === Total milliseconds ${difference}`);
+        }
         console.log(`|| === All build in ${minutes}:${seconds}.${milliseconds}`);
     }); 
 }
