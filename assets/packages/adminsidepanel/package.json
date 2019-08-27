@@ -8,9 +8,10 @@
     "prod": "vue-cli-service build",
     "dev": "vue-cli-service build --mode developement",
     "lint": "vue-cli-service lint",
-    "watch" : "vue-cli-service build --mode=developement --watch"
+    "watch": "vue-cli-service build --mode=developement --watch"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "core-js": "^2.6.5",
     "lodash": "^4.17.4",
     "vue": "^2.6.10",
@@ -49,7 +50,7 @@
     }
   },
   "browserslist": [
-    "> 1%",
+    "> 0.5%",
     "last 2 versions",
     "not ie <= 8"
   ]

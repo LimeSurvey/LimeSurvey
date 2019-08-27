@@ -1,7 +1,9 @@
 export default {
   methods: {
-    _runAjax(uri, data = {}, method = 'get') {
-      return new Promise((resolve, reject) => {
+    _runAjax: function(uri, data, method) {
+    data =  data || {};
+    method =  method || 'get';
+      return new Promise(function(resolve, reject) {
         if ($ == undefined) {
           reject('JQUERY NOT AVAILABLE!');
         }
@@ -10,7 +12,7 @@ export default {
           method: method || 'get',
           data: data,
           dataType: 'json',
-          success: (response, status, xhr) => {
+          success: function(response, status, xhr) {
             resolve({
               success: true,
               data: response,
@@ -18,7 +20,7 @@ export default {
               xhr: xhr
             });
           },
-          error: (xhr, status, error) => {
+          error: function(xhr, status, error) {
             reject({
               success: false,
               error: error,
@@ -29,16 +31,16 @@ export default {
         });
       });
     },
-    post(uri, data) {
+    post: function(uri, data) {
       return this._runAjax(uri, data, 'post');
     },
-    get(uri, data) {
+    get: function(uri, data) {
       return this._runAjax(uri, data, 'get');
     },
-    delete(uri, data) {
+    delete: function(uri, data) {
       return this._runAjax(uri, data, 'delete');
     },
-    put(uri, data) {
+    put: function(uri, data) {
       return this._runAjax(uri, data, 'put');
     }
   }

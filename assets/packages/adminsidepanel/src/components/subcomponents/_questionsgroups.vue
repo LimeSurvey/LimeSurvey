@@ -4,7 +4,7 @@ import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
     mixins: [ajaxMethods],
-    data: () => {
+    data() {
         return {
             active: [],
             questiongroupDragging: false,

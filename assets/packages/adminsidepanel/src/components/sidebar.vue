@@ -14,7 +14,7 @@ export default {
         SidebarStateToggle
     },
     mixins: [ajaxMixin],
-    data: () => {
+    data() {
         return {
             activeMenuIndex: 0,
             openSubpanelId: 0,

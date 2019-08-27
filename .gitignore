@@ -18,6 +18,7 @@
 !.editorconfig
 !.travis.yml
 !.babelrc
+!.eslintrc
 
 
 # upload directory : whole except the index.html and readme.txt
