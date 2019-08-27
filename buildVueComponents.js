@@ -49,10 +49,43 @@ process.exit(1);
 }
 
 
-const verbose = args.includes('-v');
+const all = args.includes('-a');
 const single = args.includes('-s');
+const verbose = args.includes('-v');
 const prepareOnly = args.includes('-p');
 
+if(!all && !single) {
+    console.log(`
+=============================================================================================
+||        .____    .__                 _________                                           ||
+||        |    |   |__| _____   ____  /   _____/__ ____________  __ ____ ___.__.           ||
+||        |    |   |  |/     \\_/ __ \\ \\_____  \\|  |  \\_  __ \\  \\/ // __ <   |  |           ||
+||        |    |___|  |  Y Y  \\  ___/ /        \\  |  /|  | \\/\\   /\\  ___/\\___  |           ||
+||        |_______ \\__|__|_|  /\\___  >_______  /____/ |__|    \\_/  \\___  > ____|           ||
+||                \\/        \\/     \\/        \\/                        \\/\\/                ||
+||    .................................................................................    ||
+||          __      __                 _____                      _ _                      ||
+||          \\ \\    / /                / ____|                    (_) |                     ||
+||           \\ \\  / /   _  ___ ______| |     ___  _ __ ___  _ __  _| | ___ _ __            ||
+||            \\ \\/ / | | |/ _ \\______| |    / _ \\| '_ \` _ \\| '_ \\| | |/ _ \\ '__|           ||
+||             \\  /| |_| |  __/      | |___| (_) | | | | | | |_) | | |  __/ |              ||
+||              \\/  \\__,_|\\___|       \\_____\\___/|_| |_| |_| .__/|_|_|\\___|_|              ||
+||                                                         | |                             ||
+||                                                         |_|                             ||
+=============================================================================================
+||   Usage :                                                                               ||
+||     Either use '-a' to build all components                                             ||
+||     Or use '-s [componentname]' to build one specific component                         ||
+||     Use '-s' without component name to get a list of possible components                ||
+||                                                                                         ||
+||   Options:                                                                              ||
+||     -v -> Verbose mode, show all build processes                                        ||
+||     -p -> Only prepare (install dependancies)                                           ||
+||                                                                                         ||
+=============================================================================================
+`);
+process.exit(0);
+}
 
 const runGetDependenciesInFolder = function (folder) {
     return new Promise((resolve, reject) => {
@@ -141,7 +174,10 @@ if(!single) {
                 return runGetDependenciesInFolder(item[1]).then(runBuildFolder);
             }
         },
-        runGetDependenciesInFolder('assets/packages/meta/LsCkeditor')
+        Promise.all([
+            runGetDependenciesInFolder('assets/packages/meta/LsCkeditor'),
+            runGetDependenciesInFolder('assets/packages/meta/LsRTLPlugin')
+        ])
     );
     
     finalPromise.then(()=> {
@@ -187,7 +223,10 @@ if(!single) {
                 return runGetDependenciesInFolder(item[1]).then(runBuildFolder);
             }
         },
-        runGetDependenciesInFolder('assets/packages/meta/LsCkeditor')
+        Promise.all([
+            runGetDependenciesInFolder('assets/packages/meta/LsCkeditor'),
+            runGetDependenciesInFolder('assets/packages/meta/LsRTLPlugin')
+        ])
     );
 
     finalPromise.then(()=> {

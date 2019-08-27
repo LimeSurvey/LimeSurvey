@@ -4203,6 +4203,10 @@ textarea.form-control.input-text {
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 .draggable-container {
   min-height: 300px;
 }
@@ -4372,8 +4376,4 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
-}
-
-#cpdbatt {
-  min-height: 100px;
 }
