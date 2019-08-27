@@ -26,8 +26,7 @@ class RSyntaxWriter extends Writer
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_".$survey->id."_R_syntax_file.R");
             header("Content-type: application/download; charset=UTF-8");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
+            header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {
             $this->handle = fopen($this->filename, 'w');

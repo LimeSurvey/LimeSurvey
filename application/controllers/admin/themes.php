@@ -59,9 +59,8 @@ class themes extends Survey_Common_Action
 
             if (is_file($zipfile)) {
                 // Send the file for download!
-                header("Pragma: public");
                 header("Expires: 0");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Cache-Control: must-revalidate");
                 header("Content-Type: application/force-download");
                 header("Content-Disposition: attachment; filename=$templatename.zip");
                 header("Content-Description: File Transfer");
@@ -134,9 +133,8 @@ class themes extends Survey_Common_Action
 
         if (is_file($zipfile)) {
             // Send the file for download!
-            header("Pragma: public");
             header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: must-revalidate");
             header("Content-Type: application/force-download");
             header("Content-Disposition: attachment; filename=$templatename.zip");
             header("Content-Description: File Transfer");

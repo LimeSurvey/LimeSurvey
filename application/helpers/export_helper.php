@@ -1828,8 +1828,7 @@ function group_export($action, $iSurveyID, $gid)
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache"); // HTTP/1.0
+    header("Cache-Control: must-revalidate, no-store, no-cache");
 
     $xml->openUri('php://output');
     $xml->setIndent(true);
@@ -1936,8 +1935,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Cache-Control: must-revalidate, no-store, no-cache");
     // HTTP/1.0
     $xml->openURI('php://output');
 
@@ -2084,8 +2082,7 @@ function tokensExport($iSurveyID)
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Cache-Control: must-revalidate, no-store, no-cache");
 
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
@@ -2159,8 +2156,7 @@ function CPDBExport($data, $filename)
 
     header("Content-Disposition: attachment; filename=".$filename.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Cache-Control: must-revalidate, no-store, no-cache");
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
 
     foreach ($data as $key=>$value) {
