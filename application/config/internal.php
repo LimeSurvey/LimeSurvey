@@ -165,7 +165,8 @@ $internalConfig = array(
                 'plugins/unsecure',
             ),
             'csrfCookie' => array(
-                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443))
+                'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)),
+                'httpOnly' => true
             ),
         ),
         'user' => array(
