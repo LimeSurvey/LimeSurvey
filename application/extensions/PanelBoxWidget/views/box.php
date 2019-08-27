@@ -7,16 +7,16 @@
         <?php endif; ?>
     >
         <div class="panel-heading">
-            <div class="panel-title h4"><?php eT($title); ?></div>
+            <div class="panel-title h4"><?php echo viewHelper::filterScript(gT($title)); ?></div>
         </div>
         <div class="panel-body">
             <div class="panel-body-ico">
-                <span class="sr-only"><?php eT($title); ?></span>
+                <span class="sr-only"><?php echo viewHelper::filterScript(gT($title)); ?></span>
                 <span class="<?php echo CHtml::encode($ico); ?>" style="font-size: 4em">
                 </span>
             </div>
             <div class="panel-body-link">
-                <?php eT($description); ?>
+                <?php echo viewHelper::filterScript(gT($description)); ?>
                 <?php if ($external): ?>
                     &nbsp;<i class="fa fa-external-link"></i>
                 <?php endif; ?>
