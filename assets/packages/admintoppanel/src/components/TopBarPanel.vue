@@ -142,20 +142,20 @@ export default {
 
             this.loading = true;
             this.$store.dispatch(dispatchAction)
-                .then(data => {
-                    this.$log.log("Promise resolved with data", data);
-                    this.counter++;
-                })
-                .catch(error => {
-                    this.$log.error(errorHeader);
-                    this.$log.error(error);
-                })
-                .finally(() => {
-                    this.$log.log("Trigger loading end");
-                    this.loading = false;
-                    this.$forceUpdate();
-                    LS.pageLoadActions.saveBindings();
-                });
+            .then((data) => {
+                    return this.$store.dispatch('getCustomTopbarContent').then((data2)=> { return [data, data2] });
+            }).then(datas => {
+                this.$log.log("Promise resolved with datas", datas);
+                this.counter++;
+            }).catch(error => {
+                this.$log.error(errorHeader);
+                this.$log.error(error);
+            }).finally(() => {
+                this.$log.log("Trigger loading end");
+                this.loading = false;
+                this.$forceUpdate();
+                LS.pageLoadActions.saveBindings();
+            });
         },
 
         onFade(slideable) {

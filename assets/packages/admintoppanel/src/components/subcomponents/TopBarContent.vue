@@ -9,7 +9,7 @@ export default {
     name: "TopBarContent",
     data() {
         return {
-            dropdownOpen: null,
+            dropdownOpen: false,
             itemId: 'itm-'+Math.floor(1+Math.random()*10000000),
         }
     },

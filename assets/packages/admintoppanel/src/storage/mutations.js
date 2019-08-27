@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import merge from 'lodash/merge';
+
 export default {
     setVisibility: (state, newState) => {
         state.visible = newState;
@@ -42,5 +44,8 @@ export default {
     },
     setCloseButtonUrl: (state, newState) => {
         state.closeButtonUrl = newState;
+    },
+    setDropDownOpen: (state, newState) => {
+        state.dropDownOpen = newState;
     },
 };

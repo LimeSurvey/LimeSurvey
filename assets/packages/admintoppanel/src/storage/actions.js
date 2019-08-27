@@ -102,4 +102,28 @@ export default {
         })
     },
 
+
+    getCustomTopbarContent: (context) => {
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
+                    position: 'top',
+                    sid: context.state.sid,
+                    saveButton: context.state.showSaveButton
+                }))
+                .then((data) => {
+                    const topbarLeft = context.state.topbar_left_buttons;
+                    LS.ld.forEach(data, ()=> {
+
+                    });
+                    context.commit('setTopBarLeft', topbarLeft);
+                    resolve(data);
+                })
+                .catch((error) => {
+                    reject({
+                        error: error
+                    });
+                })
+        })
+    },
+
 };

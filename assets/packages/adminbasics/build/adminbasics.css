@@ -4310,10 +4310,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   min-height: 100px;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 #selectable .ui-selecting {
   background: #8CCE00;
 }
@@ -4376,4 +4372,8 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
+}
+
+#cpdbatt {
+  min-height: 100px;
 }

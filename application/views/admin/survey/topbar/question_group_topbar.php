@@ -28,9 +28,8 @@ $title = ($oSurvey->active == 'N') ? 'preview_survey' : 'execute_survey';
 $name = ($oSurvey->active == 'N') ? gT('Preview survey') : gT('Execute survey');
 
 if (count($languages) > 1) {
-    $buttons[$title] = [];
     foreach ($languages as $language) {
-        $buttons[$title.'_'.$language] = [
+        $survey_preview_buttons[$title.'_'.$language] = [
             'url' => $this->createAbsoluteUrl(
                 "survey/index", 
                 array(
@@ -61,7 +60,7 @@ if (count($languages) > 1) {
         ],
         'dropdown' => [
             'class' => 'dropdown-menu',
-            'items' => $buttons,
+            'items' => $survey_preview_buttons,
         ],
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttonsurvey_preview_dropdown);
@@ -90,9 +89,8 @@ $name = gT('Preview question group');
 
 if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update'))) {
     if (count($languages) > 1) {
-        $buttons[$title] = [];
         foreach ($languages as $language) {
-            $buttons[$title.'_'.$language] = [
+            $questiongroup_preview_buttons[$title.'_'.$language] = [
                 'url' => $this->createAbsoluteUrl(
                     "survey/index/action/previewgroup", 
                     array(
@@ -124,7 +122,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
             ],
             'dropdown' => [
                 'class' => 'dropdown-menu',
-                'items' => $buttons,
+                'items' => $questiongroup_preview_buttons,
             ],
         ];
         array_push($topbar['alignment']['left']['buttons'], $buttongroup_preview_dropdown);

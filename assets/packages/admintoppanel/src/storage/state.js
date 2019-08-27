@@ -1,5 +1,6 @@
 export default {
     visible: false,
+    dropDownOpen: false,
     permissions: [],
     topbar_left_buttons: [],
     topbar_right_buttons: [],

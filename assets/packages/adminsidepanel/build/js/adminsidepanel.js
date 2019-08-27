@@ -64,10 +64,14 @@
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
 <<<<<<< HEAD
+<<<<<<< HEAD
 /******/ 	var hotCurrentHash = "f6a364ffce994e26564f";
 =======
 /******/ 	var hotCurrentHash = "c910b65a14039fe00b9f";
 >>>>>>> 5dc1367... New feature: Surveytopbar dynamically rendered
+=======
+/******/ 	var hotCurrentHash = "fe853209b360d989ad0b";
+>>>>>>> 558be04... Dev: added babel.conf for all packages and build script to rebuild all packages if needed
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;

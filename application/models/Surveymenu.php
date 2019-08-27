@@ -222,7 +222,7 @@ class Surveymenu extends LSActiveRecord
     public function getDefaultSurveyMenus($position = '', $oSurvey=null)
     {
         $criteria = new CDbCriteria;
-        $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
+        $criteria->condition = 'survey_id IS NULL AND (parent_id IS NULL OR parent_id=0)';
         $collapsed = $position==='collapsed';
 
         if ($position != '' && !$collapsed) {
