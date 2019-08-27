@@ -14,6 +14,10 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function index()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            $this->getController()->redirect(array('/admin'));
+        }        
         $oPluginManager = App()->getPluginManager();
 
         // Scan the plugins folder.
@@ -73,10 +77,6 @@ class PluginManagerController extends Survey_Common_Action
         $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
-        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
-            Yii::app()->setFlashMessage(gT("No permission"), 'error');
-            $this->getController()->redirect(array('/admin'));
-        }
     }
 
     /**
