@@ -463,6 +463,27 @@ class TokenDynamic extends LSActiveRecord
      * @param string $token
      * @return mixed
      */
+    public function getHasResponses($sToken)
+    {
+        debugbreak();
+        $oSurvey = Survey::model()->findByPk(intval(self::$sid));
+        if (!$oSurvey->hasResponsesTable) {
+            return false;
+        }        
+        $command = Yii::app()->db->createCommand()
+            ->select('COUNT(token)')
+            ->from('{{survey_'.intval(self::$sid).'}}')
+            ->where('token=:token')
+            ->bindParam(':token', $sToken, PDO::PARAM_STR);
+
+        return ((int)$command->queryScalar()>0);
+    }
+
+    
+    /**
+     * @param string $token
+     * @return mixed
+     */
     public function getEmailStatus($token)
     {
         $command = Yii::app()->db->createCommand()
@@ -801,7 +822,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("View response details")
             ),
-            'visible'=> $baseView .' && count($data->responses) > 0',
+            'visible'=> $baseView .' && $data->getHasResponses($data->token)',
         );
         $gridButtons['spacerviewresponse'] = array(
             'label'=>'<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
@@ -812,7 +833,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title'=>''
             ),
-            'visible'=> $baseView . ' && count($data->responses) == 0',
+            'visible'=> $baseView .'&& !$data->getHasResponses($data->token)',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* previewsurvey button */
