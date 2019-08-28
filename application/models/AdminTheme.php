@@ -151,9 +151,11 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             App()->getClientScript()->registerPackage('font-roboto');
             App()->getClientScript()->registerPackage('font-icomoon');
-            App()->getClientScript()->registerPackage('adminbasicjs');
-            App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
-            App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
+            App()->getClientScript()->registerPackage('adminbasics');
+            App()->getClientScript()->registerPackage('adminbasicsjs');
+            App()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ?  'adminbasicsrtl' : 'adminbasicsltr')); // Combined scripts and style
+            App()->getClientScript()->registerPackage('adminsidepaneljs'); // The new admin panel javascript
+            App()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ?  'adminsidepanelcssrtl' : 'adminsidepanelcss')); // The new admin panel javascript
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
         }
 
@@ -183,10 +185,10 @@ class AdminTheme extends CFormModel
                 $aCssFiles[] = 'css/'.$files->rtl->css->filename;
             }
 
-            App()->getClientScript()->registerPackage('font-roboto');
-            App()->getClientScript()->registerPackage('adminbasicjs');
-            App()->getClientScript()->unregisterPackage('adminbasics');
-            App()->getClientScript()->registerPackage('adminbasicsrtl');
+            // App()->getClientScript()->registerPackage('font-roboto');
+            // App()->getClientScript()->registerPackage('adminbasicjs');
+            // App()->getClientScript()->unregisterPackage('adminbasics');
+            // App()->getClientScript()->registerPackage('adminbasicsrtl');
 
         } else {
             // Non-RTL style

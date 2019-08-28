@@ -199,7 +199,7 @@ return array(
            'adminbasics'
        )
     ),
-    'adminsidepanel' => array(
+    'adminsidepaneljs' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
        'position' =>CClientScript::POS_HEAD,
@@ -212,11 +212,31 @@ return array(
                 'build.min/js/adminsidepanel.js'
             )
         ),
-       'css' => array(
-           'build.min/css/main.css'
-       ),
        'depends' => array(
            'adminbasics'
+       )
+    ),
+    'adminsidepanelcss' => array(
+       'devBaseUrl' => 'assets/packages/adminsidepanel/',
+       'basePath' => 'core.adminsidepanel',
+       'position' =>CClientScript::POS_HEAD,
+       'css' => array(
+           'build.min/css/adminsidepanel.css'
+       ),
+       'depends' => array(
+           'adminsidepaneljs'
+       )
+    ),
+    'adminsidepanelcssrtl' => array(
+       'devBaseUrl' => 'assets/packages/adminsidepanel/',
+       'basePath' => 'core.adminsidepanel',
+       'position' =>CClientScript::POS_HEAD,
+       'css' => array(
+           'build.min/css/adminsidepanel.rtl.css'
+       ),
+       'depends' => array(
+            'adminbasics',
+            'adminsidepaneljs'
        )
     ),
     'admintoppanel' => array(
@@ -422,20 +442,12 @@ return array(
             'build/panelboxes'.$minVersion.'.css',
         )
     ),
-    'adminbasics' => array(
+    'adminbasicsjs' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_HEAD,
-        'css' => array(
-            // 'css/lime-admin-common.css',
-            // 'css/jcarousel.responsive.css',
-            // 'css/attributeMap.css',
-            // 'css/attributeMapToken.css',
-            // 'css/displayParticipants.css',
-            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
-        ),
         'js' => array(
-            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
+            'build/adminbasics.js',
         ),
         'depends' => array(
             'jquery',
@@ -444,6 +456,25 @@ return array(
         )
     ),
 
+    'adminbasicsltr' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            // 'css/rtl/adminstyle-rtl.css',
+            // 'css/rtl/lime-admin-common-rtl.css',
+            // 'css/rtl/jcarousel.responsive-rtl.css',
+            // 'css/rtl/attributeMap-rtl.css',
+            // 'css/rtl/attributeMapToken-rtl.css',
+            // 'css/rtl/displayParticipants-rtl.css',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
+        ),
+        'depends' => array(
+            'jquery',
+            'pjaxbackend',
+            'adminbasicsjs'
+        )
+    ),
     'adminbasicsrtl' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
@@ -457,16 +488,14 @@ return array(
             // 'css/rtl/displayParticipants-rtl.css',
             'build/adminbasics.rtl'.(($debug > 0) ? '' : '.min').'.css',
         ),
-        'js' => array(
-            'build/adminbasics.js',
-        ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'adminbasicsjs'
         )
     ),
 
-    'adminbasicjs' => array(
+    'adminbasics' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
@@ -475,7 +504,7 @@ return array(
         'depends' => array(
             'jquery',
             'pjaxbackend',
-            'adminbasics'
+            'adminbasicsjs'
         )
     ),
 

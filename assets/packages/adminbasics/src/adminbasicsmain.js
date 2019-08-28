@@ -18,7 +18,7 @@
 window.LS = window.LS || {};
 
 //import css/scss to be seperately compiled
-import '../scss/loadSass.ENVDIRECTION.js';
+import '../scss/loadSass.js';
 
 //import lodash
 import _ from 'lodash';

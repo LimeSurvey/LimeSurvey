@@ -7,7 +7,7 @@
     "devrtl": "env-cmd -e devrtl rollup -c",
     "buildltr": "env-cmd -e prodltr rollup -c",
     "buildrtl": "env-cmd -e prodrtl rollup -c",
-    "build": "yarn run devltr && yarn run devrtl && yarn run buildltr && yarn run buildrtl"
+    "build": "yarn run devltr && yarn run buildltr"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
@@ -31,7 +31,9 @@
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-scss": "^1.0.1",
-    "rollup-plugin-terser": "^4.0.4"
+    "rollup-plugin-terser": "^4.0.4",
+    "rtlcss": "^2.4.0",
+    "uglifycss": "^0.0.29"
   },
   "dependencies": {
     "event-stream": "^4.0.1",
