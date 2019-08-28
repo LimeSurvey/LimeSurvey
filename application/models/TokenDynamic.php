@@ -465,7 +465,6 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getHasResponses($sToken)
     {
-        debugbreak();
         $oSurvey = Survey::model()->findByPk(intval(self::$sid));
         if (!$oSurvey->hasResponsesTable) {
             return false;
