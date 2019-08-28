@@ -919,11 +919,14 @@ function do_date($ia)
         $maxdate = '2037-12-31'; // Why 2037 ?
     }
 
+    $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+    if (!empty($dateoutput)) {
+        $dateoutput = fillDate($dateoutput);
+    }
     if (trim($aQuestionAttributes['dropdown_dates']) == 1) {
         $coreClass .= " dropdown-item"; // items ?
-        if (!empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) &&
-        ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != 'INVALID')) {
-            $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
+        if (!empty($dateoutput)) {
+            $datetimeobj   = new Date_Time_Converter($dateoutput, "Y-m-d H:i");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
             $currentday   = $datetimeobj->days;
@@ -1039,15 +1042,13 @@ function do_date($ia)
 
             }
         }
-
         // Format the date  for output
-        $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-        if ($dateoutput != '' && $dateoutput != 'INVALID') {
-            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+        if ($dateoutput != '') {
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', $dateoutput);
             if ($datetimeobj) {
                 $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
             } else {
-                $dateoutput = ''; // Imported value and some old survey can have 0000-00-00 00:00:00
+                $dateoutput = '';
             }
         }
 
@@ -1068,9 +1069,8 @@ function do_date($ia)
     } else {
         $coreClass .= " text-item";
         // Format the date  for output
-        $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
-        if ($dateoutput != '' && $dateoutput != 'INVALID') {
-            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+        if ($dateoutput != '') {
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', $dateoutput);
             if ($datetimeobj) {
                 $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
             } else {
@@ -5619,6 +5619,10 @@ function fillDate($dateString)
         case 16:
             return $dateString;
         case 19:
+        case 21: // Y-m-d H:i.s.n (n==1)
+        case 22: // Y-m-d H:i.s.n (n==2)
+        case 23: // mssql Y-m-d H:i.s.n (n==3)
+        case 24: // Y-m-d H:i.s.n (n==4)
         case 25: // Assume date('c')
             $date = new DateTime($dateString);
             if ($date) {
