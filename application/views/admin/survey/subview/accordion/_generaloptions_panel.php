@@ -136,7 +136,12 @@
                 <?php $admin = empty($oSurvey->admin) && !empty($oSurvey->owner) ? $oSurvey->owner->full_name : $oSurvey->admin; ?>
                 <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="">
-                    <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
+                    <?php echo CHtml::textField('admin',$admin,array(
+                        'class' => 'form-control',
+                        'id' => 'admin',
+                        'size' => '50',
+                        'maxlength' => '50',
+                    )); ?>
                 </div>
             </div>
 
@@ -164,7 +169,12 @@
             <div class="form-group">
                 <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
                 <div class="">
-                    <input class="form-control" type='text' size='50' id='faxto' name='faxto' value="<?php echo htmlspecialchars($oSurvey->faxto); ?>" />
+                    <?php echo CHtml::textField('faxto',$admin,array(
+                        'class' => 'form-control',
+                        'id' => 'faxto',
+                        'size' => '20',
+                        'maxlength' => '20',
+                    )); ?>
                 </div>
             </div>
 
