@@ -1,4 +1,5 @@
-import Tour from '../lib/bootstrap-tour.js';
+import 'popper.js';
+import Tour from '../lib/bootstrap-tourist.js';
 import globalTourObject from './tours/global-tour-object.js';
 
 const TourLibrary = function () {
@@ -27,6 +28,11 @@ const TourLibrary = function () {
 
             _setNoTourActive();
         },
+        getCurrentStep = () => {
+            if ((_getIsTourActive() !== false)) {
+                return globalTourObject.getCurrentStep();
+            }
+        },
         initTour = (tourName) => {
             return new Promise((resolve, reject) => {
                 if ((_getIsTourActive() !== false) && (_getIsTourActive() !== tourName)) {
@@ -41,9 +47,9 @@ const TourLibrary = function () {
                     };
                     
                     tourObject.debug = window.debugState.backend;
+                    tourObject.framework = "bootstrap3";
 
                     _actionActiveTour = new Tour(tourObject);
-                    _actionActiveTour.init();
                     window.addEventListener('resize', ()=>{
                         _actionActiveTour.redraw();
                     });
@@ -74,10 +80,11 @@ const TourLibrary = function () {
     if (_activeTour !== false && (typeof _actionActiveTour !== 'function')) {
         initTour(_activeTour).then(
             (startedTutorial) => {
-                if(startedTutorial.ended())
+                if(startedTutorial.ended()){
                     startedTutorial.restart();
-                else
-                    startedTutorial.start(true);
+                } else {
+                    setTimeout(function(){ startedTutorial.start();}, 1);
+                }
             },
             (err) => {
                 console.ls.log('Couldn\'t be loaded!');
@@ -90,7 +97,8 @@ const TourLibrary = function () {
         triggerTourStart: triggerTourStart,
         clearActiveTour: clearActiveTour,
         initTour: initTour,
-        _actionActiveTour: _actionActiveTour
+        _actionActiveTour: _actionActiveTour,
+        getCurrentStep: getCurrentStep
     };
 };
 

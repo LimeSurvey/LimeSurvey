@@ -6,8 +6,9 @@
   "author": "Markus Flür <markus.fluer@limesurvey.org>",
   "license": "GPL-3.0",
   "scripts": {
-    "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
-    "build": "WEBPACK_ENV=production webpack"
+    "dev": "gulp compile",
+    "prod": "compile:production",
+    "build": "gulp"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -41,6 +42,7 @@
   "dependencies": {
     "bootstrap-tour": "^0.12.0",
     "gulp": "^3.9.1",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "popper.js": "^1.15.0"
   }
 }

@@ -176,7 +176,7 @@ const getSurveyidFromURL = function(){
     return RegexCheck != null ? RegexCheck[3] : null;
 };
 
-$(document).ready(function(){
+$(document).on('ready pjax:scriptcomplete',function(){
     let surveyid = 'newSurvey'; 
     if(window.LS != undefined) {
         surveyid = getSurveyidFromURL();

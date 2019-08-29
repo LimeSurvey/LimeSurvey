@@ -44,7 +44,7 @@ const globalTourObject = function(){
                 step.onShown = step.onShown ? eval(step.onShown) : undefined;
                 step.onHide = step.onHide ? eval(step.onHide) : undefined;
                 step.onHidden = step.onHidden ? eval(step.onHidden) : undefined;
-                if(window.debugState.backend) { console.ls.log(step); }
+                //if(window.debugState.backend) { console.ls.log(step); }
                 return step;
             });
             

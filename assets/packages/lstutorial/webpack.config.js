@@ -18,7 +18,7 @@ appName = appName + '.js';
 // Main Settings config
 module.exports = {
     entry: entryPoint,
-    devtool: 'source-map',
+    devtool: 'cheap-module-eval-source-map',
     output: {
         path: exportPath,
         filename: appName
