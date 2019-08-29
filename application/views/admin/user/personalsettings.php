@@ -1,15 +1,16 @@
 <?php
 /**
  * Personal settings edition
+ * @var $currentPreselectedQuestiontype string
+ * @var $oQuestionSelector PreviewModalWidget
  */
 
     $aQuestionTypeGroups = array();
-    $aQuestionTypeList = Question::typeList();
 
-    if (Yii::app()->session['questionselectormode'] !== 'default') {
-        $selectormodeclass = Yii::app()->session['questionselectormode'];
+    if (App()->session['questionselectormode'] !== 'default') {
+        $selectormodeclass = App()->session['questionselectormode'];
     } else {
-        $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
+        $selectormodeclass = App()->getConfig('defaultquestionselectormode');
     }
     
     foreach ($aQuestionTypeList as $key=> $questionType) {
@@ -26,18 +27,18 @@
 
         $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
-            <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+            <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
         </div>';
         if ($imageName == 'S') {
             $questionType['detailpage'] = '
             <div class="col-sm-12 currentImageContainer">
-                <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
-                <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
+                <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+                <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
             </div>';
         }
         $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
     }
-    $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+
     $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
     'widgetsJsName' => "preselectquestiontype",
     'renderType' =>  "group-simple",
@@ -49,10 +50,10 @@
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $currentPreselectedQuestiontype,
     'debug' => YII_DEBUG,
-    'currentSelected' => Question::getQuestionTypeName($currentPreselectedQuestiontype),
+    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
     'buttonClasses' => ['btn-primary'],
     'optionArray' => [
-        'selectedClass' => Question::getQuestionClass($currentPreselectedQuestiontype),
+        'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
     ]
 ));
 
@@ -197,7 +198,7 @@ echo $oQuestionSelector->getModal();
                                     <?php echo CHtml::label(gT("HTML editor mode:"), 'htmleditormode', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php
-                                            echo CHtml::dropDownList('htmleditormode',  Yii::app()->session['htmleditormode'], array(
+                                            echo CHtml::dropDownList('htmleditormode',  App()->session['htmleditormode'], array(
                                                 'default' => gT("Default",'unescaped'),
                                                 'wysiwyg' => gT("Inline HTML editor",'unescaped'),
                                                 'source' => gT("Sourcecode editor",'unescaped'),
@@ -214,7 +215,7 @@ echo $oQuestionSelector->getModal();
                                     <?php echo CHtml::label(gT("Question type selector:"), 'questionselectormode', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php
-                                        echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
+                                        echo CHtml::dropDownList('questionselectormode', App()->session['questionselectormode'], array(
                                             'default' => gT("Default",'unescaped'),
                                             'full' => gT("Full selector",'unescaped'),
                                             'none' => gT("Simple selector",'unescaped')
@@ -237,7 +238,7 @@ echo $oQuestionSelector->getModal();
                                     <?php echo CHtml::label(gT("Template editor mode:"), 'templateeditormode', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php
-                                        echo CHtml::dropDownList('templateeditormode', Yii::app()->session['templateeditormode'], array(
+                                        echo CHtml::dropDownList('templateeditormode', App()->session['templateeditormode'], array(
                                             'default' => gT("Default"),
                                             'full' => gT("Full template editor"),
                                             'none' => gT("Simple template editor")
@@ -253,10 +254,10 @@ echo $oQuestionSelector->getModal();
                                     <div class="">
                                         <select name='dateformat' id='dateformat' class="form-control">
                                             <?php
-                                            foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
+                                            foreach (getDateFormatData(0,App()->session['adminlang']) as $index => $dateformatdata)
                                             {
                                                 echo "<option value='{$index}'";
-                                                if ($index == Yii::app()->session['dateformat'])
+                                                if ($index == App()->session['dateformat'])
                                                 {
                                                     echo " selected='selected'";
                                                 }

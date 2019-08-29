@@ -15,6 +15,12 @@
         <apiVersion>1</apiVersion>
         <description>Array dual scale question type configuration</description>
         <type>1</type>
+        <group>Arrays</group>
+        <subquestions>1</subquestions>
+        <answerscales>2</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>array-flexible-duel-scale</class>
     </metadata>
 
     <!--

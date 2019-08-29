@@ -18,6 +18,12 @@
         <apiVersion>1</apiVersion>
         <description>New implementation of the ranking question</description>
         <type>R</type>
+        <group>Mask questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>1</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>ranking</class>
     </metadata>
 
     <!--

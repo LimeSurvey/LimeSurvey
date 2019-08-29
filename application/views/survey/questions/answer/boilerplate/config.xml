@@ -15,6 +15,12 @@
         <apiVersion>1</apiVersion>
         <description>Text display question type configuration</description>
         <type>X</type>
+        <group>Mask questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>boilerplate</class>
     </metadata>
 
     <!--

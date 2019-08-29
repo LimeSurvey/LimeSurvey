@@ -958,6 +958,8 @@ function createDatabase($oDB){
             'theme_type' => "string(150)",
             'type' => "string(150)",
             'extends' => "string(150) NULL",
+            'group' => "string(150)",
+            'settings' => "text"
         ], $options);
 
         $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);

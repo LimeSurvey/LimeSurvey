@@ -1059,10 +1059,10 @@ class questions extends Survey_Common_Action
         $aData['activated'] = $sumresult1->active;
 
         // Prepare selector Class for javascript function
-        if (Yii::app()->session['questionselectormode'] !== 'default') {
-            $selectormodeclass = Yii::app()->session['questionselectormode'];
+        if (App()->session['questionselectormode'] !== 'default') {
+            $selectormodeclass = App()->session['questionselectormode'];
         } else {
-            $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
+            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
         }
 
         $aData['accordionDatas']['selectormodeclass'] = $selectormodeclass;
@@ -1258,6 +1258,10 @@ class questions extends Survey_Common_Action
 
             $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
             $aData['oQuestion'] = $oQuestion;
+            $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings(true,false);
+            $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
+            $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings(true,false);
+            $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
             $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid);
@@ -1282,10 +1286,10 @@ class questions extends Survey_Common_Action
             $aData['activated'] = $oSurvey->active;
 
                 // Prepare selector Class for javascript function
-            if (Yii::app()->session['questionselectormode'] !== 'default') {
-                $selectormodeclass = Yii::app()->session['questionselectormode'];
+            if (App()->session['questionselectormode'] !== 'default') {
+                $selectormodeclass = App()->session['questionselectormode'];
             } else {
-                $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
+                $selectormodeclass = App()->getConfig('defaultquestionselectormode');
             }
 
             $aData['selectormodeclass'] = $selectormodeclass;

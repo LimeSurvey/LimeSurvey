@@ -83,6 +83,8 @@ class questionedit extends Survey_Common_Action
         // combine aData
         $aData['surveyid'] = $iSurveyID;
         $aData['oSurvey'] = $oSurvey;
+        $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings(true,false);
+        $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
         //$aData['qct']

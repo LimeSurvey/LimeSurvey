@@ -15,6 +15,12 @@
         <apiVersion>1</apiVersion>
         <description>Short free text question type configuration</description>
         <type>S</type>
+        <group>Text questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>text-short</class>
     </metadata>
 
     <!--

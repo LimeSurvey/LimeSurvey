@@ -49,9 +49,16 @@ class PreviewModalWidget extends CWidget {
     }
 
 
+    /**
+     * @param bool $return
+     *
+     * @return string|void
+     * @throws CException
+     */
     public function getModal($return=false){
         if(preg_match("/modal/",$this->renderType)){
-            return $this->render($this->view, null, $return);
+
+            return $this->render($this->getView(), null, $return);
         }
         echo "";
         return;

@@ -91,6 +91,7 @@
          */
         public static function loadAllQuestionXMLConfigurationsIntoDatabase($questionThemeDirectories = null)
         {
+
             $questionDirectoriesAndPaths = [];
             $missingQuestionThemeAttributes = [];
             $coreQuestionsPath = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
@@ -120,72 +121,84 @@
                 $bOldEntityLoaderState = libxml_disable_entity_loader(true);
                 // process XML Question Files
                 if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
-//                    try {
-                    $transaction = App()->db->beginTransaction();
-                    foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
-                        foreach ($questionConfigFilePaths as $questionConfigFilePath) {
-                            $sQuestionConfigFile = file_get_contents(realpath($questionConfigFilePath));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-                            $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
-                            $questionMetaDatas = json_decode(json_encode($oQuestionConfig->metadata), true);
+                    try {
+                        $transaction = App()->db->beginTransaction();
+                        foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
+                            foreach ($questionConfigFilePaths as $questionConfigFilePath) {
+                                $sQuestionConfigFile = file_get_contents(realpath($questionConfigFilePath));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                                $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
+                                $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
 
-                            // set type and check if question is extended
-                            $questionType = '';
-                            $extendedQuestion = $questionMetaDatas['type'];
-                            if ($directory == $coreQuestionsPath) {
-                                $extendedQuestion = '';
-                                $questionType = gT('Core theme');
-                            }
-                            if ($directory == $customQuestionThemesPath) {
-                                $questionType = gT('Core theme');
-                            }
-                            if ($directory == $userQuestionThemesPath) {
-                                $questionType = gT('User theme');
-                            }
-
-                            // test xml for required metaData
-                            {
-                                $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'type'];
-                            }
-                            foreach ($requiredMetaDataArray as $requiredMetaData) {
-                                if (!array_key_exists($requiredMetaData, $questionMetaDatas)) {
-                                    $missingQuestionThemeAttributes[$questionConfigFilePath][] = $requiredMetaData;
+                                // test xml for required metaData
+                                {
+                                    $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
                                 }
+                                foreach ($requiredMetaDataArray as $requiredMetaData) {
+                                    if (!array_key_exists($requiredMetaData, $questionMetaData)) {
+                                        $missingQuestionThemeAttributes[$questionConfigFilePath][] = $requiredMetaData;
+                                    }
+                                }
+
+                                // set type and check if question is extended
+                                $questionType = '';
+                                $extendedQuestion = $questionMetaData['type'];
+                                if ($directory == $coreQuestionsPath) {
+                                    $extendedQuestion = '';
+                                    $questionType = gT('Core theme');
+                                }
+                                if ($directory == $customQuestionThemesPath) {
+                                    $questionType = gT('Core theme');
+                                }
+                                if ($directory == $userQuestionThemesPath) {
+                                    $questionType = gT('User theme');
+                                }
+
+                                // set settings as json
+                                $questionMetaData['settings'] = json_encode([
+                                    'subquestions' => $questionMetaData['subquestions'],
+                                    'answerscales' => $questionMetaData['answerscales'],
+                                    'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'],
+                                    'assessable' => $questionMetaData['assessable'],
+                                    'class' => $questionMetaData['class'],
+                                ]);
+
+                                $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $extendedQuestion]);
+                                if ($questionTheme == null) {
+                                    $questionTheme = new QuestionTheme();
+                                }
+                                $questionTheme->setAttributes([
+                                    'name' => $questionMetaData['name'],
+                                    'visible' => 'Y',
+                                    'folder' => $questionConfigFilePath,
+                                    'title' => $questionMetaData['title'],
+                                    'creation_date' => $questionMetaData['creationDate'],
+                                    'author' => $questionMetaData['author'],
+                                    'author_email' => $questionMetaData['authorEmail'],
+                                    'author_url' => $questionMetaData['authorUrl'],
+                                    'copyright' => $questionMetaData['copyright'],
+                                    'license' => $questionMetaData['license'],
+                                    'version' => $questionMetaData['version'],
+                                    'api_version' => $questionMetaData['apiVersion'],
+                                    'description' => $questionMetaData['description'],
+                                    'last_update' => 'now',
+                                    'owner_id' => 1,
+                                    'theme_type' => $questionType,
+                                    'type' => $questionMetaData['type'],
+                                    'extends' => $extendedQuestion,
+                                    'group' => $questionMetaData['group'],
+                                    'settings' => $questionMetaData['settings']
+                                ], false);
+                                $questionTheme->save();
                             }
-                            $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaDatas['name'], ':extends' => $extendedQuestion]);
-                            if ($questionTheme == null) {
-                                $questionTheme = new QuestionTheme();
-                            }
-                            $questionTheme->setAttributes([
-                                'name' => $questionMetaDatas['name'],
-                                'visible' => 'Y',
-                                'folder' => $questionConfigFilePath,
-                                'title' => $questionMetaDatas['title'],
-                                'creation_date' => $questionMetaDatas['creationDate'],
-                                'author' => $questionMetaDatas['author'],
-                                'author_email' => $questionMetaDatas['authorEmail'],
-                                'author_url' => $questionMetaDatas['authorUrl'],
-                                'copyright' => $questionMetaDatas['copyright'],
-                                'license' => $questionMetaDatas['license'],
-                                'version' => $questionMetaDatas['version'],
-                                'api_version' => $questionMetaDatas['apiVersion'],
-                                'description' => $questionMetaDatas['description'],
-                                'last_update' => 'now',
-                                'owner_id' => 1,
-                                'theme_type' => $questionType,
-                                'type' => $questionMetaDatas['type'],
-                                'extends' => $extendedQuestion
-                            ], false);
-                            $questionTheme->save();
                         }
+                        $transaction->commit();
+                    } catch (Exception $e) {
+                        //TODO: flashmessage for users
+                        echo $e->getMessage();
+                        var_dump($e->getTrace());
+                        echo $missingQuestionThemeAttributes;
+                        $transaction->rollback();
                     }
-                    $transaction->commit();
-//                    } catch (Exception $e) {
-//                        //TODO: flashmessage for users
-//                        echo $e->getMessage();
-//                        var_dump($e->getTrace());
-//                        echo $missingQuestionThemeAttributes;
-//                        $transaction->rollback();
-//                    }
                 }
             }
             // Put back entity loader to its original state, to avoid contagion to other applications on the server
@@ -323,7 +336,9 @@
                     'owner_id' => 1,
                     'theme_type' => $questionMetaData['themeType'],
                     'type' => $questionMetaData['type'],
-                    'extends' => $questionMetaData['extends']
+                    'extends' => $questionMetaData['extends'],
+                    'group' => $questionMetaData['group'],
+                    'settings' => $questionMetaData['settings']
                 ], false);
                 if ($questionTheme->save()) {
                     return $questionMetaData['title'];
@@ -333,10 +348,13 @@
         }
 
         /**
-         * @param $pathToXML         *
+         * Returns the Theme-type and Extended-type for the current question
+         *
+         * @param $pathToXML
          * @param $questionMetaData
          *
-         * @return string
+         * @return array
+         * TODO: move to getAllQuestionMetaData
          */
         public static function getThemeTypeAndExtendedType($pathToXML, $questionMetaData)
         {
@@ -397,7 +415,9 @@
                     'owner_id' => 1,
                     'theme_type' => 'XML Theme',
                     'type' => $questionMetaData['type'],
-                    'extends' => $questionMetaData['extends']
+                    'extends' => $questionMetaData['extends'],
+                    'group' => $questionMetaData['group'],
+                    'settings' => $questionMetaData['settings']
                 ], false);
                 $questionThemes[] = $questionTheme;
             }
@@ -448,6 +468,15 @@
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
             $questionMetaData['folder'] = $pathToXML;
+
+            // set settings as json
+            $questionMetaData['settings'] = json_encode([
+                'subquestions' => $questionMetaData['subquestions'],
+                'answerscales' => $questionMetaData['answerscales'],
+                'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'],
+                'assessable' => $questionMetaData['assessable'],
+                'class' => $questionMetaData['class'],
+            ]);
 
             libxml_disable_entity_loader($bOldEntityLoaderState);
             return $questionMetaData;
@@ -504,6 +533,64 @@
                 return $oTemplate->delete();
             }
             return false;
+        }
+
+
+        public static function getQuestionClass()
+        {
+
+        }
+
+        /**
+         * Returns Question Base settings
+         *
+         * @param string $question_type
+         *
+         * @return mixed $baseQuestions Questions as Array or Object
+         */
+        public static function getQuestionBaseSettings($question_type)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'extends = :extends';
+            $criteria->addCondition('type = :type', 'AND');
+            $criteria->addCondition('visible = :visible', 'AND');
+            $criteria->params = [':extends' => '', ':type' => $question_type, ':visible' => 'Y'];
+
+            $baseQuestions = self::model()->query($criteria, false, false);
+            $baseQuestions['settings'] = json_decode($baseQuestions['settings']);
+
+
+            return $baseQuestions;
+
+        }
+
+        /**
+         * Returns all Questions Base settings
+         *
+         * @param bool $typeAsKey
+         * @param bool $asAR
+         *
+         * @return mixed $baseQuestions Questions as Array or Object
+         */
+        public static function getAllQuestionBaseSettings($typeAsKey = true, $asAR = false)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'extends = :extends';
+            $criteria->addCondition('visible = :visible', 'AND');
+            $criteria->params = [':extends' => '', ':visible' => 'Y'];
+
+            $baseQuestions = self::model()->query($criteria, true, $asAR);
+
+            // render Keys as types for PreviewModalWidget
+            if ($typeAsKey === true){
+                $baseQuestionsWithTypeKey = [];
+                foreach ($baseQuestions as $key => $baseQuestion){
+                    $baseQuestionsWithTypeKey[$baseQuestion['type']] = $baseQuestion;
+                }
+                $baseQuestions = $baseQuestionsWithTypeKey;
+            }
+
+            return $baseQuestions;
         }
 
     }

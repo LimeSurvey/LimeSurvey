@@ -10,12 +10,12 @@
         foreach ($aGroupArray[$this->groupItemsKey] as $sItemKey => $aItemContent) { 
             $selected = $this->value == $sItemKey ? 'selected' : '';
             if(YII_DEBUG) {
-                echo sprintf("<option value='%s' %s>%s (%s)</option>", $sItemKey, $selected, $aItemContent['description'], $sItemKey);
+                echo sprintf("<option value='%s' %s>%s (%s)</option>", $sItemKey, $selected, $aItemContent['title'], $sItemKey);
             } else {
-                echo sprintf("<option value='%s' %s>%s</option>", $sItemKey, $selected, $aItemContent['description']);
+                echo sprintf("<option value='%s' %s>%s</option>", $sItemKey, $selected, $aItemContent['title']);
             }
         } 
-        echo "</optgroup>"; 
+        echo "</optgroup>";
     } 
     ?>
 </select> 

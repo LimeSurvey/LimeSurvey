@@ -31,19 +31,19 @@
                       <div class="panel-body ls-space padding all-0">
                         <div class="list-group ls-space margin all-0">
                           <?php foreach ($aGroupArray[$this->groupItemsKey] as $sItemKey => $aItemContent) { ?>
-                            <a 
-                              href="#" 
-                              class="list-group-item selector__Item--select-<?=$this->widgetsJsName?> <?=@$aItemContent['htmlclasses']?>" 
+                            <a
+                              href="#"
+                              class="list-group-item selector__Item--select-<?=$this->widgetsJsName?> <?=@$aItemContent['htmlclasses']?>"
                               data-selector="<?=!empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
                               data-key="<?=$sItemKey?>"
                               data-item-value='<?=json_encode([
                                     "key" => $sItemKey,
-                                    "title" => htmlentities($aItemContent['description']),
+                                    "title" => htmlentities($aItemContent['title']),
                                     "itemArray" => $aItemContent
                                 ]); ?>'
                               <?=@$aItemContent['extraAttributes']?>
                             >
-                              <?=$aItemContent['description']?>
+                              <?=$aItemContent['title']?>
                                 <?php if (YII_DEBUG) {
                                     ?>
                                   <em class="small"><?=gT($this->debugKeyCheck)?> <?=$sItemKey?></em>
@@ -62,7 +62,7 @@
                 <div class="container-center">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3> 
+                            <h3>
                             <b><?=gT($this->previewWindowTitle)?></b><br/>
                             <p id="selector__<?=$this->widgetsJsName?>-currentSelected"><?=$this->currentSelected?></p>
                             </h3>
