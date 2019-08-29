@@ -326,7 +326,7 @@ class LsDefaultDataSets
                         ."</div>"
                     ."</div>"
                 ."</div>",
-                'onShown' => "(function(tour){ console.ls.logT($('#notif-container').children()); $('#notif-container').children().remove(); })",
+                'onShown' => "(function(tour){ $('#notif-container').children().remove(); })",
                 'onEnd' => "(function(tour){window.location.reload();})",
                 'endOnOrphan' => true,
             )),
