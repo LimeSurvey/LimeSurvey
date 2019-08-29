@@ -135,7 +135,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @inheritdoc */
     public function defaultScope()
     {
-        return array('order'=> $this->getTableAlias(false, false).'.template_name');
+        return array('order'=> Yii::app()->db->quoteColumnName($this->getTableAlias(false, false).'.template_name'));
     }
 
     /**
@@ -410,7 +410,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria = new CDbCriteria;
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON t.template_name = template.name';
+        $criteria->join = 'INNER JOIN {{templates}} AS template ON '.Yii::app()->db->quoteColumnName("t.template_name").' = template.name';
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');
@@ -439,7 +439,7 @@ class TemplateConfiguration extends TemplateConfig
         $pageSizeTemplateView = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON t.template_name = template.name';
+        $criteria->join = 'INNER JOIN {{templates}} AS template ON '.Yii::app()->db->quoteColumnName("t.template_name").' = template.name';
         $criteria->together = true; 
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
