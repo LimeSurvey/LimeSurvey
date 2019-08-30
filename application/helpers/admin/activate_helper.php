@@ -497,6 +497,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
     $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
     Yii::app()->db->createCommand($sQuery)->query();
+    LimeExpressionManager::SetDirtyFlag();
 
     $event = new PluginEvent('afterSurveyActivate');
     $event->set('surveyId', $iSurveyID);
