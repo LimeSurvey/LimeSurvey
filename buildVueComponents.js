@@ -26,8 +26,7 @@
  * It needs as well a current nodejs (LTS preferred) as also the yarn package manager installed.
  * 
  */
-const { spawn }  = require('child_process');
-const { execSync }  = require('child_process');
+const { spawn, execSync }  = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const args = process.argv.slice(2)
@@ -91,7 +90,7 @@ const runGetDependenciesInFolder = function (folder) {
     return new Promise((resolve, reject) => {
         console.log(`|| ===  Descending into ${folder} and running 'yarn'`);
         const fullPath = folder; //path.normalize(folder);
-        const command = spawn('yarn', ['-c'], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
+        const command = spawn('yarn', [] , {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
 
         command.on('error', (err) => {
             console.log(err);
@@ -109,7 +108,7 @@ const runBuildFolder = function (folder) {
     return new Promise((resolve, reject) => {
         console.log(`|| === Descending into ${folder} and running 'yarn build'`);
         const fullPath = folder; //path.normalize(folder);
-        const command = spawn('yarn build', ['-c'], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
+        const command = spawn('yarn', ['build'], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
 
         command.on('error', (err) => {
             console.log(err);
