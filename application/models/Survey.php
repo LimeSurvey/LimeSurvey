@@ -438,7 +438,7 @@ class Survey extends LSActiveRecord
             array('expires', 'default', 'value'=>null),
             array('admin,faxto', 'LSYii_Validators'),
             array('admin', 'length', 'min' => 1, 'max'=>50),
-            array('admin', 'length', 'min' => 0, 'max'=>20),
+            array('faxto', 'length', 'min' => 0, 'max'=>20),
             array('adminemail', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
