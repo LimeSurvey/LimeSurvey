@@ -1,5 +1,5 @@
 {
-  "name": "LSRTLPlugin",
+  "name": "lsrtlplugin",
   "version": "1.0.0",
   "description": "A Webkit plugin to automatically create an rtl compatible css file",
   "author": "Markus Fluer <markusfluer@limesurvey.org>",
