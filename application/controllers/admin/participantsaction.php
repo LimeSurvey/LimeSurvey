@@ -1003,6 +1003,15 @@ $url .= "_view"; });
                     $thisduplicate = 1;
                     $dupcount++;
                     if ($overwrite == "true") {
+                        // We want all the non filtering internal attributes to be updated,too
+                        $oParticipant = Participant::model()->findByPk($aData);
+                        foreach ($writearray as $attribute => $value) {
+                            if(in_array($attribute, ['firstname', 'lastname', 'email'])) {
+                                continue;
+                            }
+                            $oParticipant->$attribute = $value;
+                        }
+                        $oParticipant->save();
                         //Although this person already exists, we want to update the mapped attribute values
                         if (!empty($mappedarray)) {
                             //The mapped array contains the attributes we are
