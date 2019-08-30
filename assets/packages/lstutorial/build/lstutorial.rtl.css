@@ -48,7 +48,7 @@
 }
 
 .popover[class*="tour-"] .popover-navigation *[data-role="end"] {
-  float: right;
+  float: left;
 }
 
 .popover[class*="tour-"] .popover-navigation *[data-role="prev"],

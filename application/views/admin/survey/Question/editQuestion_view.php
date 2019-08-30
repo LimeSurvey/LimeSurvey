@@ -207,7 +207,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
 
 
                                 <div  class="form-group">
-                                    <label class=" control-label" for="question_type_button">
+                                    <label id="selector---select-questiontype-label" class=" control-label" for="question_type_button">
                                         <?php
                                             eT("Question type:");
                                         ?>

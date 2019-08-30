@@ -192,6 +192,7 @@ return array(
             'build/lstutorial.css'
         ),
         'depends' => array(
+            'bootstrap',
             'adminbasics',
         )
     ),

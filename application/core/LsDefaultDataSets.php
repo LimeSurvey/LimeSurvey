@@ -475,7 +475,7 @@ class LsDefaultDataSets
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'delayOnElement' => "{element: 'element'}",
                     'element' => '#sidebar',
-                    'placement' => 'top',
+                    'placement' => 'right',
                     'redirect' => false,
                     'prev' => '-1',
                     'onShow' => "(function(tour){
@@ -582,7 +582,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#randomization_group',
                     'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'left',
+                    'placement' => 'right',
                     'redirect' => false,
                 ))
             ),
@@ -615,10 +615,10 @@ class LsDefaultDataSets
                 .gT("This type of question allows you to add multiple subquestions and a set of answers.")
                 .'<p class="alert bg-warning">'.gT("Please select the 'Array'-type.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#selector__questionTypeSelector-modal',
+                    'element' => '#selector---select-questiontype-label',
                     'delayOnElement' => "{
-                        element: '#selector__questionTypeSelector-modal',
-                        maxDelay: 1000
+                        element: '#selector---select-questiontype-label',
+                        maxDelay: 2500
                     }",
                     'delay' => 500,
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
