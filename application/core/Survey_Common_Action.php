@@ -106,8 +106,7 @@ class Survey_Common_Action extends CAction
             'id' => 'iId',
             'gid' => 'iGroupId',
             'qid' => 'iQuestionId',
-            /* Unsure we set 'iSurveyId', 'iSurveyID','surveyid' to same final survey id */
-            /* priority is surveyid,surveyId,sid : surveyId=1&sid=2 set sid surveyid to 1 */
+            /* priority is surveyid,surveyId,sid : surveyId=1&sid=2 set iSurveyId to 1 */
             'sid' => array('iSurveyId', 'iSurveyID', 'surveyid'), // Old link use sid
             'surveyId' => array('iSurveyId', 'iSurveyID', 'surveyid'), // PluginHelper->sidebody : if disable surveyId usage : broke API
             'surveyid' => array('iSurveyId', 'iSurveyID', 'surveyid'),
@@ -128,13 +127,16 @@ class Survey_Common_Action extends CAction
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
-        // (only if that place is empty)
+        // Chek is 2 params are equal for security issue.
         foreach ($pseudos as $key => $pseudo) {
             if (isset($params[$key])) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
                         $params[$pseud] = $params[$key];
+                    } elseif($params[$pseud] != $params[$key]){
+                        // Throw error about multiple params (and if they are different) #15204
+                        throw new CHttpException(403, sprintf(gT("Invalid parameter %s (%s already set)"),$pseud,$key));
                     }
                 }
             }
@@ -286,7 +288,6 @@ class Survey_Common_Action extends CAction
                         // Output
                     case 'output' :
                         //// TODO : http://goo.gl/ABl5t5
-
                         $content .= $viewUrl;
 
                         if (isset($aViewUrls['afteroutput'])) {
