@@ -3,9 +3,11 @@
     /**
      * Class QuestionThemes
      *
+     * Stores all the Metadata and
+     *
      * @property int     $id
      * @property string  $name   Template name
-     * @property string  $folder Template folder name eg: 'default'
+     * @property string  $folder
      * @property string  $title
      * @property string  $creation_date
      * @property string  $author
@@ -22,6 +24,8 @@
      * @property string  $theme_type
      * @property string  $type
      * @property string  $extends
+     * @property string  $group
+     * @property array   $settings
      */
     class QuestionTheme extends LSActiveRecord
     {
@@ -169,7 +173,7 @@
                                 $questionTheme->setAttributes([
                                     'name' => $questionMetaData['name'],
                                     'visible' => 'Y',
-                                    'folder' => $questionConfigFilePath,
+                                    'folder' => dirname($questionConfigFilePath),
                                     'title' => $questionMetaData['title'],
                                     'creation_date' => $questionMetaData['creationDate'],
                                     'author' => $questionMetaData['author'],
@@ -321,7 +325,7 @@
                 $questionTheme->setAttributes([
                     'name' => $questionMetaData['name'],
                     'visible' => 'Y',
-                    'folder' => $pathToXML,
+                    'folder' => dirname($pathToXML),
                     'title' => $questionMetaData['title'],
                     'creation_date' => $questionMetaData['creationDate'],
                     'author' => $questionMetaData['author'],
@@ -400,7 +404,7 @@
                 $questionTheme->setAttributes([
                     'name' => $questionMetaData['name'],
                     'visible' => 'Y',
-                    'folder' => $questionMetaData['folder'],
+                    'folder' => dirname($questionMetaData['folder']),
                     'title' => $questionMetaData['title'],
                     'creation_date' => $questionMetaData['creationDate'],
                     'author' => $questionMetaData['author'],
@@ -438,7 +442,7 @@
             if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
                 foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
                     foreach ($questionConfigFilePaths as $questionConfigFilePath) {
-                        $sQuestionConfigFile = file_get_contents(realpath($questionConfigFilePath));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                        $sQuestionConfigFile = file_get_contents($questionConfigFilePath . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
                         $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
                         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
                         $questionMetaData['folder'] = $questionConfigFilePath;
@@ -446,6 +450,14 @@
                         if ($directory == $coreQuestionsPath) {
                             $questionMetaData['extends'] = '';
                         }
+                        // set settings as json
+                        $questionMetaData['settings'] = json_encode([
+                            'subquestions' => $questionMetaData['subquestions'],
+                            'answerscales' => $questionMetaData['answerscales'],
+                            'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'],
+                            'assessable' => $questionMetaData['assessable'],
+                            'class' => $questionMetaData['class'],
+                        ]);
                         $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['type']] = $questionMetaData;
 
                     }
@@ -464,7 +476,8 @@
         {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
 
-            $sQuestionConfigFile = file_get_contents(realpath($pathToXML));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $awiehjhio = $pathToXML . DIRECTORY_SEPARATOR . 'config.xml';
+            $sQuestionConfigFile = file_get_contents($pathToXML . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
             $questionMetaData['folder'] = $pathToXML;
@@ -517,7 +530,7 @@
                     foreach ($iterator as $info) {
                         $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
                         if ($ext == 'xml') {
-                            $questionDirectoriesAndPaths[$questionThemeDirectory][] = $info->getPathname();
+                            $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname($info->getPathname());
                         }
                     }
                 }
@@ -545,10 +558,11 @@
          * Returns Question Base settings
          *
          * @param string $question_type
+         * @param string $language
          *
          * @return mixed $baseQuestions Questions as Array or Object
          */
-        public static function getQuestionBaseSettings($question_type)
+        public static function getQuestionBaseSettings($question_type, $language = '')
         {
             $criteria = new CDbCriteria();
             $criteria->condition = 'extends = :extends';
@@ -556,24 +570,32 @@
             $criteria->addCondition('visible = :visible', 'AND');
             $criteria->params = [':extends' => '', ':type' => $question_type, ':visible' => 'Y'];
 
-            $baseQuestions = self::model()->query($criteria, false, false);
-            $baseQuestions['settings'] = json_decode($baseQuestions['settings']);
+            $baseQuestion = self::model()->query($criteria, false, false);
+            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
 
+            // language settings
+            if (empty($language)) {
+                $language = App()->session['adminlang'];
+            }
+            $baseQuestion['title'] = gT($baseQuestion['title'], "html", $language);
+            $baseQuestion['group'] = gT($baseQuestion['group'], "html", $language);
 
-            return $baseQuestions;
+            return $baseQuestion;
 
         }
 
         /**
          * Returns all Questions Base settings
          *
-         * @param bool $typeAsKey
-         * @param bool $asAR
+         * @param string $language
+         * @param bool   $typeAsKey
+         * @param bool   $asAR
          *
          * @return mixed $baseQuestions Questions as Array or Object
          */
-        public static function getAllQuestionBaseSettings($typeAsKey = true, $asAR = false)
+        public static function getAllQuestionBaseSettings($language = '', $typeAsKey = true, $asAR = false)
         {
+            $language = App()->session['adminlang'];
             $criteria = new CDbCriteria();
             $criteria->condition = 'extends = :extends';
             $criteria->addCondition('visible = :visible', 'AND');
@@ -581,14 +603,25 @@
 
             $baseQuestions = self::model()->query($criteria, true, $asAR);
 
-            // render Keys as types for PreviewModalWidget
-            if ($typeAsKey === true){
-                $baseQuestionsWithTypeKey = [];
-                foreach ($baseQuestions as $key => $baseQuestion){
-                    $baseQuestionsWithTypeKey[$baseQuestion['type']] = $baseQuestion;
+            $baseQuestionsModified = [];
+
+            foreach ($baseQuestions as $key => $baseQuestion) {
+                // return type as array key
+                if ($typeAsKey === true) {
+                    $baseQuestionsModified[$baseQuestion['type']] = $baseQuestion;
+                } else {
+                    $baseQuestionsModified[] = $baseQuestion;
                 }
-                $baseQuestions = $baseQuestionsWithTypeKey;
+                $lastQuestionKey = array_key_last($baseQuestionsModified);
+
+                // language settings
+                $baseQuestionsModified[$lastQuestionKey]['title'] = gT($baseQuestion['title'], "html", $language);
+                $baseQuestionsModified[$lastQuestionKey]['group'] = gT($baseQuestion['group'], "html", $language);
+
+                // decode settings json
+                $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
             }
+            $baseQuestions = $baseQuestionsModified;
 
             return $baseQuestions;
         }

@@ -323,7 +323,7 @@ class themeoptions  extends Survey_Common_Action
 
             // Load Question Themes into DB
             // TODO: Move to create-database and updatedb_helper
-            QuestionTheme::loadAllQuestionXMLConfigurationsIntoDatabase();
+//            QuestionTheme::loadAllQuestionXMLConfigurationsIntoDatabase();
 
             $oQuestionTheme = new QuestionTheme;
             $aData['oQuestionTheme'] = $oQuestionTheme;

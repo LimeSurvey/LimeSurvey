@@ -1258,9 +1258,7 @@ class questions extends Survey_Common_Action
 
             $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
             $aData['oQuestion'] = $oQuestion;
-            $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings(true,false);
-            $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
-            $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings(true,false);
+            $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings('', true, false);
             $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;

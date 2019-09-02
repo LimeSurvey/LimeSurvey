@@ -22,9 +22,11 @@ abstract class QuestionBaseDataSet extends StaticModel
      *
      * @param int $iQuestionID
      * @param int $sQuestionType
-     * @param int $iSurveyID
      * @param string $sLanguage
+     * @param null   $question_template
+     *
      * @return array
+     * @throws CException
      */
     public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
     {
@@ -37,7 +39,8 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
-        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
+        //TODO: is this even used for anything? 30.08.2019
+//        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
 
         /*
         @todo Discussion:
@@ -145,7 +148,7 @@ abstract class QuestionBaseDataSet extends StaticModel
     //Question theme
     protected function getQuestionThemeOption($currentSetQuestionTheme = null)
     {
-        $aQuestionTemplateList = QuestionTemplate::getQuestionTemplateList($this->sQuestionType);
+        $aQuestionTemplateList = QuestionTheme::model()->findAllByAttributes(['title', 'extends']);
         $aQuestionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($this->oQuestion->qid, $this->sQuestionType, $this->oQuestion->survey->sid)['question_template'];
 
         $aOptionsArray = [];
