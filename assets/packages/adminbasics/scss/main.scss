@@ -1,5 +1,27 @@
+
 $size: 2em;
-$color: #0f3e12;
+$color: rgb(15, 62, 18);
+
+@import 'grid';
+@import 'bootstrap-sub-submenues';
+
+#vue-apps-main-container {
+    min-height: 75vh;
+}
+
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+}
+
+.fa-stack-1x.halfed {
+  font-size: 0.5em;
+}
+
+.fa-1x.halfed {
+  font-size: 0.5em;
+}
 
 .contain-pulse {
   display: flex;
@@ -8,8 +30,6 @@ $color: #0f3e12;
   align-content:bottom;
   height: $size+1;
 }
-
-@import 'grid';
 
 .square {
   background: $color;
@@ -37,19 +57,13 @@ $color: #0f3e12;
   }
 }
 
-@keyframes pulse {  
-  00.000% {
-    box-shadow: 0 0  1em $color;
-  }
-  50.000% {
-    box-shadow: 0 0 0.3em lighten($color,30%);
-    height: $size*0.5;
-    margin-top: $size*0.5;
-    opacity: 0.8;
-  }
-  100.00% {
-    box-shadow: 0 0 1em $color;
-  }
-  
+.simpleWrapper{
+  padding: 0;
+  margin:0;
+  border:none;
+  display: inline-block;
 }
 
+.vue-general-topbar {
+    
+}

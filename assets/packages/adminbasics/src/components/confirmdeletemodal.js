@@ -115,7 +115,7 @@ const ConfirmDeleteModal = function (options) {
                     }
 
                     if (onSuccess) {
-                        var func = eval(onSuccess);
+                        var func = new Function(onSuccess);
                         func(html);
                         return;
                     }

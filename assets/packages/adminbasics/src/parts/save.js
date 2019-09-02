@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import forEach from 'lodash/forEach';
+
 import LOG from '../components/lslog';
 
 const SaveController = () => {
@@ -32,7 +33,15 @@ const SaveController = () => {
 
         return form;
     },
-
+    // displayLoadingState = (el) => {
+    //     const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+    //     $(el).prop('disabled', true).append(loadingSpinner);
+    // },
+    stopDisplayLoadingState = () => {
+        LOG.log('StopLoadingIconAnimation');
+        LS.EventBus.$emit('loadingFinished');
+        // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+    },
     //###########PRIVATE
     checks = () => {
         return {
@@ -42,9 +51,13 @@ const SaveController = () => {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
+                    
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
+                    
                     $form.find('[type="submit"]').first().trigger('click');
                 },
                 on: 'click'
@@ -56,11 +69,15 @@ const SaveController = () => {
                     const $form = getForm(this);
 
                     formSubmitting = true;
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
 
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
+            
                     $form.find('[type="submit"]').first().trigger('click');
+                    displayLoadingState(this);
                 },
                 on: 'click'
             },
@@ -73,6 +90,7 @@ const SaveController = () => {
                         $form = $(formid);
                     //alert($form.find('[type="submit"]').attr('id'));
                     $form.find('[type="submit"]').trigger('click');
+                    displayLoadingState(this);
                     return false;
                 },
                 on: 'click'
@@ -86,11 +104,14 @@ const SaveController = () => {
                     formSubmitting = true;
                     $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
 
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
 
                     $form.find('[type="submit"]').first().trigger('click');
+                    displayLoadingState(this);
 
                 },
                 on: 'click'
@@ -105,6 +126,7 @@ const SaveController = () => {
                     $form.append(closeAfterSaveInput);
                     formSubmitting = true;
                     $form.find('[type="submit"]').first().trigger('click');
+                    displayLoadingState(this);
                 },
                 on: 'click'
             },
@@ -124,6 +146,7 @@ const SaveController = () => {
 
 
                     $form.find('[type="submit"]').trigger('click');
+                    displayLoadingState(this);
                     return false;
                 },
                 on: 'click'
@@ -136,11 +159,14 @@ const SaveController = () => {
                     formSubmitting = true;
                     $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
 
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
 
                     $form.find('[type="submit"]').first().trigger('click');
+                    displayLoadingState(this);
                 },
                 on: 'click'
             },
@@ -152,19 +178,27 @@ const SaveController = () => {
                     $('#question-preview').modal('show');
                 },
                 on: 'click'
+            },
+            _checkStopLoading: {
+                check: '#in_survey_common',
+                run: function(ev) {
+                    stopDisplayLoadingState();
+                    formSubmitting = false;
+                },
+                on: 'lsStopLoading'
             }
         }
     };
     //############PUBLIC
     return () => {
-        _.each(checks(), (checkItem) => {
+        forEach(checks(), (checkItem) => {
             let item = checkItem.check;
-            $(document).off(checkItem.on, item);
+            $(document).off(checkItem.on+'.centralsave', item);
 
             LOG.log('saveBindings', checkItem, $(item));
 
             if ($(item).length > 0) {
-                $(document).on(checkItem.on, item, checkItem.run);
+                $(document).on(checkItem.on+'.centralsave', item, checkItem.run);
                 LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });

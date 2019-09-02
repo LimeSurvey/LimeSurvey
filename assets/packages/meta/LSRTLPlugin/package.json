@@ -1,0 +1,16 @@
+{
+  "name": "lsrtlplugin",
+  "version": "1.0.0",
+  "description": "A Webkit plugin to automatically create an rtl compatible css file",
+  "author": "Markus Fluer <markusfluer@limesurvey.org>",
+  "copyright": "LimeSurvey GmbH",
+  "main": "main.js",
+  "license": "GPL3.0",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "rtlcss": "^2.4.0"
+  },
+  "devDependencies": {
+    "webpack-sources": "^1.4.3"
+  }
+}

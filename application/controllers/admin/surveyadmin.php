@@ -2042,7 +2042,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
-        App()->getClientScript()->registerPackage('jquery-datatable');
 
     }
 

@@ -1,6 +1,6 @@
 //globals formId
 import Vue from "vue";
-Vue.config.devtools = true;
+Vue.config.devtools = false;
 
 import Sidebar from "./components/sidebar.vue";
 import getAppState from "./store/vuex-store.js";
@@ -57,7 +57,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
         panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
         panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
-        $('#pjax-content').css({
+        $('#fullbody-container').css({
             //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
             'overflow-x': 'auto'
@@ -165,21 +165,17 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
     }
 
-    LS.adminsidepanel = LS.adminsidepanel || {};
-    LS.adminsidepanel = panelNameSpace;
+    LS.adminCore.addToNamespace(panelNameSpace, 'adminsidepanel');
 
     return createPanelAppliance;
 };
 
-const getSurveyidFromURL = function(){
-    const RegexCheck = window.location.href.match(/(surveyid|sid)(=|\/)(\d*)/);
-    return RegexCheck != null ? RegexCheck[3] : null;
-};
 
-$(document).on('ready pjax:scriptcomplete',function(){
+
+$(document).ready(function(){
     let surveyid = 'newSurvey'; 
     if(window.LS != undefined) {
-        surveyid = getSurveyidFromURL();
+        surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;
     }
     if(window.SideMenuData) {
         surveyid = window.SideMenuData.surveyid;
