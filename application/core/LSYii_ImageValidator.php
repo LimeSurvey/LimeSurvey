@@ -52,6 +52,7 @@ class LSYii_ImageValidator
             "image/png",
             "image/jpg",
             "image/jpeg",
+            "image/ico",
             "image/gif",
             "image/svg+xml",
             "image/x-icon"

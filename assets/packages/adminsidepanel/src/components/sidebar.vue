@@ -288,17 +288,31 @@ export default {
         },
         mousemove(e, self) {
             if (this.isMouseDown) {
-                // prevent to emit unwanted value on dragend
-                if (e.screenX === 0 && e.screenY === 0) {
-                    return;
+                if(self.$store.getters.isRTL) {
+                    if (e.screenX === 0 && e.screenY === 0) {
+                        return;
+                    }
+                    if ((window.innerWidth-e.clientX) > screen.width / 2) {
+                        this.$store.commit("maxSideBarWidth", true);
+                        return;
+                    }
+                    self.sideBarWidth = (window.innerWidth-e.pageX) - 8 + "px";
+                    this.$store.commit("changeSidebarwidth", self.sideBarWidth);
+                    this.$store.commit("maxSideBarWidth", false);
+                } else {
+                    // prevent to emit unwanted value on dragend
+                    if (e.screenX === 0 && e.screenY === 0) {
+                        return;
+                    }
+                    if (e.clientX > screen.width / 2) {
+                        this.$store.commit("maxSideBarWidth", true);
+                        return;
+                    }
+                    self.sideBarWidth = e.pageX + 8 + "px";
+                    this.$store.commit("changeSidebarwidth", self.sideBarWidth);
+                    this.$store.commit("maxSideBarWidth", false);
                 }
-                if (e.clientX > screen.width / 2) {
-                    this.$store.commit("maxSideBarWidth", true);
-                    return;
-                }
-                self.sideBarWidth = e.pageX + 8 + "px";
-                this.$store.commit("changeSidebarwidth", this.sideBarWidth);
-                this.$store.commit("maxSideBarWidth", false);
+                
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }

@@ -5130,6 +5130,10 @@ function fillDate($dateString)
         case 16:
             return $dateString;
         case 19:
+        case 21: // Y-m-d H:i.s.n (n==1)
+        case 22: // Y-m-d H:i.s.n (n==2)
+        case 23: // mssql Y-m-d H:i.s.n (n==3)
+        case 24: // Y-m-d H:i.s.n (n==4)
         case 25: // Assume date('c')
             $date = new DateTime($dateString);
             if ($date) {

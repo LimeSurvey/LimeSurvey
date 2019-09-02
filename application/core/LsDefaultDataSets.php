@@ -310,7 +310,7 @@ class LsDefaultDataSets
             'active' => 1,
             'settings' => json_encode(array(
                 'keyboard' => false,
-                'orphan' => true,
+                // 'orphan' => true,
                 'template' => ""
                 ."<div class='popover tour lstutorial__template--mainContainer'>"
                 ."<div class='arrow'></div>"
@@ -326,9 +326,9 @@ class LsDefaultDataSets
                         ."</div>"
                     ."</div>"
                 ."</div>",
-                'onShown' => "(function(tour){ console.ls.logT($('#notif-container').children()); $('#notif-container').children().remove(); })",
+                'onShown' => "(function(tour){ $('#notif-container').children().remove(); })",
                 'onEnd' => "(function(tour){window.location.reload();})",
-                'endOnOrphan' => true,
+                // 'endOnOrphan' => true,
             )),
             'permission' => 'survey',
             'permission_grade' => 'create'
@@ -347,14 +347,17 @@ class LsDefaultDataSets
                 'title' => gT('Welcome to LimeSurvey!'),
                 'content' => gT("This tour will help you to easily get a basic understanding of LimeSurvey.")."<br/>"
                     .gT("We would like to help you with a quick tour of the most essential functions and features."),
-                'settings' => json_encode(array(
-                    'element' => '#lime-logo',
-                    'path' => ['/admin/index'],
-                    'placement' => 'bottom',
-                    'redirect' => true,
-                    'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
-                    ))
-                ),
+                'settings' => json_encode(
+                    array(
+                        'element' => '#lime-logo',
+                        'delayOnElement' => "{element: 'element'}",
+                        'path' => ['/admin/index'],
+                        'placement' => 'bottom',
+                        'redirect' => true,
+                        'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })"
+                        )
+                )
+            ),
             array(
                 'teid' => 2,
                 'ordering' => 2,
@@ -367,8 +370,7 @@ class LsDefaultDataSets
                     'path' => ['/admin/index'],
                     'reflex' => true,
                     'onShow' => "(function(tour){ $('#welcomeModal').modal('hide'); })",
-                    'onNext' => "(function(tour){
-                    })",
+                    'onNext' => "(function(tour){ })",
                 ))
             ),
             array(
@@ -380,9 +382,18 @@ class LsDefaultDataSets
                 ."<p class='bg-warning alert'>".gT("You have to put in at least a title for the survey to be saved.").'</p>',
                 'settings' => json_encode(array(
                     'path' => ['/admin/survey/sa/newsurvey'],
+                    'delayOnElement' => "{
+                        element: '#surveyls_title',
+                        maxDelay: 1000
+                    }",
                     'element' => '#surveyls_title',
                     'redirect' => true,
                     'prev' => '-1',
+                    'onNext' => "(function(tour){
+                        if( $('#surveyls_title').val() == '' ) {
+                            return false;
+                        }
+                    })",
                 ))
             ),
             array(
@@ -462,8 +473,9 @@ class LsDefaultDataSets
                 .gT('The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
                 'settings' => json_encode(array(
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'delayOnElement' => "{element: 'element'}",
                     'element' => '#sidebar',
-                    'placement' => 'top',
+                    'placement' => 'right',
                     'redirect' => false,
                     'prev' => '-1',
                     'onShow' => "(function(tour){
@@ -539,6 +551,10 @@ class LsDefaultDataSets
                 'content' => gT('The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later).'),
                 'settings' => json_encode(array(
                     'element' => '#group_name_en',
+                    'delayOnElement' => "{
+                        element: '#group_name_en',
+                        maxDelay: 1000
+                    }",
                     'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
@@ -566,7 +582,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#randomization_group',
                     'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
-                    'placement' => 'left',
+                    'placement' => 'right',
                     'redirect' => false,
                 ))
             ),
@@ -599,7 +615,11 @@ class LsDefaultDataSets
                 .gT("This type of question allows you to add multiple subquestions and a set of answers.")
                 .'<p class="alert bg-warning">'.gT("Please select the 'Array'-type.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#selector__questionTypeSelector-modal',
+                    'element' => '#selector---select-questiontype-label',
+                    'delayOnElement' => "{
+                        element: '#selector---select-questiontype-label',
+                        maxDelay: 2500
+                    }",
                     'delay' => 500,
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'left',
@@ -691,7 +711,11 @@ class LsDefaultDataSets
                     .gT("Let's start with subquestions.")
                     .'<p class="alert bg-warning">'.gT("Click on the 'Edit subquestions' button.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminsidepanel__topbar--selectorAddSubquestions',
+                    'element' => '#adminpanel__topbar--selectorAddSubquestions',
+                    'delayOnElement' => "{
+                        element: '#adminpanel__topbar--selectorAddSubquestions',
+                        maxDelay: 1000
+                    }",
                     'placement' => 'bottom',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'reflex' => true,
@@ -712,6 +736,7 @@ class LsDefaultDataSets
                 ."<p class='bg-info alert'>".gT("Pro tip: The subquestion may even contain HTML code.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
+                    'delayOnElement' => "{element: 'element'}",
                     'path' => ['admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'bottom',
                     'redirect' => false,
@@ -758,7 +783,11 @@ class LsDefaultDataSets
                 .gT("The answer options will be shown for each subquestion.")
                 .'<p class="alert bg-warning">'.gT("Click on the 'Edit answer options' button.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminsidepanel__topbar--selectorAddAnswerOptions',
+                    'element' => '#adminpanel__topbar--selectorAddAnswerOptions',
+                    'delayOnElement' => "{
+                        element: '#adminpanel__topbar--selectorAddAnswerOptions',
+                        maxDelay: 1000
+                    }",
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
@@ -780,6 +809,7 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'."Please add at least two answer options to proceed.".'</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
+                    'delayOnElement' => "{element: 'element'}",
                     'path' => ['admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'bottom',
                     'redirect' => false,
@@ -814,6 +844,10 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT("Click on 'Preview survey' and return to this window when you are done testing.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '.selector__topbar--previewSurvey',
+                    'delayOnElement' => "{
+                        element: '.selector__topbar--previewSurvey',
+                        maxDelay: 1000
+                    }",
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
@@ -849,6 +883,7 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT("Click on 'Activate this survey'").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#ls-activate-survey',
+                    'delayOnElement' => "{element: 'element'}",
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
@@ -871,6 +906,10 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT('Now click on "Save & activate survey"').'</p>',
                 'settings' => json_encode(array(
                     'element' => '#activateSurvey__basicSettings--proceed',
+                    'delayOnElement' => "{
+                        element: '#activateSurvey__basicSettings--proceed',
+                        maxDelay: 1000
+                    }",
                     'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => '',
                     'reflex' => true,
@@ -894,6 +933,10 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT("Click on 'No, thanks'").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#activateTokenTable__selector--no',
+                    'delayOnElement' => "{
+                        element: '#activateTokenTable__selector--no',
+                        maxDelay: 1000
+                    }",
                     'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
@@ -913,7 +956,11 @@ class LsDefaultDataSets
                 'content' => gT("Just share this link with some of your friends and of course, test it yourself.")
                 .'<p class="alert bg-success lstutorial__typography--white">'.gT("Thank you for taking the tour!").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminsidepanel__surveysummary--mainLanguageLink',
+                    'element' => '#adminpanel__surveysummary--mainLanguageLink',
+                    'delayOnElement' => "{
+                        element: '#adminpanel__surveysummary--mainLanguageLink',
+                        maxDelay: 1000
+                    }",
                     'path' => ['/'.'(index.php)?'],
                     'placement' => 'top',
                     'redirect' => false,

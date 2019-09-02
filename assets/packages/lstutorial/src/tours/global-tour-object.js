@@ -1,7 +1,3 @@
-//import _ from 'lodash';
-import {map as _map, reduce as _reduce} from 'lodash';
-
-
 const globalTourObject = function(){
     const getBasedUrls = (/(\/index.php)?\?r=admin/.test(window.location.href)),
     
@@ -9,7 +5,7 @@ const globalTourObject = function(){
             const getBasedUrls = false;
             if(params === false) return '';
 
-            const returner = (getBasedUrls ? '?' :'/') + _reduce(params, (urlParams, value, key)=>{ 
+            const returner = (getBasedUrls ? '?' :'/') + LS.ld.reduce(params, (urlParams, value, key)=>{ 
                 return urlParams + (
                     getBasedUrls ? 
                         (urlParams === '' ? '' : '&')+key+'='+value 
@@ -37,14 +33,14 @@ const globalTourObject = function(){
         },
         _prepareMethods = function(tutorialObject){
             'use strict';
-            tutorialObject.steps = _map(tutorialObject.steps, function(step,i){
+            tutorialObject.steps = LS.ld.map(tutorialObject.steps, function(step,i){
                 step.path    = _preparePath(step.path);
                 step.onNext  = step.onNext  ? eval(step.onNext)  : undefined;
                 step.onShow  = step.onShow  ? eval(step.onShow)  : undefined;
                 step.onShown = step.onShown ? eval(step.onShown) : undefined;
                 step.onHide = step.onHide ? eval(step.onHide) : undefined;
                 step.onHidden = step.onHidden ? eval(step.onHidden) : undefined;
-                if(window.debugState.backend) { console.ls.log(step); }
+                //if(window.debugState.backend) { console.ls.log(step); }
                 return step;
             });
             
