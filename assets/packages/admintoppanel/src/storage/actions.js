@@ -8,6 +8,7 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
+                    sid: context.state.sid,
                     qid: context.state.qid
                 }))
                 .then((data) => {
@@ -32,6 +33,7 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
+                    sid: context.state.sid,
                     gid: context.state.gid
                 }))
                 .then((data) => {

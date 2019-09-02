@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "15ee073201d2225fd6f4";
+/******/ 	var hotCurrentHash = "a2aefc641e725406bca3";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1402,20 +1402,26 @@ __webpack_require__.r(__webpack_exports__);
       var dispatchAction = '';
       var errorHeader = "";
 
-      if (this.qid !== 0 && this.type === "question") {
-        dispatchAction = "getTopBarButtonsQuestion";
-        errorHeader = "ERROR QUESTION";
-      } else if (this.gid !== 0 && this.type === "group") {
-        dispatchAction = "getTopBarButtonsGroup";
-        errorHeader = "ERROR GROUP";
-      } else if (this.sid !== 0 && this.type == "survey") {
-        dispatchAction = "getTopBarButtonsSurvey";
-        errorHeader = "ERROR SURVEY";
-        this.slide = false;
-      } else if (this.sid !== 0 && this.type == "tokens") {
-        dispatchAction = "getTopBarButtonsTokens";
-        errorHeader = "ERROR TOKEN";
-        this.slide = false;
+      switch (this.type) {
+        case "question":
+          dispatchAction = "getTopBarButtonsQuestion";
+          errorHeader = "ERROR QUESTION";
+          break;
+
+        case "group":
+          dispatchAction = "getTopBarButtonsGroup";
+          errorHeader = "ERROR GROUP";
+          break;
+
+        case "survey":
+          dispatchAction = "getTopBarButtonsSurvey";
+          errorHeader = "ERROR SURVEY";
+          break;
+
+        case "tokens":
+          dispatchAction = "getTopBarButtonsTokens";
+          errorHeader = "ERROR TOKEN";
+          break;
       }
 
       this.loading = true;
@@ -30995,6 +31001,7 @@ __webpack_require__.r(__webpack_exports__);
     context.commit('clean');
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
+        sid: context.state.sid,
         qid: context.state.qid
       })).then(function (data) {
         context.commit('clean');
@@ -31015,6 +31022,7 @@ __webpack_require__.r(__webpack_exports__);
     context.commit('clean');
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
+        sid: context.state.sid,
         gid: context.state.gid
       })).then(function (data) {
         context.commit('clean');

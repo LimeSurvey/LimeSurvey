@@ -424,7 +424,7 @@ class questionedit extends Survey_Common_Action
         return;
     }
 
-    public function getQuestionTopbar($qid) {
+    public function getQuestionTopbar($qid = null) {
         $oQuestion = $this->_getQuestionObject($qid);
         $qtypes    = Question::typeList();
         $qrrow     = $oQuestion->attributes;
