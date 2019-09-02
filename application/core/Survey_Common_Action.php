@@ -551,7 +551,9 @@ class Survey_Common_Action extends CAction
             $aData['topBar']
         );
         
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');        
+        Yii::app()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ? 'admintoppanelrtl' : 'admintoppanelltr'));
+        
         if (isset($aData['qid'])) {
             $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';
         } else if (isset($aData['gid'])) {

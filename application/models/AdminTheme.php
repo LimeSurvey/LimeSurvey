@@ -152,7 +152,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('font-roboto');
             App()->getClientScript()->registerPackage('font-icomoon');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
-            App()->getClientScript()->registerPackage('adminbasicjs');
             App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
         }
