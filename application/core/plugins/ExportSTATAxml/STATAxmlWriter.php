@@ -50,7 +50,7 @@ class STATAxmlWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_".$survey->id."_STATA.xml");
-            header("Content-type: application/download; charset=US-ASCII");
+            header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {
@@ -532,7 +532,7 @@ class STATAxmlWriter extends Writer
         $xml->setIndent(true);
 
         //header
-        $xml->startDocument('1.0', 'US-ASCII');
+        $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('dta');
         $xml->startElement('header');
         $xml->writeElement('ds_format', $this->statafileversion);
