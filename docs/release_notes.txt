@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.14 (build 190902) to 3.17.15 (build 190903) September 3, 2019
+Fixed issue #15207: Settings and Structure tabs are broken - no action happens
+
 Changes from 3.17.13 (build 190824) to 3.17.14 (build 190902) September 2, 2019
 -Fixed issue: setting "Show header in answers export PDFs" not taken in account (LouisGac)
 -Fixed issue: [security]XSS in admin box buttons - kindly reported by Pavol Michalec & Frederik Koľbík (Carsten Schmitz)
