@@ -132,6 +132,7 @@ const runBuild = function() {
         ['emailtemplates', 'assets/packages/emailtemplates/'],
         ['filemanager', 'assets/packages/filemanager/'],
         ['labelsets', 'assets/packages/labelsets/'],
+        ['lstutorial', 'assets/packages/lstutorial/'],
         ['panelintegration', 'assets/packages/panelintegration/'],
         ['questioneditor', 'assets/packages/questioneditor/'],
         ['questiongroup', 'assets/packages/questiongroup/'],
