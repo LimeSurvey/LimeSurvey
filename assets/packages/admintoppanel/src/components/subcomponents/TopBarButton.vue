@@ -24,6 +24,7 @@ export default {
         clicked(event) {
             this.$log.log('Button clicked -> ', this.button);
             if (this.button.isSaveButton) {
+                event.preventDefault();
                 this.isLoading = true;
                 LS.EventBus.$emit("saveButtonCalled", this.button);
                 return false;

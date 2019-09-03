@@ -163,7 +163,7 @@ var PrepEmailTemplates = function(){
                 url : resetUrl,
                 dataType: 'html',
                 success: function(result){
-                    if(CKEDITOR.instances[$self.data('target')]){
+                    if(CKEDITOR !== undefined && CKEDITOR.instances[$self.data('target')]){
                         CKEDITOR.instances[$self.data('target')].setData(result);
                     } else {
                         $('#'+$self.data('target')).val(result);
@@ -172,7 +172,7 @@ var PrepEmailTemplates = function(){
                 },
                 error: console.ls.error,
                 beforeSend: function(){
-                    if(CKEDITOR.instances[$self.data('target')]){
+                    if(CKEDITOR !== undefined && CKEDITOR.instances[$self.data('target')]){
                         CKEDITOR.instances[$self.data('target')].setData('');
                     } else {
                         $('#'+$self.data('target')).val('');

@@ -220,23 +220,14 @@ if ($hasExportPermission) {
 // TopBar Extended (second TopBar, which will swap if Event triggered)
 $topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['buttons'];
 
-// Save Buttons (right side)
-if ($ownsSaveButton == true) {
-    // Save Button
-    $buttons['save'] = [
-        'id' => 'save',
-        'name' => gT('Save'),
-        'icon' => 'fa fa-floppy-o',
-        'url' => '#',
-        'id' => 'save-button',
-        'isSaveButton' => true,
-        'class' => 'btn-success',
-    ];
-    array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
-}
-
 // Save and Close Button
-if ($ownsSaveAndCloseButton) {
+if ($gid == 0) {
+    
+    $paramArray = array();
+    $paramArray["surveyid"] = $sid;
+    $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", $paramArray);
+    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
+    
     $button['save_and_close'] = [
         'id' => 'save_and_close',
         'name' => gT('Save and close'),
@@ -244,9 +235,57 @@ if ($ownsSaveAndCloseButton) {
         'url' => '#',
         'id' => 'save-and-close-button',
         'isSaveButton' => true,
-        'class' => 'btn-default',
+        'class' => 'btn-success',
     ];
     array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_close']);
+
+    $button['save_and_add_new'] = [
+        'id' => 'save_and_add_new',
+        'icon' => 'fa fa-check-square',
+        'name' => gT('Save and add question'),
+        'url' => $saveAndAddQuestionLink,
+        'isSaveButton' => true,
+        'class' => 'btn-default',
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_add_new']);
+
+    $button['save_and_add_question'] = [
+        'id' => 'save_and_add_question',
+        'name' => gT('Save and add new'),
+        'icon' => 'fa fa-check-square',
+        'url' => $saveAndNewLink,
+        'isSaveButton' => true,
+        'class' => 'btn-default',
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_add_question']);
+
+} else {
+    // Save Buttons (right side)
+    if ($ownsSaveButton == true) {
+        // Save Button
+        $buttons['save'] = [
+            'id' => 'save',
+            'name' => gT('Save'),
+            'icon' => 'fa fa-floppy-o',
+            'url' => '#',
+            'id' => 'save-button',
+            'isSaveButton' => true,
+            'class' => 'btn-success',
+        ];
+        array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
+    }
+    // Save and Close Button
+    if ($ownsSaveAndCloseButton) { 
+        $button['save_and_close'] = [
+            'id' => 'save_and_close',
+            'name' => gT('Save and close'),
+            'icon' => 'fa fa-check-square',
+            'url' => '#',
+            'isSaveButton' => true,
+            'class' => 'btn-default',
+        ];
+        array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_close']);
+    }
 }
 
 $finalJSON = [

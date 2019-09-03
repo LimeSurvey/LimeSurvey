@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "88e09dda7f9e2a55d1f2";
+/******/ 	var hotCurrentHash = "a712abf48e34f1ea250f";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1783,6 +1783,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$log.log('Button clicked -> ', this.button);
 
       if (this.button.isSaveButton) {
+        event.preventDefault();
         this.isLoading = true;
         LS.EventBus.$emit("saveButtonCalled", this.button);
         return false;

@@ -68,13 +68,13 @@ export default {
         eventSet() {
             this.event = null;
         },
-        submitCurrentState(redirect = false) {
+        submitCurrentState(redirect = false, redirectUrl = false) {
             this.toggleLoading();
             this.$store.dispatch('saveQuestionGroupData').then(
                 (result) => {
                     this.toggleLoading();
-                    if(redirect == true) {
-                        window.location.href = result.data.redirect;
+                    if(redirect == true || redirectUrl !== false ) {
+                        window.location.href = redirectUrl || result.data.redirect;
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
@@ -128,7 +128,7 @@ export default {
         });
 
         LS.EventBus.$on('saveButtonCalled', (payload) => {
-            this.submitCurrentState(payload.id == '#save-and-close-button');
+            this.submitCurrentState(payload.id == '#save-and-close-button', payload.url != '#' ? payload.url : false);
         });
         
         $('#save-button').on('click', (e)=>{
