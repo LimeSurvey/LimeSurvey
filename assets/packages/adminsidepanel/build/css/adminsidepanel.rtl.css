@@ -536,10 +536,10 @@ ol.breadcrumb.title-bar-breadcrumb {
 .ls-flex-row {
   -ms-flex-direction: row;
   -moz-flex-direction: row;
+  width: 100%;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-          flex-direction: row;
-  width: 100%; }
+          flex-direction: row; }
 
 .ls-flex-column {
   -ms-flex-direction: column;

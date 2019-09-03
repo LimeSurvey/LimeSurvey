@@ -78,7 +78,35 @@ module.exports = {
         }
 
         config.plugin('rtlcss')
-            .use(RtlCSS, '{}');
+            .use(RtlCSS, [{
+                stringMap: [
+                    {
+                      'name'    : 'left-right',
+                      'priority': 100,
+                      'search'  : ['left', 'Left', 'LEFT'],
+                      'replace' : ['right', 'Right', 'RIGHT'],
+                      'options' : {
+                          'scope' : '*',
+                          'ignoreCase' : false
+                        }
+                    },
+                    {
+                      'name'    : 'ltr-rtl',
+                      'priority': 100,
+                      'search'  : ['ltr', 'Ltr', 'LTR'],
+                      'replace' : ['rtl', 'Rtl', 'RTL'],
+                      'options' :	{
+                          'scope' : '*',
+                          'ignoreCase' : false
+                        }
+                    },
+                    {
+                        name: 'icon-direction',
+                        search: ['fa-chevron-right', 'fa-chevron-left'],
+                        replace: ['fa-chevron-left', 'fa-chevron-right'],
+                    }
+                  ]
+            }]);
 
         config.plugins
             .delete("html")

@@ -61,8 +61,8 @@ $x-directions: center flex-start flex-end space-between space-around;
     -ms-flex-direction: row;
     -webkit-flex-direction: row;
     -moz-flex-direction: row;
-    flex-direction: row;
     width: 100%;
+    flex-direction: row;
 }
 
 .ls-flex-column {
