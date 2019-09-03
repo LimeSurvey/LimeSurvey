@@ -26,7 +26,20 @@ if( ENVIRONEMENT=='production' ) {
             'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
-        babel({exclude: 'node_modules/**'}),
+        babel({
+            exclude: 'node_modules/**',
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        targets: "> 0.25%, not dead",
+                        modules: 'false',
+                        useBuiltIns: "entry",
+                        corejs: 3,
+                    }
+                ]
+            ]
+        }),
         resolve(),
         common(),
         scss({failOnError: true, outputStyle: 'compressed', output: 'build/adminbasics.min.css'}),
@@ -45,7 +58,20 @@ if( ENVIRONEMENT=='production' ) {
             'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
-        babel({exclude: 'node_modules/**'}),
+        babel({
+            exclude: 'node_modules/**',
+            presets: [
+                [
+                    "@babel/preset-env",
+                    {
+                        targets: "> 0.25%, not dead",
+                        modules: 'false',
+                        useBuiltIns: "entry",
+                        corejs: 3,
+                    }
+                ]
+            ]
+        }),
         resolve(),
         common(),
         scss({failOnError: true, outputStyle: 'expanded', output: 'build/adminbasics.css'}),

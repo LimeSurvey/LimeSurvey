@@ -146,7 +146,6 @@ return array(
     'adminsidepanelltr' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
-       'position' =>CClientScript::POS_HEAD,
        'css' => (
         $debug > 0
             ? array(
@@ -163,7 +162,6 @@ return array(
     'adminsidepanelrtl' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
-       'position' =>CClientScript::POS_HEAD,
        'css' => (
         $debug > 0
             ? array(
@@ -259,7 +257,6 @@ return array(
     'adminbasicsrtl' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_BEGIN,
         'css' => array(
             'build/adminbasics.rtl'.$minVersion.'.css'
         ),
@@ -270,7 +267,6 @@ return array(
     'adminbasicsltr' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_BEGIN,
         'css' => array(
             'build/adminbasics'.$minVersion.'.css'
         ),
