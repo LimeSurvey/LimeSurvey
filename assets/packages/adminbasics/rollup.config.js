@@ -7,9 +7,8 @@ import { terser } from "rollup-plugin-terser";
 import WriteRTLCSS from './buildplugins/rollup-plugin-writertlcss';
 
 const ENVIRONEMENT = process.env.NODE_ENV.trim();
-const DIRECTION = process.env.DIRECTION_ENV.trim();
 
-console.log(`Building adminbasics for mode ${ENVIRONEMENT} and direction ${DIRECTION}`);
+console.log(`Building adminbasics for mode ${ENVIRONEMENT}`);
 
 
 let plugins =  [];
@@ -24,8 +23,7 @@ if( ENVIRONEMENT=='production' ) {
     plugins = [
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
-            'process.env.NODE_ENV': ENVIRONEMENT,
-            ENVDIRECTION:DIRECTION,
+            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
         babel({exclude: 'node_modules/**'}),
@@ -45,7 +43,6 @@ if( ENVIRONEMENT=='production' ) {
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
             'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
-            ENVDIRECTION:DIRECTION,
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
         babel({exclude: 'node_modules/**'}),

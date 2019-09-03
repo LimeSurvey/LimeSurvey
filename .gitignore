@@ -19,6 +19,7 @@
 !.travis.yml
 !.babelrc
 !.eslintrc
+!.env-cmdrc
 
 
 # upload directory : whole except the index.html and readme.txt

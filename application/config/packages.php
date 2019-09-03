@@ -246,16 +246,8 @@ return array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_HEAD,
-        // 'css' => array(
-        //     'css/lime-admin-common.css',
-        //     'css/jcarousel.responsive.css',
-        //     'css/attributeMap.css',
-        //     'css/attributeMapToken.css',
-        //     'css/displayParticipants.css',
-        //     'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
-        // ),
         'js' => array(
-            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
+            'build/adminbasics'.$minVersion.'.js',
         ),
         'depends' => array(
             'jquery',

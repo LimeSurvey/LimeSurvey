@@ -3,11 +3,9 @@
   "license": "GPL-3.0",
   "author": "LimeSurvey DevTeam",
   "scripts": {
-    "devltr": "env-cmd -e devltr rollup -c",
-    "devrtl": "env-cmd -e devrtl rollup -c",
-    "buildltr": "env-cmd -e prodltr rollup -c",
-    "buildrtl": "env-cmd -e prodrtl rollup -c",
-    "build": "yarn run devltr && yarn run buildltr"
+    "dev": "env-cmd -e dev rollup -c",
+    "prod": "env-cmd -e prod rollup -c",
+    "build": "yarn run dev && yarn run prod"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
