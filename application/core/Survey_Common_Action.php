@@ -129,13 +129,12 @@ class Survey_Common_Action extends CAction
         // Chek is 2 params are equal for security issue.
         foreach ($pseudos as $key => $pseudo) {
             // We care only for user parameters, not by code parameters (see issue #15221)
-            if (Yii::app()->getRequest()->getParam($key)) {
-                $params[$key] = Yii::app()->getRequest()->getParam($key);
+            if ($checkParam = Yii::app()->getRequest()->getParam($key)) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
-                        $params[$pseud] = $params[$key];
-                    } elseif($params[$pseud] != $params[$key]){
+                        $params[$pseud] = $checkParam;
+                    } elseif($params[$pseud] != $checkParam){
                         // Throw error about multiple params (and if they are different) #15204
                         throw new CHttpException(403, sprintf(gT("Invalid parameter %s (%s already set)"),$pseud,$key));
                     }
