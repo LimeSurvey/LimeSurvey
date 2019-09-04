@@ -3989,14 +3989,12 @@ function do_array_texts($ia)
     }
     $columnswidth = 100 - ($answerwidth);
 
-    $aSubquestions = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=1', 'params'=>array(':parent_qid'=>$ia[0])));
+    $aSubquestionsX = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=1', 'params'=>array(':parent_qid'=>$ia[0])));
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
     $labelans     = [];
-    $labelcode    = [];
 
-    foreach ($aSubquestions as $oSubquestion) {
-        $labelans[] = $oSubquestion->questionL10ns[$sSurveyLanguage]->question;
-        $labelans[] = $oSubquestion->title;
+    foreach ($aSubquestionsX as $oSubquestion) {
+        $labelans[$oSubquestion->title] = $oSubquestion->questionL10ns[$sSurveyLanguage]->question;
     }
 
     if ($numrows = count($labelans)) {
@@ -4025,15 +4023,15 @@ function do_array_texts($ia)
         } else {
             $sOrder = 'question_order';
         }
-        $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));
-        $anscount   = count($aQuestions);
+        $aQuestionsY = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(':parent_qid'=>$ia[0])));
+        $anscount   = count($aQuestionsY);
         $fn         = 1;
 
         $showGrandTotal = (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') ?true:false;
 
         $sRows = '';
         $answertext = '';
-        foreach ($aQuestions as $j => $ansrow) {
+        foreach ($aQuestionsY as $j => $ansrow) {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $minrepeatheadings) {
                     // Close actual body and open another one
@@ -4054,8 +4052,8 @@ function do_array_texts($ia)
             if (($ia[6] == 'Y' || $ia[6] == 'S') && !empty($aMandatoryViolationSubQ)) {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult = 0;
-                foreach ($labelcode as $ld) {
-                    $myfname2 = $myfname.'_'.$ld;
+                foreach ($labelans as $title=>$label) {
+                    $myfname2 = $myfname.'_'.$title;
                     if (in_array($myfname2, $aMandatoryViolationSubQ)) {
                         $emptyresult = 1;
                     }
@@ -4071,11 +4069,10 @@ function do_array_texts($ia)
                 $answertext = (string) substr($answertext, 0, strpos($answertext, '|'));
             }
 
-            $thiskey = 0;
             $answer_tds = '';
 
-            foreach ($labelcode as $ld) {
-                $myfname2 = $myfname."_$ld";
+            foreach ($labelans as $title=>$label) {
+                $myfname2 = $myfname."_$title";
                 $myfname2value = isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] : "";
 
                 if ($aQuestionAttributes['numbers_only'] == 1) {
@@ -4085,9 +4082,9 @@ function do_array_texts($ia)
                 $inputnames[] = $myfname2;
                 $value        = str_replace('"', "'", str_replace('\\', '', $myfname2value));
                 $answer_tds  .= doRender('/survey/questions/answer/arrays/texts/rows/cells/answer_td', array(
-                    'ld'         => $ld,
+                    'ld'         => $title,
                     'myfname2'   => $myfname2,
-                    'labelText'  => $labelans[$thiskey],
+                    'labelText'  => $labelans[$title],
                     'kpclass'    => $kpclass,
                     'maxlength'  => $maxlength,
                     'inputsize'  => $inputsize,
@@ -4097,7 +4094,6 @@ function do_array_texts($ia)
                     'isInteger'  => $isInteger,
                     'error'      => ($error && $myfname2value === ''),
                     ), true);
-                $thiskey += 1;
             }
 
             $rightTd = $rightTdEmpty = false;
