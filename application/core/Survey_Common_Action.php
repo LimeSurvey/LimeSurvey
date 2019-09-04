@@ -321,7 +321,7 @@ class Survey_Common_Action extends CAction
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
-        $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
+        $aData = $this->_addPseudoParams($aData); // This call 2 times _addPseudoParams because it's already done in runWithParams : why ?
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
         

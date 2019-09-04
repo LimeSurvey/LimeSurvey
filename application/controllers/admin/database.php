@@ -1003,8 +1003,7 @@ class database extends Survey_Common_Action
             if ($oSurvey->save()) {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
             } else {
-                Yii::app()->setFlashMessage(gT("Survey could not be updated."), "error");
-                tracevar($oSurvey->getErrors());
+                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error :"))), "error");
             }
         }
 
@@ -1161,7 +1160,7 @@ class database extends Survey_Common_Action
         if ($oSurvey->save()) {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         } else {
-            Yii::app()->setFlashMessage(gT("Survey could not be updated."), "error");
+            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error :"))), "error");
         }
         Yii::app()->end();
     }
