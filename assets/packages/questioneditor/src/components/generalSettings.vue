@@ -8,6 +8,7 @@ import SettingTextdisplay from './_inputtypes/textdisplay.vue';
 import SettingTextarea from './_inputtypes/textarea.vue';
 import SettingButtongroup from './_inputtypes/buttongroup.vue';
 import SettingQuestiontheme from './_inputtypes/questiontheme.vue';
+import SettingQuestiongroup from './_inputtypes/questiongroup.vue';
 import SettingColumns from './_inputtypes/columns.vue';
 import StubSet from './_inputtypes/stub.vue';
 
@@ -18,6 +19,7 @@ export default {
     mixins: [eventChild],
     components: {
         'setting-questiontheme': SettingQuestiontheme,
+        'setting-questiongroup': SettingQuestiongroup,
         'setting-switch': SettingSwitch,
         'setting-text': SettingTextdisplay,
         'setting-select': SettingSelect,

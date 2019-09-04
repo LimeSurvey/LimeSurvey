@@ -31,7 +31,7 @@ class questionedit extends Survey_Common_Action
         $aData = array();
         $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $oQuestion = $this->_getQuestionObject($qid);
+        $oQuestion = $this->_getQuestionObject($qid, null, $gid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
         Yii::app()->getClientScript()->registerPackage('ace');
@@ -207,8 +207,8 @@ class questionedit extends Survey_Common_Action
         }
 
         $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
-        $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, true);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, true);
+        $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, $oQuestion->gid, true);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
         $this->renderJSON([
@@ -234,13 +234,13 @@ class questionedit extends Survey_Common_Action
     }
 
 
-    public function reloadQuestionData($iQuestionId=null, $type=null, $question_template='core')
+    public function reloadQuestionData($iQuestionId=null, $type=null, $gid=null, $question_template='core')
     {
         $iQuestionId = (int) $iQuestionId;
-        $oQuestion = $this->_getQuestionObject($iQuestionId, $type);
+        $oQuestion = $this->_getQuestionObject($iQuestionId, $type, $gid);
 
         $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid,  $type, true, $question_template);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid,  $type, $oQuestion->gid, true, $question_template);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid,  $type, true, $question_template);
 
         $aLanguages = [];
@@ -265,10 +265,10 @@ class questionedit extends Survey_Common_Action
         );
     }
 
-    public function getQuestionData($iQuestionId=null, $type=null)
+    public function getQuestionData($iQuestionId=null, $gid=null, $type=null)
     {
         $iQuestionId = (int) $iQuestionId;
-        $oQuestion = $this->_getQuestionObject($iQuestionId, $type);
+        $oQuestion = $this->_getQuestionObject($iQuestionId, $type, $gid);
 
         $aQuestionInformationObject = $this->_getCompiledQuestionData($oQuestion);
 
@@ -300,7 +300,7 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aPermissions);
     }
 
-    public function getQuestionAttributeData($iQuestionId=null , $returnArray = false)
+    public function getQuestionAttributeData($iQuestionId=null, $gid=null, $returnArray = false)
     {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
@@ -323,9 +323,9 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aQuestionTypeInformation);
     }
     
-    public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false, $question_template='core')
+    public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $gid=null, $returnArray = false, $question_template='core')
     {
-        $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
+        $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType, $gid);
         $aGeneralOptionsArray = $oQuestion->getDataSetObject()->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
 
         if ($returnArray === true) {
@@ -451,7 +451,7 @@ class questionedit extends Survey_Common_Action
     }
 
 
-    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null)
+    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid=null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oQuestion =  Question::model()->findByPk($iQuestionId);
@@ -460,6 +460,9 @@ class questionedit extends Survey_Common_Action
         }
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
+        }
+        if ($gid != null) {
+            $oQuestion->gid = $gid;
         }
 
         return $oQuestion;

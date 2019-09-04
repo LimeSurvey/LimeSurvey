@@ -114,20 +114,21 @@ export default {
         eventSet(eventRoot=false) {
             this.event = null;
         },
-        submitCurrentState(redirect = false) {
+        submitCurrentState(redirect = false, redirectUrl = false) {
             this.$store.dispatch('saveQuestionData').then(
                 (result) => {
                     if(result === false) {
                         return;
                     }
 
-                    if(redirect == true) {
-                        window.location.href = result.data.redirect || window.location.href;
+                    if(redirect == true || redirectUrl !== false) {
+                        window.location.href = redirectUrl || result.data.redirect || window.location.href;
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
+                    LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
@@ -175,7 +176,7 @@ export default {
         });
 
         LS.EventBus.$on('saveButtonCalled', (payload) => {
-            this.submitCurrentState(payload.id == '#save-and-close-button');
+            this.submitCurrentState(payload.id == '#save-and-close-button', (payload.url != '#' ? payload.url : false));
         });
 
         $('#save-button').on('click', (e)=>{
