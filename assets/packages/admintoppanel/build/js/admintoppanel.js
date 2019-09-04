@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "a712abf48e34f1ea250f";
+/******/ 	var hotCurrentHash = "867accbae3dd97c13d3c";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1760,16 +1760,31 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TopBarButton",
-  props: ["button"],
+  props: {
+    button: {
+      type: Object | Array,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function data() {
-    return {
-      isLoading: false
-    };
+    return {};
   },
   computed: {
+    isLoading: {
+      get: function get() {
+        return this.loading;
+      },
+      set: function set(nV) {
+        this.$emit('toggleLoading', nV);
+      }
+    },
     buttonIcon: function buttonIcon() {
       if (this.button.isSaveButton && this.isLoading === true) {
-        return "fa fa-cog fa-spin ";
+        return "fa fa-cog fa-spin";
       }
 
       return this.button.icon || "";
@@ -1780,6 +1795,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     clicked: function clicked(event) {
+      if (this.button.isSaveButton && this.isLoading === true) {
+        return false;
+      }
+
       this.$log.log('Button clicked -> ', this.button);
 
       if (this.button.isSaveButton) {
@@ -1840,13 +1859,14 @@ __webpack_require__.r(__webpack_exports__);
         "title": button.title || null,
         "target": button.target || null,
         "access-key": button.accesskey || null,
-        "data-btntype": "1"
+        "data-btntype": "1",
+        "disabled": button.isSaveButton && this.isLoading ? true : false
       },
       "class": 'btn navbar-btn button ' + classAddition + button.class,
       "on": {
         "click": this.clicked
       }
-    }, [this.buttonIcon != '' && this.isLoading === false ? h("i", {
+    }, [this.buttonIcon != '' ? h("i", {
       "class": this.buttonIcon + ' icon'
     }) : '', he__WEBPACK_IMPORTED_MODULE_3___default.a.decode("&nbsp;"), he__WEBPACK_IMPORTED_MODULE_3___default.a.decode(button.name), he__WEBPACK_IMPORTED_MODULE_3___default.a.decode("&nbsp;"), button.iconclass !== undefined ? h("i", {
       "class": 'icon ' + button.iconclass
@@ -1952,7 +1972,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       dropdownOpen: false,
-      itemId: 'itm-' + Math.floor(1 + Math.random() * 10000000)
+      itemId: 'itm-' + Math.floor(1 + Math.random() * 10000000),
+      loading: false
     };
   },
   props: {
@@ -2001,11 +2022,19 @@ __webpack_require__.r(__webpack_exports__);
           }
         })]);
       } else {
+        var toggleLoading = function toggleLoading(ev) {
+          _this.loading = ev;
+        };
+
         return h("li", {
           "key": button.id
-        }, [" ", h(_TopBarButton_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, [h(_TopBarButton_vue__WEBPACK_IMPORTED_MODULE_5__["default"], {
           "attrs": {
-            "button": button
+            "button": button,
+            "loading": _this.loading
+          },
+          "on": {
+            "toggleLoading": toggleLoading
           }
         })]);
       }

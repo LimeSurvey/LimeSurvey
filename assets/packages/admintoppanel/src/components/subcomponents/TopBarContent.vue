@@ -11,6 +11,7 @@ export default {
         return {
             dropdownOpen: false,
             itemId: 'itm-'+Math.floor(1+Math.random()*10000000),
+            loading: false
         }
     },
     props: {
@@ -38,7 +39,15 @@ export default {
             } else if(button.class.includes('divider')) {
                 return (<li key = {button.id}> <Divider button = {button} /></li>);
             } else {
-                return (<li key = {button.id}> <Button button = {button} /></li>);
+                const toggleLoading = (ev) => {this.loading = ev};
+                return (
+                    <li key = {button.id}> 
+                        <Button 
+                            button={button} 
+                            loading={this.loading} 
+                            onToggleLoading={toggleLoading} 
+                        />
+                    </li>);
             }
         };
 

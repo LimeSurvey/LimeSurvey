@@ -135,9 +135,10 @@ export default {
                 window.QuestionEditData.connectorBaseUrl+subAction, 
                 parameters
             ).then((result) => {
-                context.commit('setCurrentQuestionAdvancedSettings', result.data);
-                context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-                context.commit('setImmutableQuestionAdvancedSettings', result.data);
+                context.commit('setCurrentQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('unsetImmutableQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('setImmutableQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('setQuestionTypeDefinition', result.data.questionTypeDefinition);
                 resolve(true);
             },
             (rejectAnswer) => {

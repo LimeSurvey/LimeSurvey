@@ -18,7 +18,7 @@ export default {
             counter: 0,
             slide: false,
             loading: true,
-            slotbutton: null
+            slotbutton: null,
         };
     },
     computed: {

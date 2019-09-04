@@ -3,16 +3,19 @@ import he from 'he';
 
 export default {
     name: "TopBarButton",
-    props: ["button"],
-    data: () => {
-        return {
-            isLoading: false
-        };
+    props: {
+        button: {type: Object|Array, required: true},
+        loading: {type: Boolean, default: false}
     },
+    data() { return {} },
     computed: {
+        isLoading: {
+            get() { return this.loading },
+            set(nV) { this.$emit('toggleLoading', nV); }
+        },
         buttonIcon() {
             if(this.button.isSaveButton && this.isLoading === true) {
-                return "fa fa-cog fa-spin ";
+                return "fa fa-cog fa-spin";
             }
             return this.button.icon || "";
         },
@@ -22,6 +25,9 @@ export default {
     },
     methods: {
         clicked(event) {
+            if(this.button.isSaveButton && this.isLoading === true) {
+                return false;
+            }
             this.$log.log('Button clicked -> ', this.button);
             if (this.button.isSaveButton) {
                 event.preventDefault();
@@ -84,9 +90,10 @@ export default {
                     target={button.target || null }
                     access-key={button.accesskey || null }
                     data-btntype="1"
+                    disabled={button.isSaveButton && this.isLoading ? true : false}
                     onClick={this.clicked}
                 >
-                    { this.buttonIcon != '' && this.isLoading === false
+                    { this.buttonIcon != '' 
                         ? <i class={this.buttonIcon + ' icon'} />
                         : ''
                     }

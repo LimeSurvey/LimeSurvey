@@ -35,6 +35,9 @@ export default {
     },
 
     //Update currently set values
+    setQuestionTypeDefinition(state, valueObject) {
+        Vue.set(state.currentQuestion, 'typeInformation', valueObject);
+    },
     updateCurrentQuestion(state, valueObject) {
         state.currentQuestion = merge({}, valueObject, state.currentQuestion);
         Vue.set(state.currentQuestion, 'typeInformation', valueObject.typeInformation);

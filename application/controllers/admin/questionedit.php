@@ -342,7 +342,11 @@ class questionedit extends Survey_Common_Action
         if ($returnArray === true) {
             return $aAdvancedOptionsArray;
         }
-        $this->renderJSON($aAdvancedOptionsArray);
+        
+        $this->renderJSON([
+            'advancedSettings' => $aAdvancedOptionsArray,
+            'questionTypeDefinition' => $oQuestion->questionType,
+        ]);
     }
 
     /**

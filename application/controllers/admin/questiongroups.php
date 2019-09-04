@@ -707,7 +707,8 @@ class questiongroups extends Survey_Common_Action
 
     public function getQuestionGroupTopBar($sid, $gid=null) {
         $oSurvey = Survey::model()->findByPk($sid);
-        if( $gid == null ) {
+        $oQuestionGroup = null;
+        if( $gid !== null ) {
             $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
             $sumcount  = safecount($oQuestionGroup->questions);
         } else {
@@ -724,6 +725,7 @@ class questiongroups extends Survey_Common_Action
           '/admin/survey/topbar/question_group_topbar',
           array(
             'oSurvey' => $oSurvey,
+            'oQuestionGroup' => $oQuestionGroup,
             'sid'     => $oSurvey->sid,
             'gid'     => $gid,
             'sumcount4' => $sumcount,

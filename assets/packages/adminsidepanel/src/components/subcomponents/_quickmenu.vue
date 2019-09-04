@@ -51,7 +51,7 @@ export default {
             this.$log.error
         )
         .finally(
-            (result) => { this.loading = false }
+            (result) => { this.loadingState = false }
         );
     },
     mounted(){

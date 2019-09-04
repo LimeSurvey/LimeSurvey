@@ -358,16 +358,16 @@ if ($qid == 0) {
     $paramArray["surveyid"] = $sid;
     $saveAndNewLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
 
-    $button['save_and_close'] = [
-        'id' => 'save_and_close',
-        'name' => gT('Save and close'),
+    $button['save'] = [
+        'id' => 'save',
+        'name' => gT('Save'),
         'icon' => 'fa fa-check-square',
         'url' => '#',
-        'id' => 'save-and-close-button',
+        'id' => 'save-button',
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_close']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button['save']);
 
     $button['save_and_add_new'] = [
         'id' => 'save_and_add_new',
