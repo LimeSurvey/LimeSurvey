@@ -4,7 +4,7 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="row">                             
+    <div class="row">
         <div class="col-lg-8 content-right">
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
@@ -34,7 +34,7 @@
                                 <input name="submit" type="submit" class="submit btn btn-default" value="<?php eT("Next");?>" />
                             </div>
                         </div>
-                        <input type="hidden" name="sid" value="'.$iSurveyId.'" />
+                        <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                         <input type="hidden" name="action" value="quotas" />
                         <input type="hidden" name="subaction" value="new_answer_two" />
                         <input type="hidden" name="quota_id" value="<?php echo sanitize_int($oQuota->id);?>" />

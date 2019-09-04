@@ -121,15 +121,16 @@ class Survey_Common_Action extends CAction
             'browselang' => 'sBrowseLang',
             'tokenids' => 'aTokenIds',
             'tokenid' => 'iTokenId',
-            'subaction' => 'sSubAction',
+            'subaction' => 'sSubAction', // /!\ Already filled by sa : can be different (usage of subaction in quota at 2019-09-04)
         );
-
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
         // Chek is 2 params are equal for security issue.
         foreach ($pseudos as $key => $pseudo) {
-            if (isset($params[$key])) {
+            // We care only for user parameters, not by code parameters (see issue #15221)
+            if (Yii::app()->getRequest()->getParam($key)) {
+                $params[$key] = Yii::app()->getRequest()->getParam($key);
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
