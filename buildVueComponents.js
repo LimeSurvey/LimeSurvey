@@ -74,12 +74,12 @@ if(!all && !single) {
 =============================================================================================
 ||   Usage :                                                                               ||
 ||     Either use '-a' to build all components                                             ||
-||     Or use '-s [componentname]' to build one specific component                         ||
+||     Or use '-s [componentname[, componentname]]' to build specific component(s)         ||
 ||     Use '-s' without component name to get a list of possible components                ||
 ||                                                                                         ||
 ||   Options:                                                                              ||
 ||     -v -> Verbose mode, show all build processes                                        ||
-||     -p -> Only prepare (install dependancies)                                           ||
+||     -p -> Only prepare (install dependencies)                                           ||
 ||                                                                                         ||
 =============================================================================================
 `);
@@ -196,10 +196,11 @@ if(!single) {
 
 } else {
     let getSPosition = args.indexOf('-s');
-    const componentToBuild = args[getSPosition+1];
-    componentToBuildArray = pathArray.filter((item) => { return item[0] == componentToBuild });
+    const componentsToBuild = args[getSPosition+1].split(',');
 
-    if(componentToBuildArray.length > 1 || componentToBuildArray.array == 0 || componentToBuild == undefined) {
+    componentToBuildArray = pathArray.filter((item) => { return componentsToBuild.indexOf(item[0]) > -1; });
+
+    if(componentToBuildArray.array == 0 || componentsToBuild == undefined) {
         console.error("|| ===  Component not found or ambiguous, possible options are:")
         pathArray.forEach((item) => {
             console.log(`||       => ${item[0]}, (${item[1]})`);
@@ -208,7 +209,7 @@ if(!single) {
     }
 
     console.log(`
-|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component ${componentToBuild}${(verbose ? ' and using verbose mode.' : '.')}`);
+|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component(s) ${JSON.stringify(componentsToBuild)}${(verbose ? ' and using verbose mode.' : '.')}`);
 
     const finalPromise = componentToBuildArray.reduce( 
         async (promise, item) => {
