@@ -4131,7 +4131,7 @@ function do_array_texts($ia)
         if ($show_totals == 'col' || $show_totals == 'both' || $grand_total !== '') {
             $showtotals = true;
 
-            $iLabelCodeCount = count($labelcode);
+            $iLabelCodeCount = count($labelans);
             for ($a = 0; $a < $iLabelCodeCount; ++$a) {
                 $total .= str_replace(array('[[ROW_NAME]]', '[[INPUT_WIDTH]]'), array(strip_tags($answertext), $inputsize), $col_total);
             };
