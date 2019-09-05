@@ -33,10 +33,12 @@ const SaveController = () => {
 
         return form;
     },
-    // displayLoadingState = (el) => {
-    //     const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-    //     $(el).prop('disabled', true).append(loadingSpinner);
-    // },
+    displayLoadingState = (el) => {
+        if($(el).data('form-id') == 'addnewsurvey') {
+            const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+            $(el).prop('disabled', true).append(loadingSpinner);
+        }
+    },
     stopDisplayLoadingState = () => {
         LOG.log('StopLoadingIconAnimation');
         LS.EventBus.$emit('loadingFinished');

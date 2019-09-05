@@ -19,8 +19,8 @@
     $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
-    if (isset($oQuestionGroup)) {
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
+    if (isset($gid)) {
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid, "gid" => $gid]);
     } else {
         $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid]);
     }

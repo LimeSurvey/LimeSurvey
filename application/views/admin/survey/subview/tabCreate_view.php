@@ -107,13 +107,17 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
 <script>
     var updateCKfields = function(){
-        $('textarea').each(function () {
-            var $textarea = $(this);
-            if(CKEDITOR.instances[$textarea.attr('name')] != undefined || CKEDITOR.instances[$textarea.attr('name')] != null) {
-                $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
-            }
-        });
-    }
+        var curCKEDITOR = window.CKEDITOR === undefined ? null : window.CKEDITOR;
+        if(curCKEDITOR !== null) {
+            $('textarea').each(function () {
+                var $textarea = $(this);
+                if(curCKEDITOR.instances[$textarea.attr('name')] != undefined || curCKEDITOR.instances[$textarea.attr('name')] != null) {
+                    $textarea.val(curCKEDITOR.instances[$textarea.attr('name')].getData());
+                }
+            });
+        }
+    };
+
     $(document).on('ready pjax:scriptcomplete', function(){
         sessionStorage.setItem('maxtabs', 1);
 

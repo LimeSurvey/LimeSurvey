@@ -114,27 +114,28 @@ export default {
         eventSet(eventRoot=false) {
             this.event = null;
         },
-        submitCurrentState(redirect = false) {
+        submitCurrentState(redirect = false, redirectUrl = false) {
             this.$store.dispatch('saveQuestionData').then(
                 (result) => {
                     if(result === false) {
                         return;
                     }
 
-                    if(redirect == true) {
-                        window.location.href = result.data.redirect || window.location.href;
+                    if(redirect == true || redirectUrl !== false) {
+                        window.location.href = redirectUrl || result.data.redirect || window.location.href;
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
+                    LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                    setTimeout(()=>{window.location.reload();}, 1500);
+                    //setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
         },
@@ -158,16 +159,22 @@ export default {
         },
     },
     created(){
+        this.$store.commit('setInTransfer', false);
         Promise.all([
             this.$store.dispatch('loadQuestion'),
             this.$store.dispatch('getQuestionTypes')
         ]).then(()=>{
             this.loading = false;
         })
+        LS.EventBus.$on('questionTypeChanged', (payload) => {
+            this.$log.log("questiontype changed to -> ", payload);
+            this.questionTypeChangeTriggered(payload.content);
+        });
     },
 
     mounted() {
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
+
         this.applyHotkeys();
 
         $('#frmeditquestion').on('submit', (e)=>{
@@ -175,7 +182,7 @@ export default {
         });
 
         LS.EventBus.$on('saveButtonCalled', (payload) => {
-            this.submitCurrentState(payload.id == '#save-and-close-button');
+            this.submitCurrentState(payload.id == '#save-and-close-button', (payload.url != '#' ? payload.url : false));
         });
 
         $('#save-button').on('click', (e)=>{

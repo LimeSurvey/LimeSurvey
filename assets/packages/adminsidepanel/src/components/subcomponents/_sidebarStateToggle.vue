@@ -3,7 +3,7 @@
         <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
             <transition name="fade">
                 <button class="btn btn-default ls-space padding left-15 right-15" v-if="!$store.state.isCollapsed" @click="$emit('collapse')">
-                    <i class="fa fa-chevron-left"></i>
+                    <i :class="$store.getters.isRTL ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"></i>
                 </button>
             </transition>
             <transition name="fade">
@@ -30,7 +30,7 @@
             </transition>
             <transition name="fade">
                 <button class="btn btn-default ls-space padding left-15 right-15" v-if="$store.state.isCollapsed" @click="$emit('collapse')">
-                    <i class="fa fa-chevron-right"></i>
+                    <i :class="$store.getters.isRTL ? 'fa fa-chevron-left' : 'fa fa-chevron-right'"></i>
                 </button>
             </transition>
         </div>

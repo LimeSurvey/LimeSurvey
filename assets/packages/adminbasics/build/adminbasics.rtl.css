@@ -116,6 +116,10 @@
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -4098,10 +4102,6 @@ textarea.form-control.input-text {
 .template-files-delete-button {
   margin: 1px 0 0 0;
   padding: 0 5px;
-}
-
-#cpdbatt {
-  min-height: 100px;
 }
 
 .draggable-container {

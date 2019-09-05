@@ -26,7 +26,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/admin/"));
         }
@@ -34,7 +34,7 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
     }
-
+                                                                             
     public function index()
     {
         $aData = $this->_checkintegrity();

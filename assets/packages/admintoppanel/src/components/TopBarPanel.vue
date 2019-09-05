@@ -18,7 +18,7 @@ export default {
             counter: 0,
             slide: false,
             loading: true,
-            slotbutton: null
+            slotbutton: null,
         };
     },
     computed: {
@@ -123,23 +123,25 @@ export default {
             this.$log.log("Loading topbar contents based on type ", this.type);
             let dispatchAction = '';
             let errorHeader = "";
-
-            if (this.qid !== 0 && this.type === "question") {
-                dispatchAction = "getTopBarButtonsQuestion";
-                errorHeader = "ERROR QUESTION";
-            } else if (this.gid !== 0 && this.type === "group") {
-                dispatchAction = "getTopBarButtonsGroup";
-                errorHeader = "ERROR GROUP";
-            } else if (this.sid !== 0 && this.type == "survey") {
-                dispatchAction = "getTopBarButtonsSurvey";
-                errorHeader = "ERROR SURVEY";
-                this.slide = false;
-            } else if (this.sid !== 0 && this.type == "tokens") {
-                dispatchAction = "getTopBarButtonsTokens";
-                errorHeader = "ERROR TOKEN";
-                this.slide = false;
+            switch(this.type) {
+                case "question":
+                    dispatchAction = "getTopBarButtonsQuestion";
+                    errorHeader = "ERROR QUESTION";
+                    break;
+                case "group":
+                    dispatchAction = "getTopBarButtonsGroup";
+                    errorHeader = "ERROR GROUP";
+                    break;
+                case "survey":
+                    dispatchAction = "getTopBarButtonsSurvey";
+                    errorHeader = "ERROR SURVEY";
+                    break;
+                case "tokens":
+                    dispatchAction = "getTopBarButtonsTokens";
+                    errorHeader = "ERROR TOKEN";
+                    break;
             }
-
+            
             this.loading = true;
             this.$store.dispatch(dispatchAction)
             .then((data) => {

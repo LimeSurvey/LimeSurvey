@@ -4,7 +4,7 @@ import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
     mixins: [ajaxMethods],
-    data() {
+    data(){
         return {
             active: [],
             questiongroupDragging: false,
@@ -15,6 +15,7 @@ export default {
         };
     },
     computed: {
+        surveyIsActive() {return window.SideMenuData.isActive; },
         createQuestionGroupLink() { return window.SideMenuData.createQuestionGroupLink },
         createQuestionLink() { return window.SideMenuData.createQuestionLink },
         calculatedHeight() {
@@ -156,6 +157,7 @@ export default {
                 } 
                 
             } else {
+                if(window.SideMenuData.isActive) {return;}
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
                     const removedFromInital = LS.ld.remove(
@@ -211,6 +213,7 @@ export default {
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
             if (this.questionDragging) {
+                if(this.questionDragging.gid !== questionObject.gid && window.SideMenuData.isActive) {return;}
                 let orderSwap = questionObject.question_order;
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
@@ -265,7 +268,7 @@ export default {
                 >
                     <div class="col-12 ls-flex-row nowrap ls-space padding right-5 bottom-5">
                         <i 
-                            v-if="!$store.state.surveyActiveState"
+                            v-if="!surveyIsActive"
                             class="fa fa-bars bigIcons dragPointer" 
                             draggable="true"
                             @dragend="endDraggingGroup($event, questiongroup)" 

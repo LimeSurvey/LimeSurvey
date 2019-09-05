@@ -20,6 +20,8 @@ export default class LsReplacementsUI extends Plugin {
                 (reject) => { console.error(reject); }
             );
 
+            dropdownView.set('panelPosition','sw');
+
             dropdownView.buttonView.set( {
                 label: t( 'LsExpressions' ),
                 icon: lsIcon,
@@ -40,6 +42,7 @@ export default class LsReplacementsUI extends Plugin {
                     (reject) => { console.error(reject); }
                 );
             });
+
 
             return dropdownView;
         } );

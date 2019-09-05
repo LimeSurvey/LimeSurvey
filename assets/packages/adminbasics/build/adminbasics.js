@@ -3,6 +3,139 @@
   factory();
 }(function () { 'use strict';
 
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) _setPrototypeOf(subClass, superClass);
+  }
+
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+      return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return _getPrototypeOf(o);
+  }
+
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
+
+    return _setPrototypeOf(o, p);
+  }
+
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return self;
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (call && (typeof call === "object" || typeof call === "function")) {
+      return call;
+    }
+
+    return _assertThisInitialized(self);
+  }
+
+  function _superPropBase(object, property) {
+    while (!Object.prototype.hasOwnProperty.call(object, property)) {
+      object = _getPrototypeOf(object);
+      if (object === null) break;
+    }
+
+    return object;
+  }
+
+  function _get(target, property, receiver) {
+    if (typeof Reflect !== "undefined" && Reflect.get) {
+      _get = Reflect.get;
+    } else {
+      _get = function _get(target, property, receiver) {
+        var base = _superPropBase(target, property);
+
+        if (!base) return;
+        var desc = Object.getOwnPropertyDescriptor(base, property);
+
+        if (desc.get) {
+          return desc.get.call(receiver);
+        }
+
+        return desc.value;
+      };
+    }
+
+    return _get(target, property, receiver || target);
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    }
+  }
+
+  function _iterableToArray(iter) {
+    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance");
+  }
+
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
   function createCommonjsModule(fn, module) {
@@ -17098,7 +17231,7 @@
   });
 
   jQuery.fn.extend({
-    center: function () {
+    center: function center() {
       this.css("position", "absolute");
       this.css("top", ($(window).height() - this.height()) / 2 + $(window).scrollTop() + "px");
       this.css("left", ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + "px");
@@ -17107,7 +17240,7 @@
   });
 
   $.fn.extend({
-    isEmpty: function (helperMsg) {
+    isEmpty: function isEmpty(helperMsg) {
       if ($.trim($(this).value).length == 0) {
         alert(helperMsg);
         $(this).focus(); // set the focus to this input
@@ -17136,7 +17269,7 @@
   /**
    * Simple way to have remotely loaded modals withoud the need to have a perfect markup and replace everything.
    */
-  var BootstrapRemoteModal = function (presetOptions, templateOptions) {
+  var BootstrapRemoteModal = function BootstrapRemoteModal(presetOptions, templateOptions) {
     presetOptions = presetOptions || {};
     templateOptions = templateOptions || {};
 
@@ -17175,16 +17308,16 @@
         saveButton = $(templateOptions.saveButton);
     var modalObject = null;
 
-    var convertKebabCase = function (string) {
+    var convertKebabCase = function convertKebabCase(string) {
       return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     },
-        parseOptions = function () {
+        parseOptions = function parseOptions() {
       var self = this;
       $.each(options, function (key, option) {
         options[key] = self.data(convertKebabCase(key)) || options[key];
       });
     },
-        bindEvents = function () {
+        bindEvents = function bindEvents() {
       modalObject.on('show.bs.modal', function () {
         loadRemote();
       });
@@ -17197,18 +17330,18 @@
       });
       modalObject.on('loaded.ls.remotemodal', options.fnOnLoaded);
     },
-        loadRemote = function () {
+        loadRemote = function loadRemote() {
       var modal_body = modalObject.find('.modal-body');
       $.ajax({
         url: options.remoteLink,
         method: 'GET',
-        success: function (resolve) {
+        success: function success(resolve) {
           modal_body.html(resolve);
           modalObject.trigger('loaded.ls.remotemodal');
         }
       });
     },
-        combineModal = function () {
+        combineModal = function combineModal() {
       var thisContent = contentBlock.clone();
       thisContent.append(bodyBlock.clone());
 
@@ -17230,7 +17363,7 @@
       modalObject = outerBlock.clone();
       modalObject.append(innerBlock.clone().append(thisContent));
     },
-        bindToElement = function () {
+        bindToElement = function bindToElement() {
       this.on('click.remotemodal', function () {
         modalObject.modal('toggle');
       });
@@ -17250,7 +17383,7 @@
   /**
    * Methods and bindings for the question edit page
    */
-  const bindAdvancedAttribute = () => {
+  var bindAdvancedAttribute = function bindAdvancedAttribute() {
     if ($('#advancedquestionsettingswrapper').length > 0) {
       window.questionFunctions = window.questionFunctions || new QuestionFunctions() || null;
       window.questionFunctions.updatequestionattributes();
@@ -17269,11 +17402,11 @@
   /**
    * Methods loaded on subquestions and answers page
    */
-  const subquestionAndAnswersGlobalMethods = {
-    removechars: strtoconvert => {
+  var subquestionAndAnswersGlobalMethods = {
+    removechars: function removechars(strtoconvert) {
       return strtoconvert.replace(/[-a-zA-Z_]/g, "");
     },
-    getUnique: array => {
+    getUnique: function getUnique(array) {
       return lodash.uniq(array);
     }
   };
@@ -17282,9 +17415,9 @@
    * Methods to load when a the surveygrid is available
    *     if($('#survey-grid').length>0)
    */
-  const onExistBinding = () => {
+  var onExistBinding = function onExistBinding() {
     $(document).on('click', '.has-link', function () {
-      const linkUrl = $(this).find('a').attr('href');
+      var linkUrl = $(this).find('a').attr('href');
       window.location.href = linkUrl;
     });
   };
@@ -17293,13 +17426,13 @@
    * Neccessary methods for the confirmation modal
    */
 
-  const ConfirmationModal = function (e) {
+  var ConfirmationModal = function ConfirmationModal(e) {
     //////PREGENERATED VARIABLES
     //Define the scope
-    const _this = this; //Set everything to null on default
+    var _this = this; //Set everything to null on default
 
 
-    const optionsDefault = {
+    var optionsDefault = {
       onclick: null,
       href: null,
       message: null,
@@ -17310,18 +17443,18 @@
     }; //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
 
-    const _parseOptions = e => {
-      return lodash.each(optionsDefault, (value, key) => {
+    var _parseOptions = function _parseOptions(e) {
+      return lodash.each(optionsDefault, function (value, key) {
         optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
       });
     },
-          //Generate a simple link on the ok button
-    _basicLink = () => {
+        //Generate a simple link on the ok button
+    _basicLink = function _basicLink() {
       $(_this).find('.btn-ok').attr('href', options.href);
     },
-          //Evaluate a function on ok button click
-    _onClickFunction = () => {
-      const onclick_fn = new Function(options.onclick);
+        //Evaluate a function on ok button click
+    _onClickFunction = function _onClickFunction() {
+      var onclick_fn = new Function(options.onclick);
 
       if (typeof onclick_fn == 'function') {
         $(_this).find('.btn-ok').off('click');
@@ -17338,25 +17471,25 @@
       console.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
       return;
     },
-          //Set up an ajax call and regenerate a gridView on ok button click
-    _ajaxHandler = () => {
+        //Set up an ajax call and regenerate a gridView on ok button click
+    _ajaxHandler = function _ajaxHandler() {
       $(_this).find('.btn-ok').on('click', function (ev) {
         $.ajax({
           type: "POST",
           url: options['ajax-url'],
           data: options.postDatas,
-          success: function (html, statut) {
+          success: function success(html, statut) {
             $.fn.yiiGridView.update(options.gridid); // Update the surveys list
 
             $('#confirmation-modal').modal('hide');
           },
-          error: function (html, statut) {
+          error: function error(html, statut) {
             $('#confirmation-modal .modal-body-text').append(html.responseText);
           }
         });
       });
     },
-          _setTarget = () => {
+        _setTarget = function _setTarget() {
       //Set up normal href
       if (!!options.href) {
         _basicLink();
@@ -17383,7 +17516,7 @@
     //Current options object
 
 
-    const options = _parseOptions(e); //Set the message if available
+    var options = _parseOptions(e); //Set the message if available
 
 
     $(this).find('.modal-body-text').html(options.message); //Run setTarget to determine loading target
@@ -17391,7 +17524,7 @@
     _setTarget();
   };
 
-  const loadMethods = () => {
+  var loadMethods = function loadMethods() {
     $('#confirmation-modal').on('show.bs.modal', function (e) {
       ConfirmationModal.call(this, e);
     });
@@ -17401,8 +17534,15 @@
    * Check the browsers console capabilities and bundle them into general functions
    * If the build environment was "production" only put out error messages.
    */
-  class ConsoleShim {
-    constructor(param = '', silencer = false) {
+  var ConsoleShim =
+  /*#__PURE__*/
+  function () {
+    function ConsoleShim() {
+      var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      var silencer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      _classCallCheck(this, ConsoleShim);
+
       this.param = param;
       this.silencer = silencer;
       this.collector = [];
@@ -17411,228 +17551,246 @@
       this.timeHolder = null;
       this.methods = ['group', 'groupEnd', 'log', 'trace', 'time', 'timeEnd', 'error', 'warn'];
       this.silent = {
-        group: () => {
+        group: function group() {
           return;
         },
-        groupEnd: () => {
+        groupEnd: function groupEnd() {
           return;
         },
-        log: () => {
+        log: function log() {
           return;
         },
-        trace: () => {
+        trace: function trace() {
           return;
         },
-        time: () => {
+        time: function time() {
           return;
         },
-        timeEnd: () => {
+        timeEnd: function timeEnd() {
           return;
         },
-        error: () => {
+        error: function error() {
           return;
         },
-        err: () => {
+        err: function err() {
           return;
         },
-        debug: () => {
+        debug: function debug() {
           return;
         },
-        warn: () => {
+        warn: function warn() {
           return;
         }
       };
     }
 
-    _generateError() {
-      try {
-        throw new Error();
-      } catch (err) {
-        return err;
+    _createClass(ConsoleShim, [{
+      key: "_generateError",
+      value: function _generateError() {
+        try {
+          throw new Error();
+        } catch (err) {
+          return err;
+        }
       }
-    }
+    }, {
+      key: "_insertParamToArguments",
+      value: function _insertParamToArguments(rawArgs) {
+        if (this.param !== '') {
+          var args = _toConsumableArray(rawArgs);
 
-    _insertParamToArguments(rawArgs) {
-      if (this.param !== '') {
-        let args = [...rawArgs];
-        args.unshift(this.param);
-        return args;
+          args.unshift(this.param);
+          return args;
+        }
+
+        return Array.from(arguments);
       }
+    }, {
+      key: "setSilent",
+      value: function setSilent() {
+        var newValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+        this.silencer = newValue || !this.silencer;
+      } //Start grouping logs
 
-      return Array.from(arguments);
-    }
+    }, {
+      key: "group",
+      value: function group() {
+        if (this.silencer) {
+          return;
+        }
 
-    setSilent(newValue = null) {
-      this.silencer = newValue || !this.silencer;
-    } //Start grouping logs
+        var args = this._insertParamToArguments(arguments);
 
+        if (typeof console.group === 'function') {
+          console.group.apply(console, args);
+          return;
+        }
 
-    group() {
-      if (this.silencer) {
-        return;
+        var description = args[0] || 'GROUP';
+        this.currentGroupDescription = description;
+        this.activeGroups++;
+      } //Stop grouping logs
+
+    }, {
+      key: "groupEnd",
+      value: function groupEnd() {
+        if (this.silencer) {
+          return;
+        }
+
+        var args = this._insertParamToArguments(arguments);
+
+        if (typeof console.groupEnd === 'function') {
+          console.groupEnd.apply(console, args);
+          return;
+        }
+
+        this.currentGroupDescription = '';
+        this.activeGroups--;
+        this.activeGroups = this.activeGroups === 0 ? 0 : this.activeGroups--;
+      } //Simplest mechanism to log stuff
+      // Aware of the group shim
+
+    }, {
+      key: "log",
+      value: function log() {
+        if (this.silencer) {
+          return;
+        }
+
+        var args = this._insertParamToArguments(arguments);
+
+        if (typeof console.group === 'function') {
+          console.log.apply(console, args);
+          return;
+        }
+
+        args.shift();
+        args.unshift(' '.repeat(this.activeGroups * 2));
+        this.log.apply(this, args);
+      } //Trace back the apply.
+      //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
+
+    }, {
+      key: "trace",
+      value: function trace() {
+        if (this.silencer) {
+          return;
+        }
+
+        var args = this._insertParamToArguments(arguments);
+
+        if (typeof console.trace === 'function') {
+          console.trace.apply(console, args);
+          return;
+        }
+
+        var artificialError = this._generateError();
+
+        if (artificialError.stack) {
+          this.log.apply(console, artificialError.stack);
+          return;
+        }
+
+        this.log(args);
+
+        if (arguments.callee != undefined) {
+          this.trace.apply(console, arguments.callee);
+        }
       }
+    }, {
+      key: "time",
+      value: function time() {
+        if (this.silencer) {
+          return;
+        }
 
-      const args = this._insertParamToArguments(arguments);
+        var args = this._insertParamToArguments(arguments);
 
-      if (typeof console.group === 'function') {
-        console.group.apply(console, args);
-        return;
+        if (typeof console.time === 'function') {
+          console.time.apply(console, args);
+          return;
+        }
+
+        this.timeHolder = new Date();
       }
+    }, {
+      key: "timeEnd",
+      value: function timeEnd() {
+        if (this.silencer) {
+          return;
+        }
 
-      const description = args[0] || 'GROUP';
-      this.currentGroupDescription = description;
-      this.activeGroups++;
-    } //Stop grouping logs
+        var args = this._insertParamToArguments(arguments);
 
+        if (typeof console.timeEnd === 'function') {
+          console.timeEnd.apply(console, args);
+          return;
+        }
 
-    groupEnd() {
-      if (this.silencer) {
-        return;
+        var diff = new Date() - this.timeHolder;
+        this.log("Took ".concat(Math.floor(diff / (1000 * 60 * 60)), " hours, ").concat(Math.floor(diff / (1000 * 60)), " minutes and ").concat(Math.floor(diff / 1000), " seconds ( ").concat(diff, " ms)"));
+        this.time = new Date();
       }
+    }, {
+      key: "error",
+      value: function error() {
+        var args = this._insertParamToArguments(arguments);
 
-      const args = this._insertParamToArguments(arguments);
+        if (typeof console.error === 'function') {
+          console.error.apply(console, args);
+          return;
+        }
 
-      if (typeof console.groupEnd === 'function') {
-        console.groupEnd.apply(console, args);
-        return;
+        this.log('--- ERROR ---');
+        this.log(args);
       }
+    }, {
+      key: "warn",
+      value: function warn() {
+        var args = this._insertParamToArguments(arguments);
 
-      this.currentGroupDescription = '';
-      this.activeGroups--;
-      this.activeGroups = this.activeGroups === 0 ? 0 : this.activeGroups--;
-    } //Simplest mechanism to log stuff
-    // Aware of the group shim
+        if (typeof console.warn === 'function') {
+          console.warn.apply(console, args);
+          return;
+        }
 
-
-    log() {
-      if (this.silencer) {
-        return;
+        this.log('--- WARN ---');
+        this.log(args);
       }
+    }]);
 
-      const args = this._insertParamToArguments(arguments);
+    return ConsoleShim;
+  }();
 
-      if (typeof console.group === 'function') {
-        console.log.apply(console, args);
-        return;
-      }
-
-      args.shift();
-      args.unshift(' '.repeat(this.activeGroups * 2));
-      this.log.apply(this, args);
-    } //Trace back the apply.
-    //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
-
-
-    trace() {
-      if (this.silencer) {
-        return;
-      }
-
-      const args = this._insertParamToArguments(arguments);
-
-      if (typeof console.trace === 'function') {
-        console.trace.apply(console, args);
-        return;
-      }
-
-      const artificialError = this._generateError();
-
-      if (artificialError.stack) {
-        this.log.apply(console, artificialError.stack);
-        return;
-      }
-
-      this.log(args);
-
-      if (arguments.callee != undefined) {
-        this.trace.apply(console, arguments.callee);
-      }
-    }
-
-    time() {
-      if (this.silencer) {
-        return;
-      }
-
-      const args = this._insertParamToArguments(arguments);
-
-      if (typeof console.time === 'function') {
-        console.time.apply(console, args);
-        return;
-      }
-
-      this.timeHolder = new Date();
-    }
-
-    timeEnd() {
-      if (this.silencer) {
-        return;
-      }
-
-      const args = this._insertParamToArguments(arguments);
-
-      if (typeof console.timeEnd === 'function') {
-        console.timeEnd.apply(console, args);
-        return;
-      }
-
-      const diff = new Date() - this.timeHolder;
-      this.log(`Took ${Math.floor(diff / (1000 * 60 * 60))} hours, ${Math.floor(diff / (1000 * 60))} minutes and ${Math.floor(diff / 1000)} seconds ( ${diff} ms)`);
-      this.time = new Date();
-    }
-
-    error() {
-      const args = this._insertParamToArguments(arguments);
-
-      if (typeof console.error === 'function') {
-        console.error.apply(console, args);
-        return;
-      }
-
-      this.log('--- ERROR ---');
-      this.log(args);
-    }
-
-    warn() {
-      const args = this._insertParamToArguments(arguments);
-
-      if (typeof console.warn === 'function') {
-        console.warn.apply(console, args);
-        return;
-      }
-
-      this.log('--- WARN ---');
-      this.log(args);
-    }
-
-  }
-
-  const adminCoreLSConsole = new ConsoleShim('AdminCore', !window.debugState.backend);
+  var adminCoreLSConsole = new ConsoleShim('AdminCore', !window.debugState.backend);
 
   /**
    * Define global setters for LimeSurvey
    * Also bootstrapping methods and window bound methods are set here
    */
-  const globalWindowMethods = {
-    renderBootstrapSwitch: () => {
+  var globalWindowMethods = {
+    renderBootstrapSwitch: function renderBootstrapSwitch() {
       try {
         if (!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
           $('[data-is-bootstrap-switch]').bootstrapSwitch({
-            onInit: () => adminCoreLSConsole.log("BootstrapSwitch Initialized")
+            onInit: function onInit() {
+              return adminCoreLSConsole.log("BootstrapSwitch Initialized");
+            }
           });
         }
       } catch (e) {
         adminCoreLSConsole.error(e);
       }
     },
-    unrenderBootstrapSwitch: () => {
+    unrenderBootstrapSwitch: function unrenderBootstrapSwitch() {
       try {
         $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
       } catch (e) {
         adminCoreLSConsole.error(e);
       }
     },
-    validatefilename: (form, strmessage) => {
+    validatefilename: function validatefilename(form, strmessage) {
       if (form.the_file.value == "") {
         $('#pleaseselectfile-popup').modal();
         form.the_file.focus();
@@ -17641,7 +17799,7 @@
 
       return true;
     },
-    doToolTip: () => {
+    doToolTip: function doToolTip() {
       try {
         $(".btntooltip").tooltip("destroy");
       } catch (e) {}
@@ -17659,24 +17817,24 @@
       $('[data-toggle="tooltip"]').tooltip();
     },
     // finds any duplicate array elements using the fewest possible comparison
-    arrHasDupes: arrayToCheck => {
+    arrHasDupes: function arrHasDupes(arrayToCheck) {
       return _.uniq(arrayToCheck).length !== arrayToCheck.length;
     },
-    arrHasDupesWhich: arrayToCheck => {
+    arrHasDupesWhich: function arrHasDupesWhich(arrayToCheck) {
       return _.difference(_.uniq(arrayToCheck), arrayToCheck).length > 0;
     },
-    getkey: e => {
+    getkey: function getkey(e) {
       return window.event ? window.event.keyCode : e ? e.which : null;
     },
-    goodchars: (e, goods) => {
-      const key = getkey(e);
+    goodchars: function goodchars(e, goods) {
+      var key = getkey(e);
       if (key == null) return true; // get character
 
-      const keychar = String.fromCharCode(key).toLowerCase();
+      var keychar = String.fromCharCode(key).toLowerCase();
       goods = goods.toLowerCase();
       return goods.indexOf(keychar) != -1 || key == null || key == 0 || key == 8 || key == 9 || key == 27;
     },
-    tableCellAdapters: () => {
+    tableCellAdapters: function tableCellAdapters() {
       $('table.activecell').on("click", ['tbody td input:checkbox', 'tbody td input:radio', 'tbody td label', 'tbody th input:checkbox', 'tbody th input:radio', 'tbody th label'].join(', '), function (e) {
         e.stopPropagation();
       });
@@ -17689,9 +17847,9 @@
         }
       });
     },
-    sendPost: (url, content, contentObject) => {
+    sendPost: function sendPost(url, content, contentObject) {
       contentObject = contentObject || {};
-      const $form = $("<form method='POST'>").attr("action", url);
+      var $form = $("<form method='POST'>").attr("action", url);
 
       if (typeof content == 'string' && content != '') {
         try {
@@ -17701,7 +17859,7 @@
         }
       }
 
-      _.each(contentObject, (value, key) => {
+      _.each(contentObject, function (value, key) {
         $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
       });
 
@@ -17709,18 +17867,18 @@
       $form.appendTo("body");
       $form.submit();
     },
-    addHiddenElement: (form, name, value) => {
+    addHiddenElement: function addHiddenElement(form, name, value) {
       $('<input type="hidden"/>').attr('name', name).attr('value', value).appendTo($(form));
     },
-    fixAccordionPosition: () => {
+    fixAccordionPosition: function fixAccordionPosition() {
       $('#accordion').on('shown.bs.collapse', ".panel-collapse.collapse", function (e) {
         if (e.target != this) return;
         $('#accordion').find('.panel-collapse.collapse').not('#' + $(this).attr('id')).collapse('hide');
       });
     }
   };
-  const globalStartUpMethods = {
-    bootstrapping: () => {
+  var globalStartUpMethods = {
+    bootstrapping: function bootstrapping() {
       $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
       $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
       $(".progressbar").each(function () {
@@ -17756,72 +17914,86 @@
    */
   window.LS = window.LS || {};
 
-  class NotifyFader {
-    constructor() {
+  var NotifyFader =
+  /*#__PURE__*/
+  function () {
+    function NotifyFader() {
+      _classCallCheck(this, NotifyFader);
+
       this.count = 0;
     }
 
-    increment() {
-      this.count = this.count + 1;
-    }
-
-    decrement() {
-      this.count = this.count - 1;
-    }
-
-    getCount() {
-      return this.count;
-    }
-
-    create(text, classes, styles, customOptions) {
-      this.increment();
-      customOptions = customOptions || {};
-      styles = styles || {};
-      classes = classes || "well well-lg";
-      const options = {
-        useHtml: customOptions.useHtml || true,
-        timeout: customOptions.timeout || 3500,
-        inAnimation: customOptions.inAnimation || "slideDown",
-        outAnimation: customOptions.outAnimation || "slideUp",
-        animationTime: customOptions.animationTime || 450
-      };
-      const container = $("<div> </div>");
-      const newID = "notif-container_" + this.getCount();
-      container.addClass(classes);
-      container.css(styles);
-
-      if (options.useHtml) {
-        container.html(text);
-      } else {
-        container.text(text);
+    _createClass(NotifyFader, [{
+      key: "increment",
+      value: function increment() {
+        this.count = this.count + 1;
       }
+    }, {
+      key: "decrement",
+      value: function decrement() {
+        this.count = this.count - 1;
+      }
+    }, {
+      key: "getCount",
+      value: function getCount() {
+        return this.count;
+      }
+    }, {
+      key: "create",
+      value: function create(text, classes, styles, customOptions) {
+        var _this = this;
 
-      $('#notif-container').clone().attr('id', newID).css({
-        display: 'none',
-        top: 8 * this.getCount() + "%",
-        position: 'fixed',
-        left: "15%",
-        width: "70%",
-        'z-index': 3500
-      }).appendTo($('#notif-container').parent()).html(container); // using the option inAnimation as funtion of jquery
-
-      $('#' + newID)[options.inAnimation](options.animationTime, () => {
-        const remove = () => {
-          $('#' + newID)[options.outAnimation](options.animationTime, () => {
-            $('#' + newID).remove();
-            this.decrement();
-          });
+        this.increment();
+        customOptions = customOptions || {};
+        styles = styles || {};
+        classes = classes || "well well-lg";
+        var options = {
+          useHtml: customOptions.useHtml || true,
+          timeout: customOptions.timeout || 3500,
+          inAnimation: customOptions.inAnimation || "slideDown",
+          outAnimation: customOptions.outAnimation || "slideUp",
+          animationTime: customOptions.animationTime || 450
         };
+        var container = $("<div> </div>");
+        var newID = "notif-container_" + this.getCount();
+        container.addClass(classes);
+        container.css(styles);
 
-        $(this).on('click', remove);
-
-        if (options.timeout) {
-          setTimeout(remove, options.timeout);
+        if (options.useHtml) {
+          container.html(text);
+        } else {
+          container.text(text);
         }
-      });
-    }
 
-  }
+        $('#notif-container').clone().attr('id', newID).css({
+          display: 'none',
+          top: 8 * this.getCount() + "%",
+          position: 'fixed',
+          left: "15%",
+          width: "70%",
+          'z-index': 3500
+        }).appendTo($('#notif-container').parent()).html(container); // using the option inAnimation as funtion of jquery
+
+        $('#' + newID)[options.inAnimation](options.animationTime, function () {
+          var remove = function remove() {
+            $('#' + newID)[options.outAnimation](options.animationTime, function () {
+              $('#' + newID).remove();
+
+              _this.decrement();
+            });
+          };
+
+          $(_this).on('click', remove);
+
+          if (options.timeout) {
+            setTimeout(remove, options.timeout);
+          }
+        });
+      }
+    }]);
+
+    return NotifyFader;
+  }();
   window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
   function notifyFader (text, classes, styles, customOptions) {
     window.LS.LsGlobalNotifier.create(text, classes, styles, customOptions);
@@ -17831,7 +18003,7 @@
    * Collection of ajax helper
    */
 
-  const onSuccess$1 = response => {
+  var onSuccess$1 = function onSuccess(response) {
     // Check type of response and take action accordingly
     if (response == '') {
       console.error('No response from server');
@@ -17889,11 +18061,11 @@
   */
 
 
-  const ajax = options => {
+  var ajax = function ajax(options) {
     var oldSuccess = options.success;
     var oldError = options.error;
 
-    options.success = (response, textStatus, jqXHR) => {
+    options.success = function (response, textStatus, jqXHR) {
       $('#ls-loading').hide(); // User-supplied success is always run EXCEPT when login fails
 
       var runOldSuccess = onSuccess$1(response);
@@ -17903,7 +18075,7 @@
       }
     };
 
-    options.error = (jqXHR, textStatus, errorThrown) => {
+    options.error = function (jqXHR, textStatus, errorThrown) {
       $('#ls-loading').hide();
       console.error('AJAX CALL FAILED -> ', {
         errorThrown: errorThrown,
@@ -17925,8 +18097,9 @@
     onSuccess: onSuccess$1
   });
 
-  function createUrl (route, params = {}) {
-    let result = LS.data.baseUrl;
+  function createUrl (route) {
+    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var result = LS.data.baseUrl;
 
     if (result.indexOf('/', result.length - 1) === -1) {
       result = result + '/';
@@ -17940,7 +18113,7 @@
       // Configure route.
       result += '?r=' + route; // Configure params.
 
-      for (let key in params) {
+      for (var key in params) {
         result = result + '&' + key + '=' + params[key];
       }
     } else {
@@ -17951,8 +18124,8 @@
 
       result += route; // Configure params.
 
-      for (let key in params) {
-        result = result + '/' + key + '/' + params[key];
+      for (var _key in params) {
+        result = result + '/' + _key + '/' + params[_key];
       }
     }
 
@@ -18880,9 +19053,9 @@
 
   var forEach_1 = forEach;
 
-  const SaveController = () => {
+  var SaveController = function SaveController() {
 
-    const closeAfterSaveInput = $("<input>").attr("type", "hidden").attr("name", "close-after-save");
+    var closeAfterSaveInput = $("<input>").attr("type", "hidden").attr("name", "close-after-save");
     /**
      * Helper function for save buttons onclick event
      *
@@ -18890,8 +19063,8 @@
      * @return {object} jQuery DOM form object
      */
 
-    const getForm = that => {
-      let form;
+    var getForm = function getForm(that) {
+      var form;
 
       if ($(that).attr('data-use-form-id') == 1) {
         formId = '#' + $(that).attr('data-form-to-save');
@@ -18903,25 +19076,27 @@
       if (form.length < 1) throw "No form Found this can't be!";
       return form;
     },
-          // displayLoadingState = (el) => {
-    //     const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-    //     $(el).prop('disabled', true).append(loadingSpinner);
-    // },
-    stopDisplayLoadingState = () => {
+        displayLoadingState = function displayLoadingState(el) {
+      if ($(el).data('form-id') == 'addnewsurvey') {
+        var loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+        $(el).prop('disabled', true).append(loadingSpinner);
+      }
+    },
+        stopDisplayLoadingState = function stopDisplayLoadingState() {
       adminCoreLSConsole.log('StopLoadingIconAnimation');
       LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
-          //###########PRIVATE
-    checks = () => {
+        //###########PRIVATE
+    checks = function checks() {
       return {
         _checkExportButton: {
           check: '[data-submit-form]',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const $form = getForm(this);
+            var $form = getForm(this);
 
             try {
-              for (let instanceName in CKEDITOR.instances) {
+              for (var instanceName in CKEDITOR.instances) {
                 CKEDITOR.instances[instanceName].updateElement();
               }
             } catch (e) {
@@ -18934,12 +19109,12 @@
         },
         _checkSaveButton: {
           check: '#save-button',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const $form = getForm(this);
+            var $form = getForm(this);
 
             try {
-              for (let instanceName in CKEDITOR.instances) {
+              for (var instanceName in CKEDITOR.instances) {
                 CKEDITOR.instances[instanceName].updateElement();
               }
             } catch (e) {
@@ -18953,10 +19128,10 @@
         },
         _checkSaveFormButton: {
           check: '#save-form-button',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const formid = '#' + $(this).attr('data-form-id'),
-                  $form = $(formid); //alert($form.find('[type="submit"]').attr('id'));
+            var formid = '#' + $(this).attr('data-form-id'),
+                $form = $(formid); //alert($form.find('[type="submit"]').attr('id'));
 
             $form.find('[type="submit"]').trigger('click');
             displayLoadingState(this);
@@ -18966,13 +19141,13 @@
         },
         _checkSaveAndNewButton: {
           check: '#save-and-new-button',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const $form = getForm(this);
+            var $form = getForm(this);
             $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
 
             try {
-              for (let instanceName in CKEDITOR.instances) {
+              for (var instanceName in CKEDITOR.instances) {
                 CKEDITOR.instances[instanceName].updateElement();
               }
             } catch (e) {
@@ -18986,9 +19161,9 @@
         },
         _checkSaveAndCloseButton: {
           check: '#save-and-close-button',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const $form = getForm(this);
+            var $form = getForm(this);
             closeAfterSaveInput.val("true");
             $form.append(closeAfterSaveInput);
             $form.find('[type="submit"]').first().trigger('click');
@@ -18998,10 +19173,10 @@
         },
         _checkSaveAndCloseFormButton: {
           check: '#save-and-close-form-button',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const formid = '#' + $(this).attr('data-form-id'),
-                  $form = $(formid); // Add input to tell us to not redirect
+            var formid = '#' + $(this).attr('data-form-id'),
+                $form = $(formid); // Add input to tell us to not redirect
             // TODO : change that
 
             $('<input type="hidden">').attr({
@@ -19016,13 +19191,13 @@
         },
         _checkSaveAndNewQuestionButton: {
           check: '#save-and-new-question-button',
-          run: function (ev) {
+          run: function run(ev) {
             ev.preventDefault();
-            const $form = getForm(this);
+            var $form = getForm(this);
             $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
 
             try {
-              for (let instanceName in CKEDITOR.instances) {
+              for (var instanceName in CKEDITOR.instances) {
                 CKEDITOR.instances[instanceName].updateElement();
               }
             } catch (e) {
@@ -19036,8 +19211,8 @@
         },
         _checkOpenPreview: {
           check: '.open-preview',
-          run: function (ev) {
-            const frameSrc = $(this).attr("aria-data-url");
+          run: function run(ev) {
+            var frameSrc = $(this).attr("aria-data-url");
             $('#frame-question-preview').attr('src', frameSrc);
             $('#question-preview').modal('show');
           },
@@ -19045,7 +19220,7 @@
         },
         _checkStopLoading: {
           check: '#in_survey_common',
-          run: function (ev) {
+          run: function run(ev) {
             stopDisplayLoadingState();
           },
           on: 'lsStopLoading'
@@ -19054,9 +19229,9 @@
     }; //############PUBLIC
 
 
-    return () => {
-      forEach_1(checks(), checkItem => {
-        let item = checkItem.check;
+    return function () {
+      forEach_1(checks(), function (checkItem) {
+        var item = checkItem.check;
         $(document).off(checkItem.on + '.centralsave', item);
         adminCoreLSConsole.log('saveBindings', checkItem, $(item));
 
@@ -19068,18 +19243,18 @@
     };
   };
 
-  const saveController = SaveController();
+  var saveController = SaveController();
 
-  const $GET = {};
-  forEach_1(window.location.search.substring(1).split('&'), (value, index) => {
+  var $GET = {};
+  forEach_1(window.location.search.substring(1).split('&'), function (value, index) {
     try {
-      const keyValueArray = value.split("=");
+      var keyValueArray = value.split("=");
       $GET[keyValueArray[0]] = keyValueArray[1];
     } catch (e) {}
   });
-  let key = null;
-  const keyValuePairs = {};
-  window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach((value, index) => {
+  var key = null;
+  var keyValuePairs = {};
+  window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach(function (value, index) {
     if (value == 'sa') {
       key = false;
     }
@@ -19095,12 +19270,12 @@
   });
   var parameterGlobals = {
     parameters: {
-      $GET,
-      keyValuePairs
+      $GET: $GET,
+      keyValuePairs: keyValuePairs
     }
   };
 
-  var activateSubSubMenues = function () {
+  var activateSubSubMenues = function activateSubSubMenues() {
     $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -19109,8 +19284,8 @@
     });
   };
 
-  const ConfirmDeleteModal = function (options) {
-    const $item = $(this);
+  var ConfirmDeleteModal = function ConfirmDeleteModal(options) {
+    var $item = $(this);
 
     options.fnOnShown = options.fnOnShown || function () {};
 
@@ -19122,62 +19297,62 @@
 
     options.fnOnLoaded = options.fnOnLoaded || function () {};
 
-    const postUrl = options.postUrl || $item.attr('href'),
-          confirmText = options.confirmText || $item.data('text') || '',
-          confirmTitle = options.confirmTitle || $item.attr('title') || '',
-          postObject = options.postObject || $item.data('post'),
-          showTextArea = options.showTextArea || $item.data('show-text-area') || '',
-          useAjax = options.useAjax || $item.data('use-ajax') || '',
-          keepopen = options.keepopen || $item.data('keepopen') || '',
-          gridReload = options.gridReload || $item.data('grid-reload') || '',
-          gridid = options.gridid || $item.data('grid-id') || '',
-          buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
-          buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
-          parentElement = options.parentElement || $item.data('parent-element') || 'body';
-    const closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-          closeButtonHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">' + buttonNo + '</button>',
-          confirmButtonHTML = '<button type="button" class="btn btn-primary selector--button-confirm">' + buttonYes + '</button>'; //Define all the blocks and combine them by jquery methods
+    var postUrl = options.postUrl || $item.attr('href'),
+        confirmText = options.confirmText || $item.data('text') || '',
+        confirmTitle = options.confirmTitle || $item.attr('title') || '',
+        postObject = options.postObject || $item.data('post'),
+        showTextArea = options.showTextArea || $item.data('show-text-area') || '',
+        useAjax = options.useAjax || $item.data('use-ajax') || '',
+        keepopen = options.keepopen || $item.data('keepopen') || '',
+        gridReload = options.gridReload || $item.data('grid-reload') || '',
+        gridid = options.gridid || $item.data('grid-id') || '',
+        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
+        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
+        parentElement = options.parentElement || $item.data('parent-element') || 'body';
+    var closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        closeButtonHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">' + buttonNo + '</button>',
+        confirmButtonHTML = '<button type="button" class="btn btn-primary selector--button-confirm">' + buttonYes + '</button>'; //Define all the blocks and combine them by jquery methods
 
-    const outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
-          innerBlock = $('<div class="modal-dialog" role="document"></div>'),
-          contentBlock = $('<div class="modal-content"></div>'),
-          headerBlock = $('<div class="modal-header"></div>'),
-          headlineBlock = $('<h4 class="modal-title"></h4>'),
-          bodyBlock = $('<div class="modal-body"></div>'),
-          footerBlock = $('<div class="modal-footer"></div>'),
-          closeIcon = $(closeIconHTML),
-          closeButton = $(closeButtonHTML),
-          confirmButton = $(confirmButtonHTML);
-    let modalObject = null;
+    var outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+        innerBlock = $('<div class="modal-dialog" role="document"></div>'),
+        contentBlock = $('<div class="modal-content"></div>'),
+        headerBlock = $('<div class="modal-header"></div>'),
+        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        bodyBlock = $('<div class="modal-body"></div>'),
+        footerBlock = $('<div class="modal-footer"></div>'),
+        closeIcon = $(closeIconHTML),
+        closeButton = $(closeButtonHTML),
+        confirmButton = $(confirmButtonHTML);
+    var modalObject = null;
 
-    const combineModal = () => {
-      const thisContent = contentBlock.clone();
+    var combineModal = function combineModal() {
+      var thisContent = contentBlock.clone();
       thisContent.append(bodyBlock.clone());
 
       if (confirmTitle !== '') {
-        const thisHeader = headerBlock.clone();
+        var thisHeader = headerBlock.clone();
         headlineBlock.text(confirmTitle);
         thisHeader.append(closeIcon.clone());
         thisHeader.append(headlineBlock);
         thisContent.prepend(thisHeader);
       }
 
-      const thisFooter = footerBlock.clone();
+      var thisFooter = footerBlock.clone();
       thisFooter.append(closeButton.clone());
       thisFooter.append(confirmButton.clone());
       thisContent.append(thisFooter);
       modalObject = outerBlock.clone();
       modalObject.append(innerBlock.clone().append(thisContent));
     },
-          addForm = function () {
-      const formObject = $('<form name="' + Math.round(Math.random() * 1000) + '_' + confirmTitle.replace(/[^a-bA-B0-9]/g, '') + '" method="post" action="' + postUrl + '"></form>');
+        addForm = function addForm() {
+      var formObject = $('<form name="' + Math.round(Math.random() * 1000) + '_' + confirmTitle.replace(/[^a-bA-B0-9]/g, '') + '" method="post" action="' + postUrl + '"></form>');
 
-      for (let key in postObject) {
-        let type = 'hidden',
+      for (var key in postObject) {
+        var type = 'hidden',
             value = postObject[key],
             htmlClass = '';
 
-        if (typeof postObject[key] == 'object') {
+        if (_typeof(postObject[key]) == 'object') {
           type = postObject[key].type;
           value = postObject[key].value;
           htmlClass = postObject[key].class;
@@ -19194,13 +19369,13 @@
         modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
       }
     },
-          runAjaxRequest = function () {
+        runAjaxRequest = function runAjaxRequest() {
       return LS.ajax({
         url: postUrl,
         type: 'POST',
         data: modalObject.find('form').serialize(),
         // html contains the buttons
-        success: function (html, statut) {
+        success: function success(html, statut) {
           if (keepopen != 'true') {
             modalObject.modal('hide'); // $modal.modal('hide');
           } else {
@@ -19227,13 +19402,13 @@
             return;
           }
         },
-        error: function (html, statut) {
+        error: function error(html, statut) {
           modalObject.find('.modal-body').empty().html(html.responseText);
           console.ls.log(html);
         }
       });
     },
-          bindEvents = function () {
+        bindEvents = function bindEvents() {
       modalObject.on('show.bs.modal', function () {
         addForm();
 
@@ -19267,12 +19442,12 @@
       });
       modalObject.on('loaded.ls.remotemodal', options.fnOnLoaded);
     },
-          bindToElement = function () {
+        bindToElement = function bindToElement() {
       $item.on('click.confirmmodal', function () {
         modalObject.modal('toggle');
       });
     },
-          runPrepare = function () {
+        runPrepare = function runPrepare() {
       if ($item.data('confirm-modal-appended') == 'yes') {
         return;
       }
@@ -19305,7 +19480,7 @@
    */
   function panelClickable() {
     $(".panel-clickable").on('click', function (e) {
-      const self = $(this);
+      var self = $(this);
 
       if (self.data('url') != '') {
         if (self.data('target') === '_blank') {
@@ -19321,7 +19496,7 @@
    * Welcome page panels animations
    */
   function panelsAnimation() {
-    setTimeout(() => {
+    setTimeout(function () {
       adminCoreLSConsole.log('Triggering panel animation');
       /**
        * Panel shown one by one
@@ -19338,8 +19513,8 @@
        */
 
       function rotateLast() {
-        const $rotateShown = $('.rotateShown');
-        const $rotateHidden = $('.rotateHidden');
+        var $rotateShown = $('.rotateShown');
+        var $rotateHidden = $('.rotateHidden');
         $rotateShown.hide('slide', {
           direction: 'left',
           easing: 'easeInOutQuint'
@@ -19368,20 +19543,20 @@
    * @author Olle Haerstedt, Markus Flür
    */
 
-  const NotifcationSystem = function () {
-    const
+  var NotifcationSystem = function NotifcationSystem() {
+    var
     /**
      * Load widget HTML and inject it
      * @param {string} URL to call
      * @return
      */
-    __updateNotificationWidget = updateUrl => {
+    __updateNotificationWidget = function __updateNotificationWidget(updateUrl) {
       adminCoreLSConsole.log('updateNotificationWidget'); // Update notification widget
 
       return $.ajax({
         url: updateUrl,
         method: 'GET',
-        success: response => {
+        success: function success(response) {
           $('#notification-li').replaceWith(response); // Re-bind onclick
 
           initNotification(); // Adapt style to window size
@@ -19396,12 +19571,12 @@
      * @param {object} that The notification link
      * @return
      */
-    __notificationIsRead = that => {
+    __notificationIsRead = function __notificationIsRead(that) {
       adminCoreLSConsole.log('notificationIsRead');
       $.ajax({
         url: $(that).data('read-url'),
         method: 'GET'
-      }).done(response => {
+      }).done(function (response) {
         // Fetch new HTML for menu widget
         __updateNotificationWidget($(that).data('update-url'));
       });
@@ -19413,13 +19588,13 @@
      * @param {url} URL to fetch notification as JSON
      * @return
      */
-    __showNotificationModal = (that, url) => {
+    __showNotificationModal = function __showNotificationModal(that, url) {
       adminCoreLSConsole.log('showNotificationModal');
       $.ajax({
         url: url,
         method: 'GET'
-      }).done(response => {
-        const not = response.result;
+      }).done(function (response) {
+        var not = response.result;
         $('#admin-notification-modal .modal-title').html(not.title);
         $('#admin-notification-modal .modal-body-text').html(not.message);
         $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
@@ -19427,7 +19602,7 @@
         $('#admin-notification-modal').modal(); // TODO: Will this work in message includes a link that is clicked?
 
         $('#admin-notification-modal').off('hidden.bs.modal');
-        $('#admin-notification-modal').on('hidden.bs.modal', e => {
+        $('#admin-notification-modal').on('hidden.bs.modal', function (e) {
           __notificationIsRead(that);
 
           $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
@@ -19441,13 +19616,13 @@
      * Bind onclick and stuff
      * @return
      */
-    initNotification = () => {
+    initNotification = function initNotification() {
       // const self = this;
-      $('.admin-notification-link').each((nr, that) => {
+      $('.admin-notification-link').each(function (nr, that) {
         adminCoreLSConsole.log('Number of Notification: ', nr);
-        const url = $(that).data('url');
-        const importance = $(that).data('importance');
-        const status = $(that).data('status'); // Important notifications are shown as pop-up on load
+        var url = $(that).data('url');
+        var importance = $(that).data('importance');
+        var status = $(that).data('status'); // Important notifications are shown as pop-up on load
 
         if (importance == 3 && status == 'new') {
           __showNotificationModal(that, url);
@@ -19458,7 +19633,7 @@
 
 
         $(that).off('click.showNotification');
-        $(that).on('click.showNotification', () => {
+        $(that).on('click.showNotification', function () {
           __showNotificationModal(that, url);
         });
       });
@@ -19470,9 +19645,9 @@
      * @param {boolean} openAfter If notification widget should be opened after load; default to true
      * @return
      */
-    updateNotificationWidget = (url, openAfter) => {
+    updateNotificationWidget = function updateNotificationWidget(url, openAfter) {
       // Make sure menu is open after load
-      __updateNotificationWidget(url).then(() => {
+      __updateNotificationWidget(url).then(function () {
         if (openAfter !== false) {
           $('#notification-li').addClass('open');
         }
@@ -19486,41 +19661,41 @@
      * Apply styling
      * @return
      */
-    styleNotificationMenu = () => {
+    styleNotificationMenu = function styleNotificationMenu() {
       adminCoreLSConsole.log('styleNotificationMenu');
-      const height = window.innerHeight - 70;
+      var height = window.innerHeight - 70;
       $('#notification-outer-ul').css('height', height + 'px');
       $('#notification-inner-ul').css('height', height - 60 + 'px');
       $('#notification-inner-li').css('height', height - 60 + 'px');
     },
-          deleteAllNotifications = (url, updateUrl) => {
+        deleteAllNotifications = function deleteAllNotifications(url, updateUrl) {
       return $.ajax({
         url: url,
         method: 'GET',
-        success: response => {
+        success: function success(response) {
           adminCoreLSConsole.log('response', response);
         }
-      }).then(() => {
+      }).then(function () {
         updateNotificationWidget(updateUrl);
       });
     };
 
     return {
-      initNotification,
-      updateNotificationWidget,
-      styleNotificationMenu,
-      deleteAllNotifications
+      initNotification: initNotification,
+      updateNotificationWidget: updateNotificationWidget,
+      styleNotificationMenu: styleNotificationMenu,
+      deleteAllNotifications: deleteAllNotifications
     };
   }; //########################################################################
 
 
-  const notificationSystem = new NotifcationSystem();
+  var notificationSystem = new NotifcationSystem();
 
-  const gridButton = {
-    noGridAction: (event, that) => {
+  var gridButton = {
+    noGridAction: function noGridAction(event, that) {
       event.preventDefault();
     },
-    confirmGridAction: (event, that) => {
+    confirmGridAction: function confirmGridAction(event, that) {
       event.preventDefault();
       var actionUrl = $(that).attr('href');
 
@@ -19536,18 +19711,18 @@
         $('#' + gridid).yiiGridView('update', {
           type: 'POST',
           url: actionUrl,
-          success: function (data) {
+          success: function success(data) {
             jQuery('#' + gridid).yiiGridView('update');
             $('#identity__bsconfirmModal').modal('hide'); // todo : show an success alert box
           },
-          error: function (request, status, error) {
+          error: function error(request, status, _error) {
             $('#identity__bsconfirmModal').modal('hide');
             alert(request.responseText); // Use a better alert box (see todo success)
           }
         });
       });
     },
-    postGridAction: (event, that) => {
+    postGridAction: function postGridAction(event, that) {
       event.preventDefault();
       var parts = $(that).attr('href').split("#");
       var actionUrl = parts[0];
@@ -19567,7 +19742,7 @@
     }
   };
   var gridAction = {
-    gridButton
+    gridButton: gridButton
   };
 
   /*!
@@ -27982,34 +28157,65 @@
     }, 0);
   }
 
-  class EventBus extends Vue {
-    $getEventsBound() {
-      return this.eventsBound;
-    } // Override Vue's $emit to call a logger for any event emitted.
+  var EventBus =
+  /*#__PURE__*/
+  function (_Vue) {
+    _inherits(EventBus, _Vue);
 
+    function EventBus() {
+      _classCallCheck(this, EventBus);
 
-    $emit(event, ...args) {
-      console.ls.log("Emitting -> ", event, ...args);
-
-      if (this.eventsBound != undefined && this.eventsBound[event] != undefined) {
-        this.eventsBound[event].forEach(element => {
-          element[0](...args);
-        });
-      }
-
-      return super.$emit(event, ...args);
-    } // Override Vue's $emit to call a logger for any event bound.
-
-
-    $on(event, ...args) {
-      this.eventsBound = this.eventsBound || {};
-      this.eventsBound[event] = this.eventsBound[event] || [];
-      this.eventsBound[event].push(args);
-      console.ls.log("Binding -> ", event, ...args);
-      return super.$emit(event, ...args);
+      return _possibleConstructorReturn(this, _getPrototypeOf(EventBus).apply(this, arguments));
     }
 
-  }
+    _createClass(EventBus, [{
+      key: "$getEventsBound",
+      value: function $getEventsBound() {
+        return this.eventsBound;
+      } // Override Vue's $emit to call a logger for any event emitted.
+
+    }, {
+      key: "$emit",
+      value: function $emit(event) {
+        var _console$ls, _get2;
+
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+
+        (_console$ls = console.ls).log.apply(_console$ls, ["Emitting -> ", event].concat(args));
+
+        if (this.eventsBound != undefined && this.eventsBound[event] != undefined) {
+          this.eventsBound[event].forEach(function (element) {
+            element[0].apply(element, args);
+          });
+        }
+
+        return (_get2 = _get(_getPrototypeOf(EventBus.prototype), "$emit", this)).call.apply(_get2, [this, event].concat(args));
+      } // Override Vue's $emit to call a logger for any event bound.
+
+    }, {
+      key: "$on",
+      value: function $on(event) {
+        var _console$ls2, _get3;
+
+        this.eventsBound = this.eventsBound || {};
+        this.eventsBound[event] = this.eventsBound[event] || [];
+
+        for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
+        }
+
+        this.eventsBound[event].push(args);
+
+        (_console$ls2 = console.ls).log.apply(_console$ls2, ["Binding -> ", event].concat(args));
+
+        return (_get3 = _get(_getPrototypeOf(EventBus.prototype), "$emit", this)).call.apply(_get3, [this, event].concat(args));
+      }
+    }]);
+
+    return EventBus;
+  }(Vue);
 
   window.EventBus = window.EventBus || new EventBus({
     name: "EventBus"
@@ -28032,25 +28238,25 @@
   //Define LS Namespace
   window.LS = window.LS || {}; //import css/scss to be seperately compiled
 
-  const AdminCore = function () {
+  var AdminCore = function AdminCore() {
     //Singelton Pattern -> the AdminCore functions can only be nound once.
-    if (typeof window.LS.adminCore === 'object') {
+    if (_typeof(window.LS.adminCore) === 'object') {
       window.LS.adminCore.refresh();
       return;
     }
 
-    const eventsBound = {
+    var eventsBound = {
       document: []
     };
 
-    const debug = () => {
+    var debug = function debug() {
       return {
-        eventsBound,
+        eventsBound: eventsBound,
         windowLS: window.LS
       };
     };
 
-    const onLoadRegister = () => {
+    var onLoadRegister = function onLoadRegister() {
       globalStartUpMethods.bootstrapping();
       onExistBinding();
       appendToLoad(function () {
@@ -28069,32 +28275,34 @@
       appendToLoad(activateSubSubMenues);
       appendToLoad(globalWindowMethods.fixAccordionPosition);
     },
-          appendToLoad = (fn, event, root, delay) => {
+        appendToLoad = function appendToLoad(fn, event, root, delay) {
       event = event || 'pjax:scriptcomplete ready';
       root = root || 'document';
       delay = delay || 0;
       adminCoreLSConsole.log('appendToLoad', {
-        'type': typeof fn,
+        'type': _typeof(fn),
         'fn': fn
       });
       eventsBound[root] = eventsBound[root] || [];
 
       if (lodash.find(eventsBound[root], {
-        fn,
-        event,
-        root,
-        delay
+        fn: fn,
+        event: event,
+        root: root,
+        delay: delay
       }) === undefined) {
         eventsBound[root].push({
-          fn,
-          event,
-          root,
-          delay
+          fn: fn,
+          event: event,
+          root: root,
+          delay: delay
         });
 
-        const events = lodash.map(event.split(' '), event => event !== 'ready' ? event + '.admincore' : 'ready');
+        var events = lodash.map(event.split(' '), function (event) {
+          return event !== 'ready' ? event + '.admincore' : 'ready';
+        });
 
-        const call = delay > 0 ? () => {
+        var call = delay > 0 ? function () {
           window.setTimeout(fn, delay);
         } : fn;
 
@@ -28105,12 +28313,14 @@
         }
       }
     },
-          refreshAdminCore = () => {
-      lodash.each(eventsBound, (eventMap, root) => {
-        lodash.each(eventMap, evItem => {
-          const events = lodash.map(evItem.event.split(' '), event => event !== 'ready' ? event + '.admincore' : '');
+        refreshAdminCore = function refreshAdminCore() {
+      lodash.each(eventsBound, function (eventMap, root) {
+        lodash.each(eventMap, function (evItem) {
+          var events = lodash.map(evItem.event.split(' '), function (event) {
+            return event !== 'ready' ? event + '.admincore' : '';
+          });
 
-          const call = evItem.delay > 0 ? () => {
+          var call = evItem.delay > 0 ? function () {
             window.setTimeout(evItem.fn, evItem.delay);
           } : evItem.fn;
 
@@ -28124,12 +28334,13 @@
       onExistBinding();
       adminCoreLSConsole.trace("Refreshed Admin core methods");
     },
-          addToNamespace = (object, name = "globalAddition") => {
+        addToNamespace = function addToNamespace(object) {
+      var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "globalAddition";
       window.LS[name] = window.LS[name] || {};
       window.LS[name] = lodash.merge(window.LS[name], object);
     },
-          setNameSpace = () => {
-      const BaseNameSpace = {
+        setNameSpace = function setNameSpace() {
+      var BaseNameSpace = {
         adminCore: {
           refresh: refreshAdminCore,
           onload: onLoadRegister,
@@ -28137,20 +28348,20 @@
           addToNamespace: addToNamespace
         }
       };
-      const pageLoadActions = {
+      var pageLoadActions = {
         saveBindings: saveController,
         confirmationModal: loadMethods,
         questionEdit: bindAdvancedAttribute,
-        confirmDeletemodal,
-        panelClickable,
-        panelsAnimation,
+        confirmDeletemodal: confirmDeletemodal,
+        panelClickable: panelClickable,
+        panelsAnimation: panelsAnimation,
         initNotification: notificationSystem.initNotification
       };
 
-      const LsNameSpace = lodash.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {
-        notifyFader
+      var LsNameSpace = lodash.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {
+        notifyFader: notifyFader
       }, {
-        createUrl
+        createUrl: createUrl
       }, {
         EventBus: EventBus$1
       }, subquestionAndAnswersGlobalMethods, notificationSystem, gridAction);
@@ -28160,9 +28371,9 @@
 
 
       window.LS = lodash.merge(window.LS, LsNameSpace, {
-        pageLoadActions,
+        pageLoadActions: pageLoadActions,
         ld: lodash,
-        debug
+        debug: debug
       });
       /* Set a variable to test if browser have HTML5 form ability
       * Need to be replaced by some polyfills see #8009
