@@ -433,23 +433,42 @@ class questiongroups extends Survey_Common_Action
                 foreach ($grouparray as $aQuestiongroup) {
                     
                     //first set up the ordering for questiongroups
-                    $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-                    array_map(function($oQuestiongroup) use ($aQuestiongroup, $success)
-                    {
-                        $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                        $success = $success && $oQuestiongroup->save();
-                    }, $oQuestiongroups);
+                    $oQuestiongroups = QuestionGroup::model()->findAll(
+                        "gid=:gid AND sid=:sid", 
+                        [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]
+                    );
+                    array_map(
+                        function ($oQuestiongroup) use ($aQuestiongroup, $success) {
+                            $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                            $success = $success && $oQuestiongroup->save();
+                        }, 
+                        $oQuestiongroups
+                    );
                     
                     $aQuestiongroup['questions'] = isset($aQuestiongroup['questions']) ? $aQuestiongroup['questions'] : [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                        $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
-                        array_map(function($oQuestion) use ($aQuestion, $success)
-                        {
-                            $oQuestion->question_order = $aQuestion['question_order'];
-                            $oQuestion->gid = $aQuestion['gid'];
-                            $success = $success && $oQuestion->save(true);
-                        }, $oQuestions);
+                        $aQuestions = Question::model()->findAll(
+                            "qid=:qid AND sid=:sid", 
+                            [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]
+                        );
+                        array_walk(
+                            $aQuestions,
+                            function ($oQuestion) use ($aQuestion, $success) {
+                                $oQuestion->question_order = $aQuestion['question_order'];
+                                $oQuestion->gid = $aQuestion['gid'];
+                                if(safecount($oQuestion->subquestions) > 0) {
+                                    array_walk(
+                                        $oQuestion->subquestions,
+                                        function ($oSubQuestion) use ($aQuestion, $success) {
+                                            $oSubQuestion->gid = $aQuestion['gid'];
+                                            $success = $success && $oSubQuestion->save(true);
+                                        }
+                                    );
+                                }
+                                $success = $success && $oQuestion->save(true);
+                            }
+                        );
                     }
                 }
             }
