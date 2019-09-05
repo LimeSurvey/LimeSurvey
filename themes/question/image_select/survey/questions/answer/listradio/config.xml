@@ -39,7 +39,7 @@
         </js>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>horizontal_scroll</name>
             <category>Display</category>
@@ -102,7 +102,7 @@
             <help>Fix height of the images to this value. Leave empty to not change them.</help>
             <caption>Fix height</caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

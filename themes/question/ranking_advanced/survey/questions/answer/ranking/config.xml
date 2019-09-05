@@ -39,7 +39,7 @@
         </js>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>show_handle</name>
             <category>Display</category>
@@ -94,7 +94,7 @@
             <help>Change visualization of the ranking question</help>
             <caption>Viuzialisation: </caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

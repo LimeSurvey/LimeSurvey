@@ -42,7 +42,7 @@
         </js>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>add_platform_info</name>
             <category>Display</category>
@@ -56,7 +56,7 @@
             <help>Show also the platform information of the participant</help>
             <caption>Show Platform information: </caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

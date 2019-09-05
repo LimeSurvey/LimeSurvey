@@ -37,20 +37,20 @@ class questionedit extends Survey_Common_Action
         Yii::app()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
-        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
-        $DisplayArray = array();
-
-        foreach ($aAttributesWithValues as $aAttribute) {
-            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
-                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
-                if ($aAttribute['inputtype'] == 'singleselect') {
-                    if (isset($aAttribute['options'][$aAttribute['value']])) {
-                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
-                    }
-                }
-                $DisplayArray[] = $aAttribute;
-            }
-        }
+//        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
+//        $DisplayArray = array();
+//
+//        foreach ($aAttributesWithValues as $aAttribute) {
+//            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
+//                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
+//                if ($aAttribute['inputtype'] == 'singleselect') {
+//                    if (isset($aAttribute['options'][$aAttribute['value']])) {
+//                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+//                    }
+//                }
+//                $DisplayArray[] = $aAttribute;
+//            }
+//        }
 
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
@@ -83,8 +83,8 @@ class questionedit extends Survey_Common_Action
         // combine aData
         $aData['surveyid'] = $iSurveyID;
         $aData['oSurvey'] = $oSurvey;
-        $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings('', true, false);
-        $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionBaseSettings('', true, false);
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
         //$aData['qct']
@@ -95,7 +95,7 @@ class questionedit extends Survey_Common_Action
         $aData['qshowstyle'] = '';
         $aData['qrrow'] = $qrrow;
         $aData['baselang'] = $baselang;
-        $aData['advancedsettings'] = $DisplayArray;
+//        $aData['advancedsettings'] = $DisplayArray;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['display']['menu_bars']['qid_action'] = 'editquestion';

@@ -39,7 +39,7 @@
         </js>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>autoaddnewline</name>
             <category>Display</category>
@@ -69,7 +69,7 @@
             <help>The icon used on the "add row"-button </help>
             <caption>Add row icon:</caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

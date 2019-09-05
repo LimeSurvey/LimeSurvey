@@ -91,7 +91,7 @@ class themeoptions  extends Survey_Common_Action
                     $templatefolder = $model->folder;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = QuestionTheme::uninstall($templateid);
-                    QuestionTheme::importManifest($templatefolder);
+                    QuestionTheme::model()->importManifest($templatefolder);
                 } elseif ($gridid == 'themeoptions-grid'){
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
@@ -323,9 +323,8 @@ class themeoptions  extends Survey_Common_Action
 
             // Load Question Themes into DB
             // TODO: Move to create-database and updatedb_helper
-//            QuestionTheme::loadAllQuestionXMLConfigurationsIntoDatabase();
-
             $oQuestionTheme = new QuestionTheme;
+            $oQuestionTheme->loadAllQuestionXMLConfigurationsIntoDatabase();
             $aData['oQuestionTheme'] = $oQuestionTheme;
 
             $canImport = true;
@@ -434,7 +433,8 @@ class themeoptions  extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if ($theme == 'questiontheme') {
                 $templateFolder = App()->request->getPost('templatefolder');
-                $themeName = QuestionTheme::importManifest($templateFolder);
+                $questionTheme = new QuestionTheme();
+                $themeName = $questionTheme->importManifest($templateFolder);
                 if (isset($themeName)){
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been sucessfully installed'), "$themeName"), 'success');
                 } else {

@@ -14,6 +14,7 @@
 
 namespace LimeSurvey\Helpers;
 use QuestionAttribute;
+use QuestionTheme;
 use Yii;
 use Question;
 
@@ -1615,41 +1616,47 @@ class questionHelper
 
     /**
      * Return the question Theme custom attributes values
-     * @param $sQuestionThemeName: question theme name
+     *
+     * @param      $type
+     * @param null $question_template
+     * @param      $sQuestionThemeName : question theme name
+     *
      * @return array : the attribute settings for this question type
      */
-    public static function getQuestionThemeAttributeValues($question_template = null, $sQuestionThemeName = null)
+    public static function getQuestionThemeAttributeValues($type, $question_template = null, $sQuestionThemeName = null)
     {
         
         $aQuestionAttributes = array();
         $additionalAttributes = array();
 
-        $sCoreTypeXmlPath = Yii::app()->getConfig('corequestiontypedir').'/survey/questions/answer/'.$question_template.'/config.xml';
-        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-        
+        $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'type = :type AND extends = :extends', ['type' => $type, 'extends' => '']);
 
+//        $sCoreTypeXmlPath = Yii::app()->getConfig('corequestiontypedir').'/survey/questions/answer/'.$question_template.'/config.xml';
+//        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+//        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+
+//        $xmlConfigPath = $questionTheme['xml_path'] . '/config.xml';
         libxml_disable_entity_loader(false);
-        $oCoreConfig = simplexml_load_file($sCoreTypeXmlPath);
+        $oCoreConfig = simplexml_load_file($sCoreTypeXmlPath['xml_path'] . '/config.xml');
         $aCoreAttributes =  json_decode(json_encode((array)$oCoreConfig), TRUE);
         if ($sQuestionThemeName !== null) {
-            $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
-            $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), true);
+            $themePath = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
+            $xml_config = simplexml_load_file($themePath['xml_path'] . '/config.xml');
+            $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         libxml_disable_entity_loader(true);
-        
 
-        if(!empty($custom_attributes)) {
-            if(!empty($custom_attributes['attribute']['name'])) {
+        if(!empty($attributes)) {
+            if(!empty($attributes['attribute']['name'])) {
                 // Only one attribute set in config : need an array of attributes
-                $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+                $attributes['attribute'] = array($attributes['attribute']);
             }
             // Create array of attribute with name as key
             $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
-            foreach($custom_attributes['attribute'] as $customAttribute) {
-                if(!empty($customAttribute['name'])) {
+            foreach($attributes['attribute'] as $attribute) {
+                if(!empty($attribute['name'])) {
                     // inputtype is text by default
-                    $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+                    $additionalAttributes[$attribute['name']] = array_merge($defaultQuestionAttributeValues,$attribute);
                 }
             }
         }
@@ -1668,6 +1675,7 @@ class questionHelper
      * Return the question Theme preview URL
      * @param $sType: type pof question
      * @return string : question theme preview URL
+     * @deprecated use QuestionTheme::getQuestionThemePreviewUrl
      */
     public static function getQuestionThemePreviewUrl($sType = null)
     {
@@ -1683,7 +1691,7 @@ class questionHelper
             $preview_filename = '.png';
         }
 
-        return Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+        return App()->getConfig("imageurl").'/screenshots/'.$preview_filename;
     }
 
 }

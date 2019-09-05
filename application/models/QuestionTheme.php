@@ -1,5 +1,7 @@
 <?php
 
+    use LimeSurvey\Helpers\questionHelper;
+
     /**
      * Class QuestionThemes
      *
@@ -8,6 +10,7 @@
      * @property int     $id
      * @property string  $name   Template name
      * @property string  $folder
+     * @property string  $image_path
      * @property string  $title
      * @property string  $creation_date
      * @property string  $author
@@ -29,6 +32,11 @@
      */
     class QuestionTheme extends LSActiveRecord
     {
+        static $coreQuestionsPath;
+        static $customQuestionThemesPath;
+        static $userQuestionThemesPath;
+
+
         /**
          * Returns the static model of the specified AR class.
          * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -93,118 +101,44 @@
          *
          * @throws CException
          */
-        public static function loadAllQuestionXMLConfigurationsIntoDatabase($questionThemeDirectories = null)
+        public function loadAllQuestionXMLConfigurationsIntoDatabase()
         {
-
-            $questionDirectoriesAndPaths = [];
             $missingQuestionThemeAttributes = [];
-            $coreQuestionsPath = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-            $customQuestionThemesPath = App()->getConfig('userquestionthemedir');
-            $userQuestionThemesPath = App()->getConfig('userquestionthemerootdir');
-            if (empty($questionThemeDirectories)) {
-                if (!is_dir($userQuestionThemesPath)) {
-                    mkdir($userQuestionThemesPath);
-                }
-                $questionThemeDirectories = [$coreQuestionsPath, $customQuestionThemesPath, $userQuestionThemesPath];
-            }
+            $questionThemeDirectories = $this->getQuestionThemeDirectories();
 
-            // Search all Question Theme Directories
-            if (is_array($questionThemeDirectories) && !empty($questionThemeDirectories)) {
-
-                foreach ($questionThemeDirectories as $questionThemeDirectory) {
-                    $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
-                    $iterator = new RecursiveIteratorIterator($directory);
-                    foreach ($iterator as $info) {
-                        $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
-                        if ($ext == 'xml') {
-                            $questionDirectoriesAndPaths[$questionThemeDirectory][] = $info->getPathname();
-                        }
-                    }
-                }
-                // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-                $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-                // process XML Question Files
-                if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
-                    try {
-                        $transaction = App()->db->beginTransaction();
-                        foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
-                            foreach ($questionConfigFilePaths as $questionConfigFilePath) {
-                                $sQuestionConfigFile = file_get_contents(realpath($questionConfigFilePath));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-                                $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
-                                $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
-
-                                // test xml for required metaData
-                                {
-                                    $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
-                                }
-                                foreach ($requiredMetaDataArray as $requiredMetaData) {
-                                    if (!array_key_exists($requiredMetaData, $questionMetaData)) {
-                                        $missingQuestionThemeAttributes[$questionConfigFilePath][] = $requiredMetaData;
-                                    }
-                                }
-
-                                // set type and check if question is extended
-                                $questionType = '';
-                                $extendedQuestion = $questionMetaData['type'];
-                                if ($directory == $coreQuestionsPath) {
-                                    $extendedQuestion = '';
-                                    $questionType = gT('Core theme');
-                                }
-                                if ($directory == $customQuestionThemesPath) {
-                                    $questionType = gT('Core theme');
-                                }
-                                if ($directory == $userQuestionThemesPath) {
-                                    $questionType = gT('User theme');
-                                }
-
-                                // set settings as json
-                                $questionMetaData['settings'] = json_encode([
-                                    'subquestions' => $questionMetaData['subquestions'],
-                                    'answerscales' => $questionMetaData['answerscales'],
-                                    'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'],
-                                    'assessable' => $questionMetaData['assessable'],
-                                    'class' => $questionMetaData['class'],
-                                ]);
-
-                                $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $extendedQuestion]);
-                                if ($questionTheme == null) {
-                                    $questionTheme = new QuestionTheme();
-                                }
-                                $questionTheme->setAttributes([
-                                    'name' => $questionMetaData['name'],
-                                    'visible' => 'Y',
-                                    'folder' => dirname($questionConfigFilePath),
-                                    'title' => $questionMetaData['title'],
-                                    'creation_date' => $questionMetaData['creationDate'],
-                                    'author' => $questionMetaData['author'],
-                                    'author_email' => $questionMetaData['authorEmail'],
-                                    'author_url' => $questionMetaData['authorUrl'],
-                                    'copyright' => $questionMetaData['copyright'],
-                                    'license' => $questionMetaData['license'],
-                                    'version' => $questionMetaData['version'],
-                                    'api_version' => $questionMetaData['apiVersion'],
-                                    'description' => $questionMetaData['description'],
-                                    'last_update' => 'now',
-                                    'owner_id' => 1,
-                                    'theme_type' => $questionType,
-                                    'type' => $questionMetaData['type'],
-                                    'extends' => $extendedQuestion,
-                                    'group' => $questionMetaData['group'],
-                                    'settings' => $questionMetaData['settings']
-                                ], false);
-                                $questionTheme->save();
+            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
+            // process XML Question Files
+            if (isset($questionThemeDirectories)) {
+                try {
+                    $transaction = App()->db->beginTransaction();
+                    $questionsMetaData = self::getAllQuestionMetaData();
+                    foreach ($questionsMetaData as $questionMetaData) {
+                        // test xml for required metaData
+                        $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
+                        foreach ($requiredMetaDataArray as $requiredMetaData) {
+                            if (!array_key_exists($requiredMetaData, $questionMetaData)) {
+                                $missingQuestionThemeAttributes[$questionMetaData['xml_path']][] = $requiredMetaData;
                             }
                         }
-                        $transaction->commit();
-                    } catch (Exception $e) {
-                        //TODO: flashmessage for users
-                        echo $e->getMessage();
-                        var_dump($e->getTrace());
-                        echo $missingQuestionThemeAttributes;
-                        $transaction->rollback();
+                        $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $questionMetaData['extends']]);
+                        if ($questionTheme == null) {
+                            $questionTheme = new QuestionTheme();
+                        }
+                        $metaDataArray = $this->getMetaDataArray($questionMetaData);
+                        $questionTheme->setAttributes($metaDataArray, false);
+                        $questionTheme->save();
                     }
+                    $transaction->commit();
+                } catch (Exception $e) {
+                    //TODO: flashmessage for users
+                    echo $e->getMessage();
+                    var_dump($e->getTrace());
+                    echo $missingQuestionThemeAttributes;
+                    $transaction->rollback();
                 }
             }
+
             // Put back entity loader to its original state, to avoid contagion to other applications on the server
             libxml_disable_entity_loader($bOldEntityLoaderState);
         }
@@ -308,43 +242,21 @@
          *
          * @return bool
          */
-        public static function importManifest($pathToXML)
+        public function importManifest($pathToXML)
         {
             if (empty($pathToXML)) {
                 throw new InvalidArgumentException('$templateFolder cannot be empty');
             }
 
-            $questionMetaData = self::getQuestionMetaData($pathToXML);
-            $questionAdditionalData = self::getThemeTypeAndExtendedType($pathToXML, $questionMetaData);
-            $questionMetaData = array_merge($questionMetaData, $questionAdditionalData);
+            $questionDirectories = $this->getQuestionThemeDirectories();
+            $questionMetaData = $this->getQuestionMetaData($pathToXML, $questionDirectories);
 
-            $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $questionMetaData['type']]);
-            if ($questionTheme == null) {
-                $questionTheme = new QuestionTheme();
+            $questionThemeExists = QuestionTheme::model()->find('(name = :name AND extends = :extends) OR (extends = :extends AND type = :type)', [':name' => $questionMetaData['name'], ':type' => $questionMetaData['type'], ':extends' => $questionMetaData['extends']]);
+            if ($questionThemeExists == null) {
 
-                $questionTheme->setAttributes([
-                    'name' => $questionMetaData['name'],
-                    'visible' => 'Y',
-                    'folder' => dirname($pathToXML),
-                    'title' => $questionMetaData['title'],
-                    'creation_date' => $questionMetaData['creationDate'],
-                    'author' => $questionMetaData['author'],
-                    'author_email' => $questionMetaData['authorEmail'],
-                    'author_url' => $questionMetaData['authorUrl'],
-                    'copyright' => $questionMetaData['copyright'],
-                    'license' => $questionMetaData['license'],
-                    'version' => $questionMetaData['version'],
-                    'api_version' => $questionMetaData['apiVersion'],
-                    'description' => $questionMetaData['description'],
-                    'last_update' => 'todo insert time',
-                    'owner_id' => 1,
-                    'theme_type' => $questionMetaData['themeType'],
-                    'type' => $questionMetaData['type'],
-                    'extends' => $questionMetaData['extends'],
-                    'group' => $questionMetaData['group'],
-                    'settings' => $questionMetaData['settings']
-                ], false);
-                if ($questionTheme->save()) {
+                $metaDataArray = $this->getMetaDataArray($questionMetaData);
+                $this->setAttributes($metaDataArray, false);
+                if ($this->save()) {
                     return $questionMetaData['title'];
                 };
             }
@@ -398,31 +310,11 @@
             }
             array_values($questionsMetaData);
             foreach ($questionsMetaData as $questionMetaData) {
-
                 // TODO: replace by manifest
                 $questionTheme = new QuestionTheme();
-                $questionTheme->setAttributes([
-                    'name' => $questionMetaData['name'],
-                    'visible' => 'Y',
-                    'folder' => dirname($questionMetaData['folder']),
-                    'title' => $questionMetaData['title'],
-                    'creation_date' => $questionMetaData['creationDate'],
-                    'author' => $questionMetaData['author'],
-                    'author_email' => $questionMetaData['authorEmail'],
-                    'author_url' => $questionMetaData['authorUrl'],
-                    'copyright' => $questionMetaData['copyright'],
-                    'license' => $questionMetaData['license'],
-                    'version' => $questionMetaData['version'],
-                    'api_version' => $questionMetaData['apiVersion'],
-                    'description' => $questionMetaData['description'],
-                    'last_update' => 'todo now',
-                    'owner_id' => 1,
-                    'theme_type' => 'XML Theme',
-                    'type' => $questionMetaData['type'],
-                    'extends' => $questionMetaData['extends'],
-                    'group' => $questionMetaData['group'],
-                    'settings' => $questionMetaData['settings']
-                ], false);
+
+                $metaDataArray = $this->getMetaDataArray($questionMetaData);
+                $questionTheme->setAttributes($metaDataArray, false);
                 $questionThemes[] = $questionTheme;
             }
 
@@ -435,52 +327,34 @@
         public function getAllQuestionMetaData()
         {
             $questionsMetaData = [];
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-            $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths();
-            $coreQuestionsPath = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-
+            $questionDirectories = $this->getQuestionThemeDirectories();
+            $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths($questionDirectories);
             if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
                 foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
                     foreach ($questionConfigFilePaths as $questionConfigFilePath) {
-                        $sQuestionConfigFile = file_get_contents($questionConfigFilePath . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-                        $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
-                        $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
-                        $questionMetaData['folder'] = $questionConfigFilePath;
-                        $questionMetaData['extends'] = $questionMetaData['type'];
-                        if ($directory == $coreQuestionsPath) {
-                            $questionMetaData['extends'] = '';
-                        }
-                        // set settings as json
-                        $questionMetaData['settings'] = json_encode([
-                            'subquestions' => $questionMetaData['subquestions'],
-                            'answerscales' => $questionMetaData['answerscales'],
-                            'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'],
-                            'assessable' => $questionMetaData['assessable'],
-                            'class' => $questionMetaData['class'],
-                        ]);
+                        $questionMetaData = self::getQuestionMetaData($questionConfigFilePath, $questionDirectories);
                         $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['type']] = $questionMetaData;
-
                     }
                 }
             }
-            libxml_disable_entity_loader($bOldEntityLoaderState);
             return $questionsMetaData;
         }
 
         /**
          * @param $pathToXML
+         * @param $questionDirectories
          *
          * @return array Question Meta Data
          */
-        public static function getQuestionMetaData($pathToXML)
+        public static function getQuestionMetaData($pathToXML, $questionDirectories)
         {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
 
-            $awiehjhio = $pathToXML . DIRECTORY_SEPARATOR . 'config.xml';
             $sQuestionConfigFile = file_get_contents($pathToXML . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
-            $questionMetaData['folder'] = $pathToXML;
+            $questionMetaData['xml_path'] = $pathToXML;
+            $questionMetaData['image_path'] = self::getQuestionThemePreviewUrl($questionMetaData['type']);
 
             // set settings as json
             $questionMetaData['settings'] = json_encode([
@@ -491,6 +365,20 @@
                 'class' => $questionMetaData['class'],
             ]);
 
+            // overrides depending on directory
+            $questionMetaData['extends'] = $questionMetaData['type'];
+            if (substr($pathToXML, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
+                $questionMetaData['themeType'] = 'Core theme';
+                $questionMetaData['extends'] = '';
+                $questionMetaData['image_path'] = 'assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'screenshots' . DIRECTORY_SEPARATOR . $questionMetaData['type'];
+            }
+            if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
+                $questionMetaData['themeType'] = 'Core theme';
+            }
+            if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
+                $questionMetaData['themeType'] = 'User theme';
+            }
+
             libxml_disable_entity_loader($bOldEntityLoaderState);
             return $questionMetaData;
         }
@@ -498,33 +386,34 @@
         /**
          * Find all XML paths for specified Question Root folders
          *
-         * @param bool $core
-         * @param bool $custom
-         * @param bool $user
+         * @param array $questionDirectories
+         * @param bool  $core
+         * @param bool  $custom
+         * @param bool  $user
          *
          * @return array
          */
-        public function getAllQuestionXMLPaths($core = true, $custom = true, $user = true)
+        public function getAllQuestionXMLPaths($questionDirectories, $core = true, $custom = true, $user = true)
         {
             $questionDirectoriesAndPaths = [];
             if ($core) {
-                $coreQuestionsPath = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-                $questionThemeDirectories[] = $coreQuestionsPath;
+                $coreQuestionsPath = $questionDirectories['coreQuestion'];
+                $selectedQuestionDirectories[] = $coreQuestionsPath;
             }
             if ($custom) {
-                $customQuestionThemesPath = App()->getConfig('userquestionthemedir');
-                $questionThemeDirectories[] = $customQuestionThemesPath;
+                $customQuestionThemesPath = $questionDirectories['customCoreTheme'];
+                $selectedQuestionDirectories[] = $customQuestionThemesPath;
             }
             if ($user) {
-                $userQuestionThemesPath = App()->getConfig('userquestionthemerootdir');
+                $userQuestionThemesPath = $questionDirectories['customUserTheme'];
                 if (!is_dir($userQuestionThemesPath)) {
                     mkdir($userQuestionThemesPath);
                 }
-                $questionThemeDirectories[] = $userQuestionThemesPath;
+                $selectedQuestionDirectories[] = $userQuestionThemesPath;
             }
 
-            if (isset($questionThemeDirectories)) {
-                foreach ($questionThemeDirectories as $questionThemeDirectory) {
+            if (isset($selectedQuestionDirectories)) {
+                foreach ($selectedQuestionDirectories as $questionThemeDirectory) {
                     $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
                     $iterator = new RecursiveIteratorIterator($directory);
                     foreach ($iterator as $info) {
@@ -548,21 +437,15 @@
             return false;
         }
 
-
-        public static function getQuestionClass()
-        {
-
-        }
-
         /**
-         * Returns Question Base settings
+         * Returns All QuestionTheme settings
          *
          * @param string $question_type
          * @param string $language
          *
          * @return mixed $baseQuestions Questions as Array or Object
          */
-        public static function getQuestionBaseSettings($question_type, $language = '')
+        public static function findQuestionMetaData($question_type, $language = '')
         {
             $criteria = new CDbCriteria();
             $criteria->condition = 'extends = :extends';
@@ -574,14 +457,10 @@
             $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
 
             // language settings
-            if (empty($language)) {
-                $language = App()->session['adminlang'];
-            }
             $baseQuestion['title'] = gT($baseQuestion['title'], "html", $language);
             $baseQuestion['group'] = gT($baseQuestion['group'], "html", $language);
 
             return $baseQuestion;
-
         }
 
         /**
@@ -593,7 +472,7 @@
          *
          * @return mixed $baseQuestions Questions as Array or Object
          */
-        public static function getAllQuestionBaseSettings($language = '', $typeAsKey = true, $asAR = false)
+        public static function findAllQuestionBaseSettings($language = '', $typeAsKey = true, $asAR = false)
         {
             $language = App()->session['adminlang'];
             $criteria = new CDbCriteria();
@@ -619,11 +498,77 @@
                 $baseQuestionsModified[$lastQuestionKey]['group'] = gT($baseQuestion['group'], "html", $language);
 
                 // decode settings json
-                $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+                $baseQuestionsModified[$lastQuestionKey]['settings'] = json_decode($baseQuestion['settings']);
             }
             $baseQuestions = $baseQuestionsModified;
 
             return $baseQuestions;
+        }
+
+        public function getQuestionThemeDirectories()
+        {
+            $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
+            $questionThemeDirectories['customCoreTheme'] = App()->getConfig('userquestionthemedir');
+            $questionThemeDirectories['customUserTheme'] = App()->getConfig('userquestionthemerootdir');
+
+            return $questionThemeDirectories;
+        }
+
+        /**
+         * Returns QuestionMetaData Array for use in ->save operations
+         *
+         * @param array $questionMetaData
+         *
+         * @return array $questionMetaData
+         */
+        private function getMetaDataArray($questionMetaData)
+        {
+            $questionMetaData = [
+                'name' => $questionMetaData['name'],
+                'visible' => 'Y', //todo
+                'xml_path' => $questionMetaData['xml_path'],
+                'image_path' => $questionMetaData['image_path'],
+                'title' => $questionMetaData['title'],
+                'creation_date' => $questionMetaData['creationDate'],
+                'author' => $questionMetaData['author'],
+                'author_email' => $questionMetaData['authorEmail'],
+                'author_url' => $questionMetaData['authorUrl'],
+                'copyright' => $questionMetaData['copyright'],
+                'license' => $questionMetaData['license'],
+                'version' => $questionMetaData['version'],
+                'api_version' => $questionMetaData['apiVersion'],
+                'description' => $questionMetaData['description'],
+                'last_update' => 'insert time', //todo
+                'owner_id' => 1, //todo
+                'theme_type' => $questionMetaData['themeType'],
+                'type' => $questionMetaData['type'],
+                'extends' => $questionMetaData['extends'],
+                'group' => $questionMetaData['group'],
+                'settings' => $questionMetaData['settings']
+            ];
+            return $questionMetaData;
+        }
+
+        /**
+         * Return the question Theme preview URL
+         * @param $sType: type pof question
+         * @return string : question theme preview URL
+         */
+        public static function getQuestionThemePreviewUrl($sType = null)
+        {
+            if ($sType == '*'){
+                $preview_filename = 'EQUATION.png';
+            } elseif ($sType == ':'){
+                $preview_filename = 'COLON.png';
+            } elseif ($sType == '|'){
+                $preview_filename = 'PIPE.png';
+            } elseif (!empty($sType)) {
+                $preview_filename = $sType.'.png';
+            } else {
+                $preview_filename = '.png';
+            }
+
+            return App()->getConfig("imageurl").'/screenshots/'.$preview_filename;
         }
 
     }

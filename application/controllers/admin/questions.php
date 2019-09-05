@@ -1258,8 +1258,8 @@ class questions extends Survey_Common_Action
 
             $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
             $aData['oQuestion'] = $oQuestion;
-            $aData['aQuestionTypeList'] = QuestionTheme::getAllQuestionBaseSettings('', true, false);
-            $aData['selectedQuestion'] = QuestionTheme::getQuestionBaseSettings($oQuestion->type);
+            $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionBaseSettings('', true, false);
+            $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
             $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid);
@@ -1622,7 +1622,7 @@ class questions extends Survey_Common_Action
         // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
         if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
             // get old custom question theme attributes
-            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTypeList[$type], $sOldQuestionTemplate);
+            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTypeList[$type], $sOldQuestionTemplate, $type);
             if (!empty($aOldQuestionThemeAttributes)){ 
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
                     unset($aAttributesWithValues[$value['name']]);
@@ -1631,7 +1631,7 @@ class questions extends Survey_Common_Action
         }
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
-                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues( $questionTypeList[$type], $sQuestionTemplate);
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($type, $questionTypeList[$type], $sQuestionTemplate);
                 $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
         }
         uasort($aAttributesWithValues, 'categorySort');

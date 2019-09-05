@@ -42,7 +42,7 @@
         </preview>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>button_size</name>
             <category>Display theme options</category>
@@ -89,7 +89,7 @@
             <help>hide input_size</help>
             <caption>hide input_size</caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

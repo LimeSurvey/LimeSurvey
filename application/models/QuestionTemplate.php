@@ -279,12 +279,12 @@ class QuestionTemplate extends CFormModel
                 $this->bLoadCoreJs             = $this->oConfig->engine->load_core_js;
                 $this->bLoadCoreCss            = $this->oConfig->engine->load_core_css;
                 $this->bLoadCorePackage        = $this->oConfig->engine->load_core_package;
-                $this->bHasCustomAttributes    = !empty($this->oConfig->custom_attributes);
+                $this->bHasCustomAttributes    = !empty($this->oConfig->attributes);
 
                 // Set the custom attributes
                 if ($this->bHasCustomAttributes) {
                     $this->aCustomAttributes = array();
-                    foreach ($this->oConfig->custom_attributes->attribute as $oCustomAttribute) {
+                    foreach ($this->oConfig->attributes->attribute as $oCustomAttribute) {
                         $attribute_name = (string) $oCustomAttribute->name;
                         if (isset($oCustomAttribute->i18n) && $oCustomAttribute->i18n){
                             $sLang = App()->language;
@@ -384,15 +384,32 @@ class QuestionTemplate extends CFormModel
      */
     static public function getQuestionTemplateList($type)
     {
-        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
-        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
-        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
+        $aQuestionTemplateList1 = QuestionTheme::model()->findAllByAttributes([], 'type = :type', ['type' => $type]);
+        $aQuestionTemplates = [];
+
+        foreach ($aQuestionTemplateList1 as $aQuestionTemplate) {
+            if ($aQuestionTemplate['theme_type'] == 'Core theme' && empty($aQuestionTemplate['extends'])) {
+                $aQuestionTemplates['core'] = [
+                    'title' => gT('Default'),
+                    'preview' => $aQuestionTemplate['image_path']
+                ];
+            } else {
+                $aQuestionTemplates[$aQuestionTemplate['name']] = [
+                    'title' => $aQuestionTemplate['title'],
+                    'preview' => $aQuestionTemplate['image_path']
+                ];
+            }
+        }
+//        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
+//        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
+//        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
         return $aQuestionTemplates;
     }
 
     /**
      * @param string $type
      * @return array
+     * @deprecated
      */
     static public function getQuestionTemplateUserList($type)
     {
@@ -449,6 +466,7 @@ class QuestionTemplate extends CFormModel
     /**
      * @param string $type
      * @return array
+     * @deprecated
      */
     static public function getQuestionTemplateCoreList($type)
     {
@@ -527,6 +545,7 @@ class QuestionTemplate extends CFormModel
      * Correspondence between question type and the view folder name
      * Rem: should be in question model. We keep it here for easy access
      * @return array
+     * @deprecated
      */
     static public function getTypeToFolder()
     {
