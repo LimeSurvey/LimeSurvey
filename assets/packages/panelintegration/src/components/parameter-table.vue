@@ -132,7 +132,6 @@
         },
         methods: {
             paramUpdated(updateUbject){
-              console.log('UpdatedObject: ', updateUbject);
                 if(updateUbject.isNew === false){
                     let paramIdx = LS.ld.findIndex(this.parameterRows, (item)=>{return item.id === updateUbject.paramRow.id});
                     if(paramIdx != -1)
@@ -165,12 +164,10 @@
                 $('#lspanelintegration-deletePopup').modal('toggle');
             },
             cancelDelete(){
-                console.log('this.toDeleteRow: ', this.toDeleteRow);
-                console.log('cancelDelete()');
                 this.toDeleteRow = null;
+                $('#lspanelintegration-deletePopup').modal('toggle');
             },
             confirmDelete(){
-                console.log('confirmDelete()');
                 if(this.toDeleteRow !== null){
                     let tmpArray = LS.ld.filter(this.parameterRows, (item)=>{return item.id !== this.toDeleteRow.id});
                     if(tmpArray.length !== this.parameterRows.length ) {
@@ -181,7 +178,6 @@
             },
             toggleModal(){
                 this.modalShown = !this.modalShown;
-                console.log('this.modalShown: ', this.modalShown);
                 $('#lspanelintegration-parameterPopup').modal('toggle');
             },
             _guidGenerator() {
