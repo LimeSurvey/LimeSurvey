@@ -97,11 +97,11 @@ if ($hasReadPermission) {
         foreach ($languages as $language) {
             $buttonspreview_questiongroup[$language] = [
                 'url' => $this->createAbsoluteUrl(
-                    "survey/index",
+                    "survey/index/action/previewgroup", 
                     array(
+                        'gid' => $gid,
                         'sid' => $sid,
-                        'newtest' => "Y",
-                        'lang' => $language,
+                        'lang' => $oSurvey->language,
                     )
                 ),
                 'id' => 'preview_questiongroup_' . $language,
@@ -132,10 +132,10 @@ if ($hasReadPermission) {
     } else {
         $questiongrouppreview_buttons = [
             'url' => $this->createAbsoluteUrl(
-                "survey/index",
+                "survey/index/action/previewgroup", 
                 array(
+                    'gid' => $gid,
                     'sid' => $sid,
-                    'newtest' => "Y",
                     'lang' => $oSurvey->language,
                 )
             ),
