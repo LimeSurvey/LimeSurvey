@@ -246,8 +246,8 @@ if(!single) {
     finalPromise.then(()=> {
         const endTime = new Date();
         const difference = endTime - startTime;
-        const minutes = String((difference/1000/60)%60).padStart(2,'0');
-        const seconds = String((difference/1000)%60).padStart(2,'0');
+        const minutes = String(Math.floor(difference/1000/60)%60).padStart(2,'0');
+        const seconds = String(Math.floor(difference/1000)%60).padStart(2,'0');
         const milliseconds = String(difference%1000).padStart(4,'0');
         if(verbose) {
             console.log(`|| === Started at ${startTime.toLocaleTimeString('de-DE')}`);

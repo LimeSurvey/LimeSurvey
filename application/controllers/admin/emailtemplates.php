@@ -40,13 +40,13 @@ class emailtemplates extends Survey_Common_Action
             unset($aData['surveybar']['savebutton']);
             unset($aData['surveybar']['saveandclosebutton']);
         }
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId; // Close button
+        $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl("admin/survey/sa/view/", ['surveyid' => $iSurveyId]); // Close button
+        $aData['topBar']['showSaveButton'] = true;
 
 
         // EmailTemplateData
         $aData['jsData'] = [
             'surveyid' => $iSurveyId,
-            'connectorBaseUrl' => $this->getController()->createUrl('admin/emailtemplates/sid/'.$iSurveyId.'/sa'),
             'validatorUrl' => $this->getController()->createUrl('admin/validate',['sa'=>'email','sid'=>$iSurveyId]), //,'lang'=>$grouplang,'type'=>$tab
             'i10N' => [
                 'Subject' => gT('Subject'),
