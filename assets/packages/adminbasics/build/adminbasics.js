@@ -27457,114 +27457,6 @@
 	};
 
 	/**
-	 * Neccessary methods for the confirmation modal
-	 */
-
-	var ConfirmationModal = function ConfirmationModal(e) {
-	  //////PREGENERATED VARIABLES
-	  //Define the scope
-	  var _this = this; //Set everything to null on default
-
-
-	  var optionsDefault = {
-	    onclick: null,
-	    href: null,
-	    message: null,
-	    keepopen: null,
-	    postDatas: null,
-	    gridid: null,
-	    "ajax-url": null
-	  }; //////METHODS
-	  //Parse available options from specific item.data settings, if not available load relatedTarget settings
-
-	  var _parseOptions = function _parseOptions(e) {
-	    return lodash.each(optionsDefault, function (value, key) {
-	      optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
-	    });
-	  },
-	      //Generate a simple link on the ok button
-	  _basicLink = function _basicLink() {
-	    $(_this).find('.btn-ok').attr('href', options.href);
-	  },
-	      //Evaluate a function on ok button click
-	  _onClickFunction = function _onClickFunction() {
-	    var onclick_fn = new Function(options.onclick);
-
-	    if (typeof onclick_fn == 'function') {
-	      $(_this).find('.btn-ok').off('click');
-	      $(_this).find('.btn-ok').on('click', function (ev) {
-	        if (!options.keepopen) {
-	          $('#confirmation-modal').modal('hide');
-	        }
-
-	        onclick_fn();
-	      });
-	      return;
-	    }
-
-	    console.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
-	    return;
-	  },
-	      //Set up an ajax call and regenerate a gridView on ok button click
-	  _ajaxHandler = function _ajaxHandler() {
-	    $(_this).find('.btn-ok').on('click', function (ev) {
-	      $.ajax({
-	        type: "POST",
-	        url: options['ajax-url'],
-	        data: options.postDatas,
-	        success: function success(html, statut) {
-	          $.fn.yiiGridView.update(options.gridid); // Update the surveys list
-
-	          $('#confirmation-modal').modal('hide');
-	        },
-	        error: function error(html, statut) {
-	          $('#confirmation-modal .modal-body-text').append(html.responseText);
-	        }
-	      });
-	    });
-	  },
-	      _setTarget = function _setTarget() {
-	    //Set up normal href
-	    if (!!options.href) {
-	      _basicLink();
-
-	      return;
-	    } //Set up a complete function
-
-
-	    if (!!options.onclick) {
-	      _onClickFunction();
-
-	      return;
-	    } //Set up an ajax post
-
-
-	    if (!!options['ajax-url']) {
-	      _ajaxHandler();
-
-	      return;
-	    }
-
-	    console.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
-	  }; //////RUN BINDINGS
-	  //Current options object
-
-
-	  var options = _parseOptions(e); //Set the message if available
-
-
-	  $(this).find('.modal-body-text').html(options.message); //Run setTarget to determine loading target
-
-	  _setTarget();
-	};
-
-	var loadMethods = function loadMethods() {
-	  $('#confirmation-modal').on('show.bs.modal', function (e) {
-	    ConfirmationModal.call(this, e);
-	  });
-	};
-
-	/**
 	 * Check the browsers console capabilities and bundle them into general functions
 	 * If the build environment was "production" only put out error messages.
 	 */
@@ -27797,7 +27689,119 @@
 	  return ConsoleShim;
 	}();
 
-	var adminCoreLSConsole = new ConsoleShim('AdminCore', !window.debugState.backend);
+	var adminCoreLSConsole = new ConsoleShim('AdminCore', window.debugState ? window.debugState.backend : false); //!window.debugState.backend);
+
+	/**
+	 * Neccessary methods for the confirmation modal
+	 */
+
+	var ConfirmationModal = function ConfirmationModal(e) {
+	  //////PREGENERATED VARIABLES
+	  //Define the scope
+	  var _this = this; //Set everything to null on default
+
+
+	  var optionsDefault = {
+	    onclick: null,
+	    href: null,
+	    message: null,
+	    keepopen: null,
+	    postDatas: null,
+	    gridid: null,
+	    "ajax-url": null
+	  }; //////METHODS
+	  //Parse available options from specific item.data settings, if not available load relatedTarget settings
+
+	  var _parseOptions = function _parseOptions(e) {
+	    return lodash.each(optionsDefault, function (value, key) {
+	      optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
+	    });
+	  },
+	      //Generate a simple link on the ok button
+	  _basicLink = function _basicLink() {
+	    adminCoreLSConsole.log('Binding basicLink in notification panel');
+	    $(_this).find('.btn-ok').attr('href', options.href);
+	  },
+	      //Evaluate a function on ok button click
+	  _onClickFunction = function _onClickFunction() {
+	    adminCoreLSConsole.log('Binding onClick-functions in notification panel');
+	    var onclick_fn = eval(options.onclick);
+
+	    if (typeof onclick_fn == 'function') {
+	      $(_this).find('.btn-ok').off('click');
+	      $(_this).find('.btn-ok').on('click', function (ev) {
+	        if (!options.keepopen) {
+	          $('#confirmation-modal').modal('hide');
+	        }
+
+	        onclick_fn();
+	      });
+	      return;
+	    }
+
+	    adminCoreLSConsole.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
+	    return;
+	  },
+	      //Set up an ajax call and regenerate a gridView on ok button click
+	  _ajaxHandler = function _ajaxHandler() {
+	    adminCoreLSConsole.log('Binding ajax handler in notification panel');
+	    $(_this).find('.btn-ok').on('click', function (ev) {
+	      $.ajax({
+	        type: "POST",
+	        url: options['ajax-url'],
+	        data: options.postDatas,
+	        success: function success(html, statut) {
+	          $.fn.yiiGridView.update(options.gridid); // Update the surveys list
+
+	          $('#confirmation-modal').modal('hide');
+	        },
+	        error: function error(html, statut) {
+	          $('#confirmation-modal .modal-body-text').append(html.responseText);
+	        }
+	      });
+	    });
+	  },
+	      _setTarget = function _setTarget() {
+	    //Set up normal href
+	    if (!!options.href) {
+	      _basicLink();
+
+	      return;
+	    } //Set up a complete function
+
+
+	    if (!!options.onclick) {
+	      _onClickFunction();
+
+	      return;
+	    } //Set up an ajax post
+
+
+	    if (!!options['ajax-url']) {
+	      _ajaxHandler();
+
+	      return;
+	    }
+
+	    adminCoreLSConsole.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
+	  }; //////RUN BINDINGS
+	  //Current options object
+
+
+	  var options = _parseOptions(e); //Set the message if available
+
+
+	  $(this).find('.modal-body-text').html(options.message); //Run setTarget to determine loading target
+
+	  _setTarget();
+	};
+
+	var loadMethods = function loadMethods() {
+	  adminCoreLSConsole.log('ConfirmationModal calling');
+	  $('#confirmation-modal').on('show.bs.modal', function (e) {
+	    ConfirmationModal.call(this, e);
+	  });
+	};
 
 	/**
 	 * Define global setters for LimeSurvey
@@ -29110,11 +29114,11 @@
 	    if (form.length < 1) throw "No form Found this can't be!";
 	    return form;
 	  },
-	      // displayLoadingState = (el) => {
-	  //     const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-	  //     $(el).prop('disabled', true).append(loadingSpinner);
-	  // },
-	  stopDisplayLoadingState = function stopDisplayLoadingState() {
+	      displayLoadingState = function displayLoadingState(el) {
+	    var loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+	    $(el).prop('disabled', true).append(loadingSpinner);
+	  },
+	      stopDisplayLoadingState = function stopDisplayLoadingState() {
 	    adminCoreLSConsole.log('StopLoadingIconAnimation');
 	    LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
 	  },
