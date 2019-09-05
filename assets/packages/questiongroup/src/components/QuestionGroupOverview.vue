@@ -30,7 +30,7 @@ export default {
             randomization_group
         },
         parsedRelevance(){
-            return this.$store.state.currentQuestionGroup.grelevance_expression;
+            return this.$store.state.currentQuestionGroup.grelevance_expression || '&nbsp;';
         },
     },
     methods: {
@@ -118,6 +118,7 @@ ${scriptContent}
     padding-left: 1.8rem;
     padding-right: 1.8rem;
     position: relative;
+    min-height: 40px;
 
     &:before, 
     &:after {
