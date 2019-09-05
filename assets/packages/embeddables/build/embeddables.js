@@ -1862,17 +1862,6 @@
 	});
 	});
 
-	const embedo$1 = new embedo({
-	  facebook: true,
-	  twitter: true,
-	  instagram: true,
-	  pinterest: true,
-	  youtube: true,
-	  vimeo: true,
-	  github: true,
-	  soundcloud: true,
-	  googlemaps: true
-	});
 	$(document).on('ready pjax:scriptcomplete', function () {
 	  $('oembed').each(function (i, item) {
 	    if ($(this).find(".svgcontainer").length == 0) {
@@ -1887,9 +1876,20 @@
 	  });
 	  $('oembed').off('click.embeddable');
 	  $('oembed').on('click.embeddable', function () {
+	    window.embedo = window.embedo || new embedo({
+	      facebook: true,
+	      twitter: true,
+	      instagram: true,
+	      pinterest: true,
+	      youtube: true,
+	      vimeo: true,
+	      github: true,
+	      soundcloud: true,
+	      googlemaps: true
+	    });
 	    $(this).find(".svgcontainer").remove();
 	    const url = $(this).attr('url');
-	    embedo$1.load(this, url).done(result => {
+	    window.embedo.load(this, url).done(result => {
 	      console.ls.log(result);
 	    }).fail(result => {
 	      console.ls.error(result);

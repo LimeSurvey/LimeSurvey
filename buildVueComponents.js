@@ -130,6 +130,7 @@ const runBuild = function() {
         ['admintoppanel', 'assets/packages/admintoppanel/'],
         ['datasecuritysettings', 'assets/packages/datasecuritysettings/'],
         ['emailtemplates', 'assets/packages/emailtemplates/'],
+        ['embeddables', 'assets/packages/embeddables/'],
         ['filemanager', 'assets/packages/filemanager/'],
         ['labelsets', 'assets/packages/labelsets/'],
         ['lstutorial', 'assets/packages/lstutorial/'],

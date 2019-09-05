@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "867accbae3dd97c13d3c";
+/******/ 	var hotCurrentHash = "9cdbbf977d466ae2a42b";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1416,11 +1416,13 @@ __webpack_require__.r(__webpack_exports__);
         case "survey":
           dispatchAction = "getTopBarButtonsSurvey";
           errorHeader = "ERROR SURVEY";
+          this.slide = false;
           break;
 
         case "tokens":
           dispatchAction = "getTopBarButtonsTokens";
           errorHeader = "ERROR TOKEN";
+          this.slide = false;
           break;
       }
 

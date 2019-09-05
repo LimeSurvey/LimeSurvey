@@ -52,6 +52,7 @@
             getMenuUrl: "'.$getMenuUrl.'",
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
+            gid: '.(isset($gid) ? $gid : 'null').',
             options: [],
             surveyid: '.$surveyid.',
             isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',

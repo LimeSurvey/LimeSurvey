@@ -3,7 +3,14 @@
 #sidebar {
     padding-top: 15px;
     width:100%;
-    
+
+    .questiongroup-list-group>li.selected {
+        opacity: 0.9;
+        &.activated {
+            opacity: 1;
+        }
+    }
+
     .tabbutton.btn-primary {
         outline: none;
         &:after {

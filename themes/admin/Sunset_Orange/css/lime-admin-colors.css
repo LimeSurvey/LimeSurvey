@@ -2178,10 +2178,12 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 
 #sidebar .selected {
   padding-left: 20px;
-  background: linear-gradient(to right, #FE5B35 0px, #FE5B35 13px, #ffffff 13px, #ffffff 100%);
+  background: linear-gradient(to right, #fe9981 0px, #fe9981 13px, #ffffff 13px, #ffffff 100%);
   transition-property: all;
   transition-duration: .25s;
   transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1); }
+  #sidebar .selected.activated {
+    background: linear-gradient(to right, #FE5B35 0px, #FE5B35 13px, #ffffff 13px, #ffffff 100%); }
 
 #sidebar .dragged {
   background-color: #fe8468 !important;

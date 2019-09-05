@@ -135,10 +135,12 @@ export default {
                 case "survey":
                     dispatchAction = "getTopBarButtonsSurvey";
                     errorHeader = "ERROR SURVEY";
+                    this.slide = false;
                     break;
                 case "tokens":
                     dispatchAction = "getTopBarButtonsTokens";
                     errorHeader = "ERROR TOKEN";
+                    this.slide = false;
                     break;
             }
             
