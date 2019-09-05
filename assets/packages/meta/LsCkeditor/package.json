@@ -24,7 +24,8 @@
     "@ckeditor/ckeditor5-paste-from-office": "^11.0.2",
     "@ckeditor/ckeditor5-table": "^13.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^13.0.1",
-    "@ckeditor/ckeditor5-ui": "^13.0.0"
+    "@ckeditor/ckeditor5-ui": "^13.0.0",
+    "he": "^1.2.0"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^12.0.1",

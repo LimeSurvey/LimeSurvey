@@ -124,6 +124,14 @@ const runBuildFolder = function (folder) {
 
 const runBuild = function() {
     const startTime = new Date();
+    const ckEditorUsersArray = [
+        ['datasecuritysettings', 'assets/packages/datasecuritysettings/'],
+        ['emailtemplates', 'assets/packages/emailtemplates/'],
+        ['labelsets', 'assets/packages/labelsets/'],
+        ['questioneditor', 'assets/packages/questioneditor/'],
+        ['questiongroup', 'assets/packages/questiongroup/'],
+        ['textelements', 'assets/packages/textelements/'],
+    ];
     const pathArray = [
         ['adminbasics', 'assets/packages/adminbasics/'],
         ['adminsidepanel', 'assets/packages/adminsidepanel/'],
@@ -196,10 +204,15 @@ if(!single) {
     });   
 
 } else {
-    let getSPosition = args.indexOf('-s');
+    const getSPosition = args.indexOf('-s');
     const componentsToBuild = args[getSPosition+1].split(',');
-
-    componentToBuildArray = pathArray.filter((item) => { return componentsToBuild.indexOf(item[0]) > -1; });
+    let componentToBuildArray = [];
+    
+    if(componentsToBuild[0] == 'ckeditorrebuild') {
+        componentToBuildArray = ckEditorUsersArray;
+    } else {
+        componentToBuildArray = pathArray.filter((item) => { return componentsToBuild.indexOf(item[0]) > -1; });
+    }
 
     if(componentToBuildArray.array == 0 || componentsToBuild == undefined) {
         console.error("|| ===  Component not found or ambiguous, possible options are:")
@@ -233,8 +246,8 @@ if(!single) {
     finalPromise.then(()=> {
         const endTime = new Date();
         const difference = endTime - startTime;
-        const minutes = String((difference*1000*60)%60).padStart(2,'0');
-        const seconds = String((difference*1000)%60).padStart(2,'0');
+        const minutes = String((difference/1000/60)%60).padStart(2,'0');
+        const seconds = String((difference/1000)%60).padStart(2,'0');
         const milliseconds = String(difference%1000).padStart(4,'0');
         if(verbose) {
             console.log(`|| === Started at ${startTime.toLocaleTimeString('de-DE')}`);

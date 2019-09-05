@@ -310,12 +310,9 @@ ${scriptContent}
         border-radius: 0;
         white-space: pre-wrap;
         flex-wrap: wrap;
-        border: 1px solid #c3c3c3;
-        margin: 0.2rem 0 0.2rem 0.5rem;
         padding: 0.3rem;
-        background-color: rgba(196,196,196,0.8);
         &.active {
-            background-color: rgba(196,196,196,1);
+            font-weight:bold;
         }
     }
 }
