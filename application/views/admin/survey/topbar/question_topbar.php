@@ -344,8 +344,8 @@ if ($hasUpdatePermission) {
             'icon' => 'icon-defaultanswers',
             'class' => ' btn-default',
         ];
+        array_push($topbar['alignment']['left']['buttons'], $buttons['default_values']);
     }
-    array_push($topbar['alignment']['left']['buttons'], $buttons['default_values']);
 }
 // Extended Topbar
 // Left Side
