@@ -151,7 +151,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             App()->getClientScript()->registerPackage('font-roboto');
             App()->getClientScript()->registerPackage('font-icomoon');
-            App()->getClientScript()->registerPackage('adminbasicjs');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
@@ -184,11 +183,13 @@ class AdminTheme extends CFormModel
             }
 
             App()->getClientScript()->registerPackage('font-roboto');
-            App()->getClientScript()->registerPackage('adminbasicjs');
-            App()->getClientScript()->unregisterPackage('adminbasics');
             App()->getClientScript()->registerPackage('adminbasicsrtl');
+            App()->getClientScript()->registerPackage('adminsidepanelrtl');
 
         } else {
+            
+            App()->getClientScript()->registerPackage('adminbasicsltr');
+            App()->getClientScript()->registerPackage('adminsidepanelltr');
             // Non-RTL style
             if (is_array($files->css->filename)) {
                 foreach ($files->css->filename as $cssfile) {

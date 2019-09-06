@@ -746,20 +746,21 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             foreach ($Row as $Key=>$Value) {
                 if (!isset($exclude[$Key])) {
                     if (!(is_null($Value))) {
-// If the $value is null don't output an element at all
+                        // If the $value is null don't output an element at all
                         if (is_numeric($Key[0])) {
                             // mask invalid element names with an underscore
                             $Key = '_'.$Key;
                         }
                         $Key = str_replace('#', '-', $Key);
                         if (!$xmlwriter->startElement($Key)) {
-// Remove invalid XML characters
                             safeDie('Invalid element key: '.$Key);
                         }
 
                         if ($Value !== '') {
+                            // Remove invalid XML characters
+                            $Value = preg_replace('/[^\x0\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value);
                             $Value = str_replace(']]>', ']] >', $Value);
-                            $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $Value));
+                            $xmlwriter->writeCData($Value);
                         }
                         $xmlwriter->endElement();
                     }
@@ -1885,8 +1886,7 @@ function group_export($action, $iSurveyID, $gid)
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache"); // HTTP/1.0
+    header("Cache-Control: must-revalidate, no-store, no-cache");
 
     $xml->openUri('php://output');
     $xml->setIndent(true);
@@ -2028,8 +2028,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     header("Content-Disposition: attachment; filename=$fn");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Cache-Control: must-revalidate, no-store, no-cache");
     // HTTP/1.0
     $xml->openURI('php://output');
 
@@ -2209,8 +2208,7 @@ function tokensExport($iSurveyID)
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Cache-Control: must-revalidate, no-store, no-cache");
 
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
@@ -2234,6 +2232,9 @@ function tokensExport($iSurveyID)
     Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
     foreach ($bresultAll as $brow) {
+        if (Yii::app()->request->getPost('maskequations')){
+            $brow=array_map('MaskFormula', $brow);
+        }    
         if (trim($brow['validfrom'] != '')) {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
             $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
@@ -2284,8 +2285,7 @@ function CPDBExport($data, $filename)
 
     header("Content-Disposition: attachment; filename=".$filename.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
+    header("Cache-Control: must-revalidate, no-store, no-cache");
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
 
     foreach ($data as $key=>$value) {
@@ -2337,7 +2337,6 @@ function stringSize($sColumn)
  **/
 function numericSize($sColumn,$decimal=false)
 {
-
     $sColumn = sanitize_paranoid_string($sColumn);
     // Find the sid
     $iSurveyId = substr($sColumn, 0, strpos($sColumn, 'X'));
@@ -2455,7 +2454,7 @@ function tsvSurveyExport($surveyid){
     // flip keys and values, fields becoming keys, values are cleared with array_map function
     $fields = array_map(function () { return ''; }, array_flip($fields));
     $out = fopen('php://output', 'w');
-    fputcsv($out, array_keys($fields), chr(9));
+    fputcsv($out, array_map('MaskFormula',array_keys($fields)), chr(9));
 
     // DATA PREPARATION
     // survey settings
@@ -2480,7 +2479,7 @@ function tsvSurveyExport($surveyid){
         $tsv_output['class'] = 'S';
         $tsv_output['name'] = $key;
         $tsv_output['text'] = str_replace(array("\n", "\r"), '', $value);
-        fputcsv($out, $tsv_output, chr(9));
+        fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
     }
 
     // language settings
@@ -2512,7 +2511,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['name'] = $key;
             $tsv_output['text'] = str_replace(array("\n", "\r"), '', $value);
             $tsv_output['language'] = $current_language;
-            fputcsv($out, $tsv_output, chr(9));
+            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
         }
     }
 
@@ -2722,7 +2721,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['relevance'] = !empty($group['grelevance']) ? $group['grelevance'] : '';
             $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
             $tsv_output['language'] = $language;
-            fputcsv($out, $tsv_output, chr(9));
+            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
 
             // questions
             if (array_key_exists($gid, $questions[$language])){
@@ -2757,7 +2756,7 @@ function tsvSurveyExport($surveyid){
                             }
                         }
                     }
-                    fputcsv($out, $tsv_output, chr(9));
+                    fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
 
                     // quota members
                     if ($index_languages == 0 && !empty($quota_members[$qid])){
@@ -2767,7 +2766,7 @@ function tsvSurveyExport($surveyid){
                             $tsv_output['related_id'] = $member['quota_id'];
                             $tsv_output['class'] = 'QTAM';
                             $tsv_output['name'] = $member['code'];
-                            fputcsv($out, $tsv_output, chr(9));
+                            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
                         }
                     }
 
@@ -2782,7 +2781,7 @@ function tsvSurveyExport($surveyid){
                             $tsv_output['name'] = $condition['cfieldname'];
                             $tsv_output['relevance'] = $condition['method'];
                             $tsv_output['text'] = !empty($assessment['value']) ? $condition['value'] : '';
-                            fputcsv($out, $tsv_output, chr(9));
+                            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
                         }
                     }
 
@@ -2805,7 +2804,7 @@ function tsvSurveyExport($surveyid){
                             if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])){
                                 $tsv_output['default'] = $defaultvalues[$language][$subquestion['qid']];
                             }
-                            fputcsv($out, $tsv_output, chr(9));
+                            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
                         }
                     }
 
@@ -2821,7 +2820,7 @@ function tsvSurveyExport($surveyid){
                             $tsv_output['text'] = $answer['answer'];
                             $tsv_output['assessment_value'] = $answer['assessment_value'];
                             $tsv_output['language'] = $answer['language'];
-                            fputcsv($out, $tsv_output, chr(9));
+                            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
                         }
                     }
                 }
@@ -2844,7 +2843,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['min_num_value'] = $assessment['minimum'];
             $tsv_output['max_num_value'] = $assessment['maximum'];
             $tsv_output['language'] = $assessment['language'];
-            fputcsv($out, $tsv_output, chr(9));
+            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
         }
     }
 
@@ -2860,7 +2859,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['other'] = $quota['action'];
             $tsv_output['default'] = $quota['active'];
             $tsv_output['same_default'] = $quota['autoload_url'];
-            fputcsv($out, $tsv_output, chr(9));
+            fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
 
                 if (!empty($quota_ls[$quota['id']])){
                 foreach ($quota_ls[$quota['id']] as $key => $language) {
@@ -2874,7 +2873,7 @@ function tsvSurveyExport($surveyid){
                         $tsv_output['text'] = $ls['quotals_url'];
                         $tsv_output['help'] = !empty($ls['quotals_urldescrip']) ? $ls['quotals_urldescrip'][0] : '';
                         $tsv_output['language'] = $ls['quotals_language'];
-                        fputcsv($out, $tsv_output, chr(9));
+                        fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
                     }
                 }
             }
@@ -2977,3 +2976,11 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
     }
 
 }
+
+
+ function MaskFormula ( $sValue  ) {
+     if (isset($sValue[0]) && $sValue[0]=='=') {
+        $sValue="'".$sValue;    
+     }
+     return $sValue;
+ }

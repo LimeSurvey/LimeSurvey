@@ -22,6 +22,8 @@ export default class ImageSelectUI extends Plugin {
                 (resolve) => { this._parseSelectables( resolve, dropdownView); },
                 (reject) => { console.error(reject); }
 			);
+
+            dropdownView.set('panelPosition','sw');
 			
             dropdownView.buttonView.set( {
                 label: t( 'Select Image from server' ),

@@ -62,9 +62,9 @@ if ($hasSurveyContentPermission) {
     $name = ($isActive) ? gT('Preview survey') : gT('Execute survey');
 
     if (safecount($oSurvey->allLanguages) > 1) {
-        $buttons[$title] = [];
+        $preview_buttons = [];
         foreach ($oSurvey->allLanguages as $language) {
-            $buttons[$title.'_'.$language] = [
+            $preview_buttons[$title.'_'.$language] = [
                 'url' => $this->createAbsoluteUrl(
                     "survey/index", 
                     array(
@@ -97,7 +97,7 @@ if ($hasSurveyContentPermission) {
             ],
             'dropdown' => [
                 'class' => 'dropdown-menu',
-                'items' => $buttons,
+                'items' => $preview_buttons,
             ],
         ];
         array_push($topbar['alignment']['left']['buttons'], $buttonsurvey_preview_dropdown);
@@ -224,7 +224,7 @@ if ($hasSurveyReadPermission) {
                     )
                 ),
                 'id' => 'check_logic_'.$language,
-                'icon' => '',
+                'icon' => 'icon-expressionmanagercheck',
                 'iconclass' => '',
                 'name' => getLanguageNameFromCode($language, false),
                 'class' => ' btn-default',
@@ -242,7 +242,7 @@ if ($hasSurveyReadPermission) {
                 'id' => 'check_logic_button',
                 'icon' => 'icon-expressionmanagercheck',
                 'name' => gT("Check logic"),
-                'iconclass' => 'caret',
+                'iconclass' => 'chevron-right',
             ],
             'dropdown' => [
                 'class' => 'dropdown-menu',

@@ -4,6 +4,7 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import scss from 'rollup-plugin-scss'
 import { terser } from "rollup-plugin-terser";
+import WriteRTLCSS from './buildplugins/rollup-plugin-writertlcss';
 
 const ENVIRONEMENT = process.env.NODE_ENV.trim();
 const DIRECTION = process.env.DIRECTION_ENV.trim();
@@ -30,7 +31,8 @@ if( ENVIRONEMENT=='production' ) {
         babel({exclude: 'node_modules/**'}),
         resolve(),
         common(),
-        scss({failOnError: true, outputStyle: 'compressed', output: DIRECTION=='ltr' ? 'build/adminbasics.min.css' : 'build/adminbasics.rtl.min.css'}),
+        scss({failOnError: true, outputStyle: 'compressed', output: 'build/adminbasics.min.css'}),
+        WriteRTLCSS({input: 'build/adminbasics.min.css', output: 'build/adminbasics.rtl.min.css', compressed: true}),
         terser()
     ];
 } else {
@@ -49,7 +51,8 @@ if( ENVIRONEMENT=='production' ) {
         babel({exclude: 'node_modules/**'}),
         resolve(),
         common(),
-        scss({failOnError: true, outputStyle: 'expanded', output: DIRECTION=='ltr' ? 'build/adminbasics.css' : 'build/adminbasics.rtl.css'}),
+        scss({failOnError: true, outputStyle: 'expanded', output: 'build/adminbasics.css'}),
+        WriteRTLCSS({input: 'build/adminbasics.css', output: 'build/adminbasics.rtl.css', compressed: false}),
     ];
 }
 

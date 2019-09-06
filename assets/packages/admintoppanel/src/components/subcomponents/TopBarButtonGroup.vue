@@ -1,10 +1,3 @@
-<template>
-    <div class="topbarbuttongroup">
-        <dropdown-element v-if="list" :list="list" :mainButton="mainButton" />
-        <button-element v-else :button="mainButton" />
-    </div>
-</template>
-
 <script>
 import DropDown from "./TopBarDropDown.vue";
 import Button from "./TopBarButton.vue";
@@ -12,15 +5,32 @@ import Button from "./TopBarButton.vue";
 export default {
     name: "TopBarButtonGroup",
     props: {
-        list: Object,
-        mainButton: Object
-    },
-    components: {
-        "dropdown-element": DropDown,
-        "button-element": Button
+        list: {type: Object, default() { return null }},
+        mainButton: {type: Object, required: true },
+        dropdownOpen: {type: Boolean|Number, required: true },
     },
     data: () => {
         return {};
+    },
+    methods: {
+        dropdowntrigger(state) {
+            this.$emit('dropdowntrigger', state);
+        } 
+    },
+    render(h) {
+        return (
+            <div class="topbarbuttongroup">
+                { this.list != null
+                    ? <DropDown 
+                        list={this.list} 
+                        mainButton={this.mainButton}
+                        onDropdowntrigger = {this.dropdowntrigger} 
+                        dropdownOpen = {this.dropdownOpen}
+                    />
+                    : <Button button={this.mainButton} />
+                }
+            </div>
+        );                        
     }
 };
 </script>

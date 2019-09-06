@@ -18,7 +18,7 @@ export default {
             counter: 0,
             slide: false,
             loading: true,
-            slotbutton: null
+            slotbutton: null,
         };
     },
     computed: {
@@ -123,39 +123,43 @@ export default {
             this.$log.log("Loading topbar contents based on type ", this.type);
             let dispatchAction = '';
             let errorHeader = "";
-
-            if (this.qid !== 0 && this.type === "question") {
-                dispatchAction = "getTopBarButtonsQuestion";
-                errorHeader = "ERROR QUESTION";
-            } else if (this.gid !== 0 && this.type === "group") {
-                dispatchAction = "getTopBarButtonsGroup";
-                errorHeader = "ERROR GROUP";
-            } else if (this.sid !== 0 && this.type == "survey") {
-                dispatchAction = "getTopBarButtonsSurvey";
-                errorHeader = "ERROR SURVEY";
-                this.slide = false;
-            } else if (this.sid !== 0 && this.type == "tokens") {
-                dispatchAction = "getTopBarButtonsTokens";
-                errorHeader = "ERROR TOKEN";
-                this.slide = false;
+            switch(this.type) {
+                case "question":
+                    dispatchAction = "getTopBarButtonsQuestion";
+                    errorHeader = "ERROR QUESTION";
+                    break;
+                case "group":
+                    dispatchAction = "getTopBarButtonsGroup";
+                    errorHeader = "ERROR GROUP";
+                    break;
+                case "survey":
+                    dispatchAction = "getTopBarButtonsSurvey";
+                    errorHeader = "ERROR SURVEY";
+                    this.slide = false;
+                    break;
+                case "tokens":
+                    dispatchAction = "getTopBarButtonsTokens";
+                    errorHeader = "ERROR TOKEN";
+                    this.slide = false;
+                    break;
             }
-
+            
             this.loading = true;
             this.$store.dispatch(dispatchAction)
-                .then(data => {
-                    this.$log.log("Promise resolved with data", data);
-                    this.counter++;
-                })
-                .catch(error => {
-                    this.$log.error(errorHeader);
-                    this.$log.error(error);
-                })
-                .finally(() => {
-                    this.$log.log("Trigger loading end");
-                    this.loading = false;
-                    this.$forceUpdate();
-                    LS.pageLoadActions.saveBindings();
-                });
+            .then((data) => {
+                    return this.$store.dispatch('getCustomTopbarContent').then((data2)=> { return [data, data2] });
+            }).then(datas => {
+                this.$log.log("Promise resolved with datas", datas);
+                this.counter++;
+            }).catch(error => {
+                this.$log.error(errorHeader);
+                this.$log.error(error);
+            }).finally(() => {
+                this.$log.log("Trigger loading end");
+                this.loading = false;
+                this.$forceUpdate();
+                LS.pageLoadActions.saveBindings();
+            });
         },
 
         onFade(slideable) {

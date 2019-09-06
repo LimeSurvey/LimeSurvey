@@ -79,6 +79,10 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
+    # Check for syntax errors.
+    # TODO: Should be ! find ... instead of || true (when all warnings are fixed)
+    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
+
     # Test server.
     - wget localhost
     - cat index.html

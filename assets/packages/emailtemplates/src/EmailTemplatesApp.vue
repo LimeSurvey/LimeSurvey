@@ -28,14 +28,14 @@
                 </div>
                 <div class="col-md-10 col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <div class="container-fluid">
-                        <div class="row">
+                        <div class="row ls-space margin top-5">
                             <div class="ls-flex-row col-12">
                                 <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}:</label>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" />
                             <input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/>
                         </div>
-                        <div class="row">
+                        <div class="row ls-space margin top-15">
                             <div class="ls-flex-row col-12">
                                 <div class="ls-flex-item text-left">
                                     <label class="">{{currentTemplateTypeData.body}}:</label>
@@ -48,7 +48,7 @@
                             <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"></lsckeditor>
                             <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
                         </div>
-                        <div class="row">
+                        <div class="row ls-space margin top-15">
                             <div class="ls-flex-row col-12">
                                 <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
                                 <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset current"}} </button>
@@ -66,6 +66,7 @@
 
 <script>
 import Mousetrap from 'mousetrap';
+import he from 'he';
 import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
 
 import ValidationScreen from './components/ValidationScreen';
@@ -128,7 +129,7 @@ export default {
                 try{    
                     if (this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
                         let descriptor = this.currentTemplateTypeData.field.body;
-                        returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
+                        returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
                     }
                 } catch(e) {}
                 return returner;
@@ -154,6 +155,13 @@ export default {
         },
     },
     methods: {
+        nl2br (str, is_xhtml=true) {
+            if (typeof str === 'undefined' || str === null) {
+                return '';
+            }
+            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+            return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+        },
         onReadySetEditor(editor) {
             this.editorInstance = editor;
         },
@@ -308,14 +316,10 @@ ${scriptContent}
     &>div {
         flex: 1;
         border-radius: 0;
-        white-space: pre-wrap;
         flex-wrap: wrap;
-        border: 1px solid #c3c3c3;
-        margin: 0.2rem 0 0.2rem 0.5rem;
-        padding: 0.3rem;
-        background-color: rgba(196,196,196,0.8);
+        padding: 0.5rem 0.3rem;
         &.active {
-            background-color: rgba(196,196,196,1);
+            font-weight:bold;
         }
     }
 }

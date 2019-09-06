@@ -6,13 +6,16 @@ export default {
     props: {
         'menuEntries' : {type: [Array,Object]},
         'activeMenuIndex': {type: String},
+        loading: {type: Boolean, default: false}
     },
     data(){
-        return {
-            loading : true,
-        };
+        return { };
     },
     computed: {
+        loadingState: {
+            get() { return this.loading; },
+            set(newState) { this.$emit('changeLoadingState', newState); }
+        },
         sortedMenues(){
             return LS.ld.orderBy(this.$store.state.collapsedmenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
         }
@@ -48,7 +51,7 @@ export default {
             this.$log.error
         )
         .finally(
-            (result) => { this.loading = false }
+            (result) => { this.loadingState = false }
         );
     },
     mounted(){
@@ -57,7 +60,7 @@ export default {
 </script>
 <template>
     <div class='ls-flex-column fill'>
-        <div class="ls-space margin top-10" v-show="!loading"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
+        <div class="ls-space margin top-10" v-show="!loadingState"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
             <div class="btn-group-vertical ls-space padding right-10">
                 <a v-for="(menuItem) in sortedMenuEntries(menu.entries)" 
                 @click="setActiveMenuIndex(menuItem)"
@@ -80,7 +83,7 @@ export default {
                 </a>
             </div>
         </div>
-        <loader-widget v-if="loading" id="quickmenuLoadingIcon" extra-class="loader-quickmenu"/>
+        <loader-widget v-if="loadingState" id="quickmenuLoadingIcon" extra-class="loader-quickmenu"/>
     </div>
 </template>
 <style lang="scss">

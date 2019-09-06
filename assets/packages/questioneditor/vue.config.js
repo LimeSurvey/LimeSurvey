@@ -4,14 +4,25 @@ const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const appName = 'questionedit';
 const entryPoint = ['./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 
-const EchoBuildTime = function(){
-    return function(){
-        this.plugin('done', function () {
-            const date = new Date();
-            console.log("\n###############\n Build at -> " + date.toLocaleString('de-DE') + "\n###############\n");
-        });
-    }
+class EchoBuildTime {
+    apply(compiler) {
+    compiler.hooks.done.tapAsync('EchoBuildTime', (stats, cb) => {
+        const date = new Date();
+        const options = {
+            day: '2-digit',
+            weekday: 'short',
+            year: 'numeric',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        };
+        console.log("\n###############\n Build at -> " + date.toLocaleString('de-DE', options) + "\n###############\n");
+        cb();
+    });
 }
+};
+
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
     filenameHashing: false,

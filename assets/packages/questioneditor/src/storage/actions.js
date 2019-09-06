@@ -37,7 +37,11 @@ export default {
                 const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
                 ajax.methods.$_get(
                     window.QuestionEditData.connectorBaseUrl+subAction, 
-                    {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
+                    {
+                        'iQuestionId' : window.QuestionEditData.qid, 
+                        'gid' : window.QuestionEditData.gid || null, 
+                        type: window.QuestionEditData.startType
+                    }
                 ).then((result) => {
                     context.commit('setCurrentQuestion', result.data.question);
                     context.commit('unsetQuestionImmutable');
@@ -69,7 +73,10 @@ export default {
                 const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionPermissions' : '/getQuestionPermissions';
                 ajax.methods.$_get(
                     window.QuestionEditData.connectorBaseUrl+subAction, 
-                    {'iQuestionId' : window.QuestionEditData.qid }
+                    {
+                        'gid' : window.QuestionEditData.gid || null, 
+                        'iQuestionId' : window.QuestionEditData.qid 
+                    }
                 ).then((result) => {
                     context.commit('setCurrentQuestionPermissions', result.data);
                     resolve(true);
@@ -84,6 +91,7 @@ export default {
         return new Promise((resolve, reject) => {
             const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getGeneralOptions' : '/getGeneralOptions';
             const parameters = {
+                'gid' : window.QuestionEditData.gid || null, 
                 sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
             };
 
@@ -127,9 +135,10 @@ export default {
                 window.QuestionEditData.connectorBaseUrl+subAction, 
                 parameters
             ).then((result) => {
-                context.commit('setCurrentQuestionAdvancedSettings', result.data);
-                context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-                context.commit('setImmutableQuestionAdvancedSettings', result.data);
+                context.commit('setCurrentQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('unsetImmutableQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('setImmutableQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('setQuestionTypeDefinition', result.data.questionTypeDefinition);
                 resolve(true);
             },
             (rejectAnswer) => {
@@ -149,6 +158,7 @@ export default {
         return new Promise((resolve,reject) => {
             const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'reloadQuestionData' : '/reloadQuestionData';
             const parameters = {
+                'gid' : window.QuestionEditData.gid || null, 
                 type: context.state.currentQuestion.type || window.QuestionEditData.startType,
                 question_template: context.state.currentQuestionGeneralSettings.question_template.formElementValue || 'core'
             };

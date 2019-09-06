@@ -44,38 +44,6 @@ export default {
             }
         );
     },
-    // getTopmenus(context) {
-    //     return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "top" }).then(
-    //         result => {
-    //             LOG.log("topmenus", result);
-    //             const newTopmenus = LS.ld.orderBy(
-    //                 result.data.menues,
-    //                 a => {
-    //                     return parseInt(a.order || 999999);
-    //                 },
-    //                 ["desc"]
-    //             );
-    //             context.commit('updateTopmenus', newTopmenus);
-    //             context.dispatch('updatePjax');
-    //         }
-    //     );
-    // },
-    // getBottommenus(context) {
-    //     return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "bottom" }).then(
-    //         result => {
-    //             LOG.log("bottommenus", result);
-    //             const newBottommenus = LS.ld.orderBy(
-    //                 result.data.menues,
-    //                 a => {
-    //                     return parseInt(a.order || 999999);
-    //                 },
-    //                 ["desc"]
-    //             );
-    //             context.commit('updateBottommenus', newBottommenus);
-    //             context.dispatch('updatePjax');
-    //         }
-    //     );
-    // },
     getQuestions(context) {
         return new Promise((resolve, reject) => {
             ajax.methods.get(window.SideMenuData.getQuestionsUrl).then(result => {
@@ -91,8 +59,6 @@ export default {
         return Promise.all([
             context.dispatch('getSidemenus'),
             context.dispatch('getCollapsedmenus'),
-            // context.dispatch('getTopmenus'),
-            // context.dispatch('getBottommenus')
         ]);
     }
 }

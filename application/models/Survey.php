@@ -477,6 +477,8 @@ class Survey extends LSActiveRecord
             array('startdate', 'default', 'value'=>null),
             array('expires', 'default', 'value'=>null),
             array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'length', 'min' => 1, 'max'=>50),
+            array('faxto', 'length', 'min' => 0, 'max'=>20),
             array('adminemail', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'filter', 'filter'=>'trim'),
             //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
@@ -841,12 +843,11 @@ class Survey extends LSActiveRecord
         //Get the default menus
         $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position,$this);
         //get all survey specific menus
-        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this);
+        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this, $position);
         //merge them
         $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
         // var_dump($aDefaultSurveyMenus);
         // var_dump($aThisSurveyMenues);
-        //soon to come => Event to add menus for plugins
 
         return $aSurveyMenus;
     }

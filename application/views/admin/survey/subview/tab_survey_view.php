@@ -27,7 +27,7 @@ switch($activeTab) {
         break;
     case 'import':
         $activeForm = 'importsurvey'; 
-        $label = '<i class="fa fa-upload"></i>&nbsp;'.gT('Import');
+        $label = '<i class="fa fa-download"></i>&nbsp;'.gT('Import');
         break;
     case 'copy':
         $activeForm = 'copysurveyform'; 

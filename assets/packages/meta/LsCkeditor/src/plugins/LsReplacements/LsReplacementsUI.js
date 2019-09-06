@@ -1,9 +1,12 @@
+import he from 'he';
+
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Collection from '@ckeditor/ckeditor5-utils/src/collection';
 import Model from '@ckeditor/ckeditor5-ui/src/model';
 
 import { createDropdown } from '@ckeditor/ckeditor5-ui/src/dropdown/utils';
 import { addListToDropdown } from '../CustomDropdown/utils';
+
 
 import lsIcon from '../assets/LsIcon.svg';
 
@@ -19,6 +22,8 @@ export default class LsReplacementsUI extends Plugin {
                 (resolve) => { this._parseSelectables( resolve, dropdownView); },
                 (reject) => { console.error(reject); }
             );
+
+            dropdownView.set('panelPosition','sw');
 
             dropdownView.buttonView.set( {
                 label: t( 'LsExpressions' ),
@@ -40,6 +45,7 @@ export default class LsReplacementsUI extends Plugin {
                     (reject) => { console.error(reject); }
                 );
             });
+
 
             return dropdownView;
         } );
@@ -79,7 +85,7 @@ export default class LsReplacementsUI extends Plugin {
                     model: new Model( {
                         commandParam: key,
                         typeDef: contentData.type,
-                        label: contentData.value,
+                        label: he.decode(contentData.value),
                         class: 'lsimageSelect--dropdown-button-inner',
                         withText: true
                     })

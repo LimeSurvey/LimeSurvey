@@ -640,8 +640,7 @@ class responses extends Survey_Common_Action
                     header('Content-Disposition: attachment; filename="'.sanitize_filename(rawurldecode($aFile['name'])).'"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
-                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                    header('Pragma: public');
+                    header("Cache-Control: must-revalidate, no-store, no-cache");
                     header('Content-Length: '.filesize($sFileRealName));
                     readfile($sFileRealName);
                     exit;
@@ -1028,8 +1027,7 @@ class responses extends Survey_Common_Action
                 header('Content-Disposition: attachment; filename='.basename($zipfilename));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
-                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                header('Pragma: public');
+                header("Cache-Control: must-revalidate, no-store, no-cache");
                 header('Content-Length: '.filesize($tmpdir."/".$zipfilename));
                 readfile($tmpdir.'/'.$zipfilename);
                 unlink($tmpdir.'/'.$zipfilename);

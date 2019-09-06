@@ -1,19 +1,6 @@
 import Embedo from 'embedo';
 import './scss/main.scss';
 
-// Initialize once (prefer globally)
-const embedo = new Embedo({
-    facebook: true,
-    twitter: true,
-    instagram: true,
-    pinterest: true,
-    youtube: true,
-    vimeo: true,
-    github: true,
-    soundcloud: true,
-    googlemaps: true
-});
-
 $(document).on('ready pjax:scriptcomplete', function(){
     $('oembed').each(
         function(i,item) {
@@ -31,9 +18,21 @@ $(document).on('ready pjax:scriptcomplete', function(){
 
     $('oembed').off('click.embeddable');
     $('oembed').on('click.embeddable',  function() {
+        window.embedo = window.embedo || new Embedo({
+            facebook: true,
+            twitter: true,
+            instagram: true,
+            pinterest: true,
+            youtube: true,
+            vimeo: true,
+            github: true,
+            soundcloud: true,
+            googlemaps: true
+        });
+        
         $(this).find(".svgcontainer").remove();
         const url = $(this).attr('url');
-        embedo.load(this, url)
+        window.embedo.load(this, url)
         .done((result) => {
             console.ls.log(result);
         })

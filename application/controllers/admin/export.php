@@ -19,7 +19,7 @@
 *
 * This controller performs export actions
 *
-* @package        LimeSurvey
+* @package       LimeSurvey
 * @subpackage    Backend
 */
 class export extends Survey_Common_Action
@@ -87,10 +87,8 @@ class export extends Survey_Common_Action
 
         if (is_file($aZIPFileName)) {
             //Send the file for download!
-            header("Pragma: public");
             header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-
+            header("Cache-Control: must-revalidate, no-store, no-cache");
             header("Content-Type: application/force-download");
             header("Content-Disposition: attachment; filename=survey_archives_pack.zip");
             header("Content-Description: File Transfer");
@@ -152,6 +150,7 @@ class export extends Survey_Common_Action
         $bConvertN = Yii::app()->request->getPost('convertn');
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
+        $bMaskEquations = Yii::app()->request->getPost('maskequations');
 
         $surveybaselang = $survey->language;
         $exportoutput = "";
@@ -270,7 +269,7 @@ class export extends Survey_Common_Action
         // the exportresults form
         $explang = Yii::app()->request->getPost('exportlang', $surveybaselang);
 
-        //Get together our FormattingOptions and then call into the exportSurvey
+        //Get together our FormattingOptions and then call into the exportResponses
         //function.
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
@@ -281,6 +280,7 @@ class export extends Survey_Common_Action
         $options->convertY = $bConvertY;
         $options->yValue = ($bConvertY) ? $sYValue : null;
         $options->convertN = $bConvertN;
+        $options->csvMaskEquations = $bMaskEquations;
         $options->nValue = ($bConvertN) ? $sNValue : null;
         $options->headingTextLength = (Yii::app()->request->getPost('abbreviatedtext')) ? (int) Yii::app()->request->getPost('abbreviatedtextto') : null;
         $options->useEMCode = Yii::app()->request->getPost('emcode');
@@ -321,7 +321,7 @@ class export extends Survey_Common_Action
         }
 
         viewHelper::disableHtmlLogging();
-        $resultsService->exportSurvey($iSurveyID, $explang, $sExportType, $options, $sFilter);
+        $resultsService->exportResponses($iSurveyID, $explang, $sExportType, $options, $sFilter);
 
         Yii::app()->end();
     }
@@ -436,8 +436,7 @@ class export extends Survey_Common_Action
         if ($subaction == 'dldata') {
             header("Content-Disposition: attachment; filename=survey_".$iSurveyID."_SPSS_data_file.dat");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
+            header("Cache-Control: must-revalidate, no-store, no-cache");
 
             if ($spssver == 2) {
                 echo "\xEF\xBB\xBF";
@@ -454,8 +453,7 @@ class export extends Survey_Common_Action
         if ($subaction == 'dlstructure') {
             header("Content-Disposition: attachment; filename=survey_".$iSurveyID."_SPSS_syntax_file.sps");
             header("Content-type: application/download; charset=UTF-8");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
+            header("Cache-Control: must-revalidate, no-store, no-cache");
             $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
             if ($spssver == 2) {
@@ -623,7 +621,7 @@ class export extends Survey_Common_Action
             $vvVersion = (in_array($vvVersion, array(1, 2))) ? $vvVersion : 2; // Only 2 version actually, default to 2
             $fn = "vvexport_$iSurveyId.".$extension;
 
-            $this->_addHeaders($fn, "text/comma-separated-values", 0, "cache");
+            $this->_addHeaders($fn, "text/comma-separated-values", 0);
 
             $s = "\t";
 
@@ -789,7 +787,7 @@ class export extends Survey_Common_Action
         $fn = "limesurvey_labelset_".implode('_', $lids).".lsl";
         $xml = getXMLWriter();
 
-        $this->_addHeaders($fn, "application/force-download", "Mon, 26 Jul 1997 05:00:00 GMT", "cache");
+        $this->_addHeaders($fn, "application/force-download", "Mon, 26 Jul 1997 05:00:00 GMT");
 
         $xml->openURI('php://output');
 
@@ -1322,23 +1320,20 @@ class export extends Survey_Common_Action
         header("Content-Disposition: attachment; filename=$fn");
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Pragma: public"); // HTTP/1.0
-
+        header("Cache-Control: must-revalidate, no-store, no-cache");
         tsvSurveyExport($surveyid);
     }
 
     /**
      * @param string $content_type
      */
-    private function _addHeaders($filename, $content_type, $expires, $pragma = "public")
+    private function _addHeaders($filename, $content_type, $expires)
     {
         header("Content-Type: {$content_type}; charset=UTF-8");
         header("Content-Disposition: attachment; filename={$filename}");
         header("Expires: {$expires}"); // Date in the past
         header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Pragma: {$pragma}"); // HTTP/1.0
+        header("Cache-Control: must-revalidate, no-store, no-cache");
     }
 
     private function _xmlToJson($fileContents)

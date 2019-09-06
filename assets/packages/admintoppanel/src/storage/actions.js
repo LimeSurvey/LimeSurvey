@@ -8,6 +8,7 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
+                    sid: context.state.sid,
                     qid: context.state.qid
                 }))
                 .then((data) => {
@@ -32,6 +33,7 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
+                    sid: context.state.sid,
                     gid: context.state.gid
                 }))
                 .then((data) => {
@@ -93,6 +95,30 @@ export default {
                     context.commit('setPermissions', data.data.permissions);
 
                     resolve(data.data.topbar);
+                })
+                .catch((error) => {
+                    reject({
+                        error: error
+                    });
+                })
+        })
+    },
+
+
+    getCustomTopbarContent: (context) => {
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
+                    position: 'top',
+                    sid: context.state.sid,
+                    saveButton: context.state.showSaveButton
+                }))
+                .then((data) => {
+                    const topbarLeft = context.state.topbar_left_buttons;
+                    LS.ld.forEach(data, ()=> {
+
+                    });
+                    context.commit('setTopBarLeft', topbarLeft);
+                    resolve(data);
                 })
                 .catch((error) => {
                     reject({

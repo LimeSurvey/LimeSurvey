@@ -4,7 +4,7 @@ import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
     mixins: [ajaxMethods],
-    data: () => {
+    data(){
         return {
             active: [],
             questiongroupDragging: false,
@@ -15,6 +15,7 @@ export default {
         };
     },
     computed: {
+        surveyIsActive() {return window.SideMenuData.isActive; },
         createQuestionGroupLink() { return window.SideMenuData.createQuestionGroupLink },
         createQuestionLink() { return window.SideMenuData.createQuestionLink },
         calculatedHeight() {
@@ -58,7 +59,7 @@ export default {
             let classes = "";
             classes +=
                 this.$store.state.lastQuestionOpen === question.qid
-                    ? "selected"
+                    ? "selected activated"
                     : " ";
 
             if (this.draggedQuestion !== null)
@@ -71,7 +72,8 @@ export default {
         },
         questionGroupItemClasses(questionGroup) {
             let classes = "";
-            classes += this.isActive(questionGroup.gid) ? "selected" : " ";
+            classes += this.isOpen(questionGroup.gid) ? " selected " : " ";
+            classes += this.isActive(questionGroup.gid) ? " activated " : " ";
 
             if (this.draggedQuestionGroup !== null)
                 classes +=
@@ -90,7 +92,10 @@ export default {
                 ["asc"]
             );
         },
-        isActive(index) {
+        isActive(gid) {
+            return gid == this.$store.state.lastQuestionGroupOpen;
+        },
+        isOpen(index) {
             const result = LS.ld.indexOf(this.active, index) != -1;
 
             if (this.questiongroupDragging === true) return false;
@@ -98,7 +103,7 @@ export default {
             return result;
         },
         toggleActivation(index) {
-            if (this.isActive(index)) {
+            if (this.isOpen(index)) {
                 let removed = LS.ld.remove(this.active, idx => {
                     return idx === index;
                 });
@@ -109,7 +114,7 @@ export default {
             this.updatePjaxLinks();
         },
         addActive(questionGroupId) {
-            if (!this.isActive(questionGroupId)) {
+            if (!this.isOpen(questionGroupId)) {
                 this.active.push(questionGroupId);
             }
             this.$store.commit("questionGroupOpenArray", this.active);
@@ -156,6 +161,7 @@ export default {
                 } 
                 
             } else {
+                if(window.SideMenuData.isActive) {return;}
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
                     const removedFromInital = LS.ld.remove(
@@ -211,6 +217,7 @@ export default {
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
             if (this.questionDragging) {
+                if(this.questionDragging.gid !== questionObject.gid && window.SideMenuData.isActive) {return;}
                 let orderSwap = questionObject.question_order;
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
@@ -253,7 +260,7 @@ export default {
         </div>
         <div class="ls-flex-row ls-space padding all-0">
             <ul 
-                class="list-group col-12"  
+                class="list-group col-12 questiongroup-list-group"  
                 @drop="dropQuestionGroup($event, questiongroup)"
             >
                 <li 
@@ -265,7 +272,7 @@ export default {
                 >
                     <div class="col-12 ls-flex-row nowrap ls-space padding right-5 bottom-5">
                         <i 
-                            v-if="!$store.state.surveyActiveState"
+                            v-if="!surveyIsActive"
                             class="fa fa-bars bigIcons dragPointer" 
                             draggable="true"
                             @dragend="endDraggingGroup($event, questiongroup)" 
@@ -287,12 +294,12 @@ export default {
                             </span>
                             <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
                         </a>
-                        <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
+                        <i class="fa bigIcons" v-bind:class="isOpen(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                     </div>
                     <transition name="slide-fade-down">
                         <ul 
                             class="list-group background-muted padding-left question-question-list" 
-                            v-if="isActive(questiongroup.gid)" 
+                            v-if="isOpen(questiongroup.gid)" 
                             @drop="dropQuestion($event, question)"
                         >
                             <li 

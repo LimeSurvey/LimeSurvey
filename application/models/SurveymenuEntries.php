@@ -51,7 +51,7 @@ class SurveymenuEntries extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('changed_at', 'required'),
+            array('title, menu_title, menu_icon, menu_icon_type, changed_at', 'required'),
             array('menu_id, user_id, ordering, changed_by, created_by', 'numerical', 'integerOnly'=>true),
             array('title, menu_title, menu_icon, menu_icon_type, menu_class, menu_link, action, template, partial, permission, permission_grade, classes, getdatamethod', 'length', 'max'=>255),
             array('name', 'unique'),

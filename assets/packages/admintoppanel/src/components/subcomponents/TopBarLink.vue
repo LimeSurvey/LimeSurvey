@@ -1,12 +1,14 @@
 <script>
 import he from 'he';
+import isArray from 'lodash/isArray';
 
 export default {
     name: "TopBarLink",
     props: {
-        item: {type: Object, required: true},
+        item: {type: Object|Array, required: true},
         active: {type: Boolean, default: true},
-        preview_title: {type: String, default: ''}
+        preview_title: {type: String, default: ''},
+        hasDropdown: {type: Boolean, default: false}
     },
     data() {
         return {};
@@ -18,8 +20,12 @@ export default {
                     href={this.item.url}
                 >
                     {this.item.icon != '' ? <i class={this.item.icon + ' icon'} /> : '' }
-                    {he.decode('&nbsp;')}{ he.decode(this.item.name) }{he.decode('&nbsp;')}
+                    {he.decode('&nbsp;')}{this.item.name }{he.decode('&nbsp;')}
                     { this.preview_title != '' ? <small><i>{ he.decode(this.preview_title)}</i></small> : ''}
+                    { this.hasDropdown 
+                        ? <i class="fa fa-chevron-right pull-right" />
+                        : ''
+                    }
                 </a>
             </div>
         );

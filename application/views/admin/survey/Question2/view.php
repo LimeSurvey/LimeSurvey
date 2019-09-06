@@ -69,13 +69,11 @@
                 'value',
                 "console.ls.log(value);"
                 . "$('#question_type').val(value);"
-                . "var event = jQuery.Event('jquery:trigger');"
-                . "event.emitter = JSON.stringify({"
+                ."LS.EventBus.\$emit('questionTypeChanged', {"
                 . "target: 'lsnextquestioneditor',"
                 . "method: 'questionTypeChangeTriggered',"
                 . "content: value"
-                . "});"
-                . "$('#advancedQuestionEditor').trigger('jquery:trigger', event);"
+                ."})"
             ]
         ]
     ));

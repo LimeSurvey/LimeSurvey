@@ -20,6 +20,8 @@ $this->_showHeaders($aData, false);
     //The load indicator for pjax
     echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
+    // echo "<pre>".print_r($aData, true)."</pre>";
+
     //The container to hold the vuejs application
     echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
         <div id="vue-apps-main-container" '

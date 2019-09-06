@@ -180,8 +180,8 @@ class PrintanswersController extends LSYii_Controller
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 
-            header("Pragma: public");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
+            
             $sExportFileName = sanitize_filename($sSurveyName);
             $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf", "D");
             LimeExpressionManager::FinishProcessingGroup();

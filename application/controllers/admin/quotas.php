@@ -248,7 +248,6 @@ class quotas extends Survey_Common_Action
             /* Export a quickly done csv file */
             header("Content-Disposition: attachment; filename=quotas-survey".$iSurveyId.".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
-            header("Pragma: public");
             echo gT("Quota name").",".gT("Limit").",".gT("Completed").",".gT("Remaining")."\r\n";
             foreach ($csvoutput as $line) {
                 echo $line;

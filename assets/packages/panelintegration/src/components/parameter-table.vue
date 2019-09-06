@@ -1,109 +1,3 @@
-<script>
-    import ParameterPopup from './parameter-popup.vue'
-    import Loader from '../helperComponents/loader.vue'
-
-    export default {
-        name: 'lspanelparametertable',
-        components: {
-            loaderWidget: Loader,
-            parameterpopup: ParameterPopup
-        },
-        data () {
-            return {
-                showAllColumns: false,
-                modalShown: false,
-                isNew : false,
-                toDeleteRow: null,
-                loading: true
-            };
-        },
-        computed: {
-            currentParameter: {
-                get(){ return this.$store.state.currentSelectedParameter; },
-                set(newValue){ this.$store.commit('setCurrentSelectedParameter', newValue)},
-            },
-            parameterRows: {
-                get() { return this.$store.state.rowdata },
-                set(newValue) { this.$store.commit('setRowdata', newValue) }
-            },
-            combinedValues(){
-                return JSON.stringify(this.parameterRows);
-            },
-            questions(){
-                return this.$store.state.questionArray || [];
-            }
-        },
-        methods: {
-            paramUpdated(updateUbject){
-                if(updateUbject.isNew === false){
-                    let paramIdx = LS.ld.findIndex(this.parameterRows, (item)=>{return item.id === updateUbject.paramRow.id});
-                    if(paramIdx != -1)
-                        this.parameterRows[paramIdx] = updateUbject.paramRow;
-                } else {
-                    this.parameterRows.push(updateUbject.paramRow);
-                }
-
-                this.toggleModal();
-            },
-            editRow(parameterRow){
-                this.isNew = false;
-                this.currentParameter = parameterRow;
-                this.toggleModal();
-            },
-            addNewParam($event){
-                this.isNew = true;
-                this.currentParameter = {
-                    id : this._guidGenerator(),
-                    parameter : '',
-                    targetQuestionText : '',
-                    sid : this.sid,
-                    qid : '',
-                    sqid : ''
-                };
-                this.toggleModal();
-            },
-            deleteRow(parameterRow){
-                this.toDeleteRow = parameterRow;
-                $('#lspanelintegration-deletePopup').modal('toggle');
-            },
-            cancelDelete(){
-                this.toDeleteRow = null;
-
-            },
-            confirmDelete(){
-                if(this.toDeleteRow !== null){
-                    let tmpArray = LS.ld.filter(this.parameterRows, (item)=>{return item.id !== this.toDeleteRow.id});
-                    if(tmpArray.length !== this.parameterRows.length ) {
-                        this.parameterRows = tmpArray;
-                    }
-                }
-                $('#lspanelintegration-deletePopup').modal('toggle');
-            },
-            toggleModal(){
-                this.modalShown = !this.modalShown;
-                $('#lspanelintegration-parameterPopup').modal('toggle');
-            },
-            _guidGenerator() {
-                const S4 = function() { return (((1+Math.random())*0x10000)|0).toString(16).substring(1); };
-                return (S4()+S4()+'-'+S4()+'-'+S4()+'-'+S4()+'-'+S4()+S4()+S4());
-            }
-        },
-        created () { 
-            this.$store.dispatch('getCurrentQuestionlist');
-            this.$store.dispatch('getCurrentParameters').then(
-                () => {this.loading = false;},
-                (error)=>{
-                    this.$log.trace(arguments);
-                    this.loading = false;
-                }
-            );
-         },
-        mounted () { 
-        }
-    }
-</script>
-
-
 <template>
   <!-- Container -->
   <div class="container-fluid">
@@ -200,3 +94,108 @@
     <loader-widget v-if="loading" id="panelintegrationloader" />
   </div>
 </template>
+
+<script>
+    import ParameterPopup from './parameter-popup.vue'
+    import Loader from '../helperComponents/loader.vue'
+
+    export default {
+        name: 'lspanelparametertable',
+        components: {
+            loaderWidget: Loader,
+            parameterpopup: ParameterPopup
+        },
+        data () {
+            return {
+                showAllColumns: false,
+                modalShown: false,
+                isNew : false,
+                toDeleteRow: null,
+                loading: true
+            };
+        },
+        computed: {
+            currentParameter: {
+                get(){ return this.$store.state.currentSelectedParameter; },
+                set(newValue){ this.$store.commit('setCurrentSelectedParameter', newValue)},
+            },
+            parameterRows: {
+                get() { return this.$store.state.rowdata },
+                set(newValue) { this.$store.commit('setRowdata', newValue) }
+            },
+            combinedValues(){
+                return JSON.stringify(this.parameterRows);
+            },
+            questions(){
+                return this.$store.state.questionArray || [];
+            }
+        },
+        methods: {
+            paramUpdated(updateUbject){
+                if(updateUbject.isNew === false){
+                    let paramIdx = LS.ld.findIndex(this.parameterRows, (item)=>{return item.id === updateUbject.paramRow.id});
+                    if(paramIdx != -1)
+                        this.parameterRows[paramIdx] = updateUbject.paramRow;
+                } else {
+                    this.parameterRows.push(updateUbject.paramRow);
+                }
+
+                this.toggleModal();
+            },
+            editRow(parameterRow){
+                this.isNew = false;
+                this.currentParameter = parameterRow;
+                this.toggleModal();
+            },
+            addNewParam($event){
+                this.isNew = true;
+                this.currentParameter = {
+                    id : this._guidGenerator(),
+                    parameter : '',
+                    targetQuestionText : '',
+                    sid : this.sid,
+                    qid : '',
+                    sqid : ''
+                };
+                this.toggleModal();
+            },
+            deleteRow(parameterRow){
+                this.toDeleteRow = parameterRow;
+                $('#lspanelintegration-deletePopup').modal('toggle');
+            },
+            cancelDelete(){
+                this.toDeleteRow = null;
+                $('#lspanelintegration-deletePopup').modal('toggle');
+            },
+            confirmDelete(){
+                if(this.toDeleteRow !== null){
+                    let tmpArray = LS.ld.filter(this.parameterRows, (item)=>{return item.id !== this.toDeleteRow.id});
+                    if(tmpArray.length !== this.parameterRows.length ) {
+                        this.parameterRows = tmpArray;
+                    }
+                }
+                $('#lspanelintegration-deletePopup').modal('toggle');
+            },
+            toggleModal(){
+                this.modalShown = !this.modalShown;
+                $('#lspanelintegration-parameterPopup').modal('toggle');
+            },
+            _guidGenerator() {
+                const S4 = function() { return (((1+Math.random())*0x10000)|0).toString(16).substring(1); };
+                return (S4()+S4()+'-'+S4()+'-'+S4()+'-'+S4()+'-'+S4()+S4()+S4());
+            }
+        },
+        created () { 
+            this.$store.dispatch('getCurrentQuestionlist');
+            this.$store.dispatch('getCurrentParameters').then(
+                () => {this.loading = false;},
+                (error)=>{
+                    this.$log.trace(arguments);
+                    this.loading = false;
+                }
+            );
+         },
+        mounted () { 
+        }
+    }
+</script>

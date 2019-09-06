@@ -28,9 +28,8 @@ $title = ($oSurvey->active == 'N') ? 'preview_survey' : 'execute_survey';
 $name = ($oSurvey->active == 'N') ? gT('Preview survey') : gT('Execute survey');
 
 if (count($languages) > 1) {
-    $buttons[$title] = [];
     foreach ($languages as $language) {
-        $buttons[$title.'_'.$language] = [
+        $survey_preview_buttons[$title.'_'.$language] = [
             'url' => $this->createAbsoluteUrl(
                 "survey/index", 
                 array(
@@ -61,7 +60,7 @@ if (count($languages) > 1) {
         ],
         'dropdown' => [
             'class' => 'dropdown-menu',
-            'items' => $buttons,
+            'items' => $survey_preview_buttons,
         ],
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttonsurvey_preview_dropdown);
@@ -90,9 +89,8 @@ $name = gT('Preview question group');
 
 if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update'))) {
     if (count($languages) > 1) {
-        $buttons[$title] = [];
         foreach ($languages as $language) {
-            $buttons[$title.'_'.$language] = [
+            $questiongroup_preview_buttons[$title.'_'.$language] = [
                 'url' => $this->createAbsoluteUrl(
                     "survey/index/action/previewgroup", 
                     array(
@@ -124,7 +122,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
             ],
             'dropdown' => [
                 'class' => 'dropdown-menu',
-                'items' => $buttons,
+                'items' => $questiongroup_preview_buttons,
             ],
         ];
         array_push($topbar['alignment']['left']['buttons'], $buttongroup_preview_dropdown);
@@ -222,33 +220,42 @@ if ($hasExportPermission) {
 // TopBar Extended (second TopBar, which will swap if Event triggered)
 $topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['buttons'];
 
-// Save Buttons (right side)
+// Save and Close Button
 if ($ownsSaveButton == true) {
-    // Save Button
-    $buttons['save'] = [
+    $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
+    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $sid, "gid" => $gid]);
+    
+    $button['save'] = [
         'id' => 'save',
         'name' => gT('Save'),
-        'icon' => 'fa fa-floppy-o',
+        'icon' => 'fa fa-check-square',
         'url' => '#',
         'id' => 'save-button',
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
-}
+    array_push($topbarextended['alignment']['right']['buttons'], $button['save']);
 
-// Save and Close Button
-if ($ownsSaveAndCloseButton) {
-    $button['save_and_close'] = [
-        'id' => 'save_and_close',
-        'name' => gT('Save and close'),
+    $button['save_and_add_question_group'] = [
+        'id' => 'save_and_add_question_group',
+        'name' => gT('Save and add group'),
         'icon' => 'fa fa-check-square',
-        'url' => '#',
-        'id' => 'save-and-close-button',
+        'url' => $saveAndNewLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_close']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_add_question_group']);
+
+    $button['if ($ownsSaveButton == true) {'] = [
+        'id' => 'save_and_add_new_question',
+        'icon' => 'fa fa-check-square',
+        'name' => gT('Save and add question'),
+        'url' => $saveAndAddQuestionLink,
+        'isSaveButton' => true,
+        'class' => 'btn-default',
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $button['if ($ownsSaveButton == true) {']);
+
 }
 
 $finalJSON = [
