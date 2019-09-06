@@ -585,7 +585,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
         if (!file_exists($realPath)) {
-            @mkdir($realPath, null, true);
+            @mkdir($realPath, 0755, true);
         }
         $allFiles = scandir($realPath);
 
