@@ -557,6 +557,21 @@ $config['iFileUploadTotalSpaceMB'] = 0;
 
 $config['uniq_upload_dir'] = false; // Use a single KCFinder upload directory for all surveys
 
+/**
+ * Allow to use a different MIME database for finfo_open
+ * @see https://www.php.net/manual/en/function.finfo-open.php
+ * Example : '/usr/share/misc/magic.mgc' for redhat based linux
+ */
+$config['magic_database'] = null;
+
+/**
+ * Allow to use a different magic file array 
+ * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
+ * This file must return a PHP array of extension by mimeTypes
+ * Example : https://github.com/LimeSurvey/LimeSurvey/blob/master/framework/utils/fileExtensions.php
+ */
+$config['magic_file'] = null;
+
 
 // defines if the CKeditor toolbar should be opened by default
 $config['ckeditexpandtoolbar'] = true;
@@ -724,6 +739,5 @@ $config['pluginCoreList'] = [
 ];
 
 $config['pluginWhitelist'] = [];
-
 return $config;
 //settings deleted

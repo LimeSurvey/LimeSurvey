@@ -59,7 +59,7 @@ class UploaderController extends SurveyController
             }
             if (is_file($sFileDir.$sFileGetContent)) {
                 // Validate file before else 500 error by getMimeType
-                $mimeType = CFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
+                $mimeType = LSFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
                 if (is_null($mimeType)) {
                     $mimeType = "application/octet-stream"; // Can not really get content if not image
                 }
@@ -177,12 +177,13 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             /* extension checked : check mimeType */
-            $extByMimeType = CFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null);
+            $extByMimeType = LSFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null,false);
             $disableCheck = false;
             if(is_null($extByMimeType)) {
                 /* Lack of finfo_open or mime_content_type ? But can be a not found extension too.*/
                 /* Check if can find mime type of favicon.ico , without extension */
-                if(CFileHelper::getExtensionByMimeType(APPPATH."favicon.ico", null, false) != 'ico') { // hope we have favicon.ico for a long time
+                /* Use CFileHelper because sure it work with included */
+                if(CFileHelper::getExtensionByMimeType(APPPATH."favicon.ico", null, false) != 'ico') {
                     $disableCheck = true;
                     Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.",\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
                     if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
@@ -202,7 +203,7 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             if (!$disableCheck && !in_array($extByMimeType, $valid_extensions_array)) {
-                $realMimeType = CFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
+                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
                 $return = array(
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType,$extByMimeType)
