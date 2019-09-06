@@ -57,6 +57,8 @@ class SettingGlobal extends LSActiveRecord
             'debugsql', // Currently not accessible, seem better
             'forcedsuperadmin', // This is for security
             'defaultfixedtheme', // Because updating can broke instance
+            'ssl_emergency_override', // security related
+            'ssl_disable_alert', // security related
         );
         /* Specific disable settings for demo mode */
         if (Yii::app()->getConfig("demoMode")) {
