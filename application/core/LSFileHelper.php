@@ -34,17 +34,20 @@ class LSFileHelper extends CFileHelper
         if(empty($magicFile) && Yii::app()->getConfig('magic_file')) {
             $magicFile = Yii::app()->getConfig('magic_file');
         }
-        if(empty($magicFile) && $mimeTypes===null)
+        if(empty($magicFile) && $mimeTypes===null) {
             $mimeTypes=require(Yii::getPathOfAlias('system.utils.fileExtensions').'.php');
-        elseif($magicFile!==null && !isset($customMimeTypes[$magicFile]))
+        }
+        elseif($magicFile!==null && !isset($customMimeTypes[$magicFile])) {
             $customMimeTypes[$magicFile]=require($magicFile);
-        if(($mime=self::getMimeType($file))!==null)
-        {
+        }
+        $mime = self::getMimeType($file);
+        if($mime !== null) {
             $mime=strtolower($mime);
-            if($magicFile===null && isset($mimeTypes[$mime]))
+            if($magicFile===null && isset($mimeTypes[$mime])) {
                 return $mimeTypes[$mime];
-            elseif($magicFile!==null && isset($customMimeTypes[$magicFile][$mime]))
+            } elseif($magicFile!==null && isset($customMimeTypes[$magicFile][$mime])) {
                 return $customMimeTypes[$magicFile][$mime];
+            }
         }
         return null;
     }
