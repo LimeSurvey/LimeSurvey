@@ -52,6 +52,7 @@ class LSFileHelper extends CFileHelper
     /**
      * @inheritdoc
      * Set $magicFile (magic dataBase) from config (if is null)
+     * Use the magic file set by user only iof needed (else keep pĥp default or MAGIC env)
      * @see https://www.php.net/manual/en/function.finfo-open.php
      * @return string the MIME type. Null is returned if the MIME type cannot be determined.
      */
