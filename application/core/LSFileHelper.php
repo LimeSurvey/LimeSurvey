@@ -26,7 +26,7 @@ class LSFileHelper extends CFileHelper
      * Can not call parent since usage of self::getMimeType
      * Set $magicFile (php array) from config (if is null)
      * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
-     * @return string extension name. Null is returned if the extension cannot be determined.
+     * @return string|null extension name. Null is returned if the extension cannot be determined.
      */
     public static function getExtensionByMimeType($file,$magicFile=null)
     {
@@ -57,7 +57,7 @@ class LSFileHelper extends CFileHelper
      * Set $magicFile (magic dataBase) from config (if is null)
      * Use the magic file set by user only iof needed (else keep pĥp default or MAGIC env)
      * @see https://www.php.net/manual/en/function.finfo-open.php
-     * @return string the MIME type. Null is returned if the MIME type cannot be determined.
+     * @return string|null string if the MIME type. Null is returned if the MIME type cannot be determined.
      */
     public static function getMimeType($file,$magicFile=null,$checkExtension=true)
     {
