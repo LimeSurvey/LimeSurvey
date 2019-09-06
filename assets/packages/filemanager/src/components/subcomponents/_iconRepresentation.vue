@@ -1,7 +1,12 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
         <div class="ls-flex ls-flex-row wrap align-content-flex-start align-items-flex-start">
-            <div class="ls-flex ls-flex-column scoped-file-tile" v-for="file in $store.state.fileList" :key="file.shortName" :class="fileClass(file)">
+            <div 
+                class="ls-flex ls-flex-column scoped-file-tile" 
+                v-for="file in $store.state.fileList" 
+                :key="file.shortName" 
+                :class="fileClass(file)"
+            >
                 <div class="ls-flex ls-flex-row align-content-center align-items-center">
                     <template v-if="file.isImage">
                         <img class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
@@ -36,10 +41,14 @@
 </template>
 
 <script>
+import applyLoader from '../../mixins/applyLoader';
 
 export default {
   name: 'tablerep',
-  data() {return{};},
+  mixins: [applyLoader],
+  data() {return{
+      fileInDeletion: false
+  };},
   filters: {
     bytes(value) {
       if(value < 1024) {
@@ -56,6 +65,9 @@ export default {
   methods: {
     fileClass(file){
       let htmlClasses = 'scoped-file-icon ';
+      if(this.inDeletion(file)) {
+        htmlClasses += 'file-in-deletion ';  
+      }
       if(this.inTransit(file)) {
         htmlClasses += 'file-in-transit ';
         if(this.$store.state.transitType == 'move') {
@@ -67,25 +79,23 @@ export default {
       }
       return htmlClasses;
     },
+    inDeletion(file) {
+        return this.fileInDeletion == file.path;
+    },
     inTransit(file) {
       return this.$store.state.fileInTransit != null && file.path == this.$store.state.fileInTransit.path;
     },
     deleteFile(file) {
-        this.$dialog.confirm(translate('You are sure you want to delete %s').replace('%s', file.shortName))
-        .then(function () {
-            this.$emit('loading');
+        this.$dialog.confirm(this.translate('You are sure you want to delete %s').replace('%s', file.shortName))
+        .then((dialog) => {
+            this.loadingState = true;
             this.$store.dispatch('deleteFile', file).then(
-              (result) => {
-                this.$emit('endloading');
-              },
-              (error) => {
-                this.$log.error(error);
-                this.$emit('endloading');
-              }
-            )
+              (result) => {},
+              (error) => {this.$log.error(error);}
+            ).finally(()=>{ this.loadingState = false; })
         })
         .catch(function () {
-          console.log('Clicked on cancel')
+          console.log('Clicked on cancel');
         });
     },
     copyFile(file) {
@@ -103,6 +113,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .file-in-deletion {
+        background-color: #999999;
+        opacity: 0.5;
+    }
     @media (min-width: 769px) {
         .scoped-file-tile {
             max-width: 20%;

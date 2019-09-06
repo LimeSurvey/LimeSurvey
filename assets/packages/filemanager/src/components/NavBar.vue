@@ -1,9 +1,11 @@
 <script>
 import UploadModal from './subcomponents/_uploadModal';
+import applyLoader from '../mixins/applyLoader';
 
 export default {
   name: 'NavBar',
   components: {UploadModal},
+  mixins: [applyLoader],
   data()  {
     return {};
   },
@@ -14,9 +16,9 @@ export default {
   },
   methods: {
     onModalUploadFinished() {
-        this.$emit('loading');
+        this.loadingState = true;
         this.$store.dispatch('getFileList').finally(
-        ()=>{this.$emit('endloading');}
+        ()=>{this.loadingState = false;}
       );
     },
     openUploadModal() {
@@ -38,28 +40,19 @@ export default {
       this.$store.commit('cancelTransit');
     },
     runTransit() {
-      this.$emit('loading');
+      this.loadingState = true;
       let transitType = this.$store.state.transitType+'';
       this.$store.dispatch('applyTransition').then(
         (result) => {
-          this.$store.dispatch('getFileList').then(
-            (result) => {
-              this.$emit('endloading');
-              if(transitType == 'move') {
+            if(transitType == 'move') {
                 this.$store.commit('cancelTransit');
-              }
-            },
-            (error) => {
-              this.$emit('endloading');
-              this.$log.error(error)
             }
-          )},
+        },
         (error) => {
-          this.$emit('endloading');
-          this.$log.error(error)
+          this.$log.error(error);
         }
-      )
-    },
+      ).finally(() => { this.loadingState = false; });
+    }
   }
 }
 </script>
@@ -83,9 +76,10 @@ export default {
 <style scoped lang="scss">
   .scoped-navbar-fixes {
     .navbar-nav > li > a:hover,
-    .navbar-nav > li > a:active
+    .navbar-nav > li > a:active,
+    .navbar-nav > li > a:focus
      {
-      text-decoration: 'underline';
+      text-decoration: underline;
       color: rgb(80,80,80);
     }
   }
