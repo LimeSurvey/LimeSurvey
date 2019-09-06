@@ -6,4 +6,5 @@ export default {
     debug: false,
     fileInTransit: null,
     transitType: null,
+    fileRepresentation: 'tablerep'
 }

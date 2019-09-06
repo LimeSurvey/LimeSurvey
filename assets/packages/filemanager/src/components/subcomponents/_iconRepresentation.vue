@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
-        <div class="ls-flex ls-flex-row wrap align-content-flex-start align-items-flex-start">
+        <div class="masonry-container" >
             <div 
                 class="ls-flex ls-flex-column scoped-file-tile" 
                 v-for="file in $store.state.fileList" 
@@ -62,6 +62,11 @@ export default {
       }
     }
   },
+  computed: {
+      calcMaxHeight() {
+          return Math.floor((LS.ld.toArray(this.$store.state.fileList).length*550) / 4);
+      }
+  },
   methods: {
     fileClass(file){
       let htmlClasses = 'scoped-file-icon ';
@@ -113,24 +118,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @media (min-width: 769px) {
+        // .scoped-file-tile {
+        //     width: 20%;
+        //     max-height: 550px;
+        // }
+        .masonry-container {
+            columns: 4 auto;
+            column-gap: 1rem;
+        }
+    }
+    @media (max-width: 768px) {
+        .masonry-container {
+            columns: 2 auto;
+            column-gap: 1rem;
+        }
+    }
+
     .file-in-deletion {
         background-color: #999999;
         opacity: 0.5;
     }
-    @media (min-width: 769px) {
-        .scoped-file-tile {
-            max-width: 20%;
-        }
-    }
-    @media (max-width: 768px) {
-        .scoped-file-tile {
-            max-width: 50%;
-        }
-    }
+   
 
     .scoped-contain-image {
         max-width: 100%;
-        max-height:100%;
         display: block;
     }
     .scoped-file-icon  {

@@ -11,10 +11,10 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-Vue.use(VuejsDialog)
-Vue.use(VModal, { dynamic: true })
+Vue.use(VuejsDialog);
+Vue.use(VModal, { dynamic: true });
 
 Vue.use( PluginLog );
 

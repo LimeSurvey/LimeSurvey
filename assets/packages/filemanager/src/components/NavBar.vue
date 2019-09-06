@@ -12,6 +12,9 @@ export default {
   computed: {
     fileInTransit() {
       return this.$store.state.fileInTransit != null;
+    },
+    transitType() {
+        return $store.state.transitType == 'copy' ? 'Copy' : 'Move';
     }
   },
   methods: {
@@ -64,8 +67,8 @@ export default {
         <span class="navbar-brand">{{$store.state.currentFolder}}</span>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li v-if="fileInTransit"><a  href="#" @click.prevent="cancelTransit">{{'Cancel transit' | translate}}</a></li>
-        <li v-if="fileInTransit"><a  href="#" @click.prevent="runTransit">{{'Copy/Move'|translate}}</a></li>
+        <li v-if="fileInTransit"><a  href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
+        <li v-if="fileInTransit"><a  href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
         <li><a href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
       </ul>
     </div>
@@ -75,12 +78,17 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .scoped-navbar-fixes {
-    .navbar-nav > li > a:hover,
-    .navbar-nav > li > a:active,
-    .navbar-nav > li > a:focus
-     {
-      text-decoration: underline;
-      color: rgb(80,80,80);
-    }
+        .navbar-nav > li > a {
+            background: linear-gradient(to right, transparent 50,03%,  var(--LS-admintheme-hovercolor) 50%);
+            background-size: 200%;
+            background-position: 0;    
+            transition: all 0.3s;
+            &:hover,
+            &:active,
+            &:focus {
+                background-position: -99.9%;
+                color: white
+            }
+        }
   }
 </style>

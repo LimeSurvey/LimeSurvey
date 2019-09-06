@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
-        <div class="ls-flex ls-flex-row row bg-info">
+        <div class="ls-flex ls-flex-row row bg-info head-row">
             <div class="ls-flex ls-flex-column col-4 cell">
             {{"File name" | translate }}
             </div>
@@ -118,13 +118,20 @@ export default {
 
 <style lang="scss" scoped>
     .file-in-deletion {
-        background-color: #999999;
+        background-color: var(--LS-admintheme-hintedhovercolor);
         opacity: 0.5;
+    }
+    .file-in-transit {
+        background-color: var(--LS-admintheme-hintedbasecolor);
+        opacity: 0.7;
     }
     .scoped-table-aloud {
         .row {
             margin: 1px 0;
             border-bottom: 1px solid #798979;
+            &.head-row {
+                color: #efefef;
+            }
         }
         .cell {
             border-left: 1px solid #798979;

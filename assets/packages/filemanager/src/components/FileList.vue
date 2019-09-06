@@ -36,10 +36,15 @@ export default {
   },
   data() {
     return {
-      fileviz: 'tablerep',
       event: null
     };
   },
+  computed: {
+        fileviz: {
+            get() { return this.$store.state.fileRepresentation; },
+            set(nV) {this.$store.commit('setFileRepresentation', nV);}
+        }
+  }
 }
 </script>
 

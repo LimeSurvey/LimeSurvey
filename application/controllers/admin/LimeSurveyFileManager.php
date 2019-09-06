@@ -73,8 +73,10 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $aTranslate = [
             'File management' => gT('File management'),
             'Upload' => gT('Upload'),
-            'Cancel transit' => gT('Cancel transit'),
-            'Copy/Move' => gT('Copy/Move'),
+            'Cancel move' => gT('Cancel move'),
+            'Cancel copy' => gT('Cancel copy'),
+            'Move' => gT('Move'),
+            'Copy' => gT('Copy'),
             'Upload a file' => gT('Upload a file'),
             'Drag and drop here, or click once to start uploading' => gT('Drag and drop here, or click once to start uploading'),
             'File is uploaded to currently selected folder' => gT('File is uploaded to currently selected folder'),
