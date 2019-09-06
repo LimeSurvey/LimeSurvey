@@ -151,6 +151,38 @@ class LimeSurveyFileManager extends Survey_Common_Action
         return;
     }
 
+    public function deleteFile()
+    {
+        $iSurveyId = Yii::app()->request->getPost('surveyid');
+        $file = Yii::app()->request->getPost('file');
+        $folder = dirname($file['path']);
+        $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
+        
+        if ($checkDirectory === false) {
+            $this->_printJsonError();
+            return;
+        }
+        
+        $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
+        if ($this->checkTargetExists($realFilePath)) {
+            if (unlink($realFilePath)) {
+                $this->_printJsonResponse(
+                    [
+                        'success' => true,
+                        'message' => sprintf(gT("File successfully deleted"), $file['shortName']),
+                    ]
+                );
+            } else {
+                $this->_setError(
+                    'DELETE_FAILED',
+                    gT("Your file could not be deleted")
+                );
+                $this->_printJsonError();
+                return;
+            }
+        }
+    }
+
     public function transitFile()
     {
         $folder = Yii::app()->request->getPost('targetFolder');
