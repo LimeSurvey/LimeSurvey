@@ -57,6 +57,10 @@ class LSFileHelper extends CFileHelper
      */
     public static function getMimeType($file,$magicFile=null,$checkExtension=true)
     {
+        $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
+        if((!empty($magicFile) && $mimeType != "application/octet-stream") || !is_null($magicFile)) {
+            return $mimeType;
+        }
         if(empty($magicFile) && Yii::app()->getConfig('magic_database')) {
             $magicFile = Yii::app()->getConfig('magic_database');
         }
