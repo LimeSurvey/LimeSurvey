@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.15 (build 190903) to 3.17.16 (build 190906) September 6, 2019
+-Fixed issue: breaking js issues on IE11 (lacrioque)
+-Fixed issue : No save button when add Question (Denis Chenu)
+-Fixed issue #15229: Subquestions do not have GID changed once the parent question is moved (lacrioque)
+-Fixed issue #15228: This survey throw a Error when try to print (#1317) (Denis Chenu)
+-Fixed issue #15227: Unable to Delete Questions (lacrioque)
+-Fixed issue #15221: unable to send mail to participants - apache handler error 403 (Denis Chenu)
+
+
 Changes from 3.17.14 (build 190902) to 3.17.15 (build 190903) September 3, 2019
 Fixed issue #15207: Settings and Structure tabs are broken - no action happens
 
