@@ -1,0 +1,57 @@
+<?php
+/**
+ * @author Denis Chenu <denis@sondages.pro>
+ * @copyright 2019 Denis Chenu <http://www.sondages.pro>
+ * @license GPL version 3
+ * @version 0.0.0-alpha
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+class statFunctions extends PluginBase
+{
+    static protected $description = 'Add some function in expression manager to get count from other responses';
+    static protected $name = 'statCountFunctions';
+
+    public function init()
+    {
+        $this->subscribe('ExpressionManagerStart','newValidFunctions');
+    }
+
+    public function newValidFunctions()
+    {
+        Yii::setPathOfAlias(get_class($this),dirname(__FILE__));
+        //~ Yii::import(get_class($this).".exampleFunctions");
+        $newFunctions = array(
+            'statCountIf' => array(
+                '\statFunctions\countFunctions::statCountIf', // PHP function, no need Class if function is directly added here
+                null, // No javascript function : set as static function
+                $this->gT("Count the previous value equal to a specific value"), // Description for admin
+                'integer statCountIf("QuestionCode", value)', // Extra description
+                'https://www.limesurvey.org', // Help url
+                2, // Number of argument unsure it work here … , minimum 2, allow 3
+                3,
+            ),
+            'statCount' => array(
+                '\statFunctions\countFunctions::statCount', // PHP function, no need Class if function is directly added here
+                null, // No javascript function : set as static function
+                $this->gT("Count previous an,ser not empty"), // Description for admin
+                'integer statCount("QuestionCode")', // Extra description
+                'https://www.limesurvey.org', // Help url
+                1, // Number of argument (time to make a good description of EM …) minimum 1, allow 2
+                2,
+            ),
+        );
+        $this->getEvent()->append('functions', $newFunctions);
+    }
+}

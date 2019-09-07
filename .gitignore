@@ -76,6 +76,7 @@
 !/plugins/expressionQuestionHelp/
 !/plugins/expressionFixedDbVar/
 !/plugins/expressionQuestionForAll/
+!/plugins/statFunctions/
 
 #ignore old styles
 /styles/
