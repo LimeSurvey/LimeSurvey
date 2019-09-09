@@ -14,7 +14,7 @@ export default {
       return this.$store.state.fileInTransit != null;
     },
     transitType() {
-        return $store.state.transitType == 'copy' ? 'Copy' : 'Move';
+        return this.$store.state.transitType == 'copy' ? 'Copy' : 'Move';
     }
   },
   methods: {
