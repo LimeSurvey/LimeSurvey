@@ -19054,6 +19054,7 @@
   var forEach_1 = forEach;
 
   var SaveController = function SaveController() {
+    var formSubmitting = false; // Attach this <input> tag to form to check for closing after save
 
     var closeAfterSaveInput = $("<input>").attr("type", "hidden").attr("name", "close-after-save");
     /**
@@ -19076,6 +19077,9 @@
       if (form.length < 1) throw "No form Found this can't be!";
       return form;
     },
+        isSubmitting = function isSubmitting() {
+      return formSubmitting;
+    },
         displayLoadingState = function displayLoadingState(el) {
       if ($(el).data('form-id') == 'addnewsurvey') {
         var loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
@@ -19092,49 +19096,52 @@
         _checkExportButton: {
           check: '[data-submit-form]',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
           },
           on: 'click'
         },
         _checkSaveButton: {
           check: '#save-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
           },
           on: 'click'
         },
         _checkSaveFormButton: {
           check: '#save-form-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var formid = '#' + $(this).attr('data-form-id'),
-                $form = $(formid); //alert($form.find('[type="submit"]').attr('id'));
+                $form = $(formid);
 
-            $form.find('[type="submit"]').trigger('click');
-            displayLoadingState(this);
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
+            }
+
             return false;
           },
           on: 'click'
@@ -19142,38 +19149,44 @@
         _checkSaveAndNewButton: {
           check: '#save-and-new-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
             $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
           },
           on: 'click'
         },
         _checkSaveAndCloseButton: {
           check: '#save-and-close-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
             closeAfterSaveInput.val("true");
             $form.append(closeAfterSaveInput);
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
+            formSubmitting = true;
+
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
+            }
           },
           on: 'click'
         },
         _checkSaveAndCloseFormButton: {
           check: '#save-and-close-form-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var formid = '#' + $(this).attr('data-form-id'),
                 $form = $(formid); // Add input to tell us to not redirect
@@ -19183,8 +19196,14 @@
               name: 'saveandclose',
               value: '1'
             }).appendTo($form);
-            $form.find('[type="submit"]').trigger('click');
-            displayLoadingState(this);
+
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
+            }
+
             return false;
           },
           on: 'click'
@@ -19192,20 +19211,18 @@
         _checkSaveAndNewQuestionButton: {
           check: '#save-and-new-question-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
             $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
           },
           on: 'click'
         },
@@ -19222,13 +19239,20 @@
           check: '#in_survey_common',
           run: function run(ev) {
             stopDisplayLoadingState();
+            formSubmitting = false;
           },
           on: 'lsStopLoading'
         }
       };
-    }; //############PUBLIC
+    };
 
+    var stubEvent = {
+      isStub: true,
+      preventDefault: function preventDefault() {
+        console.ls.log("Stub prevented");
+      } //############PUBLIC
 
+    };
     return function () {
       forEach_1(checks(), function (checkItem) {
         var item = checkItem.check;
@@ -19238,6 +19262,16 @@
         if ($(item).length > 0) {
           $(document).on(checkItem.on + '.centralsave', item, checkItem.run);
           adminCoreLSConsole.log($(item), 'on', checkItem.on, 'run', checkItem.run);
+        }
+      });
+      LS.EventBus.$off("saveButtonCalled");
+      LS.EventBus.$on("saveButtonCalled", function (button) {
+        if (!isSubmitting()) {
+          forEach_1(checks(), function (checkItem) {
+            if (checkItem.check == '#' + button.id) {
+              checkItem.run(stubEvent, button);
+            }
+          });
         }
       });
     };
@@ -28186,13 +28220,12 @@
         (_console$ls = console.ls).log.apply(_console$ls, ["Emitting -> ", event].concat(args));
 
         if (this.eventsBound != undefined && this.eventsBound[event] != undefined) {
-          this.eventsBound[event].forEach(function (element) {
-            element[0].apply(element, args);
+          this.eventsBound[event].forEach(function (element) {// element[0](...args);
           });
         }
 
         return (_get2 = _get(_getPrototypeOf(EventBus.prototype), "$emit", this)).call.apply(_get2, [this, event].concat(args));
-      } // Override Vue's $emit to call a logger for any event bound.
+      } // Override Vue's $on to call a logger for any event bound.
 
     }, {
       key: "$on",
@@ -28210,7 +28243,29 @@
 
         (_console$ls2 = console.ls).log.apply(_console$ls2, ["Binding -> ", event].concat(args));
 
-        return (_get3 = _get(_getPrototypeOf(EventBus.prototype), "$emit", this)).call.apply(_get3, [this, event].concat(args));
+        return (_get3 = _get(_getPrototypeOf(EventBus.prototype), "$on", this)).call.apply(_get3, [this, event].concat(args));
+      } // Override Vue's $emit to call a logger for any event bound.
+
+    }, {
+      key: "$off",
+      value: function $off(event) {
+        var _console$ls3, _get4;
+
+        for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          args[_key3 - 1] = arguments[_key3];
+        }
+
+        this.eventsBound = this.eventsBound || {};
+
+        if (this.eventsBound[event] != undefined) {
+          this.eventsBound[event] = this.eventsBound[event].filter(function (arg) {
+            args.indexOf(arg) == -1;
+          });
+        }
+
+        (_console$ls3 = console.ls).log.apply(_console$ls3, ["Remove Binding -> ", event].concat(args));
+
+        return (_get4 = _get(_getPrototypeOf(EventBus.prototype), "$off", this)).call.apply(_get4, [this, event].concat(args));
       }
     }]);
 

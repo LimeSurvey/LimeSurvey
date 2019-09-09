@@ -127,16 +127,11 @@ export default {
             e.preventDefault();
         });
 
-        LS.EventBus.$on('saveButtonCalled', (payload) => {
-            this.submitCurrentState(payload.id == '#save-and-close-button', payload.url != '#' ? payload.url : false);
+        LS.EventBus.$off('componentFormSubmit', (payload) => {
+            this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
         });
-        
-        $('#save-button').on('click', (e)=>{
-            this.submitCurrentState((this.$store.state.currentQuestionGroup.gid == null));
-        });
-
-        $('#save-and-close-button').on('click', (e)=>{
-            this.submitCurrentState(true);
+        LS.EventBus.$on('componentFormSubmit', (payload) => {
+            this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
         });
         
         if(window.QuestionGroupEditData.startInEditView) {
