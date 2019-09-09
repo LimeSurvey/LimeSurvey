@@ -19130,18 +19130,18 @@
         _checkSaveFormButton: {
           check: '#save-form-button',
           run: function run(ev) {
-            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var formid = '#' + $(this).attr('data-form-id'),
-                $form = $(formid);
+                $form = $(formid),
+                $firstSubmit = $form.find('[type="submit"]').first();
 
-            if ($form.data('isvuecomponent') == true) {
-              LS.EventBus.$emit('componentFormSubmit', button);
+            if ($firstSubmit.length > 0) {
+              $firstSubmit.trigger('click');
             } else {
-              $form.find('[type="submit"]').first().trigger('click');
-              displayLoadingState(this);
+              $form.submit();
             }
 
+            displayLoadingState(this);
             return false;
           },
           on: 'click'
@@ -19186,7 +19186,6 @@
         _checkSaveAndCloseFormButton: {
           check: '#save-and-close-form-button',
           run: function run(ev) {
-            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var formid = '#' + $(this).attr('data-form-id'),
                 $form = $(formid); // Add input to tell us to not redirect
@@ -19196,14 +19195,8 @@
               name: 'saveandclose',
               value: '1'
             }).appendTo($form);
-
-            if ($form.data('isvuecomponent') == true) {
-              LS.EventBus.$emit('componentFormSubmit', button);
-            } else {
-              $form.find('[type="submit"]').first().trigger('click');
-              displayLoadingState(this);
-            }
-
+            $form.find('[type="submit"]').first().trigger('click');
+            displayLoadingState(this);
             return false;
           },
           on: 'click'

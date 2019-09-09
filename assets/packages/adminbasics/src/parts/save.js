@@ -85,14 +85,15 @@ const SaveController = () => {
                     ev.preventDefault();
                     const
                         formid = '#' + $(this).attr('data-form-id'),
-                        $form = $(formid);
+                        $form = $(formid),
+                        $firstSubmit = $form.find('[type="submit"]').first();
 
-                    if ($form.data('isvuecomponent') == true) {
-                        LS.EventBus.$emit('componentFormSubmit', button)
+                    if($firstSubmit.length > 0) {
+                        $firstSubmit.trigger('click');
                     } else {
-                        $form.find('[type="submit"]').first().trigger('click');
-                        displayLoadingState(this);
+                        $form.submit();
                     }
+                    displayLoadingState(this);
                     return false;
                 },
                 on: 'click'
@@ -148,13 +149,10 @@ const SaveController = () => {
                         name: 'saveandclose',
                         value: '1'
                     }).appendTo($form);
-
-                    if ($form.data('isvuecomponent') == true) {
-                        LS.EventBus.$emit('componentFormSubmit', button)
-                    } else {
-                        $form.find('[type="submit"]').first().trigger('click');
-                        displayLoadingState(this);
-                    }
+                    
+                    $form.find('[type="submit"]').first().trigger('click');
+                    displayLoadingState(this);
+                        
                     return false;
                 },
                 on: 'click'
