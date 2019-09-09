@@ -127,9 +127,7 @@ export default {
             e.preventDefault();
         });
 
-        LS.EventBus.$off('componentFormSubmit', (payload) => {
-            this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
-        });
+        LS.EventBus.$off('componentFormSubmit');
         LS.EventBus.$on('componentFormSubmit', (payload) => {
             this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
         });
