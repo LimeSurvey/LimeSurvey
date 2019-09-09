@@ -283,8 +283,11 @@ if ($hasDeletePermission) {
 
     // Delete Button
     $buttons['delete'] = [
-        'url' => $this->createUrl("admin/questions/sa/delete/", ["surveyid" => $sid, "qid" => $qid, "gid" => $gid]),
+        'url' => '#',
+        'dataurl' => $this->createUrl("admin/questions/sa/delete/"),
+        'postdata' => json_encode(["surveyid" => $sid, "qid" => $qid, "gid" => $gid]),
         'name' => gT("Delete"),
+        'type' => 'confirm',
         'id' => 'delete_button',
         'icon' => 'fa fa-trash text-danger',
         'class' => ' btn-danger',
@@ -370,7 +373,7 @@ if ($qid == 0) {
     array_push($topbarextended['alignment']['right']['buttons'], $button['save']);
 
     $button['save_and_add_new'] = [
-        'id' => 'save_and_add_new',
+        'id' => 'save-and-new-question-button',
         'icon' => 'fa fa-check-square',
         'name' => gT('Save and new question'),
         'url' => $saveAndNewLink,

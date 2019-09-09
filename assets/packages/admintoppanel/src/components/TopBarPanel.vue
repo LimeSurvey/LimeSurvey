@@ -151,6 +151,7 @@ export default {
             }).then(datas => {
                 this.$log.log("Promise resolved with datas", datas);
                 this.counter++;
+                //LS.pageLoadActions.saveBindings();
             }).catch(error => {
                 this.$log.error(errorHeader);
                 this.$log.error(error);
@@ -209,9 +210,9 @@ export default {
 
             if(currentType === this.type) {
                 this.loading = false;
-            } else {
-                this.setType();
-            }
+            } 
+            
+            this.setType();
         });
     },
     render(h) {

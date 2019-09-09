@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "9cdbbf977d466ae2a42b";
+/******/ 	var hotCurrentHash = "792087d1e4c3eea63ea9";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1434,7 +1434,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (datas) {
         _this3.$log.log("Promise resolved with datas", datas);
 
-        _this3.counter++;
+        _this3.counter++; //LS.pageLoadActions.saveBindings();
       }).catch(function (error) {
         _this3.$log.error(errorHeader);
 
@@ -1501,9 +1501,9 @@ __webpack_require__.r(__webpack_exports__);
 
       if (currentType === _this5.type) {
         _this5.loading = false;
-      } else {
-        _this5.setType();
       }
+
+      _this5.setType();
     });
   },
   render: function render(h) {
@@ -1796,7 +1796,42 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    runConfirmPost: function runConfirmPost() {
+      var _this = this;
+
+      var postdata = {};
+
+      try {
+        postdata = JSON.parse(this.button.postdata);
+      } catch (e) {
+        this.$log.error('ERROR: Postdata no valid json, exiting');
+      }
+
+      this.$_post(this.button.dataurl, postdata).then(function (result) {
+        _this.$log.log(result);
+
+        window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-error'));
+        setTimeout(function () {
+          window.location.href = result.data.redirect;
+        }, 1500);
+      }, function (reject) {
+        _this.$log.error(reject);
+      });
+    },
     clicked: function clicked(event) {
+      var _this2 = this;
+
+      if (this.button.type == 'confirm') {
+        $.bsconfirm(this.button.message, LS.lang.confirm, function () {
+          _this2.runConfirmPost();
+
+          $('#identity__bsconfirmModal').modal('hide');
+        }, function () {
+          $('#identity__bsconfirmModal').modal('hide');
+        });
+        return false;
+      }
+
       if (this.button.isSaveButton && this.isLoading === true) {
         return false;
       }
@@ -1814,11 +1849,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this3 = this;
 
     LS.EventBus.$on('loadingFinished', function () {
-      if (_this.isLoading) {
-        _this.isLoading = false;
+      if (_this3.isLoading) {
+        _this3.isLoading = false;
       }
     });
   },
@@ -29821,7 +29856,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_TopBarPanel_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/TopBarPanel.vue */ "./src/components/TopBarPanel.vue");
 /* harmony import */ var _storage_store_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./storage/store.js */ "./src/storage/store.js");
 /* harmony import */ var _mixins_logSystem_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./mixins/logSystem.js */ "./src/mixins/logSystem.js");
-/* harmony import */ var _helperComponents_loader_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./helperComponents/loader.vue */ "./src/helperComponents/loader.vue");
+/* harmony import */ var _mixins_runAjax__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./mixins/runAjax */ "./src/mixins/runAjax.js");
+/* harmony import */ var _helperComponents_loader_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./helperComponents/loader.vue */ "./src/helperComponents/loader.vue");
+
 
 
 
@@ -29839,7 +29876,8 @@ vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(_mixins_logSystem_js__WEBPACK_IM
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default.a, {
   dynamic: true
 });
-vue__WEBPACK_IMPORTED_MODULE_4__["default"].component('loader-widget', _helperComponents_loader_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].component('loader-widget', _helperComponents_loader_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].mixin(_mixins_runAjax__WEBPACK_IMPORTED_MODULE_9__["default"]);
 var surveyid = 'newSurvey';
 
 if (window.LS != undefined) {

@@ -1,4 +1,5 @@
 import forEach from 'lodash/forEach'
+import merge from 'lodash/merge'
 
 const $GET = {};
 
@@ -25,4 +26,6 @@ window.location.href.substring((window.location.href.indexOf('admin')-1)).split(
     }
 });
 
-export default {parameters : {$GET, keyValuePairs}};
+const combined = merge($GET, keyValuePairs);
+
+export default {parameters : {$GET, keyValuePairs, combined}};

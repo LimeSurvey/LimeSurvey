@@ -24,7 +24,44 @@ export default {
         }
     },
     methods: {
+        runConfirmPost() {
+            let postdata = {};
+            try {
+                postdata = JSON.parse(this.button.postdata);
+            } catch(e){
+                this.$log.error('ERROR: Postdata no valid json, exiting');
+            }
+
+            this.$_post(
+                this.button.dataurl,
+                postdata,
+            ).then(
+                (result) => {
+                    this.$log.log(result);
+                    window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-error'));
+                    setTimeout(() => {window.location.href = result.data.redirect}, 1500);
+                }, 
+                (reject) => {
+                    this.$log.error(reject);
+                }
+            )
+        },
         clicked(event) {
+            if(this.button.type == 'confirm') {
+                $.bsconfirm(
+                    this.button.message, 
+                    LS.lang.confirm, 
+                    ()=>{
+                        this.runConfirmPost();
+                        $('#identity__bsconfirmModal').modal('hide');
+                    },
+                    () => {
+                         $('#identity__bsconfirmModal').modal('hide');
+                    }
+                );
+                return false;
+            }
+
             if(this.button.isSaveButton && this.isLoading === true) {
                 return false;
             }

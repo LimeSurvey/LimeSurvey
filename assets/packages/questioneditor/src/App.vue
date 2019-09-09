@@ -181,18 +181,9 @@ export default {
             e.preventDefault();
         });
 
-        LS.EventBus.$on('saveButtonCalled', (payload) => {
-            this.submitCurrentState(payload.id == '#save-and-close-button', (payload.url != '#' ? payload.url : false));
-        });
-
-        $('#save-button').on('click', (e)=>{
-            e.preventDefault();
-            this.submitCurrentState();
-        });
-
-        $('#save-and-close-button').on('click', (e)=>{
-            e.preventDefault();
-            this.submitCurrentState(true);
+        LS.EventBus.$off('componentFormSubmit');
+        LS.EventBus.$on('componentFormSubmit', (payload) => {
+            this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
         });
 
         if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
