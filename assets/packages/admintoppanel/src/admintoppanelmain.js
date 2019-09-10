@@ -3,6 +3,7 @@ import VModal from 'vue-js-modal';
 import TopBarPanel from './components/TopBarPanel.vue';
 import getAppState from "./storage/store.js";
 import {PluginLog, LOG} from "./mixins/logSystem.js";
+import Ajax from "./mixins/runAjax";
 import Loader from './helperComponents/loader.vue';
 
 //Ignore phpunits testing tags
@@ -15,6 +16,8 @@ Vue.use( VModal, {
 });
 
 Vue.component('loader-widget', Loader);
+
+Vue.mixin(Ajax);
 
 let surveyid = 'newSurvey';
 if(window.LS != undefined) {

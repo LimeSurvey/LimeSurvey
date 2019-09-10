@@ -8,24 +8,21 @@
                 :class="fileClass(file)"
             >
                 <div class="ls-flex ls-flex-row align-content-center align-items-center">
-                    <template v-if="file.isImage">
-                        <img class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
-                    </template>
-                    <template v-else>
-                        <i :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
-                    </template>
+                    <img v-if="file.isImage" class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
+                    <i v-else :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
                 </div>
-                <p>{{file.shortName}}</p>
-                <div class="ls-flex ls-flex-row">
+                <div class="scoped-prevent-overflow ls-space margin top-5">
+                    {{file.shortName}}
+                </div>
+                <div class="ls-flex ls-flex-row align-items-space-between align-content-space-between ls-space margin top-5">
                     <div class="text-left ls-flex">
                         <small>{{file.size | bytes}}</small>
                     </div>
-                    |
-                    <div class="text-left ls-flex">
+                    <div class="text-right ls-flex">
                         <small>{{file.mod_time}}</small>
                     </div>
                 </div>
-                <div class="ls-flex ls-flex-row" >
+                <div class="ls-flex ls-flex-row ls-space margin top-5" >
                     <template v-if="!inTransit(file)">
                         <button class="btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>
                         <button class="btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"><i class="fa fa-clone"></i></button>
@@ -140,6 +137,10 @@ export default {
         opacity: 0.5;
     }
    
+    .scoped-prevent-overflow {
+        overflow: hidden;
+        word-wrap: break-word;
+    }
 
     .scoped-contain-image {
         max-width: 100%;
@@ -149,6 +150,9 @@ export default {
         border: 1px solid black;
         box-shadow: 1px 2px 3px #939393;
         margin: 1.1rem;
+        &:first-of-type {
+            margin-top: 0;
+        }
         padding: 0.5rem;
     }
 </style>

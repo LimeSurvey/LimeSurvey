@@ -171,8 +171,10 @@ if ($hasDeletePermission) {
             // can delete group and question
             $buttons['delete_current_question_group'] = [
                 'id' => 'delete_current_question_group',
-                'url' => $this->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $sid, "gid" => $gid]),
-                'type' => 'modal',
+                'url' => '#',
+                'dataurl' => $this->createUrl("admin/questiongroups/sa/delete/", ["asJson" => true]),
+                'postdata' => json_encode(['gid' => $gid, 'surveyid' => $sid]),
+                'type' => 'confirm',
                 'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
                 'icon' => 'fa fa-trash',
                 'name' => gT("Delete current question group"),
@@ -225,7 +227,7 @@ if ($ownsSaveButton == true) {
     $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
     $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $sid, "gid" => $gid]);
     
-    $button['save'] = [
+    $saveButton = [
         'id' => 'save',
         'name' => gT('Save'),
         'icon' => 'fa fa-check-square',
@@ -234,27 +236,27 @@ if ($ownsSaveButton == true) {
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save']);
+    array_push($topbarextended['alignment']['right']['buttons'], $saveButton);
 
-    $button['save_and_add_question_group'] = [
-        'id' => 'save_and_add_question_group',
+    $button_save_and_add_question_group = [
+        'id' => 'save-and-new-button',
         'name' => gT('Save and add group'),
         'icon' => 'fa fa-check-square',
         'url' => $saveAndNewLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_add_question_group']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_question_group);
 
-    $button['if ($ownsSaveButton == true) {'] = [
-        'id' => 'save_and_add_new_question',
+    $button_save_and_add_new_question = [
+        'id' => 'save-and-new-question-button',
         'icon' => 'fa fa-check-square',
         'name' => gT('Save and add question'),
         'url' => $saveAndAddQuestionLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['if ($ownsSaveButton == true) {']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_new_question);
 
 }
 

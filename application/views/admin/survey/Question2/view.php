@@ -73,7 +73,16 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
-        <?php echo CHtml::form(array("admin/questionedit/update"), 'post', array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+        <?php echo CHtml::form(
+            array("admin/questionedit/update"), 
+            'post', 
+            array(
+                'class'=>'form30 ',
+                'id'=>'frmeditquestion',
+                'name'=>'frmeditquestion', 
+                'data-isvuecomponent' => 1
+                )
+        );?>
         <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor" />
 
         <div id="advancedQuestionEditor"><app /></div>

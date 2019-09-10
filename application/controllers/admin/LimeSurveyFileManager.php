@@ -585,7 +585,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
         if (!file_exists($realPath)) {
-            @mkdir($realPath, 0755, true);
+            $this->_recursiveMkdir($realPath, 0750, true);
         }
         $allFiles = scandir($realPath);
 
@@ -614,6 +614,17 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'children' => $childFolders,
         ];
         return $folderArray;
+    }
+
+    private function _recursiveMkdir($folder, $rights=0755) {
+        $folders = explode(DIRECTORY_SEPARATOR, $folder);
+        $curFolder = array_shift($folders).DIRECTORY_SEPARATOR;
+        foreach ($folders as $folder) {
+            $curFolder.= DIRECTORY_SEPARATOR.$folder;
+            if (!is_dir($curFolder) && strlen($curFolder) > 0 && !preg_match("/^[A-Za-z]:$/", $curFolder)) {
+                mkdir($curFolder, $rights);
+            }
+        }
     }
 
     /**

@@ -60,6 +60,7 @@ export default {
             ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+subAction, transferObject)
                 .then(
                     (result) => {
+                        LOG.log("Result -> ", result);
                         context.commit('setInTransfer', false);
                         resolve(result);
                     },

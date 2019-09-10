@@ -52,6 +52,7 @@ export default {
         }
     },
     methods: {
+        createFullQuestionLink() { return LS.createUrl(this.createQuestionLink, {gid: (LS.parameters.combined.gid || null)}); },
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
@@ -251,7 +252,7 @@ export default {
             <a 
                 id="adminsidepanel__sidebar--selectorCreateQuestion" 
                 v-if="createQuestionAllowed" 
-                :href="createQuestionLink" 
+                :href="createFullQuestionLink()" 
                 class="btn btn-small btn-default ls-space margin right-10 pjax"
             >
                 <i class="fa fa-plus-circle"></i>&nbsp;
