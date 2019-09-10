@@ -42,7 +42,7 @@
               'force_xmlsettings_for_survey_rendering' => true,
 
               Then, you will not need anymore to reset your theme each time you change the config file.
-              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB 
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB
 
     -->
     <files>
@@ -271,8 +271,37 @@
                     <file type="view" role="subview">./subviews/navigation/question_index_questions_buttons.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_groups_buttons.twig</file>
                 </navigation>
-
             </screens>
+
+            <!-- Data for preview in Theme Editor and Twig Cache command line generator  -->
+            <default_data>
+              <survey>
+                <name type="data" twig="on"><![CDATA[ {{ gT("Template Sample") }} ]]></name>
+                <description type="data" twig="on"><![CDATA[<p>{{ gT('This is a sample survey description. It could be quite long.') }}</p><p>{{ gT("But this one isn't.") }}<p>]]></description>
+                <welcome  type="data" twig="on"><![CDATA[<p>{{ gT('Welcome to this sample survey')}} <p> <p> {{ gT('You should have a great time doing this') }} <p> ]]></welcome>
+                <therearexquestions  type="data" twig="on"><![CDATA[gT('There is 2 question in this survey'])]]></therearexquestions>
+                <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
+                <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
+              </survey>
+              <group>
+                <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>
+                <description type="data" twig="on"><![CDATA[ {{ gT("This group description is fairly vacuous, but quite important.") }} ]]></description>
+              </group>
+              <question_1>
+                <code type="data" >'Q1 '</code>
+                <text type="data" twig="on"><![CDATA[ {{ gT("How many roads must a man walk down?") }} ]]></text>
+                <valid_message type="data" twig="on"><![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
+              </question_1>
+              <question_2>
+                <code type="data" >'Q2 '</code>
+                <text type="data" twig="on"><![CDATA[ {{ gT("Please explain something in detail:") }} ]]></text>
+                <valid_message type="data" twig="on"><![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
+              </question_2>
+              <assessments>
+                <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>
+                <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
+              </assessments>
+            </default_data>
         </template_editor>
     </engine>
 </config>
