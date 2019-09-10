@@ -50,7 +50,6 @@ export default {
     },
     methods: {
         triggerEditQuestionGroup(){
-            this.toggleLoading(true);
             this.editQuestionGroup = !this.editQuestionGroup;
             LS.EventBus.$emit('doFadeEvent', this.editQuestionGroup);
         },
@@ -84,23 +83,30 @@ export default {
             this.event = null;
         },
         submitCurrentState(redirect = false, redirectUrl = false) {
-            this.toggleLoading();
+            this.loading = true;
             this.$store.dispatch('saveQuestionGroupData').then(
                 (result) => {
-                    this.toggleLoading();
                     if(redirect == true || redirectUrl !== false ) {
                         window.location.href = redirectUrl || result.data.redirect;
                     }
-
-                    $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                    this.$store.dispatch('loadQuestionGroup').then()
+                    .catch(
+                         (error) => {
+                             this.$log.error(error);
+                         }
+                    ).finally((result) => {
+                            this.loading = false;
+                            LS.EventBus.$emit('loadingFinished');
+                    });
                 },
                 (reject) => {
-                    this.toggleLoading();
+                    this.loading = false;
+                    LS.EventBus.$emit('loadingFinished');
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader("Questiongroup could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                    //setTimeout(()=>{window.location.reload();}, 1500);
+                    setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
         },
@@ -112,17 +118,9 @@ export default {
     created(){
         this.$store.dispatch('loadQuestionGroup').then(
             (resolve) => {
-                $('#questiongroupbarid').css({'display':''});
                 if(this.$store.state.currentQuestionGroup.gid == null) {
-                    $('#save-button').css({'display':'none'});
-                    $('#questiongroupbar--savebuttons').css({'display':''});
-                    $('#questiongroupbar--questiongroupbuttons').css({'display':'none'});
                     this.editQuestionGroup = true;
-                } else {
-                    $('#questiongroupbar--savebuttons').css({'display':'none'});
-                    $('#questiongroupbar--questiongroupbuttons').css({'display':''});
                 }
-                this.toggleLoading(false);
                 this.loading = false;
             },
             (reject) => {
@@ -156,54 +154,56 @@ export default {
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <template v-if="!loading">
-            <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-                <button
-                    @click.prevent.stop="triggerEditQuestionGroup"
-                    :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
-                    class="btn "
-                >
-                    {{'Question group overview'| translate}}
-                </button>
-                <button
-                    @click.prevent.stop="triggerEditQuestionGroup"
-                    :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
-                    class="btn "
-                >
-                    {{'Question group editor'| translate}}
-                </button>
-            </div>
-            <div class="pagetitle h3 scoped-unset-pointer-events">
-                <template v-if="isCreateQuestionGroup">
-                        {{'Create new question group'|translate}}
-                </template>
-                <template v-else>
-                        {{'Question group'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
-                </template>
-            </div>
-            <div class="row" v-if="this.containsMultipleLanguages">
-                <languageselector
-                    :elId="'questiongroup-language-changer'"
-                    :aLanguages="$store.state.languages"
-                    :parentCurrentLanguage="$store.state.activeLanguage"
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row scoped-contain-slider">
-                <transition name="slide-fade-left">
-                    <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
-                </transition>
-                <transition name="slide-fade-left">
-                    <question-group-editor v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
-                </transition>
-            </div>
-            <div class="row">
-                <question-list :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestionGroup || isCreateQuestionGroup)"></question-list>
-            </div>
-        </template>
-        <template v-if="loading">
-            <loader-widget id="questiongroupEditLoader" />
-        </template>
+        <transition-group name="fade">
+            <template v-if="!loading">
+                <div class="btn-group pull-right clear" v-if="allowSwitchEditing" key="switch-block">
+                    <button
+                        @click.prevent.stop="triggerEditQuestionGroup"
+                        :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
+                        class="btn "
+                    >
+                        {{'Question group overview'| translate}}
+                    </button>
+                    <button
+                        @click.prevent.stop="triggerEditQuestionGroup"
+                        :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
+                        class="btn "
+                    >
+                        {{'Question group editor'| translate}}
+                    </button>
+                </div>
+                <div class="pagetitle h3 scoped-unset-pointer-events" key="pagetitle-block">
+                    <template v-if="isCreateQuestionGroup">
+                            {{'Create new question group'|translate}}
+                    </template>
+                    <template v-else>
+                            {{'Question group'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
+                    </template>
+                </div>
+                <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
+                    <languageselector
+                        :elId="'questiongroup-language-changer'"
+                        :aLanguages="$store.state.languages"
+                        :parentCurrentLanguage="$store.state.activeLanguage"
+                        @change="selectLanguage"
+                    />
+                </div>
+                <div class="row scoped-contain-slider" key="editorcontent-block">
+                    <transition name="slide-fade-left">
+                        <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
+                    </transition>
+                    <transition name="slide-fade-left">
+                        <question-group-editor v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
+                    </transition>
+                </div>
+                <div class="row" key="questionlist-block">
+                    <question-list :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestionGroup || isCreateQuestionGroup)"></question-list>
+                </div>
+            </template>
+        </transition-group>
+        <transition name="fade">
+            <loader-widget id="questiongroupEditLoader" v-if="loading" />
+        </transition>
     </div>
 </template>
 

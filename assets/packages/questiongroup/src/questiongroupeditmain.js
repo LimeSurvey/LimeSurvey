@@ -18,21 +18,6 @@ Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {
-        toggleLoading(forceState=null) {
-            if(forceState !== null) {
-                if(forceState) {
-                    $('#questionGroupEditLoader').fadeIn(200);
-                } else {
-                    $('#questionGroupEditLoader').fadeOut(400);
-                }
-                return;
-            }
-            if($('#questionGroupEditLoader').css('display') == 'none') {
-                $('#questionGroupEditLoader').fadeIn(200);
-                return;
-            }
-            $('#questionGroupEditLoader').fadeOut(400);
-        },
         translate(value) {
             return window.QuestionGroupEditData.i10N[value] || value;
         }

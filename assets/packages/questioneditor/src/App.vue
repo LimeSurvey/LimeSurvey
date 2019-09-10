@@ -115,6 +115,7 @@ export default {
             this.event = null;
         },
         submitCurrentState(redirect = false, redirectUrl = false) {
+            this.loading = true;
             this.$store.dispatch('saveQuestionData').then(
                 (result) => {
                     if(result === false) {
@@ -125,12 +126,13 @@ export default {
                         window.location.href = redirectUrl || result.data.redirect || window.location.href;
                     }
 
-                    $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
+                    $('#in_survey_common').trigger('lsStopLoading');
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                    this.loading = false;
                 },
                 (reject) => {
                     $('#in_survey_common').trigger('lsStopLoading');
@@ -242,48 +244,50 @@ export default {
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
             </template>
         </div>
-        <template v-if="!loading">
-            <div class="row">
-                <div class="form-group col-sm-6">
-                    <label for="questionCode">{{'Code' | translate }}</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="questionCode"
-                        :readonly="!(editQuestion || isCreateQuestion)"
-                        v-model="currentQuestionCode"
-                        @dblclick="setEditQuestion"
+        <transition-group name="fade">
+            <template v-if="!loading">
+                <div class="row" key="questioncode-block">
+                    <div class="form-group col-sm-6">
+                        <label for="questionCode">{{'Code' | translate }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="questionCode"
+                            :readonly="!(editQuestion || isCreateQuestion)"
+                            v-model="currentQuestionCode"
+                            @dblclick="setEditQuestion"
+                        />
+                    </div>
+                    <div class="form-group col-sm-6 contains-question-selector">
+                        <label for="questionCode">{{'Question type' | translate }}</label>
+                        <div v-if="(editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y'"  v-html="questionEditButton" />
+                        <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
+                        <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                    </div>
+                </div>
+                <div class="row" key="languageselector-block">
+                    <languageselector
+                        :elId="'question-language-changer'"
+                        :aLanguages="$store.state.languages"
+                        :parentCurrentLanguage="$store.state.activeLanguage"
+                        @change="selectLanguage"
                     />
                 </div>
-                <div class="form-group col-sm-6 contains-question-selector">
-                    <label for="questionCode">{{'Question type' | translate }}</label>
-                    <div v-if="(editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y'"  v-html="questionEditButton" />
-                    <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
-                    <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                <div class="row" key="editorcontent-block">
+                    <transition name="slide-fade-left">
+                        <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                    </transition>
+                    <transition name="slide-fade-left">
+                        <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                    </transition>
+                    <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
+                    <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
                 </div>
-            </div>
-            <div class="row">
-                <languageselector
-                    :elId="'question-language-changer'"
-                    :aLanguages="$store.state.languages"
-                    :parentCurrentLanguage="$store.state.activeLanguage"
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row">
-                <transition name="slide-fade-left">
-                    <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                </transition>
-                <transition name="slide-fade-left">
-                    <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
-                </transition>
-                <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
-                <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
-            </div>
-        </template>
-        <template v-if="loading">
-            <loader-widget id="mainViewLoader" />
-        </template>
+            </template>
+        </transition-group>
+        <transition name="fade">
+            <loader-widget id="mainViewLoader" v-if="loading"/>
+        </transition>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
 </template>

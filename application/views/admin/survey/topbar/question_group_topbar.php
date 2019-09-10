@@ -230,7 +230,7 @@ if ($ownsSaveButton == true) {
     $saveButton = [
         'id' => 'save',
         'name' => gT('Save'),
-        'icon' => 'fa fa-check-square',
+        'icon' => 'fa fa-floppy-o',
         'url' => '#',
         'id' => 'save-button',
         'isSaveButton' => true,
@@ -241,7 +241,7 @@ if ($ownsSaveButton == true) {
     $button_save_and_add_question_group = [
         'id' => 'save-and-new-button',
         'name' => gT('Save and add group'),
-        'icon' => 'fa fa-check-square',
+        'icon' => 'fa fa-plus-square',
         'url' => $saveAndNewLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
@@ -250,7 +250,7 @@ if ($ownsSaveButton == true) {
 
     $button_save_and_add_new_question = [
         'id' => 'save-and-new-question-button',
-        'icon' => 'fa fa-check-square',
+        'icon' => 'fa fa-plus',
         'name' => gT('Save and add question'),
         'url' => $saveAndAddQuestionLink,
         'isSaveButton' => true,
