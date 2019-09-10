@@ -86,9 +86,6 @@ export default {
             this.loading = true;
             this.$store.dispatch('saveQuestionGroupData').then(
                 (result) => {
-                    if(redirect == true || redirectUrl !== false ) {
-                        window.location.href = redirectUrl || result.data.redirect;
-                    }
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                     this.$store.dispatch('loadQuestionGroup').then()
@@ -97,8 +94,12 @@ export default {
                              this.$log.error(error);
                          }
                     ).finally((result) => {
-                            this.loading = false;
-                            LS.EventBus.$emit('loadingFinished');
+                        if(redirect == true || redirectUrl !== false ) {
+                            window.location.href = redirectUrl || result.data.redirect;
+                            return;
+                        }
+                        this.loading = false;
+                        LS.EventBus.$emit('loadingFinished');
                     });
                 },
                 (reject) => {

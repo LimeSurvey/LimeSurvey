@@ -121,17 +121,16 @@ export default {
                     if(result === false) {
                         return;
                     }
-
-                    if(redirect == true || redirectUrl !== false) {
-                        window.location.href = redirectUrl || result.data.redirect || window.location.href;
-                    }
-
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
                     $('#in_survey_common').trigger('lsStopLoading');
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                    if(redirect == true || redirectUrl !== false) {
+                        window.location.href = redirectUrl || result.data.redirect || window.location.href;
+                        return;
+                    }
                     this.loading = false;
                 },
                 (reject) => {

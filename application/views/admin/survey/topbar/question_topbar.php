@@ -360,7 +360,8 @@ if ($qid == 0) {
     $paramArray = array();
     $paramArray["surveyid"] = $sid;
     $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
-    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $sid, "gid" => $gid]);
+    $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
+    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
     
     $saveButton = [
         'id' => 'save',
