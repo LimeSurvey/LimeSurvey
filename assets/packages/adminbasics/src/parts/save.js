@@ -190,6 +190,14 @@ const SaveController = () => {
                     formSubmitting = false;
                 },
                 on: 'lsStopLoading'
+            },
+            _checkStopLoading: {
+                check: '#create-import-copy-survey',
+                run: function(ev) {
+                    stopDisplayLoadingState();
+                    formSubmitting = false;
+                },
+                on: 'lsStopLoading'
             }
         };
 
