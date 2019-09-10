@@ -23,7 +23,7 @@ $activeTab = Yii::app()->request->getParam('tab', 'create');
 switch($activeTab) {
     case 'create':
         $activeForm = 'addnewsurvey'; 
-        $label = '<i class="fa fa-plus-circle"></i>&nbsp;'.gT("Create");
+        $label = '<i class="fa fa-save"></i>&nbsp;'.gT("Save");
         break;
     case 'import':
         $activeForm = 'importsurvey'; 
@@ -40,7 +40,8 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
     $('#save-form-button').html('".$label."');
     $('#create-import-copy-survey>li>a').on('show.bs.tab', function(e){
         $('#save-form-button').attr('data-form-id', e.target.getAttribute('data-form-id'));
-        $('#save-form-button').html($(e.target).html());
+        // NB: button-title is equal to tab title except for 'Create' -> 'Save'
+        $('#save-form-button').html($(e.target).data('button-title'));
     });
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
@@ -51,7 +52,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
     <!-- Create -->
     <li role="presentation" <?php if($active=='create'){echo 'class="active"';}?>>
-        <a role="tab" data-toggle="tab" data-form-id="addnewsurvey" href='#general'>
+        <a role="tab" data-toggle="tab" data-button-title="<i class='fa fa-save'></i>&nbsp;<?= gT('Save'); ?>" data-form-id="addnewsurvey" href='#general'>
             <i class="fa fa-plus-circle"></i>&nbsp;
             <?php  eT("Create"); ?>
         </a>
@@ -61,7 +62,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
     <?php if ($action == "newsurvey"): ?>
         <!-- Import -->
         <li role="presentation" <?php if($active=='import'){echo 'class="active"';}?>>
-            <a role="tab" data-toggle="tab" data-form-id="importsurvey" href="#import">
+            <a role="tab" data-toggle="tab" data-button-title="<i class='fa fa-upload'></i>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
                 <i class="fa fa-upload"></i>&nbsp;
                 <?php  eT("Import"); ?>
             </a>
@@ -69,7 +70,7 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
 
         <!-- Copy -->
         <li role="presentation" <?php if($active=='copy'){echo 'class="active"';}?>>
-            <a role="tab" data-toggle="tab" data-form-id="copysurveyform" href="#copy">
+            <a role="tab" data-toggle="tab" data-button-title="<i class='fa fa-copy'></i>&nbsp;<?= gT('Copy'); ?>" data-form-id="copysurveyform" href="#copy">
                 <i class="fa fa-copy"></i>&nbsp;
                 <?php  eT("Copy"); ?>
             </a>
