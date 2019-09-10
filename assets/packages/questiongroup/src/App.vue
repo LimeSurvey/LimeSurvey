@@ -88,16 +88,16 @@ export default {
                 (result) => {
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                    if(redirect == true || redirectUrl !== false ) {
+                            window.location.href = redirectUrl || result.data.redirect;
+                            return;
+                    };
                     this.$store.dispatch('loadQuestionGroup').then()
                     .catch(
                          (error) => {
                              this.$log.error(error);
                          }
                     ).finally((result) => {
-                        if(redirect == true || redirectUrl !== false ) {
-                            window.location.href = redirectUrl || result.data.redirect;
-                            return;
-                        }
                         this.loading = false;
                         LS.EventBus.$emit('loadingFinished');
                     });
