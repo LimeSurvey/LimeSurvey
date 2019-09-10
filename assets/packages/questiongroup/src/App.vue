@@ -31,7 +31,22 @@ export default {
         },
         allowSwitchEditing(){
             return !this.isCreateQuestionGroup && this.$store.state.permissions.update
-        }
+        },
+        getLanguages() {
+            return this.$store.state.languages;
+        },
+        languagesCount() {
+            let languages = this.getLanguages;
+            let count = 0;
+            for (let language in languages) {
+                count += 1;
+            }
+            return count;
+        },
+        containsMultipleLanguages() {
+            let ownsMultiple = (this.languagesCount > 1);
+            return ownsMultiple;
+        },
     },
     methods: {
         triggerEditQuestionGroup(){
@@ -166,7 +181,7 @@ export default {
                         {{'Question group'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
                 </template>
             </div>
-            <div class="row" >
+            <div class="row" v-if="this.containsMultipleLanguages">
                 <languageselector
                     :elId="'questiongroup-language-changer'"
                     :aLanguages="$store.state.languages"
