@@ -92,7 +92,9 @@ export default {
                             window.location.href = redirectUrl || result.data.redirect;
                             return;
                     };
-                    this.$store.dispatch('loadQuestionGroup').then()
+                    window.history.pushState({}, result.data.questionGroupId, result.data.redirect);
+                    LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
+                    this.$store.dispatch('reloadQuestionGroup', result.data.questionGroupId).then()
                     .catch(
                          (error) => {
                              this.$log.error(error);
@@ -143,7 +145,7 @@ export default {
 
         LS.EventBus.$off('componentFormSubmit');
         LS.EventBus.$on('componentFormSubmit', (payload) => {
-            this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
+            this.submitCurrentState((payload.id == '#save-and-close-button'), payload.url != '#' ? payload.url : false);
         });
         
         if(window.QuestionGroupEditData.startInEditView) {

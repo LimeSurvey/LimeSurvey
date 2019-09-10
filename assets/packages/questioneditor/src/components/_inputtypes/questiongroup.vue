@@ -24,13 +24,6 @@
                 get() { return this.currentValue || this.$store.getter.gid },
                 set(newValue) { 
                     this.$emit('change', newValue);
-                    this.$store.commit('setStoredEvent', { target: 'GeneralSettings', method: 'toggleTimedLoading', content: true, chain: 'AdvancedSettings' });
-                    Promise.all([
-                        this.$store.dispatch('getQuestionGeneralSettings'),
-                        this.$store.dispatch('getQuestionAdvancedSettings')
-                    ]).then((e)=>{
-                        this.$store.commit('setStoredEvent', { target: 'GeneralSettings', method: 'toggleTimedLoading', content: false, chain: 'AdvancedSettings' });
-                    });
                 },
             },
             showHelp(){

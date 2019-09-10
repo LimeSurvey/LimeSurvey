@@ -122,15 +122,16 @@ export default {
                         return;
                     }
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
-                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
+                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
                     LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
                     $('#in_survey_common').trigger('lsStopLoading');
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
-                    if(redirect == true || redirectUrl !== false) {
+                    if(redirect == true || this.isCreateQuestion || redirectUrl !== false) {
                         window.location.href = redirectUrl || result.data.redirect || window.location.href;
                         return;
                     }
+                    window.history.pushState({},result.data.newQuestionDetails.question.title, result.data.redirect);
                     this.loading = false;
                 },
                 (reject) => {
@@ -184,7 +185,7 @@ export default {
 
         LS.EventBus.$off('componentFormSubmit');
         LS.EventBus.$on('componentFormSubmit', (payload) => {
-            this.submitCurrentState((payload.id == '#save-and-close-button' || this.isCreateQuestionGroup), payload.url != '#' ? payload.url : false);
+            this.submitCurrentState((payload.id == '#save-and-close-button'), payload.url != '#' ? payload.url : false);
         });
 
         if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {

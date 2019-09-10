@@ -454,22 +454,31 @@ class questiongroups extends Survey_Common_Action
         $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroup['gid']);
         if ($oQuestionGroup == null) {
             $oQuestionGroup = $this->_newQuestionGroup($questionGroup);
-            $sRedirectUrl = $this->getController()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $iSurveyId, 'gid' => $oQuestionGroup->gid]);
         } else {
             $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup, $questionGroup);
-            $sRedirectUrl = $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId);
         }
+
+        $sRedirectUrl = $this->getController()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $iSurveyId, 'gid' => $oQuestionGroup->gid]);
         //$this->_applyI10N($oQuestionGroup, $oQuestionGroupI10N);
 
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
-        $this->renderJSON([
-            'success' => $success,
-            'message' => gT('Question group successfully stored'),
-            'questionGroupId' => $oQuestionGroup->gid,
-            'redirect' => $sRedirectUrl,
-            'transfer' => [$questionGroup, $questionGroupI10N],
-        ]);
+        $aQuestionGroup = $oQuestionGroup->attributes;
+        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
+        $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
+            LimeExpressionManager::GetLastPrettyPrintExpression()
+        );
+
+        $this->renderJSON(
+            [
+                'success' => $success,
+                'message' => gT('Question group successfully stored'),
+                'questionGroupId' => $oQuestionGroup->gid,
+                'questiongroupData' => $aQuestionGroup,
+                'redirect' => $sRedirectUrl,
+                'transfer' => [$questionGroup, $questionGroupI10N],
+            ]
+        );
         Yii::app()->close();
     }
     /**

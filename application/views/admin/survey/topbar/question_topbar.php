@@ -369,6 +369,7 @@ if ($qid == 0) {
         'icon' => 'fa fa-floppy-o',
         'url' => '#',
         'id' => 'save-button',
+        'data-form-to-save' => 'frmeditquestion',
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];

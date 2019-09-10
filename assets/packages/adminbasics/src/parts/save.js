@@ -25,7 +25,7 @@ const SaveController = () => {
             formId = '#' + $(that).attr('data-form-to-save');
             form = [$(formId)];
         } else {
-            form = $('#pjax-content').find('form');
+            form = $('#pjax-content').find('form').first();
         }
 
         if (form.length < 1)
@@ -191,7 +191,7 @@ const SaveController = () => {
                 },
                 on: 'lsStopLoading'
             },
-            _checkStopLoading: {
+            _checkStopLoadingCreateCopyImport: {
                 check: '#create-import-copy-survey',
                 run: function(ev) {
                     stopDisplayLoadingState();
@@ -227,6 +227,7 @@ const SaveController = () => {
                 forEach(checks(), (checkItem) => {
                     if(checkItem.check == '#'+button.id) {
                         checkItem.run(stubEvent, button);
+                        formSubmitting = false;
                     }
                 });
             }
