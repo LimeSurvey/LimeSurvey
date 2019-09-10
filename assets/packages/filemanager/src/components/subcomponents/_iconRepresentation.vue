@@ -150,6 +150,9 @@ export default {
         border: 1px solid black;
         box-shadow: 1px 2px 3px #939393;
         margin: 1.1rem;
+        &:first-of-type {
+            margin-top: 0;
+        }
         padding: 0.5rem;
     }
 </style>

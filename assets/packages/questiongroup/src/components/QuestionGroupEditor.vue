@@ -126,7 +126,11 @@ ${scriptContent}
                 </div>
                 <div class="col-sm-6 col-xs-12 ls-space margin top-5 bottom-5">
                     <div class="col-12">{{'Relevance'|translate}}</div>
-                    <input v-model="currentRelevance" class="form-control" />
+                    <div class="input-group">
+                        <span class="input-group-addon">{</span>
+                            <input v-model="currentRelevance" class="form-control" />
+                        <span class="input-group-addon">}</span>
+                    </div>
                 </div>
             </div>
         </div>
