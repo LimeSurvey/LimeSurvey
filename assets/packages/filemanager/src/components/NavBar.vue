@@ -79,7 +79,9 @@ export default {
 <style scoped lang="scss">
   .scoped-navbar-fixes {
         .navbar-nav > li > a {
-            background: linear-gradient(to right, transparent 50,03%,  var(--LS-admintheme-hovercolor) 50%);
+            border: none;
+            background: linear-gradient(to right, transparent 50.03%,  #989898 50%);
+            background: linear-gradient(to right, transparent 50.03%,  var(--LS-admintheme-hovercolor) 50%);
             background-size: 200%;
             background-position: 0;    
             transition: all 0.3s;
