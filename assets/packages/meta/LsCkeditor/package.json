@@ -4,7 +4,7 @@
   "description": "A custom CkEditor5 build used in LimeSurvey",
   "main": "LsCkEditor.js",
   "author": "Markus Fluer <markus.fluer@limesurvey.org>",
-  "license": "GPL2-0",
+  "license": "GPL-2.0-or-later",
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^11.1.1",
     "@ckeditor/ckeditor5-autoformat": "^11.0.2",
