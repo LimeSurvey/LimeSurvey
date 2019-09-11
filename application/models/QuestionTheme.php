@@ -101,7 +101,7 @@
          *
          * @throws CException
          */
-        public function loadAllQuestionXMLConfigurationsIntoDatabase()
+        public function loadAllQuestionXMLConfigurationsIntoDatabase($useTransaction=true)
         {
             $missingQuestionThemeAttributes = [];
             $questionThemeDirectories = $this->getQuestionThemeDirectories();
@@ -111,7 +111,9 @@
             // process XML Question Files
             if (isset($questionThemeDirectories)) {
                 try {
-                    $transaction = App()->db->beginTransaction();
+                    if($useTransaction) {
+                        $transaction = App()->db->beginTransaction();
+                    }
                     $questionsMetaData = self::getAllQuestionMetaData();
                     foreach ($questionsMetaData as $questionMetaData) {
                         // test xml for required metaData
@@ -129,13 +131,17 @@
                         $questionTheme->setAttributes($metaDataArray, false);
                         $questionTheme->save();
                     }
-                    $transaction->commit();
+                    if($useTransaction) {
+                        $transaction->commit();
+                    }
                 } catch (Exception $e) {
                     //TODO: flashmessage for users
                     echo $e->getMessage();
                     var_dump($e->getTrace());
                     echo $missingQuestionThemeAttributes;
-                    $transaction->rollback();
+                    if($useTransaction) {
+                        $transaction->rollback();
+                    }
                 }
             }
 
@@ -328,11 +334,11 @@
 
             // set settings as json
             $questionMetaData['settings'] = json_encode([
-                'subquestions' => $questionMetaData['subquestions'],
-                'answerscales' => $questionMetaData['answerscales'],
-                'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'],
-                'assessable' => $questionMetaData['assessable'],
-                'class' => $questionMetaData['class'],
+                'subquestions' => $questionMetaData['subquestions'] ?? 0,
+                'answerscales' => $questionMetaData['answerscales'] ?? 0,
+                'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
+                'assessable' => $questionMetaData['assessable'] ?? 0,
+                'class' => $questionMetaData['class'] ?? '',
             ]);
 
             // override MetaData depending on directory
@@ -517,7 +523,7 @@
                 'xml_path' => $questionMetaData['xml_path'],
                 'image_path' => $questionMetaData['image_path'],
                 'title' => $questionMetaData['title'],
-                'creation_date' => $questionMetaData['creationDate'],
+                'creation_date' => date('Y-m-d H:i:s', strtotime($questionMetaData['creationDate'])),
                 'author' => $questionMetaData['author'],
                 'author_email' => $questionMetaData['authorEmail'],
                 'author_url' => $questionMetaData['authorUrl'],
@@ -526,13 +532,13 @@
                 'version' => $questionMetaData['version'],
                 'api_version' => $questionMetaData['apiVersion'],
                 'description' => $questionMetaData['description'],
-                'last_update' => 'insert time', //todo
+                'last_update' => date('Y-m-d H:i:s'), //todo
                 'owner_id' => 1, //todo
                 'theme_type' => $questionMetaData['themeType'],
                 'type' => $questionMetaData['type'],
                 'extends' => $questionMetaData['extends'],
-                'group' => $questionMetaData['group'],
-                'settings' => $questionMetaData['settings']
+                'group' => $questionMetaData['group'] ?? '',
+                'settings' => $questionMetaData['settings'] ?? ''
             ];
             return $questionMetaData;
         }
