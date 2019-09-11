@@ -196,7 +196,7 @@ ${scriptContent}
             <div class="row">
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="surveyTitle">{{'Survey title' | translate }}</label>
-                    <input type="text" class="form-control" name="surveyls_title" @invalid="stopLoadingIcon" id="surveyTitle" required="required" v-model="currentSurveyTitle">
+                    <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" v-model="currentSurveyTitle">
                 </div>
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="dateFormat">{{'Date format' | translate }}</label>

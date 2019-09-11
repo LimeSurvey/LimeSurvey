@@ -19139,9 +19139,23 @@
               $firstSubmit.trigger('click');
             } else {
               $form.submit();
+            } // check if there are any required inputs that are not filled
+
+
+            var cntInvalid = 0;
+            var requiredInputs = $form.find('input,select').filter("[required='required']");
+            requiredInputs.each(function () {
+              if (this.validity.valueMissing == true) {
+                cntInvalid += 1;
+              }
+            }); // show loading state only if all required fields are filled, otherwise enable submit button again
+
+            if (cntInvalid === 0) {
+              displayLoadingState(this);
+            } else {
+              $('#save-form-button').removeClass('disabled');
             }
 
-            displayLoadingState(this);
             return false;
           },
           on: 'click'
