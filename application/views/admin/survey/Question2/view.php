@@ -20,7 +20,6 @@
 
     foreach ($aQuestionTypeList as $questionType) {
 
-        $blame = $questionType['type'];
         $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
         if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
             $aQuestionTypeGroups[$htmlReadyGroup] = array(
@@ -38,7 +37,7 @@
 
         $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
-            <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
+            <img src="' . $questionType['image_path'] . '" />
         </div>';
         if ($imageName == 'S') {
             $questionType['detailpage'] = '
@@ -47,7 +46,7 @@
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
         }
-        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$questionType['type']] = $questionType;
+        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
     }
 
     $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
@@ -67,13 +66,14 @@
             'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
             'onUpdate' => [
                 'value',
+                'options',
                 "console.ls.log(value);"
                 . "$('#question_type').val(value);"
-                ."LS.EventBus.\$emit('questionTypeChanged', {"
+                . "LS.EventBus.\$emit('questionTypeChanged', {"
                 . "target: 'lsnextquestioneditor',"
                 . "method: 'questionTypeChangeTriggered',"
-                . "content: value"
-                ."})"
+                . "content: {value: value, options: options}"
+                . "})"
             ]
         ]
     ));

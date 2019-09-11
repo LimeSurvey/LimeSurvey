@@ -2906,7 +2906,45 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>419),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        // TODO: update DB for QuestionThemes
+
+
+        if($iOldDBVersion < 420) {
+            $oTransaction = $oDB->beginTransaction();
+        // question_themes
+        $oDB->createCommand()->createTable('{{question_themes}}', [
+            'id' => "pk",
+            'name' => "string(150) NOT NULL",
+            'visible' => "string(1) NULL",
+            'xml_path' => "string(255) NULL",
+            'image_path' => 'string(255) NULL',
+            'title' => "string(100) NOT NULL",
+            'creation_date' => "datetime NULL",
+            'author' => "string(150) NULL",
+            'author_email' => "string(255) NULL",
+            'author_url' => "string(255) NULL",
+            'copyright' => "text",
+            'license' => "text",
+            'version' => "string(45) NULL",
+            'api_version' => "string(45) NOT NULL",
+            'view_folder' => "string(45) NOT NULL",
+            'files_folder' => "string(45) NOT NULL",
+            'description' => "text",
+            'last_update' => "datetime NULL",
+            'owner_id' => "integer NULL",
+            'theme_type' => "string(150)",
+            'type' => "string(150)",
+            'extends' => "string(150) NULL",
+            'group' => "string(150)",
+            'settings' => "text"
+        ], $options);
+
+        $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
+
+        QuestionTheme::model()->loadAllQuestionXMLConfigurationsIntoDatabase();
+
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

@@ -734,7 +734,7 @@ class UserAction extends Survey_Common_Action
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['aUserSettings'] = $aUserSettings;
-        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionBaseSettings('',true,false);
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
         $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype);
 
         $aData['surveymenu_data']['model'] = $oSurveymenu;

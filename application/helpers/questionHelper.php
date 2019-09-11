@@ -31,11 +31,11 @@ class questionHelper
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
-     * 
+     *
      * DEPRECATED, used only as fall back method
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
-    public static function getAttributesDefinitions() 
+    public static function getAttributesDefinitions()
 
     {
         if (self::$attributes) {
@@ -1618,53 +1618,47 @@ class questionHelper
      * Return the question Theme custom attributes values
      *
      * @param      $type
-     * @param null $question_template
      * @param      $sQuestionThemeName : question theme name
      *
      * @return array : the attribute settings for this question type
      */
-    public static function getQuestionThemeAttributeValues($type, $question_template = null, $sQuestionThemeName = null)
+    public static function getQuestionThemeAttributeValues($type, $sQuestionThemeName = null)
     {
-        
         $aQuestionAttributes = array();
         $additionalAttributes = array();
 
         $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'type = :type AND extends = :extends', ['type' => $type, 'extends' => '']);
 
-//        $sCoreTypeXmlPath = Yii::app()->getConfig('corequestiontypedir').'/survey/questions/answer/'.$question_template.'/config.xml';
-//        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-//        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-
-//        $xmlConfigPath = $questionTheme['xml_path'] . '/config.xml';
+        $xmlConfigPath = App()->getConfig('rootdir') . $sCoreTypeXmlPath['xml_path'] . '/config.xml';
         libxml_disable_entity_loader(false);
-        $oCoreConfig = simplexml_load_file($sCoreTypeXmlPath['xml_path'] . '/config.xml');
-        $aCoreAttributes =  json_decode(json_encode((array)$oCoreConfig), TRUE);
+        $oCoreConfig = simplexml_load_file($xmlConfigPath);
+        $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
         if ($sQuestionThemeName !== null) {
             $themePath = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
-            $xml_config = simplexml_load_file($themePath['xml_path'] . '/config.xml');
+            $xml_config = simplexml_load_file(App()->getConfig('rootdir') . $themePath['xml_path']. '/config.xml');
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         libxml_disable_entity_loader(true);
 
-        if(!empty($attributes)) {
-            if(!empty($attributes['attribute']['name'])) {
+        if (!empty($attributes)) {
+            if (!empty($attributes['attribute']['name'])) {
                 // Only one attribute set in config : need an array of attributes
                 $attributes['attribute'] = array($attributes['attribute']);
             }
             // Create array of attribute with name as key
             $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
-            foreach($attributes['attribute'] as $attribute) {
-                if(!empty($attribute['name'])) {
+            foreach ($attributes['attribute'] as $attribute) {
+                if (!empty($attribute['name'])) {
                     // inputtype is text by default
-                    $additionalAttributes[$attribute['name']] = array_merge($defaultQuestionAttributeValues,$attribute);
+                    $additionalAttributes[$attribute['name']] = array_merge($defaultQuestionAttributeValues, $attribute);
                 }
             }
         }
-        if(!isset($aCoreAttributes['attributes']['attribute'])) {
+        if (!isset($aCoreAttributes['attributes']['attribute'])) {
             throw new Exception("Question type attributes not available!");
         }
 
-        foreach( $aCoreAttributes['attributes']['attribute'] as $aCoreAttribute ) {
+        foreach ($aCoreAttributes['attributes']['attribute'] as $aCoreAttribute) {
             $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
         }
 

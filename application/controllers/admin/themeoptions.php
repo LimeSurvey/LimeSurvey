@@ -88,10 +88,10 @@ class themeoptions  extends Survey_Common_Action
                 if ($gridid == 'questionthemes-grid') {
                     $templatename = $model->name;
                     $templateid = $model->id;
-                    $templatefolder = $model->folder;
+                    $templatefolder = $model->xml_path;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = QuestionTheme::uninstall($templateid);
-                    QuestionTheme::model()->importManifest($templatefolder);
+                    $model->importManifest($templatefolder);
                 } elseif ($gridid == 'themeoptions-grid'){
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
@@ -403,7 +403,7 @@ class themeoptions  extends Survey_Common_Action
      * @param integer $id the ID of the model to be loaded
      * @param null    $gridid
      *
-     * @return TemplateConfiguration the loaded model
+     * @return QuestionTheme|TemplateConfiguration|null
      * @throws CHttpException
      */
     public function loadModel($id, $gridid = null)

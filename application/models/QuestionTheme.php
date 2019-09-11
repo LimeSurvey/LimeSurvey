@@ -264,37 +264,6 @@
         }
 
         /**
-         * Returns the Theme-type and Extended-type for the current question
-         *
-         * @param $pathToXML
-         * @param $questionMetaData
-         *
-         * @return array
-         * TODO: move to getAllQuestionMetaData
-         */
-        public static function getThemeTypeAndExtendedType($pathToXML, $questionMetaData)
-        {
-            $questionAdditionalData = [];
-            $coreQuestion = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-            $customCoreTheme = App()->getConfig('userquestionthemedir');
-            $customUserTheme = App()->getConfig('userquestionthemerootdir');
-
-            $questionAdditionalData['extends'] = $questionMetaData['type'];
-            if (substr($pathToXML, 0, strlen($coreQuestion)) === $coreQuestion) {
-                $questionAdditionalData['themeType'] = 'Core theme';
-                $questionAdditionalData['extends'] = '';
-            }
-            if (substr($pathToXML, 0, strlen($customCoreTheme)) === $customCoreTheme) {
-                $questionAdditionalData['themeType'] = 'Core theme';
-            }
-            if (substr($pathToXML, 0, strlen($customUserTheme)) === $customUserTheme) {
-                $questionAdditionalData['themeType'] = 'User theme';
-            }
-            return $questionAdditionalData;
-        }
-
-
-        /**
          * Returns all Questions that can be installed
          */
         public function getAvailableQuestions()
@@ -349,12 +318,13 @@
         public static function getQuestionMetaData($pathToXML, $questionDirectories)
         {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
+            $publicurl = App()->getConfig('publicurl');
 
             $sQuestionConfigFile = file_get_contents($pathToXML . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
-            $questionMetaData['xml_path'] = $pathToXML;
-            $questionMetaData['image_path'] = self::getQuestionThemePreviewUrl($questionMetaData['type']);
+            $questionMetaData['xml_path'] = $publicurl . $pathToXML;
+            $questionMetaData['image_path'] = $pathToXML . '/assets/' . $questionMetaData['name'] . '_' . self::getQuestionThemeImageName($questionMetaData['type']);
 
             // set settings as json
             $questionMetaData['settings'] = json_encode([
@@ -365,18 +335,26 @@
                 'class' => $questionMetaData['class'],
             ]);
 
-            // overrides depending on directory
-            $questionMetaData['extends'] = $questionMetaData['type'];
+            // override MetaData depending on directory
             if (substr($pathToXML, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
                 $questionMetaData['themeType'] = 'Core theme';
                 $questionMetaData['extends'] = '';
-                $questionMetaData['image_path'] = 'assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'screenshots' . DIRECTORY_SEPARATOR . $questionMetaData['type'];
+                $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['type']);
             }
             if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
                 $questionMetaData['themeType'] = 'Core theme';
+                $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $questionMetaData['name'] . '_' . self::getQuestionThemeImageName($questionMetaData['type']);
+                $questionMetaData['extends'] = $questionMetaData['type'];
             }
             if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
                 $questionMetaData['themeType'] = 'User theme';
+                $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $questionMetaData['name'] . '_' . self::getQuestionThemeImageName($questionMetaData['type']);
+                $questionMetaData['extends'] = $questionMetaData['type'];
+            }
+
+            // get Default Image if undefined
+            if (!file_exists(App()->getConfig('rootdir') . $questionMetaData['image_path'])) {
+                $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['type']);
             }
 
             libxml_disable_entity_loader($bOldEntityLoaderState);
@@ -454,52 +432,62 @@
             $criteria->params = [':extends' => '', ':type' => $question_type, ':visible' => 'Y'];
 
             $baseQuestion = self::model()->query($criteria, false, false);
-            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
 
             // language settings
             $baseQuestion['title'] = gT($baseQuestion['title'], "html", $language);
             $baseQuestion['group'] = gT($baseQuestion['group'], "html", $language);
 
+            // decode settings json
+            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+
             return $baseQuestion;
         }
 
         /**
-         * Returns all Questions Base settings
+         * Returns all Question Meta Data for the selector
          *
-         * @param string $language
-         * @param bool   $typeAsKey
-         * @param bool   $asAR
+         * @param bool $typeAsKey
+         * @param bool $asAR
          *
          * @return mixed $baseQuestions Questions as Array or Object
          */
-        public static function findAllQuestionBaseSettings($language = '', $typeAsKey = true, $asAR = false)
+        public static function findAllQuestionMetaDataForSelector()
         {
-            $language = App()->session['adminlang'];
             $criteria = new CDbCriteria();
-            $criteria->condition = 'extends = :extends';
+//            $criteria->condition = 'extends = :extends';
             $criteria->addCondition('visible = :visible', 'AND');
-            $criteria->params = [':extends' => '', ':visible' => 'Y'];
+            $criteria->params = [':visible' => 'Y'];
 
-            $baseQuestions = self::model()->query($criteria, true, $asAR);
+            $baseQuestions = self::model()->query($criteria, true, false);
 
+            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
             $baseQuestionsModified = [];
-
             foreach ($baseQuestions as $key => $baseQuestion) {
-                // return type as array key
-                if ($typeAsKey === true) {
-                    $baseQuestionsModified[$baseQuestion['type']] = $baseQuestion;
-                } else {
-                    $baseQuestionsModified[] = $baseQuestion;
+                //TODO: should be moved into DB column (question_theme_settings table)
+                $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . $baseQuestion['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
+                $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
+                $showAsQuestionType = $questionEngineData['show_as_question_type'];
+
+                // if an extended Question should not be shown as a selectable questiontype skip it
+                if (!empty($baseQuestion['extends'] && !$showAsQuestionType)) {
+                    continue;
                 }
-                $lastQuestionKey = array_key_last($baseQuestionsModified);
 
                 // language settings
-                $baseQuestionsModified[$lastQuestionKey]['title'] = gT($baseQuestion['title'], "html", $language);
-                $baseQuestionsModified[$lastQuestionKey]['group'] = gT($baseQuestion['group'], "html", $language);
+                $baseQuestion['title'] = gT($baseQuestion['title'], "html");
+                $baseQuestion['group'] = gT($baseQuestion['group'], "html");
 
                 // decode settings json
-                $baseQuestionsModified[$lastQuestionKey]['settings'] = json_decode($baseQuestion['settings']);
+                $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+
+                // if its a core question change name to core for rendering Default rendering in the selector
+                if (empty($baseQuestion['extends'])){
+                    $baseQuestion['name'] = 'core';
+                }
+                $baseQuestionsModified[] = $baseQuestion;
             }
+            libxml_disable_entity_loader($bOldEntityLoaderState);
             $baseQuestions = $baseQuestionsModified;
 
             return $baseQuestions;
@@ -551,24 +539,26 @@
 
         /**
          * Return the question Theme preview URL
-         * @param $sType: type pof question
+         *
+         * @param $sType : type pof question
+         *
          * @return string : question theme preview URL
          */
-        public static function getQuestionThemePreviewUrl($sType = null)
+        public static function getQuestionThemeImageName($sType = null)
         {
-            if ($sType == '*'){
+            if ($sType == '*') {
                 $preview_filename = 'EQUATION.png';
-            } elseif ($sType == ':'){
+            } elseif ($sType == ':') {
                 $preview_filename = 'COLON.png';
-            } elseif ($sType == '|'){
+            } elseif ($sType == '|') {
                 $preview_filename = 'PIPE.png';
             } elseif (!empty($sType)) {
-                $preview_filename = $sType.'.png';
+                $preview_filename = $sType . '.png';
             } else {
                 $preview_filename = '.png';
             }
 
-            return App()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+            return $preview_filename;
         }
 
     }

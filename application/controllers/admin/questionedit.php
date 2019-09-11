@@ -83,7 +83,7 @@ class questionedit extends Survey_Common_Action
         // combine aData
         $aData['surveyid'] = $iSurveyID;
         $aData['oSurvey'] = $oSurvey;
-        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionBaseSettings('', true, false);
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
         $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
@@ -766,7 +766,7 @@ class questionedit extends Survey_Common_Action
             $aData['debug'] = [$_POST, $_GET];
         }
 
-        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
+        echo App()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
         return;
     }
 

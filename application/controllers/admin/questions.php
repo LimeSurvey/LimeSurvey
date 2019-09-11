@@ -1258,7 +1258,7 @@ class questions extends Survey_Common_Action
 
             $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
             $aData['oQuestion'] = $oQuestion;
-            $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionBaseSettings('', true, false);
+            $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
             $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
@@ -1591,26 +1591,21 @@ class questions extends Survey_Common_Action
         }
     }
 
-    // private function getQuestionAttribute($type, $qid=0){
-    //
-    // }
-
     /**
      * This function prepares the data for the advanced question attributes view
      *
      * @access public
      * @return void
+     * @throws CException
      */
     public function ajaxquestionattributes()
     {
-
         $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
         $qid                = (int) Yii::app()->request->getParam('qid', 0);
         $type               = Yii::app()->request->getParam('question_type');
         $sQuestionTemplate  = Yii::app()->request->getParam('question_template', '');
         $sOldQuestionTemplate  = Yii::app()->request->getParam('old_question_template', '');
         $oSurvey = Survey::model()->findByPk($surveyid);
-        $questionTypeList = QuestionTemplate::getTypeToFolder();
 
         if ($oSurvey === null) {
             App()->end();
@@ -1622,7 +1617,7 @@ class questions extends Survey_Common_Action
         // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
         if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
             // get old custom question theme attributes
-            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTypeList[$type], $sOldQuestionTemplate, $type);
+            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($type, $sOldQuestionTemplate);
             if (!empty($aOldQuestionThemeAttributes)){ 
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
                     unset($aAttributesWithValues[$value['name']]);
@@ -1631,7 +1626,7 @@ class questions extends Survey_Common_Action
         }
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
-                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($type, $questionTypeList[$type], $sQuestionTemplate);
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($type, $sQuestionTemplate);
                 $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
         }
         uasort($aAttributesWithValues, 'categorySort');
@@ -1727,8 +1722,6 @@ class questions extends Survey_Common_Action
      */
     public function ajaxlabelsetpicker($sid, $match=0)
     {
-        $survey = Survey::model()->findByPk($sid);
-
         $criteria = new CDbCriteria;
         $language = null;
         if ($match === 1) {

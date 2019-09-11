@@ -39,6 +39,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
+
         //TODO: is this even used for anything? 30.08.2019
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
 
@@ -126,8 +127,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
-        $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
-        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionType, $questionTemplateFolderName, $sQuestionTemplate);
+        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionType, $sQuestionTemplate);
 
         $aAdvancedOptionsArray = [];
         if ($iQuestionID == null) {

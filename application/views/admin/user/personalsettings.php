@@ -13,21 +13,21 @@
         $selectormodeclass = App()->getConfig('defaultquestionselectormode');
     }
     
-    foreach ($aQuestionTypeList as $key=> $questionType) {
+    foreach ($aQuestionTypeList as $questionType) {
         $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
         if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
             $aQuestionTypeGroups[$htmlReadyGroup] = array(
                 'questionGroupName' => $questionType['group']
             );
         }
-            $imageName = $key;
+            $imageName = $questionType['type'];
             if ($imageName == ":") $imageName = "COLON";
             else if ($imageName == "|") $imageName = "PIPE";
             else if ($imageName == "*") $imageName = "EQUATION";
 
         $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
-            <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+            <img src="' . $questionType['image_path'] . '" />
         </div>';
         if ($imageName == 'S') {
             $questionType['detailpage'] = '
@@ -36,7 +36,7 @@
                 <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
             </div>';
         }
-        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
+        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
     }
 
     $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(

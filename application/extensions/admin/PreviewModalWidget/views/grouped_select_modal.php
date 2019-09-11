@@ -30,14 +30,14 @@
                     <div id="collapsible_<?=$sGroupTitle?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?=$sGroupTitle?>">
                       <div class="panel-body ls-space padding all-0">
                         <div class="list-group ls-space margin all-0">
-                          <?php foreach ($aGroupArray[$this->groupItemsKey] as $sItemKey => $aItemContent) { ?>
+                          <?php foreach ($aGroupArray[$this->groupItemsKey] as $aItemContent) { ?>
                             <a
                               href="#"
                               class="list-group-item selector__Item--select-<?=$this->widgetsJsName?> <?=@$aItemContent['htmlclasses']?>"
-                              data-selector="<?=!empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
-                              data-key="<?=$sItemKey?>"
+                              data-selector="<?=!empty($aItemContent['class']) ? $aItemContent['class'] : $aItemContent['type'] ?>"
+                              data-key="<?=$aItemContent['type']?>"
                               data-item-value='<?=json_encode([
-                                    "key" => $sItemKey,
+                                    "key" => $aItemContent['type'],
                                     "title" => htmlentities($aItemContent['title']),
                                     "itemArray" => $aItemContent
                                 ]); ?>'
@@ -46,7 +46,7 @@
                               <?=$aItemContent['title']?>
                                 <?php if (YII_DEBUG) {
                                     ?>
-                                  <em class="small"><?=gT($this->debugKeyCheck)?> <?=$sItemKey?></em>
+                                  <em class="small"><?=gT($this->debugKeyCheck)?> <?=$aItemContent['type']?></em>
                                 <?php
                                 } ?>
                             </a>
