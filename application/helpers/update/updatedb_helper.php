@@ -2868,7 +2868,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if($iOldDBVersion < 418) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->insert("{{plugins}}", [
-                'id' => null,
                 'name'               => 'PasswordRequirement',
                 'plugin_type'        => 'core',
                 'active'             => 1,
