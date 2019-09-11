@@ -33,4 +33,4 @@ const parseParameters = function(){
 }
 
 
-export default {parameters: parseParameters(), reparse: parseParameters };
+export default {parameters: parseParameters(), reparsedParameters: parseParameters };

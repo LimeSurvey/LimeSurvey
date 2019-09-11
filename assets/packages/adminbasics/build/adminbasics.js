@@ -20900,7 +20900,7 @@
 
   var parameterGlobals = {
     parameters: parseParameters(),
-    reparse: parseParameters
+    reparsedParameters: parseParameters
   };
 
   var activateSubSubMenues = function activateSubSubMenues() {

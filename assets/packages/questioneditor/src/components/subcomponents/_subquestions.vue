@@ -16,7 +16,6 @@ export default {
     data(){
         return {
             uniqueSelector: 'qid',
-            baseNonNumericPart : "SQ",
             type: 'subquestions',
             typeDefininition: 'question',
             typeDefininitionKey: 'title',
@@ -25,6 +24,7 @@ export default {
         };
     },
     computed: {
+        baseNonNumericPart() { return window.QuestionEditData.baseSQACode.subquestions},
         subquestionScales(){
             if(this.$store.state.currentQuestion.typeInformation.subquestions == 1) {
                 return [0];

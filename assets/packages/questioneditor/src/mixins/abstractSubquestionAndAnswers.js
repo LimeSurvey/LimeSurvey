@@ -35,14 +35,18 @@ export default {
         },
         getNewTitleFromCurrent(scaleId) {
             let nonNumericPart = this.baseNonNumericPart;
+            
             if(this.getLength(this.currentDataSet[scaleId]) > 0) {
                 nonNumericPart = (this.currentDataSet[scaleId][0].title || this.currentDataSet[scaleId][0].code).replace(/[0-9]/g,'');
             }
+
             let numericPart = reduce(this.currentDataSet[scaleId],(prev, oDataSet) => {
                 return max([prev, parseInt((oDataSet.title || oDataSet.code  ).replace(/[^0-9]/g,''))]);
             }, 0) + 1 ;
+
             this.$log.log('NewTitle', {nonNumericPart, numericPart});
-            return nonNumericPart+''+numericPart;
+
+            return nonNumericPart+String(numericPart).padStart(2,'0');
         },
         getRandomId(){
             return 'random'+Math.random().toString(36).substr(2, 7);
