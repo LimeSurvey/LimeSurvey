@@ -1,6 +1,10 @@
 <?php
 $topBarExtra = '';
 $exportdropdownHTML = '';
+$oSurvey = Survey::model()->findByPk($sid);
+if(!isset($respstatsread)) { $respstatsread = false; }
+if(!isset($onelanguage)) { $onelanguage = (safecount($oSurvey->allLanguages)>1); }
+
 if ($topBar['type'] == 'survey') {
     $aExportItemsArray = [];
 
