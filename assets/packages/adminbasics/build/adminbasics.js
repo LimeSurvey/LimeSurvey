@@ -20866,36 +20866,41 @@
 
   var merge_1 = merge;
 
-  var $GET = {};
-  forEach_1(window.location.search.substring(1).split('&'), function (value, index) {
-    try {
-      var keyValueArray = value.split("=");
-      $GET[keyValueArray[0]] = keyValueArray[1];
-    } catch (e) {}
-  });
-  var key = null;
-  var keyValuePairs = {};
-  window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach(function (value, index) {
-    if (value == 'sa') {
-      key = false;
-    }
-
-    if (key !== null) {
-      if (key === false) {
-        key = value;
-      } else {
-        keyValuePairs[key] = value;
+  var parseParameters = function parseParameters() {
+    var $GET = {};
+    var keyValuePairs = {};
+    forEach_1(window.location.search.substring(1).split('&'), function (value, index) {
+      try {
+        var keyValueArray = value.split("=");
+        $GET[keyValueArray[0]] = keyValueArray[1];
+      } catch (e) {}
+    });
+    var key = null;
+    window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach(function (value, index) {
+      if (value == 'sa') {
         key = false;
       }
-    }
-  });
-  var combined = merge_1($GET, keyValuePairs);
-  var parameterGlobals = {
-    parameters: {
+
+      if (key !== null) {
+        if (key === false) {
+          key = value;
+        } else {
+          keyValuePairs[key] = value;
+          key = false;
+        }
+      }
+    });
+    var combined = merge_1($GET, keyValuePairs);
+    return {
       $GET: $GET,
       keyValuePairs: keyValuePairs,
       combined: combined
-    }
+    };
+  };
+
+  var parameterGlobals = {
+    parameters: parseParameters(),
+    reparse: parseParameters
   };
 
   var activateSubSubMenues = function activateSubSubMenues() {
