@@ -21,7 +21,7 @@
         },
         computed: {
             curValue: {
-                get() { return this.currentValue || this.$store.getter.gid },
+                get() { return this.currentValue },
                 set(newValue) { 
                     this.$emit('change', newValue);
                 },
@@ -34,6 +34,11 @@
                     return this.elOptions.classes.join(' ');
                 }
                 return '';
+            }
+        },
+        mounted() {
+            if(this.curValue == 0) {
+                this.curValue = this.$store.getter.gid;
             }
         }
     };
