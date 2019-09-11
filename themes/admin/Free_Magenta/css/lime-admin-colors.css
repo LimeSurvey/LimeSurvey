@@ -479,7 +479,7 @@ output {
   color: #858585; }
 
 .form-control[disabled] {
-  color: #e3e3e3;
+  color: #858585;
   background-color: #f5f5f5;
   opacity: 1; }
 
