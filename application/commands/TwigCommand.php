@@ -18,22 +18,24 @@ class TwigCommand extends CConsoleCommand  {
       Yii::import('application.helpers.expressions.em_manager_helper', true);
       Yii::app()->assetManager->setBasePath(realpath(__DIR__.'/../../tmp/'));
 
+      Yii::app()->setConfig('force_xmlsettings_for_survey_rendering', true);
+
       $aLogs = array();
 
       // TODO: make this a parameter so the command line can be used for custom themes, question themes, etc; or create subfunctions ; or both
-
       $sThemeDir = dirname(__FILE__).'/../../themes/survey';
 
       $oThemeDir = new DirectoryIterator($sThemeDir);
+
       foreach ($oThemeDir as $fileinfo) {
-        if ($fileinfo->getFilename() != ".." && $fileinfo->getFilename() != "."){
+
+        if ($fileinfo->getFilename() != ".." && $fileinfo->getFilename() != "." && $fileinfo->getFilename() != "index.html"){
         $templatename = $fileinfo->getFilename();
 
         $oTemplateForPreview = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
         $thissurvey = $oTemplateForPreview->getDefaultDataForRendering();
         $thissurvey['templatedir'] = $templatename;
 
-        // TODO : for each screen
         $aScreenList = $oTemplateForPreview->getScreenListWithLayoutAndContent();
 
         foreach($aScreenList as $sScreenName => $aLayoutAndContent){

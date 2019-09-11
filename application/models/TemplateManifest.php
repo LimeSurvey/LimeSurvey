@@ -529,7 +529,15 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getTemplateURL()
     {
-        return Template::getTemplateURL($this->sTemplateName);
+
+      // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+      if (Template::isStandardTemplate($this->sTemplateName)) {
+          return Yii::app()->getConfig("standardthemerooturl").'/'.$this->sTemplateName.'/';
+      } else {
+          return  Yii::app()->getConfig("userthemerooturl").'/'.$this->sTemplateName.'/';
+      }
+
+    //    return Template::getTemplateURL($this->sTemplateName);
     }
 
 
@@ -1234,5 +1242,22 @@ class TemplateManifest extends TemplateConfiguration
         }
 
         return $sTemplateNames;
+    }
+
+
+
+    /**
+     * PHP getter magic method.
+     * This method is overridden so that AR attributes can be accessed like properties.
+     * @param string $name property name
+     * @return mixed property value
+     * @see getAttribute
+     */
+    public function __get($name)
+    {
+      if ($name=="options"){
+        return json_encode( $this->config->options);
+      }
+      return parent::__get($name);
     }
 }

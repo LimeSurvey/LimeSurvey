@@ -364,6 +364,8 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Get an instance of a fitting TemplateConfiguration
+     * NOTE: for rendering prupose, you should never call this function directly, but rather Template::getInstance.
+     *       if force_xmlsettings_for_survey_rendering is on, then the configuration from the XML file should be loaded, not the one from database
      *
      * @param string $sTemplateName
      * @param integer $iSurveyGroupId
@@ -440,7 +442,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria = new CDbCriteria;
 
         $criteria->join = 'INNER JOIN {{templates}} AS template ON '.Yii::app()->db->quoteColumnName("t.template_name").' = template.name';
-        $criteria->together = true; 
+        $criteria->together = true;
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');

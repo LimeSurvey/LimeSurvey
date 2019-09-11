@@ -313,7 +313,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function getTemplateForRessource($sRessource)
     {
-        $oRTemplate = Template::model()->getInstance();
+        $oRTemplate =  Template::getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
 

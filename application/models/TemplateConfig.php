@@ -267,7 +267,7 @@ class TemplateConfig extends CActiveRecord
         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
         // Remove/Replace mother template files
-        if ( ( $this->template instanceof Template &&  $this->template->extends) || !empty($this->config->metadata->extends) || Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') ){
+        if ( Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') || ( $this->template instanceof Template &&  $this->template->extends) || !empty($this->config->metadata->extends)   ){
           $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
           $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
