@@ -259,7 +259,7 @@ export default {
 
 .navbar,
 .navbar-default {
-    padding-left: 15px;
+    padding-left: 1px;
     border: none;
 }
 
