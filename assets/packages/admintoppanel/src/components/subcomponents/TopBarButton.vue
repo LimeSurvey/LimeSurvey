@@ -147,6 +147,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.topbarbutton>a {
+    margin:1px;
+}
 .icon {
     margin-right: 2px;
 }

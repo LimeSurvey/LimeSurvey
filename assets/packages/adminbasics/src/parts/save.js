@@ -25,7 +25,7 @@ const SaveController = () => {
             formId = '#' + $(that).attr('data-form-to-save');
             form = [$(formId)];
         } else {
-            form = $('#pjax-content').find('form');
+            form = $('#pjax-content').find('form').first();
         }
 
         if (form.length < 1)
@@ -93,7 +93,21 @@ const SaveController = () => {
                     } else {
                         $form.submit();
                     }
-                    displayLoadingState(this);
+                    
+                    // check if there are any required inputs that are not filled
+                    var cntInvalid = 0;
+                    var requiredInputs =  $form.find('input,select').filter("[required='required']");
+                    requiredInputs.each(function () {
+                        if (this.validity.valueMissing == true) {
+                            cntInvalid += 1;
+                        }
+                    });
+                    // show loading state only if all required fields are filled, otherwise enable submit button again
+                    if (cntInvalid === 0){
+                        displayLoadingState(this);
+                    } else {
+                        $('#save-form-button').removeClass('disabled');
+                    }
                     return false;
                 },
                 on: 'click'
@@ -191,7 +205,7 @@ const SaveController = () => {
                 },
                 on: 'lsStopLoading'
             },
-            _checkStopLoading: {
+            _checkStopLoadingCreateCopyImport: {
                 check: '#create-import-copy-survey',
                 run: function(ev) {
                     stopDisplayLoadingState();
@@ -227,6 +241,7 @@ const SaveController = () => {
                 forEach(checks(), (checkItem) => {
                     if(checkItem.check == '#'+button.id) {
                         checkItem.run(stubEvent, button);
+                        formSubmitting = false;
                     }
                 });
             }

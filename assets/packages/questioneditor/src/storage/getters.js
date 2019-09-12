@@ -11,8 +11,13 @@ export default {
         return returner;
     },
     surveyid: () => (window.QuestionEditData.surveyObject.sid),
-    gid: () => (window.QuestionEditData.gid),
-    surveyObject: () => (window.QuestionEditData.surveyObject),
+    gid: () => {
+        if(LS) {
+            return LS.reparsedParameters().combined.gid;
+        }
+        return window.QuestionEditData.gid;
+    },
+    surveyObject: () => window.QuestionEditData.surveyObject,
     currentSelectedTheme: (state) => {
         return state.currentSelectedTheme;
     },

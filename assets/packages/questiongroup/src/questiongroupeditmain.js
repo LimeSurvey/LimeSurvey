@@ -6,7 +6,7 @@ import {PluginLog} from "./mixins/logSystem";
 
 import Loader from './helperComponents/loader.vue';
 
-Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];

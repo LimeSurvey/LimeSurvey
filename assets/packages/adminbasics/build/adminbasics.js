@@ -39,21 +39,6 @@
     return Constructor;
   }
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
   function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
       throw new TypeError("Super expression must either be null or a function");
@@ -19086,7 +19071,7 @@
         formId = '#' + $(that).attr('data-form-to-save');
         form = [$(formId)];
       } else {
-        form = $('#pjax-content').find('form');
+        form = $('#pjax-content').find('form').first();
       }
 
       if (form.length < 1) throw "No form Found this can't be!";
@@ -19107,7 +19092,7 @@
     },
         //###########PRIVATE
     checks = function checks() {
-      return _defineProperty({
+      return {
         _checkExportButton: {
           check: '[data-submit-form]',
           run: function run(ev) {
@@ -19154,9 +19139,23 @@
               $firstSubmit.trigger('click');
             } else {
               $form.submit();
+            } // check if there are any required inputs that are not filled
+
+
+            var cntInvalid = 0;
+            var requiredInputs = $form.find('input,select').filter("[required='required']");
+            requiredInputs.each(function () {
+              if (this.validity.valueMissing == true) {
+                cntInvalid += 1;
+              }
+            }); // show loading state only if all required fields are filled, otherwise enable submit button again
+
+            if (cntInvalid === 0) {
+              displayLoadingState(this);
+            } else {
+              $('#save-form-button').removeClass('disabled');
             }
 
-            displayLoadingState(this);
             return false;
           },
           on: 'click'
@@ -19250,15 +19249,16 @@
             formSubmitting = false;
           },
           on: 'lsStopLoading'
-        }
-      }, "_checkStopLoading", {
-        check: '#create-import-copy-survey',
-        run: function run(ev) {
-          stopDisplayLoadingState();
-          formSubmitting = false;
         },
-        on: 'lsStopLoading'
-      });
+        _checkStopLoadingCreateCopyImport: {
+          check: '#create-import-copy-survey',
+          run: function run(ev) {
+            stopDisplayLoadingState();
+            formSubmitting = false;
+          },
+          on: 'lsStopLoading'
+        }
+      };
     };
 
     var stubEvent = {
@@ -19285,6 +19285,7 @@
           forEach_1(checks(), function (checkItem) {
             if (checkItem.check == '#' + button.id) {
               checkItem.run(stubEvent, button);
+              formSubmitting = false;
             }
           });
         }
@@ -20019,7 +20020,7 @@
     } catch (e) {}
   }());
 
-  var _defineProperty$1 = defineProperty;
+  var _defineProperty = defineProperty;
 
   /**
    * The base implementation of `assignValue` and `assignMergeValue` without
@@ -20031,8 +20032,8 @@
    * @param {*} value The value to assign.
    */
   function baseAssignValue(object, key, value) {
-    if (key == '__proto__' && _defineProperty$1) {
-      _defineProperty$1(object, key, {
+    if (key == '__proto__' && _defineProperty) {
+      _defineProperty(object, key, {
         'configurable': true,
         'enumerable': true,
         'value': value,
@@ -20692,8 +20693,8 @@
    * @param {Function} string The `toString` result.
    * @returns {Function} Returns `func`.
    */
-  var baseSetToString = !_defineProperty$1 ? identity_1 : function(func, string) {
-    return _defineProperty$1(func, 'toString', {
+  var baseSetToString = !_defineProperty ? identity_1 : function(func, string) {
+    return _defineProperty(func, 'toString', {
       'configurable': true,
       'enumerable': false,
       'value': constant_1(string),
@@ -20865,36 +20866,41 @@
 
   var merge_1 = merge;
 
-  var $GET = {};
-  forEach_1(window.location.search.substring(1).split('&'), function (value, index) {
-    try {
-      var keyValueArray = value.split("=");
-      $GET[keyValueArray[0]] = keyValueArray[1];
-    } catch (e) {}
-  });
-  var key = null;
-  var keyValuePairs = {};
-  window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach(function (value, index) {
-    if (value == 'sa') {
-      key = false;
-    }
-
-    if (key !== null) {
-      if (key === false) {
-        key = value;
-      } else {
-        keyValuePairs[key] = value;
+  var parseParameters = function parseParameters() {
+    var $GET = {};
+    var keyValuePairs = {};
+    forEach_1(window.location.search.substring(1).split('&'), function (value, index) {
+      try {
+        var keyValueArray = value.split("=");
+        $GET[keyValueArray[0]] = keyValueArray[1];
+      } catch (e) {}
+    });
+    var key = null;
+    window.location.href.substring(window.location.href.indexOf('admin') - 1).split('/').forEach(function (value, index) {
+      if (value == 'sa') {
         key = false;
       }
-    }
-  });
-  var combined = merge_1($GET, keyValuePairs);
-  var parameterGlobals = {
-    parameters: {
+
+      if (key !== null) {
+        if (key === false) {
+          key = value;
+        } else {
+          keyValuePairs[key] = value;
+          key = false;
+        }
+      }
+    });
+    var combined = merge_1($GET, keyValuePairs);
+    return {
       $GET: $GET,
       keyValuePairs: keyValuePairs,
       combined: combined
-    }
+    };
+  };
+
+  var parameterGlobals = {
+    parameters: parseParameters(),
+    reparsedParameters: parseParameters
   };
 
   var activateSubSubMenues = function activateSubSubMenues() {

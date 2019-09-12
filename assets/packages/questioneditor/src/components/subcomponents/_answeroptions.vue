@@ -16,7 +16,6 @@ export default {
     data(){
         return {
             uniqueSelector: 'aid',
-            baseNonNumericPart : "AO",
             type: 'answeroptions',
             typeDefininition: 'answer',
             typeDefininitionKey: 'code',
@@ -25,6 +24,7 @@ export default {
         };
     },
     computed: {
+        baseNonNumericPart() { return window.QuestionEditData.baseSQACode.answeroptions},
         answeroptionscales(){
             if(this.$store.state.currentQuestion.typeInformation.answerscales == 1) {
                 return [0];
