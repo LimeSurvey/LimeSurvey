@@ -11,6 +11,7 @@ import SettingQuestiontheme from './_inputtypes/questiontheme.vue';
 import SettingQuestiongroup from './_inputtypes/questiongroup.vue';
 import SettingColumns from './_inputtypes/columns.vue';
 import StubSet from './_inputtypes/stub.vue';
+import CustomThemePreview from './_inputtypes/customthemepreview.vue';
 
 import eventChild from '../mixins/eventChild.js';
 
@@ -28,6 +29,7 @@ export default {
         'setting-buttongroup': SettingButtongroup,
         'setting-columns': SettingColumns,
         'stub-set' : StubSet,
+        'custom-theme-preview': CustomThemePreview,
     },
     props: {
         readonly : {type: Boolean, default: false}
@@ -95,6 +97,10 @@ export default {
                             :readonly="isReadonly(generalSetting)"
                             @change="reactOnChange($event, generalSetting)"
                             ></component>
+                            <custom-theme-preview 
+                                v-if="generalSetting.formElementId === 'question_template'"
+                                :theme="generalSetting.formElementValue">
+                            </custom-theme-preview>
                         </div>
                     </div>
                 </div>

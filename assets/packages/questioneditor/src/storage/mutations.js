@@ -176,5 +176,11 @@ export default {
     },
     setStoredEvent: (state, newEvent) => {
         state.storedEvent = newEvent;
-    }
+    },
+    setCurrentSelectedTheme: (state, newValue) => {
+        state.currentValue = newValue;
+    },
+    setPreviewImageCustomTheme: (state, newValue) => {
+        state.previewImageCustomTheme = newValue;
+    },
 };

@@ -220,5 +220,19 @@ export default {
                 reject
             );
         });
-    }
+    },
+    getPreviewImageForCustomTheme: (context) => {
+        return new Promise((resolve, reject) => {
+            let theme = context.getters.currentSelectedTheme;
+            let url = LS.createUrl('/admin/questioneditor/sa/getPreviewImageForCustomTheme', theme);
+
+            ajax.methods.$_get(url)
+                .then( (result) => {
+                    context.commit('setPreviewImageCustomTheme', result);
+                    resolve(result);
+                },
+                reject
+            )
+        });
+    },
 };

@@ -335,6 +335,17 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aGeneralOptionsArray);
     }
 
+    /**
+     * 
+     */
+    public function getPreviewImageForCustomTheme() {
+        $request = Yii::app()->request;
+        $type = $request->getParam('type');
+        $questionTemplateList = QuestionTemplate::getQuestionTemplateList($type);
+
+        $this->renderJSON($questionTemplateList);
+    }
+
     public function getAdvancedOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false, $question_template='core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);

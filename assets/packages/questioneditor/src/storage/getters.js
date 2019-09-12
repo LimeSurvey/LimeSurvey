@@ -12,6 +12,8 @@ export default {
     },
     surveyid: () => (window.QuestionEditData.surveyObject.sid),
     gid: () => (window.QuestionEditData.gid),
-    surveyObject: () => window.QuestionEditData.surveyObject
-
+    surveyObject: () => (window.QuestionEditData.surveyObject),
+    currentSelectedTheme: (state) => {
+        return state.currentSelectedTheme;
+    },
 };

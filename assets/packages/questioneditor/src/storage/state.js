@@ -28,5 +28,7 @@ export default {
     activeLanguage: '',
     inTransfer: false,
     alerts: [],
-    storedEvent: null
+    storedEvent: null,
+    currentSelectedTheme: '',
+    previewImageCustomTheme: {},
 };
