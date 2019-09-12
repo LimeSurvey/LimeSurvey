@@ -14,6 +14,9 @@ export default {
     setDebug: (state, newValue) => {
         state.debug = newValue;
     },
+    setFileRepresentation: (state, newValue) => {
+        state.fileRepresentation = newValue;
+    },
     copyFile: (state, file) => {
         state.fileInTransit = file;
         state.transitType = 'copy';

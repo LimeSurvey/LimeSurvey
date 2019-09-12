@@ -235,14 +235,14 @@ class questiongroups extends Survey_Common_Action
      * @access public
      * @return void
      */
-    public function delete($iSurveyId=null, $iGroupId=null)
+    public function delete($iSurveyId=null, $iGroupId=null, $asJson=false)
     {
         if (is_null($iGroupId)) {
             $iGroupId = Yii::app()->getRequest()->getPost('gid');
         }
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid"=>$iGroupId));
         if (empty($oQuestionGroup)) {
-            throw new CHttpException(401, gT("Invalid question id"));
+            throw new CHttpException(401, gT("Invalid question group id"));
         }
         /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
@@ -257,6 +257,20 @@ class questiongroups extends Survey_Common_Action
 
         $iGroupId = sanitize_int($iGroupId);
         $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
+        
+        if ($asJson !== false) {
+            $success = $iGroupsDeleted > 0;
+            $this->renderJSON(
+                [
+                    'success' => $success,
+                    'deletedGroups' => $iGroupsDeleted, 
+                    'message' => ($success ?gT('The question group was deleted.') : gT('Group could not be deleted')),
+                    'redirect' => $this->getController()->createUrl('admin/survey/sa/listquestiongroups/', ['surveyid' => $iSurveyId])
+                ]
+            );
+            return;
+        }
+
 
         if ($iGroupsDeleted > 0) {
             QuestionGroup::model()->updateGroupOrder($iSurveyId);
@@ -264,6 +278,7 @@ class questiongroups extends Survey_Common_Action
         } else {
             Yii::app()->setFlashMessage(gT('Group could not be deleted'), 'error');
         }
+        
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyId));
@@ -442,17 +457,28 @@ class questiongroups extends Survey_Common_Action
         } else {
             $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup, $questionGroup);
         }
+
+        $sRedirectUrl = $this->getController()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $iSurveyId, 'gid' => $oQuestionGroup->gid]);
         //$this->_applyI10N($oQuestionGroup, $oQuestionGroupI10N);
 
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
-        $this->renderJSON([
-            'success' => $success,
-            'message' => gT('Question group successfully stored'),
-            'questionGroupId' => $oQuestionGroup->gid,
-            'redirect' => $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId),
-            'transfer' => [$questionGroup, $questionGroupI10N],
-        ]);
+        $aQuestionGroup = $oQuestionGroup->attributes;
+        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
+        $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
+            LimeExpressionManager::GetLastPrettyPrintExpression()
+        );
+
+        $this->renderJSON(
+            [
+                'success' => $success,
+                'message' => gT('Question group successfully stored'),
+                'questionGroupId' => $oQuestionGroup->gid,
+                'questiongroupData' => $aQuestionGroup,
+                'redirect' => $sRedirectUrl,
+                'transfer' => [$questionGroup, $questionGroupI10N],
+            ]
+        );
         Yii::app()->close();
     }
     /**
@@ -708,7 +734,7 @@ class questiongroups extends Survey_Common_Action
     public function getQuestionGroupTopBar($sid, $gid=null) {
         $oSurvey = Survey::model()->findByPk($sid);
         $oQuestionGroup = null;
-        if( $gid !== null ) {
+        if( $gid ) {
             $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
             $sumcount  = safecount($oQuestionGroup->questions);
         } else {
@@ -766,10 +792,12 @@ class questiongroups extends Survey_Common_Action
 
         $oQuestionGroup = new QuestionGroup();
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
+        
         if ($oQuestionGroup == null) {
             throw new CException("Object creation failed, input array malformed or invalid");
         }
-
+        // Always add at the end
+        $oQuestionGroup->group_order = safecount($oSurvey->groups)+1;
         $saved = $oQuestionGroup->save();
         if ($saved == false) {
             throw new CException("Object creation failed, couldn't save.\n ERRORS:".print_r($oQuestionGroup->getErrors(), true));

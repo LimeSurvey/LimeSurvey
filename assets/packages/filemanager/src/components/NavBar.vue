@@ -1,22 +1,27 @@
 <script>
 import UploadModal from './subcomponents/_uploadModal';
+import applyLoader from '../mixins/applyLoader';
 
 export default {
   name: 'NavBar',
   components: {UploadModal},
+  mixins: [applyLoader],
   data()  {
     return {};
   },
   computed: {
     fileInTransit() {
       return this.$store.state.fileInTransit != null;
+    },
+    transitType() {
+        return this.$store.state.transitType == 'copy' ? 'Copy' : 'Move';
     }
   },
   methods: {
     onModalUploadFinished() {
-        this.$emit('loading');
+        this.loadingState = true;
         this.$store.dispatch('getFileList').finally(
-        ()=>{this.$emit('endloading');}
+        ()=>{this.loadingState = false;}
       );
     },
     openUploadModal() {
@@ -38,28 +43,19 @@ export default {
       this.$store.commit('cancelTransit');
     },
     runTransit() {
-      this.$emit('loading');
+      this.loadingState = true;
       let transitType = this.$store.state.transitType+'';
       this.$store.dispatch('applyTransition').then(
         (result) => {
-          this.$store.dispatch('getFileList').then(
-            (result) => {
-              this.$emit('endloading');
-              if(transitType == 'move') {
+            if(transitType == 'move') {
                 this.$store.commit('cancelTransit');
-              }
-            },
-            (error) => {
-              this.$emit('endloading');
-              this.$log.error(error)
             }
-          )},
+        },
         (error) => {
-          this.$emit('endloading');
-          this.$log.error(error)
+          this.$log.error(error);
         }
-      )
-    },
+      ).finally(() => { this.loadingState = false; });
+    }
   }
 }
 </script>
@@ -71,8 +67,8 @@ export default {
         <span class="navbar-brand">{{$store.state.currentFolder}}</span>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li v-if="fileInTransit"><a  href="#" @click.prevent="cancelTransit">{{'Cancel transit' | translate}}</a></li>
-        <li v-if="fileInTransit"><a  href="#" @click.prevent="runTransit">{{'Copy/Move'|translate}}</a></li>
+        <li v-if="fileInTransit"><a  href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
+        <li v-if="fileInTransit"><a  href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
         <li><a href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
       </ul>
     </div>
@@ -82,11 +78,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .scoped-navbar-fixes {
-    .navbar-nav > li > a:hover,
-    .navbar-nav > li > a:active
-     {
-      text-decoration: 'underline';
-      color: rgb(80,80,80);
-    }
+        .navbar-nav > li > a {
+            border: none;
+            background: linear-gradient(to right, transparent 50.03%,  #989898 50%);
+            background: linear-gradient(to right, transparent 50.03%,  var(--LS-admintheme-hovercolor) 50%);
+            background-size: 200%;
+            background-position: 0;    
+            transition: all 0.3s;
+            &:hover,
+            &:active,
+            &:focus {
+                background-position: -99.9%;
+                color: white
+            }
+        }
   }
 </style>

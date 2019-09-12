@@ -1629,14 +1629,18 @@ class questionHelper
 
         $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'type = :type AND extends = :extends', ['type' => $type, 'extends' => '']);
 
-        $xmlConfigPath = App()->getConfig('rootdir') . $sCoreTypeXmlPath['xml_path'] . '/config.xml';
+        $xmlConfigPath = App()->getConfig('rootdir') .'/'. $sCoreTypeXmlPath['xml_path'] . '/config.xml';
         libxml_disable_entity_loader(false);
         $oCoreConfig = simplexml_load_file($xmlConfigPath);
         $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
         if ($sQuestionThemeName !== null) {
-            $themePath = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
-            $xml_config = simplexml_load_file(App()->getConfig('rootdir') . $themePath['xml_path']. '/config.xml');
-            $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+            $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
+            if (!empty($questionTheme)) {
+                $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
+                $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+            } else {
+                $attributes = json_decode(json_encode((array)$oCoreConfig->attributes), true);
+            }
         }
         libxml_disable_entity_loader(true);
 

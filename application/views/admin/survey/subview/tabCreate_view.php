@@ -29,6 +29,8 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 ?>
 <!-- Form submited by save button menu bar -->
 <?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
+    <!-- Submit button, needs to be the first item for the script to take it -->
+    <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-1 ls-flex-column fill align-items-center align content-center">
             <!-- Previous pane button -->
@@ -100,8 +102,6 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
     </div>
     <div class="row">
             <input type="hidden" name="saveandclose" id="submitaddnesurvey" value="1" />
-            <!-- Submit button -->
-            <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
     </div>
 </form>
 

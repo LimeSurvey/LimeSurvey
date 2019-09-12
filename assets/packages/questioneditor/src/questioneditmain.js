@@ -8,7 +8,7 @@ import Loader from './helperComponents/loader.vue';
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
 
-Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 
 //Ignore phpunits testing tags

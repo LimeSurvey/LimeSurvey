@@ -364,6 +364,10 @@ export default {
             if(payload.collectMenus) {
                 promises.push(this.$store.dispatch('collectMenus'));
             }
+            if(payload.activeMenuIndex) {
+                this.controlActiveLink();
+                promises.push(Promise.resolve());
+            }
             Promise.all(promises)
                 .then((results) => {})
                 .catch((errors) => {

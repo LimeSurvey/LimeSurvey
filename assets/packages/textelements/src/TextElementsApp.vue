@@ -82,6 +82,9 @@ export default {
         }
     },
     methods: {
+        stopLoadingIcon() {
+            $('#create-import-copy-survey').trigger('lsStopLoading');
+        },
         CKErrorManagement(error) {
             this.$log.trace(error);
         },
@@ -193,7 +196,7 @@ ${scriptContent}
             <div class="row">
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="surveyTitle">{{'Survey title' | translate }}</label>
-                    <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" v-model="currentSurveyTitle">
+                    <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" v-model="currentSurveyTitle">
                 </div>
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="dateFormat">{{'Date format' | translate }}</label>

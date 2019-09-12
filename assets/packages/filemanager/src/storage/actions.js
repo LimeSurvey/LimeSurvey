@@ -27,6 +27,28 @@ export default {
         ctx.commit('setCurrentFolder', folderObject.folder);
         return ctx.dispatch('getFileList');
     },
+    deleteFile: (ctx, file) => {
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_post(
+                window.FileManager.baseUrl+'deleteFile', 
+                {
+                    surveyid: ctx.state.currentSurveyId, 
+                    file: file
+                }
+            ).then(
+                (deleteResult) => {
+                    ctx.dispatch('getFileList').then(
+                        (result)=>{
+                            ctx.commit('setFileList', result.data);
+                            resolve(result);
+                        }, 
+                        (error) =>{ reject(error); }
+                    )
+                },
+                (error) =>{ reject(error); }
+            );
+        });
+    },
     applyTransition: (ctx) => {
         return new Promise((resolve, reject) => {
             ajax.methods.$_post(
@@ -37,10 +59,15 @@ export default {
                     file: ctx.state.fileInTransit, 
                     action: ctx.state.transitType
                 }).then(
-                (result)=>{
-                    ctx.commit('setFileList', result.data);
-                    resolve(result);
-                }, 
+                (transitResult) => {
+                    ctx.dispatch('getFileList').then(
+                        (result)=>{
+                            ctx.commit('setFileList', result.data);
+                            resolve(result);
+                        }, 
+                        (error) =>{ reject(error); }
+                    )
+                },
                 (error) =>{ ctx.commit('cancelTransit'); reject(error); }
             );
         });

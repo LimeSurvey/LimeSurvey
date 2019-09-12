@@ -19054,6 +19054,7 @@
   var forEach_1 = forEach;
 
   var SaveController = function SaveController() {
+    var formSubmitting = false; // Attach this <input> tag to form to check for closing after save
 
     var closeAfterSaveInput = $("<input>").attr("type", "hidden").attr("name", "close-after-save");
     /**
@@ -19070,11 +19071,14 @@
         formId = '#' + $(that).attr('data-form-to-save');
         form = [$(formId)];
       } else {
-        form = $('#pjax-content').find('form');
+        form = $('#pjax-content').find('form').first();
       }
 
       if (form.length < 1) throw "No form Found this can't be!";
       return form;
+    },
+        isSubmitting = function isSubmitting() {
+      return formSubmitting;
     },
         displayLoadingState = function displayLoadingState(el) {
       if ($(el).data('form-id') == 'addnewsurvey') {
@@ -19092,37 +19096,34 @@
         _checkExportButton: {
           check: '[data-submit-form]',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
           },
           on: 'click'
         },
         _checkSaveButton: {
           check: '#save-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
           },
           on: 'click'
         },
@@ -19131,10 +19132,30 @@
           run: function run(ev) {
             ev.preventDefault();
             var formid = '#' + $(this).attr('data-form-id'),
-                $form = $(formid); //alert($form.find('[type="submit"]').attr('id'));
+                $form = $(formid),
+                $firstSubmit = $form.find('[type="submit"]').first();
 
-            $form.find('[type="submit"]').trigger('click');
-            displayLoadingState(this);
+            if ($firstSubmit.length > 0) {
+              $firstSubmit.trigger('click');
+            } else {
+              $form.submit();
+            } // check if there are any required inputs that are not filled
+
+
+            var cntInvalid = 0;
+            var requiredInputs = $form.find('input,select').filter("[required='required']");
+            requiredInputs.each(function () {
+              if (this.validity.valueMissing == true) {
+                cntInvalid += 1;
+              }
+            }); // show loading state only if all required fields are filled, otherwise enable submit button again
+
+            if (cntInvalid === 0) {
+              displayLoadingState(this);
+            } else {
+              $('#save-form-button').removeClass('disabled');
+            }
+
             return false;
           },
           on: 'click'
@@ -19142,32 +19163,37 @@
         _checkSaveAndNewButton: {
           check: '#save-and-new-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
             $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
           },
           on: 'click'
         },
         _checkSaveAndCloseButton: {
           check: '#save-and-close-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
             closeAfterSaveInput.val("true");
             $form.append(closeAfterSaveInput);
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
+            formSubmitting = true;
+
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
+            }
           },
           on: 'click'
         },
@@ -19183,7 +19209,7 @@
               name: 'saveandclose',
               value: '1'
             }).appendTo($form);
-            $form.find('[type="submit"]').trigger('click');
+            $form.find('[type="submit"]').first().trigger('click');
             displayLoadingState(this);
             return false;
           },
@@ -19192,20 +19218,18 @@
         _checkSaveAndNewQuestionButton: {
           check: '#save-and-new-question-button',
           run: function run(ev) {
+            var button = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             ev.preventDefault();
             var $form = getForm(this);
+            formSubmitting = true;
             $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
 
-            try {
-              for (var instanceName in CKEDITOR.instances) {
-                CKEDITOR.instances[instanceName].updateElement();
-              }
-            } catch (e) {
-              console.ls.log('Seems no CKEDITOR4 is loaded');
+            if ($form.data('isvuecomponent') == true) {
+              LS.EventBus.$emit('componentFormSubmit', button);
+            } else {
+              $form.find('[type="submit"]').first().trigger('click');
+              displayLoadingState(this);
             }
-
-            $form.find('[type="submit"]').first().trigger('click');
-            displayLoadingState(this);
           },
           on: 'click'
         },
@@ -19222,13 +19246,28 @@
           check: '#in_survey_common',
           run: function run(ev) {
             stopDisplayLoadingState();
+            formSubmitting = false;
+          },
+          on: 'lsStopLoading'
+        },
+        _checkStopLoadingCreateCopyImport: {
+          check: '#create-import-copy-survey',
+          run: function run(ev) {
+            stopDisplayLoadingState();
+            formSubmitting = false;
           },
           on: 'lsStopLoading'
         }
       };
-    }; //############PUBLIC
+    };
 
+    var stubEvent = {
+      isStub: true,
+      preventDefault: function preventDefault() {
+        console.ls.log("Stub prevented");
+      } //############PUBLIC
 
+    };
     return function () {
       forEach_1(checks(), function (checkItem) {
         var item = checkItem.check;
@@ -19240,10 +19279,1592 @@
           adminCoreLSConsole.log($(item), 'on', checkItem.on, 'run', checkItem.run);
         }
       });
+      LS.EventBus.$off("saveButtonCalled");
+      LS.EventBus.$on("saveButtonCalled", function (button) {
+        if (!isSubmitting()) {
+          forEach_1(checks(), function (checkItem) {
+            if (checkItem.check == '#' + button.id) {
+              checkItem.run(stubEvent, button);
+              formSubmitting = false;
+            }
+          });
+        }
+      });
     };
   };
 
   var saveController = SaveController();
+
+  /**
+   * Removes all key-value entries from the list cache.
+   *
+   * @private
+   * @name clear
+   * @memberOf ListCache
+   */
+  function listCacheClear() {
+    this.__data__ = [];
+    this.size = 0;
+  }
+
+  var _listCacheClear = listCacheClear;
+
+  /**
+   * Performs a
+   * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+   * comparison between two values to determine if they are equivalent.
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to compare.
+   * @param {*} other The other value to compare.
+   * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+   * @example
+   *
+   * var object = { 'a': 1 };
+   * var other = { 'a': 1 };
+   *
+   * _.eq(object, object);
+   * // => true
+   *
+   * _.eq(object, other);
+   * // => false
+   *
+   * _.eq('a', 'a');
+   * // => true
+   *
+   * _.eq('a', Object('a'));
+   * // => false
+   *
+   * _.eq(NaN, NaN);
+   * // => true
+   */
+  function eq(value, other) {
+    return value === other || (value !== value && other !== other);
+  }
+
+  var eq_1 = eq;
+
+  /**
+   * Gets the index at which the `key` is found in `array` of key-value pairs.
+   *
+   * @private
+   * @param {Array} array The array to inspect.
+   * @param {*} key The key to search for.
+   * @returns {number} Returns the index of the matched value, else `-1`.
+   */
+  function assocIndexOf(array, key) {
+    var length = array.length;
+    while (length--) {
+      if (eq_1(array[length][0], key)) {
+        return length;
+      }
+    }
+    return -1;
+  }
+
+  var _assocIndexOf = assocIndexOf;
+
+  /** Used for built-in method references. */
+  var arrayProto = Array.prototype;
+
+  /** Built-in value references. */
+  var splice = arrayProto.splice;
+
+  /**
+   * Removes `key` and its value from the list cache.
+   *
+   * @private
+   * @name delete
+   * @memberOf ListCache
+   * @param {string} key The key of the value to remove.
+   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+   */
+  function listCacheDelete(key) {
+    var data = this.__data__,
+        index = _assocIndexOf(data, key);
+
+    if (index < 0) {
+      return false;
+    }
+    var lastIndex = data.length - 1;
+    if (index == lastIndex) {
+      data.pop();
+    } else {
+      splice.call(data, index, 1);
+    }
+    --this.size;
+    return true;
+  }
+
+  var _listCacheDelete = listCacheDelete;
+
+  /**
+   * Gets the list cache value for `key`.
+   *
+   * @private
+   * @name get
+   * @memberOf ListCache
+   * @param {string} key The key of the value to get.
+   * @returns {*} Returns the entry value.
+   */
+  function listCacheGet(key) {
+    var data = this.__data__,
+        index = _assocIndexOf(data, key);
+
+    return index < 0 ? undefined : data[index][1];
+  }
+
+  var _listCacheGet = listCacheGet;
+
+  /**
+   * Checks if a list cache value for `key` exists.
+   *
+   * @private
+   * @name has
+   * @memberOf ListCache
+   * @param {string} key The key of the entry to check.
+   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+   */
+  function listCacheHas(key) {
+    return _assocIndexOf(this.__data__, key) > -1;
+  }
+
+  var _listCacheHas = listCacheHas;
+
+  /**
+   * Sets the list cache `key` to `value`.
+   *
+   * @private
+   * @name set
+   * @memberOf ListCache
+   * @param {string} key The key of the value to set.
+   * @param {*} value The value to set.
+   * @returns {Object} Returns the list cache instance.
+   */
+  function listCacheSet(key, value) {
+    var data = this.__data__,
+        index = _assocIndexOf(data, key);
+
+    if (index < 0) {
+      ++this.size;
+      data.push([key, value]);
+    } else {
+      data[index][1] = value;
+    }
+    return this;
+  }
+
+  var _listCacheSet = listCacheSet;
+
+  /**
+   * Creates an list cache object.
+   *
+   * @private
+   * @constructor
+   * @param {Array} [entries] The key-value pairs to cache.
+   */
+  function ListCache(entries) {
+    var index = -1,
+        length = entries == null ? 0 : entries.length;
+
+    this.clear();
+    while (++index < length) {
+      var entry = entries[index];
+      this.set(entry[0], entry[1]);
+    }
+  }
+
+  // Add methods to `ListCache`.
+  ListCache.prototype.clear = _listCacheClear;
+  ListCache.prototype['delete'] = _listCacheDelete;
+  ListCache.prototype.get = _listCacheGet;
+  ListCache.prototype.has = _listCacheHas;
+  ListCache.prototype.set = _listCacheSet;
+
+  var _ListCache = ListCache;
+
+  /**
+   * Removes all key-value entries from the stack.
+   *
+   * @private
+   * @name clear
+   * @memberOf Stack
+   */
+  function stackClear() {
+    this.__data__ = new _ListCache;
+    this.size = 0;
+  }
+
+  var _stackClear = stackClear;
+
+  /**
+   * Removes `key` and its value from the stack.
+   *
+   * @private
+   * @name delete
+   * @memberOf Stack
+   * @param {string} key The key of the value to remove.
+   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+   */
+  function stackDelete(key) {
+    var data = this.__data__,
+        result = data['delete'](key);
+
+    this.size = data.size;
+    return result;
+  }
+
+  var _stackDelete = stackDelete;
+
+  /**
+   * Gets the stack value for `key`.
+   *
+   * @private
+   * @name get
+   * @memberOf Stack
+   * @param {string} key The key of the value to get.
+   * @returns {*} Returns the entry value.
+   */
+  function stackGet(key) {
+    return this.__data__.get(key);
+  }
+
+  var _stackGet = stackGet;
+
+  /**
+   * Checks if a stack value for `key` exists.
+   *
+   * @private
+   * @name has
+   * @memberOf Stack
+   * @param {string} key The key of the entry to check.
+   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+   */
+  function stackHas(key) {
+    return this.__data__.has(key);
+  }
+
+  var _stackHas = stackHas;
+
+  /** Used to detect overreaching core-js shims. */
+  var coreJsData = _root['__core-js_shared__'];
+
+  var _coreJsData = coreJsData;
+
+  /** Used to detect methods masquerading as native. */
+  var maskSrcKey = (function() {
+    var uid = /[^.]+$/.exec(_coreJsData && _coreJsData.keys && _coreJsData.keys.IE_PROTO || '');
+    return uid ? ('Symbol(src)_1.' + uid) : '';
+  }());
+
+  /**
+   * Checks if `func` has its source masked.
+   *
+   * @private
+   * @param {Function} func The function to check.
+   * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+   */
+  function isMasked(func) {
+    return !!maskSrcKey && (maskSrcKey in func);
+  }
+
+  var _isMasked = isMasked;
+
+  /** Used for built-in method references. */
+  var funcProto = Function.prototype;
+
+  /** Used to resolve the decompiled source of functions. */
+  var funcToString = funcProto.toString;
+
+  /**
+   * Converts `func` to its source code.
+   *
+   * @private
+   * @param {Function} func The function to convert.
+   * @returns {string} Returns the source code.
+   */
+  function toSource(func) {
+    if (func != null) {
+      try {
+        return funcToString.call(func);
+      } catch (e) {}
+      try {
+        return (func + '');
+      } catch (e) {}
+    }
+    return '';
+  }
+
+  var _toSource = toSource;
+
+  /**
+   * Used to match `RegExp`
+   * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+   */
+  var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+  /** Used to detect host constructors (Safari). */
+  var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+  /** Used for built-in method references. */
+  var funcProto$1 = Function.prototype,
+      objectProto$6 = Object.prototype;
+
+  /** Used to resolve the decompiled source of functions. */
+  var funcToString$1 = funcProto$1.toString;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$4 = objectProto$6.hasOwnProperty;
+
+  /** Used to detect if a method is native. */
+  var reIsNative = RegExp('^' +
+    funcToString$1.call(hasOwnProperty$4).replace(reRegExpChar, '\\$&')
+    .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+  );
+
+  /**
+   * The base implementation of `_.isNative` without bad shim checks.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a native function,
+   *  else `false`.
+   */
+  function baseIsNative(value) {
+    if (!isObject_1(value) || _isMasked(value)) {
+      return false;
+    }
+    var pattern = isFunction_1(value) ? reIsNative : reIsHostCtor;
+    return pattern.test(_toSource(value));
+  }
+
+  var _baseIsNative = baseIsNative;
+
+  /**
+   * Gets the value at `key` of `object`.
+   *
+   * @private
+   * @param {Object} [object] The object to query.
+   * @param {string} key The key of the property to get.
+   * @returns {*} Returns the property value.
+   */
+  function getValue(object, key) {
+    return object == null ? undefined : object[key];
+  }
+
+  var _getValue = getValue;
+
+  /**
+   * Gets the native function at `key` of `object`.
+   *
+   * @private
+   * @param {Object} object The object to query.
+   * @param {string} key The key of the method to get.
+   * @returns {*} Returns the function if it's native, else `undefined`.
+   */
+  function getNative(object, key) {
+    var value = _getValue(object, key);
+    return _baseIsNative(value) ? value : undefined;
+  }
+
+  var _getNative = getNative;
+
+  /* Built-in method references that are verified to be native. */
+  var Map = _getNative(_root, 'Map');
+
+  var _Map = Map;
+
+  /* Built-in method references that are verified to be native. */
+  var nativeCreate = _getNative(Object, 'create');
+
+  var _nativeCreate = nativeCreate;
+
+  /**
+   * Removes all key-value entries from the hash.
+   *
+   * @private
+   * @name clear
+   * @memberOf Hash
+   */
+  function hashClear() {
+    this.__data__ = _nativeCreate ? _nativeCreate(null) : {};
+    this.size = 0;
+  }
+
+  var _hashClear = hashClear;
+
+  /**
+   * Removes `key` and its value from the hash.
+   *
+   * @private
+   * @name delete
+   * @memberOf Hash
+   * @param {Object} hash The hash to modify.
+   * @param {string} key The key of the value to remove.
+   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+   */
+  function hashDelete(key) {
+    var result = this.has(key) && delete this.__data__[key];
+    this.size -= result ? 1 : 0;
+    return result;
+  }
+
+  var _hashDelete = hashDelete;
+
+  /** Used to stand-in for `undefined` hash values. */
+  var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+  /** Used for built-in method references. */
+  var objectProto$7 = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
+
+  /**
+   * Gets the hash value for `key`.
+   *
+   * @private
+   * @name get
+   * @memberOf Hash
+   * @param {string} key The key of the value to get.
+   * @returns {*} Returns the entry value.
+   */
+  function hashGet(key) {
+    var data = this.__data__;
+    if (_nativeCreate) {
+      var result = data[key];
+      return result === HASH_UNDEFINED ? undefined : result;
+    }
+    return hasOwnProperty$5.call(data, key) ? data[key] : undefined;
+  }
+
+  var _hashGet = hashGet;
+
+  /** Used for built-in method references. */
+  var objectProto$8 = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+
+  /**
+   * Checks if a hash value for `key` exists.
+   *
+   * @private
+   * @name has
+   * @memberOf Hash
+   * @param {string} key The key of the entry to check.
+   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+   */
+  function hashHas(key) {
+    var data = this.__data__;
+    return _nativeCreate ? (data[key] !== undefined) : hasOwnProperty$6.call(data, key);
+  }
+
+  var _hashHas = hashHas;
+
+  /** Used to stand-in for `undefined` hash values. */
+  var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
+
+  /**
+   * Sets the hash `key` to `value`.
+   *
+   * @private
+   * @name set
+   * @memberOf Hash
+   * @param {string} key The key of the value to set.
+   * @param {*} value The value to set.
+   * @returns {Object} Returns the hash instance.
+   */
+  function hashSet(key, value) {
+    var data = this.__data__;
+    this.size += this.has(key) ? 0 : 1;
+    data[key] = (_nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
+    return this;
+  }
+
+  var _hashSet = hashSet;
+
+  /**
+   * Creates a hash object.
+   *
+   * @private
+   * @constructor
+   * @param {Array} [entries] The key-value pairs to cache.
+   */
+  function Hash(entries) {
+    var index = -1,
+        length = entries == null ? 0 : entries.length;
+
+    this.clear();
+    while (++index < length) {
+      var entry = entries[index];
+      this.set(entry[0], entry[1]);
+    }
+  }
+
+  // Add methods to `Hash`.
+  Hash.prototype.clear = _hashClear;
+  Hash.prototype['delete'] = _hashDelete;
+  Hash.prototype.get = _hashGet;
+  Hash.prototype.has = _hashHas;
+  Hash.prototype.set = _hashSet;
+
+  var _Hash = Hash;
+
+  /**
+   * Removes all key-value entries from the map.
+   *
+   * @private
+   * @name clear
+   * @memberOf MapCache
+   */
+  function mapCacheClear() {
+    this.size = 0;
+    this.__data__ = {
+      'hash': new _Hash,
+      'map': new (_Map || _ListCache),
+      'string': new _Hash
+    };
+  }
+
+  var _mapCacheClear = mapCacheClear;
+
+  /**
+   * Checks if `value` is suitable for use as unique object key.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+   */
+  function isKeyable(value) {
+    var type = typeof value;
+    return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+      ? (value !== '__proto__')
+      : (value === null);
+  }
+
+  var _isKeyable = isKeyable;
+
+  /**
+   * Gets the data for `map`.
+   *
+   * @private
+   * @param {Object} map The map to query.
+   * @param {string} key The reference key.
+   * @returns {*} Returns the map data.
+   */
+  function getMapData(map, key) {
+    var data = map.__data__;
+    return _isKeyable(key)
+      ? data[typeof key == 'string' ? 'string' : 'hash']
+      : data.map;
+  }
+
+  var _getMapData = getMapData;
+
+  /**
+   * Removes `key` and its value from the map.
+   *
+   * @private
+   * @name delete
+   * @memberOf MapCache
+   * @param {string} key The key of the value to remove.
+   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+   */
+  function mapCacheDelete(key) {
+    var result = _getMapData(this, key)['delete'](key);
+    this.size -= result ? 1 : 0;
+    return result;
+  }
+
+  var _mapCacheDelete = mapCacheDelete;
+
+  /**
+   * Gets the map value for `key`.
+   *
+   * @private
+   * @name get
+   * @memberOf MapCache
+   * @param {string} key The key of the value to get.
+   * @returns {*} Returns the entry value.
+   */
+  function mapCacheGet(key) {
+    return _getMapData(this, key).get(key);
+  }
+
+  var _mapCacheGet = mapCacheGet;
+
+  /**
+   * Checks if a map value for `key` exists.
+   *
+   * @private
+   * @name has
+   * @memberOf MapCache
+   * @param {string} key The key of the entry to check.
+   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+   */
+  function mapCacheHas(key) {
+    return _getMapData(this, key).has(key);
+  }
+
+  var _mapCacheHas = mapCacheHas;
+
+  /**
+   * Sets the map `key` to `value`.
+   *
+   * @private
+   * @name set
+   * @memberOf MapCache
+   * @param {string} key The key of the value to set.
+   * @param {*} value The value to set.
+   * @returns {Object} Returns the map cache instance.
+   */
+  function mapCacheSet(key, value) {
+    var data = _getMapData(this, key),
+        size = data.size;
+
+    data.set(key, value);
+    this.size += data.size == size ? 0 : 1;
+    return this;
+  }
+
+  var _mapCacheSet = mapCacheSet;
+
+  /**
+   * Creates a map cache object to store key-value pairs.
+   *
+   * @private
+   * @constructor
+   * @param {Array} [entries] The key-value pairs to cache.
+   */
+  function MapCache(entries) {
+    var index = -1,
+        length = entries == null ? 0 : entries.length;
+
+    this.clear();
+    while (++index < length) {
+      var entry = entries[index];
+      this.set(entry[0], entry[1]);
+    }
+  }
+
+  // Add methods to `MapCache`.
+  MapCache.prototype.clear = _mapCacheClear;
+  MapCache.prototype['delete'] = _mapCacheDelete;
+  MapCache.prototype.get = _mapCacheGet;
+  MapCache.prototype.has = _mapCacheHas;
+  MapCache.prototype.set = _mapCacheSet;
+
+  var _MapCache = MapCache;
+
+  /** Used as the size to enable large array optimizations. */
+  var LARGE_ARRAY_SIZE = 200;
+
+  /**
+   * Sets the stack `key` to `value`.
+   *
+   * @private
+   * @name set
+   * @memberOf Stack
+   * @param {string} key The key of the value to set.
+   * @param {*} value The value to set.
+   * @returns {Object} Returns the stack cache instance.
+   */
+  function stackSet(key, value) {
+    var data = this.__data__;
+    if (data instanceof _ListCache) {
+      var pairs = data.__data__;
+      if (!_Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
+        pairs.push([key, value]);
+        this.size = ++data.size;
+        return this;
+      }
+      data = this.__data__ = new _MapCache(pairs);
+    }
+    data.set(key, value);
+    this.size = data.size;
+    return this;
+  }
+
+  var _stackSet = stackSet;
+
+  /**
+   * Creates a stack cache object to store key-value pairs.
+   *
+   * @private
+   * @constructor
+   * @param {Array} [entries] The key-value pairs to cache.
+   */
+  function Stack(entries) {
+    var data = this.__data__ = new _ListCache(entries);
+    this.size = data.size;
+  }
+
+  // Add methods to `Stack`.
+  Stack.prototype.clear = _stackClear;
+  Stack.prototype['delete'] = _stackDelete;
+  Stack.prototype.get = _stackGet;
+  Stack.prototype.has = _stackHas;
+  Stack.prototype.set = _stackSet;
+
+  var _Stack = Stack;
+
+  var defineProperty = (function() {
+    try {
+      var func = _getNative(Object, 'defineProperty');
+      func({}, '', {});
+      return func;
+    } catch (e) {}
+  }());
+
+  var _defineProperty = defineProperty;
+
+  /**
+   * The base implementation of `assignValue` and `assignMergeValue` without
+   * value checks.
+   *
+   * @private
+   * @param {Object} object The object to modify.
+   * @param {string} key The key of the property to assign.
+   * @param {*} value The value to assign.
+   */
+  function baseAssignValue(object, key, value) {
+    if (key == '__proto__' && _defineProperty) {
+      _defineProperty(object, key, {
+        'configurable': true,
+        'enumerable': true,
+        'value': value,
+        'writable': true
+      });
+    } else {
+      object[key] = value;
+    }
+  }
+
+  var _baseAssignValue = baseAssignValue;
+
+  /**
+   * This function is like `assignValue` except that it doesn't assign
+   * `undefined` values.
+   *
+   * @private
+   * @param {Object} object The object to modify.
+   * @param {string} key The key of the property to assign.
+   * @param {*} value The value to assign.
+   */
+  function assignMergeValue(object, key, value) {
+    if ((value !== undefined && !eq_1(object[key], value)) ||
+        (value === undefined && !(key in object))) {
+      _baseAssignValue(object, key, value);
+    }
+  }
+
+  var _assignMergeValue = assignMergeValue;
+
+  var _cloneBuffer = createCommonjsModule(function (module, exports) {
+  /** Detect free variable `exports`. */
+  var freeExports = exports && !exports.nodeType && exports;
+
+  /** Detect free variable `module`. */
+  var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+
+  /** Detect the popular CommonJS extension `module.exports`. */
+  var moduleExports = freeModule && freeModule.exports === freeExports;
+
+  /** Built-in value references. */
+  var Buffer = moduleExports ? _root.Buffer : undefined,
+      allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
+
+  /**
+   * Creates a clone of  `buffer`.
+   *
+   * @private
+   * @param {Buffer} buffer The buffer to clone.
+   * @param {boolean} [isDeep] Specify a deep clone.
+   * @returns {Buffer} Returns the cloned buffer.
+   */
+  function cloneBuffer(buffer, isDeep) {
+    if (isDeep) {
+      return buffer.slice();
+    }
+    var length = buffer.length,
+        result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+
+    buffer.copy(result);
+    return result;
+  }
+
+  module.exports = cloneBuffer;
+  });
+
+  /** Built-in value references. */
+  var Uint8Array = _root.Uint8Array;
+
+  var _Uint8Array = Uint8Array;
+
+  /**
+   * Creates a clone of `arrayBuffer`.
+   *
+   * @private
+   * @param {ArrayBuffer} arrayBuffer The array buffer to clone.
+   * @returns {ArrayBuffer} Returns the cloned array buffer.
+   */
+  function cloneArrayBuffer(arrayBuffer) {
+    var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+    new _Uint8Array(result).set(new _Uint8Array(arrayBuffer));
+    return result;
+  }
+
+  var _cloneArrayBuffer = cloneArrayBuffer;
+
+  /**
+   * Creates a clone of `typedArray`.
+   *
+   * @private
+   * @param {Object} typedArray The typed array to clone.
+   * @param {boolean} [isDeep] Specify a deep clone.
+   * @returns {Object} Returns the cloned typed array.
+   */
+  function cloneTypedArray(typedArray, isDeep) {
+    var buffer = isDeep ? _cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+    return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+  }
+
+  var _cloneTypedArray = cloneTypedArray;
+
+  /**
+   * Copies the values of `source` to `array`.
+   *
+   * @private
+   * @param {Array} source The array to copy values from.
+   * @param {Array} [array=[]] The array to copy values to.
+   * @returns {Array} Returns `array`.
+   */
+  function copyArray(source, array) {
+    var index = -1,
+        length = source.length;
+
+    array || (array = Array(length));
+    while (++index < length) {
+      array[index] = source[index];
+    }
+    return array;
+  }
+
+  var _copyArray = copyArray;
+
+  /** Built-in value references. */
+  var objectCreate = Object.create;
+
+  /**
+   * The base implementation of `_.create` without support for assigning
+   * properties to the created object.
+   *
+   * @private
+   * @param {Object} proto The object to inherit from.
+   * @returns {Object} Returns the new object.
+   */
+  var baseCreate = (function() {
+    function object() {}
+    return function(proto) {
+      if (!isObject_1(proto)) {
+        return {};
+      }
+      if (objectCreate) {
+        return objectCreate(proto);
+      }
+      object.prototype = proto;
+      var result = new object;
+      object.prototype = undefined;
+      return result;
+    };
+  }());
+
+  var _baseCreate = baseCreate;
+
+  /** Built-in value references. */
+  var getPrototype = _overArg(Object.getPrototypeOf, Object);
+
+  var _getPrototype = getPrototype;
+
+  /**
+   * Initializes an object clone.
+   *
+   * @private
+   * @param {Object} object The object to clone.
+   * @returns {Object} Returns the initialized clone.
+   */
+  function initCloneObject(object) {
+    return (typeof object.constructor == 'function' && !_isPrototype(object))
+      ? _baseCreate(_getPrototype(object))
+      : {};
+  }
+
+  var _initCloneObject = initCloneObject;
+
+  /**
+   * This method is like `_.isArrayLike` except that it also checks if `value`
+   * is an object.
+   *
+   * @static
+   * @memberOf _
+   * @since 4.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is an array-like object,
+   *  else `false`.
+   * @example
+   *
+   * _.isArrayLikeObject([1, 2, 3]);
+   * // => true
+   *
+   * _.isArrayLikeObject(document.body.children);
+   * // => true
+   *
+   * _.isArrayLikeObject('abc');
+   * // => false
+   *
+   * _.isArrayLikeObject(_.noop);
+   * // => false
+   */
+  function isArrayLikeObject(value) {
+    return isObjectLike_1(value) && isArrayLike_1(value);
+  }
+
+  var isArrayLikeObject_1 = isArrayLikeObject;
+
+  /** `Object#toString` result references. */
+  var objectTag$1 = '[object Object]';
+
+  /** Used for built-in method references. */
+  var funcProto$2 = Function.prototype,
+      objectProto$9 = Object.prototype;
+
+  /** Used to resolve the decompiled source of functions. */
+  var funcToString$2 = funcProto$2.toString;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+
+  /** Used to infer the `Object` constructor. */
+  var objectCtorString = funcToString$2.call(Object);
+
+  /**
+   * Checks if `value` is a plain object, that is, an object created by the
+   * `Object` constructor or one with a `[[Prototype]]` of `null`.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.8.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+   * @example
+   *
+   * function Foo() {
+   *   this.a = 1;
+   * }
+   *
+   * _.isPlainObject(new Foo);
+   * // => false
+   *
+   * _.isPlainObject([1, 2, 3]);
+   * // => false
+   *
+   * _.isPlainObject({ 'x': 0, 'y': 0 });
+   * // => true
+   *
+   * _.isPlainObject(Object.create(null));
+   * // => true
+   */
+  function isPlainObject(value) {
+    if (!isObjectLike_1(value) || _baseGetTag(value) != objectTag$1) {
+      return false;
+    }
+    var proto = _getPrototype(value);
+    if (proto === null) {
+      return true;
+    }
+    var Ctor = hasOwnProperty$7.call(proto, 'constructor') && proto.constructor;
+    return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+      funcToString$2.call(Ctor) == objectCtorString;
+  }
+
+  var isPlainObject_1 = isPlainObject;
+
+  /**
+   * Gets the value at `key`, unless `key` is "__proto__".
+   *
+   * @private
+   * @param {Object} object The object to query.
+   * @param {string} key The key of the property to get.
+   * @returns {*} Returns the property value.
+   */
+  function safeGet(object, key) {
+    if (key == '__proto__') {
+      return;
+    }
+
+    return object[key];
+  }
+
+  var _safeGet = safeGet;
+
+  /** Used for built-in method references. */
+  var objectProto$a = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
+
+  /**
+   * Assigns `value` to `key` of `object` if the existing value is not equivalent
+   * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+   * for equality comparisons.
+   *
+   * @private
+   * @param {Object} object The object to modify.
+   * @param {string} key The key of the property to assign.
+   * @param {*} value The value to assign.
+   */
+  function assignValue(object, key, value) {
+    var objValue = object[key];
+    if (!(hasOwnProperty$8.call(object, key) && eq_1(objValue, value)) ||
+        (value === undefined && !(key in object))) {
+      _baseAssignValue(object, key, value);
+    }
+  }
+
+  var _assignValue = assignValue;
+
+  /**
+   * Copies properties of `source` to `object`.
+   *
+   * @private
+   * @param {Object} source The object to copy properties from.
+   * @param {Array} props The property identifiers to copy.
+   * @param {Object} [object={}] The object to copy properties to.
+   * @param {Function} [customizer] The function to customize copied values.
+   * @returns {Object} Returns `object`.
+   */
+  function copyObject(source, props, object, customizer) {
+    var isNew = !object;
+    object || (object = {});
+
+    var index = -1,
+        length = props.length;
+
+    while (++index < length) {
+      var key = props[index];
+
+      var newValue = customizer
+        ? customizer(object[key], source[key], key, object, source)
+        : undefined;
+
+      if (newValue === undefined) {
+        newValue = source[key];
+      }
+      if (isNew) {
+        _baseAssignValue(object, key, newValue);
+      } else {
+        _assignValue(object, key, newValue);
+      }
+    }
+    return object;
+  }
+
+  var _copyObject = copyObject;
+
+  /**
+   * This function is like
+   * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+   * except that it includes inherited enumerable properties.
+   *
+   * @private
+   * @param {Object} object The object to query.
+   * @returns {Array} Returns the array of property names.
+   */
+  function nativeKeysIn(object) {
+    var result = [];
+    if (object != null) {
+      for (var key in Object(object)) {
+        result.push(key);
+      }
+    }
+    return result;
+  }
+
+  var _nativeKeysIn = nativeKeysIn;
+
+  /** Used for built-in method references. */
+  var objectProto$b = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$9 = objectProto$b.hasOwnProperty;
+
+  /**
+   * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+   *
+   * @private
+   * @param {Object} object The object to query.
+   * @returns {Array} Returns the array of property names.
+   */
+  function baseKeysIn(object) {
+    if (!isObject_1(object)) {
+      return _nativeKeysIn(object);
+    }
+    var isProto = _isPrototype(object),
+        result = [];
+
+    for (var key in object) {
+      if (!(key == 'constructor' && (isProto || !hasOwnProperty$9.call(object, key)))) {
+        result.push(key);
+      }
+    }
+    return result;
+  }
+
+  var _baseKeysIn = baseKeysIn;
+
+  /**
+   * Creates an array of the own and inherited enumerable property names of `object`.
+   *
+   * **Note:** Non-object values are coerced to objects.
+   *
+   * @static
+   * @memberOf _
+   * @since 3.0.0
+   * @category Object
+   * @param {Object} object The object to query.
+   * @returns {Array} Returns the array of property names.
+   * @example
+   *
+   * function Foo() {
+   *   this.a = 1;
+   *   this.b = 2;
+   * }
+   *
+   * Foo.prototype.c = 3;
+   *
+   * _.keysIn(new Foo);
+   * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+   */
+  function keysIn(object) {
+    return isArrayLike_1(object) ? _arrayLikeKeys(object, true) : _baseKeysIn(object);
+  }
+
+  var keysIn_1 = keysIn;
+
+  /**
+   * Converts `value` to a plain object flattening inherited enumerable string
+   * keyed properties of `value` to own properties of the plain object.
+   *
+   * @static
+   * @memberOf _
+   * @since 3.0.0
+   * @category Lang
+   * @param {*} value The value to convert.
+   * @returns {Object} Returns the converted plain object.
+   * @example
+   *
+   * function Foo() {
+   *   this.b = 2;
+   * }
+   *
+   * Foo.prototype.c = 3;
+   *
+   * _.assign({ 'a': 1 }, new Foo);
+   * // => { 'a': 1, 'b': 2 }
+   *
+   * _.assign({ 'a': 1 }, _.toPlainObject(new Foo));
+   * // => { 'a': 1, 'b': 2, 'c': 3 }
+   */
+  function toPlainObject(value) {
+    return _copyObject(value, keysIn_1(value));
+  }
+
+  var toPlainObject_1 = toPlainObject;
+
+  /**
+   * A specialized version of `baseMerge` for arrays and objects which performs
+   * deep merges and tracks traversed objects enabling objects with circular
+   * references to be merged.
+   *
+   * @private
+   * @param {Object} object The destination object.
+   * @param {Object} source The source object.
+   * @param {string} key The key of the value to merge.
+   * @param {number} srcIndex The index of `source`.
+   * @param {Function} mergeFunc The function to merge values.
+   * @param {Function} [customizer] The function to customize assigned values.
+   * @param {Object} [stack] Tracks traversed source values and their merged
+   *  counterparts.
+   */
+  function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+    var objValue = _safeGet(object, key),
+        srcValue = _safeGet(source, key),
+        stacked = stack.get(srcValue);
+
+    if (stacked) {
+      _assignMergeValue(object, key, stacked);
+      return;
+    }
+    var newValue = customizer
+      ? customizer(objValue, srcValue, (key + ''), object, source, stack)
+      : undefined;
+
+    var isCommon = newValue === undefined;
+
+    if (isCommon) {
+      var isArr = isArray_1(srcValue),
+          isBuff = !isArr && isBuffer_1(srcValue),
+          isTyped = !isArr && !isBuff && isTypedArray_1(srcValue);
+
+      newValue = srcValue;
+      if (isArr || isBuff || isTyped) {
+        if (isArray_1(objValue)) {
+          newValue = objValue;
+        }
+        else if (isArrayLikeObject_1(objValue)) {
+          newValue = _copyArray(objValue);
+        }
+        else if (isBuff) {
+          isCommon = false;
+          newValue = _cloneBuffer(srcValue, true);
+        }
+        else if (isTyped) {
+          isCommon = false;
+          newValue = _cloneTypedArray(srcValue, true);
+        }
+        else {
+          newValue = [];
+        }
+      }
+      else if (isPlainObject_1(srcValue) || isArguments_1(srcValue)) {
+        newValue = objValue;
+        if (isArguments_1(objValue)) {
+          newValue = toPlainObject_1(objValue);
+        }
+        else if (!isObject_1(objValue) || isFunction_1(objValue)) {
+          newValue = _initCloneObject(srcValue);
+        }
+      }
+      else {
+        isCommon = false;
+      }
+    }
+    if (isCommon) {
+      // Recursively merge objects and arrays (susceptible to call stack limits).
+      stack.set(srcValue, newValue);
+      mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
+      stack['delete'](srcValue);
+    }
+    _assignMergeValue(object, key, newValue);
+  }
+
+  var _baseMergeDeep = baseMergeDeep;
+
+  /**
+   * The base implementation of `_.merge` without support for multiple sources.
+   *
+   * @private
+   * @param {Object} object The destination object.
+   * @param {Object} source The source object.
+   * @param {number} srcIndex The index of `source`.
+   * @param {Function} [customizer] The function to customize merged values.
+   * @param {Object} [stack] Tracks traversed source values and their merged
+   *  counterparts.
+   */
+  function baseMerge(object, source, srcIndex, customizer, stack) {
+    if (object === source) {
+      return;
+    }
+    _baseFor(source, function(srcValue, key) {
+      if (isObject_1(srcValue)) {
+        stack || (stack = new _Stack);
+        _baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+      }
+      else {
+        var newValue = customizer
+          ? customizer(_safeGet(object, key), srcValue, (key + ''), object, source, stack)
+          : undefined;
+
+        if (newValue === undefined) {
+          newValue = srcValue;
+        }
+        _assignMergeValue(object, key, newValue);
+      }
+    }, keysIn_1);
+  }
+
+  var _baseMerge = baseMerge;
+
+  /**
+   * A faster alternative to `Function#apply`, this function invokes `func`
+   * with the `this` binding of `thisArg` and the arguments of `args`.
+   *
+   * @private
+   * @param {Function} func The function to invoke.
+   * @param {*} thisArg The `this` binding of `func`.
+   * @param {Array} args The arguments to invoke `func` with.
+   * @returns {*} Returns the result of `func`.
+   */
+  function apply(func, thisArg, args) {
+    switch (args.length) {
+      case 0: return func.call(thisArg);
+      case 1: return func.call(thisArg, args[0]);
+      case 2: return func.call(thisArg, args[0], args[1]);
+      case 3: return func.call(thisArg, args[0], args[1], args[2]);
+    }
+    return func.apply(thisArg, args);
+  }
+
+  var _apply = apply;
+
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeMax = Math.max;
+
+  /**
+   * A specialized version of `baseRest` which transforms the rest array.
+   *
+   * @private
+   * @param {Function} func The function to apply a rest parameter to.
+   * @param {number} [start=func.length-1] The start position of the rest parameter.
+   * @param {Function} transform The rest array transform.
+   * @returns {Function} Returns the new function.
+   */
+  function overRest(func, start, transform) {
+    start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+    return function() {
+      var args = arguments,
+          index = -1,
+          length = nativeMax(args.length - start, 0),
+          array = Array(length);
+
+      while (++index < length) {
+        array[index] = args[start + index];
+      }
+      index = -1;
+      var otherArgs = Array(start + 1);
+      while (++index < start) {
+        otherArgs[index] = args[index];
+      }
+      otherArgs[start] = transform(array);
+      return _apply(func, this, otherArgs);
+    };
+  }
+
+  var _overRest = overRest;
+
+  /**
+   * Creates a function that returns `value`.
+   *
+   * @static
+   * @memberOf _
+   * @since 2.4.0
+   * @category Util
+   * @param {*} value The value to return from the new function.
+   * @returns {Function} Returns the new constant function.
+   * @example
+   *
+   * var objects = _.times(2, _.constant({ 'a': 1 }));
+   *
+   * console.log(objects);
+   * // => [{ 'a': 1 }, { 'a': 1 }]
+   *
+   * console.log(objects[0] === objects[1]);
+   * // => true
+   */
+  function constant(value) {
+    return function() {
+      return value;
+    };
+  }
+
+  var constant_1 = constant;
+
+  /**
+   * The base implementation of `setToString` without support for hot loop shorting.
+   *
+   * @private
+   * @param {Function} func The function to modify.
+   * @param {Function} string The `toString` result.
+   * @returns {Function} Returns `func`.
+   */
+  var baseSetToString = !_defineProperty ? identity_1 : function(func, string) {
+    return _defineProperty(func, 'toString', {
+      'configurable': true,
+      'enumerable': false,
+      'value': constant_1(string),
+      'writable': true
+    });
+  };
+
+  var _baseSetToString = baseSetToString;
+
+  /** Used to detect hot functions by number of calls within a span of milliseconds. */
+  var HOT_COUNT = 800,
+      HOT_SPAN = 16;
+
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeNow = Date.now;
+
+  /**
+   * Creates a function that'll short out and invoke `identity` instead
+   * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+   * milliseconds.
+   *
+   * @private
+   * @param {Function} func The function to restrict.
+   * @returns {Function} Returns the new shortable function.
+   */
+  function shortOut(func) {
+    var count = 0,
+        lastCalled = 0;
+
+    return function() {
+      var stamp = nativeNow(),
+          remaining = HOT_SPAN - (stamp - lastCalled);
+
+      lastCalled = stamp;
+      if (remaining > 0) {
+        if (++count >= HOT_COUNT) {
+          return arguments[0];
+        }
+      } else {
+        count = 0;
+      }
+      return func.apply(undefined, arguments);
+    };
+  }
+
+  var _shortOut = shortOut;
+
+  /**
+   * Sets the `toString` method of `func` to return `string`.
+   *
+   * @private
+   * @param {Function} func The function to modify.
+   * @param {Function} string The `toString` result.
+   * @returns {Function} Returns `func`.
+   */
+  var setToString = _shortOut(_baseSetToString);
+
+  var _setToString = setToString;
+
+  /**
+   * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+   *
+   * @private
+   * @param {Function} func The function to apply a rest parameter to.
+   * @param {number} [start=func.length-1] The start position of the rest parameter.
+   * @returns {Function} Returns the new function.
+   */
+  function baseRest(func, start) {
+    return _setToString(_overRest(func, start, identity_1), func + '');
+  }
+
+  var _baseRest = baseRest;
+
+  /**
+   * Checks if the given arguments are from an iteratee call.
+   *
+   * @private
+   * @param {*} value The potential iteratee value argument.
+   * @param {*} index The potential iteratee index or key argument.
+   * @param {*} object The potential iteratee object argument.
+   * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+   *  else `false`.
+   */
+  function isIterateeCall(value, index, object) {
+    if (!isObject_1(object)) {
+      return false;
+    }
+    var type = typeof index;
+    if (type == 'number'
+          ? (isArrayLike_1(object) && _isIndex(index, object.length))
+          : (type == 'string' && index in object)
+        ) {
+      return eq_1(object[index], value);
+    }
+    return false;
+  }
+
+  var _isIterateeCall = isIterateeCall;
+
+  /**
+   * Creates a function like `_.assign`.
+   *
+   * @private
+   * @param {Function} assigner The function to assign values.
+   * @returns {Function} Returns the new assigner function.
+   */
+  function createAssigner(assigner) {
+    return _baseRest(function(object, sources) {
+      var index = -1,
+          length = sources.length,
+          customizer = length > 1 ? sources[length - 1] : undefined,
+          guard = length > 2 ? sources[2] : undefined;
+
+      customizer = (assigner.length > 3 && typeof customizer == 'function')
+        ? (length--, customizer)
+        : undefined;
+
+      if (guard && _isIterateeCall(sources[0], sources[1], guard)) {
+        customizer = length < 3 ? undefined : customizer;
+        length = 1;
+      }
+      object = Object(object);
+      while (++index < length) {
+        var source = sources[index];
+        if (source) {
+          assigner(object, source, index, customizer);
+        }
+      }
+      return object;
+    });
+  }
+
+  var _createAssigner = createAssigner;
+
+  /**
+   * This method is like `_.assign` except that it recursively merges own and
+   * inherited enumerable string keyed properties of source objects into the
+   * destination object. Source properties that resolve to `undefined` are
+   * skipped if a destination value exists. Array and plain object properties
+   * are merged recursively. Other objects and value types are overridden by
+   * assignment. Source objects are applied from left to right. Subsequent
+   * sources overwrite property assignments of previous sources.
+   *
+   * **Note:** This method mutates `object`.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.5.0
+   * @category Object
+   * @param {Object} object The destination object.
+   * @param {...Object} [sources] The source objects.
+   * @returns {Object} Returns `object`.
+   * @example
+   *
+   * var object = {
+   *   'a': [{ 'b': 2 }, { 'd': 4 }]
+   * };
+   *
+   * var other = {
+   *   'a': [{ 'c': 3 }, { 'e': 5 }]
+   * };
+   *
+   * _.merge(object, other);
+   * // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
+   */
+  var merge = _createAssigner(function(object, source, srcIndex) {
+    _baseMerge(object, source, srcIndex);
+  });
+
+  var merge_1 = merge;
 
   var $GET = {};
   forEach_1(window.location.search.substring(1).split('&'), function (value, index) {
@@ -19268,10 +20889,12 @@
       }
     }
   });
+  var combined = merge_1($GET, keyValuePairs);
   var parameterGlobals = {
     parameters: {
       $GET: $GET,
-      keyValuePairs: keyValuePairs
+      keyValuePairs: keyValuePairs,
+      combined: combined
     }
   };
 
@@ -19807,7 +21430,7 @@
    * Strict object type check. Only returns true
    * for plain JavaScript objects.
    */
-  function isPlainObject (obj) {
+  function isPlainObject$1 (obj) {
     return _toString.call(obj) === '[object Object]'
   }
 
@@ -19837,7 +21460,7 @@
   function toString (val) {
     return val == null
       ? ''
-      : Array.isArray(val) || (isPlainObject(val) && val.toString === _toString)
+      : Array.isArray(val) || (isPlainObject$1(val) && val.toString === _toString)
         ? JSON.stringify(val, null, 2)
         : String(val)
   }
@@ -19894,9 +21517,9 @@
   /**
    * Check whether an object has the property.
    */
-  var hasOwnProperty$4 = Object.prototype.hasOwnProperty;
+  var hasOwnProperty$a = Object.prototype.hasOwnProperty;
   function hasOwn (obj, key) {
-    return hasOwnProperty$4.call(obj, key)
+    return hasOwnProperty$a.call(obj, key)
   }
 
   /**
@@ -20589,8 +22212,8 @@
    * dynamically accessing methods on Array prototype
    */
 
-  var arrayProto = Array.prototype;
-  var arrayMethods = Object.create(arrayProto);
+  var arrayProto$1 = Array.prototype;
+  var arrayMethods = Object.create(arrayProto$1);
 
   var methodsToPatch = [
     'push',
@@ -20607,7 +22230,7 @@
    */
   methodsToPatch.forEach(function (method) {
     // cache original method
-    var original = arrayProto[method];
+    var original = arrayProto$1[method];
     def(arrayMethods, method, function mutator () {
       var args = [], len = arguments.length;
       while ( len-- ) args[ len ] = arguments[ len ];
@@ -20728,7 +22351,7 @@
     } else if (
       shouldObserve &&
       !isServerRendering() &&
-      (Array.isArray(value) || isPlainObject(value)) &&
+      (Array.isArray(value) || isPlainObject$1(value)) &&
       Object.isExtensible(value) &&
       !value._isVue
     ) {
@@ -20929,8 +22552,8 @@
         set(to, key, fromVal);
       } else if (
         toVal !== fromVal &&
-        isPlainObject(toVal) &&
-        isPlainObject(fromVal)
+        isPlainObject$1(toVal) &&
+        isPlainObject$1(fromVal)
       ) {
         mergeData(toVal, fromVal);
       }
@@ -21176,11 +22799,11 @@
           warn('props must be strings when using array syntax.');
         }
       }
-    } else if (isPlainObject(props)) {
+    } else if (isPlainObject$1(props)) {
       for (var key in props) {
         val = props[key];
         name = camelize(key);
-        res[name] = isPlainObject(val)
+        res[name] = isPlainObject$1(val)
           ? val
           : { type: val };
       }
@@ -21205,10 +22828,10 @@
       for (var i = 0; i < inject.length; i++) {
         normalized[inject[i]] = { from: inject[i] };
       }
-    } else if (isPlainObject(inject)) {
+    } else if (isPlainObject$1(inject)) {
       for (var key in inject) {
         var val = inject[key];
-        normalized[key] = isPlainObject(val)
+        normalized[key] = isPlainObject$1(val)
           ? extend({ from: key }, val)
           : { from: val };
       }
@@ -21237,7 +22860,7 @@
   }
 
   function assertObjectType (name, value, vm) {
-    if (!isPlainObject(value)) {
+    if (!isPlainObject$1(value)) {
       warn(
         "Invalid value for option \"" + name + "\": expected an Object, " +
         "but got " + (toRawType(value)) + ".",
@@ -21473,7 +23096,7 @@
         valid = value instanceof type;
       }
     } else if (expectedType === 'Object') {
-      valid = isPlainObject(value);
+      valid = isPlainObject$1(value);
     } else if (expectedType === 'Array') {
       valid = Array.isArray(value);
     } else {
@@ -22597,7 +24220,7 @@
 
   function bindObjectListeners (data, value) {
     if (value) {
-      if (!isPlainObject(value)) {
+      if (!isPlainObject$1(value)) {
         warn(
           'v-on without argument expects an Object value',
           this
@@ -24427,7 +26050,7 @@
     data = vm._data = typeof data === 'function'
       ? getData(data, vm)
       : data || {};
-    if (!isPlainObject(data)) {
+    if (!isPlainObject$1(data)) {
       data = {};
       warn(
         'data functions should return an object:\n' +
@@ -24618,7 +26241,7 @@
     handler,
     options
   ) {
-    if (isPlainObject(handler)) {
+    if (isPlainObject$1(handler)) {
       options = handler;
       handler = handler.handler;
     }
@@ -24660,7 +26283,7 @@
       options
     ) {
       var vm = this;
-      if (isPlainObject(cb)) {
+      if (isPlainObject$1(cb)) {
         return createWatcher(vm, expOrFn, cb, options)
       }
       options = options || {};
@@ -24951,7 +26574,7 @@
           if (type === 'component') {
             validateComponentName(id);
           }
-          if (type === 'component' && isPlainObject(definition)) {
+          if (type === 'component' && isPlainObject$1(definition)) {
             definition.name = definition.name || id;
             definition = this.options._base.extend(definition);
           }
@@ -27562,7 +29185,7 @@
         } else {
           setSelected(el, binding, vnode.context);
         }
-        el._vOptions = [].map.call(el.options, getValue);
+        el._vOptions = [].map.call(el.options, getValue$1);
       } else if (vnode.tag === 'textarea' || isTextInputType(el.type)) {
         el._vModifiers = binding.modifiers;
         if (!binding.modifiers.lazy) {
@@ -27589,7 +29212,7 @@
         // detect such cases and filter out values that no longer has a matching
         // option in the DOM.
         var prevOptions = el._vOptions;
-        var curOptions = el._vOptions = [].map.call(el.options, getValue);
+        var curOptions = el._vOptions = [].map.call(el.options, getValue$1);
         if (curOptions.some(function (o, i) { return !looseEqual(o, prevOptions[i]); })) {
           // trigger change event if
           // no matching option found for at least one value
@@ -27629,12 +29252,12 @@
     for (var i = 0, l = el.options.length; i < l; i++) {
       option = el.options[i];
       if (isMultiple) {
-        selected = looseIndexOf(value, getValue(option)) > -1;
+        selected = looseIndexOf(value, getValue$1(option)) > -1;
         if (option.selected !== selected) {
           option.selected = selected;
         }
       } else {
-        if (looseEqual(getValue(option), value)) {
+        if (looseEqual(getValue$1(option), value)) {
           if (el.selectedIndex !== i) {
             el.selectedIndex = i;
           }
@@ -27651,7 +29274,7 @@
     return options.every(function (o) { return !looseEqual(o, value); })
   }
 
-  function getValue (option) {
+  function getValue$1 (option) {
     return '_value' in option
       ? option._value
       : option.value
@@ -28186,13 +29809,12 @@
         (_console$ls = console.ls).log.apply(_console$ls, ["Emitting -> ", event].concat(args));
 
         if (this.eventsBound != undefined && this.eventsBound[event] != undefined) {
-          this.eventsBound[event].forEach(function (element) {
-            element[0].apply(element, args);
+          this.eventsBound[event].forEach(function (element) {// element[0](...args);
           });
         }
 
         return (_get2 = _get(_getPrototypeOf(EventBus.prototype), "$emit", this)).call.apply(_get2, [this, event].concat(args));
-      } // Override Vue's $emit to call a logger for any event bound.
+      } // Override Vue's $on to call a logger for any event bound.
 
     }, {
       key: "$on",
@@ -28210,7 +29832,29 @@
 
         (_console$ls2 = console.ls).log.apply(_console$ls2, ["Binding -> ", event].concat(args));
 
-        return (_get3 = _get(_getPrototypeOf(EventBus.prototype), "$emit", this)).call.apply(_get3, [this, event].concat(args));
+        return (_get3 = _get(_getPrototypeOf(EventBus.prototype), "$on", this)).call.apply(_get3, [this, event].concat(args));
+      } // Override Vue's $emit to call a logger for any event bound.
+
+    }, {
+      key: "$off",
+      value: function $off(event) {
+        var _console$ls3, _get4;
+
+        for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          args[_key3 - 1] = arguments[_key3];
+        }
+
+        this.eventsBound = this.eventsBound || {};
+
+        if (this.eventsBound[event] != undefined) {
+          this.eventsBound[event] = this.eventsBound[event].filter(function (arg) {
+            args.indexOf(arg) == -1;
+          });
+        }
+
+        (_console$ls3 = console.ls).log.apply(_console$ls3, ["Remove Binding -> ", event].concat(args));
+
+        return (_get4 = _get(_getPrototypeOf(EventBus.prototype), "$off", this)).call.apply(_get4, [this, event].concat(args));
       }
     }]);
 

@@ -73,8 +73,10 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $aTranslate = [
             'File management' => gT('File management'),
             'Upload' => gT('Upload'),
-            'Cancel transit' => gT('Cancel transit'),
-            'Copy/Move' => gT('Copy/Move'),
+            'Cancel move' => gT('Cancel move'),
+            'Cancel copy' => gT('Cancel copy'),
+            'Move' => gT('Move'),
+            'Copy' => gT('Copy'),
             'Upload a file' => gT('Upload a file'),
             'Drag and drop here, or click once to start uploading' => gT('Drag and drop here, or click once to start uploading'),
             'File is uploaded to currently selected folder' => gT('File is uploaded to currently selected folder'),
@@ -149,6 +151,38 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $this->_printJsonResponse($aAllowedFolders);
         return;
+    }
+
+    public function deleteFile()
+    {
+        $iSurveyId = Yii::app()->request->getPost('surveyid');
+        $file = Yii::app()->request->getPost('file');
+        $folder = dirname($file['path']);
+        $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
+        
+        if ($checkDirectory === false) {
+            $this->_printJsonError();
+            return;
+        }
+        
+        $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
+        if ($this->checkTargetExists($realFilePath)) {
+            if (unlink($realFilePath)) {
+                $this->_printJsonResponse(
+                    [
+                        'success' => true,
+                        'message' => sprintf(gT("File successfully deleted"), $file['shortName']),
+                    ]
+                );
+            } else {
+                $this->_setError(
+                    'DELETE_FAILED',
+                    gT("Your file could not be deleted")
+                );
+                $this->_printJsonError();
+                return;
+            }
+        }
     }
 
     public function transitFile()
@@ -551,7 +585,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
         if (!file_exists($realPath)) {
-            @mkdir($realPath, null, true);
+            $this->_recursiveMkdir($realPath, 0750, true);
         }
         $allFiles = scandir($realPath);
 
@@ -580,6 +614,17 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'children' => $childFolders,
         ];
         return $folderArray;
+    }
+
+    private function _recursiveMkdir($folder, $rights=0755) {
+        $folders = explode(DIRECTORY_SEPARATOR, $folder);
+        $curFolder = array_shift($folders).DIRECTORY_SEPARATOR;
+        foreach ($folders as $folder) {
+            $curFolder.= DIRECTORY_SEPARATOR.$folder;
+            if (!is_dir($curFolder) && strlen($curFolder) > 0 && !preg_match("/^[A-Za-z]:$/", $curFolder)) {
+                mkdir($curFolder, $rights);
+            }
+        }
     }
 
     /**

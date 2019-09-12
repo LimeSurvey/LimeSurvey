@@ -2339,6 +2339,10 @@ ol.breadcrumb.title-bar-breadcrumb {
 
 :root {
   --LS-admintheme-basecolor: #C63678;
+  --LS-admintheme-hintedbasecolor: rgba(254, 253, 253, 0.7);
+  --LS-admintheme-lightbasecolor: #e9adc8;
   --LS-admintheme-hovercolor: #7d1344;
+  --LS-admintheme-hintedhovercolor: rgba(240, 160, 197, 0.7);
+  --LS-admintheme-lighthovercolor: #e3478e;
   --LS-admintheme-dangercolor: #a0352f;
   --LS-admintheme-infocolor: #d35ccf; }

@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
-        <div class="ls-flex ls-flex-row row bg-info">
+        <div class="ls-flex ls-flex-row row bg-info head-row">
             <div class="ls-flex ls-flex-column col-4 cell">
             {{"File name" | translate }}
             </div>
@@ -45,10 +45,14 @@
 </template>
 
 <script>
+import applyLoader from '../../mixins/applyLoader';
 
 export default {
   name: 'tablerep',
-  data() {return{};},
+  mixins: [applyLoader],
+  data() {return{
+      fileInDeletion: false
+  };},
   filters: {
     bytes(value) {
       if(value < 1024) {
@@ -63,8 +67,14 @@ export default {
     }
   },
   methods: {
+    inDeletion(file) {
+        return this.fileInDeletion == file.path;
+    },
     fileClass(file){
       let htmlClasses = 'scoped-file-row ';
+      if(this.inDeletion(file)) {
+        htmlClasses += 'file-in-deletion ';  
+      }
       if(this.inTransit(file)) {
         htmlClasses += 'file-in-transit ';
         if(this.$store.state.transitType == 'move') {
@@ -80,21 +90,16 @@ export default {
       return this.$store.state.fileInTransit != null && file.path == this.$store.state.fileInTransit.path;
     },
     deleteFile(file) {
-        this.$dialog.confirm(translate('You are sure you want to delete %s').replace('%s', file.shortName))
-        .then(function () {
-            this.$emit('loading');
+        this.$dialog.confirm(this.translate('You are sure you want to delete %s').replace('%s', file.shortName))
+        .then((dialog) => {
+            this.loadingState = true;
             this.$store.dispatch('deleteFile', file).then(
-              (result) => {
-                this.$emit('endloading');
-              },
-              (error) => {
-                this.$log.error(error);
-                this.$emit('endloading');
-              }
-            )
+              (result) => {},
+              (error) => { this.$log.error(error); }
+            ).finally(()=>{ this.loadingState = false; })
         })
         .catch(function () {
-          console.log('Clicked on cancel')
+          console.log('Clicked on cancel');
         });
     },
     copyFile(file) {
@@ -112,17 +117,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .scoped-table-aloud {
-    .row {
-      margin: 1px 0;
-      border-bottom: 1px solid #798979;
+    .file-in-deletion {
+        background-color: var(--LS-admintheme-hintedhovercolor);
+        opacity: 0.5;
     }
-    .cell {
-      border-left: 1px solid #798979;
-      padding: 1rem 0.8rem;
-      &:last-of-type {
-        border-right: 1px solid #798979;
-      }
+    .file-in-transit {
+        background-color: var(--LS-admintheme-hintedbasecolor);
+        opacity: 0.7;
     }
-  }
+    .scoped-table-aloud {
+        .row {
+            margin: 1px 0;
+            border-bottom: 1px solid #798979;
+            &.head-row {
+                color: #efefef;
+            }
+        }
+        .cell {
+            border-left: 1px solid #798979;
+            padding: 1rem 0.8rem;
+            &:last-of-type {
+                border-right: 1px solid #798979;
+            }
+        }
+    }
 </style>

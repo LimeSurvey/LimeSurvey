@@ -24,6 +24,7 @@
         <hasdefaultvalues>1</hasdefaultvalues>
         <assessable>0</assessable>
         <class>multiple-short-txt</class>
+        <database></database>
     </metadata>
 
     <!--

@@ -1,26 +1,28 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
-        <div class="ls-flex ls-flex-row wrap align-content-flex-start align-items-flex-start">
-            <div class="ls-flex ls-flex-column scoped-file-tile" v-for="file in $store.state.fileList" :key="file.shortName" :class="fileClass(file)">
+        <div class="masonry-container" >
+            <div 
+                class="ls-flex ls-flex-column scoped-file-tile" 
+                v-for="file in $store.state.fileList" 
+                :key="file.shortName" 
+                :class="fileClass(file)"
+            >
                 <div class="ls-flex ls-flex-row align-content-center align-items-center">
-                    <template v-if="file.isImage">
-                        <img class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
-                    </template>
-                    <template v-else>
-                        <i :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
-                    </template>
+                    <img v-if="file.isImage" class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
+                    <i v-else :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
                 </div>
-                <p>{{file.shortName}}</p>
-                <div class="ls-flex ls-flex-row">
+                <div class="scoped-prevent-overflow ls-space margin top-5">
+                    {{file.shortName}}
+                </div>
+                <div class="ls-flex ls-flex-row align-items-space-between align-content-space-between ls-space margin top-5">
                     <div class="text-left ls-flex">
                         <small>{{file.size | bytes}}</small>
                     </div>
-                    |
-                    <div class="text-left ls-flex">
+                    <div class="text-right ls-flex">
                         <small>{{file.mod_time}}</small>
                     </div>
                 </div>
-                <div class="ls-flex ls-flex-row" >
+                <div class="ls-flex ls-flex-row ls-space margin top-5" >
                     <template v-if="!inTransit(file)">
                         <button class="btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>
                         <button class="btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"><i class="fa fa-clone"></i></button>
@@ -36,10 +38,14 @@
 </template>
 
 <script>
+import applyLoader from '../../mixins/applyLoader';
 
 export default {
   name: 'tablerep',
-  data() {return{};},
+  mixins: [applyLoader],
+  data() {return{
+      fileInDeletion: false
+  };},
   filters: {
     bytes(value) {
       if(value < 1024) {
@@ -53,9 +59,17 @@ export default {
       }
     }
   },
+  computed: {
+      calcMaxHeight() {
+          return Math.floor((LS.ld.toArray(this.$store.state.fileList).length*550) / 4);
+      }
+  },
   methods: {
     fileClass(file){
       let htmlClasses = 'scoped-file-icon ';
+      if(this.inDeletion(file)) {
+        htmlClasses += 'file-in-deletion ';  
+      }
       if(this.inTransit(file)) {
         htmlClasses += 'file-in-transit ';
         if(this.$store.state.transitType == 'move') {
@@ -67,25 +81,23 @@ export default {
       }
       return htmlClasses;
     },
+    inDeletion(file) {
+        return this.fileInDeletion == file.path;
+    },
     inTransit(file) {
       return this.$store.state.fileInTransit != null && file.path == this.$store.state.fileInTransit.path;
     },
     deleteFile(file) {
-        this.$dialog.confirm(translate('You are sure you want to delete %s').replace('%s', file.shortName))
-        .then(function () {
-            this.$emit('loading');
+        this.$dialog.confirm(this.translate('You are sure you want to delete %s').replace('%s', file.shortName))
+        .then((dialog) => {
+            this.loadingState = true;
             this.$store.dispatch('deleteFile', file).then(
-              (result) => {
-                this.$emit('endloading');
-              },
-              (error) => {
-                this.$log.error(error);
-                this.$emit('endloading');
-              }
-            )
+              (result) => {},
+              (error) => {this.$log.error(error);}
+            ).finally(()=>{ this.loadingState = false; })
         })
         .catch(function () {
-          console.log('Clicked on cancel')
+          console.log('Clicked on cancel');
         });
     },
     copyFile(file) {
@@ -104,25 +116,43 @@ export default {
 
 <style lang="scss" scoped>
     @media (min-width: 769px) {
-        .scoped-file-tile {
-            max-width: 20%;
+        // .scoped-file-tile {
+        //     width: 20%;
+        //     max-height: 550px;
+        // }
+        .masonry-container {
+            columns: 4 auto;
+            column-gap: 1rem;
         }
     }
     @media (max-width: 768px) {
-        .scoped-file-tile {
-            max-width: 50%;
+        .masonry-container {
+            columns: 2 auto;
+            column-gap: 1rem;
         }
+    }
+
+    .file-in-deletion {
+        background-color: #999999;
+        opacity: 0.5;
+    }
+   
+    .scoped-prevent-overflow {
+        overflow: hidden;
+        word-wrap: break-word;
     }
 
     .scoped-contain-image {
         max-width: 100%;
-        max-height:100%;
         display: block;
     }
     .scoped-file-icon  {
         border: 1px solid black;
         box-shadow: 1px 2px 3px #939393;
         margin: 1.1rem;
+        &:first-of-type {
+            margin-top: 0;
+        }
         padding: 0.5rem;
     }
 </style>

@@ -9,7 +9,7 @@
      *
      * @property int     $id
      * @property string  $name   Template name
-     * @property string  $folder
+     * @property string  $xml_path
      * @property string  $image_path
      * @property string  $title
      * @property string  $creation_date
@@ -101,7 +101,7 @@
          *
          * @throws CException
          */
-        public function loadAllQuestionXMLConfigurationsIntoDatabase($useTransaction=true)
+        public function loadAllQuestionXMLConfigurationsIntoDatabase($useTransaction = true)
         {
             $missingQuestionThemeAttributes = [];
             $questionThemeDirectories = $this->getQuestionThemeDirectories();
@@ -111,7 +111,7 @@
             // process XML Question Files
             if (isset($questionThemeDirectories)) {
                 try {
-                    if($useTransaction) {
+                    if ($useTransaction) {
                         $transaction = App()->db->beginTransaction();
                     }
                     $questionsMetaData = self::getAllQuestionMetaData();
@@ -131,7 +131,7 @@
                         $questionTheme->setAttributes($metaDataArray, false);
                         $questionTheme->save();
                     }
-                    if($useTransaction) {
+                    if ($useTransaction) {
                         $transaction->commit();
                     }
                 } catch (Exception $e) {
@@ -139,7 +139,7 @@
                     echo $e->getMessage();
                     var_dump($e->getTrace());
                     echo $missingQuestionThemeAttributes;
-                    if($useTransaction) {
+                    if ($useTransaction) {
                         $transaction->rollback();
                     }
                 }
@@ -232,7 +232,7 @@
         public function getManifestButtons()
         {
             $sLoadLink = CHtml::form(array("/admin/themeoptions/sa/importmanifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
-                "<input type='hidden' name='templatefolder' value='" . $this->folder . "'>
+                "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
                 <input type='hidden' name='theme' value='questiontheme'>
                 <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
                     <span class='fa fa-download text-warning'></span>
@@ -326,11 +326,16 @@
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
             $publicurl = App()->getConfig('publicurl');
 
-            $sQuestionConfigFile = file_get_contents($pathToXML . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $pathToXML . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
-            $questionMetaData['xml_path'] = $publicurl . $pathToXML;
-            $questionMetaData['image_path'] = $pathToXML . '/assets/' . $questionMetaData['name'] . '_' . self::getQuestionThemeImageName($questionMetaData['type']);
+
+            // get custom previewimage if defined
+            if (!empty($oQuestionConfig->files->preview->filename)) {
+                $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
+                $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $previewFileName;
+            }
+            $questionMetaData['xml_path'] = $pathToXML;
 
             // set settings as json
             $questionMetaData['settings'] = json_encode([
@@ -349,17 +354,15 @@
             }
             if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
                 $questionMetaData['themeType'] = 'Core theme';
-                $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $questionMetaData['name'] . '_' . self::getQuestionThemeImageName($questionMetaData['type']);
                 $questionMetaData['extends'] = $questionMetaData['type'];
             }
             if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
                 $questionMetaData['themeType'] = 'User theme';
-                $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $questionMetaData['name'] . '_' . self::getQuestionThemeImageName($questionMetaData['type']);
                 $questionMetaData['extends'] = $questionMetaData['type'];
             }
 
             // get Default Image if undefined
-            if (!file_exists(App()->getConfig('rootdir') . $questionMetaData['image_path'])) {
+            if (empty($questionMetaData['image_path']) || !file_exists(App()->getConfig('rootdir') . $questionMetaData['image_path'])) {
                 $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['type']);
             }
 
@@ -470,7 +473,7 @@
             $baseQuestionsModified = [];
             foreach ($baseQuestions as $key => $baseQuestion) {
                 //TODO: should be moved into DB column (question_theme_settings table)
-                $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . $baseQuestion['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $baseQuestion['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
                 $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
                 $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
                 $showAsQuestionType = $questionEngineData['show_as_question_type'];
@@ -488,7 +491,7 @@
                 $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
 
                 // if its a core question change name to core for rendering Default rendering in the selector
-                if (empty($baseQuestion['extends'])){
+                if (empty($baseQuestion['extends'])) {
                     $baseQuestion['name'] = 'core';
                 }
                 $baseQuestionsModified[] = $baseQuestion;
@@ -521,7 +524,7 @@
                 'name' => $questionMetaData['name'],
                 'visible' => 'Y', //todo
                 'xml_path' => $questionMetaData['xml_path'],
-                'image_path' => $questionMetaData['image_path'],
+                'image_path' => $questionMetaData['image_path'] ?? '',
                 'title' => $questionMetaData['title'],
                 'creation_date' => date('Y-m-d H:i:s', strtotime($questionMetaData['creationDate'])),
                 'author' => $questionMetaData['author'],
