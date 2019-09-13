@@ -147,6 +147,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.topbarbutton {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    &>a {
+        margin:1px;
+    }
+    .navbar-btn {
+        margin-top: 0;
+    }
+}
 .icon {
     margin-right: 2px;
 }

@@ -86,6 +86,17 @@ if(!all && !single) {
 process.exit(0);
 }
 
+const processDate = (date) => {
+    const D = String(date.getDay()).padStart(2,'0');
+    const M = String(date.getMonth()).padStart(2,'0');
+    const Y = date.getFullYear();
+    const h = String(date.getHours()).padStart(2,'0');
+    const m = String(date.getMinutes()).padStart(2,'0');
+    const s = String(date.getSeconds()).padStart(2,'0');
+
+    return `${Y}-${M}-${D} ${h}:${m}:${s}`;
+}
+
 const runGetDependenciesInFolder = function (folder) {
     return new Promise((resolve, reject) => {
         console.log(`|| ===  Descending into ${folder} and running 'yarn'`);
@@ -170,7 +181,8 @@ const runBuild = function() {
 
 if(!single) {
     console.log(`
-|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the components ${(verbose ? 'and using verbose mode.' : '.')}`);
+|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the components ${(verbose ? 'and using verbose mode.' : '.')}
+|| ===  Starting time: ${processDate(new Date)}`);
     const finalPromise = pathArray.reduce( 
         async (promise, item) => {
             try{
@@ -223,7 +235,8 @@ if(!single) {
     }
 
     console.log(`
-|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component(s) ${JSON.stringify(componentsToBuild)}${(verbose ? ' and using verbose mode.' : '.')}`);
+|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component(s) ${JSON.stringify(componentsToBuild)}${(verbose ? ' and using verbose mode.' : '.')}
+|| ===  Starting time: ${processDate(new Date)}`);
 
     const finalPromise = componentToBuildArray.reduce( 
         async (promise, item) => {
@@ -254,7 +267,9 @@ if(!single) {
             console.log(`|| === Ended at ${endTime.toLocaleTimeString('de-DE')}`);
             console.log(`|| === Total milliseconds ${difference}`);
         }
-        console.log(`|| === All build in ${minutes}:${seconds}.${milliseconds}`);
+        console.log(`
+|| ===  All build in ${minutes}:${seconds}.${milliseconds}
+|| ===  Finished at: ${processDate(new Date)}`);
     }); 
 }
 

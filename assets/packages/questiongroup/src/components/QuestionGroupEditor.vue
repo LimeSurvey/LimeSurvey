@@ -90,9 +90,6 @@ ${scriptContent}
         if(this.$store.state.permissions.editorpreset == 'source') {
             this.sourceMode = true;
         }
-    },
-    mounted(){
-        this.toggleLoading(false);
     }
 }
 </script>

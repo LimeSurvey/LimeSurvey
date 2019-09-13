@@ -3,6 +3,12 @@
     margin-right: 1px;
 }
 
+.slotbutton-content {
+    .btn {
+        margin-top: 0;
+    }
+}
+
 .slide-left-leave-active,
 .slide-left-enter-active {
     transition: 650ms;

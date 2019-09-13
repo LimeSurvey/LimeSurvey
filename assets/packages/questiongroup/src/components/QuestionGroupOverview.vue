@@ -63,9 +63,6 @@ ${scriptContent}
         toggleEditMode(){
             this.$emit('triggerEvent', { target: 'lsnextquestiongroupeditor', method: 'triggerEditQuestionGroup', content: {} });
         }
-    },
-    mounted(){
-        this.toggleLoading(false);
     }
 }
 </script>

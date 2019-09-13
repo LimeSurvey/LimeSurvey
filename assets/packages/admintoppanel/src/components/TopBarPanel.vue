@@ -255,11 +255,15 @@ export default {
     .navbar {
         flex-wrap: wrap;
     }
+    
+    .navbar-btn {
+        margin-top: 0;
+    }
 }
 
 .navbar,
 .navbar-default {
-    padding-left: 15px;
+    padding-left: 1px;
     border: none;
 }
 

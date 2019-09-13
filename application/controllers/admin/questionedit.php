@@ -110,6 +110,10 @@ class questionedit extends Survey_Common_Action
             'gid' => $gid,
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,
+            'baseSQACode' => [
+                'answeroptions' => SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id),
+                'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id),
+            ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor', ['sid' => $iSurveyID, 'gid' => $gid, 'sa' => '']),
             'i10N' => [
@@ -178,12 +182,14 @@ class questionedit extends Survey_Common_Action
     {
         $questionData = App()->request->getPost('questionData', []);
         $iSurveyId = (int) $sid;
+        $isNewQuestion = false;
 
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
         if ($oQuestion != null) {
             $oQuestion = $this->_editQuestion($oQuestion, $questionData['question']);
         } else {
             $oQuestion = $this->_newQuestion($questionData['question']);
+            $isNewQuestion = true;
         }
         //$questionData['questionAttributes'];
         $setApplied = [];
@@ -218,7 +224,7 @@ class questionedit extends Survey_Common_Action
             'message' => gT('Question successfully stored'),
             'successDetail' => $setApplied,
             'questionId' => $oQuestion->qid,
-            'redirect' => $this->getController()->createUrl('admin/survey/sa/listquestions', ['surveyid' => $iSurveyId]),
+            'redirect' => $this->getController()->createUrl('admin/questioneditor/sa/view/', ['surveyid' => $iSurveyId, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]),
             'newQuestionDetails' => [
                 "question" => $aCompiledQuestionData['question'],
                 "scaledSubquestions" => $aCompiledQuestionData['subquestions'],
