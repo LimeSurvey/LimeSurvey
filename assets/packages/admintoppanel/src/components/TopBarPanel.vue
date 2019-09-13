@@ -255,6 +255,10 @@ export default {
     .navbar {
         flex-wrap: wrap;
     }
+    
+    .navbar-btn {
+        margin-top: 0;
+    }
 }
 
 .navbar,
