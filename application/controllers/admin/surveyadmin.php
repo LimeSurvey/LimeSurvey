@@ -207,7 +207,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         //Prepare the edition panes
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
-        $aData['datasecdata']              = array_merge($aData, $this->_getDataSecurityEditData($survey));
+        $aData['datasecdata']               = array_merge($aData, $this->_getDataSecurityEditData($survey));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
