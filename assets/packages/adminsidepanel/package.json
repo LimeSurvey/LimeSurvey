@@ -51,8 +51,8 @@
     }
   },
   "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
+    "> 0.25%",
+    "not dead",
     "not ie <= 8"
   ]
 }

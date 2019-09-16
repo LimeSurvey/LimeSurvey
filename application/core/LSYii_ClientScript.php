@@ -42,6 +42,12 @@ class LSYii_ClientScript extends CClientScript
         return $this->cssFiles;
     }
 
+
+    public function recordCachingAction($context, $method, $params)
+    {
+
+    }
+
     public function getScriptFiles()
     {
         return $this->scriptFiles;
@@ -168,7 +174,7 @@ class LSYii_ClientScript extends CClientScript
         if ((!YII_DEBUG || Yii::app()->getConfig('use_asset_manager'))) {
             $aUrlDatas = $this->analyzeUrl($url);
             if ($aUrlDatas['toPublish']) {
-                $url = App()->getAssetManager()->publish($aUrlDatas['sPathToFile']);
+                $url = App()->assetManager->publish($aUrlDatas['sPathToFile']);
             }
         }
 
@@ -182,7 +188,7 @@ class LSYii_ClientScript extends CClientScript
         if ((!YII_DEBUG || Yii::app()->getConfig('use_asset_manager'))) {
             $aUrlDatas = $this->analyzeUrl($url);
             if ($aUrlDatas['toPublish']) {
-                $url = App()->getAssetManager()->publish($aUrlDatas['sPathToFile']);
+                $url = App()->assetManager->publish($aUrlDatas['sPathToFile']);
             }
         }
         parent::registerCssFile($url, $media); // We publish the script
