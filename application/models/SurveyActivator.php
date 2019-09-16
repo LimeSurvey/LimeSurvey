@@ -119,10 +119,10 @@ class SurveyActivator
                     break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "decimal (30,10)";
+                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)";
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
-                    $aTableDefinition[$aRow['fieldname']] = "text";
+                    $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_L_LIST_DROPDOWN:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
@@ -130,7 +130,7 @@ class SurveyActivator
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
                     if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
-                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "string(5)";
+                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)" ;
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
                     }
@@ -140,24 +140,24 @@ class SurveyActivator
                 case Question::QT_T_LONG_FREE_TEXT:
                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
-                    $aTableDefinition[$aRow['fieldname']] = "text";
+                    $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_D_DATE:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "datetime";
+                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "datetime";
                     break;
                 case Question::QT_5_POINT_CHOICE:
                 case Question::QT_G_GENDER_DROPDOWN:
                 case Question::QT_Y_YES_NO_RADIO:
                 case Question::QT_X_BOILERPLATE_QUESTION:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "string(1)";
+                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(1)";
                     break;
                 case Question::QT_I_LANGUAGE:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "string(20)";
+                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(20)";
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
                     $this->createSurveyDir = true;
                     if (strpos($aRow['fieldname'], "_")) {
-                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "integer";
+                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "integer";
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
                     }
@@ -176,7 +176,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$this->collation;
                     break;
                 case Question::QT_ASTERISK_EQUATION:
-                    $aTableDefinition[$aRow['fieldname']] = "text";
+                    $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_R_RANKING_STYLE:
                     /**
@@ -202,10 +202,10 @@ class SurveyActivator
                         $oQuestionAttribute->value = $nrOfAnswers;
                         $oQuestionAttribute->save();
                     }
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "string(5)";
+                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)";
                     break;
                 default:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : "string(5)";
+                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)";
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
                 $aTableDefinition['token'] = 'string(35)'.$this->collation;

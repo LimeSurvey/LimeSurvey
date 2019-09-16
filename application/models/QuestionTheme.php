@@ -570,4 +570,44 @@
             return $preview_filename;
         }
 
+        /**
+         * Returns the table definition for the current Question
+         *
+         * @param string $name
+         * @param string $type
+         *
+         * @return string mixed
+         */
+        public static function getAnswerColumnDefinition($name, $type)
+        {
+            // cache the value between function calls
+            static $cacheMemo = [];
+            $cacheKey = $name . '_' . $type;
+            if (isset($cacheMemo[$cacheKey])){
+                return $cacheMemo[$cacheKey];
+            }
+            
+            if ($name == 'core') {
+                $questionTheme = self::model()->findByAttributes([], 'type=:type AND extends=:extends', ['type' => $type, 'extends' => '']);
+            } else {
+                $questionTheme = self::model()->findByAttributes([], 'name=:name AND type=:type', ['name' => $name, 'type' => $type]);
+            }
+
+            $answerColumnDefinition = '';
+            if (isset($questionTheme['xml_path'])) {
+                $bOldEntityLoaderState = libxml_disable_entity_loader(true);
+
+                $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
+                if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
+                    $answerColumnDefinition = json_decode(json_encode($oQuestionConfig->metadata->answercolumndefinition), true)[0];
+                }
+
+                libxml_disable_entity_loader($bOldEntityLoaderState);
+            }
+            
+            $cacheMemo[$cacheKey] = $answerColumnDefinition;
+            return $answerColumnDefinition;
+        }
+
     }
