@@ -1970,11 +1970,11 @@ class SurveyAdmin extends Survey_Common_Action
 
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
-            $createSample = ((int) App()->request->getPost('createsample', 0)) === 1;
+            $createSample = App()->request->getPost('createsample');
+            $createSampleChecked = ($createSample === 'on');
 
             // Figure out destination
-
-            if ($createSample) {
+            if ($createSampleChecked) {
                 $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
