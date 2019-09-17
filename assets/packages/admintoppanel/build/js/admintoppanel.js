@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "4695e9ee64a4eadbd54a";
+/******/ 	var hotCurrentHash = "77638c164529f1c7602a";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -808,9 +808,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es6_string_iterator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_string_iterator__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.array.from */ "./node_modules/core-js/modules/es6.array.from.js");
 /* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
 
 
 
@@ -826,7 +826,7 @@ function () {
     var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     var silencer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-    Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__["default"])(this, ConsoleShim);
+    Object(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__["default"])(this, ConsoleShim);
 
     this.param = param;
     this.silencer = silencer;
@@ -869,7 +869,7 @@ function () {
     };
   }
 
-  Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__["default"])(ConsoleShim, [{
+  Object(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__["default"])(ConsoleShim, [{
     key: "_generateError",
     value: function _generateError() {
       try {
@@ -882,7 +882,7 @@ function () {
     key: "_insertParamToArguments",
     value: function _insertParamToArguments(rawArgs) {
       if (this.param !== '') {
-        var args = Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__["default"])(rawArgs);
+        var args = Object(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__["default"])(rawArgs);
 
         args.unshift(this.param);
         return args;
@@ -29886,14 +29886,14 @@ if(true) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.array.iterator.js */ "./node_modules/core-js/modules/es6.array.iterator.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.promise.js */ "./node_modules/core-js/modules/es6.promise.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.object.assign.js */ "./node_modules/core-js/modules/es6.object.assign.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/core-js/modules/es7.promise.finally.js */ "./node_modules/core-js/modules/es7.promise.finally.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.array.iterator.js */ "./node_modules/core-js/modules/es6.array.iterator.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.promise.js */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.object.assign.js */ "./node_modules/core-js/modules/es6.object.assign.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/core-js/modules/es7.promise.finally.js */ "./node_modules/core-js/modules/es7.promise.finally.js");
+/* harmony import */ var C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(C_xampp_htdocs_LimeSurveyDevelop_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
 /* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_5__);
