@@ -38,16 +38,17 @@
                         {% if key in aAssessments.group | keys %}
                             {% for assessed in aAssessments.group[key] %}
                                 {% if ( val >= assessed.min and val <= assessed.max ) %}
+                                {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
                                 <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
                                     <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
                                         <th {{ aSurveyInfo.attr.assessmentstableth }} >
-                                            {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.name)  }}
+                                            {{ processString(assessed.name,true,3,assesmentReplacement) }}
                                         </th>
                                     </tr>
 
                                     <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
                                         <td {{ aSurveyInfo.attr.assessmentstabletd }} >
-                                            {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score  ], assessed.message)  }}
+                                            {{ processString(assessed.message,true,3,assesmentReplacement) }}
                                         </td>
                                     </tr>
                                 </table>
@@ -64,16 +65,17 @@
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
                     {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
+                    {# val ({PERC}): It displays the score of a question group, it don't exist for global … take the last one (must remove it for 4.X: show an error) #}
+                    {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
                         <table class='{{ aSurveyInfo.class.assessmentstablet }} table' {{ aSurveyInfo.attr.assessmentstablet }} >
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
                                 <th {{ aSurveyInfo.attr.assessmentstabletth }}>
-                                    {# Beleive it or not, val is defined in previous loop... -_- #}
-                                    {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.name)  }}
+                                    {{ processString(assessed.name,true,3,assesmentReplacement) }}
                                 </th>
                             </tr>
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
                                 <td {{ aSurveyInfo.attr.assessmentstablettd }}>
-                                    {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.message)  }}
+                                    {{ processString(assessed.message,true,3,assesmentReplacement) }}
                                 </td>
                             </tr>
                         </table>

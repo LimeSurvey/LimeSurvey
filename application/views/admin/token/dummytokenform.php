@@ -159,11 +159,8 @@
                     </div>
                 <?php endforeach; ?>
 
-                <!-- Buttons  -->
-                <p>
-                    <input type='submit' class="hidden" value='1' />
-                    <input type='hidden' name='sid' value='$surveyid' />
-                </p>
+                <!--Hidden Buttons (default action) -->
+                <input type='submit' class="hidden" value='1' />
             </form>
         </div>
     </div>
