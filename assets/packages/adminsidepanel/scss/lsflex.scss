@@ -38,6 +38,9 @@ $x-directions: center flex-start flex-end space-between space-around;
         .grow-#{$i} {
             flex-grow: $i;
         }
+        .shrink-#{$i} {
+            flex-shrink: $i;
+        }
         .col-#{$i} {
             width: 100*( $i/12)*1%;
         }
@@ -61,8 +64,8 @@ $x-directions: center flex-start flex-end space-between space-around;
     -ms-flex-direction: row;
     -webkit-flex-direction: row;
     -moz-flex-direction: row;
-    flex-direction: row;
     width: 100%;
+    flex-direction: row;
 }
 
 .ls-flex-column {

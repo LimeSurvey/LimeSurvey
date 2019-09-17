@@ -19,6 +19,7 @@
 !.travis.yml
 !.babelrc
 !.eslintrc.json
+!.eslintrc
 !.env-cmdrc
 
 

@@ -27,7 +27,7 @@ class themes extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        
+
         $sTemplateName = Yii::app()->request->getPost('templatename', '');
         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
@@ -571,11 +571,11 @@ class themes extends Survey_Common_Action
     public function templatecopy()
     {
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
-        
+
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
-            
-            if(Template::isStandardTemplate($newname)){  
+
+            if(Template::isStandardTemplate($newname)){
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
                 $this->getController()->redirect(array("admin/themeoptions"));
             }
@@ -947,6 +947,8 @@ class themes extends Survey_Common_Action
      */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
+
+
         // LimeSurvey style
         $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 
@@ -960,6 +962,8 @@ class themes extends Survey_Common_Action
         $cssfiles     = $oEditedTemplate->getValidScreenFiles("css");
         $jsfiles     = $oEditedTemplate->getValidScreenFiles("js");
         $editfile     = (empty($editfile) || ! ( in_array($editfile, $files) || in_array( $editfile ,$cssfiles) || in_array( $editfile ,$jsfiles)  )) ? $sLayoutFile : $editfile;
+
+
 
         // Standard screens
         // Only these may be viewed
@@ -1015,42 +1019,21 @@ class themes extends Survey_Common_Action
         // NB: Used by answer print PDF layout.
         $print = [];
 
-        // Set this so common.php doesn't throw notices about undefined variables
-        $thissurvey['active'] = 'N';
+        $thissurvey = $oEditedTemplate->getDefaultDataForRendering();
 
-        // FAKE DATA FOR TEMPLATES
-        $thissurvey['name'] = gT("Template Sample");
-        $thissurvey['surveyls_title'] = $thissurvey['name'];
-        $thissurvey['description'] =
-        "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
-        "<p>".gT("But this one isn't.")."<p>";
-        $thissurvey['surveyls_description'] = $thissurvey['description'];
-        $thissurvey['welcome'] =
-        "<p>".gT('Welcome to this sample survey')."<p>".
-        "<p>".gT('You should have a great time doing this')."<p>";
-        $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
-        $thissurvey['allowsave'] = "Y";
-        $thissurvey['active'] = "Y";
-        $thissurvey['tokenanswerspersistence'] = "Y";
-        $thissurvey['templatedir'] = $templatename;
-        $thissurvey['format'] = "G";
-        $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
-        $thissurvey['surveyls_urldescription'] = gT("Some URL description");
-        $thissurvey['usecaptcha'] = "A";
-        $thissurvey['showprogress'] = true;
-        $thissurvey['aNavigator']['show'] = true;
-        $thissurvey['aNavigator']['aMoveNext']['show'] = true;
-        $thissurvey['aNavigator']['aMovePrev']['show'] = true;
 
-        $groupname = gT("Group 1: The first lot of questions");
-        $groupdescription = gT("This group description is fairly vacuous, but quite important.");
+
+  //      $thissurvey['templatedir'] = $templatename;
+
+
 
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
+        // TODO: check if this aData is still used
         $aData['thissurvey']       = $thissurvey;
+
 
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
@@ -1058,20 +1041,13 @@ class themes extends Survey_Common_Action
 
         switch ($screenname) {
             case 'welcome':
-                // Show language changer.
-                $thissurvey['alanguageChanger']['show'] = true;
-                $thissurvey['alanguageChanger']['datas'] = [
-                    'sSelected' => 'en',
-                    //'withForm' => true,  // Set to true for no-js functionality.
-                    'aListLang' => [
-                        'en' => gT('English'),
-                        'de' => gT('German')
-                    ]
-                ];
 
                 break;
 
             case 'question':
+
+              // NOTE: this seems not to be used anymore
+              // TODO: try if it can be removed
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
@@ -1090,81 +1066,17 @@ class themes extends Survey_Common_Action
 
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements, $aReplacements);
-
-                // Group Datas
-                $thissurvey['aGroups'][1]["name"]            = $groupname;
-                $thissurvey['aGroups'][1]["showdescription"] = true;
-                $thissurvey['aGroups'][1]["description"]     = $groupdescription;
-
-                // Question 1 Datas
-                $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
-                $thissurvey['aGroups'][1]["aQuestions"][1]["code"]          = 'Q1 ';
-                $thissurvey['aGroups'][1]["aQuestions"][1]["text"]          = gT("How many roads must a man walk down?");
-                $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
-                $thissurvey['aGroups'][1]["aQuestions"][1]["valid_message"] = '<div id="vmsg_1_default" class="ls-question-message ls-em-tip em_default ls-em-success"><span class="fa fa-exclamation-circle" aria-hidden="true"></span>Choose one of the following answers</div>';
-                $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
-                $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
-                $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = "This is some helpful text.";
-                $thissurvey['aGroups'][1]["aQuestions"][1]["class"]         = "list-radio mandatory";
-                $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
-
-                // Question 2 Datas
-                $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
-                $thissurvey['aGroups'][1]["aQuestions"][2]["code"]          = 'Q2 ';
-                $thissurvey['aGroups'][1]["aQuestions"][2]["text"]          = gT("Please explain something in detail:");
-                $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
-                $thissurvey['aGroups'][1]["aQuestions"][2]["valid_message"] = '<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span>Hint when response is not valid</div>';
-                $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
-                $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
-                $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = "This is some helpful text.";
-                $thissurvey['aGroups'][1]["aQuestions"][2]["class"]         = "text-long";
-                $thissurvey['aGroups'][1]["aQuestions"][2]["attributes"]    = 'id="question43"';
-
-                // This is just to prevent getAllClasses to retreive .ls-hidden CSS class
-                $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;
-                $thissurvey['aGroups'][1]["aQuestions"][2]['templateeditor'] = true;
                 break;
 
             case 'register':
-                // $sLayoutFile = ""; // TODO
-                // $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
-                // $aData = array(
-                //     'aReplacements' => array_merge($aGlobalReplacements,array(
-                //         'SURVEYNAME' => 'Survey name'
-                //     ))
-                // );
-                // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
-
-                // $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
-                //     'REGISTERERROR' => 'Example error message',
-                //     'REGISTERMESSAGE1' => 'Register message 1',
-                //     'REGISTERMESSAGE2' => 'Register message 2',
-                //     'REGISTERFORM' => $this->getController()->renderPartial('/admin/themes/templateeditor_register_view', array('alt' => true), true),
-                // ));
-
-                // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
-                // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                // $myoutput[] = "\n";
-                $thissurvey['registration_view'] = 'register_form';
                 break;
 
             case 'completed':
-                $thissurvey['aCompleted']['showDefault'] = true;
-                $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
-                $thissurvey['aCompleted']['aPublicStatistics']['show'] = true;
                 break;
 
             case 'assessments':
-                $thissurvey['aAssessments']['show'] = true;
 
-                // Datas for assessments
-                $thissurvey['aAssessments']["datas"]["total"][0]               = array("name" => gT("Welcome to the Assessment"), "min" => "0", "max" => "3", "message" => gT("You got {TOTAL} points out of 3 possible points."));
-                $thissurvey['aAssessments']["datas"]["total"]["show"]          = true;
-                $thissurvey['aAssessments']["datas"]["subtotal"]["show"]       = true;
-                $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
-                $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
-                $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
                 break;
 
             case 'printablesurvey':
@@ -1219,47 +1131,6 @@ class themes extends Survey_Common_Action
 
             case 'navigation':
                 // Show question index navigation.
-                $thissurvey['aQuestionIndex']['bShow'] = true;
-                $thissurvey['aQuestionIndex']['items'] = [
-                    [
-                        'text' => gT('A group without step status styling')
-                    ],
-                    [
-                        'text' => gT('This group is unanswered'),
-                        'stepStatus' => [
-                            'index-item-unanswered' => true
-                        ]
-                    ],
-                    [
-                        'text' => gT('This group has an error'),
-                        'stepStatus' => [
-                            'index-item-error' => true
-                        ]
-                    ],
-                    [
-                        'text' => gT('Current group is disabled'),
-                        'stepStatus' => [
-                            'index-item-current' => true
-                        ]
-                    ]
-                ];
-
-                // Show "Clear all".
-                $thissurvey['bShowClearAll'] = true;
-
-                // Show language changer.
-                $thissurvey['alanguageChanger']['show'] = true;
-                $thissurvey['alanguageChanger']['datas'] = [
-                    'sSelected' => 'en',
-                    'aListLang' => [
-                        'en' => gT('English'),
-                        'de' => gT('German')
-                    ]
-                ];
-
-                $thissurvey['aNavigator']['load'] = [
-                    'show' => "Y"
-                ];
 
                 break;
 
@@ -1278,8 +1149,6 @@ class themes extends Survey_Common_Action
                 break;
 
             case 'error':
-                $thissurvey['aError']['title'] = gT("Error");
-                $thissurvey['aError']['message'] = gT("This is an error message example");
                 break;
         }
 

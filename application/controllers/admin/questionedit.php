@@ -112,6 +112,10 @@ class questionedit extends Survey_Common_Action
             'gid' => $gid,
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,
+            'baseSQACode' => [
+                'answeroptions' => SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id),
+                'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id),
+            ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor', ['sid' => $iSurveyID, 'gid' => $gid, 'sa' => '']),
             'i10N' => [

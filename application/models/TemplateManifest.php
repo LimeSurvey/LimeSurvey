@@ -85,6 +85,269 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Returns the complete list of screens, with layout and contents. Used from Twig Command line
+     * @return array the list of screens, layouts, contents
+     */
+    public function getScreenListWithLayoutAndContent()
+    {
+      $aContent = array();
+
+      $oFilesFromXML = $this->templateEditor->xpath('//screens');
+      foreach ($oFilesFromXML[0] as $sScreen => $oScreen){
+
+        // We reset LayoutName and FileName at each loop to avoid errors
+        $sLayoutName = "";
+        $sFileName = "";
+
+        foreach ($oScreen as $sKey => $oFile){
+
+            if ($oFile->attributes()->role == "layout") {
+              $sLayoutName  = (string) $oFile;
+            }
+
+            if ($oFile->attributes()->role == "content") {
+              $sFile  = (string) $oFile;
+
+              // From command line, we need to remove the full path for content. It's inside the layout. This could be an option
+              $aFile     = explode("/", $sFile);
+              $aFileName = explode(".", end($aFile));
+              $sFileName = $aFileName[0];
+            }
+        }
+
+        if (!empty ($sLayoutName) && ! empty ($sFileName)){
+          $aContent[$sScreen][$sLayoutName] = $sFileName;
+        }
+      }
+
+      return $aContent;
+    }
+
+    /**
+     * Return the default datas for theme views.
+     * This is used when rendering the views outside of the normal survey taking.
+     * Currently used in two cases: theme editor preview, and twig cache file generation from command line.
+     */
+    public function getDefaultDataForRendering($thissurvey=array())
+    {
+
+      $thissurvey    = empty($thissurvey)?$this->getDefaultCoreDataForRendering():$thissurvey;
+
+      $thissurvey = $this->getDefaultDataForRenderingFromXml($thissurvey);
+
+      //$thissurvey['alanguageChanger'] = $this->getDefaultDataForLanguageChanger();
+
+      // Redundant values
+      $thissurvey['surveyls_title'] = $thissurvey['name'];
+      $thissurvey['surveyls_description'] = $thissurvey['description'];
+      $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
+
+      return $thissurvey;
+    }
+
+
+    public function getDefaultDataForLanguageChanger($thissurvey=array())
+    {
+
+      $thissurvey    = empty($thissurvey)?array():$thissurvey;
+      $oDataFromXML = $this->templateEditor->default_data->xpath('//survey_data');
+
+
+      $thissurvey['alanguageChanger']['datas'] = [
+                    'sSelected' => 'en',
+                    //'withForm' => true,  // Set to true for no-js functionality.
+                    'aListLang' => [
+                        'en' => gT('English'),
+                        'de' => gT('German')
+                    ]
+                ];
+
+
+    }
+
+    public function getDefaultDataForRenderingFromXml($thissurvey=array())
+    {
+        $thissurvey    = empty($thissurvey)?array():$thissurvey;
+
+        if (empty($this->templateEditor)) {
+            return $thissurvey;
+        }
+
+        $thissurvey = $this->parseDefaultData('survey', $thissurvey);
+        $thissurvey['aGroups'][1] = $this->parseDefaultData('group', $thissurvey['aGroups'][1]);
+        $thissurvey['aGroups'][1]["aQuestions"][1] = $this->parseDefaultData('question_1', $thissurvey['aGroups'][1]["aQuestions"][1]) ;
+        $thissurvey['aGroups'][1]["aQuestions"][2] = $this->parseDefaultData('question_2', $thissurvey['aGroups'][1]["aQuestions"][2]);
+        $thissurvey['aAssessments']["datas"]["total"][0] = $this->parseDefaultData('assessments', $thissurvey['aAssessments']["datas"]["total"][0]);
+
+        return $thissurvey;
+    }
+
+
+
+    protected function parseDefaultData($sXpath, $aArrayToFeed)
+    {
+
+      $oDataFromXML = $this->templateEditor->default_data->xpath('//'.$sXpath);
+
+      foreach($oDataFromXML[0] as $sKey => $oData){
+
+        if (!empty($sKey)){
+
+          $sData = (string) $oData;
+
+          if ($oData->attributes()->twig == "on") {
+            $sData = Yii::app()->twigRenderer->convertTwigToHtml($sData);
+          }
+
+          $aArrayToFeed[$sKey] = $sData;
+        }
+      }
+
+      return $aArrayToFeed;
+    }
+
+    /**
+     * Hard coded data for theme rendering outside of the normal survey taking.
+     *
+     * Currently used in two cases: theme editor preview, and twig cache file generation from command line.
+     */
+    public function getDefaultCoreDataForRendering()
+    {
+
+        $thissurvey = array();
+
+        // Values that never change.
+        $thissurvey['active'] = 'N';
+        $thissurvey['allowsave'] = "Y";
+        $thissurvey['active'] = "Y";
+        $thissurvey['tokenanswerspersistence'] = "Y";
+        $thissurvey['format'] = "G";
+
+        $thissurvey['usecaptcha'] = "A";
+        $thissurvey['showprogress'] = true;
+        $thissurvey['aNavigator']['show'] = true;
+        $thissurvey['aNavigator']['aMoveNext']['show'] = true;
+        $thissurvey['aNavigator']['aMovePrev']['show'] = true;
+
+        $thissurvey['alanguageChanger']['show'] = true;
+        $thissurvey['alanguageChanger']['datas'] = [
+            'sSelected' => 'en',
+            //'withForm' => true,  // Set to true for no-js functionality.
+            'aListLang' => [
+                'en' => gT('English'),
+                'de' => gT('German')
+            ]
+        ];
+
+
+        $thissurvey['aQuestionIndex']['bShow'] = true;
+        $thissurvey['aQuestionIndex']['items'] = [
+            [
+                'text' => gT('A group without step status styling')
+            ],
+            [
+                'text' => gT('This group is unanswered'),
+                'stepStatus' => [
+                    'index-item-unanswered' => true
+                ]
+            ],
+            [
+                'text' => gT('This group has an error'),
+                'stepStatus' => [
+                    'index-item-error' => true
+                ]
+            ],
+            [
+                'text' => gT('Current group is disabled'),
+                'stepStatus' => [
+                    'index-item-current' => true
+                ]
+            ]
+        ];
+
+        // Show "Clear all".
+        $thissurvey['bShowClearAll'] = true;
+
+        // Show language changer.
+        $thissurvey['alanguageChanger']['show'] = true;
+        $thissurvey['alanguageChanger']['datas'] = [
+            'sSelected' => 'en',
+            'aListLang' => [
+                'en' => gT('English'),
+                'de' => gT('German')
+            ]
+        ];
+
+        $thissurvey['aNavigator']['load'] = [
+            'show' => "Y"
+        ];
+
+
+        $thissurvey['aGroups'][1]["showdescription"] = true;
+        $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
+
+        // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
+        if (method_exists ( Yii::app()->getController() , 'renderPartial' ) ){
+          $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
+        }
+        $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
+        $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = gT("This is some helpful text.");
+        $thissurvey['aGroups'][1]["aQuestions"][1]["class"]         = "list-radio mandatory";
+        $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
+
+        $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
+        if (method_exists ( Yii::app()->getController() , 'renderPartial' ) ){
+          $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
+        }
+        $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
+        $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = gT("This is some helpful text.");
+        $thissurvey['aGroups'][1]["aQuestions"][2]["class"]         = "text-long";
+        $thissurvey['aGroups'][1]["aQuestions"][2]["attributes"]    = 'id="question43"';
+
+        $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;
+        $thissurvey['aGroups'][1]["aQuestions"][2]['templateeditor'] = true;
+
+        $thissurvey['registration_view'] = 'register_form';
+
+        $thissurvey['aCompleted']['showDefault'] = true;
+        $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
+        $thissurvey['aCompleted']['aPublicStatistics']['show'] = true;
+
+        $thissurvey['aAssessments']['show'] = true;
+
+
+        $thissurvey['aError']['title'] = gT("Error");
+        $thissurvey['aError']['message'] = gT("This is an error message example");
+
+        // Datas for assessments
+        $thissurvey['aAssessments']["datas"]["total"][0]["name"]       = gT("Welcome to the Assessment");
+        $thissurvey['aAssessments']["datas"]["total"][0]["min"]        = "0";
+        $thissurvey['aAssessments']["datas"]["total"][0]["max"]        = "3";
+        $thissurvey['aAssessments']["datas"]["total"][0]["message"]    = gT("You got {TOTAL} points out of 3 possible points.");
+        $thissurvey['aAssessments']["datas"]["total"]["show"]          = true;
+        $thissurvey['aAssessments']["datas"]["subtotal"]["show"]       = true;
+        $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
+        $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
+        $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
+
+        // Those values can be overwritten by XML
+        $thissurvey['name'] = gT("Template Sample");
+        $thissurvey['description'] =
+        "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
+        "<p>".gT("But this one isn't.")."<p>";
+        $thissurvey['welcome'] =
+        "<p>".gT('Welcome to this sample survey')."<p>".
+        "<p>".gT('You should have a great time doing this')."<p>";
+        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
+        $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
+        $thissurvey['surveyls_urldescription'] = gT("Some URL description");
+
+        return $thissurvey;
+    }
+
+    /**
      * Returns the layout file name for a given screen
      *
      * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
@@ -266,7 +529,15 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getTemplateURL()
     {
-        return Template::getTemplateURL($this->sTemplateName);
+
+      // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+      if (Template::isStandardTemplate($this->sTemplateName)) {
+          return Yii::app()->getConfig("standardthemerooturl").'/'.$this->sTemplateName.'/';
+      } else {
+          return  Yii::app()->getConfig("userthemerooturl").'/'.$this->sTemplateName.'/';
+      }
+
+    //    return Template::getTemplateURL($this->sTemplateName);
     }
 
 
@@ -568,6 +839,7 @@ class TemplateManifest extends TemplateConfiguration
             $ometadata->appendChild($oExtendsNode);
         }
     }
+
 
     /**
      * Update the config file of a given template so that it extends another one
@@ -1052,5 +1324,21 @@ class TemplateManifest extends TemplateConfiguration
 
         $fontOptions .='';
         return $fontOptions;
+    }
+
+
+    /**
+     * PHP getter magic method.
+     * This method is overridden so that AR attributes can be accessed like properties.
+     * @param string $name property name
+     * @return mixed property value
+     * @see getAttribute
+     */
+    public function __get($name)
+    {
+      if ($name=="options"){
+        return json_encode( $this->config->options);
+      }
+      return parent::__get($name);
     }
 }

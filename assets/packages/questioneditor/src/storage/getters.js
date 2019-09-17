@@ -11,7 +11,12 @@ export default {
         return returner;
     },
     surveyid: () => (window.QuestionEditData.surveyObject.sid),
-    gid: () => (window.QuestionEditData.gid),
+    gid: () => {
+        if(LS) {
+            return LS.reparsedParameters().combined.gid;
+        }
+        return window.QuestionEditData.gid;
+    },
     surveyObject: () => window.QuestionEditData.surveyObject
 
 };

@@ -14,6 +14,16 @@ export default {
         Aceeditor
     },
     mixins: [runAjax],
+    props: {
+        'languagelist': {
+            'type': String,
+            'default': () => { return '{}'; }
+        },
+        'languagename': {
+            'type': String,
+            'default': 'No language found'
+        }
+    },
     data() {
         return {
             loading: true,
@@ -79,6 +89,12 @@ export default {
         },
         languageChangerEnabled() {
             return LS.ld.size(this.$store.state.languages) > 1;
+        },
+        languageList() {
+            return JSON.parse(this.languagelist);
+        },
+        languageName() {
+            return this.languagename;
         }
     },
     methods: {
@@ -177,6 +193,9 @@ ${scriptContent}
                 this.submitCurrentState();
             });
         }
+
+        $('#language').select2({});
+
         this.toggleLoading(false);
     }
 }
@@ -197,6 +216,28 @@ ${scriptContent}
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="surveyTitle">{{'Survey title' | translate }}</label>
                     <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" v-model="currentSurveyTitle">
+                </div>
+                <div class="form-group col-md-4 col-md-6" v-if="isNewSurvey">
+                    <label for="createsample" class="control-label">{{'Create example question group and question?' | translate}}</label>
+                    <div>
+                        <input type="checkbox" name="createsample" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4 col-md-6" v-if="isNewSurvey">
+                    <label class="control-label" for="language">{{'Base language' | translate }}</label>
+                    <select id="language" name="language" class="form-control">
+                        <option v-for="(language,key) in languageList" :value="key" :key="key">
+                            {{language}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4 col-md-6" v-else>
+                    <label class="control-label" for="language">{{'Base language' | translate }}</label>
+                    <div>
+                        {{languageName}}
+                    </div>
                 </div>
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="dateFormat">{{'Date format' | translate }}</label>

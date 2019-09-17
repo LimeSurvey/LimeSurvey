@@ -316,7 +316,7 @@ class Template extends LSActiveRecord
     {
 
         // First we try to get a confifuration row from DB
-        if (!$bForceXML) {
+        if (!$bForceXML  ) {
             // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
             $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
             $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId, $abstractInstance);
@@ -325,9 +325,9 @@ class Template extends LSActiveRecord
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
         if ($bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || !$oTemplateConfigurationModel->checkTemplate()) {
-            $oTemplateConfigurationModel = new TemplateManifest;
-            $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
 
+            $oTemplateConfigurationModel = new TemplateManifest(null);
+            $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
         }
 
         //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
@@ -482,18 +482,15 @@ class Template extends LSActiveRecord
      */
     public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false)
     {
+
+        if ($bForceXML === null) {
+          // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+          $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering'))?true:false;
+        }
+
         // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null) {
             $sTemplateName = App()->getConfig('defaulttheme');
-        }
-
-        if ($bForceXML === null) {
-            // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
-            if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
-                $bForceXML = true;
-            } elseif (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
-                $bForceXML = false;
-            }
         }
 
         if($abstractInstance === true) {
@@ -517,7 +514,7 @@ class Template extends LSActiveRecord
     {
         self::$instance = null;
     }
-        
+
     /**
     * Alias function for resetAssetVersion()
     * Don't delete this one to maintain updgrade compatibilty
@@ -525,9 +522,9 @@ class Template extends LSActiveRecord
     */
     public function forceAssets()
     {
-        $this->resetAssetVersion();    
+        $this->resetAssetVersion();
     }
-                    
+
     /**
      * Reset assets for this template
      * Using DB only

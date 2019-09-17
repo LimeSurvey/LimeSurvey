@@ -2509,8 +2509,8 @@ h3, .h3 {
   border-color: #f9f9f9;
   background-color: #f9f9f9;
   /*New CSS3 Style of doing it*/
-  border-color: transparent;
-  background-color: transparent;
+  border-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 #token-grid table tr .blank_button {

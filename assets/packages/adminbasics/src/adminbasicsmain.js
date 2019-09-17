@@ -13,6 +13,9 @@
  */
 
 
+//import the ES6 polyfills for IE11
+import 'core-js';
+
 
 //Define LS Namespace
 window.LS = window.LS || {};

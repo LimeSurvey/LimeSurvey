@@ -55,14 +55,14 @@ export default {
         const rightButtonsHTML = map(this.rightButtons, applyButtons);
 
         return (
-            <div class = "ls-flex ls-flex-row" id = {this.itemId}>
-                <ul class = "nav navbar-nav ls-flex-item ls-flex-row text-left grow-3">
+            <div class = "ls-flex ls-flex-row ls-space padding top-5" id = {this.itemId}>
+                <ul class = "nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row grow-2 text-left">
                     {leftButtonsHTML}
-                    {this.slotbutton != '' ? <li key = "slotbutton-content" domProps = {{ innerHTML: this.slotbutton}} /> : '' }
+                    {this.slotbutton != '' ? <li key = "slotbutton-content" class = "slotbutton-content" domProps = {{ innerHTML: this.slotbutton}} /> : '' }
                 </ul>
                 {this.rightButtons.length>0
                     ? <ul
-                        class = "nav navbar-nav ls-flex-item  ls-flex-row align-content-flex-end text-right padding-left scoped-switch-floats"
+                        class = "nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row align-content-flex-end text-right padding-left scoped-switch-floats"
                     > {rightButtonsHTML}  </ul>
                     : ''
                 }
@@ -71,3 +71,12 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .scoped-topbar-nav {
+        float: none;
+        width: initial;
+        max-width: 100%;
+        padding-top:4px;
+    }
+</style>
