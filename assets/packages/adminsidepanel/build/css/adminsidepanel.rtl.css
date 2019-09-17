@@ -1,3 +1,9 @@
+.scoped-bottom-bar {
+  align-self: flex-end;
+}
+.scoped-unlocklock-organizer-right {
+  align-self: flex-end;
+}
 .list-group-item.question-question-list-item .editIcon {
   margin: 10px 5px 10px 10px;
 }
@@ -90,6 +96,9 @@
     height: 100%; }
   #sidebar .dragPointer {
     cursor: move; }
+    #sidebar .dragPointer.disabled {
+      color: #999999;
+      cursor: not-allowed; }
   #sidebar .question-question-list .question-question-list-item {
     padding: 0; }
     #sidebar .question-question-list .question-question-list-item .question-question-list-item-drag {

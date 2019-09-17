@@ -1303,4 +1303,25 @@ class Survey_Common_Action extends CAction
         return $extraMenus;
     }
 
+    /**
+     * Method to render an array as a json document
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData, $success=true)
+    {
+        
+        $aData['success'] = $aData['success'] ?? $success;
+
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => $aData
+        ], true, false);
+        return;
+    }
+
 }
