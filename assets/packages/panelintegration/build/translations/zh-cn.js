@@ -1,1 +1,0 @@
-(function(d){d['zh-cn']=Object.assign(d['zh-cn']||{},{})})(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));

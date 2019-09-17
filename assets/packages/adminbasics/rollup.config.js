@@ -24,8 +24,6 @@ if( ENVIRONEMENT=='production' ) {
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
             'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
-            // TODO: How should env-cmdrc look to support DIRECTION?
-            //ENVDIRECTION:DIRECTION,
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
         babel({

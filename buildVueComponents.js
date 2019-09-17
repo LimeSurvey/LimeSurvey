@@ -52,6 +52,7 @@ const all = args.includes('-a');
 const single = args.includes('-s');
 const verbose = args.includes('-v');
 const prepareOnly = args.includes('-p');
+const noReleaseBuild = args.includes('-d');
 
 if(!all && !single) {
     console.log(`
@@ -117,9 +118,9 @@ const runGetDependenciesInFolder = function (folder) {
 
 const runBuildFolder = function (folder) {
     return new Promise((resolve, reject) => {
-        console.log(`|| === Descending into ${folder} and running 'yarn build'`);
+        console.log(`|| === Descending into ${folder} and running 'yarn ${(noReleaseBuild ? 'run dev' : 'build')}'`);
         const fullPath = folder; //path.normalize(folder);
-        const command = spawn('yarn', ['build'], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
+        const command = spawn('yarn', [(noReleaseBuild ? 'run dev' : 'build')], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
 
         command.on('error', (err) => {
             console.log(err);
@@ -141,6 +142,7 @@ const runBuild = function() {
         ['labelsets', 'assets/packages/labelsets/'],
         ['questioneditor', 'assets/packages/questioneditor/'],
         ['questiongroup', 'assets/packages/questiongroup/'],
+        ['panelintegration', 'assets/packages/questiongroup/'],
         ['textelements', 'assets/packages/textelements/'],
     ];
     const pathArray = [
