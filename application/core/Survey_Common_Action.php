@@ -71,6 +71,15 @@ class Survey_Common_Action extends CAction
         // If the above method existence check passed, it might not be neceessary that it is of the action class
         $oMethod  = new ReflectionMethod($this, $sSubAction);
 
+        // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
+        // Merges it with actions from admin modules
+        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses() );
+
+        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
+            // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
+            // So let us get the last possible default method, ie. index
+            $oMethod = new ReflectionMethod($this, $sDefault);
+        }
 
         // We're all good to go, let's execute it
         // runWithParamsInternal would automatically get the parameters of the method and populate them as required with the params
