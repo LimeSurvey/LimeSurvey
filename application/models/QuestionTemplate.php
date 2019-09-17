@@ -425,12 +425,17 @@ class QuestionTemplate extends CFormModel
                             if (!empty($oConfig->files->preview->filename)){
                                 $fileName = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
                                 $previewPath = $sFullPathToQuestionTemplate."/assets/".$fileName;
-                                $check = LSYii_ImageValidator::validateImage($previewPath);
-                                if(is_file($previewPath) && $check['check']) {
-                                    $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
+                                if(is_file($previewPath)) {
+                                    $check = LSYii_ImageValidator::validateImage($previewPath);
+                                    if($check['check']) {
+                                        $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
+                                    } else {
+                                        /* Log it a theme.question.$oConfig->name as error, review ? */
+                                        Yii::log("Unable to use $fileName for preview in $sFullPathToQuestionTemplate/assets/",'error','theme.question.'.$oConfig->metadata->name);
+                                    }
                                 } else {
-                                    /* Log it a theme.question.$oConfig->name as error, review ? */
-                                    Yii::log("Unable to use $fileName for preview in $sFullPathToQuestionTemplate/assets/",'error','theme.question.'.$oConfig->metadata->name);
+                                        /* Log it a theme.question.$oConfig->name as error, review ? */
+                                        Yii::log("Unable to find $fileName for preview in $sFullPathToQuestionTemplate/assets/",'error','theme.question.'.$oConfig->metadata->name);
                                 }
                             }
                             if(empty($aQuestionTemplates[$file]['preview'])) {
