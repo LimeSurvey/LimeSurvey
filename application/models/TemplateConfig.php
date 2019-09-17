@@ -1005,7 +1005,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate                   = new Template;
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
-        $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title
+        $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
         $oNewTemplate->creation_date    = date("Y-m-d H:i:s");
         $oNewTemplate->author           = Yii::app()->user->name;
         $oNewTemplate->author_email     = ''; // privacy

@@ -1125,8 +1125,9 @@ class themes extends Survey_Common_Action
 
         $thissurvey['include_content'] = $sContentFile;
 
+
         // new TemplateConfiguration model created so preview can read theme options from DB
-        $oTemplateForPreview = Template::getInstance($templatename, null, null, false)->prepareTemplateRendering($templatename, null, true);
+        $oTemplateForPreview =  Template::getInstance($templatename, null, null, false);
 
         try {
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
