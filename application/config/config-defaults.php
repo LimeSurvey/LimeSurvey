@@ -511,6 +511,11 @@ $config['force_ssl'] = 'neither'; // DO not turn on unless you are sure your ser
 $config['ssl_emergency_override'] = false;
 
 /**
+* @var $ssl_disable_alert boolean disable alert for super admin
+*/
+$config['ssl_disable_alert'] = false;
+
+/**
 * Sets if any part of LimeSUrvey may be embedded in an iframe
 * Valid values are allow, sameorigin
 * Default / Recommended: sameorigin
