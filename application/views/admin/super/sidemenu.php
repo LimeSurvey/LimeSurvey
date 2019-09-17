@@ -42,6 +42,8 @@
     
     $menuObject =  json_encode($menuObjectArray);
 
+    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
+
     Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
         window.SideMenuData = {
             getQuestionsUrl: "'.$getQuestionsUrl.'",
@@ -71,5 +73,9 @@
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container"
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
-    <sidebar />
+    <?php if($landOnSideMenuTab !== ''): ?>
+        <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>' />
+    <?php else: ?>
+        <sidebar />
+    <?php endif; ?>
 </div>
