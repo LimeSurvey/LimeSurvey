@@ -262,7 +262,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             $deleteButton->click();
             $w->switchTo()->alert()->accept();
 
-            sleep(1);
+            sleep(2);
 
             // Check that file does not exist in list anymore.
             $files = $w->findElements(WebDriverBy::className('other-files-filename'));
