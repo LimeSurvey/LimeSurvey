@@ -1978,11 +1978,16 @@ class SurveyAdmin extends Survey_Common_Action
                 $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
-                $redirecturl = $this->getController()->createUrl(
-                    "admin/questions/sa/view/",
-                    ['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
-                );
+                App()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
+                
+                //$redirecturl = $this->getController()->createUrl(
+                   // "admin/questions/sa/view/",
+                    //['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
+                //);
+
+                // TODO: if create example question group and question redirect to survey overview and land on structure tab.
+                $landOnSideMenuTab   = 'structure';
+                $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
                 $redirecturl = $this->getController()->createUrl(
                     'admin/survey/sa/view/',
@@ -2003,6 +2008,25 @@ class SurveyAdmin extends Survey_Common_Action
         }
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
 
+    }
+    
+    /**
+     * This method will return the url for the current survey and set the direction for 
+     * the sidemenue. 
+     * 
+     * @param integer $sid 
+     * @param integer $gid  
+     * @param integer $qid 
+     * @return string
+     */
+    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab) {
+        $url = 'admin/questioneditor/sa/view/';
+        $params = [
+            'surveyid' => $sid, 
+            'gid'      => $gid, 
+            'qid'      => $qid, 
+            'landOnSideMenuTab'   => $landOnSideMenuTab];
+        return $this->getController()->createUrl($url, $params);
     }
 
     /**
