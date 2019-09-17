@@ -244,9 +244,11 @@
         }
 
         /**
-         * @param $pathToXML
+         * Import config manifest to database.
          *
-         * @return bool
+         * @param string $pathToXML
+         * @return bool|string
+         * @throws InvalidArgumentException
          */
         public function importManifest($pathToXML)
         {
@@ -254,12 +256,27 @@
                 throw new InvalidArgumentException('$templateFolder cannot be empty');
             }
 
+            /** @var string[] */
             $questionDirectories = $this->getQuestionThemeDirectories();
+            /** @var array */
             $questionMetaData = $this->getQuestionMetaData($pathToXML, $questionDirectories);
+            if (!$this->validateMetaData($questionMetaData)) {
+                return false;
+            }
 
-            $questionThemeExists = QuestionTheme::model()->find('(name = :name AND extends = :extends) OR (extends = :extends AND type = :type)', [':name' => $questionMetaData['name'], ':type' => $questionMetaData['type'], ':extends' => $questionMetaData['extends']]);
-            if ($questionThemeExists == null) {
+            /** @var QuestionTheme */
+            $questionTheme = QuestionTheme::model()
+                ->find(
+                    '(name = :name AND extends = :extends) OR (extends = :extends AND type = :type)',
+                    [
+                        ':name' => $questionMetaData['name'],
+                        ':type' => $questionMetaData['type'],
+                        ':extends' => $questionMetaData['extends']
+                    ]
+                );
 
+            if ($questionTheme == null) {
+                /** @var array<string, mixed> */
                 $metaDataArray = $this->getMetaDataArray($questionMetaData);
                 $this->setAttributes($metaDataArray, false);
                 if ($this->save()) {
@@ -271,6 +288,8 @@
 
         /**
          * Returns all Questions that can be installed
+         *
+         * @return QuestionTheme[]
          */
         public function getAvailableQuestions()
         {
@@ -600,6 +619,7 @@
                 $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
                 $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
                 if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
+                    // TODO: Check json_last_error.
                     $answerColumnDefinition = json_decode(json_encode($oQuestionConfig->metadata->answercolumndefinition), true)[0];
                 }
 
@@ -608,6 +628,18 @@
             
             $cacheMemo[$cacheKey] = $answerColumnDefinition;
             return $answerColumnDefinition;
+        }
+
+        /**
+         * Returns true if meta data has all mandatory fields.
+         *
+         * @param array $questionsMetaData
+         * @return boolean
+         */
+        protected function validateMetaData(array $questionsMetaData)
+        {
+            // TODO
+            return true;
         }
 
     }
