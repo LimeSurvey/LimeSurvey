@@ -180,156 +180,12 @@ class themes extends Survey_Common_Action
         $sTemplateName = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             App()->loadHelper('admin/template');
-            $themeType = returnGlobal('theme');
             $lid = returnGlobal('lid');
-            $uploadresult = "";
-            $success = false;
-            $debug = [];
             if ($action == 'templateuploadimagefile') {
-                // $iTemplateConfigurationId = App()->request->getPost('templateconfig');
-                // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
-                $oTemplateConfiguration = Template::getInstance($sTemplateName);
-
-                $debug[] = $sTemplateName;
-                $debug[] = $oTemplateConfiguration;
-                if (App()->getConfig('demoMode')) {
-                    $uploadresult = gT("Demo mode: Uploading images is disabled.");
-                    return App()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
-                $debug[] = $_FILES;
-                if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
-                    $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
-                    return App()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
-                $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
-                if ($checkImage['check'] === false) {
-                    return App()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
-                        false,
-                        false
-                    );
-                }
-
-                $destdir = $oTemplateConfiguration->filesPath;
-                if(Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
-                    $destdir = $oTemplateConfiguration->generalFilesPath;
-                }
-
-                $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
-                $fullfilepath = $destdir.$filename;
-                $debug[] = $destdir;
-                $debug[] = $filename;
-                $debug[] = $fullfilepath;
-                if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
-                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-                } else {
-                    $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                    App()->user->setFlash('success', "Data saved!");
-                    $success = true;
-                };
-
-                return App()->getController()->renderPartial(
-                    '/admin/super/_renderJson',
-                    array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                    false,
-                    false
-                );
-
+                return $this->uploadTemplateImageFile($sTemplateName);
             } else if ($action == 'templateupload') {
-
-                App()->loadLibrary('admin.pclzip');
-
-                // Redirect back if demo mode is set.
-                $this->checkDemoMode();
-
-                // Redirect back at file size error.
-                $this->checkFileSizeError();
-
-                $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
-
-                if ($themeType == 'question') {
-                    $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
-                } elseif ($themeType == 'survey') {
-                    $destdir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
-                } else {
-                    App()->setFlashMessage(gT("This theme type is not allowed."), 'error');
-                    $this->getController()->redirect(array("admin/themeoptions"));
-                }
-
-                // Redirect back if $destdir is not writable OR if it already exists.
-                $this->checkDestDir($destdir, $sNewDirectoryName);
-
-                // All OK if we're here.
-                mkdir($destdir);
-
-                $aImportedFilesInfo = array();
-                $aErrorFilesInfo = array();
-
-                if (is_file($_FILES['the_file']['tmp_name'])) {
-                    $zip = new PclZip($_FILES['the_file']['tmp_name']);
-                    $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
-
-                    if ($aExtractResult === 0) {
-                        App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
-                        rmdirr($destdir);
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
-                    } else {
-                        // Successfully unpacked
-                        foreach ($aExtractResult as $sFile) {
-                            if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
-                                $aErrorFilesInfo[] = array(
-                                    "filename" => $sFile['stored_filename'],
-                                );
-                            } else {
-                                $aImportedFilesInfo[] = array(
-                                    "filename" => $sFile['stored_filename'],
-                                    "status" => gT("OK"),
-                                    'is_folder' => $sFile['folder']
-                                );
-                            }
-                        }
-
-                        if (Template::checkIfTemplateExists($sNewDirectoryName)) {
-                            App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
-                            rmdirr($destdir);
-                            $this->getController()->redirect(array("admin/themes/sa/upload"));
-                        }
-                        if (count($aImportedFilesInfo) == 0) {
-                            App()->user->setFlash('error', gT("This ZIP archive contains no valid template files. Import failed."));
-                            rmdirr($destdir);
-                            $this->getController()->redirect(array("admin/themes/sa/upload"));
-                        }
-                        // TODO: make proper import manifest for questiontheme in configuration class
-                        if ($themeType !== 'question') {
-                            TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
-                        }
-                    }
-
-
-                } else {
-                    App()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
-                    rmdirr($destdir);
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
-
+                $aData = $this->uploadTemplate();
                 $aViewUrls = 'importuploaded_view';
-                $aData = array(
-                    'aImportedFilesInfo' => $aImportedFilesInfo,
-                    'aErrorFilesInfo' => $aErrorFilesInfo,
-                    'lid' => $lid,
-                    'newdir' => $sNewDirectoryName,
-                );
             } else {
                 $aViewUrls = 'importform_view';
                 $aData = array('lid' => $lid);
@@ -340,6 +196,185 @@ class themes extends Survey_Common_Action
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array("admin/themeoptions"));
         }
+    }
+
+    /**
+     * @param string $sTemplateName
+     * @return boolean
+     */
+    protected function uploadTemplateImageFile(string $sTemplateName)
+    {
+        // $iTemplateConfigurationId = App()->request->getPost('templateconfig');
+        // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
+        /** @var Template */
+        $oTemplateConfiguration = Template::getInstance($sTemplateName);
+
+        /** @var boolean */
+        $success = false;
+        /** @var string */
+        $uploadresult = "";
+        /** @var array<mixed> */
+        $debug = [];
+
+        $debug[] = $sTemplateName;
+        $debug[] = $oTemplateConfiguration;
+
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        $debug[] = $_FILES;
+
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
+        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
+        if ($checkImage['check'] === false) {
+            return App()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => $success,
+                        'message' => $checkImage['uploadresult'],
+                        'debug' => $checkImage['debug']
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
+        $destdir = $oTemplateConfiguration->filesPath;
+        if (Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)) {
+            $destdir = $oTemplateConfiguration->generalFilesPath;
+        }
+
+        // Don't force lowercase or alphanumeric
+        $filename = sanitize_filename($_FILES['file']['name'], false, false, false);
+        $fullfilepath = $destdir.$filename;
+        $debug[] = $destdir;
+        $debug[] = $filename;
+        $debug[] = $fullfilepath;
+        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
+            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+        } else {
+            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+            App()->user->setFlash('success', "Data saved!");
+            $success = true;
+        };
+
+        return App()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Upload template/theme/question theme.
+     *
+     * @return array $aData
+     */
+    protected function uploadTemplate()
+    {
+        App()->loadLibrary('admin.pclzip');
+
+        // TODO: What's lid?
+        $lid = returnGlobal('lid');
+
+        // TODO: Check for empty $themeType (happens randomly?)
+        /** @var string */
+        $themeType = returnGlobal('theme');
+
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
+        $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+
+        if ($themeType == 'question') {
+            $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+        } elseif ($themeType == 'survey') {
+            $destdir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+        } else {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("This theme type (%s) is not allowed."),
+                    json_encode(htmlspecialchars($themeType))
+                ),
+                'error'
+            );
+            $this->getController()->redirect(array("admin/themeoptions"));
+        }
+
+        // Redirect back if $destdir is not writable OR if it already exists.
+        $this->checkDestDir($destdir, $sNewDirectoryName);
+
+        // All OK if we're here.
+        mkdir($destdir);
+
+        $aImportedFilesInfo = array();
+        $aErrorFilesInfo = array();
+
+        if (is_file($_FILES['the_file']['tmp_name'])) {
+            $zip = new PclZip($_FILES['the_file']['tmp_name']);
+            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+
+            if ($aExtractResult === 0) {
+                App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
+                rmdirr($destdir);
+                $this->getController()->redirect(array("admin/themes/sa/upload"));
+            } else {
+                // Successfully unpacked
+                foreach ($aExtractResult as $sFile) {
+                    if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
+                        $aErrorFilesInfo[] = array(
+                            "filename" => $sFile['stored_filename'],
+                        );
+                    } else {
+                        $aImportedFilesInfo[] = array(
+                            "filename" => $sFile['stored_filename'],
+                            "status" => gT("OK"),
+                            'is_folder' => $sFile['folder']
+                        );
+                    }
+                }
+
+                if (Template::checkIfTemplateExists($sNewDirectoryName)) {
+                    App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
+                    rmdirr($destdir);
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
+                if (count($aImportedFilesInfo) == 0) {
+                    App()->user->setFlash(
+                        'error',
+                        gT("This ZIP archive contains no valid template files. Import failed.")
+                    );
+                    rmdirr($destdir);
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
+                // TODO: make proper import manifest for questiontheme in configuration class
+                if ($themeType !== 'question') {
+                    TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
+                }
+            }
+        } else {
+            App()->setFlashMessage(
+                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
+                'error'
+            );
+            rmdirr($destdir);
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+
+        return array(
+            'aImportedFilesInfo' => $aImportedFilesInfo,
+            'aErrorFilesInfo' => $aErrorFilesInfo,
+            'lid' => $lid,
+            'newdir' => $sNewDirectoryName,
+        );
     }
 
     /**
