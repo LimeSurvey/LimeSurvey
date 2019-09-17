@@ -26,7 +26,13 @@ if (!defined('BASEPATH')) {
 */
 class questionedit extends Survey_Common_Action
 {
-    public function view($surveyid, $gid, $qid=null)
+    /**
+     * @param integer $surveyid 
+     * @param integer $gid 
+     * @param integer $qid 
+     * @param string $landOnSideMenuTab
+     */
+    public function view($surveyid, $gid, $qid=null, $landOnSideMenuTab = '')
     {
         $aData = array();
         $iSurveyID = (int) $surveyid;
@@ -54,8 +60,7 @@ class questionedit extends Survey_Common_Action
 
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
-
-        $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
+      //  $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // can we delete this?
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['questionbar']['buttons']['view'] = true;
 
@@ -85,8 +90,6 @@ class questionedit extends Survey_Common_Action
         $aData['oSurvey'] = $oSurvey;
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
-        //$aData['qct']
-        //$aData['sqct']
         $aData['activated'] = $oSurvey->active;
         $aData['oQuestion'] = $oQuestion;
         $aData['languagelist'] = $oSurvey->allLanguages;
@@ -162,6 +165,9 @@ class questionedit extends Survey_Common_Action
         $aData['topBar']['savebuttonform'] = 'frmeditgroup';
         $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
 
+        if ($landOnSideMenuTab !== '') {
+            $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
+        }
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
 
