@@ -601,7 +601,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function getPathOfFile($twigView,$oTemplate=null,$extraPath=array(),$dirName = null)
     {
         if(!$oTemplate) {
-            $oTemplate = Template::model()->getInstance();
+            $oTemplate = Template::model()->getInstance(null, null, null, null, false, true);
         }
         $this->addRecursiveTemplatesPath($oTemplate,$extraPath,$dirName);
         if(!$this->_twig->getLoader()->exists($twigView)) {

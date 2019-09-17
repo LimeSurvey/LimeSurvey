@@ -457,8 +457,7 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
-    $coreReplacements['TEMPLATEURL'] = Template::model()->getInstance()->templateURL;
-
+    $coreReplacements['TEMPLATEURL'] = Template::model()->getInstance(null, $surveyid)->templateURL;
     return $coreReplacements;
 }
 

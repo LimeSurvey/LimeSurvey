@@ -478,9 +478,10 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyId
      * @param int|string $iSurveyGroupId
      * @param boolean $bForceXML
+     * @param boolean $last if you want to get the last instace without providing template name or sid
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false)
+    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false, $last=false)
     {
 
         if ($bForceXML === null) {
@@ -489,7 +490,7 @@ class Template extends LSActiveRecord
 
         }
         // The error page from default template can be called when no survey found with a specific ID.
-        if ($sTemplateName === null && $iSurveyId === null) {
+        if ($sTemplateName === null && $iSurveyId === null && $last=false) {
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
