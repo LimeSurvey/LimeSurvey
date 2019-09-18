@@ -313,8 +313,8 @@ class themes extends Survey_Common_Action
         // Redirect back if $destdir is not writable OR if it already exists.
         $this->checkDestDir($destdir, $sNewDirectoryName);
 
-        // TODO: Always check if successful.
         // All OK if we're here.
+        // TODO: Always check if successful.
         mkdir($destdir);
 
         $aImportedFilesInfo = array();
@@ -354,6 +354,7 @@ class themes extends Survey_Common_Action
                         'error',
                         gT("This ZIP archive contains no valid template files. Import failed.")
                     );
+                    // TODO: Always check if successful.
                     rmdirr($destdir);
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
                 }
@@ -367,6 +368,7 @@ class themes extends Survey_Common_Action
                 gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
                 'error'
             );
+            // TODO: Always check if successful.
             rmdirr($destdir);
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
