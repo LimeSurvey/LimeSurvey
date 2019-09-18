@@ -349,10 +349,12 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
-     * 
+     * This method will return the preview image for custom theme. 
+     * It will be rendered as JSON.
      */
-    public function getPreviewImageForCustomTheme() {
-        $request = Yii::app()->request;
+    public function getPreviewImageForCustomTheme() 
+    {
+        $request = App()->request;
         $type = $request->getParam('type');
         $questionTemplateList = QuestionTemplate::getQuestionTemplateList($type);
 
