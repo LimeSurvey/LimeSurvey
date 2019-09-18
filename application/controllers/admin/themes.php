@@ -180,6 +180,7 @@ class themes extends Survey_Common_Action
         $sTemplateName = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             App()->loadHelper('admin/template');
+            // NB: lid = label id
             $lid = returnGlobal('lid');
             if ($action == 'templateuploadimagefile') {
                 return $this->uploadTemplateImageFile($sTemplateName);
