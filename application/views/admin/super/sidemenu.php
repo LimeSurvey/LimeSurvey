@@ -5,38 +5,42 @@
     */
 ?>
 <?php
-$sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
-if (
-    $sideMenuBehaviour == 'alwaysClosed'
-    || ($sideMenuBehaviour == 'adaptive'
-    && !$sidemenu['state'])
-) {
-    $showSideMenu = false;
-} else {
-    $showSideMenu = true;
-}
-$getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
-$getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
-$createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
-$createQuestionLink = "admin/questioneditor/sa/view/surveyid/".$surveyid;
-$unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
+    $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
+    if (
+        $sideMenuBehaviour == 'alwaysClosed'
+        || ($sideMenuBehaviour == 'adaptive'
+        && !$sidemenu['state'])
+    ) {
+        $showSideMenu = false;
+    } else {
+        $showSideMenu = true;
+    }
+    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
+    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
+    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
+    $createQuestionLink = "admin/questioneditor/sa/view/surveyid/".$surveyid;
+    $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
-$updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
+    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
 
-$createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
-if ($activated || !$createPermission) {
-    $createQuestionGroupLink = "";
-    $createQuestionLink = "";
-}
-
-$menuObjectArray =  [
-    "side" => [],
-    "collapsed" => [],
-    "top" => [],
-    "bottom" => [],
-];
-
+    $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
+    if ($activated || !$createPermission) {
+        $createQuestionGroupLink = "";
+        $createQuestionLink = "";
+    }
+    
     $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
+    
+    $menuObjectArray =  [
+        "side" => [],
+        "collapsed" => [],
+        "top" => [],
+        "bottom" => [],
+    ];
+    foreach ($menuObjectArray as $position => $arr) {
+        $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
+    }
+    
 
     Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
         window.SideMenuData = {

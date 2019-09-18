@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "51ab13ec10004a3f3c89";
+/******/ 	var hotCurrentHash = "db549a956b43987adbca";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -31012,7 +31012,7 @@ __webpack_require__.r(__webpack_exports__);
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
         sid: context.state.sid || LS.reparsedParameters().combined.sid,
-        gid: context.state.gid
+        gid: context.state.gid || LS.reparsedParameters().combined.gid || 0
       })).then(function (data) {
         context.commit('clean');
         context.commit('setTopBarRight', data.data.topbar.alignment.right ? data.data.topbar.alignment.right.buttons : []);

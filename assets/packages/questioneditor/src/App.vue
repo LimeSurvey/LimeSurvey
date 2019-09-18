@@ -53,7 +53,21 @@ export default {
         },
         storedEvent() {
             return this.$store.state.storedEvent;
-        }
+        },
+        getLanguages() {
+            return this.$store.state.languages;
+        },
+        getLanguageCount() {
+            let languages = this.getLanguages;
+            let count = 0;
+            for (let language in languages) {
+                count += 1;
+            }
+            return count;
+        },
+        containsMultipleLanguages() {
+            return (this.getLanguageCount > 1);
+        },
     },
     watcher: {
         storedEvent(newValue) {
@@ -265,7 +279,7 @@ export default {
                         <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
                     </div>
                 </div>
-                <div class="row" key="languageselector-block">
+                <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
                     <languageselector
                         :elId="'question-language-changer'"
                         :aLanguages="$store.state.languages"
