@@ -7,7 +7,7 @@
 <?php
 $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
 if (
-    $sideMenuBehaviour == 'alwaysClosed'
+    ($sideMenuBehaviour == 'alwaysClosed')
     || ($sideMenuBehaviour == 'adaptive'
     && !$sidemenu['state'])
 ) {
@@ -36,24 +36,26 @@ $menuObjectArray =  [
     "bottom" => [],
 ];
 
-    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
+$landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
+$menuObject =  json_encode($menuObjectArray);
 
-    Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
-        window.SideMenuData = {
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
-            gid: '.(isset($gid) ? $gid : 'null').',
-            options: [],
-            surveyid: '.$surveyid.',
-            isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            basemenus: '.$menuObject.',
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
-            updateOrderLink: "'.$updateOrderLink.'",
+Yii::app()->getClientScript()->registerScript(
+    'SideBarGlobalObject', '
+    window.SideMenuData = {
+        getQuestionsUrl: "'.$getQuestionsUrl.'",
+        getMenuUrl: "'.$getMenuUrl.'",
+        createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+        createQuestionLink: "'.$createQuestionLink.'",
+        gid: '.(isset($gid) ? $gid : 'null').',
+        options: [],
+        surveyid: '.$surveyid.',
+        isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
+        getQuestionsUrl: "'.$getQuestionsUrl.'",
+        getMenuUrl: "'.$getMenuUrl.'",
+        basemenus: '.$menuObject.',
+        createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+        createQuestionLink: "'.$createQuestionLink.'",
+        updateOrderLink: "'.$updateOrderLink.'",
         unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
         allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
         translate: '
@@ -73,10 +75,10 @@ $menuObjectArray =  [
 );
 ?>
 
-<div class="simpleWrapper ls-flex" id="vue-sidebar-container"
+<div class="simpleWrapper ls-flex" id="vue-sidebar-container" 
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
-    <?php if($landOnSideMenuTab !== ''): ?>
+    <?php if($landOnSideMenuTab !== '') : ?>
         <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>' />
     <?php else: ?>
         <sidebar />
