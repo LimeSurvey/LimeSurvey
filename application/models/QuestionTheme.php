@@ -255,9 +255,6 @@ class QuestionTheme extends LSActiveRecord
         $questionDirectories = $this->getQuestionThemeDirectories();
         /** @var array */
         $questionMetaData = $this->getQuestionMetaData($pathToXML, $questionDirectories);
-        if (!$this->validateMetaData($questionMetaData)) {
-            return false;
-        }
 
         /** @var QuestionTheme */
         $questionTheme = QuestionTheme::model()
@@ -342,6 +339,16 @@ class QuestionTheme extends LSActiveRecord
 
         $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $pathToXML . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
+
+        // TODO: Copied from PluginManager - remake to extension manager.
+        $extensionConfig = new ExtensionConfig($oQuestionConfig);
+        if (!$extensionConfig->validate()) {
+            throw new Exception(gT('Extension configuration file is not valid.'));
+        }
+        if (!$extensionConfig->isCompatible()) {
+            throw new Exception(gT('Extension is not compatible with your LimeSurvey version.'));
+        }
+
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
 
         // get custom previewimage if defined
@@ -623,17 +630,5 @@ class QuestionTheme extends LSActiveRecord
 
         $cacheMemo[$cacheKey] = $answerColumnDefinition;
         return $answerColumnDefinition;
-    }
-
-    /**
-     * Returns true if meta data has all mandatory fields.
-     *
-     * @param array $questionsMetaData
-     * @return boolean
-     */
-    protected function validateMetaData(array $questionsMetaData)
-    {
-        // TODO
-        return true;
     }
 }
