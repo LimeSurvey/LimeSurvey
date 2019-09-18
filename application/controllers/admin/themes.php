@@ -280,10 +280,11 @@ class themes extends Survey_Common_Action
     {
         App()->loadLibrary('admin.pclzip');
 
-        // TODO: What's lid?
+        // NB: lid = label id
         $lid = returnGlobal('lid');
 
         // TODO: Check for empty $themeType (happens randomly?)
+        // TODO: Variable $themeType should probably have $_POST key 'themeType', not 'theme'
         /** @var string */
         $themeType = returnGlobal('theme');
 
