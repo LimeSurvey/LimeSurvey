@@ -56,6 +56,9 @@ export default {
         toggleOrganizer(){
             this.$store.dispatch('unlockLockOrganizer');
         },
+        collapseAll() {
+            this.active = [];
+        },
         createFullQuestionLink() { return LS.createUrl(this.createQuestionLink, {gid: (LS.parameters.combined.gid || null)}); },
         questionHasCondition(question) {
             return question.relevance !== '1';
@@ -242,33 +245,44 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
         <div 
-            class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar" 
+            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar" 
             v-if="createAllowance != ''"
         >
-            <a 
-                id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
-                v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
-                :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
-            >
-                <i class="fa fa-plus"></i>&nbsp;
-                {{"createPage"|translate}}
-            </a>
-            <a 
-                id="adminsidepanel__sidebar--selectorCreateQuestion" 
-                v-if="createQuestionAllowed" 
-                :href="createFullQuestionLink()" 
-                class="btn btn-small btn-default ls-space margin right-10 pjax"
-            >
-                <i class="fa fa-plus-circle"></i>&nbsp;
-                {{"createQuestion"|translate}}
-            </a>
-             <button
-                class="scoped-unlocklock-organizer-right"
-                :class="(allowOrganizer ? 'btn btn-warning' : 'btn btn-default')"
-                @click="toggleOrganizer"
-            >
-                <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
-            </button>
+            <div class="scoped-toolbuttons-left">
+                <a 
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
+                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
+                    :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
+                >
+                    <i class="fa fa-plus"></i>&nbsp;
+                    {{"createPage"|translate}}
+                </a>
+                <a 
+                    id="adminsidepanel__sidebar--selectorCreateQuestion" 
+                    v-if="createQuestionAllowed" 
+                    :href="createFullQuestionLink()" 
+                    class="btn btn-small btn-default ls-space margin right-10 pjax"
+                >
+                    <i class="fa fa-plus-circle"></i>&nbsp;
+                    {{"createQuestion"|translate}}
+                </a>
+            </div>
+            <div class="scoped-toolbuttons-right">
+                <button
+                    class="btn btn-default"
+                    @click="toggleOrganizer"
+                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
+                >
+                    <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
+                </button>
+                <button
+                    class="btn btn-default"
+                    @click="collapseAll"
+                    :title="translate('collapseAll')"
+                >
+                    <i class="fa fa-compress" />
+                </button>
+            </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
             <ul 
@@ -364,8 +378,20 @@ export default {
 .scoped-bottom-bar {
     align-self: flex-end;
 }
-.scoped-unlocklock-organizer-right {
+.scoped-toolbuttons-left {
+    flex: 3 0 auto;
+    align-self: flex-start;
+    .btn {
+        flex: 1;
+    }
+}
+.scoped-toolbuttons-right {
+    flex: 2 1 auto;
     align-self: flex-end;
+    white-space: nowrap;
+    .btn {
+        float: right;
+    }
 }
 .list-group-item.question-question-list-item .editIcon {
     margin: 10px 10px 10px 5px;

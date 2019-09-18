@@ -2,74 +2,80 @@
    /**
     * This view displays the sidemenu on the left side, containing the question explorer
     *
-    * Var to manage open/close state of the sidemenu, question explorer :
-    * @var $sidemenu['state'] : if set, the sidemnu is close
-    * @var $sidemenu['explorer']['state'] : if set to true, question explorer will be opened
     */
 ?>
 <?php
-    $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
-    if ($sideMenuBehaviour == 'alwaysClosed'
-        || ($sideMenuBehaviour == 'adaptive'
-        && !$sidemenu['state'])) {
-        $showSideMenu = false;
-    } else {
-        $showSideMenu = true;
-    }
-    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
-    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
-    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
-    $createQuestionLink = "admin/questioneditor/sa/view/surveyid/".$surveyid;
-    $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
+$sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
+if (
+    $sideMenuBehaviour == 'alwaysClosed'
+    || ($sideMenuBehaviour == 'adaptive'
+    && !$sidemenu['state'])
+) {
+    $showSideMenu = false;
+} else {
+    $showSideMenu = true;
+}
+$getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
+$getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
+$createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
+$createQuestionLink = "admin/questioneditor/sa/view/surveyid/".$surveyid;
+$unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
-    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
+$updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
 
-    $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
-    if ($activated || !$createPermission) {
-        $createQuestionGroupLink = "";
-        $createQuestionLink = "";
-    }
+$createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
+if ($activated || !$createPermission) {
+    $createQuestionGroupLink = "";
+    $createQuestionLink = "";
+}
 
-    $menuObjectArray =  [
-        "side" => [],
-        "collapsed" => [],
-        "top" => [],
-        "bottom" => [],
-    ];
-    
-    foreach ($menuObjectArray as $position => $arr) {
-        $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
-    }
-    
-    $menuObject =  json_encode($menuObjectArray);
+$menuObjectArray =  [
+    "side" => [],
+    "collapsed" => [],
+    "top" => [],
+    "bottom" => [],
+];
 
-    Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
-        window.SideMenuData = {
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
-            unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
-            gid: '.(isset($gid) ? $gid : 'null').',
-            options: [],
-            surveyid: '.$surveyid.',
-            isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            basemenus: '.$menuObject.',
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
-            updateOrderLink: "'.$updateOrderLink.'",
-            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
-            translate: '.json_encode([
+foreach ($menuObjectArray as $position => $arr) {
+    $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
+}
+
+$menuObject =  json_encode($menuObjectArray);
+
+Yii::app()->getClientScript()->registerScript(
+    'SideBarGlobalObject', 
+    'window.SideMenuData = {
+        getQuestionsUrl: "'.$getQuestionsUrl.'",
+        getMenuUrl: "'.$getMenuUrl.'",
+        createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+        createQuestionLink: "'.$createQuestionLink.'",
+        unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
+        gid: '.(isset($gid) ? $gid : 'null').',
+        options: [],
+        surveyid: '.$surveyid.',
+        isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
+        getQuestionsUrl: "'.$getQuestionsUrl.'",
+        getMenuUrl: "'.$getMenuUrl.'",
+        basemenus: '.$menuObject.',
+        createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+        createQuestionLink: "'.$createQuestionLink.'",
+        updateOrderLink: "'.$updateOrderLink.'",
+        allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
+        translate: '
+        .json_encode(
+            [
                 "settings" => gT("Settings"),
                 "structure" => gT("Structure"),
                 "createPage" => gT("Add page"),
                 "createQuestion" => gT("Add question"),
-                "unlockOrganizerTooltip" => gT("Lock/Unlock question organizer")
-            ]).'
-        };
-    ', LSYii_ClientScript::POS_HEAD);
+                "lockOrganizerTitle" => gT("Lock question organizer"),
+                "unlockOrganizerTitle" => gT("Unlock question organizer"),
+                "collapseAll" => gT("Collapse all questiongroups"),
+            ]
+        )
+    .'};', 
+    LSYii_ClientScript::POS_HEAD
+);
 ?>
 
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container"

@@ -255,7 +255,6 @@ export default {
     .navbar {
         flex-wrap: wrap;
     }
-    
     .navbar-btn {
         margin-top: 0;
     }
@@ -264,6 +263,11 @@ export default {
 .navbar,
 .navbar-default {
     padding-left: 1px;
+    @media(max-width:1280px) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
     border: none;
 }
 

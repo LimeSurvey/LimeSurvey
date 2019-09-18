@@ -100,6 +100,12 @@ ul li[data-v-74ef06d8] {
   max-width: 100%;
   padding-top: 4px;
 }
+@media (max-width: 1280px) {
+.scoped-topbar-nav[data-v-09de9822] {
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+}
 
 .topbarpanel[data-v-4066ed26] {
   position: relative;
@@ -117,6 +123,13 @@ ul li[data-v-74ef06d8] {
 .navbar-default[data-v-4066ed26] {
   padding-right: 1px;
   border: none;
+}
+@media (max-width: 1280px) {
+.navbar[data-v-4066ed26],
+    .navbar-default[data-v-4066ed26] {
+      padding-right: 16px;
+      padding-left: 16px;
+}
 }
 .scoped-switch-floats .navbar-nav li[data-v-4066ed26] {
   float: left;
