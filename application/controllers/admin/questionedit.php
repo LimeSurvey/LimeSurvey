@@ -155,7 +155,8 @@ class questionedit extends Survey_Common_Action
                 'Scale' => gT('Scale'),
                 'Save and Close' => gT('Save and Close'),
                 'Script' => gT('Script'),
-                '__SCRIPTHELP' => gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored")
+                '__SCRIPTHELP' => gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"),
+                "noCodeWarning" => gT("Please put in a code. Only letters and numbers are allowed. For example [Question1]"),
             ]
         ];
         

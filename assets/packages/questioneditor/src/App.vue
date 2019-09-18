@@ -26,6 +26,7 @@ export default {
             editQuestion: false,
             questionEditButton: window.questionEditButton,
             loading: true,
+            noCodeWarning: false
         }
     },
     computed: {
@@ -129,31 +130,41 @@ export default {
             this.event = null;
         },
         submitCurrentState(redirect = false, redirectUrl = false) {
-            this.loading = true;
-            this.$store.dispatch('saveQuestionData').then(
-                (result) => {
-                    if(result === false) {
-                        return;
+            if(this.checkCanSubmit()) {
+                this.loading = true;
+                this.noCodeWarning = false;
+                this.$store.dispatch('saveQuestionData').then(
+                    (result) => {
+                        if(result === false) {
+                            return;
+                        }
+                        window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
+                        this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
+                        LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
+                        $('#in_survey_common').trigger('lsStopLoading');
+                        this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+                        this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                        if(redirect == true || this.isCreateQuestion || redirectUrl !== false) {
+                            window.location.href = redirectUrl || result.data.redirect || window.location.href;
+                            return;
+                        }
+                        window.history.pushState({},result.data.newQuestionDetails.question.title, result.data.redirect);
+                        this.loading = false;
+                        LS.EventBus.$emit('loadingFinished');
+                    },
+                    (reject) => {
+                        $('#in_survey_common').trigger('lsStopLoading');
+                        window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                        //setTimeout(()=>{window.location.reload();}, 1500);
                     }
-                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
-                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
-                    LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
-                    $('#in_survey_common').trigger('lsStopLoading');
-                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
-                    this.$log.log('OBJECT AFTER TRANSFER: ', result);
-                    if(redirect == true || this.isCreateQuestion || redirectUrl !== false) {
-                        window.location.href = redirectUrl || result.data.redirect || window.location.href;
-                        return;
-                    }
-                    window.history.pushState({},result.data.newQuestionDetails.question.title, result.data.redirect);
-                    this.loading = false;
-                },
-                (reject) => {
-                    $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                    //setTimeout(()=>{window.location.reload();}, 1500);
-                }
-            )
+                )
+            } else {
+                window.setTimeout(()=>{LS.EventBus.$emit('loadingFinished')},1);
+                this.noCodeWarning = true;
+            }
+        },
+        checkCanSubmit(){
+            return !LS.ld.isEmpty(this.$store.state.currentQuestion.title);
         },
         questionTypeChangeTriggered(newValue) {
             this.$log.log('CHANGE OF TYPE', newValue);
@@ -268,9 +279,11 @@ export default {
                             class="form-control"
                             id="questionCode"
                             :readonly="!(editQuestion || isCreateQuestion)"
+                            required="required"
                             v-model="currentQuestionCode"
                             @dblclick="setEditQuestion"
                         />
+                        <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
                     </div>
                     <div class="form-group col-sm-6 contains-question-selector">
                         <label for="questionCode">{{'Question type' | translate }}</label>
