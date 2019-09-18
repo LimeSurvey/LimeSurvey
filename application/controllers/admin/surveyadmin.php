@@ -1830,7 +1830,7 @@ class SurveyAdmin extends Survey_Common_Action
             // Check if survey title was set
             if (Yii::app()->request->getPost('surveyls_title') == '') {
                 $alertError = gT("Survey could not be created because it did not have a title");
-                //Yii::app()->session['flashmessage'] = $alertError;
+    
                 return Yii::app()->getController()->renderPartial(
                     '/admin/super/_renderJson',
                     array(
@@ -1921,8 +1921,6 @@ class SurveyAdmin extends Survey_Common_Action
 
             );
 
-            //var_dump($aInsertData);
-
             $warning = '';
 
             if (!is_null($iSurveyID)) {
@@ -1980,12 +1978,6 @@ class SurveyAdmin extends Survey_Common_Action
 
                 App()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
                 
-                //$redirecturl = $this->getController()->createUrl(
-                   // "admin/questions/sa/view/",
-                    //['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
-                //);
-
-                // TODO: if create example question group and question redirect to survey overview and land on structure tab.
                 $landOnSideMenuTab   = 'structure';
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
