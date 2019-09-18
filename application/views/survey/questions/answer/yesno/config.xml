@@ -24,6 +24,10 @@
         <class>yes-no</class>
     </metadata>
 
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
     <!--
         List of the css/js files to load.
         Any file here will be loaded via the asset manager (when in config.php debug = 0)
