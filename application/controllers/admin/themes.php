@@ -283,8 +283,7 @@ class themes extends Survey_Common_Action
         // NB: lid = label id
         $lid = returnGlobal('lid');
 
-        // TODO: Check for empty $themeType (happens randomly?)
-        // TODO: Variable $themeType should probably have $_POST key 'themeType', not 'theme'
+        // TODO: Don't branch on $_POST, but on config.xml <type> tag.
         /** @var string */
         $themeType = returnGlobal('theme');
 
@@ -314,6 +313,7 @@ class themes extends Survey_Common_Action
         // Redirect back if $destdir is not writable OR if it already exists.
         $this->checkDestDir($destdir, $sNewDirectoryName);
 
+        // TODO: Always check if successful.
         // All OK if we're here.
         mkdir($destdir);
 
