@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>arrays/dualscale</name>
+        <type>question_theme</type>
         <title>Array dual scale</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,7 +15,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Array dual scale question type configuration</description>
-        <type>1</type>
+        <questionType>1</questionType>
         <group>Arrays</group>
         <subquestions>1</subquestions>
         <answerscales>2</answerscales>

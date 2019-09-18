@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>list_with_comment</name>
+        <type>question_theme</type>
         <title>List with comment</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,7 +15,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>List with comment question type configuration</description>
-        <type>O</type>
+        <questionType>O</questionType>
         <group>Single choice questions</group>
         <subquestions>0</subquestions>
         <answerscales>1</answerscales>

@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>arrays/multiflexi</name>
+        <type>question_theme</type>
         <title>Array (Numbers)</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,7 +15,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Array (Numbers) question type configuration</description>
-        <type>:</type>
+        <questionType>:</questionType>
         <group>Arrays</group>
         <subquestions>2</subquestions>
         <answerscales>0</answerscales>

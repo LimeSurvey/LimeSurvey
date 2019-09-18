@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>multiplechoice_with_comments</name>
+        <type>question_theme</type>
         <title>Multiple choice with comments</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,7 +15,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Multiple choice with comments question type configuration</description>
-        <type>P</type>
+        <questionType>P</questionType>
         <group>Multiple choice questions</group>
         <subquestions>1</subquestions>
         <answerscales>0</answerscales>

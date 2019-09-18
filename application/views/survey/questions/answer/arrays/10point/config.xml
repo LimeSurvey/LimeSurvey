@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>arrays/10point</name>
+        <type>question_theme</type>
         <title>Array (10 Point Choice)</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,7 +15,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Array (10 point choice) question type configuration</description>
-        <type>B</type>
+        <questionType>B</questionType>
         <group>Arrays</group>
         <subquestions>1</subquestions>
         <answerscales>0</answerscales>
