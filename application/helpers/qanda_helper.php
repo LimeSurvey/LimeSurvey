@@ -55,11 +55,15 @@ define('SELECTED', ' selected="selected"');
 */
 function setNoAnswerMode($thissurvey)
 {
-    if (getGlobalSetting('shownoanswer') == 1) {
+    if (App()->getConfig('shownoanswer') == 2) {
+        if ($thissurvey['shownoanswer'] == 'N') {
+            define('SHOW_NO_ANSWER', 0);
+        } else {
+            define('SHOW_NO_ANSWER', 1);
+        }
+    } elseif (App()->getConfig('shownoanswer') == 1) {
         define('SHOW_NO_ANSWER', 1);
-    } elseif (getGlobalSetting('shownoanswer') == 0) {
-        define('SHOW_NO_ANSWER', 0);
-    } elseif ($thissurvey['shownoanswer'] == 'N') {
+    } elseif (App()->getConfig('shownoanswer') == 0) {
         define('SHOW_NO_ANSWER', 0);
     } else {
         define('SHOW_NO_ANSWER', 1);
