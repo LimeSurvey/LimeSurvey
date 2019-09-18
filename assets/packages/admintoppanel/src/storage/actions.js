@@ -8,8 +8,8 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
-                    sid: context.state.sid,
-                    qid: context.state.qid
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
+                    qid: context.state.qid || LS.reparsedParameters().combined.gid
                 }))
                 .then((data) => {
                     context.commit('clean');
@@ -33,8 +33,8 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
-                    sid: context.state.sid,
-                    gid: context.state.gid
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
+                    gid: context.state.gid || LS.reparsedParameters().combined.gid || 0
                 }))
                 .then((data) => {
                     context.commit('clean');
@@ -58,7 +58,7 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', {
-                    sid: context.state.sid,
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
                     saveButton: context.state.showSaveButton
                 }))
                 .then((data) => {
@@ -83,7 +83,7 @@ export default {
         context.commit('clean');
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', {
-                    sid: context.state.sid,
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
                     saveButton: context.state.showSaveButton
                 }))
                 .then((data) => {
@@ -109,7 +109,7 @@ export default {
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
                     position: 'top',
-                    sid: context.state.sid,
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
                     saveButton: context.state.showSaveButton
                 }))
                 .then((data) => {

@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "d4a1746cb82c653fe19b";
+/******/ 	var hotCurrentHash = "51ab13ec10004a3f3c89";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -30990,8 +30990,8 @@ __webpack_require__.r(__webpack_exports__);
     context.commit('clean');
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
-        sid: context.state.sid,
-        qid: context.state.qid
+        sid: context.state.sid || LS.reparsedParameters().combined.sid,
+        qid: context.state.qid || LS.reparsedParameters().combined.gid
       })).then(function (data) {
         context.commit('clean');
         context.commit('setTopBarRight', data.data.topbar.alignment.right ? data.data.topbar.alignment.right.buttons : []);
@@ -31011,7 +31011,7 @@ __webpack_require__.r(__webpack_exports__);
     context.commit('clean');
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
-        sid: context.state.sid,
+        sid: context.state.sid || LS.reparsedParameters().combined.sid,
         gid: context.state.gid
       })).then(function (data) {
         context.commit('clean');
@@ -31032,7 +31032,7 @@ __webpack_require__.r(__webpack_exports__);
     context.commit('clean');
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', {
-        sid: context.state.sid,
+        sid: context.state.sid || LS.reparsedParameters().combined.sid,
         saveButton: context.state.showSaveButton
       })).then(function (data) {
         context.commit('clean');
@@ -31053,7 +31053,7 @@ __webpack_require__.r(__webpack_exports__);
     context.commit('clean');
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', {
-        sid: context.state.sid,
+        sid: context.state.sid || LS.reparsedParameters().combined.sid,
         saveButton: context.state.showSaveButton
       })).then(function (data) {
         context.commit('clean');
@@ -31074,7 +31074,7 @@ __webpack_require__.r(__webpack_exports__);
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
         position: 'top',
-        sid: context.state.sid,
+        sid: context.state.sid || LS.reparsedParameters().combined.sid,
         saveButton: context.state.showSaveButton
       })).then(function (data) {
         var topbarLeft = context.state.topbar_left_buttons;

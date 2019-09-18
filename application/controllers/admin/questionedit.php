@@ -569,7 +569,7 @@ class questionedit extends Survey_Common_Action
         $aQuestionAttributes = $oQuestion->questionAttributes;
 
         foreach ($dataSet as $sAttributeKey => $aAttributeValueArray) {
-            if ($sAttributeKey === 'debug') {
+            if ($sAttributeKey === 'debug' || !isset($aAttributeValueArray['formElementValue'])) {
                 continue;
             }
             if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {

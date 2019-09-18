@@ -48,29 +48,25 @@ $menuObjectArray =  [
             options: [],
             surveyid: '.$surveyid.',
             isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            basemenus: '.$menuObject.',
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
+            basemenus: '.json_encode($menuObjectArray).',
             updateOrderLink: "'.$updateOrderLink.'",
-        unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
-        allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
-        translate: '
-        .json_encode(
-            [
-                "settings" => gT("Settings"),
-                "structure" => gT("Structure"),
-                "createPage" => gT("Add page"),
-                "createQuestion" => gT("Add question"),
-                "lockOrganizerTitle" => gT("Lock question organizer"),
-                "unlockOrganizerTitle" => gT("Unlock question organizer"),
-                "collapseAll" => gT("Collapse all questiongroups"),
-            ]
-        )
-    .'};', 
-    LSYii_ClientScript::POS_HEAD
-);
+            unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
+            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
+            translate: '
+            .json_encode(
+                [
+                    "settings" => gT("Settings"),
+                    "structure" => gT("Structure"),
+                    "createPage" => gT("Add page"),
+                    "createQuestion" => gT("Add question"),
+                    "lockOrganizerTitle" => gT("Lock question organizer"),
+                    "unlockOrganizerTitle" => gT("Unlock question organizer"),
+                    "collapseAll" => gT("Collapse all questiongroups"),
+                ]
+            )
+        .'};', 
+        LSYii_ClientScript::POS_HEAD
+    );
 ?>
 
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container"

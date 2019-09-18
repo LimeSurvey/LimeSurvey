@@ -12,12 +12,14 @@ $topbar = [
         ],
     ],
 ];
+$oSurvey = Survey::model()->findByPk($sid);
+$isActive  = $oSurvey->active == 'Y';
 
 // Left Buttons for Survey Summary
 // TODO: SurveyBar Activation Buttons
 // views/admin/survey/surveybar_activation.php
 // Survey Activation
-if (!$oSurvey->active == 'Y') {
+if (!$isActive) {
     $hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
     // activate
     if ($canactivate) {
@@ -58,8 +60,8 @@ if (!$oSurvey->active == 'Y') {
 if ($hasSurveyContentPermission) {
     
     // Preview Survey Button
-    $title = ($oSurvey->active == 'Y') ? 'preview_survey' : 'execute_survey';
-    $name = ($oSurvey->active == 'Y') ? gT('Preview survey') : gT('Execute survey');
+    $title = (!$isActive) ? 'preview_survey' : 'execute_survey';
+    $name = (!$isActive) ? gT('Preview survey') : gT('Execute survey');
 
     if (safecount($oSurvey->allLanguages) > 1) {
         $preview_buttons = [];
@@ -267,7 +269,7 @@ if ($hasSurveyReadPermission) {
     }
 }
 
-if (!$oSurvey->active == 'Y' && $hasSurveyContentPermission) {
+if (!$isActive && $hasSurveyContentPermission) {
     // Divider
     $buttons['divider'] = [
         'role' => 'seperator',
@@ -318,7 +320,7 @@ if ($hasSurveyTokensPermission) {
 }
 
 // Statistics
-if ($oSurvey->active == 'Y') {
+if ($isActive) {
     $buttonsgroup['statistics'] = [
         'class' => 'btn-group',
         'id' => 'statistics_dropdown',
@@ -339,7 +341,7 @@ if ($oSurvey->active == 'Y') {
     ];
 
     // Responses & statistics
-    if (isset($respstatsread) && $respstatsread && $oSurvey->active == 'Y') {
+    if (isset($respstatsread) && $respstatsread && $isActive) {
         $buttons['responses_statistics'] = [
             'class' => 'pjax',
             'url' => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),
@@ -352,7 +354,7 @@ if ($oSurvey->active == 'Y') {
     }
 
     // Data Entry Screen
-    if ($hasResponsesCreatePermission && $oSurvey->active == 'Y') {
+    if ($hasResponsesCreatePermission && $isActive) {
         $buttons['data_entry_screen'] = [
             'url' => $this->createUrl("admin/dataentry/sa/view/surveyid/$sid"),
             'icon' => 'fa fa-keyboard-o',
@@ -364,7 +366,7 @@ if ($oSurvey->active == 'Y') {
     }
 
     // Partial (saved) Responses
-    if ($hasResponsesReadPermission && $oSurvey->active == 'Y') {
+    if ($hasResponsesReadPermission && $isActive) {
         $buttons['partial_saved_responses'] = [
             'url' => $this->createUrl("admin/saved/sa/view/surveyid/$sid"),
             'icon' => 'icon-saved',
@@ -402,6 +404,29 @@ array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
 
 
 $finalJSON = [
+    'debug' => [
+        'sid' => $sid,
+        'canactivate' => $canactivate,
+        'expired' => $expired,
+        'notstarted' => $notstarted,
+        'context' => $context,
+        'contextbutton' => $contextbutton,
+        'language' => $language,
+        'hasSurveyContentPermission' => $hasSurveyContentPermission,
+        'countLanguage' => $countLanguage,
+        'hasDeletePermission' => $hasDeletePermission,
+        'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
+        'hasAdditionalLanguages' => $hasAdditionalLanguages,
+        'conditionsCount' => $conditionsCount,
+        'hasSurveyReadPermission' => $hasSurveyReadPermission,
+        'oneLanguage' => $oneLanguage,
+        'sumcount' => $sumcount,
+        'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
+        'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
+        'hasResponsesReadPermission'   => $hasResponsesReadPermission,
+        'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
+        'addSaveButton'  => $addSaveButton,
+    ],
     'permissions' => $permissions,
     'topbar' => $topbar,
 ];
