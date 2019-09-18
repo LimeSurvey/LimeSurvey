@@ -45,9 +45,10 @@ class LSYii_ClientScript extends CClientScript
 
     public function recordCachingAction($context, $method, $params)
     {
-
-        if(($controller=Yii::app()->getController())!==null && (get_class($controller)!=='CConsoleApplication' ))
+        if(($controller=Yii::app()->getController())!==null && (get_class($controller)!=='ConsoleApplication' )){
           $controller->recordCachingAction($context,$method,$params);
+        }
+
     }
 
     public function getScriptFiles()
