@@ -133,7 +133,7 @@ class QuestionTheme extends LSActiveRecord
                 //TODO: flashmessage for users
                 echo $e->getMessage();
                 var_dump($e->getTrace());
-                echo $missingQuestionThemeAttributes;
+                var_dump($missingQuestionThemeAttributes);
                 if ($useTransaction) {
                     $transaction->rollback();
                 }
@@ -346,7 +346,12 @@ class QuestionTheme extends LSActiveRecord
             throw new Exception(gT('Extension configuration file is not valid.'));
         }
         if (!$extensionConfig->isCompatible()) {
-            throw new Exception(gT('Extension is not compatible with your LimeSurvey version.'));
+            throw new Exception(
+                sprintf(
+                    gT('Extension "%s" is not compatible with your LimeSurvey version.'),
+                    $extensionConfig->getName()
+                )
+            );
         }
 
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
