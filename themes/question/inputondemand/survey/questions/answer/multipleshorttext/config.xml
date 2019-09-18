@@ -7,6 +7,7 @@
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadata>
         <name>inputondemand</name>
+        <type>question_theme</type>
         <title>Input on Demand</title>
         <creationDate>10/04/2019</creationDate>
         <author>Markus Flür</author>
