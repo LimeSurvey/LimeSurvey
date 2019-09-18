@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.16 (build 190906) to 3.17.17 (build 190918) September 18, 2019
+-New feature: allow twig tmp files generation from command line to allow GlotPress parsing (LouisGac)
+-Fixed issue: Language code not properly set in 'survey not available' screen (Carsten Schmitz)
+-Fixed issue [security] #15257: potential XSS in CPDB by super admin (Thanks to creosote) (Denis Chenu)
+-Fixed issue : unale to create dummty tokens (Denis Chenu)
+-Fixed issue #15289: potential PHP warning in question editor with question theme (Denis Chenu)
+-Fixed issue #15285: language changer doesn't work on tokens.twig (Denis Chenu)
+-Fixed issue #15279: replacement are not done in assessments (Denis Chenu)
+-Fixed issue #15243: ssl alert is shown to simple user too (#1319) (Denis Chenu)
+-Fixed issue #15237: Upload 3gpp, amr, aac audio files using File Upload Question (Denis Chenu)
+-Fixed issue #15237: Upload 3gpp, amr, aac audio files using File Upload Question (#1318) (Denis Chenu)
+-Fixed Issue: force_xmlsettings_for_survey_rendering not taken in account (LouisGac)
+-Fixed issue #15243: ssl alert is shown to simple user too (Denis Chenu)
+-Fixed issue #15218: Allow to disable SSL alert (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Tagalog by Mazi
+#Updated translation: Russian by vipgroup, ddrmoscow
+#Updated translation: Portuguese (Brazil) by GabrielLF
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German by eddylackmann, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Filipino by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.17.15 (build 190903) to 3.17.16 (build 190906) September 6, 2019
 -Fixed issue: breaking js issues on IE11 (lacrioque)
 -Fixed issue : No save button when add Question (Denis Chenu)
