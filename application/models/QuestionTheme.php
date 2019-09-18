@@ -32,10 +32,6 @@ use LimeSurvey\Helpers\questionHelper;
  */
 class QuestionTheme extends LSActiveRecord
 {
-    static $coreQuestionsPath;
-    static $customQuestionThemesPath;
-    static $userQuestionThemesPath;
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
