@@ -37,6 +37,8 @@ class SettingGlobal extends LSActiveRecord
         'forcedsuperadmin', // This is for security
         'defaultfixedtheme', // Because updating can broke instance
         'demoMode', // No demoMode update via model
+        'ssl_emergency_override', // security related
+        'ssl_disable_alert', // security related
     );
 
     /**

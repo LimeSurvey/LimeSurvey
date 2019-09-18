@@ -478,18 +478,19 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyId
      * @param int|string $iSurveyGroupId
      * @param boolean $bForceXML
+     * @param boolean $last if you want to get the last instace without providing template name or sid
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false)
+    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false, $last=false)
     {
 
         if ($bForceXML === null) {
           // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
           $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering'))?true:false;
-        }
 
+        }
         // The error page from default template can be called when no survey found with a specific ID.
-        if ($sTemplateName === null && $iSurveyId === null) {
+        if ($sTemplateName === null && $iSurveyId === null && $last=false) {
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
@@ -497,13 +498,22 @@ class Template extends LSActiveRecord
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
 
-        if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
-            self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
+        if ( empty(self::$instance) || ! self::isCorrectInstance($sTemplateName) ) {
+          self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
+          self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
-
         return self::$instance;
+    }
+
+    /**
+     * Check if the current instance is the correct one. Could be more complex in the future
+     * @param string $sTemplateName
+     * @return boolean 
+     */
+    public static function isCorrectInstance($sTemplateName = null)
+    {
+       return ($sTemplateName != null && self::$instance->sTemplateName == $sTemplateName);
     }
 
     /**
