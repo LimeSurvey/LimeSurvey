@@ -39,7 +39,7 @@
             </div>
             <div class="{{ aSurveyInfo.class.modalbody }}" {{ aSurveyInfo.attr.modalbody }}>
             </div>
-            {% if(aSurveyInfo.mandSoft)%}
+            {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
                 <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
                 <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>

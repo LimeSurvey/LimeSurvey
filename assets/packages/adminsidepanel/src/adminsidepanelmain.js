@@ -1,6 +1,6 @@
 //globals formId
 import Vue from "vue";
-Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 import Sidebar from "./components/sidebar.vue";
 import getAppState from "./store/vuex-store.js";
@@ -81,6 +81,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
                 const maxHeight = $("#in_survey_common").height() - 35 || 400;
                 this.$store.commit("changeMaxHeight", maxHeight);
+                this.$store.commit("setAllowOrganizer", window.SideMenuData.allowOrganizer);
                 this.updatePjaxLinks();
 
 

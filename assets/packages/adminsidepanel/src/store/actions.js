@@ -60,5 +60,25 @@ export default {
             context.dispatch('getSidemenus'),
             context.dispatch('getCollapsedmenus'),
         ]);
+    },
+    unlockLockOrganizer(context) {
+        //context.commit("setAllowOrganizer", context.state.allowOrganizer);
+        return new Promise((resolve, reject) => {
+            ajax.methods.post(
+                window.SideMenuData.unlockLockOrganizerUrl,
+                { 
+                    setting : 'lock_organizer',
+                    newValue :  context.state.allowOrganizer ? '0' : '1'
+                }
+            ).then(
+                result => {
+                    LOG.log('setUsersettingLog', result);
+                    context.commit("setAllowOrganizer", parseInt(result.data.result));
+                },
+                rejection => {+
+                    LOG.error('URL Rejection => ', rejection);
+                }
+            )}
+        );
     }
 }

@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "ce742a23f4e8d0e6e14f";
+/******/ 	var hotCurrentHash = "a130cbd473c40e099de1";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -2087,7 +2087,8 @@ __webpack_require__.r(__webpack_exports__);
     }, [h("ul", {
       "class": "nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row grow-2 text-left"
     }, [leftButtonsHTML, this.slotbutton != '' ? h("li", _vue_babel_helper_vue_jsx_merge_props__WEBPACK_IMPORTED_MODULE_0___default()([{
-      "key": "slotbutton-content"
+      "key": "slotbutton-content",
+      "class": "slotbutton-content"
     }, {
       "domProps": {
         innerHTML: this.slotbutton

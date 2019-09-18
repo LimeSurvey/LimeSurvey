@@ -324,6 +324,18 @@ echo $oQuestionSelector->getModal();
                                     ?>
                                 </div>
                             </div>
+                            <!-- Lock questionorganizer in sidebar -->
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                <?php echo TbHtml::label( gT("Lock question organizer in sidebar by default:"), 'lock_organizer', array('class'=>" control-label")); ?>
+                                    <?php
+                                     echo TbHtml::dropDownList('lock_organizer', ($aUserSettings['lock_organizer'] ?? '0'), array(
+                                         '0' => gT("No",'unescaped'),
+                                         '1' => gT("Yes",'unescaped'),
+                                     ), array('class'=>"form-control"));
+                                 ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

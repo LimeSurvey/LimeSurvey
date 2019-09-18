@@ -25,13 +25,14 @@ $this->_showHeaders($aData, false);
     //The container to hold the vuejs application
     echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
         <div id="vue-apps-main-container" '
-    . 'class="ls-flex-row align-items-flex-begin align-content-flex-end" '
+    . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
     . '>';
         //Rendered through /admin/super/sidemenu
         $this->_surveysidemenu($aData);
-        echo '<div id="fullbody-container" '
-            . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width" '
-            . 'style="max-width:95%;" '
+        echo '<div id="pjax-content" '
+        . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width" '
+        . 'style="max-width:95%; overflow-x:hidden; overflow-y:visible" '
+        // . 'v-bind:style="{\'max-width\': $store.getters.substractContainer, \'min-height\': $store.state.inSurveyViewHeight+\'px\'}"'
         . '>';
             //New general top bar (VueComponent)
             $this->_generaltopbar($aData);

@@ -76,6 +76,10 @@
     }
     .dragPointer {
         cursor: move;
+        &.disabled {
+            color: #999999;
+            cursor: not-allowed;
+        }
     }
     .question-question-list {
         .question-question-list-item {

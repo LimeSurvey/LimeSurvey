@@ -20,6 +20,7 @@
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
     $createQuestionLink = "admin/questioneditor/sa/view/surveyid/".$surveyid;
+    $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
     $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
 
@@ -48,6 +49,7 @@
             getMenuUrl: "'.$getMenuUrl.'",
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
+            unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
             gid: '.(isset($gid) ? $gid : 'null').',
             options: [],
             surveyid: '.$surveyid.',
@@ -58,11 +60,13 @@
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
             updateOrderLink: "'.$updateOrderLink.'",
+            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
             translate: '.json_encode([
                 "settings" => gT("Settings"),
                 "structure" => gT("Structure"),
-                "createQuestionGroup" => gT("Add question group"),
-                "createQuestion" => gT("Add question")
+                "createPage" => gT("Add page"),
+                "createQuestion" => gT("Add question"),
+                "unlockOrganizerTooltip" => gT("Lock/Unlock question organizer")
             ]).'
         };
     ', LSYii_ClientScript::POS_HEAD);

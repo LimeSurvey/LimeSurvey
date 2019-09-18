@@ -514,6 +514,11 @@ $config['force_ssl'] = 'neither'; // DO not turn on unless you are sure your ser
 $config['ssl_emergency_override'] = false;
 
 /**
+* @var $ssl_disable_alert boolean disable alert for super admin
+*/
+$config['ssl_disable_alert'] = false;
+
+/**
 * Sets if any part of LimeSUrvey may be embedded in an iframe
 * Valid values are allow, sameorigin
 * Default / Recommended: sameorigin
@@ -559,6 +564,21 @@ $config['iFileUploadTotalSpaceMB'] = 0;
 
 
 $config['uniq_upload_dir'] = false; // Use a single KCFinder upload directory for all surveys
+
+/**
+ * Allow to use a different MIME database for finfo_open
+ * @see https://www.php.net/manual/en/function.finfo-open.php
+ * Example : '/usr/share/misc/magic.mgc' for redhat based linux
+ */
+$config['magic_database'] = null;
+
+/**
+ * Allow to use a different magic file array 
+ * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
+ * This file must return a PHP array of extension by mimeTypes
+ * Example : https://github.com/LimeSurvey/LimeSurvey/blob/master/framework/utils/fileExtensions.php
+ */
+$config['magic_file'] = null;
 
 
 // defines if the CKeditor toolbar should be opened by default

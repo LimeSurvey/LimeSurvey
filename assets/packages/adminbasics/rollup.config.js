@@ -7,9 +7,8 @@ import { terser } from "rollup-plugin-terser";
 import WriteRTLCSS from './buildplugins/rollup-plugin-writertlcss';
 
 const ENVIRONEMENT = process.env.NODE_ENV.trim();
-const DIRECTION = process.env.DIRECTION_ENV.trim();
 
-console.log(`Building adminbasics for mode ${ENVIRONEMENT} and direction ${DIRECTION}`);
+console.log(`Building adminbasics for mode ${ENVIRONEMENT}`);
 
 
 let plugins =  [];
@@ -25,10 +24,22 @@ if( ENVIRONEMENT=='production' ) {
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
             'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
-            ENVDIRECTION:DIRECTION,
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
-        babel({exclude: 'node_modules/**'}),
+        babel({
+            exclude: 'node_modules/**',
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        targets: "> 0.25%, not dead",
+                        modules: 'false',
+                        useBuiltIns: "entry",
+                        corejs: 3,
+                    }
+                ]
+            ]
+        }),
         resolve(),
         common(),
         scss({failOnError: true, outputStyle: 'compressed', output: 'build/adminbasics.min.css'}),
@@ -45,10 +56,22 @@ if( ENVIRONEMENT=='production' ) {
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
             'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
-            ENVDIRECTION:DIRECTION,
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
-        babel({exclude: 'node_modules/**'}),
+        babel({
+            exclude: 'node_modules/**',
+            presets: [
+                [
+                    "@babel/preset-env",
+                    {
+                        targets: "> 0.25%, not dead",
+                        modules: 'false',
+                        useBuiltIns: "entry",
+                        corejs: 3,
+                    }
+                ]
+            ]
+        }),
         resolve(),
         common(),
         scss({failOnError: true, outputStyle: 'expanded', output: 'build/adminbasics.css'}),

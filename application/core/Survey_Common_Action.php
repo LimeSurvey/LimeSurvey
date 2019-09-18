@@ -71,6 +71,15 @@ class Survey_Common_Action extends CAction
         // If the above method existence check passed, it might not be neceessary that it is of the action class
         $oMethod  = new ReflectionMethod($this, $sSubAction);
 
+        // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
+        // Merges it with actions from admin modules
+        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses() );
+
+        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
+            // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
+            // So let us get the last possible default method, ie. index
+            $oMethod = new ReflectionMethod($this, $sDefault);
+        }
 
         // We're all good to go, let's execute it
         // runWithParamsInternal would automatically get the parameters of the method and populate them as required with the params
@@ -115,20 +124,20 @@ class Survey_Common_Action extends CAction
             'browselang' => 'sBrowseLang',
             'tokenids' => 'aTokenIds',
             'tokenid' => 'iTokenId',
-            'subaction' => 'sSubAction',
+            'subaction' => 'sSubAction', // /!\ Already filled by sa : can be different (usage of subaction in quota at 2019-09-04)
         );
-
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
         // Chek is 2 params are equal for security issue.
         foreach ($pseudos as $key => $pseudo) {
-            if (isset($params[$key])) {
+            // We care only for user parameters, not by code parameters (see issue #15221)
+            if ($checkParam = Yii::app()->getRequest()->getParam($key)) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
-                        $params[$pseud] = $params[$key];
-                    } elseif($params[$pseud] != $params[$key]){
+                        $params[$pseud] = $checkParam;
+                    } elseif($params[$pseud] != $checkParam){
                         // Throw error about multiple params (and if they are different) #15204
                         throw new CHttpException(403, sprintf(gT("Invalid parameter %s (%s already set)"),$pseud,$key));
                     }
@@ -317,7 +326,7 @@ class Survey_Common_Action extends CAction
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
-        $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
+        $aData = $this->_addPseudoParams($aData); // This call 2 times _addPseudoParams because it's already done in runWithParams : why ?
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
 
@@ -437,7 +446,7 @@ class Survey_Common_Action extends CAction
                 ));
                 $not->save();
             }
-            if (strtolower(getGlobalSetting('force_ssl')!='on') && Yii::app()->getConfig("debug") < 2) {
+            if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
@@ -1292,6 +1301,27 @@ class Survey_Common_Action extends CAction
         }
 
         return $extraMenus;
+    }
+
+    /**
+     * Method to render an array as a json document
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData, $success=true)
+    {
+        
+        $aData['success'] = $aData['success'] ?? $success;
+
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => $aData
+        ], true, false);
+        return;
     }
 
 }

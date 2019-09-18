@@ -15,6 +15,7 @@ export default {
         };
     },
     computed: {
+        allowOrganizer() {return this.$store.state.allowOrganizer===1},
         surveyIsActive() {return window.SideMenuData.isActive; },
         createQuestionGroupLink() { return window.SideMenuData.createQuestionGroupLink },
         createQuestionLink() { return window.SideMenuData.createQuestionLink },
@@ -52,6 +53,9 @@ export default {
         }
     },
     methods: {
+        toggleOrganizer(){
+            this.$store.dispatch('unlockLockOrganizer');
+        },
         createFullQuestionLink() { return LS.createUrl(this.createQuestionLink, {gid: (LS.parameters.combined.gid || null)}); },
         questionHasCondition(question) {
             return question.relevance !== '1';
@@ -236,7 +240,7 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
         <div 
             class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar" 
             v-if="createAllowance != ''"
@@ -247,7 +251,7 @@ export default {
                 :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
             >
                 <i class="fa fa-plus"></i>&nbsp;
-                {{"createQuestionGroup"|translate}}
+                {{"createPage"|translate}}
             </a>
             <a 
                 id="adminsidepanel__sidebar--selectorCreateQuestion" 
@@ -258,6 +262,13 @@ export default {
                 <i class="fa fa-plus-circle"></i>&nbsp;
                 {{"createQuestion"|translate}}
             </a>
+             <button
+                class="scoped-unlocklock-organizer-right"
+                :class="(allowOrganizer ? 'btn btn-warning' : 'btn btn-default')"
+                @click="toggleOrganizer"
+            >
+                <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
+            </button>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
             <ul 
@@ -275,7 +286,8 @@ export default {
                         <i 
                             v-if="!surveyIsActive"
                             class="fa fa-bars bigIcons dragPointer" 
-                            draggable="true"
+                            :class=" allowOrganizer ? '' : 'disabled' "
+                            :draggable="allowOrganizer"
                             @dragend="endDraggingGroup($event, questiongroup)" 
                             @dragstart="startDraggingGroup($event, questiongroup)"
                             @click.stop.prevent="()=>false"
@@ -318,7 +330,8 @@ export default {
                                     <i 
                                         v-if="!$store.state.surveyActiveState"
                                         class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag" 
-                                        draggable="true"
+                                        :class=" allowOrganizer ? '' : 'disabled' "
+                                        :draggable="allowOrganizer"
                                         @dragend="endDraggingQuestion($event, question)" 
                                         @dragstart="startDraggingQuestion($event, question, questiongroup)"
                                         @click.stop.prevent="()=>false"
@@ -348,6 +361,12 @@ export default {
 </template>
 
 <style lang="scss">
+.scoped-bottom-bar {
+    align-self: flex-end;
+}
+.scoped-unlocklock-organizer-right {
+    align-self: flex-end;
+}
 .list-group-item.question-question-list-item .editIcon {
     margin: 10px 10px 10px 5px;
 }

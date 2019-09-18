@@ -992,10 +992,14 @@ class Question extends LSActiveRecord
     public function getBasicFieldName()
     {
         if ($this->parent_qid != 0) {
+            /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
+            // Use parents relation
+            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ? 
+                return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
+            }
             return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
-        } else {
-            return "{$this->sid}X{$this->gid}X{$this->qid}";
         }
+        return "{$this->sid}X{$this->gid}X{$this->qid}";
     }
 
     /**
@@ -1120,14 +1124,14 @@ class Question extends LSActiveRecord
             case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListRadio($this->qid);
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListDropdown($this->qid);
             case Question::QT_O_LIST_WITH_COMMENT:              return new DataSetListWithComment($this->qid);
-            case Question::QT_R_RANKING_STYLE:                  return new RenderRanking($this->qid);
+            case Question::QT_R_RANKING_STYLE:                  return new DataSetRanking($this->qid);
             case Question::QT_M_MULTIPLE_CHOICE:                return new DataSetMultipleChoice($this->qid);
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  return new DataSetMultipleChoiceWithComments($this->qid);
             case Question::QT_I_LANGUAGE:                       return new DataSetLanguage($this->qid);
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:            return new DataSetMultipleShortText($this->qid);
             case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
             case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new RenderMultipleNumerical($this->qid);
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new DataSetMultipleNumerical($this->qid);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:       return new DataSetArray5ChoiceQuestion($this->qid);
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:      return new DataSetArray10ChoiceQuestion($this->qid);
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:         return new DataSetArrayYesUncertainNo($this->qid);
