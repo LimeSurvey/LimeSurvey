@@ -140,7 +140,7 @@
             <?php else:?>
             <li class="toWhite">
                 <a href="" onclick="event.preventDefault();" style="cursor: default;">
-                    <?php eT('No question group in this survey');?>
+                    <?php eT('No survey page in this survey');?>
                 </a>
             </li>
             <?php endif;?>

@@ -17,7 +17,7 @@ $topbar = [
 // TODO: SurveyBar Activation Buttons
 // views/admin/survey/surveybar_activation.php
 // Survey Activation
-if (!$isActive) {
+if (!$oSurvey->active == 'Y') {
     $hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
     // activate
     if ($canactivate) {
@@ -58,8 +58,8 @@ if (!$isActive) {
 if ($hasSurveyContentPermission) {
     
     // Preview Survey Button
-    $title = ($isActive) ? 'preview_survey' : 'execute_survey';
-    $name = ($isActive) ? gT('Preview survey') : gT('Execute survey');
+    $title = ($oSurvey->active == 'Y') ? 'preview_survey' : 'execute_survey';
+    $name = ($oSurvey->active == 'Y') ? gT('Preview survey') : gT('Execute survey');
 
     if (safecount($oSurvey->allLanguages) > 1) {
         $preview_buttons = [];
@@ -267,7 +267,7 @@ if ($hasSurveyReadPermission) {
     }
 }
 
-if (!$isActive && $hasSurveyContentPermission) {
+if (!$oSurvey->active == 'Y' && $hasSurveyContentPermission) {
     // Divider
     $buttons['divider'] = [
         'role' => 'seperator',
@@ -296,7 +296,7 @@ if (!$isActive && $hasSurveyContentPermission) {
     // By Question Group
     $buttons['by_question_group'] = [
         'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
-        'name' => gT('By question group'),
+        'name' => gT('By survey page'),
         'icon' => 'icon-resetsurveylogic',
         'id' => 'by_question_group'
     ];
@@ -318,7 +318,7 @@ if ($hasSurveyTokensPermission) {
 }
 
 // Statistics
-if ($isActive) {
+if ($oSurvey->active == 'Y') {
     $buttonsgroup['statistics'] = [
         'class' => 'btn-group',
         'id' => 'statistics_dropdown',
@@ -339,7 +339,7 @@ if ($isActive) {
     ];
 
     // Responses & statistics
-    if (isset($respstatsread) && $respstatsread && $isActive) {
+    if (isset($respstatsread) && $respstatsread && $oSurvey->active == 'Y') {
         $buttons['responses_statistics'] = [
             'class' => 'pjax',
             'url' => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),
@@ -352,7 +352,7 @@ if ($isActive) {
     }
 
     // Data Entry Screen
-    if ($hasResponsesCreatePermission && $isActive) {
+    if ($hasResponsesCreatePermission && $oSurvey->active == 'Y') {
         $buttons['data_entry_screen'] = [
             'url' => $this->createUrl("admin/dataentry/sa/view/surveyid/$sid"),
             'icon' => 'fa fa-keyboard-o',
@@ -364,7 +364,7 @@ if ($isActive) {
     }
 
     // Partial (saved) Responses
-    if ($hasResponsesReadPermission && $isActive) {
+    if ($hasResponsesReadPermission && $oSurvey->active == 'Y') {
         $buttons['partial_saved_responses'] = [
             'url' => $this->createUrl("admin/saved/sa/view/surveyid/$sid"),
             'icon' => 'icon-saved',

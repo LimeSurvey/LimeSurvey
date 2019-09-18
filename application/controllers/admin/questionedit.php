@@ -26,11 +26,18 @@ if (!defined('BASEPATH')) {
 */
 class questionedit extends Survey_Common_Action
 {
-    public function view($surveyid, $gid, $qid=null)
+    /**
+     * @param integer $surveyid 
+     * @param integer $gid 
+     * @param integer $qid 
+     * @param string $landOnSideMenuTab
+     */
+    public function view($surveyid, $gid=null, $qid=null, $landOnSideMenuTab = '')
     {
         $aData = array();
         $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->_getQuestionObject($qid, null, $gid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
@@ -54,8 +61,7 @@ class questionedit extends Survey_Common_Action
 
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
-
-        $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
+      //  $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // can we delete this?
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['questionbar']['buttons']['view'] = true;
 
@@ -85,8 +91,6 @@ class questionedit extends Survey_Common_Action
         $aData['oSurvey'] = $oSurvey;
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
-        //$aData['qct']
-        //$aData['sqct']
         $aData['activated'] = $oSurvey->active;
         $aData['oQuestion'] = $oQuestion;
         $aData['languagelist'] = $oSurvey->allLanguages;
@@ -162,6 +166,9 @@ class questionedit extends Survey_Common_Action
         $aData['topBar']['savebuttonform'] = 'frmeditgroup';
         $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
 
+        if ($landOnSideMenuTab !== '') {
+            $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
+        }
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
 
@@ -472,16 +479,19 @@ class questionedit extends Survey_Common_Action
     }
 
 
-    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid=null)
+    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid = null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oQuestion =  Question::model()->findByPk($iQuestionId);
+        
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
+        
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
-        }
+        }     
+
         if ($gid != null) {
             $oQuestion->gid = $gid;
         }
@@ -767,23 +777,6 @@ class questionedit extends Survey_Common_Action
         ];
     }
 
-    /******************************/
-
-    /**
-     * Method to render an array as a json document
-     *
-     * @param array $aData
-     * @return void
-     */
-    protected function renderJSON($aData)
-    {
-        if (Yii::app()->getConfig('debug') > 0) {
-            $aData['debug'] = [$_POST, $_GET];
-        }
-
-        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
-        return;
-    }
 
     /**
      * Renders template(s) wrapped in header and footer

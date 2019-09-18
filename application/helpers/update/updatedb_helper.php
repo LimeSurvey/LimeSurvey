@@ -2906,6 +2906,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if($iOldDBVersion < 420) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                "{{surveymenuentries}}", 
+                [
+                    'name' =>  "listSurveyPages",
+                    'title' =>  gT('List survey pages','unescaped'),
+                    'menu_title' =>  gT('List survey pages','unescaped'),
+                    'menu_description' =>  gT('List survey pages','unescaped'),
+                ], 
+                'name="listQuestionGroups"'
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

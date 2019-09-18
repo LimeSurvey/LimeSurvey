@@ -104,7 +104,7 @@
                 <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
                 <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
                     <span class="fa fa-list"></span>
-                    <?php eT("List question groups"); ?>
+                    <?php eT("List survey pages"); ?>
                 </a>
 
             <!-- List Questions -->

@@ -11,5 +11,11 @@ export default {
     },
     isRTL: state => {
         return document.getElementsByTagName("html")[0].getAttribute("dir") == 'rtl';
+    },
+    isCollapsed: state => {
+        if(window.innerWidth < 768) {
+            return false;
+        }
+        return state.isCollapsed;
     }
 };

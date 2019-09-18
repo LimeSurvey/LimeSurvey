@@ -1132,7 +1132,7 @@ class Survey_Common_Action extends CAction
         if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add survey pages")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";

@@ -207,7 +207,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         //Prepare the edition panes
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
-        $aData['datasecdata']              = array_merge($aData, $this->_getDataSecurityEditData($survey));
+        $aData['datasecdata']               = array_merge($aData, $this->_getDataSecurityEditData($survey));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
@@ -1383,7 +1383,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        Yii::app()->session['flashmessage'] = gT("The new survey page/question order was successfully saved.");
     }
 
     /**
@@ -1830,7 +1830,7 @@ class SurveyAdmin extends Survey_Common_Action
             // Check if survey title was set
             if (Yii::app()->request->getPost('surveyls_title') == '') {
                 $alertError = gT("Survey could not be created because it did not have a title");
-                //Yii::app()->session['flashmessage'] = $alertError;
+    
                 return Yii::app()->getController()->renderPartial(
                     '/admin/super/_renderJson',
                     array(
@@ -1921,8 +1921,6 @@ class SurveyAdmin extends Survey_Common_Action
 
             );
 
-            //var_dump($aInsertData);
-
             $warning = '';
 
             if (!is_null($iSurveyID)) {
@@ -1970,19 +1968,17 @@ class SurveyAdmin extends Survey_Common_Action
 
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
-            $createSample = ((int) App()->request->getPost('createsample', 0)) === 1;
+            $createSample = App()->request->getPost('createsample');
+            $createSampleChecked = ($createSample === 'on');
 
             // Figure out destination
-
-            if ($createSample) {
+            if ($createSampleChecked) {
                 $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
-                $redirecturl = $this->getController()->createUrl(
-                    "admin/questions/sa/view/",
-                    ['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
-                );
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first survey page and an example question for you."), 'info');
+                $landOnSideMenuTab   = 'structure';
+                $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
                 $redirecturl = $this->getController()->createUrl(
                     'admin/survey/sa/view/',
@@ -2003,6 +1999,25 @@ class SurveyAdmin extends Survey_Common_Action
         }
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
 
+    }
+    
+    /**
+     * This method will return the url for the current survey and set the direction for 
+     * the sidemenue. 
+     * 
+     * @param integer $sid 
+     * @param integer $gid  
+     * @param integer $qid 
+     * @return string
+     */
+    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab) {
+        $url = 'admin/questioneditor/sa/view/';
+        $params = [
+            'surveyid' => $sid, 
+            'gid'      => $gid, 
+            'qid'      => $qid, 
+            'landOnSideMenuTab'   => $landOnSideMenuTab];
+        return $this->getController()->createUrl($url, $params);
     }
 
     /**
@@ -2267,7 +2282,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oGroup->save();
         $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
-        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->group_name = gt('My first survey page', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
         LimeExpressionManager::SetEMLanguage($sLanguage);

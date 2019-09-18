@@ -152,7 +152,7 @@
             <li>
             <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$oSurvey->sid}/subaction/bygroup"); ?>">
                 <span class="icon-resetsurveylogic" ></span>
-                <?php eT("By question group"); ?>
+                <?php eT("By survey page"); ?>
             </a>
             </li>
             <?php endif; ?>
