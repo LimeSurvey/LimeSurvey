@@ -58,7 +58,7 @@
             'action' => 'set-group-position',
             'url' => App()->createUrl('/admin/questions/sa/setMultipleQuestionGroup/'),
             'iconClasses' => 'fa fa-folder-open',
-            'text' => gT('Set question group and position'),
+            'text' => gT('Set survey page and position'),
             'grid-reload' => 'yes',
 
             // modal
@@ -67,7 +67,7 @@
             'keepopen' => 'no',
             'yes' => gT('Apply'),
             'no' => gT('Cancel'),
-            'sModalTitle' => gT('Set question group'),
+            'sModalTitle' => gT('Set survey page'),
             'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_question_group_position', array('model' => $model, 'oSurvey' => $oSurvey), true),
         );
     }

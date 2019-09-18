@@ -243,10 +243,9 @@ export default {
             this.$emit("menuselected", sId);
         },
         toggleCollapse() {
-            this.$store.getters.isCollapsed = !this.$store.getters.isCollapsed;
             this.$store.commit(
                 "changeIsCollapsed",
-                this.$store.getters.isCollapsed
+                !this.$store.state.isCollapsed
             );
             if (this.$store.getters.isCollapsed) {
                 this.sideBarWidth = "98";
@@ -267,7 +266,6 @@ export default {
         mouseup(e) {
             if (this.isMouseDown) {
                 this.isMouseDown = false;
-                this.$store.getters.isCollapsed = false;
                 if (
                     parseInt(this.sideBarWidth) < 250 &&
                     !this.$store.getters.isCollapsed

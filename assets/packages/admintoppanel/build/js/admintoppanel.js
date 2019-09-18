@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "a6ecf856b18ac6d8af6d";
+/******/ 	var hotCurrentHash = "d4a1746cb82c653fe19b";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -29915,7 +29915,7 @@ __webpack_require__.r(__webpack_exports__);
  //Ignore phpunits testing tags
 
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.ignoredElements = ["x-test"];
-vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.devtools = false;
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.devtools = true;
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(_mixins_logSystem_js__WEBPACK_IMPORTED_MODULE_8__["PluginLog"]);
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default.a, {
   dynamic: true

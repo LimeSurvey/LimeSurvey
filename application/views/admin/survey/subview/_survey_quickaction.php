@@ -49,7 +49,7 @@
                             <!-- To add questions, first, you must add a question group -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <strong><?php eT('Warning!');?></strong> <?php eT('Before you can add questions you must add a question group first.');?>
+                                <strong><?php eT('Warning!');?></strong> <?php eT('Before you can add questions you must add a survey page first.');?>
                             </div>
 
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
@@ -168,14 +168,14 @@
                                                 </div>
                                                 <div class="panel-body  ">
                                                     <div class="panel-body-ico">
-                                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a survey page."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                <span class="sr-only"><?php eT("You must first create a question group."); ?></span>
+                                <span class="sr-only"><?php eT("You must first create a survey page."); ?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
                                                         <p>
-                                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a survey page."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                                                                 <?php eT("Add new question"); ?>
                                 <span class="sr-only"><?php eT("Add new question"); ?></span>
                                                             </a>

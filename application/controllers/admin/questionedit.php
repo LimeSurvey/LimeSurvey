@@ -37,6 +37,7 @@ class questionedit extends Survey_Common_Action
         $aData = array();
         $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->_getQuestionObject($qid, null, $gid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
@@ -467,16 +468,19 @@ class questionedit extends Survey_Common_Action
     }
 
 
-    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid=null)
+    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid = null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oQuestion =  Question::model()->findByPk($iQuestionId);
+        
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
+        
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
-        }
+        }     
+
         if ($gid != null) {
             $oQuestion->gid = $gid;
         }

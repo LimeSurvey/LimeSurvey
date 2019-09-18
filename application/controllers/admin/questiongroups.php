@@ -164,7 +164,7 @@ class questiongroups extends Survey_Common_Action
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-            $aData['subaction'] = gT('Add question group');
+            $aData['subaction'] = gT('Add survey page');
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
@@ -211,8 +211,8 @@ class questiongroups extends Survey_Common_Action
                 $oGroupLS->language = $sLanguage;
                 $oGroupLS->save();
             }
-            Yii::app()->setFlashMessage(gT("New question group was saved."));
-            Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'), '<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">', '</a>'), 'info');
+            Yii::app()->setFlashMessage(gT("New survey page was saved."));
+            Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this page.'), '<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">', '</a>'), 'info');
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
                 $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
             } elseif (Yii::app()->request->getPost('saveandnew', '') !== '') {
@@ -242,7 +242,7 @@ class questiongroups extends Survey_Common_Action
         }
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid"=>$iGroupId));
         if (empty($oQuestionGroup)) {
-            throw new CHttpException(401, gT("Invalid question group id"));
+            throw new CHttpException(401, gT("Invalid survey page id"));
         }
         /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
@@ -264,7 +264,7 @@ class questiongroups extends Survey_Common_Action
                 [
                     'success' => $success,
                     'deletedGroups' => $iGroupsDeleted, 
-                    'message' => ($success ?gT('The question group was deleted.') : gT('Group could not be deleted')),
+                    'message' => ($success ?gT('The survey page was deleted.') : gT('Page could not be deleted')),
                     'redirect' => $this->getController()->createUrl('admin/survey/sa/listquestiongroups/', ['surveyid' => $iSurveyId])
                 ]
             );
@@ -274,9 +274,9 @@ class questiongroups extends Survey_Common_Action
 
         if ($iGroupsDeleted > 0) {
             QuestionGroup::model()->updateGroupOrder($iSurveyId);
-            Yii::app()->setFlashMessage(gT('The question group was deleted.'));
+            Yii::app()->setFlashMessage(gT('The survey page was deleted.'));
         } else {
-            Yii::app()->setFlashMessage(gT('Group could not be deleted'), 'error');
+            Yii::app()->setFlashMessage(gT('Page could not be deleted'), 'error');
         }
         
 
@@ -336,14 +336,14 @@ class questiongroups extends Survey_Common_Action
             'openQuestionUrl' => $this->getController()->createUrl('admin/questioneditor/sa/view/', ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']),
             'createQuestionUrl' => $this->getController()->createUrl("admin/questioneditor/sa/view/" ,["surveyid" =>  $surveyid, 'gid' => $gid]),
             'i10N' => [
-                'Question group' => gT('Question group'),
-                'Group overview' => gT('Group overview'),
+                'Survey page' => gT('Survey page'),
+                'Page overview' => gT('Page overview'),
                 'Question list' => gT('Question list'),
-                'Create new question group' => gT('Create new question group'),
+                'Create new survey page' => gT('Create new survey page'),
                 'Question group overview' => gT('Question group overview'),
                 'Question group editor' => gT('Question group editor'),
                 'General Settings' => gT("General Settings"),
-                'Group summary' => gT('Group summary'),
+                'Page summary' => gT('Page summary'),
                 'Random Group' => gT('Random Group'),
                 'Title' => gT('Title'),
                 'Relevance' => gT('Relevance'),
@@ -873,21 +873,6 @@ class questiongroups extends Survey_Common_Action
         return $storeValid;
     }
 
-    /**
-     * Method to render an array as a json document
-     *
-     * @param array $aData
-     * @return void
-     */
-    protected function renderJSON($aData)
-    {
-        if (Yii::app()->getConfig('debug') > 0) {
-            $aData['debug'] = [$_POST, $_GET];
-        }
-
-        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
-        return;
-    }
     /**
      * Renders template(s) wrapped in header and footer
      *

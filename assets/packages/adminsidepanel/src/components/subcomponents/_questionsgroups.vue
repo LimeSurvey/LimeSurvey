@@ -17,8 +17,12 @@ export default {
     computed: {
         allowOrganizer() {return this.$store.state.allowOrganizer===1},
         surveyIsActive() {return window.SideMenuData.isActive; },
-        createQuestionGroupLink() { return window.SideMenuData.createQuestionGroupLink },
-        createQuestionLink() { return window.SideMenuData.createQuestionLink },
+        createQuestionGroupLink() { 
+            return window.SideMenuData.createQuestionGroupLink
+        },
+        createQuestionLink() { 
+            return window.SideMenuData.createQuestionLink 
+        },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
             return containerHeight - 100;
@@ -59,7 +63,12 @@ export default {
         collapseAll() {
             this.active = [];
         },
-        createFullQuestionLink() { return LS.createUrl(this.createQuestionLink, {gid: (LS.parameters.combined.gid || null)}); },
+        createFullQuestionLink() { 
+            if(LS.parameters.combined.gid) {
+                return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid}); 
+            }
+            return LS.createUrl(this.createQuestionLink, {}); 
+        },
         questionHasCondition(question) {
             return question.relevance !== '1';
         },

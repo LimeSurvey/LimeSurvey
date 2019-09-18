@@ -87,7 +87,7 @@ function checkHasGroup($postsid)
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
 
     if (count($groupresult) == 0) {
-        return gT("This survey does not contain any question groups.");
+        return gT("This survey does not contain any survey pages.");
     } else {
         return false;
     }

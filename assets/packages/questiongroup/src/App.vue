@@ -127,7 +127,7 @@ export default {
                 this.loading = false;
             },
             (reject) => {
-                this.$log.error("Question group loading failed");
+                this.$log.error("Survey page loading failed");
                 this.loading = false;
             }
 
@@ -165,22 +165,22 @@ export default {
                         :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
                         class="btn "
                     >
-                        {{'Question group overview'| translate}}
+                        {{'Survey page overview'| translate}}
                     </button>
                     <button
                         @click.prevent.stop="triggerEditQuestionGroup"
                         :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
                         class="btn "
                     >
-                        {{'Question group editor'| translate}}
+                        {{'Survey page editor'| translate}}
                     </button>
                 </div>
                 <div class="pagetitle h3 scoped-unset-pointer-events" key="pagetitle-block">
                     <template v-if="isCreateQuestionGroup">
-                            {{'Create new question group'|translate}}
+                            {{'Create new survey page'|translate}}
                     </template>
                     <template v-else>
-                            {{'Question group'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
+                            {{'Survey page'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
                     </template>
                 </div>
                 <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
