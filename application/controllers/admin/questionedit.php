@@ -32,7 +32,7 @@ class questionedit extends Survey_Common_Action
      * @param integer $qid 
      * @param string $landOnSideMenuTab
      */
-    public function view($surveyid, $gid, $qid=null, $landOnSideMenuTab = '')
+    public function view($surveyid, $gid=null, $qid=null, $landOnSideMenuTab = '')
     {
         $aData = array();
         $iSurveyID = (int) $surveyid;
