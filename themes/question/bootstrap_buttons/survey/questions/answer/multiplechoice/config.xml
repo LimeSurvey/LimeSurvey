@@ -18,7 +18,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the Bootstrap buttons question theme</description>
-        <type>M</type>
+        <questionType>M</questionType>
         <group>Multiple choice questions</group>
         <subquestions>1</subquestions>
         <answerscales>0</answerscales>

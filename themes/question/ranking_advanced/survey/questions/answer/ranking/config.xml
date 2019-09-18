@@ -18,7 +18,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the ranking question</description>
-        <type>R</type>
+        <questionType>R</questionType>
         <group>Mask questions</group>
         <subquestions>0</subquestions>
         <answerscales>1</answerscales>

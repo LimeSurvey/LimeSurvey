@@ -18,7 +18,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Browser, Platform and Proxy detection</description>
-        <type>S</type>
+        <questionType>S</questionType>
         <group>Text questions</group>
         <subquestions>0</subquestions>
         <answerscales>0</answerscales>

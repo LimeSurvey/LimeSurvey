@@ -18,7 +18,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the Bootstrap buttons question theme</description>
-        <type>L</type>
+        <questionType>L</questionType>
         <group>Single choice questions</group>
         <subquestions>0</subquestions>
         <answerscales>1</answerscales>

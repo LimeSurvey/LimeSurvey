@@ -18,7 +18,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>List Radio with images.</description>
-        <type>L</type>
+        <questionType>L</questionType>
         <group>Single choice questions</group>
         <subquestions>0</subquestions>
         <answerscales>1</answerscales>

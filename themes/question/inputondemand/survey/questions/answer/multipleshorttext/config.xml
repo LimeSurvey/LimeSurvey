@@ -18,7 +18,7 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Hide not needed input fields in multiple shorttext</description>
-        <type>Q</type>
+        <questionType>Q</questionType>
         <group>Text questions</group>
         <subquestions>1</subquestions>
         <answerscales>0</answerscales>
