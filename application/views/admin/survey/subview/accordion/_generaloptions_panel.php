@@ -191,43 +191,46 @@
                 </div>
             </div>
 
-            <!-- Bounce email -->
-            <div class="form-group">
-                <?php //Switch for creation/editing ?>
-                <?php $bounce_email = $oSurvey->bounce_email; ?>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
-                        <label class=" control-label"  for='bounce_email'><?php  eT("Administrator email address:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly />
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
-                        <label class=" control-label content-center col-sm-12"  for='bounce_email'><?php  eT("Inherit:"); ?></label>
-                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                            'name' => 'bounce_emailbutton',
-                            'value'=> ($bShowInherited && $bounce_email === 'inherit' ? 'Y' : 'N'),
-                            'selectOptions'=>$optionsOnOff,
-                            'htmlOptions' => array(
-                                'class' => 'text-option-inherit '
-                                )
-                            ));
-                        ?>
+            <?php if ($bShowAllOptions === true){ ?>
+                <!-- Bounce email -->
+                <div class="form-group">
+                    <?php //Switch for creation/editing ?>
+                    <?php $bounce_email = $oSurvey->bounce_email; ?>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                            <label class=" control-label"  for='bounce_email'><?php  eT("Administrator email address:"); ?></label>
+                                <input class="form-control inherit-edit <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
+                                <input class="form-control inherit-readonly <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly />
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                            <label class=" control-label content-center col-sm-12"  for='bounce_email'><?php  eT("Inherit:"); ?></label>
+                            <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                'name' => 'bounce_emailbutton',
+                                'value'=> ($bShowInherited && $bounce_email === 'inherit' ? 'Y' : 'N'),
+                                'selectOptions'=>$optionsOnOff,
+                                'htmlOptions' => array(
+                                    'class' => 'text-option-inherit '
+                                    )
+                                ));
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                <!-- Fax to -->
+                <div class="form-group">
+                    <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
+                    <div class="">
+                        <?php echo CHtml::textField('faxto',$oSurvey->faxto,array(
+                            'class' => 'form-control',
+                            'id' => 'faxto',
+                            'size' => '20',
+                            'maxlength' => '20',
+                        )); ?>
+                    </div>
+                </div>
+            <?php } ?>
 
-            <!-- Fax to -->
-            <div class="form-group">
-                <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('faxto',$oSurvey->faxto,array(
-                        'class' => 'form-control',
-                        'id' => 'faxto',
-                        'size' => '20',
-                        'maxlength' => '20',
-                    )); ?>
-                </div>
-            </div>
 
             <?php else: ?>
             <!-- End URL -->
