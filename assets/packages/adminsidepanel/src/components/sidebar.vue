@@ -43,7 +43,10 @@ export default {
             get(){return this.$store.state.collapsedmenus; },
             set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
         },
-        currentTab() { return this.$store.state.currentTab; },
+        currentTab: {
+            get() { return this.$store.state.currentTab; },
+            set(tab) { this.$store.commit("changeCurrentTab", tab); }
+        },
         getSideBarWidth() {
             return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
         },
@@ -331,6 +334,15 @@ export default {
                     break;
             };
         },
+        changeCurrentTab(tab) {
+            if (tab === 'structure') {
+                tab = 'questiontree';
+            } else {
+                tab = 'settings';
+            }
+
+            this.currentTab = tab;
+        }
     },
     created() {
         const self = this;
@@ -407,30 +419,56 @@ export default {
         });
 
         if (this.landOnTab !== '') {
-            console.log('Land on tab: ', this.landOnTab);
+           this.changeCurrentTab(this.landOnTab);
         }
     }
 };
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{'max-height': $store.state.inSurveyViewHeight}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="sidebar_loader" :style="{width: getSideBarWidth, height: getloaderHeight}" v-if="showLoader"><div class="ls-flex ls-flex-column fill align-content-center align-items-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></div></div>
+    <div id="sidebar" 
+         class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" 
+         :style="{'max-height': $store.state.inSurveyViewHeight}" 
+         @mouseleave="mouseleave" 
+         @mouseup="mouseup">
+        <div class="sidebar_loader" 
+             :style="{width: getSideBarWidth, height: getloaderHeight}" 
+             v-if="showLoader">
+            <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
+                <i class="fa fa-circle-o-notch fa-2x fa-spin"></i>
+            </div>
+        </div>
         <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <sidebar-state-toggle @collapse="toggleCollapse"/>
                 <transition name="slide-fade">
-                    <sidemenu :loading="loading" @changeLoadingState="applyLoadingState" :style="{'min-height': calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
+                    <sidemenu :loading="loading" 
+                              @changeLoadingState="applyLoadingState" 
+                              :style="{'min-height': calculateSideBarMenuHeight}" 
+                              v-show="showSideMenu"></sidemenu>
                 </transition>
                 <transition name="slide-fade">
-                    <questionexplorer :loading="loading" @changeLoadingState="applyLoadingState" :style="{'min-height': calculateSideBarMenuHeight}" v-show="showQuestionTree" v-on:openentity="openEntity" v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
+                    <questionexplorer :loading="loading" 
+                                      @changeLoadingState="applyLoadingState" 
+                                      :style="{'min-height': calculateSideBarMenuHeight}" 
+                                      v-show="showQuestionTree" 
+                                      v-on:openentity="openEntity" 
+                                      v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
                 </transition>
                 <transition name="slide-fade">
-                    <quickmenu :loading="loading" @changeLoadingState="applyLoadingState" :style="{'min-height': calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
+                    <quickmenu :loading="loading" 
+                               @changeLoadingState="applyLoadingState" 
+                               :style="{'min-height': calculateSideBarMenuHeight}" 
+                               v-show="$store.state.isCollapsed"></quickmenu>
                 </transition>
             </div>
         </div>
         <div class="resize-handle ls-flex-column" :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}">
-            <button v-show="!$store.state.isCollapsed" class="btn btn-default" @mousedown="mousedown" @click.prevent="()=>{return false;}"><i class="fa fa-ellipsis-v"></i></button>
+            <button v-show="!$store.state.isCollapsed" 
+                    class="btn btn-default" 
+                    @mousedown="mousedown" 
+                    @click.prevent="()=>{return false;}">
+                    <i class="fa fa-ellipsis-v"></i>
+            </button>
         </div>
     </div>
     
