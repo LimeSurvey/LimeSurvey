@@ -7,6 +7,9 @@ import Sidemenu from "./subcomponents/_sidemenu.vue";
 import Quickmenu from "./subcomponents/_quickmenu.vue";
 
 export default {
+    props: {
+        landOnTab: String,
+    },
     components: {
         questionexplorer: Questionexplorer,
         sidemenu: Sidemenu,
@@ -43,15 +46,10 @@ export default {
             get(){return this.$store.state.collapsedmenus; },
             set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
         },
-        // topmenus: {
-        //     get(){return this.$store.state.topmenus; },
-        //     set(newValue) { this.$store.commit("updateTopmenus", newValue); }
-        // },
-        // bottommenus: {
-        //     get(){return this.$store.state.bottommenus; },
-        //     set(newValue) { this.$store.commit("updateBottommenus", newValue); }
-        // },
-        currentTab() { return this.$store.state.currentTab; },
+        currentTab: {
+            get() { return this.$store.state.currentTab; },
+            set(tab) { this.$store.commit("changeCurrentTab", tab); }
+        },
         getSideBarWidth() {
             return this.$store.getters.isCollapsed ? "98" : this.sideBarWidth;
         },
@@ -344,6 +342,15 @@ export default {
                     break;
             };
         },
+        changeCurrentTab(tab) {
+            if (tab === 'structure') {
+                tab = 'questiontree';
+            } else {
+                tab = 'settings';
+            }
+
+            this.currentTab = tab;
+        }
     },
     created() {
         const self = this;
@@ -420,6 +427,10 @@ export default {
         $("body").on("mousemove", event => {
             self.mousemove(event, self);
         });
+
+        if (this.landOnTab !== '') {
+           this.changeCurrentTab(this.landOnTab);
+        }
     }
 };
 </script>
