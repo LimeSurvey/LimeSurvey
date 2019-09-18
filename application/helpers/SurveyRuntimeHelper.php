@@ -1235,7 +1235,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['include_content'] = 'submit_preview';
             }
             $sHtml = Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> $oSurvey, 'aSurveyInfo'=>$this->aSurveyInfo), true);
-            $oTemplate = Template::model()->getInstance();
+            $oTemplate = Template::getLastInstance();
             // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
                 killSurveySession($this->iSurveyid);
