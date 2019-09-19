@@ -491,7 +491,7 @@ class Template extends LSActiveRecord
 
         }
         // The error page from default template can be called when no survey found with a specific ID.
-        if ($sTemplateName === null && $iSurveyId === null && $last=false) {
+        if ($sTemplateName === null && $iSurveyId === null && $last===false) {
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
@@ -511,7 +511,7 @@ class Template extends LSActiveRecord
     /**
      * Return last instance if it exists, else generate it or throw an exception depending on $bAutoGenerate.
      * @param boolean $bAutoGenerate : should the function try to generate an instance if it doesn't exist?
-     * @return TemplateConfiguration 
+     * @return TemplateConfiguration
      */
     public static function getLastInstance($bAutoGenerate=true)
     {
