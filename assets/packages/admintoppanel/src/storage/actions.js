@@ -9,7 +9,7 @@ export default {
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
                     sid: context.state.sid || LS.reparsedParameters().combined.sid,
-                    qid: context.state.qid || LS.reparsedParameters().combined.gid
+                    gid: context.state.gid || LS.reparsedParameters().combined.gid || 0
                 }))
                 .then((data) => {
                     context.commit('clean');
