@@ -69,10 +69,9 @@
                         return true;
                     }
                 );
-                return sortBy(
-                    items, 
-                    item=>item.aFormElementOptions.sortorder 
-                    );
+                return items.sort( function(keyA, keyB) {
+                    return keyA['aFormElementOptions'].sortorder - keyB['aFormElementOptions'].sortorder;
+                });
             },
             surveyActive() {
                 return this.$store.getters.surveyObject.active =='Y'

@@ -130,8 +130,10 @@ abstract class QuestionBaseDataSet extends StaticModel
             if ($userSetting !== null){
                 $aAdvancedOptionsArray = (array) json_decode($userSetting);
             }
-        } 
-        
+        }
+
+        // this is how the sorting should work but is overwritten by returning the json to the ajax result, sorting is done in _settingstab.vue for now
+        uasort($aQuestionTypeAttributes, 'categorySort');
         if (empty($aAdvancedOptionsArray)){
             foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
                 if($sAttributeName == 'question_template') { continue; } // Avoid double displaying
