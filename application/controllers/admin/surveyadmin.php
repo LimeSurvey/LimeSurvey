@@ -2458,18 +2458,18 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     public function getSurveyTopbar($sid, $saveButton=false) {
-      $oSurvey   = Survey::model()->findByPk($sid);
+      $oSurvey                       = Survey::model()->findByPk($sid);
       $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
       $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
       $hasDeletePermission           = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
       $hasSurveyTranslatePermission  = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
       $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
-      $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') ||
-                                       Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
-      $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
-      $hasResponsesReadPermission   = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+      $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') 
+                                       || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+      $hasResponsesCreatePermission  = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
+      $hasResponsesReadPermission    = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
 
-      $isActive  = $oSurvey->isActive;
+      $isActive  = $oSurvey->active == 'Y';
       $condition = array('sid' => $sid, 'parent_qid' => 0);
       $sumcount  = Question::model()->countByAttributes($condition);
       $countLanguage = count($oSurvey->allLanguages);
@@ -2493,8 +2493,6 @@ class SurveyAdmin extends Survey_Common_Action
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
         array(
-          'oSurvey' => $oSurvey,
-          'isActive' => $isActive,
           'sid' => $sid,
           'canactivate' => $canactivate,
           'expired' => $expired,
@@ -2502,6 +2500,7 @@ class SurveyAdmin extends Survey_Common_Action
           'context' => $context,
           'contextbutton' => $contextbutton,
           'language' => $language,
+          'sumcount' => $sumcount,
           'hasSurveyContentPermission' => $hasSurveyContentPermission,
           'countLanguage' => $countLanguage,
           'hasDeletePermission' => $hasDeletePermission,
@@ -2513,6 +2512,7 @@ class SurveyAdmin extends Survey_Common_Action
           'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
           'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
           'hasResponsesReadPermission'   => $hasResponsesReadPermission,
+          'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
           'addSaveButton'  => $saveButton,
         ),
         false,

@@ -194,7 +194,9 @@ ${scriptContent}
             });
         }
 
-        $('#language').select2({});
+        $('#language').select2({
+            theme: 'bootstrap'
+        });
 
         this.toggleLoading(false);
     }
