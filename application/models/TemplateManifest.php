@@ -115,7 +115,7 @@ class TemplateManifest extends TemplateConfiguration
             }
         }
 
-        if (!empty ($sLayoutName) && ! empty ($sFileName)){
+        if (!empty ($sLayoutName)){
           $aContent[$sScreen][$sLayoutName] = $sFileName;
         }
       }
