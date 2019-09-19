@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-09-19 15:13:48+00:00\n"
+"POT-Creation-Date: 2019-09-19 16:10:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5566,6 +5566,7 @@ msgstr ""
 #: application/helpers/replacements_helper.php:148
 #: application/helpers/replacements_helper.php:391
 #: application/helpers/replacements_helper.php:393
+#: tmp/runtime/twig_cache/cf/cfe172cc90a09d6f6dd720cfe4775508dc37099da2359b3af62c7f41b2f67f24.php:315
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -19258,6 +19259,7 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_surveylist_view.php:33
 #: application/views/admin/themes/templateeditor_surveylist_view.php:77
+#: tmp/runtime/twig_cache/cf/cfe172cc90a09d6f6dd720cfe4775508dc37099da2359b3af62c7f41b2f67f24.php:281
 msgid "Start survey"
 msgstr ""
 
@@ -19266,6 +19268,7 @@ msgid "Following survey(s) are not yet active but you can register for them."
 msgstr ""
 
 #: application/views/admin/themes/templateeditor_surveylist_view.php:92
+#: tmp/runtime/twig_cache/cf/cfe172cc90a09d6f6dd720cfe4775508dc37099da2359b3af62c7f41b2f67f24.php:239
 msgid "The following surveys are available:"
 msgstr ""
 
@@ -21315,6 +21318,10 @@ msgstr ""
 #: tmp/runtime/twig_cache/5c/5c6102da77e9b78179ea53229796b720b599dd2e2442c0f8a0182bf4718cb326.php:190
 #: tmp/runtime/twig_cache/b9/b9c6970350ca00ddc38cba7053318a42dbcaa10f6d2ef01a52aac4544e559996.php:47
 msgid "Question index"
+msgstr ""
+
+#: tmp/runtime/twig_cache/00/00ea63c248cef48d07136557d38b1f1c1a35dbe5105b14c03d5a2e1cece26c80.php:146
+msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/0e/0e9387c567120fdc270f49444e15d2e7084bda8752a574243348130273dc30bc.php:97
