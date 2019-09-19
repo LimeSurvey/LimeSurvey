@@ -36,7 +36,8 @@ export default {
     },
     data() {
         return {
-            loading: true
+            loading: true,
+            showCustomthemePreview: false,
         };
     },
     computed: {
@@ -57,6 +58,7 @@ export default {
         },
         reactOnChange(newValue, oSettingObject) {
             this.$store.commit('setQuestionGeneralSetting', {newValue, settingName: oSettingObject.formElementId});   
+            this.showCustomthemePreview = (oSettingObject.formElementId === 'question_template' ? true : false);
         },
         toggleLoading(force=null){
             if(force===null) {
@@ -98,7 +100,8 @@ export default {
                             @change="reactOnChange($event, generalSetting)"
                             ></component>
                             <custom-theme-preview 
-                                v-if="generalSetting.formElementId === 'question_template'"
+                                v-if="((generalSetting.formElementId === 'question_template') &&
+                                        (this.showCustomThemePreview))"
                                 :theme="generalSetting.formElementValue">
                             </custom-theme-preview>
                         </div>

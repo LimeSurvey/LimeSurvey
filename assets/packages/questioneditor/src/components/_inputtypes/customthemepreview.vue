@@ -37,13 +37,14 @@ export default {
     },
     methods: {
         getCurrentSelectedTheme() {
-            //if (this.theme !== 'core') {
+            if (this.theme !== 'core') {
                 this.currentSelectedTheme = this.theme;
                 console.log('SelectedTheme: ', this.selectedTheme);
-            //}
+                this.fetchPreviewImageForCustomTheme();
+            }
         },
         fetchPreviewImageForCustomTheme() {
-            if (this.selectedTheme !== null) {
+            if (this.selectedTheme !== '' && this.selectedTheme !== 'core') {
                 this.$store.dispatch('getPreviewImageForCustomTheme').then( (result) => {
                     this.showPreview = true;
                     this.previewImage = result.data[this.theme];
@@ -57,16 +58,7 @@ export default {
     },
     created() {
         this.getCurrentSelectedTheme();
-          //this.$store.dispatch('getPreviewImageForCustomTheme').then((result) => {
-          //  console.log('RESULT: ', result);
-        //}).catch(error => {
-          //  console.log('ERROR: ', error);
-        //})
-    },
-    mounted() {
-        this.fetchPreviewImageForCustomTheme();
-    }
-    
+    } 
 }
 </script>
 

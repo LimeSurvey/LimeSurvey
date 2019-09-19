@@ -61,9 +61,10 @@ class questionedit extends Survey_Common_Action
 
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
-      //  $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // can we delete this?
+        //$this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // TODO: can we delete this?
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
-        $aData['questionbar']['buttons']['view'] = true;
+        
+        $aData['questionbar']['buttons']['view'] = true; // TODO: Do we need this in the future? Cause view is not used anymore 
 
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
@@ -352,6 +353,8 @@ class questionedit extends Survey_Common_Action
     /**
      * This method will return the preview image for custom theme. 
      * It will be rendered as JSON.
+     * 
+     * @return void
      */
     public function getPreviewImageForCustomTheme() 
     {
