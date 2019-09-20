@@ -101,7 +101,7 @@ export default {
                             ></component>
                             <custom-theme-preview 
                                 v-if="((generalSetting.formElementId === 'question_template') &&
-                                        (this.showCustomThemePreview))"
+                                        (showCustomThemePreview))"  <!-- TODO: custom-theme-preview not showing if var is true -->
                                 :theme="generalSetting.formElementValue">
                             </custom-theme-preview>
                         </div>
