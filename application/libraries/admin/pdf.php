@@ -667,7 +667,8 @@ class pdf extends TCPDF
      */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
-        $oTemplate = Template::model()->getInstance();
+
+        $oTemplate = Template::getLastInstance();
         $sLogoFileName = $oTemplate->filesPath.Yii::app()->getConfig('pdflogofile');
         if (!file_exists($sLogoFileName)) {
             $sLogoFileName = '';
