@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.17.17 (build 190918) to 3.18.0 (build 190923) September 23, 2019
+-New feature: define theme editor screens list from theme manifest. (LouisGac)
+-New feature: allow theme developers to add their own custom data for editor preview (LouisGac)
+-Fixed issue [security]: SQL injection in participant model (Olle Haerstedt)
+-Fixed issue #15309: Special characters in page "Error 403" shown as entities (Denis Chenu)
+-Fixed issue #15304: queXML "other" question attribute issue - multilingual survey (Dominik Vitt)
+#Updated translation: Russian by ddrmoscow, vipgroup
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Italian by seccalisca, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by HonkXL, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.17.16 (build 190906) to 3.17.17 (build 190918) September 18, 2019
 -New feature: allow twig tmp files generation from command line to allow GlotPress parsing (LouisGac)
 -Fixed issue: Language code not properly set in 'survey not available' screen (Carsten Schmitz)

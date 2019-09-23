@@ -96,6 +96,7 @@ class TemplateConfiguration extends TemplateConfig
     public $template_extends;
     public $template_description;
 
+
     /**
      * @return string the associated database table name
      */
@@ -461,6 +462,8 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('template.description', $this->template_description, true);
         $criteria->compare('template.extends', $this->template_extends, true);
 
+
+
         $coreTemplates = Template::getStandardTemplateList();
         if ($this->template_type == 'core'){
             $criteria->addInCondition('template_name', $coreTemplates);
@@ -474,6 +477,27 @@ class TemplateConfiguration extends TemplateConfig
                 'pageSize'=>$pageSizeTemplateView,
             ),
         ));
+    }
+
+    /**
+     * Twig statements can be used in Theme description
+     */
+    public function getDescription()
+    {
+      $sDescription = $this->template->description;
+
+      // If wrong Twig in manifest, we don't want to block the whole list rendering
+      // Note: if no twig statement in the description, twig will just render it as usual
+      try {
+          $sDescription = Yii::app()->twigRenderer->convertTwigToHtml($this->template->description);
+      } catch (\Exception $e) {
+        // It should never happen, but let's avoid to anoy final user in production mode :) 
+        if (YII_DEBUG){
+          Yii::app()->setFlashMessage("Twig error in template ".$this->template->name." description <br> Please fix it and reset the theme <br>".$e, 'error');
+        }
+      }
+
+      return $sDescription;
     }
 
     /**
