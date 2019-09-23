@@ -771,22 +771,6 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
-     * Method to render an array as a json document
-     *
-     * @param array $aData
-     * @return void
-     */
-    protected function renderJSON($aData)
-    {
-        if (Yii::app()->getConfig('debug') > 0) {
-            $aData['debug'] = [$_POST, $_GET];
-        }
-
-        echo App()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
-        return;
-    }
-
-    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
