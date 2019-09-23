@@ -265,6 +265,13 @@
                     <file type="view" role="layout">layout_print.twig</file>
                 </pdf>
 
+                <quotas>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Quotas exceeded')}} ]]></screen_title>
+                  <file type="view" role="layout">layout_global.twig</file>
+                  <file type="view" role="content">./subviews/content/quotas.twig</file>
+                  <file type="view" role="subview">./subviews/header/start_form.twig</file>
+                </quotas>
+
                 <navigation>
                     <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Navigation')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
@@ -284,6 +291,8 @@
                     <file type="view" role="subview">./subviews/navigation/question_index_questions_buttons.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_groups_buttons.twig</file>
                 </navigation>
+
+
             </screens>
 
             <!-- Data for preview in Theme Editor and Twig Cache command line generator  -->
@@ -314,6 +323,13 @@
                 <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>
                 <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
               </assessments>
+
+              <quotas>
+                <sMessage type="data" twig="on"><![CDATA[ {{ gT("Sorry your responses have exceeded a quota on this survey.") }} ]]></sMessage>
+                <sUrl type="data">http://limesurvey.org</sUrl>
+                <sUrlDescription type="data" twig="on"><![CDATA[ {{ gT("End url") }} ]]></sUrlDescription>
+                <bShowNavigator type="data">false</bShowNavigator>
+              </quotas>
             </default_data>
         </template_editor>
     </engine>

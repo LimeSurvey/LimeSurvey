@@ -232,6 +232,7 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1] = $this->parseDefaultData('question_1', $thissurvey['aGroups'][1]["aQuestions"][1]) ;
         $thissurvey['aGroups'][1]["aQuestions"][2] = $this->parseDefaultData('question_2', $thissurvey['aGroups'][1]["aQuestions"][2]);
         $thissurvey['aAssessments']["datas"]["total"][0] = $this->parseDefaultData('assessments', $thissurvey['aAssessments']["datas"]["total"][0]);
+        $thissurvey['aQuotas'] = $this->parseDefaultData('quotas', $thissurvey['aQuotas']);
 
         return $thissurvey;
     }
@@ -399,6 +400,7 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
+        $thissurvey['aQuotas'] = array();
         return $thissurvey;
     }
 
