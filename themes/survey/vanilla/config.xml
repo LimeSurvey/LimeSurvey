@@ -297,7 +297,7 @@
 
             <!-- Data for preview in Theme Editor and Twig Cache command line generator  -->
             <default_data>
-              <survey>
+              <survey type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Template Sample") }} ]]></name>
                 <description type="data" twig="on"><![CDATA[<p>{{ gT('This is a sample survey description. It could be quite long.') }}</p><p>{{ gT("But this one isn't.") }}<p>]]></description>
                 <welcome  type="data" twig="on"><![CDATA[<p>{{ gT('Welcome to this sample survey')}} <p> <p> {{ gT('You should have a great time doing this') }} <p> ]]></welcome>
@@ -305,26 +305,29 @@
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
               </survey>
-              <group>
+              <group type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>
                 <description type="data" twig="on"><![CDATA[ {{ gT("This group description is fairly vacuous, but quite important.") }} ]]></description>
               </group>
-              <question_1>
+              <question_1 type="core">
                 <code type="data" >'Q1 '</code>
                 <text type="data" twig="on"><![CDATA[ {{ gT("How many roads must a man walk down?") }} ]]></text>
                 <valid_message type="data" twig="on"><![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
               </question_1>
-              <question_2>
+              <question_2 type="core">
                 <code type="data" >'Q2 '</code>
                 <text type="data" twig="on"><![CDATA[ {{ gT("Please explain something in detail:") }} ]]></text>
                 <valid_message type="data" twig="on"><![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
               </question_2>
-              <assessments>
+              <assessments  type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>
                 <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
               </assessments>
 
-              <quotas>
+              <!-- This is an exemple to show you how to add your custom screen in the theme editor with custom values -->
+              <!-- The name of the array inside aSurveyInfo that feed your twig view is specified as "array-name". If you check quotas.twig, you'll notice the main variable is aSurveyInfo.aQuotas -->
+              <!-- Notice that the data you parse here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
+              <quotas type="custom" arrayName="aQuotas">
                 <sMessage type="data" twig="on"><![CDATA[ {{ gT("Sorry your responses have exceeded a quota on this survey.") }} ]]></sMessage>
                 <sUrl type="data">http://limesurvey.org</sUrl>
                 <sUrlDescription type="data" twig="on"><![CDATA[ {{ gT("End url") }} ]]></sUrlDescription>

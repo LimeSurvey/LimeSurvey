@@ -134,6 +134,12 @@ class TemplateManifest extends TemplateConfiguration
       return $aContent;
     }
 
+    /**
+     * Returns an array of screens list with their respective titles. Used by Theme Editor to build the screend selection dropdown
+     * For retro-compatibility purpose, if the array is empty it will use the old default values.
+     *
+     * @return array the list of screens with their titles
+     */
     public function getScreensList()
     {
       $aScreenList = $this->getScreensDetails();
@@ -232,11 +238,38 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][1] = $this->parseDefaultData('question_1', $thissurvey['aGroups'][1]["aQuestions"][1]) ;
         $thissurvey['aGroups'][1]["aQuestions"][2] = $this->parseDefaultData('question_2', $thissurvey['aGroups'][1]["aQuestions"][2]);
         $thissurvey['aAssessments']["datas"]["total"][0] = $this->parseDefaultData('assessments', $thissurvey['aAssessments']["datas"]["total"][0]);
-        $thissurvey['aQuotas'] = $this->parseDefaultData('quotas', $thissurvey['aQuotas']);
+
+        /**
+         * NOTE: This will allow Theme developper to add their new screens without editing this file.
+         * It implies they respect the convention :
+         * $aSurveyData[custom screen name][custom variable] = custom variable value
+         * Where custom variable value can't be an array.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
+        */
+        $thissurvey = $this->getCustomScreenData($thissurvey);
 
         return $thissurvey;
     }
 
+    /**
+     * If theme developer created custom screens, they will provide custom data.
+     * This function will get those custom data to pass them to the preview.
+     */
+    protected function getCustomScreenData($thissurvey = array())
+    {
+      $oDataFromXML = $this->templateEditor->xpath("//default_data"); //
+
+      foreach( $oDataFromXML[0] as $sScreenName => $oData){
+        if ($oData->attributes()->type == "custom"){
+          $sArrayName = (string) $oData->attributes()->arrayName;
+          $thissurvey[$sArrayName] = array();
+          $thissurvey[$sArrayName] = $this->parseDefaultData($sScreenName, $thissurvey[$sArrayName]);
+        }
+      }
+
+      return $thissurvey;
+    }
 
 
     protected function parseDefaultData($sXpath, $aArrayToFeed)
@@ -400,7 +433,6 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
 
-        $thissurvey['aQuotas'] = array();
         return $thissurvey;
     }
 
