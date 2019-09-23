@@ -507,14 +507,19 @@ class Participant extends LSActiveRecord
             $attributeType = $this->allExtraAttributes[$attributeId]['attribute_type'];
             $attributeId = (int) substr($attributeId, 3);
 
+            $callParticipantAttributes = Yii::app()->db->createCommand()
+                ->selectDistinct('pa.participant_id')
+                ->from('{{participant_attribute_values}} AS pa')
+                ->where('attribute_id=:attribute_id', array('attribute_id' => $attribute_id));
+
             // Use "LIKE" for text-box, equal for other types
             if ($attributeType == 'TB') {
-                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '".$attributeId."' AND value LIKE '%".$value."%'";
+                $callParticipantAttributes->andWhere('like', 'value', '%' . $value . '%');
             } else {
-                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '".$attributeId."' AND value = '".$value."'";
+                $callParticipantAttributes->andWhere('=', 'value', $value);
             }
 
-            $criteria->addCondition('t.participant_id IN ('.$callParticipantAttributes.')');
+            $criteria->addCondition('t.participant_id IN ('.$callParticipantAttributes->getText().')');
         }
 
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
