@@ -510,7 +510,7 @@ class Participant extends LSActiveRecord
             $callParticipantAttributes = Yii::app()->db->createCommand()
                 ->selectDistinct('pa.participant_id')
                 ->from('{{participant_attribute_values}} AS pa')
-                ->where('attribute_id=:attribute_id', array('attribute_id' => $attribute_id));
+                ->where('attribute_id=:attribute_id', array('attribute_id' => $attributeId));
 
             // Use "LIKE" for text-box, equal for other types
             if ($attributeType == 'TB') {
