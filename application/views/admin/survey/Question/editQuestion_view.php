@@ -19,6 +19,7 @@ $aQuestionTypeList = Question::typeList();
 $question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($oQuestion->type);
 $selected = null;
 
+uasort($aQuestionTypeList, "questionTitleSort");
 foreach ($aQuestionTypeList as $key=> $questionType) {
     $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {

@@ -1133,7 +1133,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
     if ($other) {
         $category = $dom->createElement("category");
 
-        $label = $dom->createElement("label", quexml_get_lengthth($qid, "other_replace_text", gT("Other")));
+        $label = $dom->createElement("label", quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang));
 
         $value = $dom->createElement("value", '-oth-');
 
@@ -1143,7 +1143,7 @@ function QueXMLCreateFixed($qid, $iResponseID, $fieldmap, $rotate = false, $labe
         $contingentQuestion = $dom->createElement("contingentQuestion");
         $length = $dom->createElement("length", 24);
         $format = $dom->createElement("format", "longtext");
-        $text = $dom->createElement("text", quexml_get_lengthth($qid, "other_replace_text", gT("Other")));
+        $text = $dom->createElement("text", quexml_get_lengthth($qid, "other_replace_text", gT("Other"), $quexmllang));
 
         $contingentQuestion->appendChild($text);
         $contingentQuestion->appendChild($length);

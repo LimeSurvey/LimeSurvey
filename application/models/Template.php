@@ -473,6 +473,7 @@ class Template extends LSActiveRecord
      * NOTE 1: This function will call prepareTemplateRendering that create/update all the packages needed to render the template, which imply to do the same for all mother templates
      * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to use this one. Call it only before rendering anything related to the template.
      * NOTE 3: If you need to get the related configuration to this template, rather use: getTemplateConfiguration()
+     * NOTE 4: If you want the lastest generated theme, just call Template::getLastInstance()
      *
      * @param string $sTemplateName
      * @param int|string $iSurveyId
@@ -490,10 +491,11 @@ class Template extends LSActiveRecord
 
         }
         // The error page from default template can be called when no survey found with a specific ID.
-        if ($sTemplateName === null && $iSurveyId === null && $last=false) {
+        if ($sTemplateName === null && $iSurveyId === null && $last===false) {
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
+        // TODO: this probably not use any more. Check and remove it.
         if($abstractInstance === true) {
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
@@ -503,17 +505,34 @@ class Template extends LSActiveRecord
           self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
-        return self::$instance;
+        return self::getLastInstance(false);
+    }
+
+    /**
+     * Return last instance if it exists, else generate it or throw an exception depending on $bAutoGenerate.
+     * @param boolean $bAutoGenerate : should the function try to generate an instance if it doesn't exist?
+     * @return TemplateConfiguration
+     */
+    public static function getLastInstance($bAutoGenerate=true)
+    {
+      if (empty(self::$instance)){
+        if ($bAutoGenerate)
+          self::getInstance();
+        else
+          throw new \Exception("No Survey theme was generated", 1);
+      }
+
+      return self::$instance;
     }
 
     /**
      * Check if the current instance is the correct one. Could be more complex in the future
      * @param string $sTemplateName
-     * @return boolean 
+     * @return boolean
      */
     public static function isCorrectInstance($sTemplateName = null)
     {
-       return ($sTemplateName != null && self::$instance->sTemplateName == $sTemplateName);
+       return ( $sTemplateName == null || self::$instance->sTemplateName == $sTemplateName);
     }
 
     /**

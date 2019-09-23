@@ -11,7 +11,8 @@
     } else {
         $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
     }
-    
+
+    uasort($aQuestionTypeList, "questionTitleSort");
     foreach ($aQuestionTypeList as $key=> $questionType) {
         $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
         if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
