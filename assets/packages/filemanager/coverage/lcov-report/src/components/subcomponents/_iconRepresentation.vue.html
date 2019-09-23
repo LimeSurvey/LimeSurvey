@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/components/subcomponents/_iconRepresentation.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\..\index.html">All files</a> / <a href="index.html">src/components/subcomponents</a> _iconRepresentation.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">3.33% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/30</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/18</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">3.33% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/30</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+    &lt;div class="container-fluid scoped-table-aloud"&gt;
+        &lt;div class="masonry-container" &gt;
+            &lt;div 
+                class="ls-flex ls-flex-column scoped-file-tile" 
+                v-for="file in $store.state.fileList" 
+                :key="file.shortName" 
+                :class="fileClass(file)"
+            &gt;
+                &lt;div class="ls-flex ls-flex-row align-content-center align-items-center"&gt;
+                    &lt;img v-if="file.isImage" class="scoped-contain-image" :src="file.src" :alt="file.shortName" /&gt;
+                    &lt;i v-else :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;div class="scoped-prevent-overflow ls-space margin top-5"&gt;
+                    {{file.shortName}}
+                &lt;/div&gt;
+                &lt;div class="ls-flex ls-flex-row align-items-space-between align-content-space-between ls-space margin top-5"&gt;
+                    &lt;div class="text-left ls-flex"&gt;
+                        &lt;small&gt;{{file.size | bytes}}&lt;/small&gt;
+                    &lt;/div&gt;
+                    &lt;div class="text-right ls-flex"&gt;
+                        &lt;small&gt;{{file.mod_time}}&lt;/small&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="ls-flex ls-flex-row ls-space margin top-5" &gt;
+                    &lt;template v-if="!inTransit(file)"&gt;
+                        &lt;button class="btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"&gt;&lt;i class="fa fa-trash-o text-danger"&gt;&lt;/i&gt;&lt;/button&gt;
+                        &lt;button class="btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"&gt;&lt;i class="fa fa-clone"&gt;&lt;/i&gt;&lt;/button&gt;
+                        &lt;button class="btn btn-default" @click="moveFile(file)" :title="translate('Move file')" data-toggle="tooltip"&gt;&lt;i class="fa fa-files-o"&gt;&lt;/i&gt;&lt;/button&gt;
+                    &lt;/template&gt;
+                    &lt;template  v-if="inTransit(file)"&gt;
+                        &lt;button class="btn btn-default" @click="cancelTransit(file)" :title="translate('Cancel transit of file')" data-toggle="tooltip"&gt;&lt;i class="fa fa-times text-warning"&gt;&lt;/i&gt;&lt;/button&gt;
+                    &lt;/template&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&nbsp;
+&lt;script&gt;
+import applyLoader from '../../mixins/applyLoader';
+&nbsp;
+export default {
+  name: 'tablerep',
+  mixins: [applyLoader],
+<span class="cstat-no" title="statement not covered" >  data() {return{</span>
+      fileInDeletion: false
+  };},
+  filters: {
+    bytes(value) {
+<span class="cstat-no" title="statement not covered" >      if(value &lt; 1024) {</span>
+<span class="cstat-no" title="statement not covered" >        return value+' B';</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if(value &gt;= 1024 &amp;&amp; value &lt; 1048576) {</span>
+<span class="cstat-no" title="statement not covered" >        return (Math.round((value/1024)*100)/100)+' KB';</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if(value &gt;= 1048576) {</span>
+<span class="cstat-no" title="statement not covered" >        return (Math.round((value/(1024*1024))*100)/100)+' MB';</span>
+      }
+    }
+  },
+  computed: {
+      calcMaxHeight() {
+<span class="cstat-no" title="statement not covered" >          return Math.floor((LS.ld.toArray(this.$store.state.fileList).length*550) / 4);</span>
+      }
+  },
+  methods: {
+    fileClass(file){
+<span class="cstat-no" title="statement not covered" >      let htmlClasses = 'scoped-file-icon ';</span>
+<span class="cstat-no" title="statement not covered" >      if(this.inDeletion(file)) {</span>
+<span class="cstat-no" title="statement not covered" >        htmlClasses += 'file-in-deletion ';  </span>
+      }
+<span class="cstat-no" title="statement not covered" >      if(this.inTransit(file)) {</span>
+<span class="cstat-no" title="statement not covered" >        htmlClasses += 'file-in-transit ';</span>
+<span class="cstat-no" title="statement not covered" >        if(this.$store.state.transitType == 'move') {</span>
+<span class="cstat-no" title="statement not covered" >          htmlClasses += ' move ';</span>
+        } 
+<span class="cstat-no" title="statement not covered" >        if(this.$store.state.transitType == 'copy') {</span>
+<span class="cstat-no" title="statement not covered" >          htmlClasses += ' copy ';</span>
+        }
+      }
+<span class="cstat-no" title="statement not covered" >      return htmlClasses;</span>
+    },
+    inDeletion(file) {
+<span class="cstat-no" title="statement not covered" >        return this.fileInDeletion == file.path;</span>
+    },
+    inTransit(file) {
+<span class="cstat-no" title="statement not covered" >      return this.$store.state.fileInTransit != null &amp;&amp; file.path == this.$store.state.fileInTransit.path;</span>
+    },
+    deleteFile(file) {
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        this.$dialog.confirm(this.translate('You are sure you want to delete %s').replace('%s', file.shortName))</span></span>
+        .then((dialog) =&gt; {
+<span class="cstat-no" title="statement not covered" >            this.loadingState = true;</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >            this.$store.dispatch('deleteFile', file).then(</span></span>
+              (result) =&gt; {},
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >              (error) =&gt; {this.$log.error(error);}</span></span>
+<span class="cstat-no" title="statement not covered" >            ).finally(()=&gt;{ this.loadingState = false; })</span>
+<span class="fstat-no" title="function not covered" >        })</span>
+        .catch(function () {
+<span class="cstat-no" title="statement not covered" >          console.log('Clicked on cancel');</span>
+        });
+    },
+    copyFile(file) {
+<span class="cstat-no" title="statement not covered" >      this.$store.commit('copyFile', file);</span>
+    },
+    moveFile(file) {
+<span class="cstat-no" title="statement not covered" >      this.$store.commit('moveFile', file)</span>
+    },
+    cancelTransit() {
+<span class="cstat-no" title="statement not covered" >      this.$store.commit('cancelTransit');</span>
+    }
+  }
+&nbsp;
+}
+&lt;/script&gt;
+&nbsp;
+&lt;style lang="scss" scoped&gt;
+    @media (min-width: 769px) {
+        // .scoped-file-tile {
+        //     width: 20%;
+        //     max-height: 550px;
+        // }
+        .masonry-container {
+            columns: 4 auto;
+            column-gap: 1rem;
+        }
+    }
+    @media (max-width: 768px) {
+        .masonry-container {
+            columns: 2 auto;
+            column-gap: 1rem;
+        }
+    }
+&nbsp;
+    .file-in-deletion {
+        background-color: #999999;
+        opacity: 0.5;
+    }
+   
+    .scoped-prevent-overflow {
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+&nbsp;
+    .scoped-contain-image {
+        max-width: 100%;
+        display: block;
+    }
+    .scoped-file-icon  {
+        border: 1px solid black;
+        box-shadow: 1px 2px 3px #939393;
+        margin: 1.1rem;
+        &amp;:first-of-type {
+            margin-top: 0;
+        }
+        padding: 0.5rem;
+    }
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 23 2019 15:45:41 GMT+0200 (GMT+02:00)
+</div>
+</div>
+<script src="..\..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\..\sorter.js"></script>
+</body>
+</html>
