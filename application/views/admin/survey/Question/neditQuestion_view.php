@@ -26,11 +26,12 @@ foreach ($aQuestionTypeList as $questionType) {
             'questionGroupName' => $questionType['group']
         );
     }
-        $imageName = $questionType['type'];
+        $imageName = $questionType['question_type'];
         if ($imageName == ":") $imageName = "COLON";
         else if ($imageName == "|") $imageName = "PIPE";
         else if ($imageName == "*") $imageName = "EQUATION";
 
+    $questionType['type'] = $questionType['question_type'];
     $questionType['detailpage'] = '
     <div class="col-sm-12 currentImageContainer">
         <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />

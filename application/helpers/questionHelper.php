@@ -1627,7 +1627,7 @@ class questionHelper
         $aQuestionAttributes = array();
         $additionalAttributes = array();
 
-        $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'type = :type AND extends = :extends', ['type' => $type, 'extends' => '']);
+        $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
 
         $xmlConfigPath = App()->getConfig('rootdir') .'/'. $sCoreTypeXmlPath['xml_path'] . '/config.xml';
         libxml_disable_entity_loader(false);

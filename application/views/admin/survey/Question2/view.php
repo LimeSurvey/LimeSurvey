@@ -26,7 +26,7 @@
                 'questionGroupName' => $questionType['group']
             );
         }
-        $imageName = $questionType['type'];
+        $imageName = $questionType['question_type'];
         if ($imageName == ":") {
             $imageName = "COLON";
         } elseif ($imageName == "|") {
@@ -35,6 +35,7 @@
             $imageName = "EQUATION";
         }
 
+        $questionType['type'] = $questionType['question_type'];
         $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
             <img src="' . $questionType['image_path'] . '" />

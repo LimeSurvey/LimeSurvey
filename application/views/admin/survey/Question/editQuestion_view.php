@@ -35,7 +35,7 @@
                 'questionGroupName' => $questionType['group']
             );
         }
-        $imageName = $questionType['type'];
+        $imageName = $questionType['question_type'];
         if ($imageName == ":") {
             $imageName = "COLON";
         } else {
@@ -47,11 +47,11 @@
                 }
             }
         }
-
+        $questionType['type'] = $questionType['question_type'];
         $questionType['detailpage'] = '
-    <div class="col-sm-12 currentImageContainer">
-        <img src="' . $questionType['image_path'] . '" />
-    </div>';
+        <div class="col-sm-12 currentImageContainer">
+            <img src="' . $questionType['image_path'] . '" />
+        </div>';
         if ($imageName == 'S') {
             $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
