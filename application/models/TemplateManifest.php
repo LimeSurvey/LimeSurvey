@@ -296,6 +296,25 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Returns all the twig strings inside the current XML. Used from TwigCommand
+     * NOTE: this not recursive. So it will show only the string of the current XML, not of parent XML. (not needed to generate twig cache from command line since all XML files are parsed)
+     *
+     * @param array $items if you already have a list of items and want to use it.
+     * @return array the list of strings using twig
+     */
+    public function getTwigStrings($items = array())
+    {
+      $oDataFromXML = $this->config;
+      $oElements = $oDataFromXML->xpath('//*[@twig="on"]');
+
+      foreach($oElements as $key => $oELement){
+        $items[] = (string) $oELement;
+      }
+
+      return $items;
+    }
+
+    /**
      * Hard coded data for theme rendering outside of the normal survey taking.
      *
      * Currently used in two cases: theme editor preview, and twig cache file generation from command line.

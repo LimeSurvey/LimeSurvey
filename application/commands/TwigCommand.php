@@ -54,10 +54,17 @@ class TwigCommand extends CConsoleCommand  {
             );
           }
         }
-        }
-      }
 
-      // Here you can var dump the logs, it will not conflict with header generation
-      //var_dump($aLogs);  
+        // Render all the twig strings inside the XML itself 
+        $aTwigFromXml = $oTemplateForPreview->getTwigStrings();
+
+        foreach($aTwigFromXml as $sTwig){
+          Yii::app()->twigRenderer->convertTwigToHtml($sTwig);
+        }
+
+      }
     }
+    // Here you can var dump the logs, it will not conflict with header generation
+    //var_dump($aLogs);
+  }
 }
