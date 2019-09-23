@@ -93,6 +93,7 @@ before_script:
     #- unzip chromedriver_linux64.zip
 
     # Prepare the packages that need to be tested
+    - nvm install 10.16.3
     - nvm use 10.16.3
     - node ./buildVueComponents.js -s filemanager -p
 

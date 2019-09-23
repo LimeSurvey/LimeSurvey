@@ -5,6 +5,7 @@ import {
 } from '@vue/test-utils';
 
 import Vuex from 'vuex';
+import FlushPromises from 'flush-promises';
 
 import FileManagerApp from '../../src/App.vue';
 
@@ -81,15 +82,6 @@ describe("FileManagerApp fulfilled promises on startup", () => {
         expect(actions.getFolderList).toHaveBeenCalled();
     });
 
-    // Evaluate loading to be set to false after mount
-    it('stopped the loading animation after mount', () => {
-        const fileManagerWrapper = shallowMount(FileManagerApp, {
-            store,
-            localVue
-        });
-        expect(fileManagerWrapper.vm.loading).toBe(false);
-    }, 1500);
-
     it('renders correct html', () => {
         const fileManagerWrapper = shallowMount(FileManagerApp, {
             store,
@@ -97,5 +89,15 @@ describe("FileManagerApp fulfilled promises on startup", () => {
         });
         expect(fileManagerWrapper.html()).toContain('<div id="filemanager-app" class="row">');
     });
+
+    // Evaluate loading to be set to false after mount
+    it('stopped the loading animation after mount', async () => {
+        const fileManagerWrapper = shallowMount(FileManagerApp, {
+            store,
+            localVue
+        });
+        await FlushPromises();
+        expect(fileManagerWrapper.vm.loading).toBe(false);
+    }, 1500);
 
 });
