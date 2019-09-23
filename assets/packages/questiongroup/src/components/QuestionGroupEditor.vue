@@ -98,7 +98,7 @@ ${scriptContent}
     <div class="col-sm-12 col-xs-12">
         <div class="panel panel-default" @dblclick="toggleEditMode">
             <div class="panel-heading">
-            {{'Group overview'|translate}}
+            {{'Page overview'|translate}}
             </div>
             <div class="panel-body">
                 <div class="col-xs-12 ls-space margin top-5 bottom-5">

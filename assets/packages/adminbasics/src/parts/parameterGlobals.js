@@ -21,6 +21,9 @@ const parseParameters = function(){
             if(key === false) {
                 key=value;
             } else {
+                if(key=='surveyid') {
+                    keyValuePairs['sid'] = value;
+                }
                 keyValuePairs[key] = value;
                 key=false;
             }

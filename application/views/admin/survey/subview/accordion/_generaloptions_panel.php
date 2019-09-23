@@ -215,19 +215,22 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Fax to -->
-            <div class="form-group">
-                <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('faxto',$oSurvey->faxto,array(
-                        'class' => 'form-control',
-                        'id' => 'faxto',
-                        'size' => '20',
-                        'maxlength' => '20',
-                    )); ?>
+                
+            <?php if ($bShowAllOptions === true){ ?>
+                <!-- Fax to -->
+                <div class="form-group">
+                    <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
+                    <div class="">
+                        <?php echo CHtml::textField('faxto',$oSurvey->faxto,array(
+                            'class' => 'form-control',
+                            'id' => 'faxto',
+                            'size' => '20',
+                            'maxlength' => '20',
+                        )); ?>
+                    </div>
                 </div>
-            </div>
+            <?php } ?>
+
 
             <?php else: ?>
             <!-- End URL -->

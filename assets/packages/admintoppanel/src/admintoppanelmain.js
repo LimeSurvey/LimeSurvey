@@ -8,7 +8,7 @@ import Loader from './helperComponents/loader.vue';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
-Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 Vue.use( PluginLog );
 Vue.use( VModal, {

@@ -1,88 +1,89 @@
 <?php
-    /**
-     * @var $this              AdminController
-     * @var $oQuestionGroup    QuestionGroup
-     * @var $oSurvey           Survey
-     * @var $oQuestion         Question
-     * @var $ajaxDatas         array
-     * @var $copying           boolean
-     * @var $adding            boolean
-     * @var $aqresult          Question[]
-     * @var $aQuestionTypeList array
-     * @var $questionType      QuestionTheme
-     * @var $oQuestion         Question
-     * @var $jsData            array
-     * @var $selectedQuestion  array
-     * @var $oQuestionSelector PreviewModalWidget
-     * @var $this              AdminController
-     * TODO: move logic from the view to controller
-     */
+/**
+ * @var $this              AdminController
+ * @var $oQuestionGroup    QuestionGroup
+ * @var $oSurvey           Survey
+ * @var $oQuestion         Question
+ * @var $ajaxDatas         array
+ * @var $copying           boolean
+ * @var $adding            boolean
+ * @var $aqresult          Question[]
+ * @var $aQuestionTypeList array
+ * @var $questionType      QuestionTheme
+ * @var $oQuestion         Question
+ * @var $jsData            array
+ * @var $selectedQuestion  array
+ * @var $oQuestionSelector PreviewModalWidget
+ * @var $this              AdminController
+ * TODO: move logic from the view to controller
+ */
 
-    // DO NOT REMOVE This is for automated testing to validate we see that page
-    echo viewHelper::getViewTestTag('addQuestion');
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('addQuestion');
 
 ?>
 
 <?php
-    $aQuestionTypeGroups = array();
-    $question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($oQuestion->type);
-    $selected = null;
+$aQuestionTypeGroups = array();
+$question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($oQuestion->type);
+$selected = null;
 
-    foreach ($aQuestionTypeList as $questionType) {
-        $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
-        if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
-            $aQuestionTypeGroups[$htmlReadyGroup] = array(
-                'questionGroupName' => $questionType['group']
-            );
-        }
-        $imageName = $questionType['question_type'];
-        if ($imageName == ":") {
-            $imageName = "COLON";
+uasort($aQuestionTypeList, "questionTitleSort");
+foreach ($aQuestionTypeList as $questionType) {
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+    if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
+        $aQuestionTypeGroups[$htmlReadyGroup] = array(
+            'questionGroupName' => $questionType['group']
+        );
+    }
+    $imageName = $questionType['question_type'];
+    if ($imageName == ":") {
+        $imageName = "COLON";
+    } else {
+        if ($imageName == "|") {
+            $imageName = "PIPE";
         } else {
-            if ($imageName == "|") {
-                $imageName = "PIPE";
-            } else {
-                if ($imageName == "*") {
-                    $imageName = "EQUATION";
-                }
+            if ($imageName == "*") {
+                $imageName = "EQUATION";
             }
         }
-        $questionType['type'] = $questionType['question_type'];
+    }
+    $questionType['type'] = $questionType['question_type'];
+    $questionType['detailpage'] = '
+    <div class="col-sm-12 currentImageContainer">
+        <img src="' . $questionType['image_path'] . '" />
+    </div>';
+    if ($imageName == 'S') {
         $questionType['detailpage'] = '
-        <div class="col-sm-12 currentImageContainer">
-            <img src="' . $questionType['image_path'] . '" />
-        </div>';
-        if ($imageName == 'S') {
-            $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
             <img src="' . Yii::app()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
             <img src="' . Yii::app()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
         </div>';
-        }
-        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
     }
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+}
 ?>
 <?php
-    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
-        'widgetsJsName' => "questionTypeSelector",
-        'renderType' => (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
-        'modalTitle' => "Select question type",
-        'groupTitleKey' => "questionGroupName",
-        'groupItemsKey' => "questionTypes",
-        'debugKeyCheck' => "Type: ",
-        'previewWindowTitle' => gT("Preview question type"),
-        'groupStructureArray' => $aQuestionTypeGroups,
-        'value' => $oQuestion->type,
-        'debug' => YII_DEBUG,
-        'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
-        'optionArray' => [
-            'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
-            'onUpdate' => [
-                'value',
-                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
-            ]
+$oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+    'widgetsJsName' => "questionTypeSelector",
+    'renderType' => (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
+    'modalTitle' => "Select question type",
+    'groupTitleKey' => "questionGroupName",
+    'groupItemsKey' => "questionTypes",
+    'debugKeyCheck' => "Type: ",
+    'previewWindowTitle' => gT("Preview question type"),
+    'groupStructureArray' => $aQuestionTypeGroups,
+    'value' => $oQuestion->type,
+    'debug' => YII_DEBUG,
+    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
+    'optionArray' => [
+        'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
+        'onUpdate' => [
+            'value',
+            "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
         ]
-    ));
+    ]
+));
 ?>
 <?= $oQuestionSelector->getModal(); ?>
 
@@ -94,14 +95,14 @@
     <!-- Page Title-->
     <div class="pagetitle h3">
         <?php
-            if ($adding) {
-                eT("Add a new question");
-            } elseif ($copying) {
-                eT("Copy question");
-            } else {
-                eT("Edit question");
-                echo ': <em>' . $oQuestion->title . '</em> (ID:' . $oQuestion->qid . ')';
-            }
+        if ($adding) {
+            eT("Add a new question");
+        } elseif ($copying) {
+            eT("Copy question");
+        } else {
+            eT("Edit question");
+            echo ': <em>' . $oQuestion->title . '</em> (ID:' . $oQuestion->qid . ')';
+        }
         ?>
     </div>
 
@@ -237,7 +238,7 @@
                                 <div class="form-group">
                                     <label id="selector---select-questiontype-label" class=" control-label" for="question_type_button">
                                         <?php
-                                            eT("Question type:");
+                                        eT("Question type:");
                                         ?>
                                     </label>
                                     <?php if (!$oSurvey->isActive) : ?>
@@ -276,17 +277,17 @@
                                     <p class="help-block collapse" id="help_question_template"><?php eT("Use a customized question theme for this question"); ?></p>
                                     <select id="question_template" name="question_template" class="form-control">
                                         <?php
-                                            foreach ($aQuestionTemplateList as $code => $value) {
-                                                if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])) {
-                                                    $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
-                                                    $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
-                                                }
-                                                if (YII_DEBUG) {
-                                                    echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, CHtml::encode($value['title']), $code);
-                                                } else {
-                                                    echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, CHtml::encode($value['title']));
-                                                }
+                                        foreach ($aQuestionTemplateList as $code => $value) {
+                                            if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])) {
+                                                $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
+                                                $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
                                             }
+                                            if (YII_DEBUG) {
+                                                echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, CHtml::encode($value['title']), $code);
+                                            } else {
+                                                echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, CHtml::encode($value['title']));
+                                            }
+                                        }
                                         ?>
                                     </select>
                                     <div class="help-block" id="QuestionTemplatePreview">
@@ -326,9 +327,9 @@
                                                 'uncheckValue' => 'N',
                                             ),
                                         ));
-                                            if ($oSurvey->isActive) {
-                                                echo CHtml::hiddenField('other', $oQuestion->other);
-                                            }
+                                        if ($oSurvey->isActive) {
+                                            echo CHtml::hiddenField('other', $oQuestion->other);
+                                        }
                                         ?>
                                     </div>
                                 </div>
@@ -343,15 +344,15 @@
                                     <div class="">
                                         <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
                                         <?php
-                                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                                                'name' => 'mandatory',
-                                                'value' => $oQuestion->mandatory,
-                                                'selectOptions' => array(
-                                                    "Y" => gT("Yes", 'unescaped'),
-                                                    "S" => gT("Soft", 'unescaped'),
-                                                    "N" => gT("No", 'unescaped')
-                                                )
-                                            ));
+                                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                            'name' => 'mandatory',
+                                            'value' => $oQuestion->mandatory,
+                                            'selectOptions' => array(
+                                                "Y" => gT("Yes", 'unescaped'),
+                                                "S" => gT("Soft", 'unescaped'),
+                                                "N" => gT("No", 'unescaped')
+                                            )
+                                        ));
                                         ?>
                                     </div>
                                 </div>

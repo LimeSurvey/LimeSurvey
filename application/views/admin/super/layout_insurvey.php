@@ -29,8 +29,8 @@ $this->_showHeaders($aData, false);
     . '>';
         //Rendered through /admin/super/sidemenu
         $this->_surveysidemenu($aData);
-        echo '<div id="pjax-content" '
-        . 'class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" '
+        echo '<div '
+        . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width" '
         . 'style="max-width:95%; overflow-x:hidden; overflow-y:visible" '
         // . 'v-bind:style="{\'max-width\': $store.getters.substractContainer, \'min-height\': $store.state.inSurveyViewHeight+\'px\'}"'
         . '>';

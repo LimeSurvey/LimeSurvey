@@ -1,83 +1,82 @@
 <?php
-    /**
-     * @var $aQuestionTypeList array
-     * @var $questionType      QuestionTheme
-     * @var $oQuestion         Question
-     * @var $jsData            array
-     * @var $selectedQuestion  array
-     * @var $oQuestionSelector PreviewModalWidget
-     * @var $this              AdminController
-     * TODO: move logic from the view to controller
-     */
+/**
+ * @var $aQuestionTypeList array
+ * @var $questionType      QuestionTheme
+ * @var $oQuestion         Question
+ * @var $jsData            array
+ * @var $selectedQuestion  array
+ * @var $oQuestionSelector PreviewModalWidget
+ * @var $this              AdminController
+ * TODO: move logic from the view to controller
+ */
 
-    $aQuestionTypeGroups = array();
+$aQuestionTypeGroups = array();
 
-    if (App()->session['questionselectormode'] !== 'default') {
-        $selectormodeclass = App()->session['questionselectormode'];
-    } else {
-        $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+if (App()->session['questionselectormode'] !== 'default') {
+    $selectormodeclass = App()->session['questionselectormode'];
+} else {
+    $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+}
+uasort($aQuestionTypeList, "questionTitleSort");
+foreach ($aQuestionTypeList as $questionType) {
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+    if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
+        $aQuestionTypeGroups[$htmlReadyGroup] = array(
+            'questionGroupName' => $questionType['group']
+        );
+    }
+        $imageName = $questionType['question_type'];
+    if ($imageName == ":") {
+        $imageName = "COLON";
+    } elseif ($imageName == "|") {
+        $imageName = "PIPE";
+    } elseif ($imageName == "*") {
+        $imageName = "EQUATION";
     }
 
-    foreach ($aQuestionTypeList as $questionType) {
-
-        $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
-        if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
-            $aQuestionTypeGroups[$htmlReadyGroup] = array(
-                'questionGroupName' => $questionType['group']
-            );
-        }
-        $imageName = $questionType['question_type'];
-        if ($imageName == ":") {
-            $imageName = "COLON";
-        } elseif ($imageName == "|") {
-            $imageName = "PIPE";
-        } elseif ($imageName == "*") {
-            $imageName = "EQUATION";
-        }
-
         $questionType['type'] = $questionType['question_type'];
-        $questionType['detailpage'] = '
+    $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
             <img src="' . $questionType['image_path'] . '" />
         </div>';
-        if ($imageName == 'S') {
-            $questionType['detailpage'] = '
+    if ($imageName == 'S') {
+        $questionType['detailpage'] = '
             <div class="col-sm-12 currentImageContainer">
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
-        }
-        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
     }
+        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+}
 
-    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
-        'widgetsJsName' => "questionTypeSelector",
-        'renderType' => (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
-        'modalTitle' => "Select question type",
-        'groupTitleKey' => "questionGroupName",
-        'groupItemsKey' => "questionTypes",
-        'debugKeyCheck' => "Type: ",
-        'previewWindowTitle' => gT("Preview question type"),
-        'groupStructureArray' => $aQuestionTypeGroups,
-        'value' => $oQuestion->type,
-        'debug' => YII_DEBUG,
-        'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
-        'buttonClasses' => ['btn-primary'],
-        'optionArray' => [
-            'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
-            'onUpdate' => [
-                'value',
-                'options',
-                "console.ls.log(value);"
-                . "$('#question_type').val(value);"
-                . "LS.EventBus.\$emit('questionTypeChanged', {"
-                . "target: 'lsnextquestioneditor',"
-                . "method: 'questionTypeChangeTriggered',"
-                . "content: {value: value, options: options}"
-                . "})"
-            ]
+$oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+    'widgetsJsName' => "questionTypeSelector",
+    'renderType' => (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
+    'modalTitle' => "Select question type",
+    'groupTitleKey' => "questionGroupName",
+    'groupItemsKey' => "questionTypes",
+    'debugKeyCheck' => "Type: ",
+    'previewWindowTitle' => gT("Preview question type"),
+    'groupStructureArray' => $aQuestionTypeGroups,
+    'value' => $oQuestion->type,
+    'debug' => YII_DEBUG,
+    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
+    'buttonClasses' => ['btn-primary'],
+    'optionArray' => [
+        'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
+        'onUpdate' => [
+            'value',
+            'options',
+            "console.ls.log(value);"
+            . "$('#question_type').val(value);"
+            . "LS.EventBus.\$emit('questionTypeChanged', {"
+            . "target: 'lsnextquestioneditor',"
+            . "method: 'questionTypeChangeTriggered',"
+            . "content: {value: value, options: options}"
+            . "})"
         ]
-    ));
+    ]
+));
 ?>
 <?= $oQuestionSelector->getModal(); ?>
 <?php $this->renderPartial("./survey/Question2/_jsVariables", ['data' => $jsData, 'oQuestionSelector' => $oQuestionSelector]); ?>
@@ -89,13 +88,13 @@
             array("admin/questionedit/update"),
             'post',
             array(
-                'class'=>'form30 ',
-                'id'=>'frmeditquestion',
-                'name'=>'frmeditquestion',
+                'class' => 'form30 ',
+                'id' => 'frmeditquestion',
+                'name' => 'frmeditquestion',
                 'data-isvuecomponent' => 1
-                )
-        );?>
-        <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor" />
+            )
+        ); ?>
+        <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor"/>
 
         <div id="advancedQuestionEditor">
             <app/>

@@ -22,7 +22,7 @@ class LsDefaultDataSets
             [1,null,8,'notification', gT('Notification and data management settings','unescaped'),gT('Notifications & data','unescaped'),gT('Edit settings for notification and data management','unescaped'),'feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',null,'_tabNotificationDataManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
             [1,null,9,'publication', gT('Publication & access control settings','unescaped'),gT('Publication & access','unescaped'),gT('Edit settings for publication and access control','unescaped'),'key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',null,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
             [2,null,1,'listQuestions',gT('List questions','unescaped'),gT('List questions','unescaped'),gT('List questions','unescaped'),'list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
-            [2,null,2,'listQuestionGroups',gT('List question groups','unescaped'),gT('List question groups','unescaped'),gT('List question groups','unescaped'),'th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
+            [2,null,2,'listQuestionGroups',gT('List survey pages','unescaped'),gT('List survey pages','unescaped'),gT('List survey pages','unescaped'),'th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
             [2,null,3,'responses',gT('Responses','unescaped'),gT('Responses','unescaped'),gT('Responses','unescaped'),'icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
             [2,null,4,'participants', gT('Survey participants','unescaped'),gT('Survey participants','unescaped'),gT('Go to survey participant and token settings','unescaped'),'user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
             [2,null,5,'statistics',gT('Statistics','unescaped'),gT('Statistics','unescaped'),gT('Statistics','unescaped'),'bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
@@ -413,8 +413,8 @@ class LsDefaultDataSets
             array(
                 'teid' => 5,
                 'ordering' => 5,
-                'title' => gT('Create a sample question and question group'),
-                'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create them."),
+                'title' => gT('Create a sample question and survey page'),
+                'content' => gT("We will be creating a survey page and a question in this tutorial. There is need to automatically create them."),
                 'settings' => json_encode(array(
                     'element' => '.bootstrap-switch-id-createsample',
                     'path' => ['/admin/survey/sa/newsurvey'],
@@ -513,7 +513,7 @@ class LsDefaultDataSets
                 'teid' => 12,
                 'ordering' => 12,
                 'title' => gT('The survey structure'),
-                'content' => gT('This is the structure view of your survey. Here you can see all your question groups and questions.'),
+                'content' => gT('This is the structure view of your survey. Here you can see all your survey pages and questions.'),
                 'settings' => json_encode(array(
                     'element' => '#adminsidepanel__sidebar--selectorStructureButton',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
@@ -527,10 +527,10 @@ class LsDefaultDataSets
             array(
                 'teid' => 13,
                 'ordering' => 13,
-                'title' => gT("Let's add a question group"),
+                'title' => gT("Let's add a survey page"),
                 'content' => gT("What good would your survey be without questions?").'<br/>'
-                .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions, we first need a question group.')
-                .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button").'</p>',
+                .gT('In LimeSurvey a survey is organized in survey pages and questions. To begin creating questions, we first need a survey page.')
+                .'<p class="alert bg-warning">'.gT("Click on the 'Add page' button").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
@@ -547,8 +547,8 @@ class LsDefaultDataSets
             array(
                 'teid' => 14,
                 'ordering' => 14,
-                'title' => gT('Enter a title for your first question group'),
-                'content' => gT('The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later).'),
+                'title' => gT('Enter a title for your first survey page'),
+                'content' => gT('The title of the survey page is visible to your survey participants (this setting can be changed later and it cannot be empty). survey pages are important because they allow the survey administrators to logically group the questions. By default, each survey page (including its questions) is shown on its own page (this setting can be changed later).'),
                 'settings' => json_encode(array(
                     'element' => '#group_name_en',
                     'delayOnElement' => "{
@@ -564,9 +564,9 @@ class LsDefaultDataSets
             array(
                 'teid' => 15,
                 'ordering' => 15,
-                'title' => gT('A description for your question group'),
+                'title' => gT('A description for your survey page'),
                 'content' => gT('This description is also visible to your participants.').'<br/>'
-                .gT('You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.'),
+                .gT('You do not need to add a description to your survey page, but sometimes it makes sense to add a little extra information for your participants.'),
                 'settings' => json_encode(array(
                     'element' => 'label[for=description_en]',
                     'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
@@ -591,7 +591,7 @@ class LsDefaultDataSets
                 'ordering' => 17,
                 'title' => gT('Save and add a new question'),
                 'content' => gT("Now when you are finished click on 'Save and add question'.").'<br/>'
-                .gT('This will directly add a question to the current question group.')
+                .gT('This will directly add a question to the current survey page.')
                 .'<p class="alert bg-warning">'.gT("Now click on 'Save and add question'.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#save-and-new-question-button',
@@ -1010,6 +1010,7 @@ class LsDefaultDataSets
             ['stg_name' => 'noViewMode', 'stg_value' => '0'],
             ['stg_name' => 'answeroptionprefix', 'stg_value' => 'AO'],
             ['stg_name' => 'subquestionprefix', 'stg_value' => 'SQ'],
+            ['stg_name' => 'lock_organizer', 'stg_value' => '0'],
         ];
     }
 

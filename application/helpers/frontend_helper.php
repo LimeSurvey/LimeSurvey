@@ -1285,7 +1285,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
     }
 
     if ($iTotalGroupsWithoutQuestions > 0) {
-        $sMessage = gT("There are empty question groups in this survey - please create at least one question within a question group.");
+        $sMessage = gT("There are empty survey pages in this survey - please create at least one question within a survey page.");
     }
 
     renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath);

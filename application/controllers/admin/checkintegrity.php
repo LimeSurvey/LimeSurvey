@@ -188,7 +188,7 @@ class CheckIntegrity extends Survey_Common_Action
             if($deleted) {
                 $count += $deleted;
             } else {
-                $aData['warnings'][] = sprintf(gT('Unable to delete question group %s'), $gid);
+                $aData['warnings'][] = sprintf(gT('Unable to delete survey page %s'), $gid);
             }
         }
         $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), $count);

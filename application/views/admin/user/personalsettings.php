@@ -1,48 +1,57 @@
 <?php
 /**
  * Personal settings edition
+ *
  * @var $currentPreselectedQuestiontype string
- * @var $oQuestionSelector PreviewModalWidget
+ * @var $oQuestionSelector              PreviewModalWidget
  */
 
-    $aQuestionTypeGroups = array();
+$aQuestionTypeGroups = array();
 
-    if (App()->session['questionselectormode'] !== 'default') {
-        $selectormodeclass = App()->session['questionselectormode'];
+if (App()->session['questionselectormode'] !== 'default') {
+    $selectormodeclass = App()->session['questionselectormode'];
+} else {
+    $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+}
+uasort($aQuestionTypeList, "questionTitleSort");
+foreach ($aQuestionTypeList as $questionType) {
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+    if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
+        $aQuestionTypeGroups[$htmlReadyGroup] = array(
+            'questionGroupName' => $questionType['group']
+        );
+    }
+    $imageName = $questionType['question_type'];
+    if ($imageName == ":") {
+        $imageName = "COLON";
     } else {
-        $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+        if ($imageName == "|") {
+            $imageName = "PIPE";
+        } else {
+            if ($imageName == "*") {
+                $imageName = "EQUATION";
+            }
+        }
     }
 
-    foreach ($aQuestionTypeList as $questionType) {
-        $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
-        if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
-            $aQuestionTypeGroups[$htmlReadyGroup] = array(
-                'questionGroupName' => $questionType['group']
-            );
-        }
-            $imageName = $questionType['question_type'];
-            if ($imageName == ":") $imageName = "COLON";
-            else if ($imageName == "|") $imageName = "PIPE";
-            else if ($imageName == "*") $imageName = "EQUATION";
-
-        $questionType['type'] = $questionType['question_type'];
-        $questionType['detailpage'] = '
+    $questionType['type'] = $questionType['question_type'];
+    $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
             <img src="' . $questionType['image_path'] . '" />
         </div>';
-        if ($imageName == 'S') {
-            $questionType['detailpage'] = '
+    if ($imageName == 'S') {
+        $questionType['detailpage'] = '
             <div class="col-sm-12 currentImageContainer">
-                <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
-                <img src="'.App()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
+                <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
+                <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
-        }
-        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
     }
-
-    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+}
+$currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+$oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
     'widgetsJsName' => "preselectquestiontype",
-    'renderType' =>  "group-simple",
+    'renderType' => "group-simple",
     'modalTitle' => "Select question type",
     'groupTitleKey' => "questionGroupName",
     'groupItemsKey' => "questionTypes",
@@ -58,7 +67,7 @@
     ]
 ));
 
-echo $oQuestionSelector->getModal();                        
+echo $oQuestionSelector->getModal();
 ?>
 
 <div class="container">
@@ -324,6 +333,18 @@ echo $oQuestionSelector->getModal();
                                             )
                                         );
                                     ?>
+                                </div>
+                            </div>
+                            <!-- Lock questionorganizer in sidebar -->
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                <?php echo TbHtml::label( gT("Lock question organizer in sidebar by default:"), 'lock_organizer', array('class'=>" control-label")); ?>
+                                    <?php
+                                     echo TbHtml::dropDownList('lock_organizer', ($aUserSettings['lock_organizer'] ?? '0'), array(
+                                         '0' => gT("No",'unescaped'),
+                                         '1' => gT("Yes",'unescaped'),
+                                     ), array('class'=>"form-control"));
+                                 ?>
                                 </div>
                             </div>
                         </div>

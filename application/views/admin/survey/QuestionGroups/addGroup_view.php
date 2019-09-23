@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 
 <?php echo PrepareEditorScript(false, $this); $active = 1;?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="pagetitle h3"><?php eT("Add question group"); ?></div>
+    <div class="pagetitle h3"><?php eT("Add survey page"); ?></div>
     <div class="row">
 
         <!-- Tabs -->
@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 
                         <!-- Save question group -->
                         <p>
-                            <input type='submit' class="hidden" value='<?php eT("Save question group"); ?>' />
+                            <input type='submit' class="hidden" value='<?php eT("Save survey page"); ?>' />
                         </p>
                     </div>
                 <?php endforeach; ?>

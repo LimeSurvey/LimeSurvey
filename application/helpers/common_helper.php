@@ -1993,6 +1993,12 @@ function categorySort($a, $b)
     return $result;
 }
 
+function questionTitleSort($a, $b)
+{
+    $result = strnatcasecmp($a['description'], $b['description']);
+    return $result;
+}
+
 /**
 * make a string safe to include in an HTML 'value' attribute.
 * @deprecated If you need this you are doing something wrong. Use CHTML functions instead.

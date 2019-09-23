@@ -1265,6 +1265,7 @@ case Question::QT_G_GENDER_DROPDOWN:
             // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
             $server_is_newer = version_compare(PHP_VERSION, '5.1.0', '>');
             $rounds = 0;
+            Template::getInstance($oSurvey->template);
             return Yii::app()->twigRenderer->renderTemplateFromFile('layout_print.twig', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], $bReturn);
             // die(print_r(['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], true));
             // echo self::_populate_template($oTemplate, 'survey', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray]);

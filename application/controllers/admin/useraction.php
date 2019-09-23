@@ -687,6 +687,7 @@ class UserAction extends Survey_Common_Action
                 SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
                 SettingsUser::setUserSetting('answeroptionprefix', Yii::app()->request->getPost('answeroptionprefix'));
                 SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
+                SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -747,6 +748,18 @@ class UserAction extends Survey_Common_Action
         } else {
             $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
         }
+    }
+
+    public function togglesetting($surveyid=0) 
+    {
+        $setting  = Yii::app()->request->getPost('setting');
+        $newValue = Yii::app()->request->getPost('newValue');
+
+        $result = SettingsUser::setUserSetting($setting, $newValue);
+
+        $this->renderJSON([
+            "result" => SettingsUser::getUserSettingValue($setting)
+        ]);
     }
 
     /**

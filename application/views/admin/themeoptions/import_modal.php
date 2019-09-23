@@ -13,7 +13,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div class="modal-title h4">
-                        <?php eT("Upload template file") ?>
+                        <?php eT("Upload theme file") ?>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -24,7 +24,7 @@
                     <?php endif; ?>
                     <div class="form-group">
                         <label for='the_file'>
-                            <?php eT("Select template ZIP file:") ?>
+                            <?php eT("Select theme ZIP file:") ?>
                         </label>
                         <input id='the_file' name='the_file' type="file" accept='.zip' />
                         <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>

@@ -446,7 +446,7 @@ class Survey_Common_Action extends CAction
                 ));
                 $not->save();
             }
-            if (strtolower(getGlobalSetting('force_ssl')!='on') && Yii::app()->getConfig("debug") < 2) {
+            if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
@@ -1132,7 +1132,7 @@ class Survey_Common_Action extends CAction
         if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add survey pages")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";
@@ -1301,6 +1301,27 @@ class Survey_Common_Action extends CAction
         }
 
         return $extraMenus;
+    }
+
+    /**
+     * Method to render an array as a json document
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData, $success=true)
+    {
+        
+        $aData['success'] = $aData['success'] ?? $success;
+
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => $aData
+        ], true, false);
+        return;
     }
 
 }

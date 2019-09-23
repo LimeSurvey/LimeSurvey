@@ -39,7 +39,7 @@ $aReplacementData=array();
                     <div class="btn-group">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="icon-do"></span>
-                        <?php eT("Preview question group"); ?> <span class="caret"></span>
+                        <?php eT("Preview survey page"); ?> <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" style="min-width : 252px;">
                           <?php foreach ($languagelist as $tmp_lang): ?>
@@ -86,7 +86,7 @@ $aReplacementData=array();
                     <!-- preview question group -->
                     <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
                         <span class="icon-do"></span>
-                        <?php eT("Preview question group");?>
+                        <?php eT("Preview survey page");?>
                     </a>
                     <!-- preview question -->
                     <a class="btn btn-default" href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>' role="button" target="_blank">

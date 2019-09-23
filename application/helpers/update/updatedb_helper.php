@@ -2906,8 +2906,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-
         if($iOldDBVersion < 420) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                "{{surveymenuentries}}",
+                [
+                    'name' =>  "listSurveyPages",
+                    'title' =>  gT('List survey pages','unescaped'),
+                    'menu_title' =>  gT('List survey pages','unescaped'),
+                    'menu_description' =>  gT('List survey pages','unescaped'),
+                ],
+                'name="listQuestionGroups"'
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 421) {
             $oTransaction = $oDB->beginTransaction();
             // question_themes
             $oDB->createCommand()->createTable('{{question_themes}}', [
@@ -2938,7 +2954,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ], $options);
 
             $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
-            
+
             $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
             switchMSSQLIdentityInsert('question_themes', true);
             foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
@@ -2946,7 +2962,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             switchMSSQLIdentityInsert('question_themes', false);
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>421),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
