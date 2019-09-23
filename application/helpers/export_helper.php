@@ -2025,7 +2025,9 @@ function tokensExport($iSurveyID)
 
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
-
+    $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
+    $attrfieldnames = getAttributeFieldNames($iSurveyID);
+    
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
@@ -2042,7 +2044,6 @@ function tokensExport($iSurveyID)
         $oRecordSet->andWhere("lt.completed='N'");
         if ($bIsNotAnonymous) {
             $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
-            $oRecordSet->andWhere("ls.id IS NULL");
             $oRecordSet->select("lt.*, ls.id");
         }
     }
@@ -2053,12 +2054,20 @@ function tokensExport($iSurveyID)
         $oRecordSet->select("lt.*, ls.id");
     }
     if ($iTokenStatus == 4 && $bIsNotAnonymous) {
-        $oRecordSet->selectDistinct('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil, MAX(ls.startdate) as started');
+        // create comma-separated string from attribute names to be used in this sql query
+        if (!empty($attrfieldnames)){
+            $sAttributes = ', ' . implode(', ', $attrfieldnames);
+        } else {
+            $sAttributes = '';
+        }
+        $oRecordSet->selectDistinct('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil' . $sAttributes . ($bIsDateStamped ? ', MAX(ls.startdate) as started' : ''));
         $oRecordSet->join("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
         $oRecordSet->andWhere("ls.submitdate IS NULL");
-        $oRecordSet->andWhere("ls.startdate IS NOT NULL");
         $oRecordSet->andWhere("lt.completed='N'");
-        $oRecordSet->group('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil');
+        if ($bIsDateStamped){
+            $oRecordSet->andWhere("ls.startdate IS NOT NULL");
+            $oRecordSet->group('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil, ' . $sAttributes);
+        }
     }
 
     if ($iInvitationStatus == 1) {
@@ -2088,10 +2097,9 @@ function tokensExport($iSurveyID)
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
     $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
-    if ($iTokenStatus == 4 && $bIsNotAnonymous) {
+    if ($iTokenStatus == 4 && $bIsNotAnonymous && $bIsDateStamped) {
         $tokenoutput .= ',started';
     }
-    $attrfieldnames = getAttributeFieldNames($iSurveyID);
     $attrfielddescr = getTokenFieldsAndNames($iSurveyID, true);
     foreach ($attrfieldnames as $attr_name) {
         $tokenoutput .= ", $attr_name";
@@ -2133,7 +2141,7 @@ function tokensExport($iSurveyID)
         $tokenoutput .= '"'.trim($brow['remindercount']).'",';
         $tokenoutput .= '"'.trim($brow['completed']).'",';
         $tokenoutput .= '"'.trim($brow['usesleft']).'",';
-        if ($iTokenStatus == 4 && $bIsNotAnonymous) {
+        if ($iTokenStatus == 4 && $bIsNotAnonymous && $bIsDateStamped) {
             $tokenoutput .= '"'.trim($brow['started']).'",';
         }
         foreach ($attrfieldnames as $attr_name) {
