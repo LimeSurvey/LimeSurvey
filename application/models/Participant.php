@@ -513,6 +513,7 @@ class Participant extends LSActiveRecord
                 ->from('{{participant_attribute}} AS pa')
                 ->where('attribute_id='.$bindKey, array($bindKey => $attributeId));
             // NB: Binding in andWhere() is not enough since the subquery is converted to string.
+            // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
             $criteria->params[$bindKey] = $attributeId;
 
             // Use "LIKE" for text-box, equal for other types
