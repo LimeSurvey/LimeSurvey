@@ -503,20 +503,27 @@ class Participant extends LSActiveRecord
 
         // Include a query for each extra attribute to filter
         foreach ($extraAttributeValues as $attributeId => $value) {
-
             $attributeType = $this->allExtraAttributes[$attributeId]['attribute_type'];
             $attributeId = (int) substr($attributeId, 3);
 
+            /** @var string Param name to bind in prepared statement */
+            $bindKey = ':attribute_id' . $attributeId;
             $callParticipantAttributes = Yii::app()->db->createCommand()
                 ->selectDistinct('pa.participant_id')
-                ->from('{{participant_attribute_values}} AS pa')
-                ->where('attribute_id=:attribute_id', array('attribute_id' => $attributeId));
+                ->from('{{participant_attribute}} AS pa')
+                ->where('attribute_id='.$bindKey, array($bindKey => $attributeId));
+            // NB: Binding in andWhere() is not enough since the subquery is converted to string.
+            $criteria->params[$bindKey] = $attributeId;
 
             // Use "LIKE" for text-box, equal for other types
             if ($attributeType == 'TB') {
                 $callParticipantAttributes->andWhere('like', 'value', '%' . $value . '%');
             } else {
-                $callParticipantAttributes->andWhere('=', 'value', $value);
+                /** @var string Param name to bind in prepared statement */
+                $bindKey = ':value' . $attributeId;
+                $callParticipantAttributes->andWhere('value = ' . $bindKey, array($bindKey => $value));
+                // NB: Binding in andWhere() is not enough since the subquery is converted to string.
+                $criteria->params[$bindKey] = $value;
             }
 
             $criteria->addCondition('t.participant_id IN ('.$callParticipantAttributes->getText().')');
