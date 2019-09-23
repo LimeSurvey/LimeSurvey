@@ -21,7 +21,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>2.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ]]></description>
+        <description><![CDATA[<strong>{{gT("LimeSurvey Bootwatch Theme")}}</strong><br>{{gT("Based on BootsWatch Themes:")}} <a href='https://bootswatch.com/3/'>{{gT("Visit BootsWatch page")}}</a> ]]></description>
         <last_update>2017-11-29 19:28:00</last_update>
         <extends>vanilla</extends>
     </metadata>
@@ -285,7 +285,7 @@
                 <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>
                 <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
               </assessments>
-            </default_data>      
+            </default_data>
         </template_editor>
     </engine>
 

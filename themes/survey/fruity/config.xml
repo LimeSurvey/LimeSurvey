@@ -20,7 +20,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.]]></description>
+        <description  twig="on"><![CDATA[<strong>{{gT("LimeSurvey Fruity Theme")}}</strong><br>{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
         <last_update>2018-06-12 16:26:42</last_update>
         <extends>vanilla</extends>
     </metadata>
@@ -42,7 +42,7 @@
               'force_xmlsettings_for_survey_rendering' => true,
 
               Then, you will not need anymore to reset your theme each time you change the config file.
-              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB 
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB
     -->
     <files>
         <css>
