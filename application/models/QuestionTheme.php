@@ -19,13 +19,12 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string  $copyright
  * @property string  $license
  * @property string  $version
- * @property string  $view_folder
- * @property string  $files_folder
  * @property string  $description
  * @property string  $last_update
  * @property integer $owner_id
  * @property string  $theme_type
- * @property string  $type
+ * @property string  $question_type
+ * @property integer $core_theme
  * @property string  $extends
  * @property string  $group
  * @property array   $settings
@@ -112,7 +111,7 @@ class QuestionTheme extends LSActiveRecord
                 $questionsMetaData = self::getAllQuestionMetaData();
                 foreach ($questionsMetaData as $questionMetaData) {
                     // test xml for required metaData
-                    $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
+                    $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'question_type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
                     foreach ($requiredMetaDataArray as $requiredMetaData) {
                         if (!array_key_exists($requiredMetaData, $questionMetaData)) {
                             $missingQuestionThemeAttributes[$questionMetaData['xml_path']][] = $requiredMetaData;
@@ -259,10 +258,10 @@ class QuestionTheme extends LSActiveRecord
         /** @var QuestionTheme */
         $questionTheme = QuestionTheme::model()
             ->find(
-                '(name = :name AND extends = :extends) OR (extends = :extends AND type = :type)',
+                '(name = :name AND extends = :extends) OR (extends = :extends AND question_type = :question_type)',
                 [
                     ':name' => $questionMetaData['name'],
-                    ':type' => $questionMetaData['type'],
+                    ':question_type' => $questionMetaData['questionType'],
                     ':extends' => $questionMetaData['extends']
                 ]
             );
@@ -289,26 +288,33 @@ class QuestionTheme extends LSActiveRecord
         $questionsMetaData = $this->getAllQuestionMetaData();
         $questionsInDB = $this->findAll();
 
-        foreach ($questionsInDB as $questionInDB) {
-            if (array_key_exists($questionKey = $questionInDB->name . '_' . $questionInDB->type, $questionsMetaData)) {
-                unset($questionsMetaData[$questionKey]);
+        if (!empty($questionsInDB)) {
+            foreach ($questionsInDB as $questionInDB) {
+                if (array_key_exists($questionKey = $questionInDB->name . '_' . $questionInDB->question_type, $questionsMetaData)) {
+                    unset($questionsMetaData[$questionKey]);
+                }
             }
         }
-        array_values($questionsMetaData);
-        foreach ($questionsMetaData as $questionMetaData) {
-            // TODO: replace by manifest
-            $questionTheme = new QuestionTheme();
+        if (!empty($questionsMetaData)) {
+            array_values($questionsMetaData);
+            foreach ($questionsMetaData as $questionMetaData) {
+                // TODO: replace by manifest
+                $questionTheme = new QuestionTheme();
 
-            $metaDataArray = $this->getMetaDataArray($questionMetaData);
-            $questionTheme->setAttributes($metaDataArray, false);
-            $questionThemes[] = $questionTheme;
+                $metaDataArray = $this->getMetaDataArray($questionMetaData);
+                $questionTheme->setAttributes($metaDataArray, false);
+                $questionThemes[] = $questionTheme;
+            }
         }
 
         return $questionThemes;
     }
 
     /**
+     * Returns an Array of all questionthemes and their metadata
+     *
      * @return array
+     * @throws Exception
      */
     public function getAllQuestionMetaData()
     {
@@ -319,7 +325,7 @@ class QuestionTheme extends LSActiveRecord
             foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
                 foreach ($questionConfigFilePaths as $questionConfigFilePath) {
                     $questionMetaData = self::getQuestionMetaData($questionConfigFilePath, $questionDirectories);
-                    $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['type']] = $questionMetaData;
+                    $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['questionType']] = $questionMetaData;
                 }
             }
         }
@@ -374,22 +380,22 @@ class QuestionTheme extends LSActiveRecord
 
         // override MetaData depending on directory
         if (substr($pathToXML, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
-            $questionMetaData['themeType'] = 'Core theme';
+            $questionMetaData['coreTheme'] = 1;
             $questionMetaData['extends'] = '';
-            $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['type']);
+            $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
-            $questionMetaData['themeType'] = 'Core theme';
-            $questionMetaData['extends'] = $questionMetaData['type'];
+            $questionMetaData['coreTheme'] = 1;
+            $questionMetaData['extends'] = $questionMetaData['questionType'];
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
-            $questionMetaData['themeType'] = 'User theme';
-            $questionMetaData['extends'] = $questionMetaData['type'];
+            $questionMetaData['coreTheme'] = 0;
+            $questionMetaData['extends'] = $questionMetaData['questionType'];
         }
 
         // get Default Image if undefined
         if (empty($questionMetaData['image_path']) || !file_exists(App()->getConfig('rootdir') . $questionMetaData['image_path'])) {
-            $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['type']);
+            $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
 
         libxml_disable_entity_loader($bOldEntityLoaderState);
@@ -462,9 +468,9 @@ class QuestionTheme extends LSActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->condition = 'extends = :extends';
-        $criteria->addCondition('type = :type', 'AND');
+        $criteria->addCondition('question_type = :question_type', 'AND');
         $criteria->addCondition('visible = :visible', 'AND');
-        $criteria->params = [':extends' => '', ':type' => $question_type, ':visible' => 'Y'];
+        $criteria->params = [':extends' => '', ':question_type' => $question_type, ':visible' => 'Y'];
 
         $baseQuestion = self::model()->query($criteria, false, false);
 
@@ -563,8 +569,9 @@ class QuestionTheme extends LSActiveRecord
             'description' => $questionMetaData['description'],
             'last_update' => date('Y-m-d H:i:s'), //todo
             'owner_id' => 1, //todo
-            'theme_type' => $questionMetaData['themeType'],
-            'type' => $questionMetaData['type'],
+            'theme_type' => $questionMetaData['type'],
+            'question_type' => $questionMetaData['questionType'],
+            'core_theme' => $questionMetaData['coreTheme'],
             'extends' => $questionMetaData['extends'],
             'group' => $questionMetaData['group'] ?? '',
             'settings' => $questionMetaData['settings'] ?? ''
@@ -575,7 +582,7 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Return the question Theme preview URL
      *
-     * @param $sType : type pof question
+     * @param $sType : type of question
      *
      * @return string : question theme preview URL
      */
@@ -609,14 +616,14 @@ class QuestionTheme extends LSActiveRecord
         // cache the value between function calls
         static $cacheMemo = [];
         $cacheKey = $name . '_' . $type;
-        if (isset($cacheMemo[$cacheKey])){
+        if (isset($cacheMemo[$cacheKey])) {
             return $cacheMemo[$cacheKey];
         }
 
         if ($name == 'core') {
-            $questionTheme = self::model()->findByAttributes([], 'type=:type AND extends=:extends', ['type' => $type, 'extends' => '']);
+            $questionTheme = self::model()->findByAttributes([], 'question_type=:question_type AND extends=:extends', ['question_type' => $type, 'extends' => '']);
         } else {
-            $questionTheme = self::model()->findByAttributes([], 'name=:name AND type=:type', ['name' => $name, 'type' => $type]);
+            $questionTheme = self::model()->findByAttributes([], 'name=:name AND question_type=:question_type', ['name' => $name, 'question_type' => $type]);
         }
 
         $answerColumnDefinition = '';

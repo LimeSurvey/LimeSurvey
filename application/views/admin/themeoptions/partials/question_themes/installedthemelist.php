@@ -61,9 +61,9 @@
                     ),
 
                     array(
-                        'header' => gT('Theme Type'),
-                        'name' => 'theme_type',
-                        'value' => '$data->theme_type',
+                        'header' => gT('Type'),
+                        'name' => 'core_theme',
+                        'value' => '($data->core_theme == 1) ? gT("Core Theme") : gT("User theme")',
                         'type' => 'raw',
                         'htmlOptions' => array('class' => 'col-md-2'),
                     ),
