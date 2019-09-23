@@ -88,39 +88,93 @@ class TemplateManifest extends TemplateConfiguration
      * Returns the complete list of screens, with layout and contents. Used from Twig Command line
      * @return array the list of screens, layouts, contents
      */
-    public function getScreenListWithLayoutAndContent()
+    public function getScreensDetails()
     {
       $aContent = array();
 
-      $oFilesFromXML = $this->templateEditor->xpath('//screens');
-      foreach ($oFilesFromXML[0] as $sScreen => $oScreen){
+      $oScreensFromXML = $this->templateEditor->xpath('//screens');
+      foreach ($oScreensFromXML[0] as $sScreen => $oScreen){
 
         // We reset LayoutName and FileName at each loop to avoid errors
         $sLayoutName = "";
         $sFileName = "";
+        $sTitle = "";
 
-        foreach ($oScreen as $sKey => $oFile){
+        foreach ($oScreen as $sKey => $oField){
 
-            if ($oFile->attributes()->role == "layout") {
-              $sLayoutName  = (string) $oFile;
+            if ($oField->attributes()->role == "layout") {
+              $sLayoutName  = (string) $oField;
             }
 
-            if ($oFile->attributes()->role == "content") {
-              $sFile  = (string) $oFile;
+            if ($oField->attributes()->role == "content") {
+              $sFile  = (string) $oField;
 
               // From command line, we need to remove the full path for content. It's inside the layout. This could be an option
               $aFile     = explode("/", $sFile);
               $aFileName = explode(".", end($aFile));
-              $sFileName = $aFileName[0];
+              $sContent = $aFileName[0];
             }
+
+            if ($oField->attributes()->role == "title") {
+              $sTitle  = (string) $oField;
+
+              if ($oField->attributes()->twig == "on") {
+                $sTitle = Yii::app()->twigRenderer->convertTwigToHtml($sTitle);
+              }
+            }
+
         }
 
         if (!empty ($sLayoutName)){
-          $aContent[$sScreen][$sLayoutName] = $sFileName;
+          $aContent[$sScreen]['title'] = $sTitle;
+          $aContent[$sScreen]['layouts'][$sLayoutName] = $sContent;
         }
       }
 
       return $aContent;
+    }
+
+    public function getScreensList()
+    {
+      $aScreenList = $this->getScreensDetails();
+      $aScreens = array();
+
+      foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
+        $aScreens[$sScreenName] = $aTitleAndLayouts['title'];
+      }
+
+      // We check there is at least one screen title in the array. Else, the theme manifest is outdated, so we use the default values
+      $bEmptyTitles = true;
+      foreach($aScreens as $sScreenName => $sTitle){
+        if (!empty($sTitle)){
+          $bEmptyTitles = false;
+          break;
+        }
+      }
+
+      if ($bEmptyTitles){
+          if(YII_DEBUG){
+            Yii::app()->setFlashMessage("Your theme does not implement screen definition in XML. Using the default ones <br> this message will not appear when debug mode is off", 'error');
+          }
+
+          $aScreens['welcome']         = gT('Welcome', 'unescaped');
+          $aScreens['question']        = gT('Question', 'unescaped');
+          $aScreens['completed']       = gT('Completed', 'unescaped');
+          $aScreens['clearall']        = gT('Clear all', 'unescaped');
+          $aScreens['load']            = gT('Load', 'unescaped');
+          $aScreens['save']            = gT('Save', 'unescaped');
+          $aScreens['surveylist']      = gT('Survey list', 'unescaped');
+          $aScreens['error']           = gT('Error', 'unescaped');
+          $aScreens['assessments']     = gT('Assessments', 'unescaped');
+          $aScreens['register']        = gT('Registration', 'unescaped');
+          $aScreens['printanswers']    = gT('Print answers', 'unescaped');
+          $aScreens['pdf']             = gT('PDF', 'unescaped');
+          $aScreens['navigation']      = gT('Navigation', 'unescaped');
+          $aScreens['misc']            = gT('Miscellaneous files', 'unescaped');
+      }
+
+      return $aScreens;
+
     }
 
     /**
@@ -188,8 +242,9 @@ class TemplateManifest extends TemplateConfiguration
     {
 
       $oDataFromXML = $this->templateEditor->default_data->xpath('//'.$sXpath);
+      $oDataFromXML = end($oDataFromXML);
 
-      foreach($oDataFromXML[0] as $sKey => $oData){
+      foreach( $oDataFromXML as $sKey => $oData){
 
         if (!empty($sKey)){
 

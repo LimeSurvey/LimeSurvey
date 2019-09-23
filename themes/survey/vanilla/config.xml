@@ -105,6 +105,7 @@
         <template_editor>
             <screens>
                 <question>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Question')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
@@ -127,6 +128,7 @@
                 </question>
 
                 <surveylist>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Survey list')}} ]]></screen_title>
                     <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -139,6 +141,7 @@
                 </surveylist>
 
                 <welcome>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Welcome')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -162,6 +165,7 @@
                 </welcome>
 
                 <completed>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Completed')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -174,6 +178,7 @@
                 </completed>
 
                 <assessments>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Assessments')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -187,11 +192,13 @@
                 </assessments>
 
                 <error>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Error')}} ]]></screen_title>
                     <file type="view" role="layout">layout_errors.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                 </error>
 
                 <clearall>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Clear all')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -204,6 +211,7 @@
                 </clearall>
 
                 <load>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Load')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -216,6 +224,7 @@
                 </load>
 
                 <save>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Save')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -228,6 +237,7 @@
                 </save>
 
                 <register>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Registration')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/register.twig</file>
@@ -240,6 +250,7 @@
                 </register>
 
                 <printanswers>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Print answers')}} ]]></screen_title>
                     <file type="view" role="layout">layout_printanswers.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/printanswers.twig</file>
@@ -250,10 +261,12 @@
                 </printanswers>
 
                 <pdf>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('PDF')}} ]]></screen_title>
                     <file type="view" role="layout">layout_print.twig</file>
                 </pdf>
 
                 <navigation>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Navigation')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>

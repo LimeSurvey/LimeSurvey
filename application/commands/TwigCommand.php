@@ -36,13 +36,14 @@ class TwigCommand extends CConsoleCommand  {
         $thissurvey = $oTemplateForPreview->getDefaultDataForRendering();
         $thissurvey['templatedir'] = $templatename;
 
-        $aScreenList = $oTemplateForPreview->getScreenListWithLayoutAndContent();
+        $aScreenList = $oTemplateForPreview->getScreensDetails();
 
-        foreach($aScreenList as $sScreenName => $aLayoutAndContent){
-          foreach($aLayoutAndContent as $sLayout => $sContent){
+        foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
+          foreach($aTitleAndLayouts['layouts'] as $sLayout => $sContent){
             $aLogs[$templatename][$sScreenName][$sLayout] =  $sContent;
             $sLayoutFile  = $sLayout ;
             $thissurvey['include_content'] = $sContent;
+
 
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
                   $sLayoutFile,
@@ -57,6 +58,6 @@ class TwigCommand extends CConsoleCommand  {
       }
 
       // Here you can var dump the logs, it will not conflict with header generation
-    //  var_dump($aLogs);
+      //var_dump($aLogs);  
     }
 }

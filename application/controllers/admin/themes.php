@@ -940,23 +940,7 @@ class themes extends Survey_Common_Action
 
 
         // Standard screens
-        // Only these may be viewed
-        $screens = array();
-
-        $screens['welcome']         = gT('Welcome', 'unescaped'); // first  page*
-        $screens['question']        = gT('Question', 'unescaped'); // main
-        $screens['completed']       = gT('Completed', 'unescaped'); // submit?
-        $screens['clearall']        = gT('Clear all', 'unescaped');
-        $screens['load']            = gT('Load', 'unescaped');
-        $screens['save']            = gT('Save', 'unescaped');
-        $screens['surveylist']      = gT('Survey list', 'unescaped');
-        $screens['error']           = gT('Error', 'unescaped');
-        $screens['assessments']     = gT('Assessments', 'unescaped');
-        $screens['register']        = gT('Registration', 'unescaped');
-        $screens['printanswers']    = gT('Print answers', 'unescaped');
-        $screens['pdf']             = gT('PDF', 'unescaped');
-        $screens['navigation']      = gT('Navigation', 'unescaped');
-        //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
+        $screens = $oEditedTemplate->getScreensList();
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
@@ -992,14 +976,7 @@ class themes extends Survey_Common_Action
         // NB: Used by answer print PDF layout.
         $print = [];
 
-        $thissurvey = $oEditedTemplate->getDefaultDataForRendering();
-
-
-
-  //      $thissurvey['templatedir'] = $templatename;
-
-
-
+        $thissurvey  = $oEditedTemplate->getDefaultDataForRendering();
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
 
