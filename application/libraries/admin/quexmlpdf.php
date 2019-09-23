@@ -3808,10 +3808,13 @@ class quexmlpdf extends pdf
             $this->SetFooterMargin(0);
 
             $oTemplate = Template::model()->getInstance();
-            $sLogoFileName = $oTemplate->filesPath.Yii::app()->getConfig('pdflogofile');
+            $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
             if (file_exists($sLogoFileName)) {
-                $sLogo = "@" . file_get_contents($sLogoFileName);
-                $this->Image($sLogo, 15, 5, 0, 7);
+                $result = LSYii_ImageValidator::validateImage($sLogoFileName);
+                if (isset($result['check']) && $result['check'] == true) {
+                    $sLogo = "@" . file_get_contents($sLogoFileName);
+                    $this->Image($sLogo, 15, 5, 0, 7);
+                }
             }
 
             //Shortcuts to make the code (a bit) nicer
