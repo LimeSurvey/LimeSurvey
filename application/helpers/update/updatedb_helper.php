@@ -2909,14 +2909,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if($iOldDBVersion < 420) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update(
-                "{{surveymenuentries}}",
+                "{{surveymenu_entries}}",
                 [
                     'name' =>  "listSurveyPages",
                     'title' =>  gT('List survey pages','unescaped'),
                     'menu_title' =>  gT('List survey pages','unescaped'),
                     'menu_description' =>  gT('List survey pages','unescaped'),
                 ],
-                'name="listQuestionGroups"'
+                'name=\'listQuestionGroups\''
             );
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
