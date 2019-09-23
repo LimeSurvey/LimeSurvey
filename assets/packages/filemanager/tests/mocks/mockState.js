@@ -1,0 +1,15 @@
+
+
+import mockFolderList from '../mocks/folderList.json';
+import mockFileList from '../mocks/fileList.json';
+
+export default {
+    currentFolder : 'generalfiles',
+    currentSurveyId: null,
+    folderList: mockFolderList,
+    fileList: mockFileList,
+    debug: false,
+    fileInTransit: null,
+    transitType: null,
+    fileRepresentation: 'tablerep'
+}
