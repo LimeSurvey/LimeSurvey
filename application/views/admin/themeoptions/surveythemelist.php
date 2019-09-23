@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-sm-12 content-right">
-        
+
         <?php $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $oSurveyTheme->searchGrid(),
             'filter'        => $oSurveyTheme,
@@ -15,7 +15,7 @@
                     Yii::app()->params['pageSizeOptions'],
                     array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
                 )
-            ),            
+            ),
             'columns' => array(
                 array(
                     'header' => gT('Preview'),
@@ -36,7 +36,8 @@
                 array(
                     'header' => gT('Description'),
                     'name' => 'template_description',
-                    'value'=>'$data->template->description',
+                    //'value'=>'$data->template->description',
+                    'value'=>'$data->description',
                     'htmlOptions' => array('class' => 'col-md-3'),
                     'type'=>'raw',
                 ),
