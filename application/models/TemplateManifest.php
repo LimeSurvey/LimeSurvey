@@ -88,39 +88,99 @@ class TemplateManifest extends TemplateConfiguration
      * Returns the complete list of screens, with layout and contents. Used from Twig Command line
      * @return array the list of screens, layouts, contents
      */
-    public function getScreenListWithLayoutAndContent()
+    public function getScreensDetails()
     {
       $aContent = array();
 
-      $oFilesFromXML = $this->templateEditor->xpath('//screens');
-      foreach ($oFilesFromXML[0] as $sScreen => $oScreen){
+      $oScreensFromXML = $this->templateEditor->xpath('//screens');
+      foreach ($oScreensFromXML[0] as $sScreen => $oScreen){
 
         // We reset LayoutName and FileName at each loop to avoid errors
         $sLayoutName = "";
         $sFileName = "";
+        $sTitle = "";
 
-        foreach ($oScreen as $sKey => $oFile){
+        foreach ($oScreen as $sKey => $oField){
 
-            if ($oFile->attributes()->role == "layout") {
-              $sLayoutName  = (string) $oFile;
+            if ($oField->attributes()->role == "layout") {
+              $sLayoutName  = (string) $oField;
             }
 
-            if ($oFile->attributes()->role == "content") {
-              $sFile  = (string) $oFile;
+            if ($oField->attributes()->role == "content") {
+              $sFile  = (string) $oField;
 
               // From command line, we need to remove the full path for content. It's inside the layout. This could be an option
               $aFile     = explode("/", $sFile);
               $aFileName = explode(".", end($aFile));
-              $sFileName = $aFileName[0];
+              $sContent = $aFileName[0];
             }
+
+            if ($oField->attributes()->role == "title") {
+              $sTitle  = (string) $oField;
+
+              if ($oField->attributes()->twig == "on") {
+                $sTitle = Yii::app()->twigRenderer->convertTwigToHtml($sTitle);
+              }
+            }
+
         }
 
         if (!empty ($sLayoutName)){
-          $aContent[$sScreen][$sLayoutName] = $sFileName;
+          $aContent[$sScreen]['title'] = $sTitle;
+          $aContent[$sScreen]['layouts'][$sLayoutName] = $sContent;
         }
       }
 
       return $aContent;
+    }
+
+    /**
+     * Returns an array of screens list with their respective titles. Used by Theme Editor to build the screend selection dropdown
+     * For retro-compatibility purpose, if the array is empty it will use the old default values.
+     *
+     * @return array the list of screens with their titles
+     */
+    public function getScreensList()
+    {
+      $aScreenList = $this->getScreensDetails();
+      $aScreens = array();
+
+      foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
+        $aScreens[$sScreenName] = $aTitleAndLayouts['title'];
+      }
+
+      // We check there is at least one screen title in the array. Else, the theme manifest is outdated, so we use the default values
+      $bEmptyTitles = true;
+      foreach($aScreens as $sScreenName => $sTitle){
+        if (!empty($sTitle)){
+          $bEmptyTitles = false;
+          break;
+        }
+      }
+
+      if ($bEmptyTitles){
+          if(YII_DEBUG){
+            Yii::app()->setFlashMessage("Your theme does not implement screen definition in XML. Using the default ones <br> this message will not appear when debug mode is off", 'error');
+          }
+
+          $aScreens['welcome']         = gT('Welcome', 'unescaped');
+          $aScreens['question']        = gT('Question', 'unescaped');
+          $aScreens['completed']       = gT('Completed', 'unescaped');
+          $aScreens['clearall']        = gT('Clear all', 'unescaped');
+          $aScreens['load']            = gT('Load', 'unescaped');
+          $aScreens['save']            = gT('Save', 'unescaped');
+          $aScreens['surveylist']      = gT('Survey list', 'unescaped');
+          $aScreens['error']           = gT('Error', 'unescaped');
+          $aScreens['assessments']     = gT('Assessments', 'unescaped');
+          $aScreens['register']        = gT('Registration', 'unescaped');
+          $aScreens['printanswers']    = gT('Print answers', 'unescaped');
+          $aScreens['pdf']             = gT('PDF', 'unescaped');
+          $aScreens['navigation']      = gT('Navigation', 'unescaped');
+          $aScreens['misc']            = gT('Miscellaneous files', 'unescaped');
+      }
+
+      return $aScreens;
+
     }
 
     /**
@@ -179,17 +239,46 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][2] = $this->parseDefaultData('question_2', $thissurvey['aGroups'][1]["aQuestions"][2]);
         $thissurvey['aAssessments']["datas"]["total"][0] = $this->parseDefaultData('assessments', $thissurvey['aAssessments']["datas"]["total"][0]);
 
+        /**
+         * NOTE: This will allow Theme developper to add their new screens without editing this file.
+         * It implies they respect the convention :
+         * $aSurveyData[custom screen name][custom variable] = custom variable value
+         * Where custom variable value can't be an array.
+         * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
+         * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
+        */
+        $thissurvey = $this->getCustomScreenData($thissurvey);
+
         return $thissurvey;
     }
 
+    /**
+     * If theme developer created custom screens, they will provide custom data.
+     * This function will get those custom data to pass them to the preview.
+     */
+    protected function getCustomScreenData($thissurvey = array())
+    {
+      $oDataFromXML = $this->templateEditor->xpath("//default_data"); //
+
+      foreach( $oDataFromXML[0] as $sScreenName => $oData){
+        if ($oData->attributes()->type == "custom"){
+          $sArrayName = (string) $oData->attributes()->arrayName;
+          $thissurvey[$sArrayName] = array();
+          $thissurvey[$sArrayName] = $this->parseDefaultData($sScreenName, $thissurvey[$sArrayName]);
+        }
+      }
+
+      return $thissurvey;
+    }
 
 
     protected function parseDefaultData($sXpath, $aArrayToFeed)
     {
 
       $oDataFromXML = $this->templateEditor->default_data->xpath('//'.$sXpath);
+      $oDataFromXML = end($oDataFromXML);
 
-      foreach($oDataFromXML[0] as $sKey => $oData){
+      foreach( $oDataFromXML as $sKey => $oData){
 
         if (!empty($sKey)){
 
@@ -204,6 +293,25 @@ class TemplateManifest extends TemplateConfiguration
       }
 
       return $aArrayToFeed;
+    }
+
+    /**
+     * Returns all the twig strings inside the current XML. Used from TwigCommand
+     * NOTE: this not recursive. So it will show only the string of the current XML, not of parent XML. (not needed to generate twig cache from command line since all XML files are parsed)
+     *
+     * @param array $items if you already have a list of items and want to use it.
+     * @return array the list of strings using twig
+     */
+    public function getTwigStrings($items = array())
+    {
+      $oDataFromXML = $this->config;
+      $oElements = $oDataFromXML->xpath('//*[@twig="on"]');
+
+      foreach($oElements as $key => $oELement){
+        $items[] = (string) $oELement;
+      }
+
+      return $items;
     }
 
     /**

@@ -51,7 +51,8 @@
                 array(
                     'header' => gT('Description'),
                     'name' => 'template_description',
-                    'value'=>'$data->template->description',
+                    //'value'=>'$data->template->description',
+                    'value'=>'$data->description',
                     'htmlOptions' => array('class' => 'col-md-3'),
                     'type'=>'raw',
                 ),
