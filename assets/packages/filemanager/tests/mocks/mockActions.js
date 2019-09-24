@@ -17,6 +17,6 @@ export default {
         });
     }),
     folderSelected: jest.fn(),
-    deleteFile: jest.fn(Promise.resolve()),
-    applyTransition: jest.fn(()=>Promise.resolve()),
+    deleteFile: jest.fn(() => Promise.resolve()),
+    applyTransition: jest.fn(() => Promise.resolve()),
 };
