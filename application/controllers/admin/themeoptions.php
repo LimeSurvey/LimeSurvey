@@ -321,7 +321,6 @@ class themeoptions  extends Survey_Common_Action
             $oSurveyTheme = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
             $aData['oQuestionTheme'] =  new QuestionTheme;
-            QuestionTheme::model()->loadAllQuestionXMLConfigurationsIntoDatabase();
             $canImport = true;
             $importErrorMessage = null;
 

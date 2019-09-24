@@ -315,14 +315,20 @@ class themes extends Survey_Common_Action
 
         // All OK if we're here.
         // TODO: Always check if successful.
-        mkdir($destdir);
+        if ($themeType == 'question'){
+            $extractDir = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
+            mkdir($extractDir);
+        } else {
+            $extractDir = $destdir;
+            mkdir($destdir);
+        }
 
         $aImportedFilesInfo = array();
         $aErrorFilesInfo = array();
 
         if (is_file($_FILES['the_file']['tmp_name'])) {
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
-            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $extractDir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
 
             if ($aExtractResult === 0) {
                 App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));

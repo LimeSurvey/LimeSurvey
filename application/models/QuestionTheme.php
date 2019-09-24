@@ -249,7 +249,6 @@ class QuestionTheme extends LSActiveRecord
         if (empty($pathToXML)) {
             throw new InvalidArgumentException('$templateFolder cannot be empty');
         }
-
         /** @var string[] */
         $questionDirectories = $this->getQuestionThemeDirectories();
         /** @var array */
@@ -258,10 +257,9 @@ class QuestionTheme extends LSActiveRecord
         /** @var QuestionTheme */
         $questionTheme = QuestionTheme::model()
             ->find(
-                '(name = :name AND extends = :extends) OR (extends = :extends AND question_type = :question_type)',
+                '(name = :name AND extends = :extends)',
                 [
                     ':name' => $questionMetaData['name'],
-                    ':question_type' => $questionMetaData['questionType'],
                     ':extends' => $questionMetaData['extends']
                 ]
             );
