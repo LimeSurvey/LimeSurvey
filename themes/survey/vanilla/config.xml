@@ -292,6 +292,14 @@
                     <file type="view" role="subview">./subviews/navigation/question_index_groups_buttons.twig</file>
                 </navigation>
 
+                <token>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
+                  <file type="view" role="layout">layout_user_forms.twig</file>
+                  <file type="view" role="content">./subviews/content/userforms.twig</file>
+                  <file type="view" role="content">./subviews/logincomponents/token.twig</file>
+                  <file type="view" role="content">./subviews/logincomponents/captcha.twig</file>
+                </token>
+
 
             </screens>
 
@@ -326,13 +334,17 @@
 
               <!-- This is an exemple to show you how to add your custom screen in the theme editor with custom values -->
               <!-- The name of the array inside aSurveyInfo that feed your twig view is specified as "array-name". If you check quotas.twig, you'll notice the main variable is aSurveyInfo.aQuotas -->
-              <!-- Notice that the data you parse here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
+              <!-- Notice that the data you pass here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
               <quotas type="custom" arrayName="aQuotas">
                 <sMessage type="data" twig="on"><![CDATA[ {{ gT("Sorry your responses have exceeded a quota on this survey.") }} ]]></sMessage>
                 <sUrl type="data">http://limesurvey.org</sUrl>
                 <sUrlDescription type="data" twig="on"><![CDATA[ {{ gT("End url") }} ]]></sUrlDescription>
                 <bShowNavigator type="data">false</bShowNavigator>
               </quotas>
+
+              <userforms type="custom" arrayName="aForm">
+                <sType type="data">token</sType>
+              </userforms>
             </default_data>
         </template_editor>
     </engine>
