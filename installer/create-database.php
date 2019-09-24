@@ -817,7 +817,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
             'surveyls_survey_id' => "integer NOT NULL",
             'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
-            'surveyls_title' => "string(191) NOT NULL",
+            'surveyls_title' => "string(200) NOT NULL",
             'surveyls_description' => "text NULL",
             'surveyls_welcometext' => "text NULL",
             'surveyls_endtext' => "text NULL",
@@ -1043,7 +1043,7 @@ function createDatabase($oDB){
             'full_name' => "string(50) NOT NULL",
             'parent_id' => "integer NOT NULL",
             'lang' => "string(20)",
-            'email' => "string(191)",
+            'email' => "string(192)",
             'htmleditormode' => "string(7) default 'default'",
             'templateeditormode' => "string(7) NOT NULL default 'default'",
             'questionselectormode' => "string(7) NOT NULL default 'default'",
