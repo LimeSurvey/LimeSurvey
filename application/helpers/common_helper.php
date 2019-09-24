@@ -1370,7 +1370,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $qtypes = Question::typeList();
 
     // Main query
-    $aquery = "SELECT * "
+    $aquery = "SELECT g.*, q.*, gls.*, qls.*, qa.attribute, qa.value"
     ." FROM {{groups}} g"
     .' JOIN {{questions}} q on q.gid=g.gid '
     .' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
