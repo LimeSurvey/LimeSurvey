@@ -441,7 +441,7 @@ class GlobalSettings extends Survey_Common_Action
             ]
         ];
         $aData['partial'] = $sPartial;
-        $this->_renderWrappedTemplate('global_settings', 'surveySettings', $aData);
+        $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
     public function surveysettingmenues() {
