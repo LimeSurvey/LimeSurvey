@@ -539,7 +539,8 @@ class Participant extends LSActiveRecord
             'shares.date_added',
             'shares.can_edit',
             $sqlCountActiveSurveys.' AS countActiveSurveys',
-            't.participant_id AS id', // This is need to avoid confusion between t.participant_id and shares.participant_id
+            // NB: This is need to avoid confusion between t.participant_id and shares.participant_id
+            't.participant_id AS id',
         );
         if ($this->extraCondition) {
             $criteria->mergeWith($this->extraCondition);
@@ -547,7 +548,11 @@ class Participant extends LSActiveRecord
         $sort->attributes = $sortAttributes;
         $sort->defaultOrder = 't.lastname ASC';
 
-        // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone 4) all participants if they have global permission
+        // Users can only see:
+        // 1) Participants they own;
+        // 2) participants shared with them;
+        // 3) participants shared with everyone
+        // 4) all participants if they have global permission
         // Superadmins can see all users.
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $readAllPermission = Permission::model()->hasGlobalPermission('participantpanel', 'read');
