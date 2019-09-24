@@ -31,7 +31,7 @@ export default {
             let classes =
                 "ls-flex ls-flex-row scoped-tree-folder ls-space bottom-5";
             if (folder.children.length > 0) {
-                classes += "scoped-has-children text-bold";
+                classes += " scoped-has-children text-bold";
             }
             if (this.$store.state.currentFolder == folder.folder) {
                 classes += " scoped-selected";

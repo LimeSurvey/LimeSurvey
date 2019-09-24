@@ -107,4 +107,4 @@ before_script:
 script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit
-    - yarn --cwd .\assets\packages\filemanager run test:unit
+    - $(cd assets\packages\filemanager && yarn run test:unit)

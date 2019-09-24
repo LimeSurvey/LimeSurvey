@@ -4,7 +4,7 @@ import mockFolderList from '../mocks/folderList.json';
 import mockFileList from '../mocks/fileList.json';
 
 export default {
-    currentFolder : 'generalfiles',
+    currentFolder : 'upload/themes/survey/generalfiles',
     currentSurveyId: null,
     folderList: mockFolderList,
     fileList: mockFileList,

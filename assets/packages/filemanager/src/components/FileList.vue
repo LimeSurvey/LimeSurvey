@@ -2,8 +2,8 @@
   <div :class="'col-xs-'+cols">
     <div class="ls-flex ls-flex-row align-items-flex-end align-content-flex-end ls-space margin bottom-10">
       <div class="btn-group" role="group">
-        <button type="button" class="btn" @click="fileviz='tablerep'" :class="fileviz=='tablerep' ? 'btn-info active' : 'btn-default'">Table</button>
-        <button type="button" class="btn" @click="fileviz='iconrep'" :class="fileviz=='iconrep' ? 'btn-info active' : 'btn-default'">Icons</button>
+        <button type="button" id="FileManager--change-filewiz-to-tablerep" class="btn" @click="fileviz='tablerep'" :class="fileviz=='tablerep' ? 'btn-info active' : 'btn-default'">Table</button>
+        <button type="button" id="FileManager--change-filewiz-to-iconrep" class="btn" @click="fileviz='iconrep'" :class="fileviz=='iconrep' ? 'btn-info active' : 'btn-default'">Icons</button>
       </div>
     </div>
     <div class="container-fluid">

@@ -1,7 +1,6 @@
 <script>
 
 import Treeview from './subcomponents/_treeView';
-
 import applyLoader from '../mixins/applyLoader';
 
 export default {

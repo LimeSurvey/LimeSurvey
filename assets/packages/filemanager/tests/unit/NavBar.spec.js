@@ -58,6 +58,16 @@ describe("NavBar basic behaviour", () => {
         expect(hasUploadButton).toBe(true);
     });
 
+    it('should NOT contain transit cancel button', () => {
+        const transitCancelButton = navBarMount.find('#FileManager--button-fileInTransit--cancel');
+        expect(transitCancelButton.exists()).toBeFalsy();
+    });
+
+    it('should contain transit submit button', () => {
+        const transitSubmitButton = navBarMount.find('#FileManager--button-fileInTransit--submit');
+        expect(transitSubmitButton.exists()).toBeFalsy();
+    });
+
     it('should trigger the upload modal on click', () => {
         const uploadButton = navBarMount.find('#FileManager--button-upload');
         uploadButton.trigger('click')
