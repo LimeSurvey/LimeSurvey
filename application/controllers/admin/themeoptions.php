@@ -540,6 +540,7 @@ class themeoptions  extends Survey_Common_Action
         );
 
         if ($sid !== null) {
+            $aData['topBar']['showSaveButton'] = true;
             $aData['surveybar']['buttons']['view'] = true;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
