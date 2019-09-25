@@ -82,7 +82,16 @@
                 </ul>
             </p>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme" value='<?php eT("Open imported theme") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) ?>', '_top')" />
+                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme"
+                       value='<?php eT("Open imported theme") ?>'
+                       onclick="window.open('<?php
+                       if ($theme == 'question') {
+                           echo $this->createUrl('admin/themeoptions/sa/index/#questionthemes') . '\', ' . '\'_top\'';
+                       } elseif ($theme == 'survey') {
+                           echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) . '\', ' . '\'_top\'';
+                       }
+                       ?>)"
+                />
             </p>
         </div>
     </div>

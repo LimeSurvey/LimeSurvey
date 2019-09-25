@@ -310,14 +310,21 @@ class themes extends Survey_Common_Action
             $this->getController()->redirect(array("admin/themeoptions"));
         }
 
+        // make questiontheme upload folder if it doesnt exist
+        if ($themeType == 'question') {
+            if (!is_dir($questionthemerootdir = App()->getConfig('userquestionthemerootdir'))) {
+                mkdir($questionthemerootdir);
+            }
+        }
+
         // Redirect back if $destdir is not writable OR if it already exists.
-        $this->checkDestDir($destdir, $sNewDirectoryName);
+        $this->checkDestDir($destdir, $sNewDirectoryName, $themeType);
 
         // All OK if we're here.
         // TODO: Always check if successful.
         if ($themeType == 'question'){
             $extractDir = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
-            mkdir($extractDir);
+            mkdir($extractDir, 0777, true);
         } else {
             $extractDir = $destdir;
             mkdir($destdir);
@@ -384,6 +391,7 @@ class themes extends Survey_Common_Action
             'aErrorFilesInfo' => $aErrorFilesInfo,
             'lid' => $lid,
             'newdir' => $sNewDirectoryName,
+            'theme' => $themeType
         );
     }
 
@@ -1303,20 +1311,29 @@ class themes extends Survey_Common_Action
 
     /**
      * Redirect back if $destdir is not writable or already exists.
+     *
      * @param string $destdir
      * @param string $sNewDirectoryName
+     * @param string $themeType *
      * @return void
      */
-    protected function checkDestDir($destdir, $sNewDirectoryName)
+    protected function checkDestDir($destdir, $sNewDirectoryName, $themeType)
     {
+        if ($themeType == 'question'){
+            $redirectUrl = 'admin/themeoptions#questionthemes';
+        } elseif ($themeType == 'survey'){
+            $redirectUrl = 'admin/themes/sa/upload';
+        } else {
+            $redirectUrl = 'admin/themes/sa/upload';
+        }
         if (!is_writeable(dirname($destdir))) {
             Yii::app()->user->setFlash('error', sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
+            $this->getController()->redirect(array($redirectUrl));
         }
 
         if (is_dir($destdir)) {
             Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
+            $this->getController()->redirect(array($redirectUrl));
         }
     }
 }
