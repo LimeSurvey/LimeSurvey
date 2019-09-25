@@ -271,6 +271,9 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $this->assertNotNull($scopeApplyBaseStyleContainer);
 
             sleep(1);
+
+            // TODO: This is broken at the moment, cause the vue component is always selecting the default value as selected theme after save. 
+            // TODO: So this is test will always break.
             // Check if Display theme options link exists
             $displayLink = self::$webDriver->findElement(WebDriverBy::linkText('Display theme options'));
             $this->assertNotNull($displayLink);
