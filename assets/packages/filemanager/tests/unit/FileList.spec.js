@@ -51,11 +51,11 @@ describe("loading state", () => {
         localVue
     }); 
 
-    it("Should be loading on startup", () => {
+    test("Should be loading on startup", () => {
         expect(fileListMount.find('#filemanager-loader-widget').exists()).toBe(true);
     })
 
-    it("Should stop loading on prop change", () => {
+    test("Should stop loading on prop change", () => {
         fileListMount.setProps({loading: false});
         expect(fileListMount.find('#filemanager-loader-widget').exists()).toBe(false);
     })
@@ -89,16 +89,16 @@ describe("file representation changes", () => {
         }); 
     }); 
 
-    it("Should have file visualization set to table by default", () => {
+    test("Should have file visualization set to table by default", () => {
         expect(fileListMount.vm.fileviz).toBe('tablerep');
     })
 
-    it("Should change file visualisation to icons", () => {
+    test("Should change file visualisation to icons", () => {
        fileListMount.find('#FileManager--change-filewiz-to-iconrep').trigger('click');
        expect(fileListMount.vm.fileviz).toBe('iconrep');
     })
 
-    it("Should change file visualisation to table", () => {
+    test("Should change file visualisation to table", () => {
        fileListMount.find('#FileManager--change-filewiz-to-iconrep').trigger('click');
        fileListMount.find('#FileManager--change-filewiz-to-tablerep').trigger('click');
        expect(fileListMount.vm.fileviz).toBe('tablerep');

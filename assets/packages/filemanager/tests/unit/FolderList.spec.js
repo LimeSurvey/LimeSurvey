@@ -50,17 +50,17 @@ describe("it should switch loading", () => {
         }); 
     });
 
-    it("Should have rendered with a with of 4 columns", () => {
+    test("Should have rendered with a with of 4 columns", () => {
         expect(folderListMount.html()).toContain('<div class="scoped-folder-list col-xs-4">');
     });
     
-    it("Should emit to change the loading attribute to true", () => {
+    test("Should emit to change the loading attribute to true", () => {
         folderListMount.vm.setLoading(true)
         //This is somehow how this method workd it always wraps stuff in arrays
         expect(folderListMount.emitted().setLoading[0][0]).toBe(true);
     });
 
-    it("Should emit to change the loading attribute to false", () => {
+    test("Should emit to change the loading attribute to false", () => {
         folderListMount.vm.setLoading(false)
         //This is somehow how this method workd it always wraps stuff in arrays
         expect(folderListMount.emitted().setLoading[0][0]).toBe(false);

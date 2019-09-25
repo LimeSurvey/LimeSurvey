@@ -32,12 +32,12 @@ localVue.mixin({
 
 // Check the ajax calls
 describe("FileManagerApp basics", () => {
-    it('has a mounted hook', () => {
+    test('has a mounted hook', () => {
         expect(typeof FileManagerApp.mounted).toBe('function');
     });
 
     // Evaluate loading to be set to true on start
-    it('is loading on beforemount', () => {
+    test('is loading on beforemount', () => {
         expect(typeof FileManagerApp.data).toBe('function')
         const defaultData = FileManagerApp.data()
         expect(defaultData.loading).toBe(true);
@@ -56,7 +56,7 @@ describe("FileManagerApp fulfilled promises on startup", () => {
         });
     });
 
-    it('dispatches getFolderList action', () => {
+    test('dispatches getFolderList action', () => {
         const fileManagerWrapper = shallowMount(FileManagerApp, {
             store,
             localVue
@@ -64,7 +64,7 @@ describe("FileManagerApp fulfilled promises on startup", () => {
         expect(actions.getFolderList).toHaveBeenCalled();
     });
 
-    it('dispatches getFileList action', () => {
+    test('dispatches getFileList action', () => {
         const fileManagerWrapper = shallowMount(FileManagerApp, {
             store,
             localVue
@@ -72,7 +72,7 @@ describe("FileManagerApp fulfilled promises on startup", () => {
         expect(actions.getFolderList).toHaveBeenCalled();
     });
 
-    it('renders correct html', () => {
+    test('renders correct html', () => {
         const fileManagerWrapper = shallowMount(FileManagerApp, {
             store,
             localVue
@@ -81,7 +81,7 @@ describe("FileManagerApp fulfilled promises on startup", () => {
     });
 
     // Evaluate loading to be set to false after mount
-    it('stopped the loading animation after mount', async () => {
+    test('stopped the loading animation after mount', async () => {
         const fileManagerWrapper = shallowMount(FileManagerApp, {
             store,
             localVue

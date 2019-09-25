@@ -6,7 +6,7 @@ import {
 import Vuex from 'vuex';
 import _ from 'lodash';
 
-import TableRepComponent from '../../src/components/subcomponents/_tableRepresentation.vue';
+import IconRepComponent from '../../src/components/subcomponents/_iconRepresentation.vue';
 import VueXMutations from '../../src/storage/mutations.js';
 import MockState from '../mocks/mockState.js';
 import MockActions from '../mocks/mockActions.js';
@@ -27,6 +27,7 @@ localVue.mixin({
     }
 });
 
+
 describe("correct display", () => {
     const actions = _.clone(MockActions);
     const state = _.clone(MockState);
@@ -36,7 +37,7 @@ describe("correct display", () => {
         actions
     });
 
-    const tableRepMount = shallowMount(TableRepComponent, {
+    const iconRepMount = shallowMount(IconRepComponent, {
         propsData: { 
             loading: false
         },
@@ -51,57 +52,56 @@ describe("correct display", () => {
         localVue
     }); 
 
-    test("Has the correct table head", () => {
-        expect(tableRepMount.html()).toContain(`<div class=\"ls-flex ls-flex-column col-4 cell\">
-        File name
-        </div> <div class=\"ls-flex ls-flex-column col-1 cell\">
-        Type
-        </div> <div class=\"ls-flex ls-flex-column col-2 cell\">
-        Size
-        </div> <div class=\"ls-flex ls-flex-column col-3 cell\">
-        Mod time
-        </div> <div class=\"ls-flex ls-flex-row col-2 cell\">
-        Action
-        </div></div>`);
+    test.each(_.toArray(MockState.fileList))(
+        "Has an image block for every file rendered", 
+        (file) => {
+            const iconRepContainer = iconRepMount.find('#iconRep-' + file.hash);
+        expect(iconRepContainer.html()).toContain(`<img src="${file.src}" alt="${file.shortName}" class="scoped-contain-image">`)
+        && expect(iconRepContainer.html()).toContain(`<small>{{file.size | bytes}}</small>`)
+        && expect(iconRepContainer.html()).toContain(file.shortName)
+        && expect(iconRepContainer.html()).toContain(`<small>${IconRepComponent.filters.bytes(file.size)}</small>`)
+        && expect(iconRepContainer.html()).toContain(`<small>${file.mod_time}</small>`)
+        && expect(iconRepContainer.html()).toContain(`<button class="FileManager--file-action-delete btn btn-default" title="Delete file" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>`)
+        && expect(iconRepContainer.html()).toContain(`<button class="FileManager--file-action-startTransit-copy btn btn-default" title="Copy file" data-toggle="tooltip"><i class="fa fa-clone"></i></button>`)
+        && expect(iconRepContainer.html()).toContain(`<button class="FileManager--file-action-startTransit-move btn btn-default" title="Move file" data-toggle="tooltip"><i class="fa fa-files-o"></i></button>`);
+    });
+
+    test("Has no file in transit", () => {
+        expect(iconRepMount.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
     });
 
     test.each(_.toArray(MockState.fileList))(
         "Has an image block for every file rendered", 
         (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
+            const iconRepContainer = iconRepMount.find('#iconRep-' + file.hash);
+        expect(iconRepContainer.find('.FileManager--file-action-delete').exists()).toBe(true);
     });
 
     test.each(_.toArray(MockState.fileList))(
         "Has an image block for every file rendered", 
         (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-delete').exists()).toBe(true);
+            const iconRepContainer = iconRepMount.find('#iconRep-' + file.hash);
+        expect(iconRepContainer.find('.FileManager--file-action-startTransit-copy').exists()).toBe(true);
     });
 
     test.each(_.toArray(MockState.fileList))(
         "Has an image block for every file rendered", 
         (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-startTransit-copy').exists()).toBe(true);
-    });
-
-    test.each(_.toArray(MockState.fileList))(
-        "Has an image block for every file rendered", 
-        (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-startTransit-move').exists()).toBe(true);
+            const iconRepContainer = iconRepMount.find('#iconRep-' + file.hash);
+        expect(iconRepContainer.find('.FileManager--file-action-startTransit-move').exists()).toBe(true);
     });
     
     test("has a working byte-filter", () => {
-        let shouldBeKB = TableRepComponent.filters.bytes(1025);
-        let shouldBeMB = TableRepComponent.filters.bytes(1048577);
+        let shouldBeKB = IconRepComponent.filters.bytes(1025);
+        let shouldBeMB = IconRepComponent.filters.bytes(1048577);
         expect(shouldBeKB).toBe('1 KB')
         && expect(shouldBeMB).toBe('1 MB');
     });
 
-});
+    test("has correct max height set", () => {
 
+    })
+}); 
 
 describe("File transit actions", () => {
     
@@ -109,7 +109,7 @@ describe("File transit actions", () => {
     const fileInTransit = MockState.fileList['firstPicture.jpg'];
     const fileNotTransit = MockState.fileList['secondPicture.jpg'];
     
-    let tableRepMount;
+    let iconRepMount;
     beforeEach(() => {
         const state = _.clone(MockState);
         
@@ -119,7 +119,7 @@ describe("File transit actions", () => {
             actions
         });
 
-        tableRepMount = shallowMount(TableRepComponent, {
+        iconRepMount = shallowMount(IconRepComponent, {
             propsData: { 
                 loading: false
             },
@@ -136,17 +136,17 @@ describe("File transit actions", () => {
     }); 
 
     test("Should start transit after clicking on 'copy'", () => {
-        const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
-        const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-copy');
+        const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
+        const copyButton = iconRepContainer.find('.FileManager--file-action-startTransit-copy');
         copyButton.trigger('click');
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(true);  
+        expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(true);  
     })
 
     test("Should start transit after clicking on 'move'", () => {
-        const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
-        const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-move');
+        const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
+        const copyButton = iconRepContainer.find('.FileManager--file-action-startTransit-move');
         copyButton.trigger('click');
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(true);  
+        expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(true);  
     })
 });
 
@@ -157,7 +157,7 @@ describe("File in transit actions", () => {
     const fileNotTransit = MockState.fileList['secondPicture.jpg'];
     const state = _.clone(MockState);
 
-    let tableRepMount;
+    let iconRepMount;
     beforeEach(() => {
 
         state.fileInTransit = fileInTransit;
@@ -169,7 +169,7 @@ describe("File in transit actions", () => {
             actions
         });
 
-        tableRepMount = shallowMount(TableRepComponent, {
+        iconRepMount = shallowMount(IconRepComponent, {
             propsData: { 
                 loading: false
             },
@@ -186,29 +186,29 @@ describe("File in transit actions", () => {
     }); 
 
     test("Should show cancel transit button when a transit starts", () => {
-        const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
-        expect(fileRowWrapper.find('.FileManager--file-action-cancelTransit').exists()).toBe(true);
+        const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
+        expect(iconRepContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(true);
     });
     test("Should cancel the transit after clickong 'cancelTransit'", () => {
-        const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
-        fileRowWrapper.find('.FileManager--file-action-cancelTransit').trigger('click');
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(false);
+        const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
+        iconRepContainer.find('.FileManager--file-action-cancelTransit').trigger('click');
+        expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(false);
     })
 
     test("Should mark in transit file as inTransit", () => {
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(true);
+        expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(true);
     })
     test("Should mark notInTransitFile as notInTransit", () => {
-        expect(tableRepMount.vm.inTransit(fileNotTransit)).toBe(false);
+        expect(iconRepMount.vm.inTransit(fileNotTransit)).toBe(false);
     })
 
     test("Should have the correct classes for a file in transit", () => {
-        const fileRowClasses = tableRepMount.vm.fileClass(fileInTransit);
-        expect(fileRowClasses).toBe("scoped-file-row file-in-transit move ")
+        const fileRowClasses = iconRepMount.vm.fileClass(fileInTransit);
+        expect(fileRowClasses).toBe("scoped-file-icon file-in-transit move ")
     })
     test("Should have the correct classes for a file not in transit", () => {
-        const fileRowClasses = tableRepMount.vm.fileClass(fileNotTransit);
-        expect(fileRowClasses).toBe("scoped-file-row ")
+        const fileRowClasses = iconRepMount.vm.fileClass(fileNotTransit);
+        expect(fileRowClasses).toBe("scoped-file-icon ")
     })
 
     
@@ -220,7 +220,7 @@ describe('Delete file success', () => {
     const callDialog = jest.fn((txt) => Promise.resolve(txt));
 
     let actions;
-    let tableRepMount;
+    let iconRepMount;
     beforeAll(() => {
 
         actions = _.clone(MockActions);
@@ -232,7 +232,7 @@ describe('Delete file success', () => {
             actions
         });
 
-        tableRepMount = shallowMount(TableRepComponent, {
+        iconRepMount = shallowMount(IconRepComponent, {
             propsData: { 
                 loading: false
             },
@@ -248,8 +248,8 @@ describe('Delete file success', () => {
     }); 
 
     test("Should call a dialog on click on delete file", () => {
-        const fileRowWrapper = tableRepMount.find("#file-row-" + fileToBeDeleted.hash);
-        fileRowWrapper.find('.FileManager--file-action-delete').trigger('click');
+        const iconRepContainer = iconRepMount.find("#iconRep-" + fileToBeDeleted.hash);
+        iconRepContainer.find('.FileManager--file-action-delete').trigger('click');
         expect(callDialog).toHaveBeenCalled();
     });
     test("Should have called the delete action after clicking delete", () => {
@@ -263,7 +263,7 @@ describe('Delete file failure', () => {
     const state = _.clone(MockState);
     const callDialog = jest.fn((txt) => Promise.reject());
     let actions;
-    let tableRepMount;
+    let iconRepMount;
 
     beforeEach(() => {
         actions = _.clone(MockActions);
@@ -275,7 +275,7 @@ describe('Delete file failure', () => {
             actions
         });
 
-        tableRepMount = shallowMount(TableRepComponent, {
+        iconRepMount = shallowMount(IconRepComponent, {
             propsData: { 
                 loading: false
             },
@@ -291,9 +291,8 @@ describe('Delete file failure', () => {
     }); 
 
     test("Should not call the delete action after clicking delete", () => {
-        const fileRowWrapper = tableRepMount.find("#file-row-" + fileToBeDeleted.hash);
-        fileRowWrapper.find('.FileManager--file-action-delete').trigger('click');
+        const iconRepContainer = iconRepMount.find("#iconRep-" + fileToBeDeleted.hash);
+        iconRepContainer.find('.FileManager--file-action-delete').trigger('click');
         expect(actions.deleteFile).not.toHaveBeenCalled()
     });
-    
-})
+}); 

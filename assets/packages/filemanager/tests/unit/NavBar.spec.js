@@ -45,30 +45,30 @@ describe("NavBar basic behaviour", () => {
         }
     });
 
-    it('should not have a file in tranist', () => {
+    test('should not have a file in tranist', () => {
         expect(navBarMount.vm.fileInTransit).toBe(false);
     });
 
-    it('should contain current folder name', () => {
+    test('should contain current folder name', () => {
         expect(navBarMount.html()).toContain('<span class="navbar-brand">' + MockState.currentFolder  +'</span>');
     });
 
-    it('should contain upload buttons', () => {
+    test('should contain upload buttons', () => {
         const hasUploadButton = navBarMount.find('#FileManager--button-upload').exists();
         expect(hasUploadButton).toBe(true);
     });
 
-    it('should NOT contain transit cancel button', () => {
+    test('should NOT contain transit cancel button', () => {
         const transitCancelButton = navBarMount.find('#FileManager--button-fileInTransit--cancel');
         expect(transitCancelButton.exists()).toBeFalsy();
     });
 
-    it('should contain transit submit button', () => {
+    test('should contain transit submit button', () => {
         const transitSubmitButton = navBarMount.find('#FileManager--button-fileInTransit--submit');
         expect(transitSubmitButton.exists()).toBeFalsy();
     });
 
-    it('should trigger the upload modal on click', () => {
+    test('should trigger the upload modal on click', () => {
         const uploadButton = navBarMount.find('#FileManager--button-upload');
         uploadButton.trigger('click')
         expect(mockOpenModal).toHaveBeenCalled();
@@ -93,21 +93,21 @@ describe("NavBar on file in transit action - moving", () => {
         localVue
     });
 
-    it('should have a file in tranist', () => {
+    test('should have a file in tranist', () => {
         expect(navBarMount.vm.fileInTransit).toBe(true);
     });
 
-    it('should contain transit submit button', () => {
+    test('should contain transit submit button', () => {
         const transitSubmitButton = navBarMount.find('#FileManager--button-fileInTransit--submit');
         expect(transitSubmitButton.html()).toContain('<a href="#">Move</a>');
     });
 
-    it('should contain transit cancel button', () => {
+    test('should contain transit cancel button', () => {
         const transitCancelButton = navBarMount.find('#FileManager--button-fileInTransit--cancel');
         expect(transitCancelButton.html()).toContain('<a href="#">Cancel Move</a>');
     });
 
-    it('should apply transit on click', () => {
+    test('should apply transit on click', () => {
         const transitSubmitButton = navBarMount.find('#FileManager--button-fileInTransit--submit>a');
         transitSubmitButton.trigger('click');
         expect(actions.applyTransition).toHaveBeenCalled()
@@ -134,21 +134,21 @@ describe("NavBar on file in transit action - copying", () => {
         localVue
     });
 
-    it('should have a file in tranist', () => {
+    test('should have a file in tranist', () => {
         expect(navBarMount.vm.fileInTransit).toBe(true);
     });
 
-    it('should contain transit submit button', () => {
+    test('should contain transit submit button', () => {
         const transitSubmitButton = navBarMount.find('#FileManager--button-fileInTransit--submit');
         expect(transitSubmitButton.html()).toContain('<a href="#">Copy</a>');
     });
 
-    it('should contain transit cancel button', () => {
+    test('should contain transit cancel button', () => {
         const transitCancelButton = navBarMount.find('#FileManager--button-fileInTransit--cancel');
         expect(transitCancelButton.html()).toContain('<a href="#">Cancel Copy</a>');
     });
 
-    it('should apply transit on click', () => {
+    test('should apply transit on click', () => {
         const transitSubmitButton = navBarMount.find('#FileManager--button-fileInTransit--submit>a');
         transitSubmitButton.trigger('click');
 
@@ -176,11 +176,11 @@ describe("NavBar in transit cancel", () => {
         localVue
     });
 
-    it('should have a file in tranist', () => {
+    test('should have a file in tranist', () => {
         expect(navBarMount.vm.fileInTransit).toBe(true);
     });
 
-    it("should mutate fileInTransit on cancel", () => {
+    test("should mutate fileInTransit on cancel", () => {
         navBarMount.vm.cancelTransit();
         expect(navBarMount.vm.fileInTransit).toBe(false);
     });
