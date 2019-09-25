@@ -20,7 +20,11 @@
             <div class="col-sm-12">
                 <ul class="list-group">
                     <?php foreach($results as $type => $result){ ?>
-                        <li><?=$type?> : <?=($result ? 'OK' : 'FEHLER')?></li>
+                        <?php /*<?='<pre>'.print_r([$type,$result],true).'</pre>';?> */ ?>
+                        <li class="list-group-item">
+                            <?=($result['descriptionData']['title'] ?? $type)?> :
+                            <?=($result['success'] ? 'OK' : 'FEHLER')?>
+                        </li>
                     <?php } ?>
                 </ul>
             </div>

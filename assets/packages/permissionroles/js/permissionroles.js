@@ -75,7 +75,7 @@ var RoleControl = function () {
                     if (result.success == true) {
                         $('#RoleControl--modalform').off('submit.ROLECONTROLMODAL');
                         $('#RoleControl-action-modal').find('.modal-content').html(result.html);
-                        wireExportDummyUser();
+                        
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {
                             e.preventDefault();
                             $('#exitForm').off('click.ROLECONTROLMODAL');
