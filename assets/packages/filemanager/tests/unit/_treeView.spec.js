@@ -26,6 +26,44 @@ localVue.mixin({
     }
 });
 
+describe("it should render correctly", () => {
+    let treeViewMount;
+    let store;
+
+    beforeEach(() => {
+        const  actions = MockActions;
+        store = new Vuex.Store({
+            state: Object.assign({}, MockState),
+            mutations: VueXMutations,
+            actions
+        });
+        treeViewMount = shallowMount(TreeViewComponent, {
+            stubs: {
+                ModalsContainer: '<div class="stubbed" />',
+                LoaderWidget: '<div id="filemanager-loader-widget" />'
+            },
+            propsData: { 
+                folders: MockState.folderList,
+                initiallyCollapsed: true,
+                loading: true,
+                presetFolder: "upload/global"
+            },
+            mocks: {
+                $log: {log: jest.fn()}
+            },
+            store,
+            localVue
+        }); 
+    });
+
+    test("It should mark out the preselected folder", () => {
+        const preselected = treeViewMount.find('.FileManager--preselected-folder')
+        expect(preselected.exists()).toBe(true)
+        && expect(preselected.html()).toContain('<span class="scope-apply-hover">global</span>');
+    });
+
+});
+
 describe("basic rendering", () => {
     const  actions = MockActions;
     const state = Object.assign({}, MockState);
@@ -54,6 +92,10 @@ describe("basic rendering", () => {
 
     it("Is collapsed on startup", () => {
         expect(treeViewMount.vm.collapsed).toBe(true);
+    });
+
+    test("It should not mark any of the folder without a preselected one", () => {
+        expect(treeViewMount.find('.FileManager--preselected-folder').exists()).toBe(false);
     });
 
     it("Has Folder classes correctly set no children", () => {

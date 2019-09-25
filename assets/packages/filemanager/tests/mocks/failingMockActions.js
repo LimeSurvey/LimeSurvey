@@ -6,12 +6,12 @@ import mockFileList2 from './fileList2.json';
 export default {
     getFolderList: jest.fn((ctx) => {
         return new Promise((resolve, reject) => {
-            reject(new Error('Server not available'));
+            reject(('Server not available'));
         });
     }),
     getFileList: jest.fn((ctx) => {
         return new Promise((resolve, reject) => {
-            reject(new Error('Server not available'));
+            reject(('Server not available'));
         });
     }),
     folderSelected: jest.fn(),

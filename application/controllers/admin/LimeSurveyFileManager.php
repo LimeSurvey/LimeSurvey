@@ -80,6 +80,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'Upload a file' => gT('Upload a file'),
             'Drag and drop here, or click once to start uploading' => gT('Drag and drop here, or click once to start uploading'),
             'File is uploaded to currently selected folder' => gT('File is uploaded to currently selected folder'),
+            'An error has happened and no files could be located' => gT('An error has happened and no files could be located'),
             'File name' => gT('File name'),
             'Type' => gT('Type'),
             'Size' => gT('Size'),
@@ -102,6 +103,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         if ($surveyid !== null) {
             $oSurvey = Survey::model()->findByPk($surveyid);
             $aData['surveyid'] = $surveyid;
+            $aData['presetFolder'] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid;
             $aData['surveybar']['buttons']['view'] = true;
             $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
             $aData['subaction'] = gT("File manager");

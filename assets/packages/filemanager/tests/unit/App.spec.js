@@ -3,7 +3,7 @@ import {
     shallowMount,
     createLocalVue
 } from '@vue/test-utils';
-
+import _ from 'lodash';
 import Vuex from 'vuex';
 import FlushPromises from 'flush-promises';
 
@@ -46,6 +46,7 @@ describe("FileManagerApp basics", () => {
 
 describe("FileManagerApp fulfilled promises on startup", () => {
     let store;
+    let fileManagerWrapper;
     const  actions = MockActions;
 
     beforeAll(() => {
@@ -56,36 +57,30 @@ describe("FileManagerApp fulfilled promises on startup", () => {
         });
     });
 
-    test('dispatches getFolderList action', () => {
-        const fileManagerWrapper = shallowMount(FileManagerApp, {
+    beforeEach(() => {
+        fileManagerWrapper = shallowMount(FileManagerApp, {
             store,
-            localVue
+            localVue,
+            mocks: {
+                $log: {log: jest.fn(), error: jest.fn()}
+            },
         });
+    })
+
+    test('dispatches getFolderList action', () => {
         expect(actions.getFolderList).toHaveBeenCalled();
     });
 
     test('dispatches getFileList action', () => {
-        const fileManagerWrapper = shallowMount(FileManagerApp, {
-            store,
-            localVue
-        });
         expect(actions.getFolderList).toHaveBeenCalled();
     });
 
     test('renders correct html', () => {
-        const fileManagerWrapper = shallowMount(FileManagerApp, {
-            store,
-            localVue
-        });
         expect(fileManagerWrapper.html()).toContain('<div id="filemanager-app" class="row">');
     });
 
     // Evaluate loading to be set to false after mount
     test('stopped the loading animation after mount', async () => {
-        const fileManagerWrapper = shallowMount(FileManagerApp, {
-            store,
-            localVue
-        });
         await FlushPromises();
         expect(fileManagerWrapper.vm.loading).toBe(false);
     }, 1500);
@@ -94,6 +89,7 @@ describe("FileManagerApp fulfilled promises on startup", () => {
 
 describe("FileManagerApp failing promises on startup", () => {
     let store;
+    let fileManagerWrapper;
     const  actions = FailingMockActions;
 
     beforeAll(() => {
@@ -103,4 +99,74 @@ describe("FileManagerApp failing promises on startup", () => {
             actions
         });
     });
+
+    beforeEach(() => {
+        fileManagerWrapper = shallowMount(FileManagerApp, {
+            store,
+            localVue,
+            mocks: {
+                $log: {log: jest.fn(), error: jest.fn()}
+            },
+        });
+    })
+    
+    test('dispatches getFolderList action', () => {
+        expect(actions.getFolderList).toHaveBeenCalled()
+        && expect(fileManagerWrapper.vm.hasError).toBe(true);
+    });
+
+    test('dispatches getFileList action', () => {
+        expect(actions.getFolderList).toHaveBeenCalled()
+        && expect(fileManagerWrapper.vm.hasError).toBe(true);
+    });
+
+    // Evaluate loading to be set to false after mount
+    test('stopped the loading animation after mount', async () => {
+        await FlushPromises();
+        expect(fileManagerWrapper.vm.loading).toBe(false)
+        && expect(fileManagerWrapper.vm.hasError).toBe(true);
+    }, 1500);
+})
+
+describe("FileManagerApp ", () => {
+    const actions = MockActions;
+    let store;
+
+    beforeEach(() => {
+        const state = _.clone(VueXState);
+        state.currentFolder = null;
+        store = new Vuex.Store({
+            state,
+            mutations: VueXMutations,
+            actions
+        });
+    });
+
+    test("Selected folder should be the first in the call after markup", async () => {
+        const fileManagerWrapper = shallowMount(FileManagerApp, {
+            store,
+            localVue,
+            mocks: {
+                $log: {log: jest.fn(), error: jest.fn()}
+            },
+        });
+        await FlushPromises();
+        expect(fileManagerWrapper.vm.$store.state.currentFolder).toBe(VueXState.currentFolder);
+    })
+
+    test("Selected folder should be the set one by prop", async () => {
+        const fileManagerWrapper = shallowMount(FileManagerApp, {
+            store,
+            localVue,
+            mocks: {
+                $log: {log: jest.fn(), error: jest.fn()}
+            },
+            propsData: {
+                presetFolder: "upload/global"
+            }
+        });
+        await FlushPromises();
+        expect(fileManagerWrapper.vm.$store.state.currentFolder).toBe("upload/global");
+    })
+    
 })
