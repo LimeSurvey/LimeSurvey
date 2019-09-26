@@ -200,7 +200,9 @@ class Permissiontemplates extends CActiveRecord
             array(
                 "name" => 'description',
                 "header" => gT("Description"),
-                "value" => 'ellipsize($data->description, 40)'
+                "value" => '$data->description',
+                "htmlOptions" => ["style" => "white-space: pre-wrap"],
+                "headerHtmlOptions" => ["style" => "max-width: 35%"],
             ),
             array(
                 "name" => 'renewed_last',

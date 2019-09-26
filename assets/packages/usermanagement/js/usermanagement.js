@@ -224,7 +224,11 @@ var UserManagement = function () {
     };
 
     var wireRoleSet = function () {
-        $('#roleselector').select2();
+        $('#UserManagement--modalform').find('select').each(
+            function(i,item) {
+                $(item).select2();
+            }
+        );
     }
 
     var applyModalHtml = function (html) {

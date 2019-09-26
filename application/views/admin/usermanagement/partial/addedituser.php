@@ -46,14 +46,17 @@
         </div>
         <?php } else { ?>
             <div class="row ls-space margin top-10" id="utility_set_password">
-                <div class="btn-group col-xs-12" data-toggle="buttons">
-                    <label for="utility_set_password_no" class="btn btn-primary col-xs-6 active">
-                        <input type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
-                        <?=gT("Send password via email?")?>
-                    </label>
-                    <label for="utility_set_password_yes" class="btn btn-primary col-xs-6">
+                <div class="col-xs-6" >
+                    <label><?=gT("Set password in this mask?")?></label>
+                </div>
+                <div class="btn-group col-xs-6" data-toggle="buttons">
+                    <label for="utility_set_password_yes" class="btn btn-default col-xs-6">
                         <input type="radio" id="utility_set_password_yes" name="preset_password" value="1">
-                        <?=gT("Set password in this mask?")?>
+                        <?=gT("Yes")?>
+                    </label>
+                    <label for="utility_set_password_no" class="btn btn-default col-xs-6 active">
+                        <input type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
+                        <?=gT("No")?>
                     </label>
                 </div>
             </div>
