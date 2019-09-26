@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $aTabTitles
  * @var $aTabContents
@@ -6,15 +7,20 @@
  * @var $surveyid
  * @var $surveyls_language
  */
-if(isset($data)){
+
+if (isset($data)) {
     extract($data);
 }
-$count=0;
-if(isset($scripts))
+
+if (isset($scripts)) {
     echo $scripts;
+}
 
  $cs = Yii::app()->getClientScript();
  $cs->registerPackage('bootstrap-select2');
+
+$adminlang = Yii::app()->session['adminlang'];
+
 ?>
 
 <div class="container-center">
@@ -22,6 +28,7 @@ if(isset($scripts))
         <lsnexttexteditor
             :languagelist="'<?= htmlentities(json_encode(array_merge(["" => ""], getLanguageDataRestricted(false, 'short')))); ?>'"
             :languagename="'<?= getLanguageNameFromCode($oSurvey->language, false); ?>'"
+            :defaultlanguage="'<?= $adminlang; ?>'"
         />
     </div>
     <div id="textEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center">
