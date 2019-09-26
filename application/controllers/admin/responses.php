@@ -181,7 +181,7 @@ class responses extends Survey_Common_Action
             }
             //add token to top of list if survey is not private
             if ($bHaveToken) {
-                $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
+                $fnames[] = array("token", gT("Access code"), 'code'=>'token');
                 $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname'); // or token:firstname ?
                 $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
                 $fnames[] = array("email", gT("Email"), 'code'=>'email');
