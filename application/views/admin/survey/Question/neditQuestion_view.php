@@ -20,18 +20,19 @@ $question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThem
 $selected = null;
 
 uasort($aQuestionTypeList, "questionTitleSort");
-foreach ($aQuestionTypeList as $key=> $questionType) {
+foreach ($aQuestionTypeList as $questionType) {
     $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = array(
             'questionGroupName' => $questionType['group']
         );
     }
-        $imageName = $key;
+        $imageName = $questionType['question_type'];
         if ($imageName == ":") $imageName = "COLON";
         else if ($imageName == "|") $imageName = "PIPE";
         else if ($imageName == "*") $imageName = "EQUATION";
 
+    $questionType['type'] = $questionType['question_type'];
     $questionType['detailpage'] = '
     <div class="col-sm-12 currentImageContainer">
         <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
@@ -43,7 +44,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
             <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
         </div>';
     }
-    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
 }
 ?>
 <?php

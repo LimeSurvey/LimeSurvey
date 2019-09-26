@@ -37,14 +37,42 @@ class ExtensionConfig
      */
     public function validate()
     {
-        return isset($this->xml->metadata)
-            && isset($this->xml->metadata->name)
-            && isset($this->xml->metadata->description)
-            && isset($this->xml->metadata->author)
-            && isset($this->xml->metadata->license)
-            && isset($this->xml->metadata->version)
-            && isset($this->xml->compatibility)
-            && isset($this->xml->metadata->type);
+        /** @var array<string, mixed> */
+        $tags = [
+            'metadata' => [
+                'name',
+                'description',
+                'author',
+                'license',
+                'version',
+                'type'
+            ],
+            'compatibility',
+        ];
+        foreach ($tags as $key => $value) {
+            if (!isset($this->xml->$key)) {
+                throw new Exception(
+                    sprintf(
+                        gT('Missing tag %s in extension config.xml'),
+                        $key
+                    )
+                );
+            }
+            if (is_array($value)) {
+                foreach ($value as $tag) {
+                    if (!isset($this->xml->$key->$tag)) {
+                        throw new Exception(
+                            sprintf(
+                                gT('Missing tag %s in %s in extension config.xml'),
+                                $tag,
+                                $key
+                            )
+                        );
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**

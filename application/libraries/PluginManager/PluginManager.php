@@ -124,17 +124,17 @@ class PluginManager extends \CApplicationComponent
     public function installPlugin(\ExtensionConfig $extensionConfig, $pluginType)
     {
         if (!$extensionConfig->validate()) {
-            return [false, gT('Plugin configuration file is not valid.')];
+            return [false, gT('Extension configuration file is not valid.')];
         }
 
         if (!$extensionConfig->isCompatible()) {
-            return [false, gT('Plugin is not compatible with your LimeSurvey version.')];
+            return [false, gT('Extension is not compatible with your LimeSurvey version.')];
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
         if (!empty($otherPlugin)) {
-            return [false, sprintf(gT('Plugin "%s" is already installed.'), $newName)];
+            return [false, sprintf(gT('Extension "%s" is already installed.'), $newName)];
         }
 
         $plugin = new Plugin();

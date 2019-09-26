@@ -21,8 +21,8 @@
         <license>GNU General Public License version 2 or later</license>
         <version>2.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ]]></description>
-        <lastUpdate>2017-11-29 19:28:00</lastUpdate>
+        <description><![CDATA[<strong>{{gT("LimeSurvey Bootwatch Theme")}}</strong><br>{{gT("Based on BootsWatch Themes:")}} <a href='https://bootswatch.com/3/'>{{gT("Visit BootsWatch page")}}</a> ]]></description>
+        <last_update>2017-11-29 19:28:00</last_update>
         <extends>vanilla</extends>
     </metadata>
 
@@ -107,6 +107,7 @@
         <template_editor>
             <screens>
                 <question>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Question')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
@@ -129,6 +130,7 @@
                 </question>
 
                 <surveylist>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Survey list')}} ]]></screen_title>
                     <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -140,6 +142,7 @@
                 </surveylist>
 
                 <welcome>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Welcome')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -161,6 +164,7 @@
                 </welcome>
 
                 <completed>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Completed')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -173,6 +177,7 @@
                 </completed>
 
                 <assessments>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Assessments')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -186,11 +191,13 @@
                 </assessments>
 
                 <error>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Error')}} ]]></screen_title>
                     <file type="view" role="layout">layout_errors.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                 </error>
 
                 <clearall>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Clear all')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -203,6 +210,7 @@
                 </clearall>
 
                 <load>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Load')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -215,6 +223,7 @@
                 </load>
 
                 <save>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Save')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
@@ -227,6 +236,7 @@
                 </save>
 
                 <register>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Registration')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/register.twig</file>
@@ -238,6 +248,7 @@
                 </register>
 
                 <printanswers>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Print answers')}} ]]></screen_title>
                     <file type="view" role="layout">layout_printanswers.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/printanswers.twig</file>
@@ -248,10 +259,12 @@
                 </printanswers>
 
                 <pdf>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('PDF')}} ]]></screen_title>
                     <file type="view" role="layout">layout_print.twig</file>
                 </pdf>
 
                 <navigation>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Navigation')}} ]]></screen_title>
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
@@ -263,11 +276,26 @@
                     <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
                 </navigation>
 
+                <quotas>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Quotas exceeded')}} ]]></screen_title>
+                  <file type="view" role="layout">layout_global.twig</file>
+                  <file type="view" role="content">./subviews/content/quotas.twig</file>
+                  <file type="view" role="subview">./subviews/header/start_form.twig</file>
+                </quotas>
+
+                <token>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
+                  <file type="view" role="layout">layout_user_forms.twig</file>
+                  <file type="view" role="content">./subviews/content/userforms.twig</file>
+                  <file type="view" role="content">./subviews/logincomponents/token.twig</file>
+                  <file type="view" role="content">./subviews/logincomponents/captcha.twig</file>
+                </token>
+
             </screens>
 
             <!-- Data for preview in Theme Editor and Twig Cache command line generator  -->
             <default_data>
-              <survey>
+              <survey type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Template Sample") }} ]]></name>
                 <description type="data" twig="on"><![CDATA[<p>{{ gT('This is a sample survey description. It could be quite long.') }}</p><p>{{ gT("But this one isn't.") }}<p>]]></description>
                 <welcome  type="data" twig="on"><![CDATA[<p>{{ gT('Welcome to this sample survey')}} <p> <p> {{ gT('You should have a great time doing this') }} <p> ]]></welcome>
@@ -275,25 +303,39 @@
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
               </survey>
-              <group>
+              <group type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>
                 <description type="data" twig="on"><![CDATA[ {{ gT("This group description is fairly vacuous, but quite important.") }} ]]></description>
               </group>
-              <question_1>
+              <question_1 type="core">
                 <code type="data" >'Q1 '</code>
                 <text type="data" twig="on"><![CDATA[ {{ gT("How many roads must a man walk down?") }} ]]></text>
                 <valid_message type="data" twig="on"><![CDATA[ <div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Choose one of the following answers") }} </div> ]]></valid_message>
               </question_1>
-              <question_2>
+              <question_2 type="core">
                 <code type="data" >'Q2 '</code>
                 <text type="data" twig="on"><![CDATA[ {{ gT("Please explain something in detail:") }} ]]></text>
                 <valid_message type="data" twig="on"><![CDATA[<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span> {{ gT("Hint when response is not valid") }} </div> ]]></valid_message>
               </question_2>
-              <assessments>
+              <assessments  type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Welcome to the Assessment") }} ]]></name>
                 <message type="data" twig="on"><![CDATA[ {{ gT("You got {TOTAL} points out of 3 possible points.") }} ]]></message>
               </assessments>
-            </default_data>      
+
+              <!-- This is an exemple to show you how to add your custom screen in the theme editor with custom values -->
+              <!-- The name of the array inside aSurveyInfo that feed your twig view is specified as "array-name". If you check quotas.twig, you'll notice the main variable is aSurveyInfo.aQuotas -->
+              <!-- Notice that the data you pass here are simple. You can't pass complex arrays inside the array, only key => value pairs.-->
+              <quotas type="custom" arrayName="aQuotas">
+                <sMessage type="data" twig="on"><![CDATA[ {{ gT("Sorry your responses have exceeded a quota on this survey.") }} ]]></sMessage>
+                <sUrl type="data">http://limesurvey.org</sUrl>
+                <sUrlDescription type="data" twig="on"><![CDATA[ {{ gT("End url") }} ]]></sUrlDescription>
+                <bShowNavigator type="data">false</bShowNavigator>
+              </quotas>
+
+              <userforms type="custom" arrayName="aForm">
+                <sType type="data">token</sType>
+              </userforms>
+            </default_data>
         </template_editor>
     </engine>
 

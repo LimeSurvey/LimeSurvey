@@ -433,7 +433,7 @@ class quotas extends Survey_Common_Action
         $aData['baselang'] = $aData['sBaseLang'];
 
         $aData['sidemenu']['state'] = false;
-
+        $aData['topBar']['showSaveButton'] = true;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId; // Close button

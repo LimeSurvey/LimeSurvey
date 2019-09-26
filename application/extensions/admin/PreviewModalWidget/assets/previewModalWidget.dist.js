@@ -41,6 +41,7 @@ function () {
       },
       value: '',
       selectedClass: '',
+      option: false,
       debugString: 'Key: ',
       debug: false
     };
@@ -74,6 +75,7 @@ function () {
       $("#selector__".concat(this.widgetsJsName, "--buttonText")).html("".concat(itemData.title, " ").concat(this.getForDebug(itemData.key)));
       $("#selector__".concat(this.widgetsJsName, "-detailPage")).html(this.options.onGetDetails(itemData.itemArray.detailpage, itemData));
       this.inputItem.val(itemData.key);
+      this.options.option = itemData.itemArray;
       this.options.value = itemData.key;
     }
   }, {
@@ -157,7 +159,7 @@ function () {
           _this.selectItemClick(ev);
         });
         $("#selector__select-this-".concat(this.widgetsJsName)).on('click', function () {
-          _this.options.onUpdate(_this.options.value);
+          _this.options.onUpdate(_this.options.value, _this.options.option);
 
           _this.modalItem.modal('hide');
         });

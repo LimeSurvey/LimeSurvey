@@ -1370,13 +1370,14 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $qtypes = Question::typeList();
 
     // Main query
-    $aquery = "SELECT * "
+    $aquery = "SELECT g.*, q.*, gls.*, qls.*, qa.attribute, qa.value"
     ." FROM {{groups}} g"
     .' JOIN {{questions}} q on q.gid=g.gid '
     .' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
     .' JOIN {{question_l10ns}} qls on qls.qid=q.qid '
+    ." LEFT JOIN {{question_attributes}} qa ON qa.qid=q.qid AND qa.attribute='question_template' "
     ." WHERE qls.language='{$baseLanguage}' and gls.language='{$baseLanguage}' AND"
-    ." g.sid={$surveyid} AND "
+    ." g.sid={$surveyid} AND"
     ." q.parent_qid=0";
     if ($questionid !== false) {
         $aquery .= " and questions.qid={$questionid} ";
@@ -1389,10 +1390,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $_groupOrder = -1;
 
     foreach ($questions as $arow) {
-//With each question, create the appropriate field(s))
+        //For each question, create the appropriate field(s))
+
         ++$questionSeq;
 
-        // fix fact taht group_order may have gaps
+        // fix fact that the group_order may have gaps
         if ($_groupOrder != $arow['group_order']) {
             $_groupOrder = $arow['group_order'];
             ++$groupSeq;
@@ -1400,6 +1402,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // Condition indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
         $conditions = 'N';
         $usedinconditions = 'N';
+
+        // Check if answertable has custom setting for current question
+        if (isset($arow['attribute']) && isset($arow['type']) && $arow['attribute'] == 'question_template') {
+            $answerColumnDefinition = QuestionTheme::getAnswerColumnDefinition($arow['value'], $arow['type']);
+        }
 
         // Field identifier
         // GXQXSXA
@@ -1416,6 +1423,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             }
 
             $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
+            if (isset($answerColumnDefinition)) {
+                $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+            }
 
             if ($style == "full") {
                 $fieldmap[$fieldname]['title'] = $arow['title'];
@@ -1446,6 +1456,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         "gid"=>$arow['gid'],
                         "qid"=>$arow['qid'],
                         "aid"=>"other");
+                        if (isset($answerColumnDefinition)) {
+                            $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                        }
+
                         // dgk bug fix line above. aid should be set to "other" for export to append to the field name in the header line.
                         if ($style == "full") {
                             $fieldmap[$fieldname]['title'] = $arow['title'];
@@ -1476,6 +1490,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "gid"=>$arow['gid'],
                     "qid"=>$arow['qid'],
                     "aid"=>"comment");
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
+
                     // dgk bug fix line below. aid should be set to "comment" for export to append to the field name in the header line. Also needed set the type element correctly.
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
@@ -1523,6 +1541,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     "qid"=>$arow['qid'],
                     "aid"=>$abrow['title']."_".$answer['title'],
                     "sqid"=>$abrow['qid']);
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
+
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
                         $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1549,7 +1571,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 if (isset($fieldmap[$fieldname])) {
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
                 }
+
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
+                if (isset($answerColumnDefinition)) {
+                    $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                }
+
                 if ($style == "full") {
                     $fieldmap[$fieldname]['title'] = $arow['title'];
                     $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1570,6 +1597,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
                 }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
+                if (isset($answerColumnDefinition)) {
+                    $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                }
+
                 if ($style == "full") {
                     $fieldmap[$fieldname]['title'] = $arow['title'];
                     $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1597,6 +1628,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
                 }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
+                if (isset($answerColumnDefinition)) {
+                    $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                }
+
                 if ($style == "full") {
                     $fieldmap[$fieldname]['title'] = $arow['title'];
                     $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1612,45 +1647,55 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             }
         } elseif ($arow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-                $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>''
-                );
-                if ($style == "full") {
-                    $fieldmap[$fieldname]['title'] = $arow['title'];
-                    $fieldmap[$fieldname]['question'] = $arow['question'];
-                    $fieldmap[$fieldname]['max_files'] = $qidattributes['max_num_of_files'];
-                    $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
-                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
-                    $fieldmap[$fieldname]['hasconditions'] = $conditions;
-                    $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
-                    $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                }
-                $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
-                $fieldmap[$fieldname] = array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>"filecount"
-                );
-                if ($style == "full") {
-                    $fieldmap[$fieldname]['title'] = $arow['title'];
-                    $fieldmap[$fieldname]['question'] = "filecount - ".$arow['question'];
-                    $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
-                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
-                    $fieldmap[$fieldname]['hasconditions'] = $conditions;
-                    $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
-                    $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
-                }
+            $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+            $fieldmap[$fieldname] = array(
+                "fieldname" => $fieldname,
+                'type' => $arow['type'],
+                'sid' => $surveyid,
+                "gid" => $arow['gid'],
+                "qid" => $arow['qid'],
+                "aid" => ''
+            );
+            if (isset($answerColumnDefinition)) {
+                $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+            }
+
+            if ($style == "full") {
+                $fieldmap[$fieldname]['title'] = $arow['title'];
+                $fieldmap[$fieldname]['question'] = $arow['question'];
+                $fieldmap[$fieldname]['max_files'] = $qidattributes['max_num_of_files'];
+                $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
+                $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
+                $fieldmap[$fieldname]['hasconditions'] = $conditions;
+                $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
+                $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
+                $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+            }
+            $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}" . "_filecount";
+            $fieldmap[$fieldname] = array(
+                "fieldname" => $fieldname,
+                'type' => $arow['type'],
+                'sid' => $surveyid,
+                "gid" => $arow['gid'],
+                "qid" => $arow['qid'],
+                "aid" => "filecount"
+            );
+            if (isset($answerColumnDefinition)) {
+                $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+            }
+            
+            if ($style == "full") {
+                $fieldmap[$fieldname]['title'] = $arow['title'];
+                $fieldmap[$fieldname]['question'] = "filecount - " . $arow['question'];
+                $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
+                $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
+                $fieldmap[$fieldname]['hasconditions'] = $conditions;
+                $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
+                $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
+                $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+            }
         } else {
             // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
             //MULTI ENTRY
@@ -1668,6 +1713,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 'qid'=>$arow['qid'],
                 'aid'=>$abrow['title'],
                 'sqid'=>$abrow['qid']);
+                if (isset($answerColumnDefinition)) {
+                    $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                }
+                
                 if ($style == "full") {
                     $fieldmap[$fieldname]['title'] = $arow['title'];
                     $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1692,6 +1741,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
                     }
                     $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']."comment");
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
                         $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1712,6 +1764,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
                 }
                 $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
+                if (isset($answerColumnDefinition)) {
+                    $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                }
+                
                 if ($style == "full") {
                     $fieldmap[$fieldname]['title'] = $arow['title'];
                     $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -1731,6 +1787,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
                     }
                     $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
+                    
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
                         $fieldmap[$fieldname]['question'] = $arow['question'];

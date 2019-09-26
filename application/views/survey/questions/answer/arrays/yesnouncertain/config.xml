@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>arrays/yesnouncertain</name>
+        <type>question_theme</type>
         <title>Array (Yes/No/Uncertain)</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,8 +15,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Array (Yes/No/Uncertain) question type configuration</description>
-        <type>C</type>
+        <questionType>C</questionType>
+        <group>Arrays</group>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>array-yes-uncertain-no</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         List of the css/js files to load.

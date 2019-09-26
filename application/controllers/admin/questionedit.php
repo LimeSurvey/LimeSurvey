@@ -27,9 +27,9 @@ if (!defined('BASEPATH')) {
 class questionedit extends Survey_Common_Action
 {
     /**
-     * @param integer $surveyid 
-     * @param integer $gid 
-     * @param integer $qid 
+     * @param integer $surveyid
+     * @param integer $gid
+     * @param integer $qid
      * @param string $landOnSideMenuTab
      */
     public function view($surveyid, $gid=null, $qid=null, $landOnSideMenuTab = '')
@@ -44,20 +44,21 @@ class questionedit extends Survey_Common_Action
         Yii::app()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
-        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
-        $DisplayArray = array();
-
-        foreach ($aAttributesWithValues as $aAttribute) {
-            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
-                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
-                if ($aAttribute['inputtype'] == 'singleselect') {
-                    if (isset($aAttribute['options'][$aAttribute['value']])) {
-                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
-                    }
-                }
-                $DisplayArray[] = $aAttribute;
-            }
-        }
+        // TODO: can we delete this?
+//        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
+//        $DisplayArray = array();
+//
+//        foreach ($aAttributesWithValues as $aAttribute) {
+//            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
+//                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
+//                if ($aAttribute['inputtype'] == 'singleselect') {
+//                    if (isset($aAttribute['options'][$aAttribute['value']])) {
+//                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+//                    }
+//                }
+//                $DisplayArray[] = $aAttribute;
+//            }
+//        }
 
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
@@ -89,6 +90,8 @@ class questionedit extends Survey_Common_Action
         // combine aData
         $aData['surveyid'] = $iSurveyID;
         $aData['oSurvey'] = $oSurvey;
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
         $aData['activated'] = $oSurvey->active;
@@ -97,7 +100,7 @@ class questionedit extends Survey_Common_Action
         $aData['qshowstyle'] = '';
         $aData['qrrow'] = $qrrow;
         $aData['baselang'] = $baselang;
-        $aData['advancedsettings'] = $DisplayArray;
+//        $aData['advancedsettings'] = $DisplayArray;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['display']['menu_bars']['qid_action'] = 'editquestion';
@@ -473,14 +476,14 @@ class questionedit extends Survey_Common_Action
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oQuestion =  Question::model()->findByPk($iQuestionId);
-        
+
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
-        
+
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
-        }     
+        }
 
         if ($gid != null) {
             $oQuestion->gid = $gid;
@@ -766,7 +769,6 @@ class questionedit extends Survey_Common_Action
             'answerOptions' => $aScaledAnswerOptions,
         ];
     }
-
 
     /**
      * Renders template(s) wrapped in header and footer

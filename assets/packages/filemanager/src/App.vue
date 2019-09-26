@@ -2,9 +2,14 @@
     <div id="filemanager-app" class="row">
         <div class="container-fluid">
             <nav-bar :loading="loading" @setLoading="setLoading" />
-            <div class="row">
-                <folder-list :loading="loading" @setLoading="setLoading" :cols="4" />
+            <div class="row" v-if="!hasError">
+                <folder-list :loading="loading" @setLoading="setLoading" :cols="4" :preset-folder="presetFolder" />
                 <file-list :loading="loading" @setLoading="setLoading" :cols="8" />
+            </div>
+            <div class="row" v-if="hasError">
+                <div class="ls-flex ls-flex-column align-content-center align-items-center">
+                    <div class="alert alert-warning">{{"An error has happened and no files could be located"|translate}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -22,9 +27,13 @@ export default {
         FolderList,
         FileList
     },
+    props: {
+        presetFolder: {type: String|null, default: null}
+    },
     data() {
         return {
-            loading: true
+            loading: true,
+            hasError: false
         };
     },
     methods: {
@@ -35,6 +44,14 @@ export default {
     },
     mounted() {
         this.$store.dispatch("getFolderList").then(result => {
+            
+            if(this.presetFolder != null) {
+                this.$store.commit(
+                    "setCurrentFolder",
+                    this.presetFolder
+                );
+            }
+
             if (this.$store.state.currentFolder == null) {
                 this.$store.commit(
                     "setCurrentFolder",
@@ -44,6 +61,11 @@ export default {
             this.$store.dispatch("getFileList").finally(() => {
                 this.loading = false;
             });
+        })
+        .catch((error) => {
+            this.$log.error(error);
+            this.loading = false;
+            this.hasError = true;
         });
     }
 };

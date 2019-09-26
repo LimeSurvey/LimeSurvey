@@ -87,12 +87,13 @@ export default {
             }))
         ]);
     },
-    getQuestionGeneralSettings: (context) => {
+    getQuestionGeneralSettings: (context, questionTheme='core') => {
         return new Promise((resolve, reject) => {
             const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getGeneralOptions' : '/getGeneralOptions';
             const parameters = {
                 'gid' : window.QuestionEditData.gid || null, 
                 sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
+                question_template: questionTheme
             };
 
             if(context.state.currentQuestionGeneralSettings.question_template != undefined) {

@@ -166,15 +166,16 @@ export default {
         checkCanSubmit(){
             return !LS.ld.isEmpty(this.$store.state.currentQuestion.title);
         },
-        questionTypeChangeTriggered(newValue) {
-            this.$log.log('CHANGE OF TYPE', newValue);
-            this.currentQuestionType = newValue;
+        questionTypeChangeTriggered(newValueArray) {
+            this.$log.log('CHANGE OF TYPE', newValueArray.value);
+            this.currentQuestionType = newValueArray.value;
             let tempQuestionObject = this.$store.state.currentQuestion;
-            tempQuestionObject.type = newValue;
+            tempQuestionObject.type = newValueArray.value;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
+            this.$store.commit('setQuestionGeneralSetting', {settingName: 'question_template', newValue: newValueArray.options.name });
             this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' };
             Promise.all([
-                this.$store.dispatch('getQuestionGeneralSettings'),
+                this.$store.dispatch('getQuestionGeneralSettings', newValueArray.options.name),
                 this.$store.dispatch('getQuestionAdvancedSettings')
             ]).finally(()=>{
                 this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' };
@@ -194,7 +195,8 @@ export default {
             this.loading = false;
         })
         LS.EventBus.$on('questionTypeChanged', (payload) => {
-            this.$log.log("questiontype changed to -> ", payload);
+            this.$log.log("questiontype changed to -> ", payload.content.value);
+            this.$log.log("with data -> ", payload.content.options);
             this.questionTypeChangeTriggered(payload.content);
         });
     },

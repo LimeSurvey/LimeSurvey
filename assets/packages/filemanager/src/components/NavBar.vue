@@ -67,9 +67,9 @@ export default {
         <span class="navbar-brand">{{$store.state.currentFolder}}</span>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li v-if="fileInTransit"><a  href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
-        <li v-if="fileInTransit"><a  href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
-        <li><a href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
+        <li id="FileManager--button-fileInTransit--cancel" v-if="fileInTransit"><a href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
+        <li id="FileManager--button-fileInTransit--submit" v-if="fileInTransit"><a href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
+        <li><a id="FileManager--button-upload" href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
       </ul>
     </div>
   </div>

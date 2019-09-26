@@ -4,7 +4,8 @@
     <!-- Metadata -->
     <metadata>
         <name>arrays/5point</name>
-        <title>Array (5 point choice)</title>
+        <type>question_theme</type>
+        <title>Array (5 Point Choice)</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -14,8 +15,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Array (5 point choice) question type configuration</description>
-        <type>A</type>
+        <questionType>A</questionType>
+        <group>Arrays</group>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>array-5-pt</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         List of the css/js files to load.

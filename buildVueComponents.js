@@ -81,6 +81,7 @@ if(!all && !single) {
 ||   Options:                                                                              ||
 ||     -v -> Verbose mode, show all build processes                                        ||
 ||     -p -> Only prepare (install dependencies)                                           ||
+||     -d -> build only the development part                                               ||
 ||                                                                                         ||
 =============================================================================================
 `);

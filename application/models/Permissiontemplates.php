@@ -130,7 +130,7 @@ class Permissiontemplates extends CActiveRecord
         $editUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
         $exportRoleUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/setpermissions', ['ptid' => $this->ptid]);
-        $deleteUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/deleteconfirm');
+        $deleteUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/delete');
         
 
         $roleDetail = ""
@@ -160,7 +160,7 @@ class Permissiontemplates extends CActiveRecord
                 data-url='".$deleteUrl."' 
                 data-ptid='".$this->ptid."'
                 data-action='delrole' 
-                data-onclick='(LS.RoleControl.triggerRunAction(\"#RoleControl--delete-".$this->ptid."\"))()' 
+                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-".$this->ptid."\")' 
                 data-message='".gt('Do you want to delete this role?')."'>
                     <i class='fa fa-trash text-danger'></i>
               </button>";

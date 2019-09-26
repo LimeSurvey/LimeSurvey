@@ -123,6 +123,7 @@ export default {
             (resolve) => {
                 if(this.$store.state.currentQuestionGroup.gid == null) {
                     this.editQuestionGroup = true;
+                    LS.EventBus.$emit('doFadeEvent', true);
                 }
                 this.loading = false;
             },

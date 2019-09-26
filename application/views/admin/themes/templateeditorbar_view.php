@@ -238,7 +238,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 </div>
 
 <?php if($importModal):?>
-    <?php $this->renderPartial('themeoptions/import_modal',[]); ?>
+    <?php $this->renderPartial('themeoptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
 <?php endif;?>
 
 <div class="col-lg-12 templateeditor">

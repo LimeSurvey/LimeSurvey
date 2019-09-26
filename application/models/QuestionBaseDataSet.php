@@ -22,9 +22,11 @@ abstract class QuestionBaseDataSet extends StaticModel
      *
      * @param int $iQuestionID
      * @param int $sQuestionType
-     * @param int $iSurveyID
      * @param string $sLanguage
+     * @param null   $question_template
+     *
      * @return array
+     * @throws CException
      */
     public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
     {
@@ -37,6 +39,8 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
+
+        //TODO: is this even used for anything? 30.08.2019
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
 
         /*
@@ -95,18 +99,20 @@ abstract class QuestionBaseDataSet extends StaticModel
     /**
      * Returns a preformatted block of the advanced settings for the question editor
      *
-     * @param int $iQuestionID
-     * @param int $sQuestionType
-     * @param int $iSurveyID
+     * @param int    $iQuestionID
+     * @param int    $sQuestionType
      * @param string $sLanguage
+     * @param string   $sQuestionTemplate
+     *
      * @return array
+     * @throws CException
      */
     public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null,  $sQuestionTemplate = null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
         } else {
-            $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
+            $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
             $this->oQuestion = $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
         
@@ -121,8 +127,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
-        $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
-        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTemplateFolderName, $sQuestionTemplate);
+        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionType, $sQuestionTemplate);
 
         $aAdvancedOptionsArray = [];
         if ($iQuestionID == null) {

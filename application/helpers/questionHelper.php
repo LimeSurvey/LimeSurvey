@@ -14,6 +14,7 @@
 
 namespace LimeSurvey\Helpers;
 use QuestionAttribute;
+use QuestionTheme;
 use Yii;
 use Question;
 
@@ -30,11 +31,11 @@ class questionHelper
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
-     * 
+     *
      * DEPRECATED, used only as fall back method
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
-    public static function getAttributesDefinitions() 
+    public static function getAttributesDefinitions()
 
     {
         if (self::$attributes) {
@@ -1615,49 +1616,53 @@ class questionHelper
 
     /**
      * Return the question Theme custom attributes values
-     * @param $sQuestionThemeName: question theme name
+     *
+     * @param      $type
+     * @param      $sQuestionThemeName : question theme name
+     *
      * @return array : the attribute settings for this question type
      */
-    public static function getQuestionThemeAttributeValues($question_template = null, $sQuestionThemeName = null)
+    public static function getQuestionThemeAttributeValues($type, $sQuestionThemeName = null)
     {
-        
         $aQuestionAttributes = array();
         $additionalAttributes = array();
 
-        $sCoreTypeXmlPath = Yii::app()->getConfig('corequestiontypedir').'/survey/questions/answer/'.$question_template.'/config.xml';
-        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-        
+        $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
 
+        $xmlConfigPath = App()->getConfig('rootdir') .'/'. $sCoreTypeXmlPath['xml_path'] . '/config.xml';
         libxml_disable_entity_loader(false);
-        $oCoreConfig = simplexml_load_file($sCoreTypeXmlPath);
-        $aCoreAttributes =  json_decode(json_encode((array)$oCoreConfig), TRUE);
+        $oCoreConfig = simplexml_load_file($xmlConfigPath);
+        $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
         if ($sQuestionThemeName !== null) {
-            $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
-            $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), true);
+            $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
+            if (!empty($questionTheme)) {
+                $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
+                $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+            } else {
+                $attributes = json_decode(json_encode((array)$oCoreConfig->attributes), true);
+            }
         }
         libxml_disable_entity_loader(true);
-        
 
-        if(!empty($custom_attributes)) {
-            if(!empty($custom_attributes['attribute']['name'])) {
+        if (!empty($attributes)) {
+            if (!empty($attributes['attribute']['name'])) {
                 // Only one attribute set in config : need an array of attributes
-                $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+                $attributes['attribute'] = array($attributes['attribute']);
             }
             // Create array of attribute with name as key
             $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
-            foreach($custom_attributes['attribute'] as $customAttribute) {
-                if(!empty($customAttribute['name'])) {
+            foreach ($attributes['attribute'] as $attribute) {
+                if (!empty($attribute['name'])) {
                     // inputtype is text by default
-                    $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+                    $additionalAttributes[$attribute['name']] = array_merge($defaultQuestionAttributeValues, $attribute);
                 }
             }
         }
-        if(!isset($aCoreAttributes['attributes']['attribute'])) {
+        if (!isset($aCoreAttributes['attributes']['attribute'])) {
             throw new Exception("Question type attributes not available!");
         }
 
-        foreach( $aCoreAttributes['attributes']['attribute'] as $aCoreAttribute ) {
+        foreach ($aCoreAttributes['attributes']['attribute'] as $aCoreAttribute) {
             $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
         }
 
@@ -1668,6 +1673,7 @@ class questionHelper
      * Return the question Theme preview URL
      * @param $sType: type pof question
      * @return string : question theme preview URL
+     * @deprecated use QuestionTheme::getQuestionThemePreviewUrl
      */
     public static function getQuestionThemePreviewUrl($sType = null)
     {
@@ -1683,7 +1689,7 @@ class questionHelper
             $preview_filename = '.png';
         }
 
-        return Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+        return App()->getConfig("imageurl").'/screenshots/'.$preview_filename;
     }
 
 }

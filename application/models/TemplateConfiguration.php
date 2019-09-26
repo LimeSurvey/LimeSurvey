@@ -96,6 +96,7 @@ class TemplateConfiguration extends TemplateConfig
     public $template_extends;
     public $template_description;
 
+
     /**
      * @return string the associated database table name
      */
@@ -475,6 +476,8 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('template.description', $this->template_description, true);
         $criteria->compare('template.extends', $this->template_extends, true);
 
+
+
         $coreTemplates = Template::getStandardTemplateList();
         if ($this->template_type == 'core'){
             $criteria->addInCondition('template_name', $coreTemplates);
@@ -488,6 +491,27 @@ class TemplateConfiguration extends TemplateConfig
                 'pageSize'=>$pageSizeTemplateView,
             ),
         ));
+    }
+
+    /**
+     * Twig statements can be used in Theme description
+     */
+    public function getDescription()
+    {
+      $sDescription = $this->template->description;
+
+      // If wrong Twig in manifest, we don't want to block the whole list rendering
+      // Note: if no twig statement in the description, twig will just render it as usual
+      try {
+          $sDescription = Yii::app()->twigRenderer->convertTwigToHtml($this->template->description);
+      } catch (\Exception $e) {
+        // It should never happen, but let's avoid to anoy final user in production mode :) 
+        if (YII_DEBUG){
+          Yii::app()->setFlashMessage("Twig error in template ".$this->template->name." description <br> Please fix it and reset the theme <br>".$e, 'error');
+        }
+      }
+
+      return $sDescription;
     }
 
     /**
@@ -605,54 +629,53 @@ class TemplateConfiguration extends TemplateConfig
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             return '';
         }
-        $gsid          = Yii::app()->request->getQuery('id', null);
-        $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->template_name));
-        $sExtendUrl    = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
-        $sOptionUrl    = (App()->getController()->action->id == "surveysgroups")?Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gsid)):Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
+        $gsid = Yii::app()->request->getQuery('id', null);
+        $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->template_name));
+        $sExtendUrl = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
+        $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ? Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id" => $this->id, "gsid" => $gsid)) : Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id" => $this->id));
 
         $sEditorLink = "<a
-            id='template_editor_link_".$this->template_name."'
-            href='".$sEditorUrl."'
+            id='template_editor_link_" . $this->template_name . "'
+            href='" . $sEditorUrl . "'
             class='btn btn-default btn-block'>
                 <span class='icon-templates'></span>
-                ".gT('Theme editor')."
+                " . gT('Theme editor') . "
             </a>";
 
         $OptionLink = '';
         if ($this->hasOptionPage) {
             $OptionLink .= "<a
-                id='template_options_link_".$this->template_name."'
-                href='".$sOptionUrl."'
+                id='template_options_link_" . $this->template_name . "'
+                href='" . $sOptionUrl . "'
                 class='btn btn-default btn-block'>
                     <span class='fa fa-tachometer'></span>
-                    ".gT('Theme options')."
+                    " . gT('Theme options') . "
                 </a>";
         }
 
 
-         $sExtendLink = '<a
-            id="extendthis_'.$this->template_name.'"
-            href="'.$sExtendUrl.'"
+        $sExtendLink = '<a
+            id="extendthis_' . $this->template_name . '"
+            href="' . $sExtendUrl . '"
             data-post=\''
-            .json_encode([
+            . json_encode([
                 "copydir" => $this->template_name,
                 "action" => "templatecopy",
-                "newname" => ["value"=> "extends_".$this->template_name, "type" => "text", "class" => "form-control col-sm-12"]
+                "newname" => ["value" => "extends_" . $this->template_name, "type" => "text", "class" => "form-control col-sm-12"]
             ])
-            .'\'
-            data-text="'.gT('Please type in the new theme name above.').'"
-            title="'.sprintf(gT('Type in the new name to extend %s'), $this->template_name).'"
+            . '\'
+            data-text="' . gT('Please type in the new theme name above.') . '"
+            title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
             class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
-                '.gT('Extend').'
+                ' . gT('Extend') . '
             </a>';
 
-       
 
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
-            $sButtons = $sEditorLink.$OptionLink.$sExtendLink;
+            $sButtons = $sEditorLink . $OptionLink . $sExtendLink;
 
         }
 

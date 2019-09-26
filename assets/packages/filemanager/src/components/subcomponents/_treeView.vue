@@ -11,6 +11,7 @@ export default {
                 return [];
             }
         },
+        presetFolder: {type: String|null, default: null},
         initiallyCollapsed: { type: Boolean, default: false },
     },
     data() {
@@ -31,10 +32,14 @@ export default {
             let classes =
                 "ls-flex ls-flex-row scoped-tree-folder ls-space bottom-5";
             if (folder.children.length > 0) {
-                classes += "scoped-has-children text-bold";
+                classes += " scoped-has-children text-bold";
             }
             if (this.$store.state.currentFolder == folder.folder) {
                 classes += " scoped-selected";
+            }
+
+            if (this.presetFolder == folder.folder) {
+                classes += " FileManager--preselected-folder";
             }
             return classes;
         }
@@ -72,6 +77,7 @@ export default {
                     :collapsed="collapsed"
                     :folders="folder.children"
                     :loading="loading"
+                    :preset-folder="presetFolder"
                     @setLoading="setLoading"
                 />
             </li>
@@ -81,6 +87,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.FileManager--preselected-folder {
+    background:rgba(220, 220, 220, 0.5);
+}
 .scoped-root-list {
     position: relative;
     padding-left: 18px;

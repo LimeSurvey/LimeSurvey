@@ -708,6 +708,7 @@ class UserAction extends Survey_Common_Action
         foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind) {
             $aLanguageData[$langkey] = html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'], ENT_COMPAT, 'utf-8');
         }
+
         $aData = array();
         $aData['aLanguageData'] = $aLanguageData;
         $aData['sSavedLanguage'] = $oUser->lang;
@@ -731,8 +732,14 @@ class UserAction extends Survey_Common_Action
         array_walk($aRawUserSettings, function ($oUserSetting) use (&$aUserSettings) {
             $aUserSettings[$oUserSetting->stg_name] = $oUserSetting->stg_value;
         });
-        
+
+        $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
+
+        $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['aUserSettings'] = $aUserSettings;
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype);
+
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view

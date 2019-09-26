@@ -545,6 +545,8 @@ class Survey_Common_Action extends CAction
             ],
             $aData['topBar']
         );
+        
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');     
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
     public function _generaltopbarAdditions($aData) {
@@ -559,8 +561,7 @@ class Survey_Common_Action extends CAction
             ],
             $aData['topBar']
         );
-        
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');        
+           
         Yii::app()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ? 'admintoppanelrtl' : 'admintoppanelltr'));
         
         if (isset($aData['qid'])) {

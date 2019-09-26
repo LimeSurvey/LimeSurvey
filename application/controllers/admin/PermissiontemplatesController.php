@@ -164,10 +164,11 @@ class PermissiontemplatesController extends Survey_Common_Action
         
         $oPermissionTemplate->renewed_last = date('Y-m-d H:i:s');
         $save = $oPermissionTemplate->save();
-
+        
+        $html = $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true);
         return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data"=>[
             'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true)
+            'html' => $html
         ]]);
     }
 
@@ -208,17 +209,18 @@ class PermissiontemplatesController extends Survey_Common_Action
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $ptid the ID of the model to be deleted
      */
-    public function delete($ptid)
+    public function delete()
     {
         if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
+        $ptid = Yii::app()->request->getPost('ptid', 0);
         $this->loadModel($ptid)->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('/admin/roles'));
         }
 
     }
@@ -279,8 +281,11 @@ class PermissiontemplatesController extends Survey_Common_Action
                 $oPermissionDBSettingKey = $sSettingKey.'_p';
                 $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
             }
+            
+            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
 
             $results[$sPermissionKey] = [
+                'descriptionData' => $aPermissionData,
                 'success' => $oPermission->save(),
                 'storedValue' => $oPermission->attributes
             ];

@@ -10,7 +10,7 @@ if ($topBar['type'] == 'survey') {
 
     $aExportItemsArray["surveystructure"] = [
         "key" => "surveystructure",
-        "description" => "".gT("Survey structure (.lss)"),
+        "title" => "".gT("Survey structure (.lss)"),
         "detailpage" => "<p>".gT("This export will dump all the groups, questions, answers and conditions for your survey into a .LSS file (which is basically an XML file). This dump file can be used with the 'Import survey' feature when creating a new survey.",'json')."</p>"
         ."<p>".gT("A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server. In that case the system will use the global default theme.",'json')."</p>"
         ."<p><b>".gT("Please note: This file does not contain any collected responses.",'json')."</b></p>",
@@ -21,7 +21,7 @@ if ($topBar['type'] == 'survey') {
         $aExportItemsArray["surveyarchive"] = ($oSurvey->isActive)
         ? [
             "key" => "surveyarchive",
-            "description" => "".gT("Survey archive (.lsa)",'json'),
+            "title" => "".gT("Survey archive (.lsa)",'json'),
             "detailpage" => "
             <p>".gT("This export is intended to create a complete backup of an active survey for archival purposes.",'json')."</p>
             <p>".gT("It will include the following data in a ZIP file ending with '.lsa'.",'json')."</p>
@@ -37,7 +37,7 @@ if ($topBar['type'] == 'survey') {
         ]
         : [
             "key" => "surveyarchive",
-            "description" => "".gT("Survey archive - only available for active surveys",'json'),
+            "title" => "".gT("Survey archive - only available for active surveys",'json'),
             "detailpage" => "",
             "href" => '#',
             "htmlclasses" => 'disabled',
@@ -49,7 +49,7 @@ if ($topBar['type'] == 'survey') {
 
     $aExportItemsArray["quexml"] = [
         "key" => "quexml",
-        "description" => "".gT("queXML format (*.xml)",'json'),
+        "title" => "".gT("queXML format (*.xml)",'json'),
         "detailpage" => "
         <p>".gT("queXML is an XML description of a questionnaire.",'json')."</p>
         <p>".gT("It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types.",'json')."</p>
@@ -62,7 +62,7 @@ if ($topBar['type'] == 'survey') {
 
     $aExportItemsArray["quexmlpdf"] =  [
         "key" => "quexmlpdf",
-        "description" => "".gT("queXML PDF export",'json'),
+        "title" => "".gT("queXML PDF export",'json'),
         "detailpage" => "
         <p>".gT("queXML is an XML description of a questionnaire.",'json')."</p>
         <p>".gT("On the following page you will be able to create a pdf that can be printed filled out and scanned again.",'json')."</p>
@@ -74,7 +74,7 @@ if ($topBar['type'] == 'survey') {
 
     $aExportItemsArray["tabseperated"] =  [
         "key" => "tabseperated",
-        "description" => "".gT("Tab-separated-values format (*.txt)",'json'),
+        "title" => "".gT("Tab-separated-values format (*.txt)",'json'),
         "detailpage" => "
         <p>".gT("This feature is designed to make it easy to use Excel to author and edit surveys.")."</p>
         <p>".gT("It completely eliminates the dependence upon SGQA codes.")."</p>
@@ -87,7 +87,7 @@ if ($topBar['type'] == 'survey') {
 
     $aExportItemsArray["printablesurveyhtml"] = [
         "key" => "printablesurveyhtml",
-        "description" => gT("Printable survey (*.html)",'json'),
+        "title" => gT("Printable survey (*.html)",'json'),
         "detailpage" => "
         <p>".gT("This will download a .zip file containing the survey in all languages.",'json')."</p>
         <p>".gT("It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers.",'json')."</p>
@@ -101,7 +101,7 @@ if ($topBar['type'] == 'survey') {
         if ($onelanguage) {
             $aExportItemsArray["printablesurvey"] = [
                 "key" => "printablesurvey",
-                "description" => gT("Printable survey",'json'),
+                "title" => gT("Printable survey",'json'),
                 "detailpage" => "
                 <p>".gT("This will open the survey as a printable page in new window.",'json')."</p>
                 <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu.",'json')."</p>
@@ -114,7 +114,7 @@ if ($topBar['type'] == 'survey') {
         } else {
             $aExportItemsArray["spacer"] = [
                 "key" => "spacer",
-                "description" => '---',
+                "title" => '---',
                 "detailpage" => "",
                 "href" => '#',
                 "htmlclasses" => 'disabled',
@@ -126,7 +126,7 @@ if ($topBar['type'] == 'survey') {
             foreach ($oSurvey->allLanguages as $tmp_lang) {
                 $aExportItemsArray["printablesurvey_".$tmp_lang] = [
                     "key" => "printablesurvey_".$tmp_lang,
-                    "description" => gT("Printable survey",'json').' ('.getLanguageNameFromCode($tmp_lang, false).')',
+                    "title" => gT("Printable survey",'json').' ('.getLanguageNameFromCode($tmp_lang, false).')',
                     "detailpage" => "
                     <p>".sprintf(gT("This will open the survey in %s as a printable page in new window.",'json'), getLanguageNameFromCode($tmp_lang, false))."</p>
                     <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu.",'json')."</p>

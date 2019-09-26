@@ -1053,10 +1053,13 @@ class UserManagement extends Survey_Common_Action
                 $oPermissionDBSettingKey = $sSettingKey . '_p';
                 $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
             }
+            
+            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
 
             $results[$sPermissionKey] = [
+                'descriptionData' => $aPermissionData,
                 'success' => $oPermission->save(),
-                'storedValue' => $oPermission->attributes,
+                'storedValue' => $oPermission->attributes
             ];
         }
         return $results;

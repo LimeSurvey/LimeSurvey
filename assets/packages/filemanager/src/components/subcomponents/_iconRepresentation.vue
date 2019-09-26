@@ -3,7 +3,8 @@
         <div class="masonry-container" >
             <div 
                 class="ls-flex ls-flex-column scoped-file-tile" 
-                v-for="file in $store.state.fileList" 
+                v-for="file in $store.state.fileList"
+                :id="'iconRep-' + file.hash"
                 :key="file.shortName" 
                 :class="fileClass(file)"
             >
@@ -24,12 +25,12 @@
                 </div>
                 <div class="ls-flex ls-flex-row ls-space margin top-5" >
                     <template v-if="!inTransit(file)">
-                        <button class="btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>
-                        <button class="btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"><i class="fa fa-clone"></i></button>
-                        <button class="btn btn-default" @click="moveFile(file)" :title="translate('Move file')" data-toggle="tooltip"><i class="fa fa-files-o"></i></button>
+                        <button class="FileManager--file-action-delete btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>
+                        <button class="FileManager--file-action-startTransit-copy btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"><i class="fa fa-clone"></i></button>
+                        <button class="FileManager--file-action-startTransit-move btn btn-default" @click="moveFile(file)" :title="translate('Move file')" data-toggle="tooltip"><i class="fa fa-files-o"></i></button>
                     </template>
                     <template  v-if="inTransit(file)">
-                        <button class="btn btn-default" @click="cancelTransit(file)" :title="translate('Cancel transit of file')" data-toggle="tooltip"><i class="fa fa-times text-warning"></i></button>
+                        <button class="FileManager--file-action-cancelTransit btn btn-default" @click="cancelTransit(file)" :title="translate('Cancel transit of file')" data-toggle="tooltip"><i class="fa fa-times text-warning"></i></button>
                     </template>
                 </div>
             </div>
@@ -59,11 +60,6 @@ export default {
       }
     }
   },
-  computed: {
-      calcMaxHeight() {
-          return Math.floor((LS.ld.toArray(this.$store.state.fileList).length*550) / 4);
-      }
-  },
   methods: {
     fileClass(file){
       let htmlClasses = 'scoped-file-icon ';
@@ -73,10 +69,10 @@ export default {
       if(this.inTransit(file)) {
         htmlClasses += 'file-in-transit ';
         if(this.$store.state.transitType == 'move') {
-          htmlClasses += ' move ';
+          htmlClasses += 'move ';
         } 
         if(this.$store.state.transitType == 'copy') {
-          htmlClasses += ' copy ';
+          htmlClasses += 'copy ';
         }
       }
       return htmlClasses;
@@ -96,8 +92,8 @@ export default {
               (error) => {this.$log.error(error);}
             ).finally(()=>{ this.loadingState = false; })
         })
-        .catch(function () {
-          console.log('Clicked on cancel');
+        .catch(() => {
+          this.$.log.log('Clicked on cancel');
         });
     },
     copyFile(file) {
