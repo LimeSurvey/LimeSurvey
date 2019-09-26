@@ -1271,7 +1271,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         $fieldmap["token"] = array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
         if ($style == "full") {
             $fieldmap["token"]['title'] = "";
-            $fieldmap["token"]['question'] = gT("Token");
+            $fieldmap["token"]['question'] = gT("Access code");
             $fieldmap["token"]['group_name'] = "";
         }
     }
@@ -2794,7 +2794,7 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
             'showregister'=>'N'
         ),
         'token'=>array(
-            'description'=>gT('Token'),
+            'description'=>gT('Access code'),
             'mandatory'=>'N',
             'showregister'=>'Y'
         ),

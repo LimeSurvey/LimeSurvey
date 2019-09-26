@@ -2311,7 +2311,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
     $results = [];
     $results['warnings'] = array();
     if ($xml->LimeSurveyDocType != 'Tokens') {
-        $results['error'] = gT("This is not a valid token data XML file.");
+        $results['error'] = gT("This is not a valid participant data XML file.");
         return $results;
     }
 
@@ -2355,7 +2355,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
         $token = Token::create($iSurveyID, 'allowinvalidemail');
         $token->setAttributes($insertdata, false);
         if (!$token->encryptSave()) {
-            $results['warnings'][] = CHtml::errorSummary($token, gT("Skipped tokens entry:"));
+            $results['warnings'][] = CHtml::errorSummary($token, gT("Skipped participant entry:"));
         } else {
             $results['tokens']++;
         }

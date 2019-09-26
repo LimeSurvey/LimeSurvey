@@ -1072,7 +1072,7 @@ class Survey_Common_Action extends CAction
             $surveysummary2[] = gT("It uses cookies for access control.");
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2[] = gT("If tokens are used, the public may register for this survey");
+            $surveysummary2[] = gT("If participant access codes are used, the public may register for this survey");
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
             $surveysummary2[] = gT("Participants can save partially finished surveys");
