@@ -846,6 +846,8 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_languagesettings_pk}}', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
 
+        // TODO: varchar(200) is too big for MySQL index, the index will be truncated to 191 chars.
+        // If debug = 2, this line will fail (can happen if installing from CLI and you already have a config file).
         $oDB->createCommand()->createIndex('{{idx1_surveys_languagesettings}}', '{{surveys_languagesettings}}', 'surveyls_title', false);
 
 
