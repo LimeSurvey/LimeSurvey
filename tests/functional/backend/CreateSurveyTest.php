@@ -543,10 +543,10 @@ class CreateSurveyTest extends TestBaseClassWeb
     }
 
     /**
-     * This test will click on the overview tab inside the sidemenu.
+     * This test will click on the structure tab inside the sidemenu.
      * @test
      */
-    public function clickOnOverviewTab() 
+    public function clickOnStructureButtonSidemenu() 
     {
         try {
             // Before testing 
@@ -569,23 +569,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(1);
 
             // Actual Test
-            $actualWebDriver = $this->_clickOverviewTabSidemenu();
+            $actualWebDriver = $this->_clickOnStructureInSidemenu();
             $this->assertNotNull($actualWebDriver);
         } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
         }
-    }
-
-    /**
-     * This method will click on the overview tab inside sidemenu.
-     */
-    private function _clickOverviewTabSidemenu() 
-    {
-        $elementName = 'adminsidepanel__sidebar--selectorStructureButton';
-        $selectStructureSidebar = self::$webDriver->findElement(
-            WebDriverBy::id($elementName)
-        );
-        return $selectStructureSidebar->click();
     }
 
     /**
@@ -614,12 +602,26 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
+            $actualWebDriver = $this->_clickOnStructureInSidemenu();
+            $this->assertNotNull($actualWebDriver);
+
             // Actual Test 
             $actualWebDriver = $this->__clickOnAddGroupInsideSideMenu();
             $this->assertNotNull($actualWebDriver, 'actualWebDriver is null!');
         } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
         }
+    }
+
+    private function _clickOnStructureInSidemenu() {
+        $structure = 'adminsidepanel__sidebar--selectorStructureButton';
+        $selectStructureSidebar = self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($structure)      
+            )
+        );
+
+        return $selectStructureSidebar->click();
     }
 
     /**
@@ -640,31 +642,42 @@ class CreateSurveyTest extends TestBaseClassWeb
      */
     public function addGroup() 
     {
-        // Before testing 
-        $adminurl = 'admin';
-        $title    = 'Test Survey 01';
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
 
-        $actualWebDriver = $this->_viewMainPage($adminurl);
-        $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_viewMainPage($adminurl);
+            $this->assertNotNull($actualWebDriver);
 
-        sleep(1);
+            sleep(1);
 
-        $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
-        $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
+            $this->assertNotNull($actualWebDriver);
 
-        sleep(1);
+            sleep(1);
 
-        $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
-        $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
+            $this->assertNotNull($actualWebDriver);
 
-        sleep(1);
+            sleep(1);
 
-        $actualWebDriver = $this->__clickOnAddGroupInsideSideMenu();
-        $this->assertNotNull($actualWebDriver, 'actualWebDriver is null!');
+            $actualWebDriver = $this->_clickOnStructureInSidemenu();
+            $this->assertNotNull($actualWebDriver);
 
-         // Actual Test 
-         $actualWebDriver = $this->_fillGroupTitleAndSave();
-         $this->assertNotNull($actualWebDriver);
+            sleep(1);
+
+            $actualWebDriver = $this->__clickOnAddGroupInsideSideMenu();
+            $this->assertNotNull($actualWebDriver, 'actualWebDriver is null!');
+
+            sleep(1);
+
+            // Actual Test 
+            $actualWebDriver = $this->_fillGroupTitleAndSave();
+            $this->assertNotNull($actualWebDriver);
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
     }
 
     /**
