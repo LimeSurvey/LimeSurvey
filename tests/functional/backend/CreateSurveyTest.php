@@ -480,35 +480,28 @@ class CreateSurveyTest extends TestBaseClassWeb
      * @test 
      */
     public function fillInTitleAndSaveSurvey() 
-    {
-        // Before testing 
-        $adminurl = 'admin';
-        $title    = 'Test Survey 01';
+    {   
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
 
-        $actualWebDriver = $this->_viewMainPage($adminurl);
-        $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_viewMainPage($adminurl);
+            $this->assertNotNull($actualWebDriver);
 
-        sleep(1);
+            sleep(1);
 
-        $actualWebDriver = $this->_clickCloseButtonInModal($actualWebDriver, 'welcomeModal');
-        $this->assertNotNull($actualWebDriver, 'actualClick is null!');
+            $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
+            $this->assertNotNull($actualWebDriver);
 
-        sleep(1);
+            sleep(1);
 
-        $actualWebDriver = $this->_clickCloseButtonInModal($actualWebDriver, 'admin-notification-modal');
-        $this->assertNotNull($actualWebDriver, 'actualClick is null!');
-
-        sleep(1);
-
-        $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
-        $this->assertNotNull($actualWebDriver);
-
-        sleep(1);
-
-        // Actual test
-
-        $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
-        $this->assertNotNull($actualWebDriver);
+            // Actual test
+            $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
+            $this->assertNotNull($actualWebDriver);
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }        
     } 
 
     /**
