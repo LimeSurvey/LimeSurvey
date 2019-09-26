@@ -18,7 +18,7 @@ use Facebook\WebDriver\Exception\ElementNotVisibleException;
  */
 class CreateSurveyTest extends TestBaseClassWeb
 {
-    private $urlMan;
+    private $_urlMan;
     private const HTTP_STRING = 'http://';
     private const INDEX_SITE = '/index.php';
 
@@ -350,9 +350,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     private function _viewMainPage(string $url) 
     {   
-        $this->urlMan = \Yii::app()->urlManager;
-        $this->urlMan->setBaseUrl(self::HTTP_STRING.self::$domain.self::INDEX_SITE);
-        $url = $this->urlMan->createUrl($url);
+        $this->_urlMan = \Yii::app()->urlManager;
+        $this->_urlMan->setBaseUrl(self::HTTP_STRING.self::$domain.self::INDEX_SITE);
+        $url = $this->_urlMan->createUrl($url);
         return self::$webDriver->get($url);
     }
 
@@ -406,8 +406,8 @@ class CreateSurveyTest extends TestBaseClassWeb
     /**
      * This Method will do the click action inside the modal view.
      * 
-     * @param string $modalname Name of the Modal 
-     * @return $actualClick
+     * @param  string $modalname Name of the Modal 
+     * @return object $actualClick
      */
     private function _clickCloseButtonInModal(string $modalname)
     {
@@ -425,7 +425,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This Test will create a survey.
+     * 
      * @test 
+     * @return void
      */
     public function clickOnCreateSurveyButton() 
     {
@@ -472,7 +474,9 @@ class CreateSurveyTest extends TestBaseClassWeb
     }
     /**
      * This test is filling the title and saves the survey.
+     * 
      * @test 
+     * @return void
      */
     public function fillInTitleAndSaveSurvey() 
     {   
@@ -504,7 +508,7 @@ class CreateSurveyTest extends TestBaseClassWeb
      * 
      * @param string $title Title of the Survey
      * 
-     * @return object $webDriver
+     * @return object 
      */
     private function _fillInTitleAndSave($title) 
     {
@@ -531,20 +535,20 @@ class CreateSurveyTest extends TestBaseClassWeb
     /**
      * This method will click on save button.
      * 
-     * @return object $webDriver
+     * @return object
      */
     private function _clickSave() 
     {
         $saveButtonName = 'save-form-button';
-        $button = self::$webDriver->findElement(WebDriverby::id($saveButtonName));
-        $webDriver = $button->click();
-
-        return $webDriver;
+        $button = self::$webDriver->findElement(WebDriverBy::id($saveButtonName));
+        return $button->click();
     }
 
     /**
      * This test will click on the structure tab inside the sidemenu.
+     * 
      * @test
+     * @return void
      */
     public function clickOnStructureButtonSidemenu() 
     {
@@ -578,7 +582,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This test will try to click add group button.
+     * 
      * @test 
+     * @return void
      */
     public function clickAddGroup() 
     {   
@@ -588,17 +594,14 @@ class CreateSurveyTest extends TestBaseClassWeb
             $title    = 'Test Survey 01';
 
             $actualWebDriver = $this->_viewMainPage($adminurl);
-            $this->assertNotNull($actualWebDriver);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
-            $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
-            $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
-            $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_fillInTitleAndSave($title);
 
             sleep(1);
 
@@ -606,19 +609,23 @@ class CreateSurveyTest extends TestBaseClassWeb
             $this->assertNotNull($actualWebDriver);
 
             // Actual Test 
-            $actualWebDriver = $this->__clickOnAddGroupInsideSideMenu();
+            $actualWebDriver = $this->_clickOnAddGroupInsideSideMenu();
             $this->assertNotNull($actualWebDriver, 'actualWebDriver is null!');
         } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
         }
     }
 
-    private function _clickOnStructureInSidemenu() {
+    /**
+     * This method will click at STRUCTURE BUTTON inside sidemenu.
+     * 
+     * @return object
+     */
+    private function _clickOnStructureInSidemenu() 
+    {
         $structure = 'adminsidepanel__sidebar--selectorStructureButton';
-        $selectStructureSidebar = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::id($structure)      
-            )
+        $selectStructureSidebar = self::$webDriver->findElement(
+            WebDriverBy::id($structure)     
         );
 
         return $selectStructureSidebar->click();
@@ -626,19 +633,23 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This method will click at ADD GROUP inside sidemenu.
-     * @return 
+     * 
+     * @return object
      */
-    private function __clickOnAddGroupInsideSideMenu() 
+    private function _clickOnAddGroupInsideSideMenu() 
     {
+        $name = 'adminsidepanel__sidebar--selectorCreateQuestionGroup';
         $addGroupButton = self::$webDriver->findElement(
-            WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestionGroup')
+            WebDriverBy::id($name)
         );
         return $addGroupButton->click();
     }
 
     /**
      * This test will add an new question group to the survey.
+     * 
      * @test
+     * @return void
      */
     public function addGroup() 
     {
@@ -652,23 +663,19 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
-            $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
-            $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
-            $this->assertNotNull($actualWebDriver);
+            $actualWebDriver = $this->_fillInTitleAndSave($title);
 
             sleep(1);
 
             $actualWebDriver = $this->_clickOnStructureInSidemenu();
-            $this->assertNotNull($actualWebDriver);
 
             sleep(1);
 
-            $actualWebDriver = $this->__clickOnAddGroupInsideSideMenu();
-            $this->assertNotNull($actualWebDriver, 'actualWebDriver is null!');
+            $actualWebDriver = $this->_clickOnAddGroupInsideSideMenu();
 
             sleep(1);
 
@@ -682,6 +689,8 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This Method will fill out the group title and saves it.
+     * 
+     * @return object
      */
     private function _fillGroupTitleAndSave() 
     {
@@ -704,7 +713,8 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This method will click on save and close button. 
-     * @return 
+     * 
+     * @return object
      */
     private function _clickSaveaAndCloseButton() 
     {
@@ -713,5 +723,472 @@ class CreateSurveyTest extends TestBaseClassWeb
             WebDriverBy::id($buttonName)
         );
         return $button->click();
+    }
+
+    /**
+     * This test will check click at ADD QUESTION Button inside sidemenu.
+     * 
+     * @test 
+     * @return void
+     */
+    public function clickAddQuestion() 
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $actualWebDriver = $this->_viewMainPage($adminurl);
+
+            sleep(1);
+
+            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+
+            sleep(1);
+
+            $actualWebDriver = $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            $actualWebDriver = $this->_clickOnStructureInSidemenu();
+
+            sleep(1);
+
+            $actualWebDriver = $this->_clickOnAddGroupInsideSideMenu();
+
+            sleep(1);
+
+            $actualWebDriver = $this->_fillGroupTitleAndSave();
+
+            sleep(1);
+            
+            // Actual Test 
+            $actualWebDriver = $this->_clickOnAddQuestionInsideSidemenu();
+            $this->assertNotNull($actualWebDriver, 'actualWebdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
+    }
+
+    /**
+     * This method clicks at CREATE QUESTION BUTTON inside sidemenu.
+     * 
+     * @return object
+     */
+    private function _clickOnAddQuestionInsideSidemenu() 
+    {
+        $name = 'adminsidepanel__sidebar--selectorCreateQuestion';
+        $button = self::$webDriver->findElement(
+            WebDriverBy::className($name)
+        );
+        return $button->click();
+    }
+
+    /**
+     * This test will try to add a question. 
+     * 
+     * @test 
+     * @return void
+     */
+    public function addQuestion() 
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $this->_viewMainPage($adminurl);
+
+            sleep(1);
+
+            $this->_clickOnCreateSurveyButton();
+
+            sleep(1);
+
+            $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            $this->_clickOnStructureInSidemenu();
+
+            sleep(1);
+
+            $this->_clickOnAddGroupInsideSideMenu();
+
+            sleep(1);
+
+            $this->_fillGroupTitleAndSave();
+
+            sleep(1);
+            
+            $this->_clickOnAddQuestionInsideSidemenu();
+
+            // Actual Test 
+            $actualWebDriver = $this->_fillQuestionAndSave('Test Question Title 01');
+            $this->assertNotNull($actualWebDriver, 'actualWebDriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
+    }
+
+    /**
+     * This method will fill question and save it.
+     * 
+     * @param string $content Content of Question
+     * 
+     * @return object
+     */
+    private function _fillQuestionAndSave(string $content)
+    {
+        $this->_fillQuestion($content);
+        return $this->_clickSave();
+    }
+
+    /**
+     * This Method will fill the question.
+     * 
+     * @param string $content Content of Question
+     * 
+     * @return object
+     */
+    private function _fillQuestion(string $content)
+    {
+        $name = 'questionCode';
+        $input = self::$webDriver->findElement(
+            WebDriverBy::id($name)
+        );
+        return $input->clear()->sendKeys($content);
+    }
+
+    /**
+     * This method will click on Settings Button inside sidemenu.
+     * 
+     * @return object
+     */
+    private function _clickOnSettingsInSidemenu() 
+    {
+        $name = 'adminsidepanel__sidebar--selectorSettingsButton';
+        $button = self::$webDriver->findElement(
+            WebDriverby::id($name)
+        );
+        return $button->click();
+    }
+
+    /**
+     * This test tries to click on Settings Button inside Sidemenu.
+     * @test
+     */
+    public function clickOnSettingsButtonSidemenu()
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $actualWebDriver = $this->_viewMainPage($adminurl);
+
+            sleep(1);
+
+            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+
+            sleep(1);
+
+            $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            // Actual Test
+            $actualWebDriver = $this->_clickOnSettingsInSidemenu();
+            $this->assertNotNull($actualWebDriver, 'actualWebdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
+    }
+
+    /**
+     * This test tries to click at the overview tab inside the sidemenu.
+     * 
+     * @test 
+     * @return void
+     */
+    public function clickOnOverViewTab()
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $actualWebDriver = $this->_viewMainPage($adminurl);
+
+            sleep(1);
+
+            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+
+            sleep(1);
+
+            $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            $this->_clickOnSettingsInSidemenu();
+
+            sleep(1);
+
+            // Actual Test
+            $actualWebDriver = $this->_clickOnOverviewTab();
+            $this->assertNotNull($actualWebDriver, 'actualWebdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
+    }
+
+    /**
+     * This method is clicking on overview tab inside settings tab (sidemenu).
+     * 
+     * @return object
+     */
+    private function _clickOnOverviewTab()
+    {
+        $name = 'sidemenu_overview';
+        $button = self::$webDriver->findElement(
+            WebDriverBy::id($name)
+        );
+        return $button->click();
+    }
+
+    /**
+     * This test tries to activate a survey.
+     * 
+     * @test
+     * @return void
+     */
+    public function activateSurvey() 
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $this->_viewMainPage($adminurl);
+
+            sleep(1);
+
+            $this->_clickOnCreateSurveyButton();
+
+            sleep(1);
+
+            $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            $this->_clickOnSettingsInSidemenu();
+
+            sleep(1);
+
+            $this->_clickOnOverviewTab();
+            
+            // Actual Test
+            $actualWebDriver = $this->_activateSurvey();
+            $this->assertNotNull($actualWebDriver, 'actualwebdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
+    }
+
+    private function _activateSurvey() 
+    {
+        $this->_clickOnActivateSurveyButton();
+        return $this->_clickConfirmActivateSurvey();
+    }
+
+    private function _clickOnActivateSurveyButton() 
+    {
+        $name = 'ls-activate-survey';
+        $button = self::$webDriver->findElement(
+            WebDriverBy::id($name)
+        );
+        return $button->click();
+    }
+
+    private function _clickConfirmActivateSurvey()
+    {
+        $name = 'activateSurvey__basicSettings--proceed';
+        $button = self::$webDriver->findElement(
+            WebDriverby::id($name)
+        );
+        return $button->click();
+    }
+
+    /**
+     * This test tries to execute the survey. 
+     * 
+     * @test 
+     * @return void 
+     */
+    public function executeSurvey() 
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $this->_viewMainPage($adminurl);
+
+            sleep(1);
+
+            $this->_clickOnCreateSurveyButton();
+
+            sleep(1);
+
+            $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            $this->_clickOnSettingsInSidemenu();
+
+            sleep(1);
+
+            $this->_clickOnOverviewTab();
+            
+            // Actual Test 
+            $actualWebDriver = $this->_executeSurvey();
+            $this->assertNotNull($actualWebDriver, 'actualwebdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }   
+    }
+
+    /**
+     * This method clicks at execute survey button.
+     * 
+     * @return object
+     */
+    private function _executeSurvey()
+    {
+        $text = 'Execute survey';
+        $button = self::$webDriver->findElement(
+            WebDriverBy::linkText($text)
+        );
+        return $button->click();
+    }
+
+    /**
+     * This test is switching to a new tab.
+     * 
+     * @test 
+     * @return void
+     */
+    public function switchToNewTab() 
+    {
+        try {
+            // Before testing 
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $this->_viewMainPage($adminurl);
+            $this->_clickOnCreateSurveyButton();
+            $this->_fillInTitleAndSave($title);
+
+            sleep(1);
+
+            $this->_clickOnSettingsInSidemenu();
+
+            sleep(1);
+
+            $this->_clickOnOverviewTab();
+            $this->_activateSurvey();
+            $this->_executeSurvey();
+
+            // Actual Test 
+            $actualWebDriver = $this->_switchToNewTab();
+            $this->assertNotNull($actualWebDriver, 'webdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }
+    }
+
+    private function _switchToNewTab() 
+    {
+        $windowHandles = self::$webDriver->getWindowHandles();
+        return self::$webDriver->switchTo()->window(
+            end($windowHandles)
+        );
+    }
+
+    /**
+     * This test is creating a new survey, inserts title in it,
+     * activate, and execute survey. also switching to new tab 
+     * and click next button.
+     * 
+     * @test 
+     * @return void
+     */
+    public function newTabActiveSurveyNextButton() {
+        try {
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $this->_viewMainPage($adminurl);
+            $this->_clickOnCreateSurveyButton();
+            $this->_fillInTitleAndSave($title);
+            $this->_clickOnSettingsInSidemenu();
+            $this->_clickOnOverviewTab();
+            $this->_activateSurvey();
+            $this->_executeSurvey();
+            $this->_switchToNewTab();
+            
+            $actualWebDriver = $this->_clickNextButton();
+            $this->assertNotNull($actualWebDriver, 'webdriver null');
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }
+    }
+
+    private function _clickNextButton() {
+        $name = 'ls-button-submit';
+        $button = self::$webDriver->findElement(
+            WebDriverBy::id($name)
+        );
+        return $button->click();
+    }
+
+    public function getQuestions() 
+    {
+        try {
+            $adminurl = 'admin';
+            $title    = 'Test Survey 01';
+
+            $this->_viewMainPage($adminurl);
+            $this->_clickOnCreateSurveyButton();
+            $this->_fillInTitleAndSave($title);
+            $this->_clickOnSettingsInSidemenu();
+            $this->_clickOnOverviewTab();
+            $this->_activateSurvey();
+            $this->_executeSurvey();
+            $this->_switchToNewTab();
+            $this->_clickNextButton();
+
+            $actual = $this->_getQuestions();
+            
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+        }
+    }
+
+    private function _getQuestions() 
+    {
+        $dbo = \Yii::app()->getDb();
+            $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
+            $sids = $dbo->createCommand($query)->queryAll();
+            $this->assertCount(1, $sids);
+            $sid = $sids[0]['sid'];
+            $survey = \Survey::model()->findByPk($sid);
+            $this->assertNotEmpty($survey);
+            $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
+            $questionObjects = $survey->groups[0]->questions;
+            $questions = [];
+            foreach ($questionObjects as $q) {
+                $questions[$q->title] = $q;
+            }
     }
 }
