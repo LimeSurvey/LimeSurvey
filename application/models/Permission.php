@@ -727,7 +727,7 @@ class Permission extends LSActiveRecord
                 'img' => ' fa fa-gears',
             ),
             'tokens' => array(
-                'title' => gT("Tokens"), 'description' => gT("Permission to create/update/delete/import/export token entries"),
+                'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
                 'img' => ' fa fa-user',
             ),
             'translations' => array(

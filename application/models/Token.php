@@ -73,7 +73,7 @@ abstract class Token extends Dynamic
     public function attributeLabels()
     {
         $labels = array(
-            'tid' => gT('Token ID'),
+            'tid' => gT('Access code'),
             'partcipant_id' => gT('Participant ID'),
             'firstname' => gT('First name'),
             'lastname' => gT('Last name'),
@@ -104,7 +104,7 @@ abstract class Token extends Dynamic
         $result = parent::beforeDelete();
         if ($result && isset($this->surveylink)) {
             if (!$this->surveylink->delete()) {
-                throw new CException('Could not delete survey link. Token was not deleted.');
+                throw new CException('Could not delete survey link. Participant was not deleted.');
             }
             return true;
         }
@@ -230,7 +230,7 @@ abstract class Token extends Dynamic
             $counter++;
             // This is extremely unlikely.
             if ($counter > 50) {
-                throw new CHttpException(500, 'Failed to create unique token in 50 attempts.');
+                throw new CHttpException(500, 'Failed to create unique access code in 50 attempts.');
             }
         }
     }
