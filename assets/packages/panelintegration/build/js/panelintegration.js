@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "f04cf05c9e255db2ae4d";
+/******/ 	var hotCurrentHash = "406e83b066a065e5e483";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1769,15 +1769,9 @@ var render = function() {
             _c(
               "button",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.isValid,
-                    expression: "isValid"
-                  }
-                ],
                 staticClass: "btn btn-success",
+                class: !_vm.isValid ? "disabled" : "",
+                attrs: { disabled: !_vm.isValid },
                 on: {
                   click: function($event) {
                     $event.preventDefault()

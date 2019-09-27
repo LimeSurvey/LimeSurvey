@@ -116,7 +116,7 @@ export default {
                 </div>
                 <div class='form-group'>
                     <div class='col-sm-12 text-center'>
-                        <button class='btn btn-success' v-show="isValid" @click.prevent="saveChangedParameter()">
+                        <button class='btn btn-success' :class=" !isValid ? 'disabled' : ''" :disabled="!isValid"  @click.prevent="saveChangedParameter()">
                             <span class="fa fa-floppy-o"></span>
                             {{'Save'|translate}}
                         </button>
