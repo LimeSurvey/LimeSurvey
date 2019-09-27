@@ -251,7 +251,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'title' => gT('Mandatory'),
                 'formElementId' => 'mandatory',
                 'formElementName' => false,
-                'formElementHelp' => gT('Makes this question mandatory in your survey'),
+                'formElementHelp' => gT('Makes this question mandatory in your survey. Option "Soft" gives a possibility to skip a question without giving any answer.'),
                 'inputtype' => 'buttongroup',
                 'formElementValue' => $this->oQuestion->mandatory,
                 'formElementOptions' => [
