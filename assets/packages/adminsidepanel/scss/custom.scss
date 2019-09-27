@@ -378,6 +378,9 @@ ol.breadcrumb.title-bar-breadcrumb {
     }
 }
 @media(max-width: 768px) {
+    .navbar-header {
+        background: white;
+    }
     .simpleWrapper {
         position: absolute;
         background: white;
@@ -385,6 +388,12 @@ ol.breadcrumb.title-bar-breadcrumb {
         width: 20px !important;
     }
     #sidebar {
-        width: 80vw;
+        width: 99vw;
+        padding-right:10px;
+    }
+    #vue-apps-main-container,
+    footer.footer,
+    .surveymanagerbar {
+        margin-left:22px
     }
 }

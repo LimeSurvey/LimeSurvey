@@ -33,25 +33,6 @@
   width: 2em;
 }
 
-@media (max-width: 768px) {
-.scoped-hide-on-small[data-v-19f8877c] {
-    position: fixed;
-    top: 110px;
-    left: -77vw;
-    background: white;
-    width: 80vw;
-    height: 85vh;
-    z-index: 10;
-}
-.scoped-hide-on-small.toggled[data-v-19f8877c] {
-      left: 0;
-}
-#sidebar .resize-handle > button[data-v-19f8877c] {
-    width: 18px;
-    margin-top: 10px;
-    background: var(--LS-admintheme-basecolor);
-}
-}
 .sidebar_loader[data-v-19f8877c] {
   height: 100%;
   position: absolute;
@@ -60,6 +41,36 @@
   z-index: 4501;
   box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
   top: 0;
+}
+.scoped-placeholder-greyed-area[data-v-19f8877c] {
+  display: none;
+}
+@media (max-width: 768px) {
+.scoped-hide-on-small[data-v-19f8877c] {
+    position: fixed;
+    top: 49px;
+    left: -96vw;
+    width: 100vw;
+    height: 95vh;
+    z-index: 10;
+}
+.scoped-hide-on-small.toggled[data-v-19f8877c] {
+      left: 0;
+}
+.scoped-hide-on-small .mainContentContainer[data-v-19f8877c] {
+      max-width: 80vw;
+      background: white;
+}
+#sidebar .resize-handle > button[data-v-19f8877c] {
+    width: 20px;
+    background: var(--LS-admintheme-basecolor);
+}
+.scoped-placeholder-greyed-area[data-v-19f8877c] {
+    display: block;
+    background: rgba(125, 125, 125, 0.2);
+    height: 100%;
+    width: 20vw;
+}
 }
 
 
@@ -354,13 +365,20 @@ ol.breadcrumb.title-bar-breadcrumb {
       font-size: 13rem; }
 
 @media (max-width: 768px) {
+  .navbar-header {
+    background: white; }
   .simpleWrapper {
     position: absolute;
     background: white;
     left: 0;
     width: 20px !important; }
   #sidebar {
-    width: 80vw; } }
+    width: 99vw;
+    padding-right: 10px; }
+  #vue-apps-main-container,
+  footer.footer,
+  .surveymanagerbar {
+    margin-left: 22px; } }
 
 .ls-flex, .ls-flex-row, .ls-flex-column {
   display: -moz-flex;

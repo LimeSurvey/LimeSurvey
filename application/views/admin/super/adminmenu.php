@@ -26,7 +26,7 @@
 
     <!-- Only on xs screens -->
     <div class="collapse navbar-collapse pull-left hidden-sm  hidden-md hidden-lg" id="small-screens-menus">
-        <ul class="nav navbar-nav hidden-sm  hidden-md hidden-lg">
+        <ul class="nav navbar-nav hidden-sm  hidden-md hidden-lg small-screens-menus">
 
             <li><br/><br/></li>
             <!-- active surveys -->
