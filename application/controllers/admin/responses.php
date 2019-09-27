@@ -825,9 +825,9 @@ class responses extends Survey_Common_Action
             }
 
             if ($fielddetails['type'] == 'page_time') {
-                $fnames[] = array($fielddetails['fieldname'], gT('Group').": ".$fielddetails['group_name']);
+                $fnames[] = array($fielddetails['fieldname'], gT('Page').": ".$fielddetails['group_name']);
                 $aData['columns'][] = array(
-                    'header' => gT('Group: ').$fielddetails['group_name'],
+                    'header' => gT('Page: ').$fielddetails['group_name'],
                     'name' => $fielddetails['fieldname']
                 );
             }

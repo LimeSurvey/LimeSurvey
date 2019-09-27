@@ -17,7 +17,7 @@ use \LimeSurvey\Helpers\questionHelper;
 * This function imports a LimeSurvey .lsg survey page XML file
 *
 * @param string $sFullFilePath  The full filepath of the uploaded file
-* @param integer $iNewSID The new survey id - the group will always be added after the last group in the survey
+* @param integer $iNewSID The new survey id - the page will always be added after the last page in the survey
 */
 function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
 {
@@ -29,7 +29,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
 
 
     if ($xml === false || $xml->LimeSurveyDocType != 'Group') {
-        safeDie('This is not a valid LimeSurvey group structure XML file.');
+        safeDie('This is not a valid LimeSurvey page structure XML file.');
     }
 
     $iDBVersion = (int) $xml->DBVersion;
@@ -47,7 +47,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
     }
 
     if (!in_array($sBaseLanguage, $importlanguages)) {
-        $results['fatalerror'] = gT("The languages of the imported group file must at least include the base language of this survey.");
+        $results['fatalerror'] = gT("The languages of the imported page file must at least include the base language of this survey.");
         return $results;
     }
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
@@ -1532,7 +1532,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oQuestionGroupL10n = new QuestionGroupL10n();
             $oQuestionGroupL10n->setAttributes($insertdata, false);
             if (!$oQuestionGroupL10n->save()) {
-                throw new Exception(gT("Error while saving group: ").print_r($oQuestionGroupL10n->errors, true));
+                throw new Exception(gT("Error while saving page: ").print_r($oQuestionGroupL10n->errors, true));
             }
         }
     }

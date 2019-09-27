@@ -165,11 +165,11 @@ class Survey_Common_Action extends CAction
         if (!empty($params['iGroupId'])) {
             if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid group id"));
+                throw new CHttpException(403, gT("Invalid survey page id"));
             }
             $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid"=>$params['iGroupId'])); //Move this in model to use cache
             if (!$oGroup) {
-                throw new CHttpException(404, gT("Group not found"));
+                throw new CHttpException(404, gT("Survey page not found"));
             }
             if (!isset($params['iSurveyId'])) {
                 $params['iSurveyId'] = $params['iSurveyID'] = $params['surveyid'] = $params['sid'] = $oGroup->sid;
@@ -1046,7 +1046,7 @@ class Survey_Common_Action extends CAction
         if ($aSurveyInfo['format'] == "S") {
             $surveysummary2[] = gT("It is presented question by question.");
         } elseif ($aSurveyInfo['format'] == "G") {
-            $surveysummary2[] = gT("It is presented group by group.");
+            $surveysummary2[] = gT("It is presented page by page.");
         } else {
             $surveysummary2[] = gT("It is presented on one single page.");
         }

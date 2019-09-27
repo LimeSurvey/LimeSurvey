@@ -169,7 +169,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 } ?>
 
                 <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)): ?>
-                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question and group respectively, check the question order and save it."); ?>
+                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question and page respectively, check the question order and save it."); ?>
                         <ul>
                             <?php foreach ($questionOrderDuplicates as $info): ?>
                             <li>
@@ -188,7 +188,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <?php
                     if (isset($groups))
                     {?>
-                    <li><?php eT("The following groups should be deleted:"); ?>
+                    <li><?php eT("The following pages should be deleted:"); ?>
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($groups as $group) {?>
@@ -200,7 +200,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     }
                     else
                     { ?>
-                    <li><?php eT("All groups meet consistency standards."); ?></li><?php
+                    <li><?php eT("All pages meet consistency standards."); ?></li><?php
                 } ?>
 
                 <?php
@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 } ?>
 
                 <?php if (isset($groupOrderDuplicates) && !empty($groupOrderDuplicates)): ?>
-                    <li><?php eT("The following surveys have an errorneous survey page order. Please go to each survey respectively, check the group order and save it."); ?>
+                    <li><?php eT("The following surveys have an errorneous survey page order. Please go to each survey respectively, check the page order and save it."); ?>
                         <ul>
                             <?php foreach ($groupOrderDuplicates as $info): ?>
                             <li>

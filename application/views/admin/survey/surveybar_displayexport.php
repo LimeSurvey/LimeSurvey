@@ -83,7 +83,7 @@
         "detailpage" => "
         <p>".gT("This feature is designed to make it easy to use Excel to author and edit surveys.")."</p>
         <p>".gT("It completely eliminates the dependence upon SGQA codes.")."</p>
-        <p>".gT("It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), and testing (such as temporarily disabling mandatory or validation criteria).")."</p>
+        <p>".gT("It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating pages), and testing (such as temporarily disabling mandatory or validation criteria).")."</p>
         <p><a href=\"https://manual.limesurvey.org/Excel_Survey_Structure\" target=\"_blank\" >".gT("Check out the dedicated documentation for this format.")." <i class=\"fa fa-external-link\"></i></a></p>
         ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/".$oSurvey->sid),

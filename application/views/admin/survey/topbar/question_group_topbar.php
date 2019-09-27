@@ -175,7 +175,7 @@ if ($hasDeletePermission) {
                 'dataurl' => $this->createUrl("admin/questiongroups/sa/delete/", ["asJson" => true]),
                 'postdata' => json_encode(['gid' => $gid, 'surveyid' => $sid]),
                 'type' => 'confirm',
-                'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
+                'message' => gT("Deleting this survey page will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
                 'icon' => 'fa fa-trash',
                 'name' => gT("Delete current survey page"),
                 'class' => ' btn-danger ',
@@ -185,7 +185,7 @@ if ($hasDeletePermission) {
             $buttons['delete_current_question_group'] = [
                 'id' => 'delete_current_question_group',
                 'url' => '',
-                'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
+                'title' => gT("Impossible to delete this survey page because there is at least one question having a condition on its content"),
                 'icon' => 'fa fa-trash',
                 'name' => gT("Delete current survey page"),
                 'class' => ' btn-danger disabled',
