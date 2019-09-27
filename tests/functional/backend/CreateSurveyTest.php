@@ -487,7 +487,8 @@ class CreateSurveyTest extends TestBaseClassWeb
         } catch (TimeOutException $exception) {
             // Do nothing.
         }
-        
     }
+
+    
 
 }
