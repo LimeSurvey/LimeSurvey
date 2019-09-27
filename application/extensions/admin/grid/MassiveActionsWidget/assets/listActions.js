@@ -67,7 +67,10 @@ var onClickListAction =  function () {
     // Using session before redirect rather than form submission
     if(actionType == 'fill-session-and-redirect')
     {
-        // postUrl is defined as a var in the View
+        // postUrl is defined as a var in the View, if not the basic url is used
+        if(postUrl == undefined) {
+            var postUrl = $actionUrl;
+        } 
         $(this).load(postUrl, {
             itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);

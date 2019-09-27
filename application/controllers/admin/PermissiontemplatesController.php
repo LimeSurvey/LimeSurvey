@@ -15,15 +15,22 @@ class PermissiontemplatesController extends Survey_Common_Action
 
         Yii::app()->getClientScript()->registerPackage('permissionroles');
 
+        $massiveAction = App()->getController()->renderPartial(
+            '/admin/permissiontemplates/massiveAction/_selector',
+            [],
+            true,
+            false
+        );
+
         $model = Permissiontemplates::model();
         $this->_renderWrappedTemplate(
             null, 
             'permissiontemplates/index', 
             array(
                 'model' => $model,
+                'massiveAction' => $massiveAction
             )
         );
-
     }
     /**
      * Displays a particular model.
@@ -87,6 +94,65 @@ class PermissiontemplatesController extends Survey_Common_Action
                 true
             )
         ]]);
+
+    }
+
+    public function showImportXML() {
+        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->getController()->redirect(array('/admin'));
+        }
+
+        Yii::app()->getController()->renderPartial( 'permissiontemplates/partials/_import', []);
+    }
+
+    public function importXML() {
+        
+        $sRandomFileName = randomChars(20);
+        $sFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$sRandomFileName;
+        $aPathinfo = pathinfo($_FILES['the_file']['name']);
+        $sExtension = $aPathinfo['extension'];
+        $bMoveFileResult = false;
+        
+ 
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
+            Yii::app()->getController()->redirect(array('/admin/roles'));
+            Yii::app()->end();
+        } elseif (strtolower($sExtension) == 'xml' ||1==1) {
+            $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
+        } else {
+            Yii::app()->setFlashMessage(gT("This is not a .xml file."). 'It is a '.$sExtension, 'error');
+            Yii::app()->getController()->redirect(array('/admin/roles'));
+            Yii::app()->end();
+        }
+
+        if ($bMoveFileResult === false) {
+            Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+            Yii::app()->getController()->redirect(array('/admin/roles'));
+            Yii::app()->end();
+            return;
+        }
+
+        libxml_disable_entity_loader(false);
+        $oRoleDefinition = simplexml_load_file(realpath($sFilePath));
+        libxml_disable_entity_loader(true);
+        
+        $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
+        if($oNewRole == false ) {
+
+            Yii::app()->setFlashMessage(gT("Error creating role"), 'error');
+            Yii::app()->getController()->redirect(array('/admin/roles'));
+            Yii::app()->end();
+            return;
+        }
+
+        $applyPermissions = $this->applyPermissionFromXML($oNewRole->ptid, $oRoleDefinition->permissions);
+        
+        Yii::app()->setFlashMessage(gT("Sucessfully imported role"), 'success');
+        Yii::app()->getController()->redirect(array('/admin/roles'));
+        Yii::app()->end();
+        return;
 
     }
 
@@ -204,6 +270,30 @@ class PermissiontemplatesController extends Survey_Common_Action
         );
     }
 
+    public function batchDelete() 
+    {
+        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->getController()->redirect(array('/admin'));
+        }
+        $sPtids = Yii::app()->request->getPost('sItems', []);
+        $aPtids = json_decode($sPtids, true);
+        $success = [];
+        foreach ($aPtids as $ptid) {
+            $success[$ptid] = $this->loadModel($ptid)->delete();
+        }
+
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success', 
+            [
+                'sMessage' => gT('Roles successfully deleted'), 
+                'sDebug' => json_encode($success, JSON_PRETTY_PRINT), 
+                'noButton' => true
+            ]
+        );
+
+    }
+
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -234,6 +324,57 @@ class PermissiontemplatesController extends Survey_Common_Action
         header('Content-Disposition: attachment; filename="'.$filename.'.xml"');
         print($oXML->asXML());
         Yii::app()->end();
+    }
+    
+    public function batchExport() {
+        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->getController()->redirect(array('/admin'));
+        }
+        $sPtids = Yii::app()->request->getParam('sItems', '');
+        $aPtids = explode(',',$sPtids);
+        $sRandomFolderName = randomChars(20);
+        $sRandomFileName = "RoleExport-".randomChars(5).'-'.time();
+        
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $zipfile = "$tempdir/$sRandomFileName.zip";
+        Yii::app()->loadLibrary('admin.pclzip');
+
+        $zip = new PclZip($zipfile);
+        $sFilePath = $tempdir.DIRECTORY_SEPARATOR.$sRandomFolderName;      
+        
+        mkdir($sFilePath);
+        $filesInArchive = [];
+        
+        foreach ($aPtids as $iPtid) {
+            $oModel = $this->loadModel($iPtid);
+            $oXML = $oModel->compileExportXML();
+            $filename = preg_replace("/[^a-zA-Z0-9-_]*/",'',$oModel->name).'.xml';
+
+            file_put_contents($sFilePath.DIRECTORY_SEPARATOR.$filename, $oXML->asXML());
+            $filesInArchive[] = $sFilePath.DIRECTORY_SEPARATOR.$filename;
+        }
+
+        $zip->create($filesInArchive, PCLZIP_OPT_REMOVE_ALL_PATH);
+
+        if (is_file($zipfile)) {
+            // Send the file for download!
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate");
+            header("Content-Type: application/force-download");
+            header("Content-Disposition: attachment; filename=$sRandomFileName.zip");
+            header("Content-Description: File Transfer");
+
+            @readfile($zipfile);
+
+            // Delete the temporary file
+            array_map('unlink', glob("$sFilePath/*.*"));
+            rmdir($sFilePath);
+            unlink($zipfile);
+            return;
+        }
+
+        $this->getController()->redirect('/admin/roles');
     }
 
     /**
@@ -280,6 +421,41 @@ class PermissiontemplatesController extends Survey_Common_Action
             foreach($aPermissionSettings as $sSettingKey => $sSettingValue) {
                 $oPermissionDBSettingKey = $sSettingKey.'_p';
                 $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
+            }
+            
+            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
+
+            $results[$sPermissionKey] = [
+                'descriptionData' => $aPermissionData,
+                'success' => $oPermission->save(),
+                'storedValue' => $oPermission->attributes
+            ];
+        }
+        return $results;
+    }
+
+    private function applyPermissionFromXML($iRoleId, $oPermissionObject)
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('entity_id', $iRoleId);
+        $oCriteria->compare('entity', 'role');
+        //Kill all Permissions of that role.
+        $aPermissionsCurrently = Permission::model()->deleteAll($oCriteria);
+        $results = [];
+        //Apply the permission array
+        $aCleanPermissionObject = json_decode(json_encode($oPermissionObject), true);
+        foreach($aCleanPermissionObject as $sPermissionKey => $aPermissionSettings) {
+            $oPermission = new Permission();
+            $oPermission->entity = 'role';
+            $oPermission->entity_id = $iRoleId;
+            $oPermission->uid = 0;
+            $oPermission->permission = $sPermissionKey;
+
+            foreach($aPermissionSettings as $sSettingKey => $sSettingValue) {
+                $oPermissionDBSettingKey = $sSettingKey.'_p';
+                if(isset($oPermission->$oPermissionDBSettingKey)) {
+                    $oPermission->$oPermissionDBSettingKey = $sSettingValue;
+                }
             }
             
             $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
