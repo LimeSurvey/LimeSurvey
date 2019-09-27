@@ -8,7 +8,7 @@
 
 $standardthemerooturl = Yii::app()->getConfig('standardthemerooturl');
 $templaterooturl      = Yii::app()->getConfig('userthemerooturl');
-$sAdminEmailAddressNeeded = gT("If you are using token functions or notification emails you need to set an administrator email address.");
+$sAdminEmailAddressNeeded = gT("If you are using participants or notification emails you need to set an administrator email address.");
 
 App()->getClientScript()->registerScript(
     "createSurveyText-variables",

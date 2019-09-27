@@ -73,13 +73,13 @@ abstract class Token extends Dynamic
     public function attributeLabels()
     {
         $labels = array(
-            'tid' => gT('Access code'),
+            'tid' => gT('Access code ID'),
             'partcipant_id' => gT('Participant ID'),
             'firstname' => gT('First name'),
             'lastname' => gT('Last name'),
             'email' => gT('Email address'),
             'emailstatus' => gT('Email status'),
-            'token' => gT('Token'),
+            'token' => gT('Access code'),
             'language' => gT('Language code'),
             'blacklisted' => gT('Blacklisted'),
             'sent' => gT('Invitation sent date'),

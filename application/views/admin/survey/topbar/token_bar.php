@@ -240,10 +240,10 @@ if (!$onlyclose) {
     }
     // Invitation and reminders (Dropdown) ############### END
 
-    //Generate Tokens
+    //Generate access codes
     $buttons['generate_tokens'] = [
         'url' => $this->createUrl("admin/tokens/sa/tokenify/surveyid/$sid"),
-        'name' => gT('Generate tokens'),
+        'name' => gT('Generate access codes'),
         'icon' => 'fa fa-cog',
         'id' => 'participants-generatetoken-button',
         'class' => 'btn btn-default',

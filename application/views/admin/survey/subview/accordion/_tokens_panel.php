@@ -189,7 +189,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     $this->widget('bootstrap.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
         'header' => gt('Warning','unescaped'),
-        'content' => '<p>'.gT("You can't use Anonymized responses when Token-based answers persistence is enabled.").'</p>',
+        'content' => '<p>'.gT("You can't use Anonymized responses when participant-based answer persistence is enabled.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));
     $this->widget('bootstrap.widgets.TbModal', array(
