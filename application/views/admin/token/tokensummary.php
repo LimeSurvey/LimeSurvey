@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                 </tr>
                 <tr>
                     <th>
-                        <?php eT("Total with no unique token"); ?>
+                        <?php eT("Total with no unique participant access code"); ?>
                     </th>
                     <td>
                         <?php echo $queries['invalid']; ?>

@@ -163,12 +163,12 @@ foreach ($tokendata as $Key => $Value) {
             <!-- Token, language -->
             <div class="form-group">
                 <label class=" control-label" for='token'>
-                <?php eT("Token:"); ?>
+                <?php eT("Access code:"); ?>
                 </label>
                 <div class="">
                 <input class='form-control' type='text' maxlength="<?php echo $iTokenLength; ?>" size='20' name='token' id='token' value="<?php if (isset($token)) {echo $token; } ?>" />
                 <?php if ($token_subaction == "addnew"): ?>
-                    <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
+                    <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate access codes using 'Generate access codes'"); ?></span>
                 <?php endif; ?>
                 </div>
             </div>
@@ -411,12 +411,12 @@ foreach ($tokendata as $Key => $Value) {
     switch ($token_subaction)
     {
         case "edit":?>
-          <input type='submit' class="hidden" value='<?php eT("Update token entry"); ?>' />
+          <input type='submit' class="hidden" value='<?php eT("Update participant entry"); ?>' />
           <input type='hidden' name='subaction' value='updatetoken' />
           <input type='hidden' name='tid' value='<?php echo $tokenid; ?>' />
         <?php break;
         case "addnew": ?>
-          <input type='submit' class='hidden' value='<?php eT("Add token entry"); ?>' />
+          <input type='submit' class='hidden' value='<?php eT("Add participant entry"); ?>' />
           <input type='hidden' name='subaction' value='inserttoken' />
         <?php break;
     } ?>

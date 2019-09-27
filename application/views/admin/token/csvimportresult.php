@@ -16,14 +16,14 @@
                                 }
                                 else
                                 {
-                                    eT("Failed to create token entries");
+                                    eT("Failed to create participant entries");
                                 }
                         ?>
                     </h2>
             <?php else:?>
                 <div class="jumbotron message-box">
                     <h2 class="text-success"><?php eT("Uploaded CSV file successfully"); ?></h2>
-                    <p class='lead text-success'><?php eT("Successfully created token entries"); ?></p>
+                    <p class='lead text-success'><?php eT("Successfully created participant entries"); ?></p>
             <?php endif;?>
                     <p>
                         <ul class="list-unstyled">

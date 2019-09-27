@@ -17,7 +17,7 @@
 
                     <?php
                         if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','create')){
-                            eT("If you initialise a survey participants table for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
+                            eT("If you initialise a survey participants table for this survey then this survey will only be accessible to users who provide an access code either manually or by URL.");
                         ?><br /><br />
 
                         <?php
@@ -38,7 +38,7 @@
 
                     <?php
                     }else{
-                        eT("You don't have the permission to activate tokens.");
+                        eT("You don't have the permission to activate participants.");
                     ?>
                     <input type='submit' value='<?php eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$oSurvey->sid"); ?>', '_top')" /></div>
 

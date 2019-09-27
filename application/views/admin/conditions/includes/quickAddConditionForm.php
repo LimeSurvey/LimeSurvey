@@ -91,7 +91,7 @@
                             <a href='#QUICKADD-PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-toggle='tab'><?php eT('Questions'); ?></a>
                         </li>
                         <li role='presentation' class='target-tab'>
-                            <a href='#QUICKADD-TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Token fields'); ?></a>
+                            <a href='#QUICKADD-TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Participant fields'); ?></a>
                         </li>
                         <li role='presentation' class='target-tab disabled'>
                             <a href='#QUICKADD-REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
