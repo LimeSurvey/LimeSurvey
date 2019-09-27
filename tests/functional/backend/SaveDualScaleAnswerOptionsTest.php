@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2017-11-24
@@ -67,8 +68,12 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         );
 
         self::$webDriver->get($url);
-
-        $button = self::$webDriver->findElement(WebDriverBy::id('questionEditorButton'));
+        
+        $button = self::$webDriver->wait(5)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id('questionEditorButton')
+            )
+        );
         $button->click();
 
         $button = self::$webDriver->findElement(WebDriverBy::linkText('Answer options'));
