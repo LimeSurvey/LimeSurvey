@@ -18,7 +18,7 @@
     <p><?php eT("Please choose one option."); ?></p>
     <select name='selectedoption' class="form-control" >
         <option value="po" selected><?php eT("Delete only from the central panel") ?></option>
-        <option value="pt"><?php eT("Delete from the central panel and associated surveys") ?></option>
+        <option value="ptt"><?php eT("Delete from the central panel and associated surveys") ?></option>
         <option value="ptta"><?php eT("Delete from central panel, associated surveys and all associated responses") ?></option>
     </select>
 </div>
