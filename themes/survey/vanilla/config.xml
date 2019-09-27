@@ -307,7 +307,7 @@
                 </navigation>
 
                 <token>
-                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Participant')}} ]]></screen_title>
                   <file type="view" role="layout">layout_user_forms.twig</file>
                   <file type="view" role="content">./subviews/content/userforms.twig</file>
                   <file type="view" role="content">./subviews/logincomponents/token.twig</file>
