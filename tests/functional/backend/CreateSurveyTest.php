@@ -340,14 +340,23 @@ class CreateSurveyTest extends TestBaseClassWeb
      * This Test will check if its possible to view the main page.
      * 
      * @test
+     * @return object
      */
     public function goToMainPage() 
     {   
         $adminurl = 'admin';
         $actualWebDriver = $this->_viewMainPage($adminurl);
         $this->assertNotNull($actualWebDriver, 'webdriver is null');
+        return $actualWebDriver;
     }
 
+    /**
+     * This method will view the main page.
+     * 
+     * @param string $url URL
+     * 
+     * @return object
+     */
     private function _viewMainPage(string $url) 
     {   
         $this->_urlMan = \Yii::app()->urlManager;
@@ -358,18 +367,21 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This test will click the welcome modal.
+     * 
+     * @return void
+     *  
      * @test
+     * @depends gotoMainPage
      */
     public function clickCloseButtonInWelcomeModal() 
     {
         try {
-            $adminurl = 'admin';
+            //$adminurl = 'admin';
             $modal = 'welcomeModal';
-
-            $actualWebDriver = $this->_viewMainPage($adminurl);
-            $this->assertNotNull($actualWebDriver);
+            //$actualWebDriver = $this->_viewMainPage($adminurl);
+            //$this->assertNotNull($actualWebDriver);
     
-            sleep(1);
+            //sleep(1);
             
             $actualClick = $this->_clickCloseButtonInModal($modal);
             $this->assertNotNull($actualClick, 'actualClick is null!');
@@ -406,8 +418,9 @@ class CreateSurveyTest extends TestBaseClassWeb
     /**
      * This Method will do the click action inside the modal view.
      * 
-     * @param  string $modalname Name of the Modal 
-     * @return object $actualClick
+     * @param string $modalname Name of the Modal 
+     * 
+     * @return object 
      */
     private function _clickCloseButtonInModal(string $modalname)
     {
@@ -434,24 +447,22 @@ class CreateSurveyTest extends TestBaseClassWeb
         try {
             // Before testing
             $adminurl = 'admin';
+            $welcomeModal = 'welcomeModal';
+            $passwordModal = 'admin-notification-modal';
 
             $actualWebDriver = $this->_viewMainPage($adminurl);
-            $this->assertNotNull($actualWebDriver);
     
             sleep(1);
 
-            $actualWebDriver = $this->_clickCloseButtonInModal('welcomeModal');
-            $this->assertNotNull($actualWebDriver, 'actualClick is null!');
+            $actualWebDriver = $this->_clickCloseButtonInModal($welcomeModal);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickCloseButtonInModal('admin-notification-modal');
-            $this->assertNotNull($actualWebDriver, 'actualClick is null!');
+            $actualWebDriver = $this->_clickCloseButtonInModal($passwordModal);
 
             sleep(1);
 
-            // Actual Testing starts here 
-            // Click on big create survey button.
+            // Actual Test
             $actualWebDriver = $this->_clickOnCreateSurveyButton();
             $this->assertNotNull($actualWebDriver);
         } catch (\Exception $exception) {
@@ -462,7 +473,7 @@ class CreateSurveyTest extends TestBaseClassWeb
     /**
      * This method will click on CREATE SURVEY button.
      * 
-     * @return object $webDriver
+     * @return object
      */
     private function _clickOnCreateSurveyButton() 
     {
@@ -558,17 +569,14 @@ class CreateSurveyTest extends TestBaseClassWeb
             $title    = 'Test Survey 01';
 
             $actualWebDriver = $this->_viewMainPage($adminurl);
-            $this->assertNotNull($actualWebDriver);
 
             sleep(1);
 
             $actualWebDriver = $this->_clickOnCreateSurveyButton($actualWebDriver);
-            $this->assertNotNull($actualWebDriver);
 
             sleep(1);
 
             $actualWebDriver = $this->_fillInTitleAndSave($actualWebDriver, $title);
-            $this->assertNotNull($actualWebDriver);
 
             sleep(1);
 
@@ -593,20 +601,19 @@ class CreateSurveyTest extends TestBaseClassWeb
             $adminurl = 'admin';
             $title    = 'Test Survey 01';
 
-            $actualWebDriver = $this->_viewMainPage($adminurl);
+            $this->_viewMainPage($adminurl);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+            $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
-            $actualWebDriver = $this->_fillInTitleAndSave($title);
+            $this->_fillInTitleAndSave($title);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnStructureInSidemenu();
-            $this->assertNotNull($actualWebDriver);
+            $this->_clickOnStructureInSidemenu();
 
             // Actual Test 
             $actualWebDriver = $this->_clickOnAddGroupInsideSideMenu();
@@ -658,24 +665,23 @@ class CreateSurveyTest extends TestBaseClassWeb
             $adminurl = 'admin';
             $title    = 'Test Survey 01';
 
-            $actualWebDriver = $this->_viewMainPage($adminurl);
-            $this->assertNotNull($actualWebDriver);
+            $this->_viewMainPage($adminurl);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+            $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
-            $actualWebDriver = $this->_fillInTitleAndSave($title);
+            $this->_fillInTitleAndSave($title);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnStructureInSidemenu();
+            $this->_clickOnStructureInSidemenu();
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnAddGroupInsideSideMenu();
+            $this->_clickOnAddGroupInsideSideMenu();
 
             sleep(1);
 
@@ -738,27 +744,27 @@ class CreateSurveyTest extends TestBaseClassWeb
             $adminurl = 'admin';
             $title    = 'Test Survey 01';
 
-            $actualWebDriver = $this->_viewMainPage($adminurl);
+            $this->_viewMainPage($adminurl);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+            $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
-            $actualWebDriver = $this->_fillInTitleAndSave($title);
+            $this->_fillInTitleAndSave($title);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnStructureInSidemenu();
+            $this->_clickOnStructureInSidemenu();
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnAddGroupInsideSideMenu();
+            $this->_clickOnAddGroupInsideSideMenu();
 
             sleep(1);
 
-            $actualWebDriver = $this->_fillGroupTitleAndSave();
+            $this->_fillGroupTitleAndSave();
 
             sleep(1);
             
@@ -876,7 +882,9 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This test tries to click on Settings Button inside Sidemenu.
+     * 
      * @test
+     * @return void
      */
     public function clickOnSettingsButtonSidemenu()
     {
@@ -885,11 +893,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             $adminurl = 'admin';
             $title    = 'Test Survey 01';
 
-            $actualWebDriver = $this->_viewMainPage($adminurl);
+            $this->_viewMainPage($adminurl);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+            $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
@@ -918,11 +926,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             $adminurl = 'admin';
             $title    = 'Test Survey 01';
 
-            $actualWebDriver = $this->_viewMainPage($adminurl);
+            $this->_viewMainPage($adminurl);
 
             sleep(1);
 
-            $actualWebDriver = $this->_clickOnCreateSurveyButton();
+            $this->_clickOnCreateSurveyButton();
 
             sleep(1);
 
@@ -995,12 +1003,23 @@ class CreateSurveyTest extends TestBaseClassWeb
         }   
     }
 
+    /**
+     * This method will click at ACTIVATE SURVEY Button 
+     * and click at CONFIRM Button.
+     * 
+     * @return object
+     */
     private function _activateSurvey() 
     {
         $this->_clickOnActivateSurveyButton();
         return $this->_clickConfirmActivateSurvey();
     }
 
+    /**
+     * This method will click at ACTIVATE SURVEY Button
+     * 
+     * @return object
+     */
     private function _clickOnActivateSurveyButton() 
     {
         $name = 'ls-activate-survey';
@@ -1010,6 +1029,12 @@ class CreateSurveyTest extends TestBaseClassWeb
         return $button->click();
     }
 
+    /**
+     * This method will at CONFIRM BUTTON inside 
+     * ACTIVATE SURVEY.
+     * 
+     * @return object
+     */
     private function _clickConfirmActivateSurvey()
     {
         $name = 'activateSurvey__basicSettings--proceed';
@@ -1107,6 +1132,11 @@ class CreateSurveyTest extends TestBaseClassWeb
         }
     }
 
+    /**
+     * This method will switch to a new tab.
+     * 
+     * @return void 
+     */
     private function _switchToNewTab() 
     {
         $windowHandles = self::$webDriver->getWindowHandles();
@@ -1144,7 +1174,13 @@ class CreateSurveyTest extends TestBaseClassWeb
         }
     }
 
-    private function _clickNextButton() {
+    /**
+     * This method clicks NEXT BUTTON.
+     * 
+     * @return object
+     */
+    private function _clickNextButton() 
+    {
         $name = 'ls-button-submit';
         $button = self::$webDriver->findElement(
             WebDriverBy::id($name)
@@ -1152,6 +1188,12 @@ class CreateSurveyTest extends TestBaseClassWeb
         return $button->click();
     }
 
+    /**
+     * Test is checking questions.
+     * 
+     * @test 
+     * @return void
+     */
     public function getQuestions() 
     {
         try {
@@ -1167,28 +1209,60 @@ class CreateSurveyTest extends TestBaseClassWeb
             $this->_executeSurvey();
             $this->_switchToNewTab();
             $this->_clickNextButton();
-
-            $actual = $this->_getQuestions();
             
+            $sids = $this->_getSurveyIDsByDB();
+            $this->assertCount(1, $sids);
+
+            $sid = $sids[0]['sid'];
+            $survey = $this->_getSurvey($sid);
+            $this->assertNotEmpty($survey);
+            $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
+            
+            $actual = $this->_getQuestions($survey);
+            $this->assertCount(1, $actual, 'We have exactly one question');
+            $this->assertTrue(isset($actual['question1']), json_encode(array_keys($actual)));
         } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
         }
     }
 
-    private function _getQuestions() 
+    /**
+     * Getter for Questions from Database.
+     * 
+     * @param \Survey $survey Survey 
+     * 
+     * @return \Question[]
+     */
+    private function _getQuestions(\Survey $survey) 
+    {
+        $questionObjects = $survey->groups[0]->questions;
+        $questions = [];
+        foreach ($questionObjects as $q) {
+            $questions[$q->title] = $q;
+        }
+        return $questions;
+    }
+
+    /**
+     * Getter Survey
+     * 
+     * @param int $surveyID Survey ID
+     * 
+     * @return \Survey
+     */
+    private function _getSurvey(int $surveyID) 
+    {
+        return \Survey::model()->findByPk($surveyID);
+    }
+    /**
+     * Getter SurveyIDs by DB
+     * 
+     * @return array
+     */
+    private function _getSurveyIDsByDB() 
     {
         $dbo = \Yii::app()->getDb();
-            $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
-            $sids = $dbo->createCommand($query)->queryAll();
-            $this->assertCount(1, $sids);
-            $sid = $sids[0]['sid'];
-            $survey = \Survey::model()->findByPk($sid);
-            $this->assertNotEmpty($survey);
-            $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
-            $questionObjects = $survey->groups[0]->questions;
-            $questions = [];
-            foreach ($questionObjects as $q) {
-                $questions[$q->title] = $q;
-            }
+        $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
+        return $dbo->createCommand($query)->queryAll();
     }
 }
