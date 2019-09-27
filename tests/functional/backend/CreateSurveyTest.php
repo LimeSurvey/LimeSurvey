@@ -9,6 +9,7 @@ use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\ElementNotVisibleException;
+use Facebook\WebDriver\WebDriver;
 
 /**
  * Login and create a survey, add a group
@@ -339,29 +340,20 @@ class CreateSurveyTest extends TestBaseClassWeb
     /**
      * This Test will check if its possible to view the main page.
      * 
-     * @return object
+     * @return LimeSurveyWebDriver
      */
     public function testGoToMainPage() 
     {   
-        $adminurl = 'admin';
-        $actualWebDriver = $this->_viewMainPage($adminurl);
-        $this->assertNotNull($actualWebDriver, 'webdriver is null');
-        return $actualWebDriver;
-    }
+        $url = 'admin';
 
-    /**
-     * This method will view the main page.
-     * 
-     * @param string $url URL
-     * 
-     * @return object
-     */
-    private function _viewMainPage(string $url) 
-    {   
         $this->_urlMan = \Yii::app()->urlManager;
         $this->_urlMan->setBaseUrl(self::HTTP_STRING.self::$domain.self::INDEX_SITE);
         $url = $this->_urlMan->createUrl($url);
-        return self::$webDriver->get($url);
+        $driver = self::$webDriver->get($url);
+
+        $this->assertNotNull($driver, 'webdriver is null');
+
+        return $driver;
     }
 
     /**
@@ -369,26 +361,131 @@ class CreateSurveyTest extends TestBaseClassWeb
      * 
      * @param LimeSurveyWebDriver $driver Actual Webdriver
      * 
+     * @return LimeSurveyWebDriver
+     * 
+     * @skipped
      * @depends testGoToMainPage 
      */
     public function testClickCloseButtonInWelcomeModal(LimeSurveyWebDriver $driver)
     {
         try {
-            $modalname = 'welcomeModal';
+            $button = $driver->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                )
+            );
+            $driver = $button->click();
     
-            $modal = $driver->findElement(
-                WebDriverBy::id($modalname)
+            $this->assertNotNull($driver, 'actualClick is null!');
+        
+        } catch(TimeOutException $excpetion) {
+            // Do nothing.
+        }
+        return $driver;
+    }
+
+    /**
+     * This Test will click the close button inside the password warning modal view.
+     * 
+     * @param LimeSurveyWebDriver $driver Webdriver
+     * 
+     * @return LimeSurveyWebDriver
+     * 
+     * @skipped
+     * @depends testGoToMainPage
+     */
+    public function testClickCloseButtonInPasswordWarning(LimeSurveyWebDriver $driver)
+    {
+        try {
+            $button = $driver->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                )
             );
-            $modalfooter = $modal->findElement(
-                WebDriverBy::className('modal-footer')
+            $driver = $button->click();
+    
+            $this->assertNotNull($driver, 'actualClick is null!');
+        } catch(TimeOutException $excpetion) {
+            // Do nothing.
+        }
+        return $driver;
+    }
+
+    /**
+     * This Test will create a survey.
+     * 
+     * @param LimeSurveyWebDriver $driver Webdriver
+     * 
+     * @return LimeSurveyWebDriver
+     *
+     * @depends testGoToMainPage
+     */
+    public function testClickOnCreateSurveyButton(LimeSurveyWebDriver $driver) 
+    {
+        $link = $driver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::cssSelector('#panel-1[data-url]')
+            )
+        );
+    
+        $this->assertNotNull($link->click());
+       
+        return $driver;
+    }
+
+    /**
+     * This Test is filling the survey with content and saves it.
+     * 
+     * @param LimeSurveyWebDriver $driver 
+     * 
+     * @return LimeSurveyWebDriver
+     * 
+     * @depends testClickOnCreateSurveyButton
+     */
+    public function testFillSurveyAndSave(LimeSurveyWebDriver $driver)
+    {
+        $elementName = 'surveyTitle';
+        $title = 'Test Survey 01';
+        $saveButtonName = 'save-form-button';
+
+        $input = $driver->findElement(
+            WebDriverBy::id($elementName)
+        );
+        $input->clear()->sendKeys($title);
+        $button = $driver->findElement(
+            WebDriverBy::id($saveButtonName)
+        );
+        $this->assertNotNull($button->click());
+
+        return $driver;
+    }
+
+    /**
+     * This test will click on the structure tab inside the sidemenu.
+     * 
+     * @param LimeSurveyWebDriver $driver Actual Webdriver 
+     * 
+     * @return LimeSurveyWebDriver
+     * 
+     * @test
+     * @depends testFillSurveyAndSave
+     */
+    public function clickOnStructureButtonSidemenu(LimeSurveyWebDriver $driver) 
+    {
+        try {
+            $structure = 'adminsidepanel__sidebar--selectorStructureButton';
+            $selectStructureSidebar = $driver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::id($structure)
+                )
             );
-            $button = $modalfooter->findElement(
-                WebDriverBy::className('btn btn-default')
-            );
-            $actualClick = $button->click();
-            $this->assertNotNull($actualClick, 'actualClick is null!');
-        } catch (\Exception $exception) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '__' . __FUNCTION__);
+
+            $driver = $selectStructureSidebar->click();
+            $this->assertNotNull($driver);
+
+            return $driver;
+        } catch (TimeOutException $exception) {
+            // Do nothing.
         }
         
     }
