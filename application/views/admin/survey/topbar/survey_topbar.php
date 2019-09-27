@@ -295,7 +295,7 @@ if (!$isActive && $hasSurveyContentPermission) {
     ];
     array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['straight']);
 
-    // By Question Group
+    // By Survey Page
     $buttons['by_question_group'] = [
         'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
         'name' => gT('By survey page'),

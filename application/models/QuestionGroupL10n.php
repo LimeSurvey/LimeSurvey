@@ -59,7 +59,7 @@ class QuestionGroupL10n extends LSActiveRecord
     public function defaultScope()
     {
         return array('index'=>'language');
-    }   
+    }
 
     /** @inheritdoc */
     public function rules()
@@ -71,7 +71,7 @@ class QuestionGroupL10n extends LSActiveRecord
                 'condition'=>'language=:language',
                 'params'=>array(':language'=>$this->language)
                 ),
-                'message'=>sprintf(gT("Group ID (gid): “%s” already set with language ”%s”."),$this->gid,$this->language),
+                'message'=>sprintf(gT("Page ID (gid): “%s” already set with language ”%s”."),$this->gid,$this->language),
             ),
         );
     }
@@ -80,9 +80,8 @@ class QuestionGroupL10n extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'language' => gt('Language'),
-            'group_name' => gt('Group name'),
+            'language' => gT('Language'),
+            'group_name' => gT('Page name'),
         );
     }
-    
 }

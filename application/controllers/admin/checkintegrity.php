@@ -542,7 +542,7 @@ class CheckIntegrity extends Survey_Common_Action
 
                                     if ( array_key_exists( $sNvColName, $aColumns ) ){
                                         // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                        // So we'll change the group of the question question group table (so in admin interface, not in frontend)
+                                        // So we'll change the group of the question survey page table (so in admin interface, not in frontend)
                                         $oQuestion->gid = $sGid;
                                         $oQuestion->save();
 

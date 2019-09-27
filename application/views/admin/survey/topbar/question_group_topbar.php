@@ -147,7 +147,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
     }
 }
 
-// Right Buttons (only shown for question group
+// Right Buttons (only shown for survey page)
 if ($hasReadPermission) {
     // Check Survey Logic Button
     $buttons['check_survey_logic'] = [

@@ -61,10 +61,10 @@ class LSHttpRequest extends CHttpRequest
      * TODO: implement it for all those pages
      * List of pages where it should be implemented :
      * - All pages accessible via the top nav-bar (eg: create a new survey, edit template, etc.)
-     * - All pages accessible via quick actions (home page, survey quick actions, question group quick actions, etc.)
+     * - All pages accessible via quick actions (home page, survey quick actions, survey page quick actions, etc.)
      * - All pages accessible via question explorer (only "add question to group" for now)
-     * - Edition of question and question group, which are accessible via summary or list
-     * - Import question, question group
+     * - Edition of question and survey page, which are accessible via summary or list
+     * - Import question, survey page
      *
      * TODO: remove misused of it
      * It should not be used for pages accessible from only one place

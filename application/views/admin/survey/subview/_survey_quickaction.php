@@ -46,7 +46,7 @@
 
                         <?php elseif(!$groups_count > 0):?>
 
-                            <!-- To add questions, first, you must add a question group -->
+                            <!-- To add questions, first, you must add a survey page -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT('Before you can add questions you must add a survey page first.');?>

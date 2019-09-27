@@ -9,9 +9,9 @@
             <!-- Summary Table -->
             <table  id='questiondetails' <?php echo $qshowstyle; ?>>
 
-                <!-- Question Group -->
+                <!-- Survey Page -->
                 <tr>
-                    <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
+                    <td><strong><?php eT('Survey page:');?></strong>&nbsp;&nbsp;&nbsp;</td>
                     <td><em><?php echo flattenText($oQuestion->group->questionGroupL10ns[$baselang]->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
                 </tr>
 

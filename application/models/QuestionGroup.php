@@ -260,50 +260,50 @@ class QuestionGroup extends LSActiveRecord
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
-            $button .= '<a class="btn btn-default list-btn '.($surveyIsActive ? 'disabled' : '').' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><i class="fa fa-plus " ></i></a>';
+            $button .= '<a class="btn btn-default list-btn '.($surveyIsActive ? 'disabled' : '').' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to page').'" href="'.$url.'" role="button"><i class="fa fa-plus " ></i></a>';
         }
 
         // Group edition
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><i class="fa fa-pencil " ></i></a>';
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit page').'"><i class="fa fa-pencil " ></i></a>';
         }
 
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
             $url .= '/'.$this->sid.'/gid/'.$this->gid;
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><i class="fa fa-list-alt " ></i></a>';
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Page summary').'"><i class="fa fa-list-alt " ></i></a>';
         }
 
         // Delete
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
-                $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
+                $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey page').'">'
                     .'<button class="btn btn-default" '
                     .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
                     .' data-target="#confirmation-modal"'
                     .' role="button"'
                     .' data-toggle="modal"'
-                    .' data-message="'.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'"'
+                    .' data-message="'.gT("Deleting this page will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'"'
                     .'>'
                         .'<i class="fa fa-trash text-danger "></i>'
-                        .'<span class="sr-only">'.gT('Delete survey group').'</span>'
+                        .'<span class="sr-only">'.gT('Delete survey page').'</span>'
                     .'</button>'
                     .'</span>';
 
             } else {
-                $button .= '<span data-toggle="tooltip" title="'.gT('Group cant be deleted, because of depending conditions').'">'
+                $button .= '<span data-toggle="tooltip" title="'.gT("Page can't be deleted, because of depending conditions").'">'
                     .'<button class="btn btn-default" '
                     .' disabled '
                     .' role="button"'
                     .' data-toggle="popover"'
                     .' data-tooltip="true"'
-                    .' title="'.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'">'
+                    .' title="'.gT("Impossible to delete this page because there is at least one question having a condition on its content", "js").'">'
                         .'<i class="fa fa-trash text-muted "></i>'
-                        .'<span class="sr-only">'.gT('Delete survey group not possible').'</span>'
+                        .'<span class="sr-only">'.gT('Delete survey page not possible').'</span>'
                     .'</button>'
                     .'</span>';
             }
@@ -357,7 +357,7 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /*
-     * Get primary Question group title
+     * Get primary Question page title
      */
     public function getPrimaryTitle()
     {
@@ -368,7 +368,7 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /*
-     * Get primary Question group description
+     * Get primary Question page description
      */
     public function getPrimaryDescription()
     {
@@ -379,7 +379,7 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Make sure we don't save a new question group
+     * Make sure we don't save a new survey page
      * while the survey is active.
      *
      * @inheritdoc
@@ -390,7 +390,7 @@ class QuestionGroup extends LSActiveRecord
             $survey = Survey::model()->findByPk($this->sid);
             if (!empty($survey) && $survey->isActive && $this->getIsNewRecord()) {
                 /* And for multi lingual, when add a new language ? */
-                $this->addError('gid', gT("You can not add a group if survey is active."));
+                $this->addError('gid', gT("You can not add a page if survey is active."));
                 return false;
             }
             return true;
@@ -400,7 +400,7 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Returns the first question group in the survey
+     * Returns the first survey page in the survey
      * @param int $surveyId
      * @return QuestionGroup
      */

@@ -88,7 +88,7 @@ if ($hasReadPermission) {
     array_push($topbar['alignment']['left']['buttons'], $surveypreview_buttons);
     array_push($topbarextended['alignment']['left']['buttons'], $surveypreview_buttons);
 
-    // Preview Question Group Button
+    // Preview Survey Page Button
     $name = gT('Preview survey page');
 
     $questiongrouppreview_buttons = [];

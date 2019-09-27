@@ -14,7 +14,7 @@
 use \LimeSurvey\Helpers\questionHelper;
 
 /**
-* This function imports a LimeSurvey .lsg question group XML file
+* This function imports a LimeSurvey .lsg survey page XML file
 *
 * @param string $sFullFilePath  The full filepath of the uploaded file
 * @param integer $iNewSID The new survey id - the group will always be added after the last group in the survey
@@ -599,7 +599,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
 *
 * @param string $sFullFilePath  The full filepath of the uploaded file
 * @param integer $iNewSID The new survey id
-* @param mixed $newgid The new question group id -the question will always be added after the last question in the group
+* @param mixed $newgid The new survey page id -the question will always be added after the last question in the group
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('autorename'=>false))
 {

@@ -83,7 +83,7 @@ $aReplacementData=array();
                     </a>
 
 
-                    <!-- preview question group -->
+                    <!-- preview survey page -->
                     <a class="btn btn-default" href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
                         <span class="icon-do"></span>
                         <?php eT("Preview survey page");?>
