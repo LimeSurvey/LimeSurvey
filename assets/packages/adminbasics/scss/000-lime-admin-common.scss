@@ -1099,6 +1099,16 @@ div.panel.disabled a {
     overflow-y:visible
 }
 
+.ck-content {
+    transition: height 400ms ease-in-out;
+}
+.ck-blurred {
+    max-height:35vh;
+}
+.ck-focused {
+    max-height: initial;
+}
+
 @media (max-width: 768px) {
     .main-content-container {
         max-width:100%; 

@@ -34,7 +34,7 @@ export default {
     },
     data() {
         return {
-            loading: true
+            loading: true,
         };
     },
     computed: {
@@ -45,6 +45,10 @@ export default {
         },
         surveyActive() {
             return this.$store.getters.surveyObject.active =='Y'
+        },
+        collapsedMenu: {
+            get() { return this.$store.state.collapsedGeneralSettings },
+            set(nV) { return this.$store.commit('setCollapsedGeneralSettings', nV); }
         }
     },
     methods: {
@@ -76,10 +80,15 @@ export default {
 </script>
 
 <template>
-    <div class="col-sm-4 col-xs-12 scope-set-min-height">
+    <div class="ls-flex scope-set-min-height scoped-general-settings" :class="collapsedMenu ? 'collapsed' : ''">
         <transition name="slide-fade">
-            <div class="panel panel-default question-option-general-container" v-if="!loading">
-                <div class="panel-heading"> {{"General Settings" | translate }}</div>
+            <div class="panel panel-default question-option-general-container col-12" v-if="!loading && !collapsedMenu">
+                <div class="panel-heading"> 
+                    {{"General Settings" | translate }}
+                    <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
+                        <i class="fa fa-chevron-right" />
+                    </button>
+                </div>
                 <div class="panel-body">
                     <div class="list-group">
                         <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
@@ -101,6 +110,14 @@ export default {
             </div>
         </transition>
         <transition name="slide-fade">
+            <button v-if="!loading && collapsedMenu" class="btn btn-default scoped--special-collapse" @click="collapsedMenu=false">
+                <i class="fa fa-chevron-left" />
+                <div class="special-collapse-text">
+                    {{"General Settings" | translate }}
+                </div>
+            </button>
+        </transition>
+        <transition name="slide-fade">
             <div class="row" v-if="loading">
                 <loader-widget id="generalSettingsLoader" />
             </div>
@@ -109,10 +126,25 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.scoped--special-collapse {
+    width: 50px;
+    >.special-collapse-text {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+        margin-top: 0.5rem;
+    }
+}
+.scoped-general-settings {
+    min-width: 30%;
+    &.collapsed {
+        min-width: 0%;
+        width: 75px;
+    }
+}
 .scope-general-setting-block {
     margin: 1rem  0.1rem;
 }
 .scope-set-min-height {
-    min-height: 40vh;
+    min-height: 280px;
 }
 </style>

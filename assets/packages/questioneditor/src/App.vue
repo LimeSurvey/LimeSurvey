@@ -301,15 +301,19 @@ export default {
                         @change="selectLanguage"
                     />
                 </div>
-                <div class="row" key="editorcontent-block">
-                    <transition name="slide-fade-left">
-                        <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                    </transition>
-                    <transition name="slide-fade-left">
-                        <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
-                    </transition>
-                    <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
-                    <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+                <div key="editorcontent-block">
+                    <div class="ls-flex ls-flex-row scope-create-gutter">
+                        <transition name="slide-fade-left">
+                            <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                        </transition>
+                        <transition name="slide-fade-left">
+                            <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                        </transition>
+                        <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
+                    </div>
+                    <div class="ls-flex ls-flex-row">
+                        <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+                    </div>
                 </div>
             </template>
         </transition-group>
@@ -320,9 +324,16 @@ export default {
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .scoped-unset-pointer-events {
     pointer-events: none;
+}
+
+.scope-create-gutter {
+    &>div {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }
 
 .scoped-new-questioneditor {
