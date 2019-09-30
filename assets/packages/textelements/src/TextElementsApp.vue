@@ -35,20 +35,32 @@ export default {
             descriptionEditorObject: LsEditor,
             descriptionEditorConfig: {
                 'lsExtension:fieldtype': 'survey-desc', 
-                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
-                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+                'lsExtension:ajaxOptions': this.$store.getters.surveyid != null 
+                    ? {surveyid: this.$store.getters.surveyid} 
+                    : {},
+                'lsExtension:currentFolder':  this.$store.getters.surveyid != null 
+                    ? 'upload/surveys/'+this.$store.getters.surveyid+'/' 
+                    : 'upload/global/',
             },
             welcomeEditorObject: LsEditor,
             welcomeEditorConfig: {
                 'lsExtension:fieldtype': 'survey-welc', 
-                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
-                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+                'lsExtension:ajaxOptions': this.$store.getters.surveyid != null 
+                    ? {surveyid: this.$store.getters.surveyid} 
+                    : {},
+                'lsExtension:currentFolder':  this.$store.getters.surveyid != null 
+                    ? 'upload/surveys/'+this.$store.getters.surveyid+'/' 
+                    : 'upload/global/',
             },
             endTextEditorObject: LsEditor,
             endTextEditorConfig: {
                 'lsExtension:fieldtype': 'survey-endtext', 
-                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
-                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+                'lsExtension:ajaxOptions': this.$store.getters.surveyid != null 
+                    ? {surveyid: this.$store.getters.surveyid} 
+                    : {},
+                'lsExtension:currentFolder':  this.$store.getters.surveyid != null 
+                    ? 'upload/surveys/'+this.$store.getters.surveyid+'/' 
+                    : 'upload/global/',
             },
             descriptionSource: false,
             welcomeSource: false,
