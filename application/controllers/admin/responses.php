@@ -255,8 +255,11 @@ class responses extends Survey_Common_Action
 
                 $oCriteria->addCondition("id = {$iId}");
                 $iIdresult = SurveyDynamic::model($iSurveyID)->find($oCriteria);
-                $aResult = array_merge($iIdresult->tokens->decrypt()->attributes, $iIdresult->decrypt()->attributes);
-
+                if ($bHaveToken) {
+                    $aResult = array_merge($iIdresult->tokens->decrypt()->attributes, $iIdresult->decrypt()->attributes);
+                } else {
+                    $aResult = $iIdresult->decrypt()->attributes;
+                }
                 $iId = $aResult['id'];
                 $rlanguage = $aResult['startlanguage'];
                 $aData['bHasFile'] = false;
