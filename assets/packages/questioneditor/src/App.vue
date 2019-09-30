@@ -155,6 +155,7 @@ export default {
                     (reject) => {
                         $('#in_survey_common').trigger('lsStopLoading');
                         window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                        this.$log.error(reject);
                         //setTimeout(()=>{window.location.reload();}, 1500);
                     }
                 )
@@ -187,14 +188,14 @@ export default {
         },
     },
     created(){
-        this.$store.commit('setInTransfer', false);
         Promise.all([
             this.$store.dispatch('loadQuestion'),
             this.$store.dispatch('getQuestionTypes')
         ]).then(()=>{
             this.loading = false;
+            this.$store.commit('setInTransfer', false);
             if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
-            this.triggerEditQuestion(true);
+                this.triggerEditQuestion(true);
             }
         })
         LS.EventBus.$on('questionTypeChanged', (payload) => {

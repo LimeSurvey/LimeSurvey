@@ -106,7 +106,7 @@ export default {
             this.$emit('close');
         },
         replaceCurrent() {
-            this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
+            //this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
             this.$emit('modalEvent', {target: this.type, method: 'replaceFromQuickAdd', content: this.parsed});
             this.$emit('close');
         },

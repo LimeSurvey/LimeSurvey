@@ -184,7 +184,7 @@ export default {
     },
     saveQuestionData: (context) => {
         if(context.state.inTransfer) {
-            return Promise.resolve(false);
+            return Promise.reject("Transfer in progress");
         }
 
         let transferObject = merge({

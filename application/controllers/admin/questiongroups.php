@@ -623,8 +623,9 @@ class questiongroups extends Survey_Common_Action
                                 $oQuestion->question_order = $aQuestion['question_order'];
                                 $oQuestion->gid = $aQuestion['gid'];
                                 if(safecount($oQuestion->subquestions) > 0) {
+                                    $aSubquestions = $oQuestion->subquestions;
                                     array_walk(
-                                        $oQuestion->subquestions,
+                                        $aSubquestions,
                                         function ($oSubQuestion) use ($aQuestion, $success) {
                                             $oSubQuestion->gid = $aQuestion['gid'];
                                             $success = $success && $oSubQuestion->save(true);
