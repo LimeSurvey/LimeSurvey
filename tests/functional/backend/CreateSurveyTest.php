@@ -365,11 +365,12 @@ class CreateSurveyTest extends TestBaseClassWeb
      * 
      * @return LimeSurveyWebDriver
      * 
-     * @skipped
      * @depends testGoToMainPage 
+     * TODO: Marked as incomplete cause its not finished.
      */
     public function testClickCloseButtonInWelcomeModal(LimeSurveyWebDriver $driver)
     {
+        $this->markTestIncomplete();
         try {
             $button = $driver->wait(1)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -393,11 +394,12 @@ class CreateSurveyTest extends TestBaseClassWeb
      * 
      * @return LimeSurveyWebDriver
      * 
-     * @skipped
      * @depends testGoToMainPage
+     * TODO: Marked as incomplete, cause its not finished.
      */
     public function testClickCloseButtonInPasswordWarning(LimeSurveyWebDriver $driver)
     {
+        $this->markTestIncomplete();
         try {
             $button = $driver->wait(1)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -421,9 +423,11 @@ class CreateSurveyTest extends TestBaseClassWeb
      * @return LimeSurveyWebDriver
      *
      * @depends testGoToMainPage
+     * TODO: Marked as incomplete, cause its not finished.
      */
     public function testClickOnCreateSurveyButton(LimeSurveyWebDriver $driver) 
     {
+        $this->markTestIncomplete();
         $link = $driver->wait(10)->until(
             WebDriverExpectedCondition::elementToBeClickable(
                 WebDriverBy::cssSelector('#panel-1[data-url]')
