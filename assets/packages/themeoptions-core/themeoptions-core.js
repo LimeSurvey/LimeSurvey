@@ -13,7 +13,7 @@ var ThemeOptions = function () {
     }
 
     var optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
-    var optionCssFiles = JSON.parse(JSON.parse($('#optionCssFiles').val()));
+    var optionCssFiles = JSON.parse($('#optionCssFiles').val());
     //get the global form
     var globalForm = $('.action_update_options_string_form');
 

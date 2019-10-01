@@ -65,14 +65,32 @@ return array(
             'jquery',
         )
     ),
+
+    'themeoptions-core' => [
+        'devBaseUrl'  => 'assets/packages/themeoptions-core/',
+        'basePath' => 'core.themeoptions-core',
+        'position' =>CClientScript::POS_END,
+        'css'=> [
+            'themeoptions-core.css',
+        ],
+        'js'=>[
+            'themeoptions-core.js',
+        ],
+        'depends' => [
+            'jquery',
+            'bootstrap'
+        ]
+    ],
     /* For public template extended functionnality (based on default template) */
     'template-core'=>array(
         'devBaseUrl'  => 'assets/packages/template-core/',
         'basePath' => 'core.template-core',
         'css'=> array(
+            'spectrum.css',
             'template-core.css',
         ),
         'js'=>array(
+            'spectrum.js',
             'template-core.js',
         ),
         'depends' => array(
