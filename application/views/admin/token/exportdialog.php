@@ -13,7 +13,7 @@
                         </label>
                         <div class="default controls">
                             <select id="tokenstatus" name="tokenstatus" class="form-control">
-                                <option value="0"><?php eT('All tokens'); ?></option>
+                                <option value="0"><?php eT('All participants'); ?></option>
                                 <option value="1"><?php eT('Completed'); ?></option>
                                 <option value="2"><?php eT('Not completed'); ?></option>
                                 <option value="3"><?php eT('Not started'); ?></option>
@@ -131,7 +131,7 @@
                     <div class="buttons control-group ls-space padding top-5 col-md-6 col-md-offset-3 col-sm-12">
                         <button class="btn btn-primary btn-block" type="submit" name="submit">
                             <i class="fa fa-download"></i>
-                            <?php eT('Export tokens'); ?>
+                            <?php eT('Export participants'); ?>
                         </button>
                     </div>
                 </div>

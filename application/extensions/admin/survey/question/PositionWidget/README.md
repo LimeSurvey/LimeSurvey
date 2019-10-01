@@ -9,7 +9,7 @@
  - ajax mode (display = ajax_form_group): In ajax mode, the widget will first render an hidden input where is called.
     This hidden input contains the necessary datas to generate a static position selector.
     Then it will register some js, that will insert after this hidden input a static position selector based on the datas of the hidden input.
-    If the question group selector change, it will update the datas of the hidden input, and regenerate a new position selector
+    If the survey page selector change, it will update the datas of the hidden input, and regenerate a new position selector
 
 
 ## Usage Example:
@@ -29,6 +29,6 @@ $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
 | Parameter  |  accepted value | default value | comment |
 | ---------  | --------------- | ------------- | ------- |
 | `display`  |  form_group/ajax_form_group | form_group | What kind of rendering to use. For now, only form_group, to display a static one inside right menu, or  to display a dynamic one |
-| `oQuestionGroup` | Question Group Model instance | none |The question group the position is related to |
+| `oQuestionGroup` | Survey page Model instance | none |The survey page the position is related to |
 | `reloadAction` | string | admin/questions/sa/ajaxReloadPositionWidget |  In ajax mode, name of the controller/action to call to get the HTML of the static widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module) |
-| `dataGroupSelectorId` | string | 'gid' |  The id of the question group selector to watch |
+| `dataGroupSelectorId` | string | 'gid' |  The id of the survey page selector to watch |

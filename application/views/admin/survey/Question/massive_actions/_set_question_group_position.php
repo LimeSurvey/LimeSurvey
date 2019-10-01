@@ -1,6 +1,6 @@
 <?php
 /**
- * Set question group and position modal body (parsed to massive action widget)
+ * Set survey page and position modal body (parsed to massive action widget)
  */
 
 /** @var AdminController $this */

@@ -284,7 +284,7 @@
                 </quotas>
 
                 <token>
-                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Participant')}} ]]></screen_title>
                   <file type="view" role="layout">layout_user_forms.twig</file>
                   <file type="view" role="content">./subviews/content/userforms.twig</file>
                   <file type="view" role="content">./subviews/logincomponents/token.twig</file>
@@ -304,8 +304,8 @@
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
               </survey>
               <group type="core">
-                <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>
-                <description type="data" twig="on"><![CDATA[ {{ gT("This group description is fairly vacuous, but quite important.") }} ]]></description>
+                <name type="data" twig="on"><![CDATA[ {{ gT("Page 1: The first lot of questions") }} ]]></name>
+                <description type="data" twig="on"><![CDATA[ {{ gT("This survey page description is fairly vacuous, but quite important.") }} ]]></description>
               </group>
               <question_1 type="core">
                 <code type="data" >'Q1 '</code>

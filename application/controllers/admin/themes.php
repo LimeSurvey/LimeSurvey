@@ -1166,8 +1166,8 @@ class themes extends Survey_Common_Action
             case 'pdf':
                 $print['groups'] = [
                     [
-                        'name' => gT('Question group name'),
-                        'description' => gT('Question group description'),
+                        'name' => gT('Survey page name'),
+                        'description' => gT('Survey page description'),
                         'questions' => [
                         ]
                     ]

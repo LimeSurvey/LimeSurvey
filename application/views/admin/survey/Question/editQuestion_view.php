@@ -299,7 +299,7 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
                                 </div>
 
                                 <div class="form-group">
-                                    <label class=" control-label" for='gid'><?php eT("Question group:"); ?></label>
+                                    <label class=" control-label" for='gid'><?php eT("Survey page:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" <?php if ($oSurvey->isActive) {
                                             echo " disabled ";

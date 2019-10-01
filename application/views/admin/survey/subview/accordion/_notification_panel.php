@@ -243,7 +243,11 @@ $googleAnalyticsStyleOptions = array(
             <div class="form-group">
                 <label class=" control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
                 <div class="">
-                    <?php echo CHtml::textField('googleanalyticsapikey',$oSurvey->googleanalyticsapikey,array('size'=>20), array('class'=>"form-control")); ?>
+                    <?php echo CHtml::textField(
+                        'googleanalyticsapikey',
+                        $oSurvey->googleanalyticsapikey,
+                        array('size'=>20, 'class' => 'form-control')
+                    ); ?>
                 </div>
             </div>
             <!-- Google Analytics style -->

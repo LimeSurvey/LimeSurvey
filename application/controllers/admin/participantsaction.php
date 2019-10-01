@@ -2452,7 +2452,7 @@ $url .= "_view"; });
         }
         if ($response['overwriteman'] == "true" || $response['overwriteauto']) {
             echo "<p>";
-            eT("Attribute values for existing participants have been updated from the token records");
+            eT("Attribute values for central participants have been updated from the survey participants");
             echo "</p>";
         }
     }
@@ -2509,7 +2509,7 @@ $url .= "_view"; });
             echo $e->getMessage();
             return;
         } catch (Exception $e) {
-            printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
+            printf("Error: Could not copy attributes to participants: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
             return;
         }
 

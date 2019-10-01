@@ -1745,13 +1745,13 @@ class SurveyRuntimeHelper
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
 
             if ($gseq == -1) {
-                $sMessage = gT('Invalid group number for this survey: ').$_gid;
+                $sMessage = gT('Invalid page number for this survey: ').$_gid;
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
 
             $this->aMoveResult = LimeExpressionManager::JumpTo($gseq + 1, 'group', false, true);
             if (is_null($this->aMoveResult)) {
-                $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
+                $sMessage = gT('This page contains no questions.  You must add questions to this page before you can preview it');
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
 
@@ -1761,7 +1761,7 @@ class SurveyRuntimeHelper
 
             // #14595
             if(empty($this->aStepInfo)) {
-                $sMessage = gT('This group is empty');
+                $sMessage = gT('This page is empty');
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
 

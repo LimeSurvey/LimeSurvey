@@ -103,6 +103,26 @@ class User extends LSActiveRecord
         );
     }
 
+    public function attributeLabels() {
+        return [
+            'uid' => gT('User ID'),
+            'users_name' => gT('Username'),
+            'password' => gT('Password'),
+            'full_name' => gT('Full name'),
+            'parent_id' => gT('Parent User'),
+            'lang' => gT('Language'),
+            'email' => gT('Email'),
+            'htmleditormode' => gT('Editormode'),
+            'templateeditormode' => gT('Template editor mode'),
+            'questionselectormode' => gT('Question selector mode'),
+            'one_time_pw' => gT('One time password'),
+            'dateformat' => gT('Dateformat'),
+            'created' => gT('Created at'),
+            'modified' => gT('Modified at'),
+            'lastLogin' => gT('Last recorded login'),
+        ];
+    }
+
     /**
      * @return string
      */

@@ -105,7 +105,7 @@ class Assessments extends Survey_Common_Action
     {
         $iSurveyID = $aData['surveyid'];
         
-        $aHeadings = array(gT("Scope"), gT("Question group"), gT("Minimum"), gT("Maximum"));
+        $aHeadings = array(gT("Scope"), gT("Survey page"), gT("Minimum"), gT("Maximum"));
         $aData['headings'] = $aHeadings;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oAssessments = Assessment::model();

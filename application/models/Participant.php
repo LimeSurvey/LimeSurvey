@@ -1559,7 +1559,7 @@ class Participant extends LSActiveRecord
                     if (empty($name)) {
                         $name = array('attribute_name' => '[Found no name]');
                     }
-                    throw new CPDBException(sprintf("Token attribute already exists: %s", $name['attribute_name']));
+                    throw new CPDBException(sprintf("Participant attribute already exists: %s", $name['attribute_name']));
                 }
             }
         }
@@ -1757,7 +1757,7 @@ class Participant extends LSActiveRecord
                 try {
                     $oSurveyLink->save();
                 } catch (Exception $e) {
-                    throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
+                    throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                 }
 
                 //If there are new attributes created, add those values to the token entry for this participant
@@ -1767,7 +1767,7 @@ class Participant extends LSActiveRecord
                         try {
                             Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $addedAttributes[$a], $addedAttributeIds[$a]);
                         } catch (Exception $e) {
-                            throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
+                            throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                         }
                     }
                 }
@@ -1782,7 +1782,7 @@ class Participant extends LSActiveRecord
 
                         Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $value, $key);
                     } catch (Exception $e) {
-                        throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
+                        throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                     }
                 }
                 $successful++;

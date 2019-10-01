@@ -165,11 +165,11 @@ class Survey_Common_Action extends CAction
         if (!empty($params['iGroupId'])) {
             if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid group id"));
+                throw new CHttpException(403, gT("Invalid survey page id"));
             }
             $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid"=>$params['iGroupId'])); //Move this in model to use cache
             if (!$oGroup) {
-                throw new CHttpException(404, gT("Group not found"));
+                throw new CHttpException(404, gT("Survey page not found"));
             }
             if (!isset($params['iSurveyId'])) {
                 $params['iSurveyId'] = $params['iSurveyID'] = $params['surveyid'] = $params['sid'] = $oGroup->sid;
@@ -313,7 +313,7 @@ class Survey_Common_Action extends CAction
      * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
      * The work it's doing should be handle by layout files, and subviews inside views.
      * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
-     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the question group bar is called as a subview.
+     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the survey page bar is called as a subview.
      *
      * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.) to subfunctions, then it will be easier to remove.
      * Comments starting with //// indicate how it should work in the future
@@ -513,7 +513,7 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Render the save/cancel bar for Organize question groups/questions
+     * Render the save/cancel bar for Organize survey pages/questions
      *
      * @param array $aData
      *
@@ -666,7 +666,7 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Show admin menu for question group view
+     * Show admin menu for survey page view
      *
      * @param array $aData ?
      */
@@ -762,7 +762,7 @@ class Survey_Common_Action extends CAction
             $aData['surveysettings'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
             // Survey permission item
             $aData['surveysecurity'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
-            // CHANGE QUESTION GROUP ORDER BUTTON
+            // CHANGE SURVEY PAGE ORDER BUTTON
             $aData['surveycontentread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
             $aData['groupsum'] = ($oSurvey->groupsCount > 1);
             // SET SURVEY QUOTAS BUTTON
@@ -975,7 +975,7 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * listquestion groups
+     * list survey pages
      * @param array $aData
      */
     private function _listquestiongroups(array $aData)
@@ -1046,7 +1046,7 @@ class Survey_Common_Action extends CAction
         if ($aSurveyInfo['format'] == "S") {
             $surveysummary2[] = gT("It is presented question by question.");
         } elseif ($aSurveyInfo['format'] == "G") {
-            $surveysummary2[] = gT("It is presented group by group.");
+            $surveysummary2[] = gT("It is presented page by page.");
         } else {
             $surveysummary2[] = gT("It is presented on one single page.");
         }
@@ -1072,7 +1072,7 @@ class Survey_Common_Action extends CAction
             $surveysummary2[] = gT("It uses cookies for access control.");
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2[] = gT("If tokens are used, the public may register for this survey");
+            $surveysummary2[] = gT("If participant access codes are used, the public may register for this survey");
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
             $surveysummary2[] = gT("Participants can save partially finished surveys");

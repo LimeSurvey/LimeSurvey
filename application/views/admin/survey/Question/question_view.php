@@ -9,9 +9,9 @@
             <!-- Summary Table -->
             <table  id='questiondetails' <?php echo $qshowstyle; ?>>
 
-                <!-- Question Group -->
+                <!-- Survey Page -->
                 <tr>
-                    <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
+                    <td><strong><?php eT('Survey page:');?></strong>&nbsp;&nbsp;&nbsp;</td>
                     <td><em><?php echo flattenText($oQuestion->group->questionGroupL10ns[$baselang]->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
                 </tr>
 
@@ -200,7 +200,7 @@
                 <!-- Group Relevance equation -->
                 <?php if (trim($oQuestion->group->grelevance)!='' && trim($oQuestion->group->grelevance)!='1'): ?>
                     <tr>
-                        <td><?php eT("Group relevance:"); ?></td>
+                        <td><?php eT("Page relevance:"); ?></td>
                         <td>
                             <?php
                             LimeExpressionManager::ProcessString("{" . $oQuestion->group->grelevance . "}", $qid);
@@ -242,16 +242,16 @@
                 <div class="row welcome survey-action">
                     <div class="col-lg-12 content-right">
 
-                        <!-- create question in this group -->
+                        <!-- create question in this page -->
                         <div class="col-lg-3">
                             <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                                 <div class="panel-heading">
-                                    <div class="panel-title h4"><?php eT("Add new question to group");?></div>
+                                    <div class="panel-title h4"><?php eT("Add new question to page");?></div>
                                 </div>
                                 <div class="panel-body">
                                     <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                     <p class='btn-link'>
-                                            <?php eT("Add new question to group");?>
+                                            <?php eT("Add new question to page");?>
                                     </p>
                                 </div>
                             </div>

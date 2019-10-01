@@ -427,7 +427,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $fileRelativePath = $folderPath . DIRECTORY_SEPARATOR . $file;
             $fileRealpath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $fileRelativePath;
             $fileIsDirectoy = @is_dir($fileRealpath);
-            $isImage =  !!exif_imagetype($fileRealpath);
+            $isImage =  @exif_imagetype($fileRealpath) !== false;
             if ($fileIsDirectoy) {
                 continue;
             } else {

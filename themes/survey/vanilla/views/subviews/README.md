@@ -36,5 +36,5 @@ If you're creating a template from scratch, there is no obligation to respect th
     *Those subviews are hard included in other views. So if you create a template from scratch, you can named them as you want (or you can even not create them at all)*
 
 * survey/
-    The subviews to render the question groups and the questions.
+    The subviews to render the survey pages and the questions.
     *Those subviews are hard included in other views. So if you create a template from scratch, you can named them as you want (or you can even not create them at all)*

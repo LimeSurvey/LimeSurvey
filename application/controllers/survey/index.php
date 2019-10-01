@@ -172,8 +172,8 @@ class index extends CAction
 
         if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token'=>$clienttoken, 'lang'=>App()->language, 'newtest'=>'Y'));
-            $aErrors    = array(gT('Token mismatch'));
-            $asMessage  = array(gT('The token you provided doesn\'t match the one in your session.'));
+            $aErrors    = array(gT('Access code mismatch'));
+            $asMessage  = array(gT('The access code you provided doesn\'t match the one in your session.'));
             $aUrl       = array(
                             'url'=>$sReloadUrl,
                             'type'=>'restart-survey',
@@ -480,7 +480,7 @@ class index extends CAction
                         $sError = gT("This invitation is not valid anymore.");
                     } else {
                         // This can not happen
-                        $sError = gT("This is a controlled survey. You need a valid token to participate.");
+                        $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                     }
 
                     $aMessage = array(
@@ -501,7 +501,7 @@ class index extends CAction
                         array($sError)
                     );
                 } else {
-                    $sError = gT("This is a controlled survey. You need a valid token to participate.");
+                    $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                 }
             }
         }

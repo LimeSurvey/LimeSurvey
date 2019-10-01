@@ -193,6 +193,9 @@ export default {
             this.$store.dispatch('getQuestionTypes')
         ]).then(()=>{
             this.loading = false;
+            if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
+            this.triggerEditQuestion(true);
+            }
         })
         LS.EventBus.$on('questionTypeChanged', (payload) => {
             this.$log.log("questiontype changed to -> ", payload.content.value);
@@ -214,10 +217,6 @@ export default {
         LS.EventBus.$on('componentFormSubmit', (payload) => {
             this.submitCurrentState((payload.id == '#save-and-close-button'), payload.url != '#' ? payload.url : false);
         });
-
-        if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
-           this.triggerEditQuestion(true);
-        }
     }
 }
 </script>

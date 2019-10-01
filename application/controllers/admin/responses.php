@@ -181,7 +181,7 @@ class responses extends Survey_Common_Action
             }
             //add token to top of list if survey is not private
             if ($bHaveToken) {
-                $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
+                $fnames[] = array("token", gT("Access code"), 'code'=>'token');
                 $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname'); // or token:firstname ?
                 $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
                 $fnames[] = array("email", gT("Email"), 'code'=>'email');
@@ -255,8 +255,11 @@ class responses extends Survey_Common_Action
 
                 $oCriteria->addCondition("id = {$iId}");
                 $iIdresult = SurveyDynamic::model($iSurveyID)->find($oCriteria);
-                $aResult = array_merge($iIdresult->tokens->decrypt()->attributes, $iIdresult->decrypt()->attributes);
-
+                if ($bHaveToken) {
+                    $aResult = array_merge($iIdresult->tokens->decrypt()->attributes, $iIdresult->decrypt()->attributes);
+                } else {
+                    $aResult = $iIdresult->decrypt()->attributes;
+                }
                 $iId = $aResult['id'];
                 $rlanguage = $aResult['startlanguage'];
                 $aData['bHasFile'] = false;
@@ -825,9 +828,9 @@ class responses extends Survey_Common_Action
             }
 
             if ($fielddetails['type'] == 'page_time') {
-                $fnames[] = array($fielddetails['fieldname'], gT('Group').": ".$fielddetails['group_name']);
+                $fnames[] = array($fielddetails['fieldname'], gT('Page').": ".$fielddetails['group_name']);
                 $aData['columns'][] = array(
-                    'header' => gT('Group: ').$fielddetails['group_name'],
+                    'header' => gT('Page: ').$fielddetails['group_name'],
                     'name' => $fielddetails['fieldname']
                 );
             }

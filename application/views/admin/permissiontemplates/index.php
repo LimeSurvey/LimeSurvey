@@ -18,7 +18,6 @@
 // );
 //
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-$massiveAction = '';
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('roles');
 

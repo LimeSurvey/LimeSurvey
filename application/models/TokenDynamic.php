@@ -702,7 +702,7 @@ class TokenDynamic extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Token'),
+                'header' => gT('Access code'),
                 'name' => 'token',
                 'value'=>'$data->token',
                 'headerHtmlOptions'=>array('class' => 'hidden-xs'),
@@ -841,14 +841,14 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
+            'label'=>'<span class="sr-only">'.gT("Launch the survey with this participant").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>'.self::$sid.',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
                 'class'=>"btn btn-default btn-xs",
                 'target'=>"_blank",
                 'data-toggle'=>"tooltip",
-                'title'=>gT("Launch the survey with this token")
+                'title'=>gT("Launch the survey with this participant")
             ),
             'visible'=> $baseView . ' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );

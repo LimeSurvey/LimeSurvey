@@ -22,6 +22,10 @@ export default {
         'languagename': {
             'type': String,
             'default': 'No language found'
+        },
+        'defaultlanguage': {
+            'type': String,
+            'default': 'en'
         }
     },
     data() {
@@ -197,6 +201,8 @@ ${scriptContent}
         $('#language').select2({
             theme: 'bootstrap'
         });
+        $('#language').val(this.defaultlanguage);
+        $('#language').trigger('change');
 
         this.toggleLoading(false);
     }

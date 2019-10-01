@@ -1,6 +1,6 @@
 <?php
 /**
-* This file render the list of groups
+* This file render the list of pages
 * It use the QuestionGroup model search method to build the data provider.
 *
 * @var $model  obj    the QuestionGroup model
@@ -49,7 +49,7 @@
             $this->widget('ext.LimeGridView.LimeGridView', array(
                 'id' => 'question-group-grid',
                 'dataProvider' => $model->search(),
-                'emptyText'=>gT('No survey apges found.'),
+                'emptyText'=>gT('No survey pages found.'),
                 'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
                         'pageSize',

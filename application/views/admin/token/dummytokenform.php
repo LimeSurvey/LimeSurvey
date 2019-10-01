@@ -29,7 +29,7 @@
 
                 <!-- Token length  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='tokenlen'><?php eT("Token length"); ?>:</label>
+                    <label  class=" control-label" for='tokenlen'><?php eT("Access code length"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" />
                     </div>

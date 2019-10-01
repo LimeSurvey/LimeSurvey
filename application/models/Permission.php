@@ -698,7 +698,7 @@ class Permission extends LSActiveRecord
             ),
             'surveycontent' => array(
                 'title' => gT("Survey content"),
-                'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
+                'description' => gT("Permission to create/view/update/delete/import/export the questions, pages, answers & conditions of a survey"),
                 'img' => ' fa fa-file-text-o',
             ),
             'surveylocale' => array(
@@ -727,7 +727,7 @@ class Permission extends LSActiveRecord
                 'img' => ' fa fa-gears',
             ),
             'tokens' => array(
-                'title' => gT("Tokens"), 'description' => gT("Permission to create/update/delete/import/export token entries"),
+                'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
                 'img' => ' fa fa-user',
             ),
             'translations' => array(

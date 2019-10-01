@@ -29,7 +29,7 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * questiongroup::import()
-     * Function responsible to import a question group.
+     * Function responsible to import a question page.
      *
      * @access public
      * @return void
@@ -104,7 +104,7 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
-     * Import a question group
+     * Import a question page
      *
      */
     public function importView($surveyid)
@@ -136,7 +136,7 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * questiongroup::add()
-     * Load add new question group screen.
+     * Load add new question page screen.
      * @return
      */
     public function add($surveyid)
@@ -230,7 +230,7 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
-     * Action to delete a question group.
+     * Action to delete a question page.
      *
      * @access public
      * @return void
@@ -340,8 +340,8 @@ class questiongroups extends Survey_Common_Action
                 'Page overview' => gT('Page overview'),
                 'Question list' => gT('Question list'),
                 'Create new survey page' => gT('Create new survey page'),
-                'Question group overview' => gT('Question group overview'),
-                'Question group editor' => gT('Question group editor'),
+                'Survey page overview' => gT('Survey page overview'),
+                'Survey page editor' => gT('Survey page editor'),
                 'General Settings' => gT("General Settings"),
                 'Page summary' => gT('Page summary'),
                 'Random Group' => gT('Random Group'),
@@ -472,7 +472,7 @@ class questiongroups extends Survey_Common_Action
         $this->renderJSON(
             [
                 'success' => $success,
-                'message' => gT('Question group successfully stored'),
+                'message' => gT('Survey page successfully stored'),
                 'questionGroupId' => $oQuestionGroup->gid,
                 'questiongroupData' => $aQuestionGroup,
                 'redirect' => $sRedirectUrl,
@@ -483,7 +483,7 @@ class questiongroups extends Survey_Common_Action
     }
     /**
      * questiongroup::edit()
-     * Load editing of a question group screen.
+     * Load editing of a survey page screen.
      *
      * @access public
      * @param int $surveyid
@@ -739,7 +739,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
-            Yii::app()->setFlashMessage(gT("Question group successfully saved."));
+            Yii::app()->setFlashMessage(gT("Survey page successfully saved."));
 
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
                 $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid));

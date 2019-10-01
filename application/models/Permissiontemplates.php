@@ -182,7 +182,7 @@ class Permissiontemplates extends CActiveRecord
         // TODO should be static
         $cols = array(
             array(
-                'value' => "<input type='checkbox' class='RoleControl--selector-roleCheckbox' name='selectedRole[]' value='".$this->ptid."'>",
+                'value' => "\"<input type='checkbox' class='RoleControl--selector-roleCheckbox' name='selectedRole[]' value='\".\$data->ptid.\"' />\"",
                 'type' => 'raw',
                 'header' => "<input type='checkbox' id='RoleControl--action-toggleAllRoles' />",
                 'filter' => false
@@ -200,7 +200,9 @@ class Permissiontemplates extends CActiveRecord
             array(
                 "name" => 'description',
                 "header" => gT("Description"),
-                "value" => 'ellipsize($data->description, 40)'
+                "value" => '$data->description',
+                "htmlOptions" => ["style" => "white-space: pre-wrap"],
+                "headerHtmlOptions" => ["style" => "max-width: 35%"],
             ),
             array(
                 "name" => 'renewed_last',
@@ -248,8 +250,41 @@ class Permissiontemplates extends CActiveRecord
         return $xml;
     }
 
-    public function importFromXML ($xmlEntitiy) {
-       return true;
+    public function createFromXML ($xmlEntitiy, $includeRootData = false) {
+        $name = $this->removeCdataFormat($xmlEntitiy->meta->name);
+        $iExisiting = self::model()->countByAttributes(['name' => $name]);
+        if ($iExisiting > 0) {
+            return false;
+        }
+        $oRole = new self();
+        $oRole->name = $this->removeCdataFormat($xmlEntitiy->meta->name);
+        $oRole->description = $this->removeCdataFormat($xmlEntitiy->meta->description);
+
+        if ($includeRootData) {
+            $oRole->created_at = $this->removeCdataFormat($xmlEntitiy->meta->createdOn);
+            $oRole->created_by = $this->removeCdataFormat($xmlEntitiy->meta->createdBy);
+        } else {
+            $oRole->created_by = App()->user->id;
+            $oRole->created_at = date('Y-m-d H:i');
+        }
+        $oRole->renewed_last = date('Y-m-d H:i');
+
+        if ($oRole->save()) {
+            return $oRole;
+        }
+
+        return false;
+    }
+
+    public function removeCdataFormat($node)
+    {
+        $nodeText = (string) $node;
+        $regex_replace = array('','');
+        $regex_patterns = array(
+            '/<!\[CDATA\[/',
+            '/\]\]>/'
+       );
+       return trim(preg_replace($regex_patterns, $regex_replace, $nodeText));
     }
 
     public function getHasPermission($sPermission, $sCRUD) {

@@ -973,7 +973,7 @@ class InstallerController extends CController
             ."\t\t"."'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2"."\n";
 
             if ($model->isMysql) {
-                $sConfig .= "\t\t"."// Mysql database engine (MYSQL|MYISAM):"."\n"
+                $sConfig .= "\t\t"."// Mysql database engine (INNODB|MYISAM):"."\n"
                 ."\t\t 'mysqlEngine' => '{$model->dbengine}'\n\n,";
             }
             $sConfig .= "\t\t"."// Update default LimeSurvey config here"."\n"
