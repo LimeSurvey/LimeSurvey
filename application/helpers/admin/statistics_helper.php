@@ -3270,7 +3270,19 @@ class statistics_helper
         //PCHART has to be enabled and we need some data
         //
         if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+
+            // NOTE: in ls3, not so many tests were needed. We suscpect that a bug has been introduced (like no "show graph" attribute for certains question type, also, why now sometime $outputs['parentqid']=0 at this point? )
+            //       so if debug mode is on, we'll show a warning, so dev will not strugle to find a deeper bug.
+            if (YII_DEBUG){
+                if (!$aattr){
+                    Yii::app()->setFlashMessage('Warning: could not get question attributes for '. $qqid . ' parent qid: ' . $outputs['parentqid'], 'error');
+                }elseif (!array_key_exists("statistics_showgraph", $aattr)){
+                    Yii::app()->setFlashMessage('Warning: question '. $qqid .' has not attribute "statistics_showgraph" ', 'error');
+                }
+            }
+
+            $bShowGraph = ( $aattr && array_key_exists("statistics_showgraph", $aattr) && $aattr["statistics_showgraph"] == "1");
+
             $bAllowPieChart = ($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE && $outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
