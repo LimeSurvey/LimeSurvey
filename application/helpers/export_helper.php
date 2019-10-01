@@ -22,7 +22,7 @@ function stripTagsFull($string)
 {
     $string = flattenText($string,false,true); // stripo whole + html_entities
     $string = str_replace('-oth', '', $string);// Why ?
-    //The backslashes must be escaped twice, once for php, and again for the regexp
+    // The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return $string;
 }
