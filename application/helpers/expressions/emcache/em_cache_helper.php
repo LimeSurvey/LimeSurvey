@@ -153,6 +153,11 @@ class EmCacheHelper
      */
     public static function useCache()
     {
+        // not always a controller set in tests.
+        if (\Yii::app()->getController() === null) {
+            return false;
+        }
+
         // Never in admin.
         if (get_class(\Yii::app()->getController()) !== 'SurveyController') {
             return false;
