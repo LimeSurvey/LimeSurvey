@@ -171,6 +171,8 @@ only screen and (max-width: 760px),
     .dir-ltr table.ls-answers .ls-label-xs-visibility > * {left:auto;}
     .dir-rtl table.ls-answers .ls-label-xs-visibility > * {right:auto;}
 
+    .dir-rtl table.ls-answers .answers-list p[dir=rtl] {left:0;text-align:right;}
+
     .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:-20px;}
     .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:-20px;}
     .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:-20px;}
