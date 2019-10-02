@@ -3,7 +3,7 @@
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -24,6 +24,12 @@
 class saved extends Survey_Common_Action
 {
 
+    /**
+     * Show the list of save response
+     * @param int $surveyid
+     * @return void
+     * @throw Exception
+     */
     public function view($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
@@ -53,7 +59,9 @@ class saved extends Survey_Common_Action
 
     /**
      * Function responsible to delete saved responses.
-     * @param 
+     * @param int $surveyid
+     * @return void
+     * @throw Exception
      */
     public function actionDelete($surveyid)
     {
@@ -66,7 +74,6 @@ class saved extends Survey_Common_Action
         Yii::import('application.helpers.admin.ajax_helper', true);
 
         $iScid = App()->getRequest()->getParam('scid');
-        $survey = Survey::model()->findByPk($surveyid);
         $oSavedControl = SavedControl::model()->find('scid = :scid',array(':scid'=>$iScid));
         if(empty($oSavedControl)) {
             throw new CHttpException(401, gT("Saved response not found"));
@@ -82,14 +89,14 @@ class saved extends Survey_Common_Action
                 Yii::app()->end();
             }
             Yii::app()->setFlashMessage(gT('Unable to delete saved response.'),'danger');
-            $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$surveyid}"));
         }
         if(Yii::app()->getRequest()->isAjaxRequest) {
             ls\ajax\AjaxHelper::outputSuccess(gT('Saved response deleted.'));
             Yii::app()->end();
         }
         Yii::app()->setFlashMessage(gT('Saved response deleted.'),'success');
-        $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
+        $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$surveyid}"));
     }
 
     /**
