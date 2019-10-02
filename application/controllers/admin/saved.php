@@ -30,34 +30,65 @@ class saved extends Survey_Common_Action
         $aViewUrls = array();
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
-            die();
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
         $aThisSurvey = getSurveyInfo($iSurveyId);
         $aData['sSurveyName'] = $aThisSurvey['name'];
         $aData['iSurveyId'] = $iSurveyId;
-        $aViewUrls[] = 'savedbar_view';
-        $aViewUrls['savedlist_view'][] = $this->_showSavedList($iSurveyId);
-
-        // saved.js bugs if table is empty
-        if (count($aViewUrls['savedlist_view'][0]['aResults'])) {
-            App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'saved.js');
-        }
-
-
+        $aData['dataProvider'] = new CActiveDataProvider('SavedControl', array(
+            'criteria'=>array(
+                'condition'=>'sid=:sid',
+                'params'=>[':sid'=>$iSurveyId],
+            ),
+            'countCriteria'=>array(
+                'condition'=>'sid=:sid',
+                'params'=>[':sid'=>$iSurveyId],
+            ),
+        ));
+        $aData['SavedControlModel'] = SavedControl::model();
+        $aViewUrls[] = 'savedlist_view';
         $this->_renderWrappedTemplate('saved', $aViewUrls, $aData);
     }
 
     /**
      * Function responsible to delete saved responses.
+     * @param 
      */
-    public function delete($iSurveyId, $iSurveyResponseId, $iSavedControlId)
+    public function actionDelete($surveyid)
     {
-        $survey = Survey::model()->findByPk($iSurveyId);
-        SavedControl::model()->deleteAllByAttributes(array('scid' => $iSavedControlId, 'sid' => $iSurveyId)) or die(gT("Couldn't delete"));
-        Yii::app()->db->createCommand()->delete($survey->responsesTableName, 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
+        if(!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        Yii::import('application.helpers.admin.ajax_helper', true);
 
+        $iScid = App()->getRequest()->getParam('scid');
+        $survey = Survey::model()->findByPk($surveyid);
+        $oSavedControl = SavedControl::model()->find('scid = :scid',array(':scid'=>$iScid));
+        if(empty($oSavedControl)) {
+            throw new CHttpException(401, gT("Saved response not found"));
+        }
+        if($oSavedControl->delete()) {
+            $oReponse = Response::model($surveyid)->findByPk($oSavedControl->srid);
+            if($oReponse) {
+                $oReponse->delete();
+            }
+        } else {
+            if(Yii::app()->getRequest()->isAjaxRequest) {
+                ls\ajax\AjaxHelper::outputError(gT('Unable to delete saved response.'));
+                Yii::app()->end();
+            }
+            Yii::app()->setFlashMessage(gT('Unable to delete saved response.'),'danger');
+            $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
+        }
+        if(Yii::app()->getRequest()->isAjaxRequest) {
+            ls\ajax\AjaxHelper::outputSuccess(gT('Saved response deleted.'));
+            Yii::app()->end();
+        }
+        Yii::app()->setFlashMessage(gT('Saved response deleted.'),'success');
         $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
     }
 
@@ -79,25 +110,4 @@ class saved extends Survey_Common_Action
         $aData['menu']['edition'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
-
-    /**
-     * Load saved list.
-     * @param mixed $iSurveyId Survey id
-     * @return array
-     */
-    private function _showSavedList($iSurveyId)
-    {
-        $aResults = SavedControl::model()->findAll(array(
-            'select' => array('scid', 'srid', 'identifier', 'ip', 'saved_date', 'email', 'access_code'),
-            'condition' => 'sid=:sid',
-            'order' => 'saved_date desc',
-            'params' => array(':sid' => $iSurveyId),
-        ));
-
-        if (!empty($aResults)) {
-            return compact('aResults');
-        } else
-        {return array('aResults'=>array()); }
-    }
-
 }
