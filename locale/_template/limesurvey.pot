@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-10-02 14:06:10+00:00\n"
+"POT-Creation-Date: 2019-10-02 16:28:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1215,6 +1215,7 @@ msgstr ""
 #: application/views/survey/questions/question_help/error-tip.php:12
 #: tmp/runtime/twig_cache/03/0333811180be79951c6361ca6eb054475f27ca9ce309b0a70b025b427bc30b58.php:75
 #: tmp/runtime/twig_cache/43/43c4fd9e210092c7fbd2cc6561291407461d8f0ebb009713170b91622e3879ef.php:123
+#: tmp/runtime/twig_cache/e9/e912a9806f579a05a6ad19465f4cad654e2cb878334cafa5f974366bb2089342.php:89
 msgid "Close"
 msgstr ""
 
@@ -21415,6 +21416,10 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+#: tmp/runtime/twig_cache/99/99e0fcd8f923c8c0ff68491fc4bf0832371de2cc5148840dfd291382b4ec5438.php:44
+msgid "Here your data security notice"
+msgstr ""
+
 #: tmp/runtime/twig_cache/9d/9da5727190f676065808034d3e94a1c129305d286323a586da65196ddda672a0.php:44
 msgid "LimeSurvey Fruity Theme"
 msgstr ""
@@ -21429,6 +21434,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/b7/b7f89667439eba9197059192319f01681d493b0ffdcf595bec995afd30d9993e.php:44
 msgid "Quotas exceeded"
+msgstr ""
+
+#: tmp/runtime/twig_cache/d2/d28ffa31f5b28a0819831205c838b3f026efbffc3e9b4981e5722274ba36273b.php:44
+msgid "Show Policy"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d2/d2d94efbdf824708e220f3a828828163ca89742204db0d55f3ae6976186288c8.php:44
@@ -21453,4 +21462,12 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/e8/e80c728ce366034ec021eef4877d7cf0aed6c2e24c0016ae1810474bc6879b67.php:100
 msgid "Export these responses as queXML PDF:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e9/e912a9806f579a05a6ad19465f4cad654e2cb878334cafa5f974366bb2089342.php:68
+msgid "Survey data policy"
+msgstr ""
+
+#: tmp/runtime/twig_cache/e9/e912a9806f579a05a6ad19465f4cad654e2cb878334cafa5f974366bb2089342.php:83
+msgid "Accept"
 msgstr ""
