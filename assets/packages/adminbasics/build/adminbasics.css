@@ -1,4 +1,111 @@
 @charset "UTF-8";
+.draggable-container {
+  min-height: 300px;
+}
+
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-left: 0.75%;
+  margin-right: 0.75%;
+  margin-bottom: 20px;
+}
+
+#tokenattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute {
+  margin-right: 1.5%;
+}
+
+#centralattribute .centralatt {
+  padding-bottom: 15px;
+}
+
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
+}
+
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
+}
+
+#newcreated,
+#tokenattribute {
+  height: 100%;
+}
+
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
+}
+
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
+}
+
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
+}
+
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#centralattribute .explanation-row {
+  display: table-row;
+}
+
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#centralattribute .explanation label {
+  padding-left: 8px;
+}
+
+.attribute-item.draggable {
+  cursor: move;
+}
+
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
+}
+
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
+}
+
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
+}
+
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
+}
+
 /**
  * Lime Admin Common CSS File
  *
@@ -57,14 +164,16 @@
   padding: .2em 0;
 }
 
-.ui-datepicker .ui-datepicker-next, .ui-datepicker .ui-datepicker-prev {
+.ui-datepicker .ui-datepicker-next,
+.ui-datepicker .ui-datepicker-prev {
   position: absolute;
   top: 2px;
   width: 1.8em;
   height: 1.8em;
 }
 
-.ui-datepicker .ui-datepicker-next-hover, .ui-datepicker .ui-datepicker-prev-hover {
+.ui-datepicker .ui-datepicker-next-hover,
+.ui-datepicker .ui-datepicker-prev-hover {
   top: 1px;
 }
 
@@ -84,7 +193,8 @@
   right: 10px;
 }
 
-.ui-datepicker .ui-datepicker-next span, .ui-datepicker .ui-datepicker-prev span {
+.ui-datepicker .ui-datepicker-next span,
+.ui-datepicker .ui-datepicker-prev span {
   display: block;
   position: absolute;
   left: 50%;
@@ -104,7 +214,8 @@
   margin: 1px 0;
 }
 
-.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
   width: 49%;
 }
 
@@ -127,7 +238,8 @@
   padding: 1px;
 }
 
-.ui-datepicker td a, .ui-datepicker td span {
+.ui-datepicker td a,
+.ui-datepicker td span {
   display: block;
   padding: .2em;
   text-align: right;
@@ -152,7 +264,9 @@
   overflow: visible;
 }
 
-.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current, .ui-datepicker-multi .ui-datepicker-group, .ui-datepicker-rtl .ui-datepicker-buttonpane button {
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-multi .ui-datepicker-group,
+.ui-datepicker-rtl .ui-datepicker-buttonpane button {
   float: left;
 }
 
@@ -177,7 +291,8 @@
   width: 25%;
 }
 
-.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header, .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
   border-left-width: 0;
 }
 
@@ -219,23 +334,28 @@
   clear: right;
 }
 
-.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current, .ui-datepicker-rtl .ui-datepicker-group {
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
+.ui-datepicker-rtl .ui-datepicker-group {
   float: right;
 }
 
-.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header, .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
   border-right-width: 0;
   border-left-width: 1px;
 }
 
-.side-body, .full-page-wrapper {
+.side-body,
+.full-page-wrapper {
   min-height: 100%;
   position: relative;
   margin-bottom: 65px;
   padding: 0;
 }
 
-.side-body h3, .pagetitle, .list-surveys h3 {
+.side-body h3,
+.pagetitle,
+.list-surveys h3 {
   position: relative;
   padding: 0.5em;
   margin-bottom: 1em;
@@ -1069,7 +1189,28 @@ div.panel.disabled a {
   padding-left: 30px;
 }
 
+.main-content-container {
+  max-width: 95%;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.ck-content {
+  transition: height 400ms ease-in-out;
+}
+
+.ck-blurred {
+  max-height: 35vh;
+}
+
+.ck-focused {
+  max-height: initial;
+}
+
 @media (max-width: 768px) {
+  .main-content-container {
+    max-width: 100%;
+  }
   .side-menu {
     position: relative;
     width: 100%;
@@ -1195,8 +1336,11 @@ div.panel.disabled a {
   }
   .navbar-header {
     position: fixed;
+    top: 0;
     width: 100%;
     z-index: 3;
+    background: white;
+    border-bottom: 1px solid var(--LS-admintheme-basecolor);
   }
   .side-menu-container > .navbar-nav {
     position: fixed;
@@ -1241,7 +1385,8 @@ div.panel.disabled a {
   padding-right: 0;
 }
 
-.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+.container-fluid .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff;
 }
 
@@ -1249,7 +1394,10 @@ div.panel.disabled a {
   color: #fff;
 }
 
-.btn-success:hover, .btn-danger:hover, .btn-warning:hover, .btn-info:hover {
+.btn-success:hover,
+.btn-danger:hover,
+.btn-warning:hover,
+.btn-info:hover {
   color: #fff;
 }
 
@@ -1678,13 +1826,16 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 1em;
 }
 
-.container-fluid .ui-widget-content .ui-state-default, .container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
+.container-fluid .ui-widget-content .ui-state-default,
+.container-fluid .ui-jqgrid .ui-jqgrid-bdiv {
   padding: 0.5em;
   /* Too much padding for tabs (both bootstrap and jquery ui) */
   padding-bottom: 0;
 }
 
-.ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
+.ui-dialog,
+.ui-jqdialog,
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
   border-radius: 4px;
   padding: 1em;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -1707,7 +1858,8 @@ input[type="checkbox"]:disabled:checked:after,
   padding: 0em;
 }
 
-.EditTable td select, .EditTable td textarea {
+.EditTable td select,
+.EditTable td textarea {
   display: inline-block;
   width: auto;
   vertical-align: middle;
@@ -1727,11 +1879,17 @@ input[type="checkbox"]:disabled:checked:after,
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
-.EditTable td input, .EditTable td select, .EditTable td textarea {
+.EditTable td input,
+.EditTable td select,
+.EditTable td textarea {
   margin: 0;
 }
 
-input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {
+input[type="text"],
+input[type="password"],
+.ui-autocomplete-input,
+textarea,
+.uneditable-input {
   display: inline-block;
   font-size: 14px;
   line-height: 18px;
@@ -1741,7 +1899,8 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   border-radius: 3px;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: 0;
   border-color: rgba(82, 168, 236, 0.8);
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
@@ -1749,7 +1908,9 @@ input:focus, textarea:focus {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
 }
 
-#displayparticipants_firstname, #displayparticipants_lastname, #displayparticipants_owner_uid {
+#displayparticipants_firstname,
+#displayparticipants_lastname,
+#displayparticipants_owner_uid {
   padding-left: 40px;
 }
 
@@ -1845,17 +2006,22 @@ input:focus, textarea:focus {
   font-weight: bold;
 }
 
-.data-entry-tbl tr.odd td, .data-entry-tbl tr.even td {
+.data-entry-tbl tr.odd td,
+.data-entry-tbl tr.even td {
   padding: 20px 0 20px 0;
 }
 
-h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-right {
+h3 .glyphicon-chevron-up,
+h3 .glyphicon-chevron-down,
+h3 .glyphicon-chevron-right {
   position: absolute;
   right: 1em;
   top: 10px;
 }
 
-h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-right {
+h3 .glyphicon-chevron-up,
+h3 .glyphicon-chevron-down,
+h3 .glyphicon-chevron-right {
   cursor: pointer;
 }
 
@@ -1904,7 +2070,8 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
   padding-top: 0px;
 }
 
-#carousel-example-generic, #carousel-example-generic .carousel-inner {
+#carousel-example-generic,
+#carousel-example-generic .carousel-inner {
   min-height: 150px;
 }
 
@@ -2035,7 +2202,8 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
 /**
  * comfortUpdate
  */
-#ajaxContainerLoading, .ajaxLoading {
+#ajaxContainerLoading,
+.ajaxLoading {
   height: 130px;
   text-align: center;
   margin-top: 70px;
@@ -2072,7 +2240,8 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
   padding-top: 0.5em;
 }
 
-#comfortUpdateGeneralWrap #welcomeMessage, #comfortUpdateGeneralWrap #btn-container {
+#comfortUpdateGeneralWrap #welcomeMessage,
+#comfortUpdateGeneralWrap #btn-container {
   border-right: 1px solid #EEE;
 }
 
@@ -2087,7 +2256,9 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
   margin-top: 1em;
 }
 
-html body .nav-tabs > li.active > a, html body .nav-tabs > li.active > a:hover, html body .nav-tabs > li.active > a:focus {
+html body .nav-tabs > li.active > a,
+html body .nav-tabs > li.active > a:hover,
+html body .nav-tabs > li.active > a:focus {
   border-bottom-color: transparent;
   cursor: default;
 }
@@ -2096,7 +2267,8 @@ html body .nav-tabs > li.active > a, html body .nav-tabs > li.active > a:hover, 
   vertical-align: middle;
 }
 
-.btnaddanswer:hover, .btndelanswer:hover {
+.btnaddanswer:hover,
+.btndelanswer:hover {
   cursor: pointer;
 }
 
@@ -2124,15 +2296,19 @@ span[data-tooltip] {
   border-bottom: none;
 }
 
-#explorer-collapse:hover, #sideMenu #dropdown li a#explorer-collapse[aria-expanded="true"], #sideMenu #dropdown li a.question-group-collapse[aria-expanded="true"] {
+#explorer-collapse:hover,
+#sideMenu #dropdown li a#explorer-collapse[aria-expanded="true"],
+#sideMenu #dropdown li a.question-group-collapse[aria-expanded="true"] {
   width: auto;
 }
 
-#sideMenu #dropdown #explorer li#questionexplorer-group-container, #sideMenu #dropdown li#questionexplorer-group-container > a {
+#sideMenu #dropdown #explorer li#questionexplorer-group-container,
+#sideMenu #dropdown li#questionexplorer-group-container > a {
   line-height: 1.4;
 }
 
-#sideMenu #dropdown #explorer li#questionexplorer-group-container:hover, #sideMenu #dropdown li#questionexplorer-group-container:hover > a {
+#sideMenu #dropdown #explorer li#questionexplorer-group-container:hover,
+#sideMenu #dropdown li#questionexplorer-group-container:hover > a {
   background-color: #fafafa;
   font-weight: 400;
   line-height: 1.4;
@@ -2143,11 +2319,13 @@ span[data-tooltip] {
   padding: 0em 0 1em 0;
 }
 
-.explorer-group-title a.explorer-group, .question-collapse-title {
+.explorer-group-title a.explorer-group,
+.question-collapse-title {
   color: #163c19;
 }
 
-#item-container, #jcarousel-wrapper-container {
+#item-container,
+#jcarousel-wrapper-container {
   width: 300px;
 }
 
@@ -2247,7 +2425,11 @@ iframe#dialog {
 /** Fixed pager width */
 /* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
 /* Myabe use a pseudo fixd-y solution is a good idea */
-.ui-jqgrid, .ui-jqgrid-view, .ui-jqgrid-titlebar, .ui-jqgrid-toppager, .ui-jqgrid-pager {
+.ui-jqgrid,
+.ui-jqgrid-view,
+.ui-jqgrid-titlebar,
+.ui-jqgrid-toppager,
+.ui-jqgrid-pager {
   min-width: 100%;
   max-width: 100%;
   margin-right: 0;
@@ -2286,7 +2468,8 @@ iframe#dialog {
 }
 
 /** */
-.droppable-new, .droppable-csv {
+.droppable-new,
+.droppable-csv {
   min-height: 40px;
   height: 100%;
 }
@@ -2338,7 +2521,8 @@ div#gview_displayresponses th#displayresponses_cb {
 }
 
 /* Make sure buttons is onw row */
-.time-statistics-row-buttons, .nowrap {
+.time-statistics-row-buttons,
+.nowrap {
   white-space: nowrap;
 }
 
@@ -2381,7 +2565,8 @@ div#gview_displayresponses th#displayresponses_cb {
   overflow: visible;
 }
 
-a.explorer-group:hover, a.explorer-group:focus {
+a.explorer-group:hover,
+a.explorer-group:focus {
   text-decoration: none;
 }
 
@@ -2410,7 +2595,8 @@ a.explorer-group:hover, a.explorer-group:focus {
   opacity: 0.5;
 }
 
-.btn.readonly, .btn.readonly:hover {
+.btn.readonly,
+.btn.readonly:hover {
   cursor: not-allowed;
   opacity: 0.65;
   filter: alpha(opacity=65);
@@ -2420,19 +2606,23 @@ a.explorer-group:hover, a.explorer-group:focus {
   border: 1px solid #cccccc;
 }
 
-#displayResponsesContainer .ui-jqgrid-bdiv, #gbox_displaytokens .ui-jqgrid-bdiv {
+#displayResponsesContainer .ui-jqgrid-bdiv,
+#gbox_displaytokens .ui-jqgrid-bdiv {
   overflow: hidden;
 }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: 24px;
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: 22px;
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: 20px;
 }
 
@@ -2440,7 +2630,13 @@ h3, .h3 {
   word-wrap: break-word;
 }
 
-.summary-container, .summary, #massive-action-container, #surveyListActions, .listActions, .pager-container ls-ba .pager, .pager-container ls-ba .pager .pagination {
+.summary-container,
+.summary,
+#massive-action-container,
+#surveyListActions,
+.listActions,
+.pager-container ls-ba .pager,
+.pager-container ls-ba .pager .pagination {
   margin: 0;
   margin-bottom: 20px;
 }
@@ -2449,7 +2645,9 @@ h3, .h3 {
   text-align: right;
 }
 
-#massive-action-container, #surveyListActions, .listActions {
+#massive-action-container,
+#surveyListActions,
+.listActions {
   padding-left: 0px;
   text-align: left;
 }
@@ -2540,7 +2738,8 @@ h3, .h3 {
   max-width: 12px;
 }
 
-#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4, #edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8 {
+#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-4,
+#edittoken .tab-content #general .form-group .col-sm-4 .col-sm-8 {
   padding: 0;
 }
 
@@ -2561,7 +2760,8 @@ div[id^="alertmod_"] {
   text-align: left;
 }
 
-.ui-helper-clearfix::before, .ui-helper-clearfix::after {
+.ui-helper-clearfix::before,
+.ui-helper-clearfix::after {
   border-collapse: collapse;
   content: "";
   display: table;
@@ -2571,7 +2771,8 @@ div[id^="alertmod_"] {
   clear: both;
 }
 
-.ui-helper-clearfix::before, .ui-helper-clearfix::after {
+.ui-helper-clearfix::before,
+.ui-helper-clearfix::after {
   border-collapse: collapse;
   content: "";
   display: table;
@@ -2645,7 +2846,7 @@ table#responsedetail tr td {
   text-decoration: none;
   background-color: transparent;
   background-image: none;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
   cursor: not-allowed;
 }
 
@@ -2707,7 +2908,8 @@ table#responsedetail tr td {
 }
 
 /* Tabs used within form in condition designer */
-#editconditions .tab-content, #quick-add-conditions-form .tab-content {
+#editconditions .tab-content,
+#quick-add-conditions-form .tab-content {
   padding-top: 0;
 }
 
@@ -2757,7 +2959,8 @@ table#responsedetail tr td {
   width: 100%;
 }
 
-.welcome .panel-body .panel-body-ico, .welcome .panel-body .panel-body-link {
+.welcome .panel-body .panel-body-ico,
+.welcome .panel-body .panel-body-link {
   width: 100%;
   display: flex;
   align-items: center;
@@ -2794,7 +2997,8 @@ input[type="file"].form-control {
   * {
     overflow: visible !important;
   }
-  html, body {
+  html,
+  body {
     margin: 0;
     max-width: 0%;
   }
@@ -2962,6 +3166,10 @@ input[type="file"].form-control {
 #accordion_questionTypeSelector .panel-title > a {
   width: 100%;
   display: block;
+}
+
+.small-screens-menus {
+  padding-left: 28px;
 }
 
 /*custom margin and padding*/
@@ -3983,115 +4191,107 @@ textarea.form-control.input-text {
   padding: 0 5px;
 }
 
-.draggable-container {
-  min-height: 300px;
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
 }
 
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-left: 0.75%;
-  margin-right: 0.75%;
-  margin-bottom: 20px;
+.grid-view .table th > .sort-link .caret {
+  right: -10px;
 }
 
-#tokenattribute {
-  margin-left: 1.5%;
+.dropdown-menu.larger-dropdown {
+  min-width: 240px;
 }
 
-#centralattribute {
-  margin-right: 1.5%;
+.dropdown-submenu {
+  position: relative;
 }
 
-#centralattribute .centralatt {
-  padding-bottom: 15px;
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px 6px;
+  border-radius: 0 6px 6px 6px;
 }
 
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
+.dropdown-submenu:hover > a:after {
+  border-left-color: #555;
 }
 
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
 
-#newcreated,
-#tokenattribute {
-  height: 100%;
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
 }
 
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
+#vue-apps-main-container {
+  min-height: 75vh;
 }
 
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
 }
 
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
+.fa-stack-1x.halfed {
+  font-size: 0.5em;
 }
 
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
-  text-align: left;
+.fa-1x.halfed {
+  font-size: 0.5em;
 }
 
-#centralattribute .explanation-row {
-  display: table-row;
+.contain-pulse {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: bottom;
+  height: 3em;
 }
 
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
+.square {
+  background: #0f3e12;
+  border-radius: 0.6em;
+  box-sizing: border-box;
+  height: 2em;
+  margin: 0.2em;
+  overflow: hidden;
+  padding: 0.5em;
+  width: 2em;
 }
 
-#centralattribute .explanation label {
-  padding-left: 8px;
+.animate-pulse .square:nth-of-type(1) {
+  animation: pulse ease-in-out 1.8s infinite 0.2s;
 }
 
-.attribute-item.draggable {
-  cursor: move;
+.animate-pulse .square:nth-of-type(2) {
+  animation: pulse ease-in-out 1.8s infinite 0.6s;
 }
 
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
+.animate-pulse .square:nth-of-type(3) {
+  animation: pulse ease-in-out 1.8s infinite 1.0s;
 }
 
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
+.animate-pulse .square:nth-of-type(4) {
+  animation: pulse ease-in-out 1.8s infinite 1.4s;
 }
 
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
-}
-
-#cpdbatt {
-  min-height: 100px;
+.simpleWrapper {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: inline-block;
 }
 
 #selectable .ui-selecting {
@@ -4156,6 +4356,10 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
+}
+
+#cpdbatt {
+  min-height: 100px;
 }
 
 .jcarousel-wrapper {
@@ -4273,107 +4477,4 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 
 .item.inactive {
   display: none;
-}
-
-.grid-view .table td.button-column, .grid-view .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
-}
-
-.grid-view .table th > .sort-link .caret {
-  right: -10px;
-}
-
-.dropdown-menu.larger-dropdown {
-  min-width: 240px;
-}
-
-.dropdown-submenu {
-  position: relative;
-}
-
-.dropdown-submenu > .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px 6px;
-  border-radius: 0 6px 6px 6px;
-}
-
-.dropdown-submenu:hover > a:after {
-  border-left-color: #555;
-}
-
-.dropdown-submenu.pull-left {
-  float: none;
-}
-
-.dropdown-submenu.pull-left > .dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
-}
-
-#vue-apps-main-container {
-  min-height: 75vh;
-}
-
-.fa-stack.halfed {
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-}
-
-.fa-stack-1x.halfed {
-  font-size: 0.5em;
-}
-
-.fa-1x.halfed {
-  font-size: 0.5em;
-}
-
-.contain-pulse {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-content: bottom;
-  height: 3em;
-}
-
-.square {
-  background: #0f3e12;
-  border-radius: 0.6em;
-  box-sizing: border-box;
-  height: 2em;
-  margin: 0.2em;
-  overflow: hidden;
-  padding: 0.5em;
-  width: 2em;
-}
-
-.animate-pulse .square:nth-of-type(1) {
-  animation: pulse ease-in-out 1.8s infinite 0.2s;
-}
-
-.animate-pulse .square:nth-of-type(2) {
-  animation: pulse ease-in-out 1.8s infinite 0.6s;
-}
-
-.animate-pulse .square:nth-of-type(3) {
-  animation: pulse ease-in-out 1.8s infinite 1.0s;
-}
-
-.animate-pulse .square:nth-of-type(4) {
-  animation: pulse ease-in-out 1.8s infinite 1.4s;
-}
-
-.simpleWrapper {
-  padding: 0;
-  margin: 0;
-  border: none;
-  display: inline-block;
 }

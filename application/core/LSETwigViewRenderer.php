@@ -357,7 +357,7 @@ window.addEventListener('message', function(event) {
         }
 
         if (file_exists($oRTemplate->path.$sOptionJS)) {
-            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, LSYii_ClientScript::POS_END);
         }
 
         $this->_twig = $twig = parent::getTwig();

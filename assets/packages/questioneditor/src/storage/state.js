@@ -25,6 +25,7 @@ export default {
         }
     ],
     questionAdvancedSettingsCategory: '',
+    collapsedGeneralSettings: false,
     activeLanguage: '',
     inTransfer: false,
     alerts: [],

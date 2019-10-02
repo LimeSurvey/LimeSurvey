@@ -98,13 +98,10 @@ ul li[data-v-74ef06d8] {
   float: none;
   width: initial;
   max-width: 100%;
+  min-width: 30%;
   padding-top: 4px;
-}
-@media (max-width: 1280px) {
-.scoped-topbar-nav[data-v-09de9822] {
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
-}
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .topbarpanel[data-v-4066ed26] {

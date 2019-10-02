@@ -39827,6 +39827,8 @@
 	  }, 0);
 	}
 
+	Vue.config.devtools = true;
+
 	var EventBus =
 	/*#__PURE__*/
 	function (_Vue) {

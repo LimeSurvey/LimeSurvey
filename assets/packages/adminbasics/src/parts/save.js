@@ -235,6 +235,7 @@ const SaveController = () => {
         });
 
         LS.EventBus.$off("saveButtonCalled");
+        LS.EventBus.$emit("saveButtonFlushed");
         
         LS.EventBus.$on("saveButtonCalled", (button) => {
             if(!isSubmitting()) {

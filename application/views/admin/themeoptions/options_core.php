@@ -57,7 +57,7 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
     $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $brandlogo;
 
     foreach($aOptionAttributes['categories'] as $key => $category){ ?>
-        <div role="tabpanel" class="tab-pane  <?php echo $key == 0 ? 'active' : ''; ?>" id="category-<?php echo $key; ?>">
+        <div role="tabpanel" class="CoreThemeOptions--settingsTab tab-pane  <?php echo $key == 0 ? 'active' : ''; ?>" id="category-<?php echo $key; ?>">
             <div class="container-fluid" style="position:relative">
                 <?php if ($key == 0){ ?>
                     <?php /* Small loading animation to give the scripts time to parse and render the correct values */ ?>

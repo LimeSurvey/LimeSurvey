@@ -1,5 +1,7 @@
 'use strict'
 import Vue from 'vue';
+
+Vue.config.devtools = true;
 class EventBus extends Vue {
 
     $getEventsBound() {

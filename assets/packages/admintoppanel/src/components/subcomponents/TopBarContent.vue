@@ -77,10 +77,8 @@ export default {
         float: none;
         width: initial;
         max-width: 100%;
+        min-width: 30%;
         padding-top:4px;
-        
-        @media(max-width:1280px) {
-            flex-wrap: wrap;
-        }
+        flex-wrap: wrap;
     }
 </style>

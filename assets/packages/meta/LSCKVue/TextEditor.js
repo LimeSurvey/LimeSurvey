@@ -78,12 +78,15 @@ export default {
 
 				this.$_setUpEditorEvents();
 				this.$emit( 'ready', editor );
-				window.LS.debug.cks.push(editor);
+                window.LS.debug.cks.push(editor);
+                
 			})
 			.catch( error => {
 				console.error( error );
 				if(this.onError !== null) {this.onError(error);}
-			});
+            });
+            
+            
 		       
 	},
 
@@ -112,16 +115,21 @@ export default {
 			const editor = this.instance;
 			const emitInputEvent = evt => {
 				const data = this.$_lastEditorData = editor.getData();
-				this.$emit( 'input', data, evt, editor );
+				this.$emit( 'input', data, {evt, editor} );
 			};
 			editor.model.document.on( 'change:data', LS.ld.debounce( emitInputEvent, INPUT_EVENT_DEBOUNCE_WAIT ) );
 
 			editor.editing.view.document.on( 'focus', evt => {
-				this.$emit( 'focus', evt, editor );
+                editor.editing.view.scrollToTheSelection();
+				this.$emit( 'focus', {evt, editor} );
+            } );
+            
+			$(editor.editing.view.element).on('scroll', evt => {
+				this.$emit( 'insidescroll', {evt, editor} );
 			} );
 
 			editor.editing.view.document.on( 'blur', evt => {
-				this.$emit( 'blur', evt, editor );
+				this.$emit( 'blur', {evt, editor} );
 			} );
 		}
 	}

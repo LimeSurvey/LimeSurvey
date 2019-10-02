@@ -512,13 +512,19 @@ class themeoptions  extends Survey_Common_Action
     private function _updateCommon(TemplateConfiguration $model, $sid = null,$gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
-        Template::model()->getInstance($model->template_name,$sid,$gsid);
+        $oTemplate = Template::model()->getInstance($model->template_name,$sid,$gsid);
 
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
-        $templateOptionPage           = $oModelWithInheritReplacement->optionPage;
-        $aOptionAttributes            = TemplateManifest::getOptionAttributes($oModelWithInheritReplacement->path);
+        $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
         $aTemplateConfiguration = $oModelWithInheritReplacement->getOptionPageAttributes();
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        
+        if($aOptionAttributes['optionsPage'] == 'core') {
+            Yii::app()->clientScript->registerPackage('themeoptions-core');
+            $templateOptionPage = '';
+        } else {
+            $templateOptionPage = $oModelWithInheritReplacement->optionPage;
+        }
 
         $oSimpleInheritance = Template::getInstance($oModelWithInheritReplacement->sTemplateName, $sid, $gsid, null, true);
         $oSimpleInheritance->options = 'inherit';
