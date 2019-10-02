@@ -279,8 +279,8 @@
                   <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
                   <file type="view" role="layout">layout_user_forms.twig</file>
                   <file type="view" role="content">./subviews/content/userforms.twig</file>
-                  <file type="view" role="content">./subviews/logincomponents/token.twig</file>
-                  <file type="view" role="content">./subviews/logincomponents/captcha.twig</file>
+                  <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
+                  <file type="view" role="subview">./subviews/logincomponents/captcha.twig</file>
                 </token>
 
             </screens>

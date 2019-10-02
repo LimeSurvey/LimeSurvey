@@ -13,7 +13,7 @@
     <!-- Those metadata are displayed in the theme configuration page.  -->
     <metadata>
         <name>vanilla</name>
-        <title twig="on">Bootstrap Vanilla</title>
+        <title>Bootstrap Vanilla</title>
         <creationDate>16/10/2017</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
@@ -296,8 +296,8 @@
                   <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
                   <file type="view" role="layout">layout_user_forms.twig</file>
                   <file type="view" role="content">./subviews/content/userforms.twig</file>
-                  <file type="view" role="content">./subviews/logincomponents/token.twig</file>
-                  <file type="view" role="content">./subviews/logincomponents/captcha.twig</file>
+                  <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
+                  <file type="view" role="subview">./subviews/logincomponents/captcha.twig</file>
                 </token>
 
 
