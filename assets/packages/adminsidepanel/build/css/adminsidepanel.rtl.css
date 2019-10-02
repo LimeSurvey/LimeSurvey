@@ -173,7 +173,9 @@
   font-size: "28px"; }
 
 .ls-ba .list-group {
-  padding-left: 0; }
+  padding-left: 0;
+  -webkit-padding-start: 0;
+          padding-inline-start: 0; }
   .ls-ba .list-group > .list-group-item {
     padding-left: 0; }
     .ls-ba .list-group > .list-group-item .list-group {
