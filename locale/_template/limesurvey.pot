@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-09-23 16:43:40+00:00\n"
+"POT-Creation-Date: 2019-10-02 14:06:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4355,6 +4355,8 @@ msgstr ""
 #: application/views/survey/frontpage/registerForm/form.php:56
 #: application/views/survey/frontpage/tokenForm/form.php:57
 #: tmp/runtime/twig_cache/6e/6ee49d4261c9aac3c266c9a74d0f872c4a4215e6abdc71167186aa9bdef49b46.php:302
+#: tmp/runtime/twig_cache/77/7786ad2aa8ed25b729416034a8bfbcbafe7d286bb3ac5b88c30c5b8cd6792f9b.php:247
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:272
 msgid "Continue"
 msgstr ""
 
@@ -8311,6 +8313,7 @@ msgstr ""
 #: application/models/TokenDynamic.php:702
 #: application/views/admin/dataentry/caption_view.php:36
 #: application/views/admin/participants/attributeMap_view.php:158
+#: tmp/runtime/twig_cache/31/319f7463ba7eafdf7d5cb8f03afa447708837e199074f66c90be2c5987a6613f.php:44
 msgid "Token"
 msgstr ""
 
@@ -17002,6 +17005,9 @@ msgstr ""
 #: tmp/runtime/twig_cache/00/00c8bc431d46b14d275cc2fcebe87d2655b8cddc1c176946ca4639feee015503.php:325
 #: tmp/runtime/twig_cache/20/209036a7f891079846567f11e2cb2448b9c9d06a980aa7112229dec4fb1a260c.php:184
 #: tmp/runtime/twig_cache/20/209036a7f891079846567f11e2cb2448b9c9d06a980aa7112229dec4fb1a260c.php:233
+#: tmp/runtime/twig_cache/77/7786ad2aa8ed25b729416034a8bfbcbafe7d286bb3ac5b88c30c5b8cd6792f9b.php:190
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:127
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:207
 #: tmp/runtime/twig_cache/fe/fe13998c19202ed01537b30b68215742ec3e8a2da908938efab267b1876969ec.php:54
 msgid "Mandatory"
 msgstr ""
@@ -19117,12 +19123,12 @@ msgstr ""
 
 #: application/views/admin/themeoptions/index.php:48
 #: application/views/admin/themeoptions/index.php:187
-#: application/views/admin/themeoptions/surveythemelist.php:45
+#: application/views/admin/themeoptions/surveythemelist.php:46
 msgid "Type"
 msgstr ""
 
 #: application/views/admin/themeoptions/index.php:48
-#: application/views/admin/themeoptions/surveythemelist.php:54
+#: application/views/admin/themeoptions/surveythemelist.php:55
 msgid "Extends"
 msgstr ""
 
@@ -19917,6 +19923,7 @@ msgstr ""
 
 #: application/views/admin/token/tokenform.php:166
 #: application/views/survey/frontpage/tokenForm/form.php:9
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:117
 msgid "Token:"
 msgstr ""
 
@@ -21157,10 +21164,13 @@ msgstr ""
 #: application/views/survey/frontpage/tokenForm/form.php:27
 #: application/views/survey/system/formItem/captcha.php:10
 #: tmp/runtime/twig_cache/6e/6ee49d4261c9aac3c266c9a74d0f872c4a4215e6abdc71167186aa9bdef49b46.php:231
+#: tmp/runtime/twig_cache/77/7786ad2aa8ed25b729416034a8bfbcbafe7d286bb3ac5b88c30c5b8cd6792f9b.php:174
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:191
 msgid "Please solve the following equation:"
 msgstr ""
 
 #: application/views/survey/frontpage/captchaForm/heading.php:7
+#: tmp/runtime/twig_cache/77/7786ad2aa8ed25b729416034a8bfbcbafe7d286bb3ac5b88c30c5b8cd6792f9b.php:140
 msgid "Before you start, please prove you are human."
 msgstr ""
 
@@ -21279,14 +21289,17 @@ msgid "After having clicked the save button you can either close this browser wi
 msgstr ""
 
 #: application/views/survey/frontpage/tokenForm/heading.php:7
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:58
 msgid "To participate in this restricted survey, you need a valid token."
 msgstr ""
 
 #: application/views/survey/frontpage/tokenForm/message.php:9
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:77
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
 #: application/views/survey/frontpage/tokenForm/message.php:11
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:83
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
@@ -21373,6 +21386,8 @@ msgid "There is 1 question in this survey."
 msgstr ""
 
 #: tmp/runtime/twig_cache/6e/6ee49d4261c9aac3c266c9a74d0f872c4a4215e6abdc71167186aa9bdef49b46.php:258
+#: tmp/runtime/twig_cache/77/7786ad2aa8ed25b729416034a8bfbcbafe7d286bb3ac5b88c30c5b8cd6792f9b.php:208
+#: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:225
 msgid "Reload captcha"
 msgstr ""
 
