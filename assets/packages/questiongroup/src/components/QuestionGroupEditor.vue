@@ -103,7 +103,7 @@ ${scriptContent}
             <div class="panel-body">
                 <div class="col-xs-12 ls-space margin top-5 bottom-5">
                     <div class="col-12">{{'Title'|translate}}</div>
-                    <input v-model="currentTitle" class="form-control group-title" />
+                    <input v-model="currentTitle" id="groupTitle" class="form-control group-title" />
                 </div>
                 <div class="col-xs-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor">
                     <div class="ls-flex-row col-12">
