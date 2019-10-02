@@ -70,7 +70,7 @@ class CreateSurveyTest extends TestBaseClassWeb
      */
     public function testCreateSurvey()
     {
-        $this->markTestIncomplete();
+        //$this->markTestIncomplete();
         try {
             // Go to main page.
             $urlMan = \Yii::app()->urlManager;
@@ -133,13 +133,11 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(5);
 
             // Go to structure sidebar
-            // TODO: Can not find this selector.
             $selectStructureSidebar = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton')      
                 )
             );
-
             $selectStructureSidebar->click();
 
             // Click "Add group".
@@ -150,18 +148,23 @@ class CreateSurveyTest extends TestBaseClassWeb
             );
             $addgroup->click();
 
+            //TODO: Fill in group title not working.
             // Fill in group title.
             $groupname = self::$webDriver->findElement(WebDriverBy::className('group-title'));
             $groupname->clear()->sendKeys('group1');
 
-            // Click save and add question.
-            $save = self::$webDriver->findElement(WebDriverBy::id('save-and-close-button'));
+            // Click save and add question group.
+            $save = self::$webDriver->findElement(WebDriverBy::id('save-and-new-button'));
             $save->click();
             sleep(1);
 
             // Create question.
-            $save = self::$webDriver->findElement(WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestion'));
-            $save->click();
+            $adminSelectorCreateQuestionButton = self::$webDriver->wait(10)->until(
+              WebDriverExpectedCondition::elementToBeClickable(
+                  WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestion')
+              )
+            );
+            $adminSelectorCreateQuestionButton->click();
             sleep(1);
 
             // Add question title.
