@@ -143,7 +143,7 @@ class questiongroups extends Survey_Common_Action
     {
         $this->view($surveyid, null);
         return;
-        /////
+        ///// TODO: Delete this code in the future?
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($iSurveyID);
         $aViewUrls = $aData = array();
