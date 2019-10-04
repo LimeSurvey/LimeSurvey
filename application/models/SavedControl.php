@@ -102,4 +102,33 @@ class SavedControl extends LSActiveRecord
         return $this->db->insert('saved_control', $data);
     }
 
+    public function getGridButtons($surveyid)
+    {
+        $gridButtons = array();
+        $gridButtons['editresponse'] = array(
+            'label'=>'<span class="sr-only">'.gT("Edit").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-edit",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Edit response")
+            ),
+            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update').')',
+        );
+        $gridButtons['delete'] = array(
+            'label'=>'<span class="sr-only">'.gT("Delete").'</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'icon'=>false,
+            'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-delete",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Delete this entry and related response")
+            ),
+            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete').')',
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
+        );
+        return $gridButtons;
+    }
 }
