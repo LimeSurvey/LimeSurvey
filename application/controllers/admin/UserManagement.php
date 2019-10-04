@@ -169,7 +169,7 @@ class UserManagement extends Survey_Common_Action
             Yii::app()->end();
         }
 
-        $oUser = $this->_editUser($aUser);
+        $oUser = $this->updateAdminUser($aUser);
         if ($oUser === false) {
             return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
                 'success' => false,
@@ -873,14 +873,12 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * private method to store a change in a user
-     * return json to return to js frontend
+     * Update admin-user
      *
-     * @param array $aUser
-     * @param integer $userid
-     * @return string
+     * @param $aUser
+     * @return array|bool|mixed|null
      */
-    private function _editUser($aUser)
+    private function updateAdminUser($aUser)
     {
         $oUser = User::model()->findByPk($aUser['uid']);
         $oUser->setAttributes($aUser);
