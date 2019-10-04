@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-10-02 16:28:31+00:00\n"
+"POT-Creation-Date: 2019-10-04 08:00:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -463,7 +463,7 @@ msgstr ""
 #: application/models/SurveymenuEntries.php:182
 #: application/models/SurveysGroups.php:69
 #: application/models/TokenDynamic.php:659
-#: application/views/admin/saved/savedlist_view.php:17
+#: application/views/admin/saved/savedlist_view.php:18
 #: application/views/admin/survey/surveySummary_view.php:32
 msgid "ID"
 msgstr ""
@@ -703,7 +703,7 @@ msgstr ""
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/helpers/qanda_helper.php:2306
 #: application/models/Assessment.php:99 application/models/Permission.php:759
-#: application/models/Question.php:850
+#: application/models/Question.php:850 application/models/SavedControl.php:120
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:690
 #: application/views/admin/participants/massive_actions/_selector.php:18
@@ -734,7 +734,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:315
 #: application/controllers/admin/assessments.php:278
 #: application/helpers/qanda_helper.php:2307
-#: application/models/Assessment.php:92
+#: application/models/Assessment.php:92 application/models/SavedControl.php:109
 #: application/views/admin/quotas/viewquotas_quota_actions.php:12
 #: application/views/admin/survey/Question/questionbar_view.php:109
 msgid "Edit"
@@ -1109,6 +1109,8 @@ msgstr ""
 #: application/controllers/admin/responses.php:484
 #: application/controllers/admin/responses.php:548
 #: application/controllers/admin/responses.php:718
+#: application/controllers/admin/saved.php:39
+#: application/controllers/admin/saved.php:69
 #: application/controllers/admin/surveyadmin.php:102
 #: application/controllers/admin/surveyadmin.php:1039
 #: application/controllers/admin/surveyadmin.php:1092
@@ -2398,8 +2400,8 @@ msgstr ""
 #: application/controllers/admin/export.php:609
 #: application/controllers/admin/responses.php:1075
 #: application/controllers/admin/responses.php:1076
-#: application/controllers/admin/saved.php:73
-#: application/controllers/admin/saved.php:77
+#: application/controllers/admin/saved.php:111
+#: application/controllers/admin/saved.php:115
 #: application/controllers/admin/statistics.php:812
 #: application/controllers/admin/statistics.php:818
 #: application/views/admin/dataentry/delete.php:7
@@ -3006,6 +3008,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:1421
 #: application/controllers/admin/responses.php:551
 #: application/controllers/admin/responses.php:721
+#: application/controllers/admin/saved.php:72
 #: application/controllers/admin/tokens.php:264
 msgid "Invalid action"
 msgstr ""
@@ -3909,9 +3912,18 @@ msgstr ""
 msgid "Responses and statistics"
 msgstr ""
 
-#: application/controllers/admin/saved.php:58
-#: application/controllers/admin/saved.php:59
-msgid "Couldn't delete"
+#: application/controllers/admin/saved.php:79
+msgid "Saved response not found"
+msgstr ""
+
+#: application/controllers/admin/saved.php:88
+#: application/controllers/admin/saved.php:91
+msgid "Unable to delete saved response."
+msgstr ""
+
+#: application/controllers/admin/saved.php:95
+#: application/controllers/admin/saved.php:98
+msgid "Saved response deleted."
 msgstr ""
 
 #: application/controllers/admin/statistics.php:200
@@ -4274,7 +4286,6 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:131
 #: application/views/admin/responses/browsemenubar_view.php:227
-#: application/views/admin/saved/savedlist_view.php:39
 #: application/views/admin/usergroup/usergroupbar_view.php:35
 #: application/views/admin/usergroup/viewUserGroup_view.php:56
 msgid "Are you sure you want to delete this entry?"
@@ -8328,7 +8339,7 @@ msgstr ""
 
 #: application/helpers/common_helper.php:1504
 #: application/views/admin/dataentry/caption_view.php:85
-#: application/views/admin/saved/savedlist_view.php:20
+#: application/views/admin/saved/savedlist_view.php:32
 msgid "IP address"
 msgstr ""
 
@@ -8365,7 +8376,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:229 application/models/Token.php:80
 #: application/models/TokenDynamic.php:684
 #: application/views/admin/export/exportresult_panels/_token-control.php:29
-#: application/views/admin/saved/savedlist_view.php:22
+#: application/views/admin/saved/savedlist_view.php:40
 #: application/views/admin/themes/templateeditor_register_view.php:11
 msgid "Email address"
 msgstr ""
@@ -12334,6 +12345,14 @@ msgstr ""
 msgid "URL Description:"
 msgstr ""
 
+#: application/models/SavedControl.php:115
+msgid "Edit response"
+msgstr ""
+
+#: application/models/SavedControl.php:127
+msgid "Delete this entry and related response"
+msgstr ""
+
 #: application/models/Survey.php:213
 msgid "running"
 msgstr ""
@@ -12629,7 +12648,6 @@ msgstr ""
 
 #: application/models/SurveysGroups.php:150
 #: application/views/admin/responses/browseallheader_view.php:77
-#: application/views/admin/saved/savedlist_view.php:18
 msgid "Actions"
 msgstr ""
 
@@ -16442,24 +16460,12 @@ msgstr ""
 msgid "ID: %s"
 msgstr ""
 
-#: application/views/admin/saved/savedlist_view.php:10
-msgid "Total:"
-msgstr ""
-
-#: application/views/admin/saved/savedlist_view.php:19
+#: application/views/admin/saved/savedlist_view.php:28
 msgid "Identifier"
 msgstr ""
 
-#: application/views/admin/saved/savedlist_view.php:21
+#: application/views/admin/saved/savedlist_view.php:36
 msgid "Date saved"
-msgstr ""
-
-#: application/views/admin/saved/savedlist_view.php:35
-msgid "Edit entry"
-msgstr ""
-
-#: application/views/admin/saved/savedlist_view.php:39
-msgid "Delete entry"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:28
