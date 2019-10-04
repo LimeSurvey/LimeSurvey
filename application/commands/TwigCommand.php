@@ -20,8 +20,6 @@ class TwigCommand extends CConsoleCommand  {
      */
     public function init()
     {
-      $this->aLogs = array();
-
       // Needed helpers for correct rendering
       Yii::import('application.helpers.surveytranslator_helper', true);
       Yii::import('application.helpers.common_helper', true);
@@ -52,12 +50,14 @@ class TwigCommand extends CConsoleCommand  {
      */
     public function actionGenerateTwigTmpFiles( $sThemeDir=null, $bGenerateSurveyCache=true, $bGenerateQuestionsCache=true, $bShowLogs=false )
     {
+      $this->aLogs = array();
+      $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bShowLogs";
       if ($bGenerateSurveyCache){
-        $this->actionGenerateSurveyThemeCache($sThemeDir );
+        $this->actionGenerateSurveyThemesCache($sThemeDir );
       }
 
       if ($bGenerateQuestionsCache){
-        $this->actionGenerateQuestionTwigTmpFiles(null);
+        $this->actionGenerateQuestionsCache(null);
       }
 
       // TODO: here add something more complex to create a file log on the server, something that can be return to the CU server at release creation, etc
@@ -71,8 +71,10 @@ class TwigCommand extends CConsoleCommand  {
      *
      * @param string $sThemeDir the directory to parse, where to find the manifests.
      */
-    public function actionGenerateSurveyThemeCache($sThemeDir=null)
+    public function actionGenerateSurveyThemesCache($sThemeDir=null)
     {
+      $this->aLogs["action"] = "actionGenerateSurveyThemesCache $sThemeDir";
+
       // NOTE 1: by default used only for core theme.
       // NOTE 2: Later, we'll can use this function to offer to generate .po files for themes developers
       $sThemeDir = ($sThemeDir==null) ? dirname(__FILE__).'/../../themes/survey':$sThemeDir;
@@ -100,8 +102,10 @@ class TwigCommand extends CConsoleCommand  {
     *
     * @param string $sQuestionDir the directory to parse, where to find the answer.twig file.
     */
-    public function actionGenerateQuestionTwigTmpFiles( $sQuestionDir=null )
+    public function actionGenerateQuestionsCache( $sQuestionDir=null )
     {
+      $this->aLogs["action"] = "actionGenerateQuestionsCache $sQuestionDir";
+
       // Generate cache for question theme
       $sQuestionDir = ($sQuestionDir===null)?dirname(__FILE__).'/../views/survey/questions/answer':$sQuestionDir;
 
@@ -114,11 +118,12 @@ class TwigCommand extends CConsoleCommand  {
           $sQuestionDirectory = $sQuestionDir.DIRECTORY_SEPARATOR.$sQuestionName;
           $sTwigFile = $sQuestionDirectory.DIRECTORY_SEPARATOR."answer.twig";
           if (file_exists($sTwigFile)){
+            $this->aLogs[$sQuestionName] = "$sTwigFile";
             $line       = file_get_contents($sTwigFile);
             $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line, array());
           }elseif(is_dir($sQuestionDirectory) && $sQuestionName != "arrays"){
             // Recursive step
-            $this->actionGenerateQuestionTwigTmpFiles($sQuestionDirectory);
+            $this->actionGenerateQuestionsCache($sQuestionDirectory);
           }
         }
       }
@@ -140,7 +145,6 @@ class TwigCommand extends CConsoleCommand  {
           $this->aLogs[$oTemplateForPreview->sTemplateName][$sScreenName][$sLayout] =  $sContent;
           $sLayoutFile  = $sLayout ;
           $thissurvey['include_content'] = $sContent;
-
 
           $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
                 $sLayoutFile,
