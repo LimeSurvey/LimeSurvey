@@ -283,12 +283,16 @@ export default {
                             @click.stop="openQuestionGroup(questiongroup)" 
                         > 
                             <span 
-                                class="question_text_ellipsize pull-left" 
+                                :class="$store.getters.isRTL ? 'question_text_ellipsize pull-right' : 'question_text_ellipsize pull-left'"
                                 :style="{ 'max-width': itemWidth }"
                             >
                                 {{questiongroup.group_name}} 
                             </span>
-                            <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
+                            <span 
+                                :class="$store.getters.isRTL ? 'badge ls-space margin right-5 pull-left' : 'badge ls-space margin right-5 pull-right'"
+                            >
+                                {{questiongroup.questions.length}}
+                            </span>
                         </a>
                         <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                     </div>
