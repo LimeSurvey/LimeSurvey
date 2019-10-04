@@ -23,7 +23,8 @@ class CreateSurveyTest extends TestBaseClassWeb
     private const INDEX_SITE = '/index.php';
 
     /**
-     * 
+     *
+     * @throws \Exception
      */
     public static function setupBeforeClass()
     {
@@ -480,12 +481,13 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This Test is filling the survey with content and saves it.
-     * 
+     *
+     * @depends testClickOnCreateSurveyButton
+     * @test
      * @param LimeSurveyWebDriver $driver
      * @return LimeSurveyWebDriver
-     * @depends testClickOnCreateSurveyButton
      */
-    public function testFillSurveyAndSave(LimeSurveyWebDriver $driver)
+    public function createSurvey(LimeSurveyWebDriver $driver)
     {
         $inputName = 'surveyTitle';
         $title = 'Test Survey 01';
@@ -509,41 +511,42 @@ class CreateSurveyTest extends TestBaseClassWeb
 
     /**
      * This test will click on the structure tab inside the sidemenu.
-     *
+     * @test
+     * @depends createSurvey
      * @param LimeSurveyWebDriver $driver Actual Webdriver
      * @return LimeSurveyWebDriver
-     * @test
-     * @depends testFillSurveyAndSave
      * @throws NoSuchElementException
+     * @throws TimeOutException
      */
     public function clickOnStructureButtonSidemenu(LimeSurveyWebDriver $driver) 
     {
-        try {
-            $structure = 'adminsidepanel__sidebar--selectorStructureButton';
-            $selectStructureSidebar = $driver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id($structure)
-                )
-            );
 
-            $actual = $selectStructureSidebar->click();
-            $this->assertNotNull($actual);
+         $this->assertNotNull($actual);
 
-            return $driver;
-        } catch (TimeOutException $exception) {
-            // Do nothing.
-        }
+         return $driver;
+    }
+
+    private function clickOnStructureButton(LimeSurveyWebDriver $driver) {
+        $structure = 'adminsidepanel__sidebar--selectorStructureButton';
+        $selectStructureSidebar = $driver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($structure)
+            )
+        );
+
+        $actual = $selectStructureSidebar->click();
+        
     }
 
     /**
+     * @depends clickOnStructureButtonSidemenu
+     * @test
      * @param LimeSurveyWebDriver $driver
      * @return LimeSurveyWebDriver
      * @throws NoSuchElementException
      * @throws TimeOutException
-     * @depends clickOnStructureButtonSidemenu
-     * @test
      */
-    public function clickAddQuestionButtonInsideSidemenu(LimeSurveyWebDriver $driver)
+    public function clickAddQuestionGroupButtonInsideSidemenu(LimeSurveyWebDriver $driver)
     {
         $elementName = 'adminsidepanel__sidebar--selectorCreateQuestionGroup';
         $button = $driver->wait(10)->until(
@@ -560,9 +563,9 @@ class CreateSurveyTest extends TestBaseClassWeb
      * @param LimeSurveyWebDriver $driver
      * @return LimeSurveyWebDriver
      * @test
-     * @depends clickAddQuestionButtonInsideSidemenu
+     * @depends clickAddQuestionGroupButtonInsideSidemenu
      */
-    public function addQuestionToSurvey(LimeSurveyWebDriver $driver)
+    public function addQuestionGroupToSurvey(LimeSurveyWebDriver $driver)
     {
         $elementName = 'groupTitle';
         $elementNameSaveButton = 'save-and-new-button';
@@ -583,5 +586,176 @@ class CreateSurveyTest extends TestBaseClassWeb
         return $driver;
     }
 
+    /**
+     * @test
+     * @depends clickOnStructureButtonSidemenu
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function clickAddQuestionButtonOnSidemenu(LimeSurveyWebDriver $driver)
+    {
+        $elementName = 'adminsidepanel__sidebar--selectorCreateQuestion';
+        $button = $driver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($elementName)
+            )
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
 
+    /**
+     * @test
+     * @depends clickAddQuestionButtonOnSidemenu
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     */
+    public function addQuestionToSurvey(LimeSurveyWebDriver $driver) {
+        $expected = 'question1';
+
+        $input = $driver->findElement(WebDriverBy::id('questionCode'));
+        $input->clear()->sendKeys($expected);
+
+        $actual = $input->getAttribute('value');
+
+        $button = self::$webDriver->findElement(WebDriverBy::id('save-button'));
+        $actualButton = $button->click();
+
+        $this->assertEquals($expected, $actual);
+        $this->assertNotNull($actualButton);
+
+        return $driver;
+    }
+
+    /**
+     * @test
+     * @depends addQuestionToSurvey
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function clickSettingsButtonOnSideMenu(LimeSurveyWebDriver $driver) {
+        $elementName = 'adminsidepanel__sidebar--selectorSettingsButton';
+        $button = $driver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($elementName)
+            )
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
+
+    /**
+     * @test
+     * @depends clickSettingsButtonOnSideMenu
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function clickOverviewButtonOnSidemenu(LimeSurveyWebDriver $driver) {
+        $elementName = 'sidemenu_overview';
+        $button = $driver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id($elementName)
+            )
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
+
+    /**
+     * @test
+     * @depends clickOverviewButtonOnSidemenu
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     */
+    public function clickActivateSurveyButton(LimeSurveyWebDriver $driver) {
+        $elementName = 'ls-activate-survey';
+        $button = $driver->findElement(
+            WebDriverBy::id($elementName)
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
+
+    /**
+     * @test
+     * @depends clickActivateSurveyButton
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     */
+    public function clickConfirmButton(LimeSurveyWebDriver $driver) {
+        $elementName = 'activateSurvey__basicSettings--proceed';
+        $button = $driver->findElement(
+            WebDriverBy::id($elementName)
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
+
+    /**
+     * @test
+     * @depends clickOverviewButtonOnSidemenu
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
+    public function clickExecuteSurveyButton(LimeSurveyWebDriver $driver) {
+        $text = 'Execute survey';
+        $button = $driver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::linkText($text)
+            )
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
+
+    /**
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     */
+    private function switchToNewTab(LimeSurveyWebDriver $driver) {
+        $tab = $driver->getWindowHandles();
+        $driver->switchTo()->window(
+            end($tab)
+        );
+        return $driver;
+    }
+
+    /**
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     */
+    private function switchToPreviousTab(LimeSurveyWebDriver $driver) {
+        return $driver;
+    }
+
+    /**
+     * @test
+     * @depends clickExecuteSurveyButton
+     * @param LimeSurveyWebDriver $driver
+     * @return LimeSurveyWebDriver
+     */
+    public function clickNextButton(LimeSurveyWebDriver $driver) {
+        $driver = $this->switchToNewTab($driver);
+        $elementName = 'ls-button-submit';
+        $button = $driver->findElement(
+            WebDriverBy::id($elementName)
+        );
+        $actual = $button->click();
+        $this->assertNotNull($actual);
+        return $driver;
+    }
 }
