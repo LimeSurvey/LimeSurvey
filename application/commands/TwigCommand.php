@@ -55,7 +55,7 @@ class TwigCommand extends CConsoleCommand  {
           }
         }
 
-        // Render all the twig strings inside the XML itself 
+        // Render all the twig strings inside the XML itself
         $aTwigFromXml = $oTemplateForPreview->getTwigStrings();
 
         foreach($aTwigFromXml as $sTwig){
@@ -66,5 +66,38 @@ class TwigCommand extends CConsoleCommand  {
     }
     // Here you can var dump the logs, it will not conflict with header generation
     //var_dump($aLogs);
+
+    $this->actionGenerateQuestionTwigTmpFiles(null);
+  }
+
+  /**
+   * Generate twig cache files for each question type.
+   * NOTE 1: It's a recursive function, since some directories are the question type itself (it has an answer.twig file) but other containes various question types as subdirectories.
+   * NOTE 2: Currenlty arrays are skipped. We need to set default data, so it will be done in LS4, at the same time than Question Theme Editor.
+   *
+   * @param string $sQuestionDir the directory to parse, where to find the answer.twig file.
+   */
+  public function actionGenerateQuestionTwigTmpFiles( $sQuestionDir=null )
+  {
+    // Generate cache for question theme
+    $sQuestionDir = ($sQuestionDir===null)?dirname(__FILE__).'/../views/survey/questions/answer':$sQuestionDir;
+
+    $oQuestionDir = new DirectoryIterator($sQuestionDir);
+
+    foreach ($oQuestionDir as $fileinfo) {
+      if ($fileinfo->getFilename() != ".." && $fileinfo->getFilename() != "." && $fileinfo->getFilename() != "index.html"){
+        $sQuestionName = $fileinfo->getFilename();
+
+        $sQuestionDirectory = $sQuestionDir.DIRECTORY_SEPARATOR.$sQuestionName;
+        $sTwigFile = $sQuestionDirectory.DIRECTORY_SEPARATOR."answer.twig";
+        if (file_exists($sTwigFile)){
+          $line       = file_get_contents($sTwigFile);
+          $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line, array());
+        }elseif(is_dir($sQuestionDirectory) && $sQuestionName != "arrays"){
+          // Recursive step
+          $this->actionGenerateQuestionTwigTmpFiles($sQuestionDirectory);
+        }
+      }
+    }
   }
 }
