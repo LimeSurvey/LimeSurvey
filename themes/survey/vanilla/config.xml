@@ -310,8 +310,8 @@
                   <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Participant')}} ]]></screen_title>
                   <file type="view" role="layout">layout_user_forms.twig</file>
                   <file type="view" role="content">./subviews/content/userforms.twig</file>
-                  <file type="view" role="content">./subviews/logincomponents/token.twig</file>
-                  <file type="view" role="content">./subviews/logincomponents/captcha.twig</file>
+                  <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
+                  <file type="view" role="subview">./subviews/logincomponents/captcha.twig</file>
                 </token>
 
 
@@ -326,6 +326,9 @@
                 <therearexquestions  type="data" twig="on"><![CDATA[gT('There is 2 question in this survey'])]]></therearexquestions>
                 <surveyls_url type="data" twig="on">"https://www.limesurvey.org/"</surveyls_url>
                 <surveyls_urldescription type="data" twig="on"><![CDATA[ gT("Some URL description") ]]></surveyls_urldescription>
+                <showsurveypolicynotice>2</showsurveypolicynotice>
+                <datasecurity_notice_label type="data" twig="on"><![CDATA[ <a href='#data-security-modal-' data-toggle='collapse'> {{ gT('Show Policy') }} </a>  ]]></datasecurity_notice_label>
+                <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Here your data security notice") }} ]]></datasecurity_notice>
               </survey>
               <group type="core">
                 <name type="data" twig="on"><![CDATA[ {{ gT("Page 1: The first lot of questions") }} ]]></name>
