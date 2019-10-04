@@ -384,11 +384,11 @@ class QuestionTemplate extends CFormModel
      */
     static public function getQuestionTemplateList($type)
     {
-        $aQuestionTemplateList1 = QuestionTheme::model()->findAllByAttributes([], 'question_type = :question_type', ['question_type' => $type]);
+        $aQuestionTemplateList = QuestionTheme::model()->findAllByAttributes([], 'question_type = :question_type', ['question_type' => $type]);
         $aQuestionTemplates = [];
 
-        foreach ($aQuestionTemplateList1 as $aQuestionTemplate) {
-            if ($aQuestionTemplate['theme_type'] == 'Core theme' && empty($aQuestionTemplate['extends'])) {
+        foreach ($aQuestionTemplateList as $aQuestionTemplate) {
+            if ($aQuestionTemplate['core_theme'] == true && empty($aQuestionTemplate['extends'])) {
                 $aQuestionTemplates['core'] = [
                     'title' => gT('Default'),
                     'preview' => $aQuestionTemplate['image_path']
