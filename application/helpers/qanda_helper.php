@@ -1792,12 +1792,20 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
+    $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
+    $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
+    $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
+    $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
+    $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
+
     $fileuploadData = array(
         'fileid' => $ia[1],
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue'=>$filecountvalue,
         'coreClass'=>$coreClass,
         'basename' => $ia[1],
+        'uploadurl' => $uploadurl,
+        'uploadButtonLabel' => ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files'])
     );
     $answer .= doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
     $answer .= '<script type="text/javascript">
@@ -1841,11 +1849,6 @@ function do_file_upload($ia)
     $("#'.$ia[1].'_filecount").val(filecount);
     });
     </script>';
-    $uploadurl  = $scriptloc."?sid=".Yii::app()->getConfig('surveyID')."&fieldname=".$ia[1]."&qid=".$ia[0];
-    $uploadurl .= "&preview=".$questgrppreview."&show_title=".$aQuestionAttributes['show_title'];
-    $uploadurl .= "&show_comment=".$aQuestionAttributes['show_comment'];
-    $uploadurl .= "&minfiles=".$aQuestionAttributes['min_num_of_files']; // TODO: Regression here? Should use LEMval(minfiles) like above
-    $uploadurl .= "&maxfiles=".$aQuestionAttributes['max_num_of_files']; // Same here.
     $answer .= '
     <!-- Trigger the modal with a button -->
         <!-- Modal -->

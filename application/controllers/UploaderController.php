@@ -301,10 +301,10 @@ class UploaderController extends SurveyController
             var surveyid = surveyid || "'.$surveyid.'";
             showpopups="'.$oTemplate->showpopups.'";
         ';
-        $sLangScriptVar = "
-                uploadLang = {
+        $sLangScript = "{
                      titleFld: '" . gT('Title', 'js')."',
                      commentFld: '" . gT('Comment', 'js')."',
+                     filenameFld: '" . gT('File name', 'js')."',
                      errorNoMoreFiles: '" . gT('Sorry, no more files can be uploaded!', 'js')."',
                      errorOnlyAllowed: '" . gT('Sorry, only %s files can be uploaded for this question!', 'js')."',
                      uploading: '" . gT('Uploading', 'js')."',
@@ -315,19 +315,18 @@ class UploaderController extends SurveyController
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.', 'js')."',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?", 'js')."',
                      deleteFile : '".gT('Delete', 'js')."',
-                     editFile : '".gT('Edit', 'js')."',
-                    };
+                     editFile : '".gT('Edit', 'js')."'
+                    }
         ";
+
+        $sLangScriptVar = "
+            uploadLang = " . $sLangScript . ";";
+
         $oTemplate = Template::model()->getInstance('', $surveyid);
-        Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
-        // App()->getClientScript()->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
-        // App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
-        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js', LSYii_ClientScript::POS_END);
-        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js', LSYii_ClientScript::POS_END);
-
-        App()->bootstrap->register();
+        App()->getClientScript()->registerScriptFile('/assets/packages/questions/upload/build/uploadquestion.js');
+        App()->getClientScript()->registerScriptFile('/assets/packages/questions/upload/src/ajaxupload.js');
 
         $header = getHeader($meta);
 
@@ -358,12 +357,16 @@ class UploaderController extends SurveyController
                 window.uploadModalObjects = window.uploadModalObjects || {};
                 window.uploadModalObjects['".$fn."'] = window.getUploadHandler(  "
                     . $qid.", {"
+                    . "qid : '".$qid."', "
                     . "sFieldName : '".$sFieldName."', "
                     . "sPreview : '".$sPreview."', "
+                    . "questgrppreview : '".$sPreview."', "
+                    . "uploadurl : '".$this->createUrl('/uploader/index/mode/upload/')."', "
                     . "csrfToken: '".ls_json_encode(Yii::app()->request->csrfToken)."', "
-                    . "showpopups: '".Yii::app()->getConfig("showpopups")."'"
-                    . "});"
-            . "});
+                    . "showpopups: '".Yii::app()->getConfig("showpopups")."', "
+                    . "uploadLang: ".$sLangScript
+                    . "});
+            });
         </script>";
         $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
         $body .= $container.$scripts;
