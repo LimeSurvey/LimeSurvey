@@ -6262,6 +6262,22 @@
                 } else {
                     $sgqas = explode('|',$LEM->qid2code[$qid]);
                 }
+                // Ranking need some var : fill it here
+                if($qInfo['type']=='R') {
+                    /** @var integer counbter to have current rank number (subquestion */
+                    $iCountRank = 0;
+                    /** @var integer Get total of answers TODO : FIXIT , here anwer inside filter but not out of filter **/
+                    $answersCount = $LEM->subQrelInfo[$qid];
+                    /** @var integer Get number of answers currently filtered (unrelveant) **/
+                    $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
+                        function ($sqRankAnwsers) {
+                            return !$sqRankAnwsers['result'];
+                        }
+                    ));
+                    /** var integer the answers available **/
+                    $iCountRelevant = $answersCount - $answersFilteredCount;
+                    // No need to control if upper than max_columns : count on $sgqa and count($sgqa) == max_columns
+                }
                 foreach ($sgqas as $sgqa) {
                     // for each subq, see if it is part of an array_filter or array_filter_exclude
                     if (!isset($LEM->subQrelInfo[$qid])) {
@@ -6270,26 +6286,12 @@
                     }
                     $foundSQrelevance=false;
                     if($qInfo['type']=='R') {
-                        // Relevance of subquestion for ranking question depend of the count of relevance of answers.
-                        $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
-                        // Relevant count is : Total answers less Unrelevant answers. subQrelInfo give only array with relevance equation, not this without any relevance.
-                        $iCountRelevant = isset($iCountRelevant) ?
-                            $iCountRelevant :
-                            count($LEM->subQrelInfo[$qid]) - count(
-                                array_filter(
-                                    $LEM->subQrelInfo[$qid],
-                                    function ($sqRankAnwsers) {
-                                        return !$sqRankAnwsers['result'];
-                                    }
-                                )
-                            );
-
-                        if($iCountRank >  $iCountRelevant)
-                        {
+                        /* Get next rank */
+                        $iCountRank++;
+                        /* If rank is upper than available answer : then it's unrelevant */
+                        if($iCountRank > $iCountRelevant) {
                             $irrelevantSQs[] = $sgqa;
-                        }
-                        else
-                        {
+                        } else {
                             $relevantSQs[] = $sgqa;
                         }
                         // This just remove the last ranking : don't control validity of answers done: user can rank irrelevant answers .... See Bug #09774
