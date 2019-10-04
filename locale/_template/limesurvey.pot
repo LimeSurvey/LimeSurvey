@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-10-04 08:00:16+00:00\n"
+"POT-Creation-Date: 2019-10-04 12:56:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1653,6 +1653,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1451
 #: application/helpers/userstatistics_helper.php:1649
 #: application/views/admin/dataentry/content_view.php:51
+#: tmp/runtime/twig_cache/51/5150cdb26be48bcc1a406ec4f8534f01ee130094816c998edb06f7c622f08b4c.php:161
+#: tmp/runtime/twig_cache/a5/a5c38a85c773697500a8b3512e9fc2c6a40cdb43a259306955ab4e1d9608ea30.php:148
 msgid "No answer"
 msgstr ""
 
@@ -2123,6 +2125,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1331
 #: application/views/admin/dataentry/content_view.php:104
 #: application/views/admin/export/statistics_subviews/_question.php:293
+#: tmp/runtime/twig_cache/51/5150cdb26be48bcc1a406ec4f8534f01ee130094816c998edb06f7c622f08b4c.php:84
+#: tmp/runtime/twig_cache/a5/a5c38a85c773697500a8b3512e9fc2c6a40cdb43a259306955ab4e1d9608ea30.php:80
 msgid "Female"
 msgstr ""
 
@@ -2140,6 +2144,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1332
 #: application/views/admin/dataentry/content_view.php:105
 #: application/views/admin/export/statistics_subviews/_question.php:299
+#: tmp/runtime/twig_cache/51/5150cdb26be48bcc1a406ec4f8534f01ee130094816c998edb06f7c622f08b4c.php:121
+#: tmp/runtime/twig_cache/a5/a5c38a85c773697500a8b3512e9fc2c6a40cdb43a259306955ab4e1d9608ea30.php:113
 msgid "Male"
 msgstr ""
 
@@ -2439,6 +2445,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3178
 #: application/helpers/expressions/em_manager_helper.php:3372
 #: application/views/admin/dataentry/content_view.php:508
+#: tmp/runtime/twig_cache/e4/e49be2bf57e7e69f957bcb162a9bc05f951c9fea05abfcd96975fedb44831c0c.php:96
 msgid "Only numbers may be entered in this field."
 msgstr ""
 
@@ -3735,6 +3742,7 @@ msgid "Limit"
 msgstr ""
 
 #: application/controllers/admin/quotas.php:251
+#: tmp/runtime/twig_cache/1c/1c41f001467916d34542cd7353f3d4ea4402f8ab7c1952d3e6f9a103a608bf2a.php:61
 msgid "Remaining"
 msgstr ""
 
@@ -5174,6 +5182,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4298
 #: application/views/admin/dataentry/content_view.php:153
 #: application/views/admin/dataentry/content_view.php:165
+#: tmp/runtime/twig_cache/25/2569ab6a31b7f8b0a5b1fedfa039a472ddfc7a148e4068e7cd411ec04c1f1e24.php:69
 msgid "Please choose..."
 msgstr ""
 
@@ -8989,6 +8998,7 @@ msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:3167
+#: tmp/runtime/twig_cache/ba/ba8533c4b4765fbd53cc35805d2076c99422ceb4b9aec32edd912cf3aa182a51.php:57
 msgid "Choose your language"
 msgstr ""
 
@@ -19623,6 +19633,8 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:118
 #: application/views/admin/token/dummytokenform.php:148
+#: tmp/runtime/twig_cache/de/de46d5cbd1c303315c4aa2fb7b42a3aa4f718f0257c4cc46a96aae06185dd8d6.php:88
+#: tmp/runtime/twig_cache/e0/e05e15e1fb430f01e7563584718e5c9f29317d3cb398966ea3cfedcbcedeb710.php:92
 msgid "Format: %s"
 msgstr ""
 
@@ -21368,6 +21380,10 @@ msgstr ""
 msgid "Change the language"
 msgstr ""
 
+#: tmp/runtime/twig_cache/1c/1c41f001467916d34542cd7353f3d4ea4402f8ab7c1952d3e6f9a103a608bf2a.php:118
+msgid "Total:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/49/4937370cbab6a2070ec72d34c8819d73c10412caa45f8e6fca964a354c474b45.php:44
 msgid "Hint when response is not valid"
 msgstr ""
@@ -21418,6 +21434,10 @@ msgstr ""
 msgid "This group description is fairly vacuous, but quite important."
 msgstr ""
 
+#: tmp/runtime/twig_cache/86/86924bf50de890741a6eb8a7dace120b1eb8230a6ea93d2cc3eda336fa845300.php:66
+msgid "Upload files"
+msgstr ""
+
 #: tmp/runtime/twig_cache/87/8770eaa9fc8609d5028d1a2164736a9328315bd52609d8e4746a964ab6bcdd61.php:94
 msgid "default"
 msgstr ""
@@ -21456,6 +21476,15 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/dc/dc18af40de5ca3cd5182facce79edca1add4faf108f799f0afedd9aa63d8ae73.php:44
 msgid "Group 1: The first lot of questions"
+msgstr ""
+
+#: tmp/runtime/twig_cache/de/de46d5cbd1c303315c4aa2fb7b42a3aa4f718f0257c4cc46a96aae06185dd8d6.php:58
+#: tmp/runtime/twig_cache/e0/e05e15e1fb430f01e7563584718e5c9f29317d3cb398966ea3cfedcbcedeb710.php:72
+msgid "Date in the format: %s"
+msgstr ""
+
+#: tmp/runtime/twig_cache/de/de46d5cbd1c303315c4aa2fb7b42a3aa4f718f0257c4cc46a96aae06185dd8d6.php:77
+msgid "Open the date time chooser"
 msgstr ""
 
 #: tmp/runtime/twig_cache/e8/e80c728ce366034ec021eef4877d7cf0aed6c2e24c0016ae1810474bc6879b67.php:84
