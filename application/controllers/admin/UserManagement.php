@@ -169,17 +169,17 @@ class UserManagement extends Survey_Common_Action
             Yii::app()->end();
         }
 
-        $aUser = $this->_editUser($aUser);
-        if ($aUser === false) {
+        $oUser = $this->_editUser($aUser);
+        if ($oUser === false) {
             return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
                 'success' => false,
                 'error' => print_r($oUser->getErrors(), true),
             ]]);
         }
-
+        $sMessage = gT('User successfully updated');
         return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
             'success' => true,
-            'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $aReturnArray, true),
+            'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $sMessage, true),
         ]]);
 
     }
@@ -883,20 +883,11 @@ class UserManagement extends Survey_Common_Action
     private function _editUser($aUser)
     {
         $oUser = User::model()->findByPk($aUser['uid']);
-        $aReturnArray = ["sMessage" => gT('User successfully updated')];
-        if (isset($aUser['password'])) {
-            $rawPassword = $aUser['password'];
-            $aUser['password'] = password_hash($rawPassword, PASSWORD_DEFAULT);
-            $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $aReturnArray["sMessage"] .= $display_user_password_in_html ? "<br/>New password set: " . $rawPassword : '';
-        }
-
         $oUser->setAttributes($aUser);
         $oUser->modified = date('Y-m-d H:i:s');
 
-        $aUser = [];
         if ($oUser->save()) {
-            return $oUser->attributes();
+            return $oUser;
         }
         return false;
     }
