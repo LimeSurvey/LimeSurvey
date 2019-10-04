@@ -6262,7 +6262,8 @@
                 } else {
                     $sgqas = explode('|',$LEM->qid2code[$qid]);
                 }
-                // Ranking need some var : fill it here
+                /* With ranking we don't check for relevance in each subquestion, just need the max numbers of answers */
+                /* $sgqa and subQrelInfo are not the same information */
                 if($qInfo['type']=='R') {
                     /** @var integer counter to have current rank number (subquestion) */
                     $iCountRank = 0;
@@ -6287,7 +6288,6 @@
                         $relevantSQs[] = $sgqa;
                         continue;
                     }
-                    $foundSQrelevance=false;
                     if($qInfo['type']=='R') {
                         /* Get next rank */
                         $iCountRank++;
@@ -6300,7 +6300,7 @@
                         // This just remove the last ranking : don't control validity of answers done: user can rank irrelevant answers .... See Bug #09774
                         continue;
                     }
-
+                    $foundSQrelevance=false;
                     foreach ($LEM->subQrelInfo[$qid] as $sq)
                     {
                         switch ($sq['qtype'])
