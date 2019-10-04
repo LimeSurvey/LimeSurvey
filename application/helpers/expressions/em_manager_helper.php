@@ -6266,8 +6266,11 @@
                 if($qInfo['type']=='R') {
                     /** @var integer counter to have current rank number (subquestion) */
                     $iCountRank = 0;
+
+                    $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
                     /** @var integer Get total of answers TODO : FIXIT , here anwer inside filter but not out of filter **/
-                    $answersCount = count($LEM->subQrelInfo[$qid]);
+                    $answersCount = \Answer::model()->count('qid = :qid and language = :language',array(':qid'=>$qid,':language'=>$language));
+
                     /** @var integer Get number of answers currently filtered (unrelveant) **/
                     $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
                         function ($sqRankAnwsers) {
