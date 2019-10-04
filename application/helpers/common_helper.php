@@ -1995,7 +1995,7 @@ function categorySort($a, $b)
 
 function questionTitleSort($a, $b)
 {
-    $result = strnatcasecmp($a['description'], $b['description']);
+    $result = strnatcasecmp($a['title'], $b['title']);
     return $result;
 }
 
