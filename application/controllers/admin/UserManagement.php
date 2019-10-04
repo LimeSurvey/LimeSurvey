@@ -140,33 +140,7 @@ class UserManagement extends Survey_Common_Action
         }
 
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
-            $sendMail = (bool) Yii::app()->request->getPost('preset_password', false);
-            $aUser = $this->_createNewUser($aUser);
-            $sReturnMessage = '';
-            $success = true;
-
-            if ($sendMail && (isset($newUser['sendMail']) && $newUser['sendMail'] == true)) {
-                if ($this->_sendAdminMail('registration', $aUser)) {
-                    $sReturnMessage = gT("Success");
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $aUser['users_name'], $aUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
-                } else {
-                    // has to be sent again or no other way
-                    $sReturnMessage = gT("Warning");
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $aUser['users_name'] . "</strong>", $aUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array('class' => 'alert alert-danger'), $mailer->getError());
-                    $success = false;
-                }
-            }
-
-            $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $new_pass . '</b>') : '';
-
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => $success,
-                'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => $sReturnMessage], true),
-            ]]);
-            Yii::app()->end();
+            $this->createNewAdminUser($aUser);
         }
 
         $aUser = $this->_editUser($aUser);
@@ -938,7 +912,7 @@ class UserManagement extends Survey_Common_Action
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
                     'username' => $aUser['users_name'],
-                    'password' => $aUser['rawPassword'],
+                    'password' => $aUser['password'],
                     'mainLogoFile' => LOGO_URL,
                     'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
                     'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
@@ -959,7 +933,12 @@ class UserManagement extends Survey_Common_Action
         $mailer->Body = $body;
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
-        return $mailer->sendMessage();
+
+        if ($mailer->sendMessage()) {
+            return true;
+        } else {
+            $mailer->getError();
+        }
 
     }
 
@@ -1147,5 +1126,44 @@ class UserManagement extends Survey_Common_Action
             });
         }
         return $check;
+    }
+
+    /**
+     * This function handles the creation of a new admin-user
+     *
+     * @return false|string|string[]|null
+     * @throws CException
+     */
+    private function createNewAdminUser($aUser)
+    {
+        if (!isset($aUser['uid']) || $aUser['uid'] == null) {
+            $bPresetPassword = (bool)Yii::app()->request->getPost('preset_password', false);
+            $aUser = $this->_createNewUser($aUser);
+            $sReturnMessage = '';
+            $sCustomPassword = '';
+            $success = true;
+
+            $mailerResponse = $this->_sendAdminMail('registration', $aUser);
+            if ($mailerResponse) {
+                $sReturnMessage = gT("Success");
+                $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $aUser['users_name'], $aUser['email']));
+                $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
+            } else {
+                // has to be sent again or no other way
+                $sReturnMessage = gT("Warning");
+                $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $aUser['users_name'] . "</strong>", $aUser['email']));
+                $sReturnMessage .= CHtml::tag("p", array('class' => 'alert alert-danger'), $mailerResponse->getError());
+                $success = false;
+            }
+
+            $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
+            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $sCustomPassword . '</b>') : '';
+
+            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+                'success' => $success,
+                'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => $sReturnMessage], true),
+            ]]);
+            Yii::app()->end();
+        }
     }
 }
