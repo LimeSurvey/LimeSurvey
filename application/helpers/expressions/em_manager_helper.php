@@ -6264,10 +6264,10 @@
                 }
                 // Ranking need some var : fill it here
                 if($qInfo['type']=='R') {
-                    /** @var integer counbter to have current rank number (subquestion */
+                    /** @var integer counter to have current rank number (subquestion) */
                     $iCountRank = 0;
                     /** @var integer Get total of answers TODO : FIXIT , here anwer inside filter but not out of filter **/
-                    $answersCount = $LEM->subQrelInfo[$qid];
+                    $answersCount = count($LEM->subQrelInfo[$qid]);
                     /** @var integer Get number of answers currently filtered (unrelveant) **/
                     $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
                         function ($sqRankAnwsers) {
