@@ -180,3 +180,5 @@ tags
 
 # Yarn is our main package manager system -> so ignore npm lock files
 package-lock.json
+
+third_party/

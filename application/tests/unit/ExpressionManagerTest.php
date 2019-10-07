@@ -1,4 +1,7 @@
 <?php
+    /**
+     * TODO: Why is it here? Move it to root tests folder!
+     */
     class ExpressionManagerTest extends CTestCase
     {
         /**
