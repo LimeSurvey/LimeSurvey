@@ -226,6 +226,7 @@ ${scriptContent}
 
 <template>
     <div class="container-center scoped-new-texteditor">
+        <x-test id="action::surveyTexts"></x-test>
         <template v-show="!loading">
             <div class="row" v-if="languageChangerEnabled">
                 <language-selector 
