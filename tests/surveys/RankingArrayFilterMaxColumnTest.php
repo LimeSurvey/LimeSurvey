@@ -39,14 +39,6 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
         /** @var Survey */
         $survey = \Survey::model()->findByPk(self::$surveyId);
 
-        /** @var Question[] */
-        $subQuestions = $survey->groups[0]->questions[0]->subquestions;
-        /** @var Question[] */
-        $subQuestionsByTitle = [];
-        foreach ($subQuestions as $q) {
-            $subQuestionsByTitle[$q->title] = $q;
-        }
-
         try {
             // Open survey.
             $web->get($url);
