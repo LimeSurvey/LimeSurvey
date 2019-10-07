@@ -30,8 +30,6 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
      */
     public function testRanking()
     {
-        $this->markTestSkipped();
-
         /** @var string */
         $url = $this->getSurveyUrl();
 
@@ -57,12 +55,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $web->next();
 
             /** @var string Answer id to first subquestion. */
-            $answerId = 'javatbd'
-                . self::$surveyId
-                . 'X' . $survey->groups[0]->gid
-                . 'X'
-                . $survey->groups[0]->questions[0]->qid
-                . '1';
+            $answerId = $this->getAnswerId($survey) . '1';
 
             // Click it.
             /** @var RemoteWebElement */
@@ -70,12 +63,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label->click();
 
             /** @var string Answer id to second subquestion. */
-            $answerId = 'javatbd'
-                . self::$surveyId
-                . 'X' . $survey->groups[0]->gid
-                . 'X'
-                . $survey->groups[0]->questions[0]->qid
-                . '2';
+            $answerId = $this->getAnswerId($survey) . '2';
 
             // Click it.
             /** @var RemoteWebElement */
@@ -83,12 +71,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label->click();
 
             /** @var string Answer id to third subquestion. */
-            $answerId = 'javatbd'
-                . self::$surveyId
-                . 'X' . $survey->groups[0]->gid
-                . 'X'
-                . $survey->groups[0]->questions[0]->qid
-                . '3';
+            $answerId = $this->getAnswerId($survey) . '3';
 
             // Click it.
             /** @var RemoteWebElement */
@@ -100,34 +83,41 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             sleep(1);
 
             /** @var string List item id to first answer option. */
-            $liId = 'javatbd'
-                . self::$surveyId
-                . 'X' . $survey->groups[1]->gid
-                . 'X'
-                . $survey->groups[1]->questions[0]->qid
-                . '1';
-
-            /** @var RemoteWebElement */
-            $li = $web->findById($liId);
-            $dropZone = $web->findById('sortable-rank-' . $survey->groups[1]->questions[0]->qid);
+            $sgqa1 = $this->getItemListId($survey) . '1';
 
             // TODO: Can't use mouse with geckodriver and Selenium?
             sleep(1);
-            //$web->getMouse()->mouseMove($li->getCoordinates());
-            //$web->action()->moveToElement($li)->perform();
-            //$web
-                //->action()
-                //->moveToElement($li)
-                //->clickAndHold($li)
-                //->moveToElement($dropZone)
-                //->release($dropZone)
-                //->perform();
+            // NB: Couldn't get mouse to work, use JS to simulate double click.
+            /** @var string */
+            $javascript = $this->getJavascriptDoubleClick($sgqa1);
+            /** @var string */
+            $result = $web->executeAsyncScript($javascript, []);
+            $this->assertEquals('done', $result);
+            sleep(1);
 
-            //$web->getMouse()
-                //->mouseDown($li->getCoordinates())
-                //->mouseMove($dropZone->getCoordinates())
-                //->mouseUp($dropZone->getCoordinates());
-            sleep(3);
+            /** @var string List item id to second answer option. */
+            $sgqa2 = $this->getItemListId($survey) . '2';
+
+            /** @var string */
+            $javascript = $this->getJavascriptDoubleClick($sgqa2);
+            /** @var string */
+            $result = $web->executeAsyncScript($javascript, []);
+            $this->assertEquals('done', $result);
+            sleep(1);
+
+            // Submit survey.
+            $web->submit();
+
+            // Check that answer was recorded correctly.
+            /** @var string */
+            $query = sprintf('SELECT * FROM {{survey_%d}}', $survey->sid);
+            /** @var CDbConnection */
+            $dbo = \Yii::app()->getDb();
+            /** @var array */
+            $answers = $dbo->createCommand($query)->queryAll();
+            $this->assertCount(1, $answers);
+            $this->assertEquals('1', $answers[0][$sgqa1]);
+            $this->assertEquals('2', $answers[0][$sgqa2]);
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -135,9 +125,50 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
                 self::$testHelper->javaTrace($ex)
             );
         }
-        // fill in first question
-        // fill in second question
-        // submit
-        // check database result
+    }
+
+    /**
+     * Answer id to subquestion
+     *
+     * @param Survey $survey
+     * @return string
+     */
+    protected function getAnswerId(\Survey $survey)
+    {
+        return 'javatbd'
+            . self::$surveyId
+            . 'X' . $survey->groups[0]->gid
+            . 'X'
+            . $survey->groups[0]->questions[0]->qid;
+    }
+
+    /**
+     * @param Survey $survey
+     * @return string
+     */
+    protected function getItemListId(\Survey $survey)
+    {
+        return self::$surveyId
+            . 'X' . $survey->groups[1]->gid
+            . 'X'
+            . $survey->groups[1]->questions[0]->qid;
+    }
+
+    /**
+     * @param string $id
+     * @return string
+     */
+    protected function getJavascriptDoubleClick($id)
+    {
+        return <<<END_JAVASCRIPT
+var callback = arguments[arguments.length-1],
+    event = new MouseEvent('dblclick', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true
+    });
+document.getElementById('javatbd$id').dispatchEvent(event);
+callback('done');
+END_JAVASCRIPT;
     }
 }
