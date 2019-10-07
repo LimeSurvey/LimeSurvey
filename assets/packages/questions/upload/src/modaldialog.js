@@ -5,7 +5,8 @@ $(function() {
 });
 
 function openUploadModalDialog(){
-    $('.upload').click(function(e) {
+    $('.upload').off('click.lsuploadquestion');
+    $('.upload').on('click.lsuploadquestion',function(e) {
 
         e.preventDefault();
 
@@ -20,16 +21,18 @@ function openUploadModalDialog(){
         };
 
         $('#file-upload-modal-' + fieldname).modal('show');
-        $(document).on('shown.bs.modal','#file-upload-modal-' + fieldname, function()
+        $(document).off('shown.bs.modal.lsuploadquestion');
+        $(document).on('shown.bs.modal.lsuploadquestion','#file-upload-modal-' + fieldname, function()
         {
             var uploadFrame = $('#uploader'+fieldname);
             uploadFrame.load(uploadFrame.data('src'));
             updateMaxHeightModalbody($(this));
         });
-        $('#file-upload-modal-' + fieldname).on('hide.bs.modal', function() {
+        $('#file-upload-modal-' + fieldname).off('hide.bs.modal.lsuploadquestion');
+        $('#file-upload-modal-' + fieldname).on('hide.bs.modal.lsuploadquestion', function() {
             var pass;
             var uploaderId = 'uploader' + fieldname;
-            window.uploadModalObjects[fieldname].saveAndExit(fieldname,show_title,show_comment,pos);
+            window.currentUplaodHandler.saveAndExit(fieldname,show_title, show_comment,pos);
             // if(document.getElementById(uploaderId).contentDocument) {
             //     if(document.getElementById(uploaderId).contentDocument.defaultView)
             //         {       /*Firefox*/
@@ -40,7 +43,9 @@ function openUploadModalDialog(){
             // }else{    /*IE6*/
             //     pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
             // }
+            $('#uploader'+fieldname).html('');
             return pass;
+
         });
     });
 }
@@ -96,7 +101,7 @@ function isValueInArray(arr, val) {
     return inArray;
 }
 
-var displayUploadedFiles = function ( filecount, fieldname, show_title, show_comment) {
+var displayUploadedFiles = function (filecount, fieldname, show_title, show_comment) {
     var jsonstring = $("#"+fieldname).val();
     var i;
     var display = '';
@@ -113,32 +118,33 @@ var displayUploadedFiles = function ( filecount, fieldname, show_title, show_com
             jsonobj = JSON.parse(jsonstring);
         } catch(e) {};
 
-        var table = $('<table width="100%" class="question uploadedfiles"></table>');
-        $('<thead></thead>').appendTo(table)
-            .append($('<tr></tr>').append('<th width="20%">&nbsp;</th>'));
-
+        display = '<table width="100%" class="question uploadedfiles">';
+        display += '<thead>';
+        display += '<tr>';
+        display += '<th width="20%">&nbsp;</th>';
+        
         
         if (show_title != 0)
-            display += '<th>'+uploadLang.headTitle+'</th>';
+        display += '<th>'+uploadLang.titleFld+'</th>';
         if (show_comment != 0)
-            display += '<th>'+uploadLang.headComment+'</th>';
-        display += '<th>'+uploadLang.headFileName+'</th><th class="edit"></th></tr></thead><tbody>';
+        display += '<th>'+uploadLang.commentFld+'</th>';
+        display += '<th>'+uploadLang.filenameFld+'</th><th class="edit"></th></tr></thead><tbody>';
         var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
-
+                
         jsonobj.forEach(function(item,iterator) {
             if (isValueInArray(image_extensions, item.ext))
-                display += '<tr><td class="upload image"><img src="' + uploadurl + '/filegetcontents/'+decodeURIComponent(item.filename)+'" class="uploaded" /></td>';
+            display += '<tr><td class="upload image"><img src="' + uploadurl + '/filegetcontents/'+decodeURIComponent(item.filename)+'" class="uploaded" /></td>';
             else
-                display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
-
+            display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
+            
             if (show_title != 0)
-                display += '<td class="upload title">'+htmlspecialchars(item.title)+'</td>';
+            display += '<td class="upload title">'+item.title+'</td>';
             if (show_comment != 0)
-                display += '<td class="upload comment">'+htmlspecialchars(item.comment)+'</td>';
-            display +='<td class="upload edit">'+htmlspecialchars(decodeURIComponent(item.name))+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
+            display += '<td class="upload comment">'+item.comment+'</td>';
+            display +='<td class="upload edit">'+decodeURIComponent(item.name)+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         });
         display += '</tbody></table>';
-
+       
         $('#'+fieldname+'_uploadedfiles').html(display);
     }
 };

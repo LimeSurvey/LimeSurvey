@@ -1,4 +1,5 @@
 <?php
+
 use LimeSurvey\PluginManager\AuthPluginBase;
 
 if (!defined('BASEPATH')) {
@@ -140,7 +141,7 @@ class UserManagement extends Survey_Common_Action
         }
 
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
-            $sendMail = (bool) Yii::app()->request->getPost('preset_password', false);
+            $sendMail = (bool)Yii::app()->request->getPost('preset_password', false);
             $aUser = $this->_createNewUser($aUser);
             $sReturnMessage = '';
             $success = true;
@@ -169,19 +170,22 @@ class UserManagement extends Survey_Common_Action
             Yii::app()->end();
         }
 
-        $aUser = $this->_editUser($aUser);
-        if ($aUser === false) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => print_r($oUser->getErrors(), true),
-            ]]);
+        $oUser = $this->updateAdminUser($aUser);
+        if ($oUser->hasErrors()) {
+            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+                "data" => [
+                    'success' => false,
+                    'error' => print_r($oUser->getErrors(), true),
+                ]
+            ]);
         }
-
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $aReturnArray, true),
-        ]]);
-
+        $sMessage = gT('User successfully updated');
+        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+            'data' => [
+                'success' => true,
+                'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $sMessage, true),
+            ]
+        ]);
     }
 
     /**
@@ -384,6 +388,7 @@ class UserManagement extends Survey_Common_Action
             'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
         ]]);
     }
+
     /**
      * Stores the changed permissions
      *
@@ -430,7 +435,9 @@ class UserManagement extends Survey_Common_Action
                 $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
             }
         );
-        $aCurrentRoles = array_map(function ($oRole) {return $oRole->ptid;}, $oUser->roles);
+        $aCurrentRoles = array_map(function ($oRole) {
+            return $oRole->ptid;
+        }, $oUser->roles);
 
         return $this->getController()->renderPartial(
             '/admin/usermanagement/partial/addrole',
@@ -441,6 +448,7 @@ class UserManagement extends Survey_Common_Action
             ]
         );
     }
+
     /**
      * Apply role to user
      *
@@ -458,10 +466,12 @@ class UserManagement extends Survey_Common_Action
         $iUserId = Yii::app()->request->getPost('userid');
         $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
         $results = [];
-        
+
         $results['clear'] = Permissiontemplates::model()->clearUser($iUserId);
-        foreach($aUserRoleIds as $iUserRoleId) {
-            if ($iUserRoleId == '' ) { continue; }
+        foreach ($aUserRoleIds as $iUserRoleId) {
+            if ($iUserRoleId == '') {
+                continue;
+            }
             $results[$iUserRoleId] = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
         }
 
@@ -470,6 +480,7 @@ class UserManagement extends Survey_Common_Action
             'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
         ]]);
     }
+
     /**
      * Stores the permission settings run via MassEdit
      *
@@ -542,6 +553,7 @@ class UserManagement extends Survey_Common_Action
             ]
         );
     }
+
     /**
      * Mass edition delete user
      *
@@ -611,8 +623,8 @@ class UserManagement extends Survey_Common_Action
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $results = [];
         foreach ($aItems as $sItem) {
-            foreach($aUserRoleIds as $iUserRoleId) {
-                $results[$sItem.'-'.$iUserRoleId] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
+            foreach ($aUserRoleIds as $iUserRoleId) {
+                $results[$sItem . '-' . $iUserRoleId] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
             }
         }
 
@@ -644,7 +656,7 @@ class UserManagement extends Survey_Common_Action
             );
         }
         $times = App()->request->getParam('times', 5);
-        $passwordsize = (int) App()->request->getParam('passwordsize', 5);
+        $passwordsize = (int)App()->request->getParam('passwordsize', 5);
         $passwordsize = $passwordsize < 8 || is_nan($passwordsize) ? 8 : $passwordsize;
         $prefix = App()->request->getParam('prefix', 'randuser_');
         $email = App()->request->getParam('email', User::model()->findByPk(App()->user->id)->email);
@@ -871,34 +883,21 @@ class UserManagement extends Survey_Common_Action
 
         return User::model()->findByPk($iNewUID)->attributes;
     }
-
+    
     /**
-     * private method to store a change in a user
-     * return json to return to js frontend
+     * Update admin-user
      *
-     * @param array $aUser
-     * @param integer $userid
-     * @return string
+     * @param $aUser
+     * @return object
      */
-    private function _editUser($aUser)
+    private function updateAdminUser($aUser)
     {
         $oUser = User::model()->findByPk($aUser['uid']);
-        $aReturnArray = ["sMessage" => gT('User successfully updated')];
-        if (isset($aUser['password'])) {
-            $rawPassword = $aUser['password'];
-            $aUser['password'] = password_hash($rawPassword, PASSWORD_DEFAULT);
-            $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $aReturnArray["sMessage"] .= $display_user_password_in_html ? "<br/>New password set: " . $rawPassword : '';
-        }
-
         $oUser->setAttributes($aUser);
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->save();
 
-        $aUser = [];
-        if ($oUser->save()) {
-            return $oUser->attributes();
-        }
-        return false;
+        return  $oUser;
     }
 
     /**
@@ -915,7 +914,7 @@ class UserManagement extends Survey_Common_Action
                 $renderArray = [
                     'surveyapplicationname' => Yii::app()->getConfig("sitename"),
                     'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
-                    . sprintf(gT("this is an automated email to notify that your login credentials for '%s' have been reset."), Yii::app()->getConfig("sitename")),
+                        . sprintf(gT("this is an automated email to notify that your login credentials for '%s' have been reset."), Yii::app()->getConfig("sitename")),
                     'credentialsText' => gT("Here are you're new credentials."),
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
@@ -933,7 +932,7 @@ class UserManagement extends Survey_Common_Action
                 $renderArray = [
                     'surveyapplicationname' => Yii::app()->getConfig("sitename"),
                     'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
-                    . sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'.."), Yii::app()->getConfig("sitename")),
+                        . sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'.."), Yii::app()->getConfig("sitename")),
                     'credentialsText' => gT("You can use now the following credentials to log into the site:"),
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
@@ -1053,7 +1052,7 @@ class UserManagement extends Survey_Common_Action
                 $oPermissionDBSettingKey = $sSettingKey . '_p';
                 $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
             }
-            
+
             $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
 
             $results[$sPermissionKey] = [

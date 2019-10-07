@@ -115,4 +115,22 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $body = $this->findElement(WebDriverBy::tagName('body'));
         var_dump('body text = ' . $body->getText());
     }
+
+    /**
+     * @param string $id
+     * @return Element
+     */
+    public function findById($id)
+    {
+        return $this->findElement(WebDriverBy::id($id));
+    }
+
+    /**
+     * @param string $css
+     * @return ElementCollection
+     */
+    public function findByCss($css)
+    {
+        return $this->findElement(WebDriverBy::cssSelector($css));
+    }
 }

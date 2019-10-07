@@ -225,7 +225,7 @@ class questionedit extends Survey_Common_Action
 
         $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
         $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, $oQuestion->gid, true);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true, $aQuestionAttributeData['question_template']);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
         $this->renderJSON([

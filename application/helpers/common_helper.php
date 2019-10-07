@@ -1995,7 +1995,7 @@ function categorySort($a, $b)
 
 function questionTitleSort($a, $b)
 {
-    $result = strnatcasecmp($a['description'], $b['description']);
+    $result = strnatcasecmp($a['title'], $b['title']);
     return $result;
 }
 
@@ -4149,7 +4149,7 @@ function getLabelSets($languages = null)
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    global $surveyid;
+    $surveyid = Yii::app()->session['LEMsid'];
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 

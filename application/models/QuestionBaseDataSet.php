@@ -164,24 +164,24 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         if ($currentSetQuestionTheme == null) {
-            $currentSetQuestionTheme = (isset($aQuestionTemplateAttributes['value']) &&  $aQuestionTemplateAttributes['value'] !== '') 
-            ? $aQuestionTemplateAttributes['value'] 
-            : 'core';
+            $currentSetQuestionTheme = (isset($aQuestionTemplateAttributes['value']) && $aQuestionTemplateAttributes['value'] !== '')
+                ? $aQuestionTemplateAttributes['value']
+                : 'core';
         }
 
         return [
-                'name' => 'question_template',
-                'title' => gT('Question theme'),
-                'formElementId' => 'question_template',
-                'formElementName' => false, //false means identical to id
-                'formElementHelp' => gT("Use a customized question theme for this question"),
-                'inputtype' => 'questiontheme',
-                'formElementValue' => $currentSetQuestionTheme,
-                'formElementOptions' => [
-                    'classes' => ['form-control'],
-                    'options' => $aOptionsArray,
-                ],
-            ];
+            'name' => 'question_template',
+            'title' => gT('Question theme'),
+            'formElementId' => 'question_template',
+            'formElementName' => false, //false means identical to id
+            'formElementHelp' => gT("Use a customized question theme for this question"),
+            'inputtype' => 'questiontheme',
+            'formElementValue' => $currentSetQuestionTheme,
+            'formElementOptions' => [
+                'classes' => ['form-control'],
+                'options' => $aOptionsArray,
+            ],
+        ];
     }
 
     //Question page

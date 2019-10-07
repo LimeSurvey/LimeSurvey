@@ -6344,7 +6344,17 @@
                         // Relevance of subquestion for ranking question depend of the count of relevance of answers.
                         $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
                         // Relevant count is : Total answers less Unrelevant answers. subQrelInfo give only array with relevance equation, not this without any relevance.
-                        $iCountRelevant=isset($iCountRelevant) ? $iCountRelevant : count($sgqas)-count(array_filter($LEM->subQrelInfo[$qid],function($sqRankAnwsers){ return !$sqRankAnwsers['result']; }));
+                        $iCountRelevant = isset($iCountRelevant) ?
+                            $iCountRelevant :
+                            count($LEM->subQrelInfo[$qid]) - count(
+                                array_filter(
+                                    $LEM->subQrelInfo[$qid],
+                                    function ($sqRankAnwsers) {
+                                        return !$sqRankAnwsers['result'];
+                                    }
+                                )
+                            );
+
                         if($iCountRank >  $iCountRelevant)
                         {
                             $irrelevantSQs[] = $sgqa;
