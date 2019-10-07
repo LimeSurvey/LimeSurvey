@@ -104,6 +104,7 @@ class TwigCommand extends CConsoleCommand  {
     */
     public function actionGenerateQuestionsCache( $sQuestionDir=null )
     {
+
       $this->aLogs["action"] = "actionGenerateQuestionsCache $sQuestionDir";
 
       // Generate cache for question theme
@@ -116,11 +117,26 @@ class TwigCommand extends CConsoleCommand  {
           $sQuestionName = $fileinfo->getFilename();
 
           $sQuestionDirectory = $sQuestionDir.DIRECTORY_SEPARATOR.$sQuestionName;
+
+          /**
+           * TODO for ls4/ls5:
+           *  - get the Question XML rather than answer.twig
+           *  - load the default data from the XML
+           *
+           * NOTE 1: as long as this is not done, it's highly probable that some twig files will never be reached.
+           *
+           * NOTE 2: It should be possible to parse the XML to get the different values for the attributes, and then to generate a cache file for each attribue possible value.
+           *         Doing this could allow to test easely the rendering for all question type, with all question attribute variations.
+           *         Since we're very far to get this with Unit Test (it will imlpy to write around 1000 tests in a row), it could be a first step.
+           *         One way to do: for a stable version, save the rendered HTML somwhere, then in unitest, call this function, compare the rendered HTML to the saved one.
+           *         Enjoy the 1000 test in a single one :) (sadly, only for HTML rendering, not for JS or DB saving)
+           */
           $sTwigFile = $sQuestionDirectory.DIRECTORY_SEPARATOR."answer.twig";
+          $aQuestionData = array(); // See todo
           if (file_exists($sTwigFile)){
             $this->aLogs[$sQuestionName] = "$sTwigFile";
             $line       = file_get_contents($sTwigFile);
-            $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line, array());
+            $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line, $aQuestionData);
           }elseif(is_dir($sQuestionDirectory) && $sQuestionName != "arrays"){
             // Recursive step
             $this->actionGenerateQuestionsCache($sQuestionDirectory);
