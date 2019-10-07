@@ -895,8 +895,9 @@ class UserManagement extends Survey_Common_Action
         $oUser = User::model()->findByPk($aUser['uid']);
         $oUser->setAttributes($aUser);
         $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->save();
 
-        return  $oUser->save();
+        return  $oUser;
     }
 
     /**
