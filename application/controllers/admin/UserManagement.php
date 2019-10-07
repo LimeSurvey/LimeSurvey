@@ -171,18 +171,21 @@ class UserManagement extends Survey_Common_Action
         }
 
         $oUser = $this->updateAdminUser($aUser);
-        if ($oUser === false) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => print_r($oUser->getErrors(), true),
-            ]]);
+        if ($oUser->hasErrors()) {
+            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+                "data" => [
+                    'success' => false,
+                    'error' => print_r($oUser->getErrors(), true),
+                ]
+            ]);
         }
         $sMessage = gT('User successfully updated');
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $sMessage, true),
-        ]]);
-
+        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+            'data' => [
+                'success' => true,
+                'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $sMessage, true),
+            ]
+        ]);
     }
 
     /**
@@ -880,12 +883,12 @@ class UserManagement extends Survey_Common_Action
 
         return User::model()->findByPk($iNewUID)->attributes;
     }
-
+    
     /**
      * Update admin-user
      *
      * @param $aUser
-     * @return array|bool|mixed|null
+     * @return object
      */
     private function updateAdminUser($aUser)
     {
@@ -893,10 +896,7 @@ class UserManagement extends Survey_Common_Action
         $oUser->setAttributes($aUser);
         $oUser->modified = date('Y-m-d H:i:s');
 
-        if ($oUser->save()) {
-            return $oUser;
-        }
-        return false;
+        return  $oUser->save();
     }
 
     /**
