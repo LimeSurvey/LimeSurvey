@@ -34,6 +34,51 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.18.0 (build 190923) to 3.19.0 (build 191008) October 8, 2019
+-New feature: generate twig cache for questions from command line. (LouisGac)
+-New feature: allow translation in theme description (LouisGac)
+-Fixed issue [security]: SQL injection in participant model (James Mullen, edgescan) (Olle Haerstedt)
+-Fixed issue [security] : no CRSF control when delete saved response (Denis Chenu)
+-Fixed issue #15369: Ranking with filter didn't save all value (Denis Chenu)
+-Fixed issue #15350: Unable to delete saved reponse (Denis Chenu)
+-Fixed issue #15348: Ranking question does not save answers when array (Olle Haerstedt)
+-Fixed issue #15334: Option 'Delete from the central panel and associated surveys' would not properly delete in CPDB (WalAffe)
+-Fixed issue #15326: beforesurveybarrender view surveybar_view doesn't style dropdown menu correctly (Adam Zammit)
+-Fixed issue #15305: Export survey participants by status (Dominik Vitt)
+-Fixed issue #15162: Images in the answer options of an array are shown on the very left when switch to Arabic on small screens (Dominik Vitt)
+-Fixed issue #15147: PHP notice message when exporting survey as TSV (Dominik Vitt)
+-Fixed issue #15030: Css and font issue, Arabic is not displayed properly (Dominik Vitt)
+-Fixed issue #15008: Captcha for later use not working in IE11 (Eddy Lackmann)
+#Updated translation: Turkish by eddylackmann
+#Updated translation: Thai by Mazi, tomzt
+#Updated translation: Swahili by eddylackmann
+#Updated translation: Slovak by dusanm
+#Updated translation: Russian by vipgroup, ddrmoscow
+#Updated translation: Romanian by eddylackmann
+#Updated translation: Portuguese (Portugal) by effgarces
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Persian by mdavoodian
+#Updated translation: Persian by ESH
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by Mazi
+#Updated translation: Japanese by Mazi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by vargazsoltivan, kkd, cdorin
+#Updated translation: German by marvinthemartian13,  c_schmitz
+#Updated translation: German (Informal) by marvinthemartian13,  c_schmitz
+#Updated translation: French (France) by eddylackmann, b00z00,  DenisChenu
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Danish by Mikkel
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Chinese (Simplified) by Mazi
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.17.17 (build 190918) to 3.18.0 (build 190923) September 23, 2019
 -New feature: define theme editor screens list from theme manifest. (LouisGac)
 -New feature: allow theme developers to add their own custom data for editor preview (LouisGac)
