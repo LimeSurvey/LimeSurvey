@@ -85,6 +85,7 @@ class translate extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+            $aData['topBar']['showSaveButton'] = true;
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
