@@ -169,6 +169,9 @@ class translate extends Survey_Common_Action
                 $amTypeOptions2 = $this->setupTranslateFields($type2);
                 $resultbase2 = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
                 $resultto2 = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
+            } else {
+                $resultbase2 = $resultbase;
+                $resultto2 = $resultto;
             }
 
             $aData['type'] = $type;
