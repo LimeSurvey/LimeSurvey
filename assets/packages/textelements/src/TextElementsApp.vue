@@ -203,15 +203,10 @@ ${scriptContent}
         $('#advancedTextEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
-        $('#surveytexts').on('submit', (e)=>{
+        $('#surveytexts').find('[type="submit"]:not(.ck)').first().on('click', (e)=>{
             e.preventDefault();
+            this.submitCurrentState();
         });
-
-        if(!window.TextEditData.isNewSurvey) {
-            $('#save-button').on('click', (e)=>{
-                this.submitCurrentState();
-            });
-        }
 
         $('#language').select2({
             theme: 'bootstrap'

@@ -66,7 +66,7 @@ export default {
             this.$store.dispatch('saveData').then(
                 (result) => {
                     this.toggleLoading();
-                    this.$store.state.commit('toggleVisible', true);
+                    this.$store.commit('toggleVisible', true);
                     if(redirect == true) {
                         window.location.href = result.data.redirect;
                     }
@@ -76,7 +76,7 @@ export default {
                 },
                 (reject) => {
                     this.toggleLoading();
-                    this.$store.state.commit('toggleVisible', true);
+                    this.$store.commit('toggleVisible', true);
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader("Texts could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     setTimeout(()=>{window.location.reload();}, 1500);
@@ -119,19 +119,15 @@ ${scriptContent}
             }
         );
     },
-    
+
     mounted() {
         $('#advancedDataSecurityTextEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
-        $('#datasecurity').on('submit', (e)=>{
+        $('#datasecurity').find('[type="submit"]:not(.ck)').first().on('click', (e)=>{
             e.preventDefault();
+            this.submitCurrentState();
         });
-        if(!window.DataSecTextEditData.isNewSurvey) {
-            $('#save-button').on('click', (e)=>{
-                this.submitCurrentState();
-            });
-        }
 
         this.toggleLoading(false);
         

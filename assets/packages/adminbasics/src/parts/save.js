@@ -73,7 +73,7 @@ const SaveController = () => {
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
-                        $form.find('[type="submit"]').first().trigger('click');
+                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
                         displayLoadingState(this);
                     }
                 },
