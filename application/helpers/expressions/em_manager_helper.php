@@ -6333,6 +6333,26 @@
                 } else {
                     $sgqas = explode('|',$LEM->qid2code[$qid]);
                 }
+                /* With ranking we don't check for relevance in each subquestion, just need the max numbers of answers */
+                /* $sgqa and subQrelInfo are not the same information */
+                if($qInfo['type']=='R') {
+                    /** @var integer counter to have current rank number (subquestion) */
+                    $iCountRank = 0;
+
+                    $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
+                    /** @var integer Get total of answers (all potential answers) **/
+                    $answersCount = \Answer::model()->count('qid = :qid and language = :language',array(':qid'=>$qid,':language'=>$language));
+
+                    /** @var integer Get number of answers currently filtered (unrelevant) **/
+                    $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
+                        function ($sqRankAnwsers) {
+                            return !$sqRankAnwsers['result'];
+                        }
+                    ));
+                    /** var integer the answers available **/
+                    $iCountRelevant = $answersCount - $answersFilteredCount;
+                    // No need to control if upper than max_columns : count on $sgqa and count($sgqa) == max_columns
+                }
                 foreach ($sgqas as $sgqa) {
                     // for each subq, see if it is part of an array_filter or array_filter_exclude
                     if (!isset($LEM->subQrelInfo[$qid])) {
@@ -6358,15 +6378,13 @@
                         if($iCountRank >  $iCountRelevant)
                         {
                             $irrelevantSQs[] = $sgqa;
-                        }
-                        else
-                        {
+                        } else {
                             $relevantSQs[] = $sgqa;
                         }
                         // This just remove the last ranking : don't control validity of answers done: user can rank irrelevant answers .... See Bug #09774
                         continue;
                     }
-
+                    $foundSQrelevance=false;
                     foreach ($LEM->subQrelInfo[$qid] as $sq)
                     {
                         switch ($sq['qtype'])

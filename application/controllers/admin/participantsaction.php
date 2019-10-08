@@ -684,11 +684,11 @@ $url .= "_view"; });
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            $this->ajaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
+            AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
         }
 
         if (!$participant->userHasPermissionToEdit()) {
-            $this->ajaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
 
         // Make sure no-one hacks owner_uid into form
@@ -709,7 +709,7 @@ $url .= "_view"; });
             $attribute->updateParticipantAttributeValue($attribute->attributes);
         }
 
-        $this->ajaxHelper::outputSuccess(gT("Participant successfully updated"));
+        AjaxHelper::outputSuccess(gT("Participant successfully updated"));
     }
 
     /**
