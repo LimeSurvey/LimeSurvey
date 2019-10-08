@@ -6339,9 +6339,8 @@
                     /** @var integer counter to have current rank number (subquestion) */
                     $iCountRank = 0;
 
-                    $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
                     /** @var integer Get total of answers (all potential answers) **/
-                    $answersCount = \Answer::model()->count('qid = :qid and language = :language',array(':qid'=>$qid,':language'=>$language));
+                    $answersCount = \Answer::model()->count('qid = :qid',array(':qid'=>$qid));
 
                     /** @var integer Get number of answers currently filtered (unrelevant) **/
                     $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
