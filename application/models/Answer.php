@@ -61,8 +61,8 @@ class Answer extends LSActiveRecord
             'question' => array(self::BELONGS_TO, 'Question', '',
                 'on' => "$alias.qid = question.qid",
             ),
-            'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'questions',
-                'on' => 'questions.gid = group.gid'
+            'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'question',
+                'on' => 'question.gid = group.gid'
             ),
             'answerL10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
             'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
