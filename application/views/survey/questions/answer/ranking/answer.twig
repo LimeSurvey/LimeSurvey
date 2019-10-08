@@ -61,8 +61,8 @@
 {% set script %}
 try{
  var ranking{{qId}} = new RankingQuestion({
-        max_answers      : "{{ processString(max_answers,1) }}",
-        min_answers      : "{{ processString(min_answers,1) }}",
+        max_answers      : "{{ processString('{'~max_answers~'}',1) }}",
+        min_answers      : "{{ processString('{'~min_answers~'}',1) }}",
         showpopups       : "{{showpopups}}",
         samechoiceheight : "{{samechoiceheight}}",
         samelistheight   : "{{samelistheight}}",
