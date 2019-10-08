@@ -64,6 +64,9 @@ class participantsaction extends Survey_Common_Action
         Yii::import('application.helpers.admin.permission_helper', true);
 
         // Default AjaxHelper (overridden in tests).
+        // NB: The reason we "inject" this here is because the
+        // tests need a mock AjaxHelper instead of the "real thing"
+        // that dies.
         $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
 
         parent::runWithParams($params);
