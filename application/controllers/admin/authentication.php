@@ -39,8 +39,8 @@ class Authentication extends Survey_Common_Action
     public function index()
     {
         /* Set adminlang to the one set in dropdown */
-        if (Yii::app()->request->getPost('loginlang', 'default') != 'default') {
-            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('loginlang', 'default');
+        if (Yii::app()->request->getParam('loginlang', 'default') != 'default') {
+            Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         }
         // The page should be shown only for non logged in users
