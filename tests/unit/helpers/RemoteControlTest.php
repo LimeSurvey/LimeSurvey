@@ -37,6 +37,7 @@ class RemoteControlTest extends TestBaseClass
 
     /**
      * Test the add_response API call.
+     * @todo Marked as incomplete, cause its failing.
      */
     public function testAddResponse()
     {
