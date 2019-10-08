@@ -47,7 +47,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $web->next();
 
             /** @var string Answer id to first subquestion. */
-            $answerId = $this->getAnswerId($survey) . '1';
+            $answerId = $this->getAnswerId($survey) . 'A01';
 
             // Click it.
             /** @var RemoteWebElement */
@@ -55,7 +55,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label->click();
 
             /** @var string Answer id to second subquestion. */
-            $answerId = $this->getAnswerId($survey) . '2';
+            $answerId = $this->getAnswerId($survey) . 'A02';
 
             // Click it.
             /** @var RemoteWebElement */
@@ -63,7 +63,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             $label->click();
 
             /** @var string Answer id to third subquestion. */
-            $answerId = $this->getAnswerId($survey) . '3';
+            $answerId = $this->getAnswerId($survey) . 'A03';
 
             // Click it.
             /** @var RemoteWebElement */
@@ -75,7 +75,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             sleep(1);
 
             /** @var string List item id to first answer option. */
-            $sgqa1 = $this->getItemListId($survey) . '1';
+            $sgqa1 = $this->getItemListId($survey) . 'A01';
 
             // TODO: Can't use mouse with geckodriver and Selenium?
             sleep(1);
@@ -88,7 +88,7 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             sleep(1);
 
             /** @var string List item id to second answer option. */
-            $sgqa2 = $this->getItemListId($survey) . '2';
+            $sgqa2 = $this->getItemListId($survey) . 'A02';
 
             /** @var string */
             $javascript = $this->getJavascriptDoubleClick($sgqa2);
@@ -108,8 +108,8 @@ class RankingArrayFilterMaxColumnTest extends TestBaseClassWeb
             /** @var array */
             $answers = $dbo->createCommand($query)->queryAll();
             $this->assertCount(1, $answers);
-            $this->assertEquals('1', $answers[0][$sgqa1]);
-            $this->assertEquals('2', $answers[0][$sgqa2]);
+            $this->assertEquals('A01', $answers[0][$sgqa1]);
+            $this->assertEquals('A02', $answers[0][$sgqa2]);
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
