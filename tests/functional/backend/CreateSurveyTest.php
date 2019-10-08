@@ -515,17 +515,21 @@ class CreateSurveyTest extends TestBaseClassWeb
      * @depends createSurvey
      * @param LimeSurveyWebDriver $driver Actual Webdriver
      * @return LimeSurveyWebDriver
-     * @throws NoSuchElementException
-     * @throws TimeOutException
      */
     public function clickOnStructureButtonSidemenu(LimeSurveyWebDriver $driver) 
     {
-
+         $actual = $this->clickOnStructureButton($driver);
          $this->assertNotNull($actual);
 
          return $driver;
     }
 
+    /**
+     * @param LimeSurveyWebDriver $driver
+     * @return mixed
+     * @throws NoSuchElementException
+     * @throws TimeOutException
+     */
     private function clickOnStructureButton(LimeSurveyWebDriver $driver) {
         $structure = 'adminsidepanel__sidebar--selectorStructureButton';
         $selectStructureSidebar = $driver->wait(10)->until(
@@ -535,7 +539,7 @@ class CreateSurveyTest extends TestBaseClassWeb
         );
 
         $actual = $selectStructureSidebar->click();
-        
+        return $actual;
     }
 
     /**
