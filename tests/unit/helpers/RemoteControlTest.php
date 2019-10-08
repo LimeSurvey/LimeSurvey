@@ -40,6 +40,7 @@ class RemoteControlTest extends TestBaseClass
      */
     public function testAddResponse()
     {
+        $this->markTestIncomplete();
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);
