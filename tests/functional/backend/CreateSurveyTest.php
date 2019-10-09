@@ -361,6 +361,7 @@ class CreateSurveyTest extends TestBaseClassWeb
      */
     public function testGoToMainPage() 
     {   
+        $this->markTestIncomplete();
         $url = 'admin';
 
         $this->_urlMan = \Yii::app()->urlManager;
