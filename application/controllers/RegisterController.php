@@ -332,6 +332,8 @@ class RegisterController extends LSYii_Controller
         $sTo = $event->get('to');
         $sFrom = $event->get('from');
         $sBounce = $event->get('bounce');
+        
+        $customheaders = array('1' => "X-surveyid: ".$iSurveyId, '2' => "X-tokenid: ".$sToken);
 
         $aRelevantAttachments = array();
         if (isset($aSurveyInfo['attachments'])) {
@@ -358,7 +360,7 @@ class RegisterController extends LSYii_Controller
                 $oToken->sent = $today;
                 $oToken->save();
             }
-        } elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments)) {
+        } elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments, $customheaders)) {
             // TLR change to put date into sent
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent = $today;
