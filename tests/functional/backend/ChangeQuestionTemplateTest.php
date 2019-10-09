@@ -69,19 +69,9 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
             sleep(2);
 
-            // Ignore password warning.
-            try {
-                $button = $web->wait(1)->until(
-                    WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
-                    )
-                );
-                $button->click();
-            } catch (TimeOutException $ex) {
-                // Do nothing.
-            } catch (NoSuchElementException $ex) {
-                // Do nothing.
-            }
+            $web->dismissModal();
+            $web->dismissModal();
+            sleep(1);
 
             $editButton = $web->findById('questionEditorButton');
             $editButton->click();
