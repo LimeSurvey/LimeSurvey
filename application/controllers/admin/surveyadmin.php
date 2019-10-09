@@ -1949,16 +1949,18 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Insert base language into surveys_language_settings table
             $aInsertData = array(
-                'surveyls_survey_id'      => $iNewSurveyid,
-                'surveyls_title'          => $sTitle,
-                'surveyls_description'    => $sDescription,
-                'surveyls_welcometext'    => $sWelcome,
-                'surveyls_language'       => Yii::app()->request->getPost('language'),
-                'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip', ''),
-                'surveyls_endtext'        => Yii::app()->request->getPost('endtext', ''),
-                'surveyls_url'            => Yii::app()->request->getPost('url', ''),
-                'surveyls_dateformat'     => (int) Yii::app()->request->getPost('dateformat'),
-                'surveyls_numberformat'   => (int) Yii::app()->request->getPost('numberformat'),
+                'surveyls_survey_id'           => $iNewSurveyid,
+                'surveyls_title'               => $sTitle,
+                'surveyls_description'         => $sDescription,
+                'surveyls_welcometext'         => $sWelcome,
+                'surveyls_language'            => Yii::app()->request->getPost('language'),
+                'surveyls_urldescription'      => Yii::app()->request->getPost('urldescrip', ''),
+                'surveyls_endtext'             => Yii::app()->request->getPost('endtext', ''),
+                'surveyls_url'                 => Yii::app()->request->getPost('url', ''),
+                'surveyls_dateformat'          => (int)Yii::app()->request->getPost('dateformat'),
+                'surveyls_numberformat'        => (int)Yii::app()->request->getPost('numberformat'),
+                'surveyls_policy_notice'       => App()->request->getPost('surveyls_policy_notice'),
+                'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
             );
 
             $langsettings = new SurveyLanguageSetting;
