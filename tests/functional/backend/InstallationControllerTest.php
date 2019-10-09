@@ -4,14 +4,14 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+
 /**
  * @since 2017-11-24
- * @group inst
  */
 class InstallationControllerTest extends TestBaseClassWeb
 {
     /**
-     * 
+     * Setup
      */
     public static function setupBeforeClass()
     {
@@ -37,11 +37,9 @@ class InstallationControllerTest extends TestBaseClassWeb
     /**
      *
      * @throws \CException
-     * TODO: Marked as incomplete, cause its failing.
      */
     public function testBasic()
     {
-        $this->markTestIncomplete();
         //$this->checkFolders();
 
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
@@ -95,7 +93,6 @@ class InstallationControllerTest extends TestBaseClassWeb
         $installerForm->dbtype = \InstallerConfigForm::DB_TYPE_MYSQL;
 
         try {
-
             // Installer start page.
             self::$webDriver->get($url);
 
@@ -177,12 +174,11 @@ class InstallationControllerTest extends TestBaseClassWeb
 
             $this->assertTrue(true, 'We made it!');
         } catch (NoSuchElementException $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, (new \ReflectionClass($this))->getShortName() . '_' . __FUNCTION__);
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
             );
         }
     }
-
 }
