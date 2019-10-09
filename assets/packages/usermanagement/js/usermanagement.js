@@ -79,11 +79,7 @@ var UserManagement = function () {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         wireExportDummyUser();
-                        $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
-                            e.preventDefault();
-                            $('#exitForm').off('click.USERMANAGERMODAL');
-                            triggerModalClose();
-                        });
+                        triggerModalClose();
                         return;
                     }
                     $('#UserManagement--errors').append(
