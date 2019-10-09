@@ -1498,7 +1498,7 @@ class dataentry extends Survey_Common_Action
                 $errormsg .= CHtml::tag('p', array(), gT("The access code have provided is not valid or has already been used."));
             } elseif ($tokenTableExists && $lastanswfortoken != '') {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this access code
+                $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this access code"));
 
                 if ($lastanswfortoken != 'PrivacyProtected') {
                     $errormsg .= "<br /><br />".gT("Follow the following link to update it").":\n";
