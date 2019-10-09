@@ -1,5 +1,6 @@
 <template>
     <div class="container-center scoped-new-emailTemplatesEditor">
+        <x-test id="action::surveyEmailTemplates"></x-test>
         <template v-show="!loading">
             <div class="row" v-if="languageChangerEnabled">
                 <language-selector 

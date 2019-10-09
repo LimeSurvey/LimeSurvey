@@ -80,7 +80,7 @@ class AdminViewsTest extends TestBaseClassView
      */
     public function testAdminSurveyViews($name, $view)
     {
-        $this->markTestIncomplete();
+        //$this->markTestIncomplete();
         if (isset($view['import_id'])) {
             // we'll change the survey in the middle of test
             if(self::$testSurvey){

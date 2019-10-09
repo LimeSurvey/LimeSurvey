@@ -265,6 +265,7 @@ export default {
         </div>
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion">
+                    <x-test id="action::addQuestion"></x-test>
                     {{'Create new Question'|translate}}
             </template>
             <template v-else>
