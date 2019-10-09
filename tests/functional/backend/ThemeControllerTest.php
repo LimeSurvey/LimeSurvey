@@ -144,7 +144,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         // Wait for modal to appear.
         sleep(1);
 
-        $this->dismissModal();
+        $w->dismissModal();
 
         try {
             // Click "Theme editor" for vanilla theme.
@@ -155,7 +155,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Wait for possible modal.
             sleep(1);
 
-            $this->dismissModal();
+            $w->dismissModal();
 
             $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
             $button->click();
@@ -265,8 +265,8 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Wait for possible modal to appear.
             sleep(1);
 
-            $this->dismissModal();
-            $this->dismissModal();
+            $w->dismissModal();
+            $w->dismissModal();
 
             // Test upload file.
             $fileInput = $w->findElement(WebDriverBy::id('upload_file'));
@@ -344,8 +344,8 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Wait for possible modal to appear.
             // Two modals on fresh install.
             sleep(1);
-            $this->dismissModal();
-            $this->dismissModal();
+            $w->dismissModal();
+            $w->dismissModal();
 
             // Extend vanilla.
             $w->clickButton('button-extend-vanilla');
@@ -413,24 +413,6 @@ class ThemeControllerTest extends TestBaseClassWeb
                 true,
                 self::$testHelper->javaTrace($ex)
             );
-        }
-    }
-
-    /**
-     * Click "Close" on notification modal.
-     * @return void
-     * @todo Move to webdriver subclass
-     */
-    protected function dismissModal()
-    {
-        try {
-            // If not clickable, dismiss modal.
-            $w = self::$webDriver;
-            $button = $w->findElement(WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn'));
-            $button->click();
-            sleep(1);
-        } catch (\Exception $ex) {
-            // Do nothing.
         }
     }
 }
