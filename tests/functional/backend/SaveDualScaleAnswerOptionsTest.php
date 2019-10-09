@@ -12,7 +12,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
 {
     /**
-     * 
+     * Setup
      */
     public static function setupBeforeClass()
     {
@@ -39,11 +39,11 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
     }
 
     /**
-     *  TODO: This test will be marked as incomplete, cause some tests inside are not working correctly. See TODOS.
+     * Test save dual-scale answer options.
      */
     public function testQuestionEditor()
     {
-        $this->markTestIncomplete();
+        //$this->markTestIncomplete();
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_677328.lss';
         self::importSurvey($surveyFile);
 
@@ -52,7 +52,6 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
         $this->assertCount(1, $survey->groups[0]->questions, 'We have exactly one question');
 
-        $qid = $survey->groups[0]->questions[0]->qid;
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertCount(2, $answers);
 
@@ -69,6 +68,8 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         );
 
         self::$webDriver->get($url);
+
+        sleep(2);
         
         $button = self::$webDriver->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
@@ -100,8 +101,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);
         $this->assertEquals('abc', $answers[1]->answerL10ns['en']->answer);
 
-        //TODO: This element does not exists.
-        $notif = self::$webDriver->findElement(WebDriverBy::className('questioneditor-alert-pan'));
+        $notif = self::$webDriver->findElement(WebDriverBy::id('notif-container_1'));
         $notifText = $notif->getText();
         $this->assertContains('Question successfully stored', $notifText);
     }
