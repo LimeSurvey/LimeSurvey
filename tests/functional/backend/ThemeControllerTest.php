@@ -59,7 +59,6 @@ class ThemeControllerTest extends TestBaseClassWeb
      */
     public function testCopyTemplate()
     {
-        $this->markTestIncomplete();
         \Yii::app()->session['loginID'] = 1;
 
         // TODO: Clean up should be inside teardown()!
@@ -105,10 +104,10 @@ class ThemeControllerTest extends TestBaseClassWeb
     /**
      * @group extendtheme
      * @todo Split up in separate tests.
-     * TODO: Marked as incomplete cause this test is failing
+     * @todo: Marked as incomplete cause this test is failing
      */
     public function testExtendTheme()
-    {   
+    {
         $this->markTestIncomplete();
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
@@ -149,7 +148,7 @@ class ThemeControllerTest extends TestBaseClassWeb
 
         try {
             // Click "Theme editor" for vanilla theme.
-            // TODO: Unable to locate element! 
+            // TODO: Unable to locate element!
             $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
             $button->click();
 
@@ -213,7 +212,6 @@ class ThemeControllerTest extends TestBaseClassWeb
                 'Theme editor: vanilla_version_renamed',
                 $header->getText() . ' should equal "Theme editor: vanilla_version_renamed"'
             );
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -288,7 +286,6 @@ class ThemeControllerTest extends TestBaseClassWeb
             foreach ($files as $file) {
                 $this->assertNotEquals($file->getText(), 'dalahorse.jpg');
             }
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -401,7 +398,6 @@ class ThemeControllerTest extends TestBaseClassWeb
                 'Theme editor: vanilla_test_3',
                 $header->getText() . ' should equal "Theme editor: vanilla_test_3"'
             );
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -414,6 +410,7 @@ class ThemeControllerTest extends TestBaseClassWeb
     /**
      * Click "Close" on notification modal.
      * @return void
+     * @todo Move to webdriver subclass
      */
     protected function dismissModal()
     {
