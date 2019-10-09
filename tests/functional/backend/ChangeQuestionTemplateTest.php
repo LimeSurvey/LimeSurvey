@@ -50,28 +50,28 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
      * Login, create survey, add group and question,
      * activate survey, execute survey, check database
      * result.
-     * 
-     * TODO: This Test is failing. Bug #15330.
      */
     public function testChangeQuestionTemplate()
     {
-        $this->markTestIncomplete('Skipped.');
         try {
-
             $gid = self::$testSurvey->groups[0]->gid;
             $qid = self::$testSurvey->groups[0]->questions[0]->qid;
 
             // Go to edit question page.
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('admin/questions', array('sa'=>'editquestion', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
-            self::$webDriver->get($url);
+            $url = $urlMan->createUrl(
+                'admin/questioneditor',
+                array('sa'=>'view', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
+            );
+            $web = self::$webDriver;
+            $web->get($url);
 
-            sleep(1);
+            sleep(2);
 
             // Ignore password warning.
             try {
-                $button = self::$webDriver->wait(1)->until(
+                $button = $web->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
                     )
@@ -83,41 +83,45 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
+            $editButton = $web->findById('questionEditorButton');
+            $editButton->click();
+
             sleep(1);
 
             // Select bootstrap_buttons on Question theme dropdown
-            $option = self::$webDriver->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
+            $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
             $option->click();
 
             sleep(1);
 
             // Select "Display theme options" tab
-            $displayLink = self::$webDriver->findElement(WebDriverBy::linkText('Display theme options'));
+            $displayLink = $web->findElement(WebDriverBy::linkText('Display theme options'));
             $displayLink->click();
 
             sleep(1);
 
             // Find button_size element
-            $buttonSizeElement = self::$webDriver->findElement(WebDriverBy::cssSelector('#button_size'));
-            $this->assertTrue(isset($buttonSizeElement), 'Found the button size element YY');
+            $buttonSizeElement = $web->findById('input-button_size_0');
+            $this->assertNotEmpty($buttonSizeElement, 'Found the button size element YY');
 
             // Switch back to "General options" tab
-            $displayLink = self::$webDriver->findElement(WebDriverBy::linkText('General options'));
+            $displayLink = $web->findElement(WebDriverBy::linkText('Display'));
             $displayLink->click();
 
             sleep(1);
 
             // Change question template to default
-            $option = self::$webDriver->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
+            $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
             $option->click();
 
             sleep(1);
 
             // Switch to Display tab
-            // Try to find "button_size" - should throw exception NoSuchElementException (wrap in try-catch block and assert true in catch block)
+            // Try to find "button_size" - should throw exception NoSuchElementException
+            // (wrap in try-catch block and assert true in catch block)
             try {
-                $buttonSizeElement = self::$webDriver->findElement(WebDriverBy::cssSelector('#button_size'));
-                $this->assertNotEmpty(isset($buttonSizeElement), 'Found the button size element');
+                $buttonSizeElement = $web->findById('input-button_size_0');
+                $this->assertEmpty($buttonSizeElement, 'Found the button size element');
             } catch (NoSuchElementException $ex) {
                 $this->assertTrue(true, 'Element not found');
             }
@@ -127,7 +131,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 true,
                 self::$testHelper->javaTrace($ex)
             );
-        } 
+        }
     }
 
     /**
