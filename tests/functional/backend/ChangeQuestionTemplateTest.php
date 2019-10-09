@@ -219,7 +219,6 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
      */
     public function selectQuestionThemeForQuestion()
     {
-        $this->markTestIncomplete();
         try {
             $gid = self::$testSurvey->groups[0]->gid;
             $qid = self::$testSurvey->groups[0]->questions[0]->qid;
@@ -227,12 +226,13 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             // Go to edit question page.
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('admin/questioneditor', array('sa'=>'view', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
-            $actualWebDriver = self::$webDriver->get($url);
+            $url = $urlMan->createUrl(
+                'admin/questioneditor',
+                array('sa'=>'view', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
+            );
+            self::$webDriver->get($url);
 
-            $this->assertNotNull($actualWebDriver, 'The WebDriver is null');
-
-            sleep(1);
+            sleep(2);
 
             // Select Question Editor View
             try {
@@ -244,7 +244,9 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 $questionEditorButton->click();
 
                 // Check if General Settings Container is there
-                $generalSettingsContainer = self::$webDriver->findElement(WebDriverBy::className('question-option-general-container'));
+                $generalSettingsContainer = self::$webDriver->findElement(
+                    WebDriverBy::className('question-option-general-container')
+                );
                 $this->assertNotNull($generalSettingsContainer);
             } catch (TimeOutException $ex) {
                 // Do nothing.
@@ -257,7 +259,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             // Select new Question Theme for Question
 
             // Select bootstrap_buttons on Question theme dropdown
-            $option = self::$webDriver->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
+            $option = self::$webDriver->findByCss('#question_template option[value=bootstrap_buttons]');
             $option->click();
             
             sleep(1);
@@ -266,7 +268,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $saveButton = self::$webDriver->findElement(WebDriverBy::cssSelector('#save-button'));
             $saveButton->click();
 
-            sleep(1);
+            sleep(2);
 
              // Change question template to default
             $option = self::$webDriver->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
@@ -281,14 +283,20 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             sleep(1);
 
             // Check if Scope-apply-base-style exists
-            $scopeApplyBaseStyleContainer = self::$webDriver->findElement(WebDriverBy::className('scope-apply-base-style'));
+            $scopeApplyBaseStyleContainer = self::$webDriver->findElement(
+                WebDriverBy::className('scope-apply-base-style')
+            );
             $this->assertNotNull($scopeApplyBaseStyleContainer);
 
             sleep(1);
 
             // Check if Display theme options link exists
-            $displayLink = self::$webDriver->findElement(WebDriverBy::linkText('Display theme options'));
-            $this->assertNotNull($displayLink);
+            try {
+                $displayLink = self::$webDriver->findElement(WebDriverBy::linkText('Display theme options'));
+            } catch (NoSuchElementException $ex) {
+                $this->assertTrue(true, 'Element not found');
+            }
+            $this->assertEmpty($displayLink);
         } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(true, self::$testHelper->javaTrace($exception));
