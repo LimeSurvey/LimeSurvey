@@ -1404,7 +1404,7 @@ class remotecontrol_handle
                 }
 
                 $sGroupSurveyID = $oGroup['sid'];
-                groupif ($sGroupSurveyID != $iSurveyID) {
+                if ($sGroupSurveyID != $iSurveyID) {
                     return array('status' => 'Error: Missmatch in surveyid and groupid');
                 }
 
