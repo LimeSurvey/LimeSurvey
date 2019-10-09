@@ -195,6 +195,11 @@ abstract class Token extends Dynamic
          */
         $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1, 50000), $sTableName, 'token');
 
+        $event = new PluginEvent('afterTokensTableCreated');
+        $event->set('surveyId', $surveyId);
+        $event->set('name', $sTableName);
+        App()->getPluginManager()->dispatchEvent($event);
+
         // Refresh schema cache just in case the table existed in the past, and return if table exist
         return $db->schema->getTable($sTableName, true);
     }
