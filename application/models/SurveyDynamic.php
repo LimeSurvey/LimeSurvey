@@ -953,6 +953,7 @@ class SurveyDynamic extends LSActiveRecord
             foreach (Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parents['type'] == '1' ? 2 : 1))) as $oScaleSubquestion) {
                 $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+                $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = isset($oScaleSubquestion->question) ? $oScaleSubquestion->question : null;
             }
         }
         
