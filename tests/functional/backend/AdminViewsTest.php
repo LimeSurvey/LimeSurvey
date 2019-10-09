@@ -145,12 +145,9 @@ class AdminViewsTest extends TestBaseClassView
      * @param string $name
      * @param array$view
      * @dataProvider addGeneralSettingsViews
-     * 
-     * TODO: Marked as incomplete cause its failing.
      */
     public function testGeneralSettingsViews($name, $view)
     {
-        $this->markTestIncomplete();
         $this->findViewTag($name, $view);
     }
 
