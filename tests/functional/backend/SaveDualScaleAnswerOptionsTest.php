@@ -66,31 +66,34 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
             ]
         );
 
-        self::$webDriver->get($url);
+        $web = self::$webDriver;
+        $web->get($url);
 
         sleep(2);
-        
-        $button = self::$webDriver->wait(5)->until(
+
+        $web->dismissModal();
+
+        $button = $web->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
                 WebDriverBy::id('questionEditorButton')
             )
         );
         $button->click();
 
-        $button = self::$webDriver->findElement(WebDriverBy::linkText('Answer options'));
+        $button = $web->findElement(WebDriverBy::linkText('Answer options'));
         $button->click();
 
         $name1 = sprintf('input[name=answer_en_%d_0]', $answers[0]->aid);
-        $answer1 = self::$webDriver->findElement(WebDriverBy::cssSelector($name1));
+        $answer1 = $web->findElement(WebDriverBy::cssSelector($name1));
         $answer1->sendKeys('123');
 
         $name2 = sprintf('input[name=answer_en_%d_1]', $answers[1]->aid);
-        $answer2 = self::$webDriver->findElement(WebDriverBy::cssSelector($name2));
+        $answer2 = $web->findElement(WebDriverBy::cssSelector($name2));
         $answer2->sendKeys('abc');
 
         sleep(1);
 
-        $savebutton = self::$webDriver->findElement(WebDriverBy::id('save-button'));
+        $savebutton = $web->findElement(WebDriverBy::id('save-button'));
         $savebutton->click();
 
         sleep(1);
@@ -100,7 +103,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);
         $this->assertEquals('abc', $answers[1]->answerL10ns['en']->answer);
 
-        $notif = self::$webDriver->findElement(WebDriverBy::id('notif-container_1'));
+        $notif = $web->findElement(WebDriverBy::id('notif-container_1'));
         $notifText = $notif->getText();
         $this->assertContains('Question successfully stored', $notifText);
     }
