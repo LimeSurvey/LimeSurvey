@@ -29109,7 +29109,7 @@
 	      formId = '#' + $(that).attr('data-form-to-save');
 	      form = [$(formId)];
 	    } else {
-	      form = $('#pjax-content').find('form').first();
+	      form = $('#pjax-content').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
 	    }
 
 	    if (form.length < 1) throw "No form Found this can't be!";
