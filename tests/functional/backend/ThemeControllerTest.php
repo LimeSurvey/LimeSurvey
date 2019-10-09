@@ -223,18 +223,26 @@ class ThemeControllerTest extends TestBaseClassWeb
 
     /**
      * Test upload and delete file.
-     * @group themeuploadfile
+     * @todo Don't test two things in one test
+     * @todo Must be run as web user for templatecopy() to work
      */
     public function testUploadFile()
     {
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
+        // Clear flashes.
+        \Yii::app()->session['aFlashMessage'] = [];
+
         // Extend vanilla.
-        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $dummy = new \ls\tests\DummyController('dummyid');
+        $contr = new \themes($dummy);
         $_POST['copydir'] = 'vanilla';
         $_POST['newname'] = 'vanilla_version_1';
+        // NB: Must run as web user to get correct permissions here.
         $contr->templatecopy();
+        //$dummy->lastAction;
+        //$flashes = \Yii::app()->session['aFlashMessage'];
 
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
@@ -257,6 +265,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Wait for possible modal to appear.
             sleep(1);
 
+            $this->dismissModal();
             $this->dismissModal();
 
             // Test upload file.
