@@ -20,7 +20,7 @@ use Facebook\WebDriver\Exception\ElementNotVisibleException;
 class ChangeQuestionTemplateTest extends TestBaseClassWeb
 {
     /**
-     * 
+     * Setup
      */
     public static function setupBeforeClass()
     {
@@ -136,9 +136,9 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
     /**
      * This Test is checking the question view.
-     * @test 
+     * @test
      */
-    public function goToQuestionView() 
+    public function goToQuestionView()
     {
         try {
             $gid = self::$testSurvey->groups[0]->gid;
@@ -151,7 +151,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $actualWebDriver = self::$webDriver->get($url);
 
             $this->assertNotNull($actualWebDriver, 'The WebDriver is null');
-        } catch( \Exception $exception) {
+        } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
@@ -162,12 +162,11 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
     /**
      * This Method is testing if the Question Editor is clickable.
+     *
      * @test
-     * TODO: Marked as incomplete, cause its failing.
      */
-    public function changeToQuestionEditorView() 
+    public function changeToQuestionEditorView()
     {
-        $this->markTestIncomplete();
         try {
             $gid = self::$testSurvey->groups[0]->gid;
             $qid = self::$testSurvey->groups[0]->questions[0]->qid;
@@ -175,16 +174,18 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             // Go to edit question page.
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('admin/questioneditor', array('sa'=>'view', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
-            $actualWebDriver = self::$webDriver->get($url);
+            $url = $urlMan->createUrl(
+                'admin/questioneditor',
+                array('sa'=>'view', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
+            );
+            $web = self::$webDriver;
+            $web->get($url);
 
-            $this->assertNotNull($actualWebDriver, 'The WebDriver is null');
+            sleep(3);
 
-            sleep(1);
-
-            // Select Question Editor View 
+            // Select Question Editor View
             try {
-                $questionEditorButton = self::$webDriver->wait(1)->until(
+                $questionEditorButton = $web->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#questionEditorButton')
                     )
@@ -192,30 +193,31 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 $questionEditorButton->click();
 
                 // Check if General Settings Container is there
-                $generalSettingsContainer = self::$webDriver->findElement(WebDriverBy::className('question-option-general-container'));
+                $generalSettingsContainer = $web->findElement(
+                    WebDriverBy::className('question-option-general-container')
+                );
                 $this->assertNotNull($generalSettingsContainer);
             } catch (TimeOutException $ex) {
                 // Do nothing.
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
             }
-
-        } catch(\Exception $exception) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+        } catch (\Exception $exception) {
+            self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(true, self::$testHelper->javaTrace($exception));
         }
     }
 
     /**
-     * This Method is changing the question theme for the current question. 
+     * This Method is changing the question theme for the current question.
      * Also checking if the value is changed inside the database.
-     * 
+     *
      * TODO: This test will fail cause of bug.
      * TODO: Bug #15330.
-     * 
-     * @test 
+     *
+     * @test
      */
-    public function selectQuestionThemeForQuestion() 
+    public function selectQuestionThemeForQuestion()
     {
         $this->markTestIncomplete();
         try {
@@ -232,7 +234,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
             sleep(1);
 
-            // Select Question Editor View 
+            // Select Question Editor View
             try {
                 $questionEditorButton = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
@@ -260,7 +262,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             
             sleep(1);
 
-            // Save Question 
+            // Save Question
             $saveButton = self::$webDriver->findElement(WebDriverBy::cssSelector('#save-button'));
             $saveButton->click();
 
@@ -272,7 +274,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
  
             sleep(1);
             
-            // Save Question 
+            // Save Question
             $saveButton = self::$webDriver->findElement(WebDriverBy::cssSelector('#save-button'));
             $saveButton->click();
             
@@ -287,7 +289,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             // Check if Display theme options link exists
             $displayLink = self::$webDriver->findElement(WebDriverBy::linkText('Display theme options'));
             $this->assertNotNull($displayLink);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(true, self::$testHelper->javaTrace($exception));
         }
