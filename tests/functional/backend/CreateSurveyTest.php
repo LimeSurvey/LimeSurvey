@@ -344,32 +344,8 @@ class CreateSurveyTest extends TestBaseClassWeb
             $sids = $dbo->createCommand($query)->queryAll();
             $this->assertCount(0, $sids);
 
-        } catch (NoSuchElementException $ex) {
+        } catch (\Exception $ex) {
             // TODO :Duplicated code.
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
-            );
-        } catch (StaleElementReferenceException $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
-            );
-        } catch (UnknownServerException $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
-            );
-        } catch (TimeOutException $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
-            );
-        } catch (ElementNotVisibleException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
