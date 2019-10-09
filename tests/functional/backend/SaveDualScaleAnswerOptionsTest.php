@@ -43,7 +43,6 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
      */
     public function testQuestionEditor()
     {
-        //$this->markTestIncomplete();
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_677328.lss';
         self::importSurvey($surveyFile);
 
