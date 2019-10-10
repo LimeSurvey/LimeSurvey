@@ -196,18 +196,18 @@ class translate extends Survey_Common_Action
                 if ($class == 'QuestionGroup'){
                     $aRowfrom = $oRowfrom->questionGroupL10ns[$baselang]->getAttributes();
                     $aResultBase2 = !empty($type2) ? $oResultBase2->questionGroupL10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->questionGroupL10ns[$baselang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionGroupL10ns[$baselang]->getAttributes() : $aResultTo;
+                    $aResultTo = $oResultTo->questionGroupL10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionGroupL10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Question' || $class == 'Subquestion'){
                     $aRowfrom = $oRowfrom->questionL10ns[$baselang]->getAttributes();
                     $aResultBase2 = !empty($type2) ? $oResultBase2->questionL10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->questionL10ns[$baselang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionL10ns[$baselang]->getAttributes() : $aResultTo;
+                    $aResultTo = $oResultTo->questionL10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionL10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Answer'){
                     $aRowfrom = $oRowfrom->answerL10ns[$baselang]->getAttributes();
                     $aResultBase2 = !empty($type2) ? $oResultBase2->answerL10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->answerL10ns[$baselang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->answerL10ns[$baselang]->getAttributes() : $aResultTo;
+                    $aResultTo = $oResultTo->answerL10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->answerL10ns[$tolang]->getAttributes() : $aResultTo;
                 }
                 $aRowfrom = array_merge($aRowfrom, $oRowfrom->getAttributes());
                 $aResultBase2 = array_merge($aResultBase2, $oResultBase2->getAttributes());
@@ -825,17 +825,18 @@ class translate extends Survey_Common_Action
                     case 'email_confirmbody':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_confirm'=>$new));
                     case 'group':
-                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('group_name' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroupL10n::model()->updateAll(array('group_name' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'group_desc':
-                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('description' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'question':
-                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang), array('question' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
+                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
                     case 'question_help':
-                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang), array('help' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
+                        return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
                     case 'subquestion':
-                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang), array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
                     case 'answer':
-                        return Answer::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>$iScaleID), array('answer' => $new));
+                        $oAnswer = Answer::model()->find('qid = :qid and code = :code and scale_id = :scale_id', array(':qid'=>$id1, ':code'=>$id2, ':scale_id'=>$iScaleID));
+                        return AnswerL10n::model()->updateAll(array('answer' => $new), 'aid = :aid and language = :language', array(':aid'=>$oAnswer->aid, ':language'=>$tolang));
                 }
 
         }
