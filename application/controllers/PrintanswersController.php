@@ -128,9 +128,9 @@ class PrintanswersController extends LSYii_Controller
         // Remove all <script>...</script> content from result.
         Yii::import('application.helpers.viewHelper');
         foreach ($groupArray as &$group) {
-            $group['description'] = viewHelper::flatEllipsizeText($group['description'], true, 0);
+            $group['description'] = viewHelper::purified($group['description']);
             foreach ($group['answerArray'] as &$answer) {
-                $answer['question'] = viewHelper::flatEllipsizeText($answer['question'], true, 0);
+                $answer['question'] = viewHelper::purified($answer['question']);
             }
         }
 
