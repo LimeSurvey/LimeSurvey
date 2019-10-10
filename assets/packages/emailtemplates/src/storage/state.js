@@ -5,6 +5,7 @@ export default {
     survey: {},
     debugMode: false,
     activeLanguage: '',
+    useHtml: '',
     currentTemplateType: '',
     permissions: {}
 };

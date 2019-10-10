@@ -31,15 +31,15 @@
                     <div class="container-fluid">
                         <div class="row ls-space margin top-5">
                             <div class="ls-flex-row col-12">
-                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}:</label>
+                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}</label>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" />
                             <input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/>
                         </div>
-                        <div class="row ls-space margin top-15">
+                        <div class="row ls-space margin top-15 ckedit-nocollapse">
                             <div class="ls-flex-row col-12">
                                 <div class="ls-flex-item text-left">
-                                    <label class="">{{currentTemplateTypeData.body}}:</label>
+                                    <label class="">{{currentTemplateTypeData.body}}</label>
                                 </div>
                                 <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
                                     <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
@@ -52,8 +52,8 @@
                         <div class="row ls-space margin top-15">
                             <div class="ls-flex-row col-12">
                                 <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
-                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset current"}} </button>
-                                <!-- <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button> -->
+                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset to default"}} </button>
+                                <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
 <script>
 import Mousetrap from 'mousetrap';
 import he from 'he';
-import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
+import LsEditor from '../../meta/LsCkeditor/src/LsCkEditorInline';
 
 import ValidationScreen from './components/ValidationScreen';
 import LanguageSelector from './components/subcomponents/_languageSelector';
@@ -130,7 +130,11 @@ export default {
                 try{    
                     if (this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
                         let descriptor = this.currentTemplateTypeData.field.body;
-                        returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
+                        if(!this.$store.state.useHtml) {
+                            returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
+                        } else {
+                            returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
+                        }
                     }
                 } catch(e) {}
                 return returner;
@@ -256,6 +260,9 @@ ${scriptContent}
             if (this.editorInstance != null) { 
                 this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);
             }
+        },
+        addFileToCurrent() {
+            this.$log.log("Add file!");
         }
     },
     created(){

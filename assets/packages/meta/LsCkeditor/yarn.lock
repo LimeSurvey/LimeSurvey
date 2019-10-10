@@ -145,6 +145,15 @@
     "@ckeditor/ckeditor5-utils" "^12.1.1"
     lodash-es "^4.17.10"
 
+"@ckeditor/ckeditor5-core@^12.3.0":
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-12.3.0.tgz#8b230c86fce19ffd76b46f45fff5f8a50a7f3ef9"
+  integrity sha512-uUK+snI1G9b/kHOqULpEM+b3PCppQOOGkBg+eP/xggn3WPn33u2eh44RPpArsjx80dg5GWx+uj6E7OFdPylHLA==
+  dependencies:
+    "@ckeditor/ckeditor5-engine" "^14.0.0"
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
+    lodash-es "^4.17.10"
+
 "@ckeditor/ckeditor5-dev-utils@^12.0.1":
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-dev-utils/-/ckeditor5-dev-utils-12.0.1.tgz#5804d1d1abf609e2d20b2efdefb927af28931e9d"
@@ -186,12 +195,31 @@
     "@ckeditor/ckeditor5-utils" "^12.1.1"
     lodash-es "^4.17.10"
 
+"@ckeditor/ckeditor5-editor-inline@^12.3.0":
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-editor-inline/-/ckeditor5-editor-inline-12.3.0.tgz#43f93b9bbaba72c4054a4efd1b727c4017a9d582"
+  integrity sha512-+zHBuxQ5z/TrhrBV1LjIWzZOYz31X8JqBcQ5y1tBX59f9qUUATF/rMOQR0aMrx0Xshb25xNJPdo4zs4exC5Glw==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^12.3.0"
+    "@ckeditor/ckeditor5-engine" "^14.0.0"
+    "@ckeditor/ckeditor5-ui" "^14.0.0"
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
+    lodash-es "^4.17.10"
+
 "@ckeditor/ckeditor5-engine@^13.1.1":
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-13.1.1.tgz#8d194dd6a5c7946f4892be830a52bc26c783fe4b"
   integrity sha512-Itu7ECpUGFJJg9HGqOOSyu9vGbdBGKcHdWGLf000NOBwK9ZZZzIsZL2xWd/5bhVAo+M/q/b5j7DHGJP6PDRW2g==
   dependencies:
     "@ckeditor/ckeditor5-utils" "^12.1.1"
+    lodash-es "^4.17.10"
+
+"@ckeditor/ckeditor5-engine@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-14.0.0.tgz#45547ef8a9951bd568607e046751c9b60d99dd2d"
+  integrity sha512-Y9EWmWwJ6anckAdSDhAFkMryz494y2LsBlF9o/wY3ChwfpEODpaaADBh22yFqQp6PXrFvk4LmAOJeOyTeA13FA==
+  dependencies:
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
     lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-enter@^11.0.2":
@@ -336,6 +364,15 @@
     "@ckeditor/ckeditor5-utils" "^12.1.1"
     lodash-es "^4.17.10"
 
+"@ckeditor/ckeditor5-ui@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-14.0.0.tgz#5444c1fd863486e87089b15fd86fc6f937f80ce9"
+  integrity sha512-zV4o4K5zUMcDr2q3Mmohisb2VTNFFsJ4BvhUt6jCNgM0kD6M4BwalmG7XdaXWMqOh15iqLC4f0p93/6DloyD+Q==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^12.3.0"
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
+    lodash-es "^4.17.10"
+
 "@ckeditor/ckeditor5-undo@^11.0.2":
   version "11.0.2"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-undo/-/ckeditor5-undo-11.0.2.tgz#36918b0144d150a3b79f5532872b28deebdadeb4"
@@ -360,6 +397,14 @@
   integrity sha512-69D+3Sx+QTBgKunFZdDp5jcEgo/v6kE+vOgnNtVXaEyjvAXJGppB++WPCYJw3POZxHqMy57PlpyqGG5zGyoYkg==
   dependencies:
     ckeditor5 "^12.2.0"
+    lodash-es "^4.17.10"
+
+"@ckeditor/ckeditor5-utils@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-14.0.0.tgz#9eba9b30a00e2b1011ffc954dd206fcb8a193e20"
+  integrity sha512-JC9sDlRbvmhL+Gqpq4HPZkrnpMFgEwlkVNUd2RKD/heOvzdpMfpLnIFpdXi1ohx/LQHDC9GZce0t6NJM5PbGoA==
+  dependencies:
+    ckeditor5 "^12.4.0"
     lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-widget@^11.0.2":
@@ -1183,6 +1228,11 @@ ckeditor5@^12.2.0:
   version "12.2.0"
   resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-12.2.0.tgz#39cbaee904854be2a8324b40348fedc5373368e1"
   integrity sha512-LPni36zcmeS8VaV3tRdO6etvLrJC6ytP+zRzjUmOoAG+5tiZwb5z8LS4L+HOWqIy9BxA/2H/jkiY67X0ZTTiBw==
+
+ckeditor5@^12.4.0:
+  version "12.4.0"
+  resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-12.4.0.tgz#60bfc4848d29f6c9d5915fa588017152fbd3db60"
+  integrity sha512-gd6PGm3pId5KibAZNvACc5NN657xP0IEyqziRI0tBFnLyXgDjw3e8Uu2zkIEUbxPR2vXG1J7PoqS9ZxJuE9XTQ==
 
 class-utils@^0.3.5:
   version "0.3.6"

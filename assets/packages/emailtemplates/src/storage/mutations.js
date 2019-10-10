@@ -68,6 +68,9 @@ export default {
     setSurvey : (state, newValue) => {
         state.survey = newValue;
     },
+    setUseHtml : (state, newValue) => {
+        state.useHtml = newValue;
+    },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;
     }

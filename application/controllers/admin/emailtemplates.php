@@ -71,7 +71,7 @@ class emailtemplates extends Survey_Common_Action
             $aTemplateTypeContents[$lngString] = $oSurvey->languagesettings[$lngString];
         });
         
-        $aTemplateTypes = self::getTabTypeArray();
+        $aTemplateTypes = $this->getTabTypeArray($iSurveyId);
         $aPermissions = [
             "read" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveylocale', 'read'),
             "update" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveylocale', 'update'),
@@ -79,6 +79,7 @@ class emailtemplates extends Survey_Common_Action
         ];
         
         $this->renderJSON([
+            'useHtml' => ($oSurvey->htmlemail == 'Y'),
             'templateTypes' => $aTemplateTypes,
             'templateTypeContents' => $aTemplateTypeContents,
             'permissions' => $aPermissions,
@@ -260,10 +261,14 @@ class emailtemplates extends Survey_Common_Action
         ];
     }
 
-    public static function getTabTypeArray($language=null){
-        if($language==null) { $language = App()->getLanguage(); }
+    public function getTabTypeArray($iSurveyId, $language=null){
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
+        $language = $language==null ? $oSurvey->language : $language; 
+        
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('html', $language);
-        return array(
+
+        $array = array(
             'invitation' => array(
                 'title' => gT("Invitation"),
                 'subject' => gT("Invitation email subject:"),
@@ -303,7 +308,7 @@ class emailtemplates extends Survey_Common_Action
                 ),
                 'default' => array(
                     'subject' => $aDefaultTexts['confirmation_subject'],
-                    'body' => $aDefaultTexts['confirmation']
+                    'body' => $aDefaultTexts['confirmation'],
                 )
             ),
             'registration' => array(
@@ -317,7 +322,7 @@ class emailtemplates extends Survey_Common_Action
                 ),
                 'default' => array(
                     'subject' => $aDefaultTexts['registration_subject'],
-                    'body' => $aDefaultTexts['registration']
+                    'body' => $aDefaultTexts['registration'],
                 )
             ),
             'admin_notification' => array(
@@ -331,7 +336,7 @@ class emailtemplates extends Survey_Common_Action
                 ),
                 'default' => array(
                     'subject' => $aDefaultTexts['admin_notification_subject'],
-                    'body' => $aDefaultTexts['admin_notification']
+                    'body' => $aDefaultTexts['admin_notification'],
                 )
             ),
             'admin_detailed_notification' => array(
@@ -345,10 +350,17 @@ class emailtemplates extends Survey_Common_Action
                 ),
                 'default' => array(
                     'subject' => $aDefaultTexts['admin_detailed_notification_subject'],
-                    'body' => $aDefaultTexts['admin_detailed_notification']
+                    'body' => $aDefaultTexts['admin_detailed_notification'],
                 )
             )
         );
+        return $array;
+    }
+
+    public function getDataUri($image, $mime = '')
+    {
+        return 'data: '
+        .(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
     }
 
     public function getTemplateOfType($type, $language=null, $survey=0){
