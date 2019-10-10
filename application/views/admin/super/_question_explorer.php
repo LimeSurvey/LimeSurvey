@@ -39,10 +39,10 @@
                             <a class="btn btn-link"
                                 data-toggle="tooltip"
                                 data-placement="bottom"
-                                title="<?php eT('Add a group');?>"
+                                title="<?php eT('Add a page');?>"
                                 href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
                                 <span class="fa fa-plus-sign"></span>
-                                <?php eT('Add group');?>
+                                <?php eT('Add page');?>
                             </a>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
                             <div class="col-sm-1" id="questions-container-<?php echo $aGroup->gid; ?>">
                                 <!-- add question to this group -->
-                                <a  data-toggle="tooltip" data-placement="top" style="padding: 0" title="<?php eT('Add a question to this group');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
+                                <a  data-toggle="tooltip" data-placement="top" style="padding: 0" title="<?php eT('Add a question to this page');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                     <span class="fa fa-plus-sign"></span>
                                 </a>
                             </div>
@@ -78,7 +78,7 @@
                             <?php endif;?>
                         <div class="col-sm-1">
                             <!-- add question to this group -->
-                            <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Group summary');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
+                            <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Page summary');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                 <span class="fa fa-list"></span>
                             </a>
                         </div>
@@ -128,7 +128,7 @@
                                     <?php endforeach;?>
                                 <?php else:?>
                                 <a href="" onclick="event.preventDefault();" style="cursor: default;">
-                                    <?php eT('There are no questions in this group.');?>
+                                    <?php eT('There are no questions in this page.');?>
                                 </a>
                                 <?php endif;?>
                         </div>

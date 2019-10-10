@@ -65,7 +65,7 @@
                     "createQuestion" => gT("Add question"),
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
-                    "collapseAll" => gT("Collapse all questiongroups"),
+                    "collapseAll" => gT("Collapse all survey pages"),
                 ]
             )
         .'};', 
