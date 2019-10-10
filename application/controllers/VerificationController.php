@@ -62,7 +62,7 @@ class VerificationController extends LSYii_Controller
 
         $font_rand = rand(1,5); //Maybe add other specific hard font
         switch ($font_rand) {
-            case 1: $font = $rootdir."/assets/fonts/font-src/FreeSans.ttf"; break;
+            case 1: $font = $rootdir."/assets/fonts/FreeSans.ttf"; break;
             case 2: $font = $rootdir."/assets/fonts/DejaVuSans.ttf"; break;
             case 3: $font = $rootdir."/assets/fonts/font-src/lato-v11-latin-700.ttf"; break;
             case 4: $font = $rootdir."/assets/fonts/font-src/news-cycle-v13-latin-regular.ttf"; break;
