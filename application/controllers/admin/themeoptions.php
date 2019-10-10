@@ -21,6 +21,7 @@ class themeoptions  extends Survey_Common_Action
 
     /**
      * @param string $controller
+     * @param null $id
      */
     public function __construct($controller = null, $id = null)
     {
@@ -224,11 +225,17 @@ class themeoptions  extends Survey_Common_Action
      * Updates a particular model (globally)
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
+     * @throws CHttpException
      */
     public function update($id)
     {
         $model = $this->loadModel($id);
         if (Permission::model()->hasTemplatePermission($model->template_name,'update')) {
+
+            // Turn Ajax off as default save it after.
+            $model = $this->turnAjaxmodeOffAsDefault($model);
+            $model->save();
+
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
@@ -241,6 +248,30 @@ class themeoptions  extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions"));
         }
+    }
+
+    /**
+     * This method turn ajaxmode off as default.
+     *
+     * @param TemplateConfiguration $templateConfiguration Configuration of Template
+     * @return TemplateConfiguration
+     */
+    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
+    {
+        $attributes = $templateConfiguration->getAttributes();
+        $hasOptions = isset($attributes['options']);
+        if ($hasOptions) {
+            $options = $attributes['options'];
+            $optionsJSON = json_decode($options, true);
+            $hasAjaxMode = isset($optionsJSON['ajaxmode']);
+            if ($hasAjaxMode) {
+                $optionsJSON['ajaxmode'] = 'off';
+                $options = json_encode($optionsJSON);
+                $templateConfiguration->setAttribute('options', $options);
+            }
+
+        }
+        return $templateConfiguration;
     }
 
     /**
@@ -271,6 +302,8 @@ class themeoptions  extends Survey_Common_Action
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
+     * @param $gsid
+     * @param null $l
      */
     public function updatesurveygroup($id = null, $gsid, $l = null)
     {
@@ -299,6 +332,9 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param $sAdminThemeName
+     */
     public function setAdminTheme($sAdminThemeName)
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -462,6 +498,10 @@ class themeoptions  extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
+    /**
+     * @param $gsid
+     * @throws Exception
+     */
     public function reset($gsid)
     {
         $templatename = Yii::app()->request->getPost('templatename');
