@@ -2264,7 +2264,7 @@ class SurveyAdmin extends Survey_Common_Action
             '/admin/super/_renderJson',
             ['data' => [
                 "success" => $success,
-                "message" => ($success ? gT("Successfully stored survey texts") : gT("Error in storing survey texts"))
+                "message" => ($success ? gT("Successfully stored data security texts") : gT("Error in storing data security texts"))
                 ]
             ],
             false,
