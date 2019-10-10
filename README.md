@@ -38,10 +38,10 @@ The absolute minimal requirements are:
 
 ### Recommended
 We recommend the following setup
- - nginx 1.4.6
- - php 5.6.x
+ - Web server: nginx (most recent stable version)
+ - PHP (most recent stable version)
     - with php-fpm, mbstring, gd2 with freetype, imap, ldap, zip, zlib and database drivers
- - mysql 5.5.50
+ - MariaDB or MySQL (most recent stable version)
 
 ## Manual
 for more information please refer to our [homepage](http://www.limesurvey.org), or have a look at the [manual](http://manual.limesurvey.org) 
