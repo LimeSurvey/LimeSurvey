@@ -1431,7 +1431,7 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
+        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>(int)$qqid);
     }
 
     /**
@@ -3265,7 +3265,8 @@ class statistics_helper
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
+        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
         //PCHART has to be enabled and we need some data
         //
