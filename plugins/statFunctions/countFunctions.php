@@ -22,7 +22,7 @@ class countFunctions
      * @param boolean $submitted respnse
      * @return integer|string
      */
-    public static function statCountIf($qCode,$comparaison)
+    public static function statCountIf($qCode, $comparaison, $submitted = true)
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
         $checkSurveyId = self::_checkSurveyId($surveyId);
@@ -39,12 +39,10 @@ class countFunctions
         $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria;
         $oCriteria->condition= "$sQuotedColumn IS NOT NULL";
-        $oCriteria->addCondition("submitdate IS NOT NULL");
+        if($submitted) {
+            $oCriteria->addCondition("submitdate IS NOT NULL");
+        }
         $oCriteria->compare($sQuotedColumn,$comparaison);
-        tracevar([
-            $qCode,
-            intval(SurveyDynamic::model($surveyId)->count($oCriteria))
-        ]);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
     }
 
@@ -56,7 +54,7 @@ class countFunctions
      * @param boolean $submitted response
      * @return integer|string
      */
-    public static function statCount($qCode)
+    public static function statCount($qCode, $submitted = true)
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
         $checkSurveyId = self::_checkSurveyId($surveyId);
@@ -65,14 +63,18 @@ class countFunctions
         }
         $column = self::_getColumnByQCode($surveyId,$qCode);
         if(is_null($column)) {
+            if(Permission::model()->hasSurveyPermission($surveyId,'surveycontent')) { // update ???
+                return sprintf(gT("Invalid question code %s"),CHtml::encode($qCode));
+            }
             return "";
         }
 
         $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria;
         $oCriteria->condition= "$sQuotedColumn IS NOT NULL and $sQuotedColumn <> ''";
-        $oCriteria->addCondition("submitdate IS NOT NULL");
-        tracevar([$column,$surveyId,SurveyDynamic::model($surveyId)->count($oCriteria)]);
+        if($submitted) {
+            $oCriteria->addCondition("submitdate IS NOT NULL");
+        }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
     }
 
