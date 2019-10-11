@@ -1471,7 +1471,7 @@ class remotecontrol_handle
      * Get properties of a question in a survey.
      *
      * @see \Question for available properties.
-     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, defaultvalue
+     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, answeroptions_multiscale, defaultvalue
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1580,7 +1580,7 @@ class remotecontrol_handle
                             }
                             $aResult['answeroptions'] = $aData;
                         } else {
-                                                    $aResult['answeroptions'] = 'No available answer options';
+                                                   $aResult['answeroptions'] = 'No available answer options';
                         }
                     } else if ($sPropertyName == 'answeroptions_multiscale') {
                         $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'sortorder'));
@@ -1597,10 +1597,7 @@ class remotecontrol_handle
                         } else {
                                                     $aResult['answeroptions'] = 'No available answer options';
                         }
-                    }
-                    
-                    
-                    else if ($sPropertyName == 'defaultvalue') {
+                    } else if ($sPropertyName == 'defaultvalue') {
                         $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
