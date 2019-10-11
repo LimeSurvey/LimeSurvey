@@ -47,7 +47,12 @@ class emailtemplates extends Survey_Common_Action
         // EmailTemplateData
         $aData['jsData'] = [
             'surveyid' => $iSurveyId,
-            'validatorUrl' => $this->getController()->createUrl('admin/validate',['sa'=>'email','sid'=>$iSurveyId]), //,'lang'=>$grouplang,'type'=>$tab
+            'getFileUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => 'getFileList']),
+            'surveyFolder' => 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId,
+            'validatorUrl' => $this->getController()->createUrl(
+                'admin/validate', 
+                ['sa'=>'email','sid'=>$iSurveyId]
+            ),
             'i10N' => [
                 'Subject' => gT('Subject'),
                 'Message' => gT('Message'),
@@ -265,7 +270,7 @@ class emailtemplates extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $language = $language==null ? $oSurvey->language : $language; 
-        
+
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('html', $language);
 
         $array = array(
@@ -359,7 +364,7 @@ class emailtemplates extends Survey_Common_Action
 
     public function getDataUri($image, $mime = '')
     {
-        return 'data: '
+        return 'data:'
         .(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
     }
 

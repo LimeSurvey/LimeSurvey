@@ -53,7 +53,7 @@
                             <div class="ls-flex-row col-12">
                                 <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
                                 <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset to default"}} </button>
-                                <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button>
+                                <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add attachment to templates"}} </button>
                             </div>
                         </div>
                     </div>
@@ -74,6 +74,7 @@ import ValidationScreen from './components/ValidationScreen';
 import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
+import FileSelectModal from './components/FileSelectModal';
 import runAjax from './mixins/runAjax';
 
 export default {
@@ -262,7 +263,19 @@ ${scriptContent}
             }
         },
         addFileToCurrent() {
-            this.$log.log("Add file!");
+            this.$modal.show(
+                FileSelectModal,
+                {},
+                {
+                    width: '75%',
+                    height: '75%',
+                    scrollable: true,
+                    resizable: false
+                },
+                {
+                    'before-close': this.onFileSelectClose
+                }
+            );
         }
     },
     created(){

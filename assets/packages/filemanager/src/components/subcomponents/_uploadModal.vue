@@ -22,7 +22,10 @@ export default {
         applyFolderAndData(file, xhr, formData){
             formData.append(LS.data.csrfTokenName, LS.data.csrfToken);
             formData.append('folder', this.$store.state.currentFolder);
-            formData.append('surveyid', this.$store.state.currentSurveyId);
+            const surveyId = LS.reparsedParameters().combined.surveyid;
+            if(surveyId != undefined) {
+                formData.append('surveyid', surveyId);
+            }
         },
         onCompleteHandler(file, response) {
             

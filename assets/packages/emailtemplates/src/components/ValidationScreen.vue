@@ -52,7 +52,7 @@ ${scriptContent}
 
 <template>
     <div class="container-fluid scoped-visible-container">
-        <div class="row" v-if="header != ''">
+        <div class="row" id="emailtemplates--validation-header" v-if="header != ''">
             <h3>{{header}}</h3>
         </div>
         <div class="row">
