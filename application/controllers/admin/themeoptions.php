@@ -256,7 +256,7 @@ class themeoptions  extends Survey_Common_Action
      * @param TemplateConfiguration $templateConfiguration Configuration of Template
      * @return TemplateConfiguration
      */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
+    public function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
     {
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
@@ -281,9 +281,15 @@ class themeoptions  extends Survey_Common_Action
      */
     public function updatesurvey($sid)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'update') || Permission::model()->hasSurveyPermission($sid,'surveysettings','update') ) {
+        if (Permission::model()->hasGlobalPermission('templates', 'update') ||
+            Permission::model()->hasSurveyPermission($sid,'surveysettings','update') ) {
             // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
             $model = TemplateConfiguration::getInstance(null, null, $sid);
+
+            // turn ajaxmode off as default behavior
+            $model = $this->turnAjaxmodeOffAsDefault($model);
+            $model->save();
+
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
