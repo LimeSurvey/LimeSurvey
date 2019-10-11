@@ -73,9 +73,11 @@ export default {
                         :class="isSelected(file) ? 'scope-selected-file' : ''"
                         :id="'iconRep-' + file.hash"
                         :key="file.shortName" 
-                        @click="toggleFileSelection(file)"
                     >
-                        <div class="ls-flex ls-flex-row align-content-center align-items-center">
+                        <div 
+                            class="ls-flex ls-flex-row align-content-center align-items-center emailtemplates--imagecontainer"
+                            @click="toggleFileSelection(file)"
+                        >
                             <img v-if="file.isImage" class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
                             <i v-else :class="'fa '+file.iconClass+' fa-4x scoped-big-icon'"></i>
                         </div>
@@ -125,17 +127,18 @@ export default {
         max-width: 100%;
         display: block;
     }
-    .scope-selected-file {
-        border: 1px solid var(--LS-admintheme-basecolor);
-        box-shadow: 3px 6px 9px var(--LS-admintheme-basecolor);
-    }
     .scoped-file-icon  {
         border: 1px solid black;
         box-shadow: 1px 2px 3px #939393;
         margin: 1.1rem;
+        padding: 0.5rem;
+
         &:first-of-type {
             margin-top: 0;
         }
-        padding: 0.5rem;
+        &.scope-selected-file {
+            border: 1px solid var(--LS-admintheme-basecolor);
+            box-shadow: 3px 6px 9px var(--LS-admintheme-basecolor);
+        }
     }
 </style>

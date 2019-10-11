@@ -56,6 +56,18 @@
                                 <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add attachment to templates"}} </button>
                             </div>
                         </div>
+                        <div class="row ls-space margin top-15" v-if="hasAttachments">
+                            <div class="scoped-simple-carousel">
+                                <div 
+                                    v-for="file in currentLanguageAttachments"
+                                    :key="file.hash"
+                                    class="simple-carousel-item"
+                                >
+                                    <img v-if="file.isImage" class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
+                                    <i v-else :class="'fa '+file.iconClass+' fa-4x'"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,6 +114,12 @@ export default {
     computed: {
         isNewSurvey() {
             return window.EmailTemplateData.isNewSurvey;
+        },
+        currentLanguageAttachments() {
+            return this.$store.state.templateTypeContents[this.$store.state.activeLanguage].attachments;
+        },
+        hasAttachments() {
+            return this.currentLanguageAttachments != null;
         },
         currentSubject: {
             get() { 
@@ -272,9 +290,6 @@ ${scriptContent}
                     scrollable: true,
                     resizable: false
                 },
-                {
-                    'before-close': this.onFileSelectClose
-                }
             );
         }
     },
@@ -303,7 +318,7 @@ ${scriptContent}
         });
 
         if(!window.EmailTemplateData.isNewSurvey) {
-            $('#save-button').on('click', (e)=>{
+           LS.EventBus.$on('componentFormSubmit', () => {
                 this.submitCurrentState();
             });
         }
@@ -341,6 +356,31 @@ ${scriptContent}
         padding: 0.5rem 0.3rem;
         &.active {
             font-weight:bold;
+        }
+    }
+}
+.scoped-simple-carousel {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    .simple-carousel-item {
+        width: 23%;
+        margin: 1%;
+        height: 6.5em;
+        box-shadow: 1px 3px 5px #cfcfcf;
+        display: inline-flex;
+        align-content: center;
+        &>.scoped-contain-image {
+            max-width: 100%;
+            max-height: 5em;
+            display: block;
+            margin: auto;
+        }
+        &>i.fa {
+            max-height: 5em;
+            display: block;
+            margin: auto;
         }
     }
 }

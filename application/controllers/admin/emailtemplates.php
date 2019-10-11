@@ -106,6 +106,7 @@ class emailtemplates extends Survey_Common_Action
             foreach($aSurveyLanguages as $language) {
                 $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id'=>$iSurveyId, 'surveyls_language'=> $language]);
                 $oSurveyLanguageSetting->setAttributes($aTemplateTypeContents[$language]);
+                $oSurveyLanguageSetting->attachments = json_encode($aTemplateTypeContents[$language]['attachments']);
                 $result = $oSurveyLanguageSetting->save();
                 $success = $success && $result;
                 $detailedSuccess[$language] = $result;

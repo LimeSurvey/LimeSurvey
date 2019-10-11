@@ -88,7 +88,7 @@ describe('FileSelectModal.vue', () => {
 
     test('show a selected file correctly', () => {
         const fileTiles = wrapper.findAll('.scoped-file-tile');
-        fileTiles.at(0).trigger('click');
+        fileTiles.at(0).find('.emailtemplates--imagecontainer').trigger('click');
         expect(wrapper.findAll('.scope-selected-file').length).toBe(1)
         && expect(wrapper.vm.selectedFiles[0].hash).toMatch("62a62fcf2b28ae7009feee5ae6c4f816")
     });
@@ -96,7 +96,7 @@ describe('FileSelectModal.vue', () => {
     test('hide selected file correctly', () => {
         wrapper.vm.selectedFiles = availableFilesList;
         const fileTiles = wrapper.findAll('.scope-selected-file');
-        fileTiles.trigger('click');
+        fileTiles.wrappers.forEach((wrapContainer) => { wrapContainer.find('.emailtemplates--imagecontainer').trigger('click'); });
         expect(wrapper.findAll('.scope-selected-file').length).toBe(0)
     });
     
