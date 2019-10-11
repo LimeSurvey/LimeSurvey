@@ -188,7 +188,7 @@ class CheckIntegrity extends Survey_Common_Action
             if($deleted) {
                 $count += $deleted;
             } else {
-                $aData['warnings'][] = sprintf(gT('Unable to delete question group %s'), $gid);
+                $aData['warnings'][] = sprintf(gT('Unable to delete survey page %s'), $gid);
             }
         }
         $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), $count);
@@ -542,7 +542,7 @@ class CheckIntegrity extends Survey_Common_Action
 
                                     if ( array_key_exists( $sNvColName, $aColumns ) ){
                                         // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
-                                        // So we'll change the group of the question question group table (so in admin interface, not in frontend)
+                                        // So we'll change the group of the question survey page table (so in admin interface, not in frontend)
                                         $oQuestion->gid = $sGid;
                                         $oQuestion->save();
 

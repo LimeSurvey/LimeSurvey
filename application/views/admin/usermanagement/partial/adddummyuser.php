@@ -19,7 +19,7 @@
             </div>
             <div class="row ls-space margin top-5">
                 <label for="AnonUser_email"><?=gT('Email address to use')?></label>
-                <input id="AnonUser_email" name="email" class="form-control" type="text" value="<?=User::model()->findByPk(App()->user->id)->email?>">
+                <input id="AnonUser_email" name="email" class="form-control" type="email" value="<?=User::model()->findByPk(App()->user->id)->email?>">
             </div>
             <div class="row ls-space margin top-35">
                 <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm"><?=gT('Create')?></button>

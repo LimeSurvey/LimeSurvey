@@ -506,18 +506,31 @@ class Participant extends LSActiveRecord
 
         // Include a query for each extra attribute to filter
         foreach ($extraAttributeValues as $attributeId => $value) {
-
             $attributeType = $this->allExtraAttributes[$attributeId]['attribute_type'];
             $attributeId = (int) substr($attributeId, 3);
 
+            /** @var string Param name to bind in prepared statement */
+            $bindKey = ':attribute_id' . $attributeId;
+            $callParticipantAttributes = Yii::app()->db->createCommand()
+                ->selectDistinct('pa.participant_id')
+                ->from('{{participant_attribute}} AS pa')
+                ->where('attribute_id='.$bindKey, array($bindKey => $attributeId));
+            // NB: Binding in andWhere() is not enough since the subquery is converted to string.
+            // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
+            $criteria->params[$bindKey] = $attributeId;
+
             // Use "LIKE" for text-box, equal for other types
             if ($attributeType == 'TB') {
-                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '".$attributeId."' AND value LIKE '%".$value."%'";
+                $callParticipantAttributes->andWhere('like', 'value', '%' . $value . '%');
             } else {
-                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '".$attributeId."' AND value = '".$value."'";
+                /** @var string Param name to bind in prepared statement */
+                $bindKey = ':value' . $attributeId;
+                $callParticipantAttributes->andWhere('value = ' . $bindKey, array($bindKey => $value));
+                // NB: Binding in andWhere() is not enough since the subquery is converted to string.
+                $criteria->params[$bindKey] = $value;
             }
 
-            $criteria->addCondition('t.participant_id IN ('.$callParticipantAttributes.')');
+            $criteria->addCondition('t.participant_id IN ('.$callParticipantAttributes->getText().')');
         }
 
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
@@ -529,7 +542,8 @@ class Participant extends LSActiveRecord
             'shares.date_added',
             'shares.can_edit',
             $sqlCountActiveSurveys.' AS countActiveSurveys',
-            't.participant_id AS id', // This is need to avoid confusion between t.participant_id and shares.participant_id
+            // NB: This is need to avoid confusion between t.participant_id and shares.participant_id
+            't.participant_id AS id',
         );
         if ($this->extraCondition) {
             $criteria->mergeWith($this->extraCondition);
@@ -537,7 +551,11 @@ class Participant extends LSActiveRecord
         $sort->attributes = $sortAttributes;
         $sort->defaultOrder = 't.lastname ASC';
 
-        // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone 4) all participants if they have global permission
+        // Users can only see:
+        // 1) Participants they own;
+        // 2) participants shared with them;
+        // 3) participants shared with everyone
+        // 4) all participants if they have global permission
         // Superadmins can see all users.
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $readAllPermission = Permission::model()->hasGlobalPermission('participantpanel', 'read');
@@ -1541,7 +1559,7 @@ class Participant extends LSActiveRecord
                     if (empty($name)) {
                         $name = array('attribute_name' => '[Found no name]');
                     }
-                    throw new CPDBException(sprintf("Token attribute already exists: %s", $name['attribute_name']));
+                    throw new CPDBException(sprintf("Participant attribute already exists: %s", $name['attribute_name']));
                 }
             }
         }
@@ -1739,7 +1757,7 @@ class Participant extends LSActiveRecord
                 try {
                     $oSurveyLink->save();
                 } catch (Exception $e) {
-                    throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
+                    throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                 }
 
                 //If there are new attributes created, add those values to the token entry for this participant
@@ -1749,7 +1767,7 @@ class Participant extends LSActiveRecord
                         try {
                             Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $addedAttributes[$a], $addedAttributeIds[$a]);
                         } catch (Exception $e) {
-                            throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
+                            throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                         }
                     }
                 }
@@ -1764,7 +1782,7 @@ class Participant extends LSActiveRecord
 
                         Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $value, $key);
                     } catch (Exception $e) {
-                        throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
+                        throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                     }
                 }
                 $successful++;

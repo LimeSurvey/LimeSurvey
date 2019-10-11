@@ -19,18 +19,20 @@ $aQuestionTypeList = Question::typeList();
 $question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($oQuestion->type);
 $selected = null;
 
-foreach ($aQuestionTypeList as $key=> $questionType) {
+uasort($aQuestionTypeList, "questionTitleSort");
+foreach ($aQuestionTypeList as $questionType) {
     $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = array(
             'questionGroupName' => $questionType['group']
         );
     }
-        $imageName = $key;
+        $imageName = $questionType['question_type'];
         if ($imageName == ":") $imageName = "COLON";
         else if ($imageName == "|") $imageName = "PIPE";
         else if ($imageName == "*") $imageName = "EQUATION";
 
+    $questionType['type'] = $questionType['question_type'];
     $questionType['detailpage'] = '
     <div class="col-sm-12 currentImageContainer">
         <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
@@ -42,7 +44,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
             <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
         </div>';
     }
-    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
 }
 ?>
 <?php
@@ -281,7 +283,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                 </div>
 
                                 <div  class="form-group">
-                                    <label class=" control-label" for='gid'><?php eT("Question group:"); ?></label>
+                                    <label class=" control-label" for='gid'><?php eT("Survey page:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" <?php if ($oSurvey->isActive){echo " disabled ";} ?> >
                                             <?php echo getGroupList3($oQuestion->gid,$oSurvey->sid); ?>

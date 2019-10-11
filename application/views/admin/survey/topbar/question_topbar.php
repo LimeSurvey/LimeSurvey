@@ -88,8 +88,8 @@ if ($hasReadPermission) {
     array_push($topbar['alignment']['left']['buttons'], $surveypreview_buttons);
     array_push($topbarextended['alignment']['left']['buttons'], $surveypreview_buttons);
 
-    // Preview Question Group Button
-    $name = gT('Preview question group');
+    // Preview Survey Page Button
+    $name = gT('Preview survey page');
 
     $questiongrouppreview_buttons = [];
 
@@ -283,8 +283,11 @@ if ($hasDeletePermission) {
 
     // Delete Button
     $buttons['delete'] = [
-        'url' => $this->createUrl("admin/questions/sa/delete/", ["surveyid" => $sid, "qid" => $qid, "gid" => $gid]),
+        'url' => '#',
+        'dataurl' => $this->createUrl("admin/questions/sa/delete/"),
+        'postdata' => json_encode(["surveyid" => $sid, "qid" => $qid, "gid" => $gid]),
         'name' => gT("Delete"),
+        'type' => 'confirm',
         'id' => 'delete_button',
         'icon' => 'fa fa-trash text-danger',
         'class' => ' btn-danger',
@@ -298,7 +301,7 @@ if ($hasExportPermission) {
 
     // Export Button
     $buttons['export'] = [
-        'url' => $this->createUrl("admin/export/sa/question/surveyid/$sid/gid/$gid/qid/$qid"),
+        'url' => $this->createUrl("admin/export/sa/question", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
         'name' => gT("Export"),
         'id' => 'export_button',
         'icon' => 'icon-export',
@@ -313,7 +316,7 @@ if ($hasCopyPermission) {
 
     // Copy Button
     $buttons['copy'] = [
-        'url' => $this->createUrl("admin/questions/sa/copyquestion/surveyid/$sid/gid/$gid/qid/$qid"),
+        'url' => $this->createUrl("admin/questions/sa/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
         'name' => gT("Copy"),
         'icon' => 'icon-copy',
         'id' => 'copy_button',
@@ -328,7 +331,7 @@ if ($hasUpdatePermission) {
 
     // Conditions Button
     $buttons['conditions'] = [
-        'url' => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$sid/gid/$gid/qid/$qid"),
+        'url' => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
         'name' => gT("Set conditions"),
         'id' => 'conditions_button',
         'icon' => 'icon-conditions',
@@ -338,7 +341,7 @@ if ($hasUpdatePermission) {
 
     if ($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
         $buttons['default_values'] = [
-            'url' => $this->createUrl("admin/questions/sa/editdefaultvalues/suveyid/" . $sid . "/gid/" . $gid . "/qid/" . $qid),
+            'url' => $this->createUrl("admin/questions/sa/editdefaultvalues", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
             'name' => gT("Edit default anwers"),
             'id' => 'default_value_button',
             'icon' => 'icon-defaultanswers',
@@ -356,28 +359,42 @@ if ($qid == 0) {
 
     $paramArray = array();
     $paramArray["surveyid"] = $sid;
-    $saveAndNewLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
-
-    $button['save'] = [
+    $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
+    $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
+    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
+    
+    $saveButton = [
         'id' => 'save',
         'name' => gT('Save'),
-        'icon' => 'fa fa-check-square',
+        'icon' => 'fa fa-floppy-o',
         'url' => '#',
         'id' => 'save-button',
+        'data-form-to-save' => 'frmeditquestion',
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save']);
+    array_push($topbarextended['alignment']['right']['buttons'], $saveButton);
 
-    $button['save_and_add_new'] = [
-        'id' => 'save_and_add_new',
-        'icon' => 'fa fa-check-square',
-        'name' => gT('Save and new question'),
+    $button_save_and_add_question_group = [
+        'id' => 'save-and-new-button',
+        'name' => gT('Save and add page'),
+        'icon' => 'fa fa-plus-square',
         'url' => $saveAndNewLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_add_new']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_question_group);
+
+    $button_save_and_add_new_question = [
+        'id' => 'save-and-new-question-button',
+        'icon' => 'fa fa-plus',
+        'name' => gT('Save and add question'),
+        'url' => $saveAndAddQuestionLink,
+        'isSaveButton' => true,
+        'class' => 'btn-default',
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_new_question);
+
 } else {
 
     // Save Button
@@ -391,31 +408,31 @@ if ($qid == 0) {
     ];
     array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
 
-    // Save and Close Button
-    if ($ownsSaveAndCloseButton) {
-        $buttons['save_and_close'] = [
-            'url' => $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$sid}"),
-            'icon' => 'fa fa-check-square',
-            'name' => gT('Save and close'),
-            'id' => 'save_and_close',
-            'class' => 'btn-default',
-            'isSaveButton' => true,
-        ];
-        array_push($topbarextended['alignment']['right']['buttons'], $buttons['save_and_close']);
-    }
+    // // Save and Close Button
+    // if ($ownsSaveAndCloseButton) {
+    //     $buttons['save_and_close'] = [
+    //         'url' => $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$sid}"),
+    //         'icon' => 'fa fa-check-square',
+    //         'name' => gT('Save and close'),
+    //         'id' => 'save_and_close',
+    //         'class' => 'btn-default',
+    //         'isSaveButton' => true,
+    //     ];
+    //     array_push($topbarextended['alignment']['right']['buttons'], $buttons['save_and_close']);
+    // }
 
-    // Close Button
-    if ($ownsCloseButton) {
-        $buttons['close'] = [
-            'url' => '/admin/survey/sa/listquestions/surveyid/' . $sid,
-            'name' => gT('Close'),
-            'icon' => 'fa fa-close',
-            'id' => 'close',
-            'class' => 'btn-danger pull-right margin-left',
-            'isCloseButton' => true,
-        ];
-        array_push($topbarextended['alignment']['right']['buttons'], $buttons['close']);
-    }
+    // // Close Button
+    // if ($ownsCloseButton) {
+    //     $buttons['close'] = [
+    //         'url' => '/admin/survey/sa/listquestions/surveyid/' . $sid,
+    //         'name' => gT('Close'),
+    //         'icon' => 'fa fa-close',
+    //         'id' => 'close',
+    //         'class' => 'btn-danger pull-right margin-left',
+    //         'isCloseButton' => true,
+    //     ];
+    //     array_push($topbarextended['alignment']['right']['buttons'], $buttons['close']);
+    // }
 }
 
 $finalJSON = [

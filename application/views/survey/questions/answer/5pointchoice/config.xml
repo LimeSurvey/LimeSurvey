@@ -4,7 +4,8 @@
     <!-- Metadata -->
     <metadata>
         <name>5pointchoice</name>
-        <title>5 point choice</title>
+        <type>question_theme</type>
+        <title>5 Point Choice</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -14,8 +15,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>5 point choice question type configuration</description>
-        <type>5</type>
+        <questionType>5</questionType>
+        <group>Single choice questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>choice-5-pt-radio</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         List of the css/js files to load.

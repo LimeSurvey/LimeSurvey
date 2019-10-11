@@ -79,11 +79,7 @@ var UserManagement = function () {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         wireExportDummyUser();
-                        $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
-                            e.preventDefault();
-                            $('#exitForm').off('click.USERMANAGERMODAL');
-                            triggerModalClose();
-                        });
+                        triggerModalClose();
                         return;
                     }
                     $('#UserManagement--errors').append(
@@ -224,7 +220,11 @@ var UserManagement = function () {
     };
 
     var wireRoleSet = function () {
-        $('#roleselector').select2();
+        $('#UserManagement--modalform').find('select').each(
+            function(i,item) {
+                $(item).select2();
+            }
+        );
     }
 
     var applyModalHtml = function (html) {

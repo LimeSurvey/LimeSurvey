@@ -71,6 +71,15 @@ class Survey_Common_Action extends CAction
         // If the above method existence check passed, it might not be neceessary that it is of the action class
         $oMethod  = new ReflectionMethod($this, $sSubAction);
 
+        // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
+        // Merges it with actions from admin modules
+        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses() );
+
+        if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
+            // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
+            // So let us get the last possible default method, ie. index
+            $oMethod = new ReflectionMethod($this, $sDefault);
+        }
 
         // We're all good to go, let's execute it
         // runWithParamsInternal would automatically get the parameters of the method and populate them as required with the params
@@ -115,20 +124,20 @@ class Survey_Common_Action extends CAction
             'browselang' => 'sBrowseLang',
             'tokenids' => 'aTokenIds',
             'tokenid' => 'iTokenId',
-            'subaction' => 'sSubAction',
+            'subaction' => 'sSubAction', // /!\ Already filled by sa : can be different (usage of subaction in quota at 2019-09-04)
         );
-
         // Foreach pseudo, take the key, if it exists,
         // Populate the values (taken as an array) as keys in params
         // with that key's value in the params
         // Chek is 2 params are equal for security issue.
         foreach ($pseudos as $key => $pseudo) {
-            if (isset($params[$key])) {
+            // We care only for user parameters, not by code parameters (see issue #15221)
+            if ($checkParam = Yii::app()->getRequest()->getParam($key)) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
-                        $params[$pseud] = $params[$key];
-                    } elseif($params[$pseud] != $params[$key]){
+                        $params[$pseud] = $checkParam;
+                    } elseif($params[$pseud] != $checkParam){
                         // Throw error about multiple params (and if they are different) #15204
                         throw new CHttpException(403, sprintf(gT("Invalid parameter %s (%s already set)"),$pseud,$key));
                     }
@@ -156,11 +165,11 @@ class Survey_Common_Action extends CAction
         if (!empty($params['iGroupId'])) {
             if ((string) (int) $params['iGroupId'] !== (string) $params['iGroupId']) {
                 // pgsql need filtering before find
-                throw new CHttpException(403, gT("Invalid group id"));
+                throw new CHttpException(403, gT("Invalid survey page id"));
             }
             $oGroup = QuestionGroup::model()->find("gid=:gid", array(":gid"=>$params['iGroupId'])); //Move this in model to use cache
             if (!$oGroup) {
-                throw new CHttpException(404, gT("Group not found"));
+                throw new CHttpException(404, gT("Survey page not found"));
             }
             if (!isset($params['iSurveyId'])) {
                 $params['iSurveyId'] = $params['iSurveyID'] = $params['surveyid'] = $params['sid'] = $oGroup->sid;
@@ -304,7 +313,7 @@ class Survey_Common_Action extends CAction
      * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
      * The work it's doing should be handle by layout files, and subviews inside views.
      * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
-     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the question group bar is called as a subview.
+     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the survey page bar is called as a subview.
      *
      * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.) to subfunctions, then it will be easier to remove.
      * Comments starting with //// indicate how it should work in the future
@@ -317,7 +326,7 @@ class Survey_Common_Action extends CAction
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
-        $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
+        $aData = $this->_addPseudoParams($aData); // This call 2 times _addPseudoParams because it's already done in runWithParams : why ?
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
 
@@ -437,7 +446,7 @@ class Survey_Common_Action extends CAction
                 ));
                 $not->save();
             }
-            if (strtolower(getGlobalSetting('force_ssl')!='on') && Yii::app()->getConfig("debug") < 2) {
+            if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
@@ -504,7 +513,7 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Render the save/cancel bar for Organize question groups/questions
+     * Render the save/cancel bar for Organize survey pages/questions
      *
      * @param array $aData
      *
@@ -536,6 +545,8 @@ class Survey_Common_Action extends CAction
             ],
             $aData['topBar']
         );
+        
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');     
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
     public function _generaltopbarAdditions($aData) {
@@ -550,8 +561,7 @@ class Survey_Common_Action extends CAction
             ],
             $aData['topBar']
         );
-        
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');        
+           
         Yii::app()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ? 'admintoppanelrtl' : 'admintoppanelltr'));
         
         if (isset($aData['qid'])) {
@@ -656,7 +666,7 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Show admin menu for question group view
+     * Show admin menu for survey page view
      *
      * @param array $aData ?
      */
@@ -752,7 +762,7 @@ class Survey_Common_Action extends CAction
             $aData['surveysettings'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
             // Survey permission item
             $aData['surveysecurity'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
-            // CHANGE QUESTION GROUP ORDER BUTTON
+            // CHANGE SURVEY PAGE ORDER BUTTON
             $aData['surveycontentread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
             $aData['groupsum'] = ($oSurvey->groupsCount > 1);
             // SET SURVEY QUOTAS BUTTON
@@ -965,7 +975,7 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * listquestion groups
+     * list survey pages
      * @param array $aData
      */
     private function _listquestiongroups(array $aData)
@@ -1036,7 +1046,7 @@ class Survey_Common_Action extends CAction
         if ($aSurveyInfo['format'] == "S") {
             $surveysummary2[] = gT("It is presented question by question.");
         } elseif ($aSurveyInfo['format'] == "G") {
-            $surveysummary2[] = gT("It is presented group by group.");
+            $surveysummary2[] = gT("It is presented page by page.");
         } else {
             $surveysummary2[] = gT("It is presented on one single page.");
         }
@@ -1062,7 +1072,7 @@ class Survey_Common_Action extends CAction
             $surveysummary2[] = gT("It uses cookies for access control.");
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2[] = gT("If tokens are used, the public may register for this survey");
+            $surveysummary2[] = gT("If participant access codes are used, the public may register for this survey");
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
             $surveysummary2[] = gT("Participants can save partially finished surveys");
@@ -1123,7 +1133,7 @@ class Survey_Common_Action extends CAction
         if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add survey pages")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";
@@ -1292,6 +1302,27 @@ class Survey_Common_Action extends CAction
         }
 
         return $extraMenus;
+    }
+
+    /**
+     * Method to render an array as a json document
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData, $success=true)
+    {
+        
+        $aData['success'] = $aData['success'] ?? $success;
+
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => $aData
+        ], true, false);
+        return;
     }
 
 }

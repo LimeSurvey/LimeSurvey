@@ -2,8 +2,17 @@
 <div class="row">
     <div class="col-sm-12 content-right">
         
-        <?php 
-        $massiveAction = App()->getController()->renderPartial('/admin/themeoptions/massive_action/_selector', array('oSurveyTheme'=>$oSurveyTheme), true, false);
+        <?php
+        $massiveAction = App()->getController()->renderPartial(
+            '/admin/themeoptions/massive_action/_selector',
+            array(
+                'oSurveyTheme' => $oSurveyTheme,
+                'gridID' => 'themeoptions-grid',
+                'dropupID' => 'themeoptions-dropup',
+                'pk' => 'id'
+            ),
+            true,
+            false);
         $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $oSurveyTheme->searchGrid(),
             'filter'        => $oSurveyTheme,
@@ -42,7 +51,8 @@
                 array(
                     'header' => gT('Description'),
                     'name' => 'template_description',
-                    'value'=>'$data->template->description',
+                    //'value'=>'$data->template->description',
+                    'value'=>'$data->description',
                     'htmlOptions' => array('class' => 'col-md-3'),
                     'type'=>'raw',
                 ),

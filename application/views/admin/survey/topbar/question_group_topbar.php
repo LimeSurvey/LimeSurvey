@@ -85,7 +85,7 @@ if (count($languages) > 1) {
 
 // Preview Questiongroup Button
 $title = 'preview_questiongroup';
-$name = gT('Preview question group');
+$name = gT('Preview survey page');
 
 if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update'))) {
     if (count($languages) > 1) {
@@ -147,13 +147,13 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
     }
 }
 
-// Right Buttons (only shown for question group
+// Right Buttons (only shown for survey page)
 if ($hasReadPermission) {
     // Check Survey Logic Button
     $buttons['check_survey_logic'] = [
         'id' => 'check_survey_logic',
         'url' => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
-        'name' => gT("Check survey logic for current question group"),
+        'name' => gT("Check survey logic for current survey page"),
         'icon' => 'icon-expressionmanagercheck',
         'class' => ' ',
     ];
@@ -171,11 +171,13 @@ if ($hasDeletePermission) {
             // can delete group and question
             $buttons['delete_current_question_group'] = [
                 'id' => 'delete_current_question_group',
-                'url' => $this->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $sid, "gid" => $gid]),
-                'type' => 'modal',
-                'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
+                'url' => '#',
+                'dataurl' => $this->createUrl("admin/questiongroups/sa/delete/", ["asJson" => true]),
+                'postdata' => json_encode(['gid' => $gid, 'surveyid' => $sid]),
+                'type' => 'confirm',
+                'message' => gT("Deleting this survey page will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
                 'icon' => 'fa fa-trash',
-                'name' => gT("Delete current question group"),
+                'name' => gT("Delete current survey page"),
                 'class' => ' btn-danger ',
             ];
         } else {
@@ -183,9 +185,9 @@ if ($hasDeletePermission) {
             $buttons['delete_current_question_group'] = [
                 'id' => 'delete_current_question_group',
                 'url' => '',
-                'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
+                'title' => gT("Impossible to delete this survey page because there is at least one question having a condition on its content"),
                 'icon' => 'fa fa-trash',
-                'name' => gT("Delete current question group"),
+                'name' => gT("Delete current survey page"),
                 'class' => ' btn-danger disabled',
             ];
         }
@@ -193,9 +195,9 @@ if ($hasDeletePermission) {
         // Activated
         $buttons['delete_current_question_group'] = [
             'id' => 'delete_current_question_group',
-            'title' => gT("You can't delete this question group because the survey is currently active."),
+            'title' => gT("You can't delete this survey page because the survey is currently active."),
             'icon' => 'fa fa-trash',
-            'name' => gT("Delete current question group"),
+            'name' => gT("Delete current survey page"),
             'class' => ' btn-danger ',
         ];
     }
@@ -210,7 +212,7 @@ if ($hasExportPermission) {
         'id' => 'export',
         'url' => $this->createUrl("admin/export/sa/group/surveyid/$sid/gid/$gid"),
         'icon' => 'icon-export',
-        'name' => gT("Export this question group"),
+        'name' => gT("Export this survey page"),
         'class' => ' btn-default ',
     ];
 
@@ -223,38 +225,40 @@ $topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['
 // Save and Close Button
 if ($ownsSaveButton == true) {
     $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
-    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $sid, "gid" => $gid]);
     
-    $button['save'] = [
+    $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
+    $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
+    
+    $saveButton = [
         'id' => 'save',
         'name' => gT('Save'),
-        'icon' => 'fa fa-check-square',
+        'icon' => 'fa fa-floppy-o',
         'url' => '#',
         'id' => 'save-button',
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save']);
+    array_push($topbarextended['alignment']['right']['buttons'], $saveButton);
 
-    $button['save_and_add_question_group'] = [
-        'id' => 'save_and_add_question_group',
-        'name' => gT('Save and add group'),
-        'icon' => 'fa fa-check-square',
+    $button_save_and_add_question_group = [
+        'id' => 'save-and-new-button',
+        'name' => gT('Save and add page'),
+        'icon' => 'fa fa-plus-square',
         'url' => $saveAndNewLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_add_question_group']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_question_group);
 
-    $button['if ($ownsSaveButton == true) {'] = [
-        'id' => 'save_and_add_new_question',
-        'icon' => 'fa fa-check-square',
+    $button_save_and_add_new_question = [
+        'id' => 'save-and-new-question-button',
+        'icon' => 'fa fa-plus',
         'name' => gT('Save and add question'),
         'url' => $saveAndAddQuestionLink,
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button['if ($ownsSaveButton == true) {']);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_new_question);
 
 }
 

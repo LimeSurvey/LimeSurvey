@@ -63,9 +63,6 @@ ${scriptContent}
         toggleEditMode(){
             this.$emit('triggerEvent', { target: 'lsnextquestiongroupeditor', method: 'triggerEditQuestionGroup', content: {} });
         }
-    },
-    mounted(){
-        this.toggleLoading(false);
     }
 }
 </script>
@@ -74,7 +71,7 @@ ${scriptContent}
     <div class="col-sm-12 col-xs-12">
         <div class="panel panel-default" @dblclick="toggleEditMode">
             <div class="panel-heading">
-            {{'Group overview'|translate}}
+            {{'Page overview'|translate}}
             </div>
             <ul class="list-group">
                 <li class="list-group-item">

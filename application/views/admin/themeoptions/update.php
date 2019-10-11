@@ -80,6 +80,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
             <!-- Tab panes -->
             <?php /* Begin theme option form */ ?>
             <form class='form action_update_options_string_form' action=''>
+            <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), [ 'id' => 'theme-options--submit', 'class'=> 'hidden']); ?>
                 <div class="tab-content">
                     <?php
                         /***
@@ -268,9 +269,6 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                         <?php echo $form->textArea($model,'packages_to_load',array('rows'=>6, 'cols'=>50)); ?>
                                         <?php echo $form->error($model,'packages_to_load'); ?>
                                     </div>
-                                </div>
-                                <div class="row buttons hidden">
-                                    <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class'=> 'btn-success']); ?>
                                 </div>
 
                                 <?php $this->endWidget(); ?>

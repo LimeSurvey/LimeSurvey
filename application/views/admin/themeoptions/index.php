@@ -1,9 +1,12 @@
 <?php
-/* @var $this AdminController */
-/* @var $dataProvider CActiveDataProvider */
-/* @var bool $canImport */
-/* @var string $importErrorMessage */
-
+    /**
+     * @var AdminController     $this
+     * @var CActiveDataProvider $dataProvider
+     * @var bool                $canImport
+     * @var string              $importErrorMessage
+     * @var object              $oQuestionTheme
+     * @var object              $oSurveyTheme
+     */
 
 // TODO: rename to template_list.php and move to template controller
 
@@ -20,7 +23,7 @@ $this->renderPartial('super/fullpagebar_view', array(
 ));
 ?>
 
-<div class="ls-space margin left-15 right-15 row list-themes">
+<div class="meme ls-space margin left-15 right-15 row list-themes">
     <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="active"><a href="#surveythemes"><?php eT('Survey themes'); ?></a></li>
         <li><a href="#adminthemes"><?php eT('Admin themes'); ?></a></li>
@@ -32,7 +35,7 @@ $this->renderPartial('super/fullpagebar_view', array(
 
                 <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
-                <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage]); ?>
+                <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage, 'importModal' => 'importSurveyModal', 'importTemplate' => 'importSurveyTemplate', 'themeType' => 'survey']); ?>
                 <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme, 'pageSize'=>$pageSize )); ?>
 
                 <!-- Available Themes -->
@@ -218,13 +221,18 @@ $this->renderPartial('super/fullpagebar_view', array(
         <div id="questionthemes" class="tab-pane">
             <div class="col-lg-12 list-surveys">
 
-                <?php echo '<h3>'.gT('Question themes:').'</h3>'; ?>
+                <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
 
-                Soon, here, you'll have the list of all question types, and all customed question types. <br>
-                You'll be able to manage them like the Survey Themes (inheritance, theme editor, configuration at global/survey group/survey ; show/hide by survey group, etc)
-                <br>Engine is already working, the interface will come very soon.
+                Under Development.
+
+                <!-- Installed Question Themes -->
+                <?php // $this->renderPartial('themeoptions/surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
+                <?php // $this->renderPartial('themeoptions/partials/question_themes/installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+
+                <!-- Available Quesiton Themes -->
+                <?php // $this->renderPartial('themeoptions/partials/question_themes/availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+
             </div>
-
         </div>
     </div>
 </div>

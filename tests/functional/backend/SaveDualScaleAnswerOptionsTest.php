@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2017-11-24
@@ -11,7 +12,7 @@ use Facebook\WebDriver\WebDriverBy;
 class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
 {
     /**
-     * 
+     * Setup
      */
     public static function setupBeforeClass()
     {
@@ -38,7 +39,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
     }
 
     /**
-     *
+     * Test save dual-scale answer options.
      */
     public function testQuestionEditor()
     {
@@ -50,7 +51,6 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
         $this->assertCount(1, $survey->groups[0]->questions, 'We have exactly one question');
 
-        $qid = $survey->groups[0]->questions[0]->qid;
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertCount(2, $answers);
 
@@ -66,25 +66,34 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
             ]
         );
 
-        self::$webDriver->get($url);
+        $web = self::$webDriver;
+        $web->get($url);
 
-        $button = self::$webDriver->findElement(WebDriverBy::id('questionEditorButton'));
+        sleep(2);
+
+        $web->dismissModal();
+
+        $button = $web->wait(5)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::id('questionEditorButton')
+            )
+        );
         $button->click();
 
-        $button = self::$webDriver->findElement(WebDriverBy::linkText('Answer options'));
+        $button = $web->findElement(WebDriverBy::linkText('Answer options'));
         $button->click();
 
         $name1 = sprintf('input[name=answer_en_%d_0]', $answers[0]->aid);
-        $answer1 = self::$webDriver->findElement(WebDriverBy::cssSelector($name1));
+        $answer1 = $web->findElement(WebDriverBy::cssSelector($name1));
         $answer1->sendKeys('123');
 
         $name2 = sprintf('input[name=answer_en_%d_1]', $answers[1]->aid);
-        $answer2 = self::$webDriver->findElement(WebDriverBy::cssSelector($name2));
+        $answer2 = $web->findElement(WebDriverBy::cssSelector($name2));
         $answer2->sendKeys('abc');
 
         sleep(1);
 
-        $savebutton = self::$webDriver->findElement(WebDriverBy::id('save-button'));
+        $savebutton = $web->findElement(WebDriverBy::id('save-button'));
         $savebutton->click();
 
         sleep(1);
@@ -94,7 +103,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);
         $this->assertEquals('abc', $answers[1]->answerL10ns['en']->answer);
 
-        $notif = self::$webDriver->findElement(WebDriverBy::className('questioneditor-alert-pan'));
+        $notif = $web->findElement(WebDriverBy::id('notif-container_1'));
         $notifText = $notif->getText();
         $this->assertContains('Question successfully stored', $notifText);
     }

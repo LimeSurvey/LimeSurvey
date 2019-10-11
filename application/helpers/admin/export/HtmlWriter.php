@@ -72,7 +72,7 @@
             //echo '<pre>'; var_dump($this->groupMap); echo '</pre>';
                 foreach ($this->groupMap as $gid => $questions) {
                     if ($gid != 0) {
-                        $this->tag('h2', gT("Group").": ".$questions[0]['group_name']);
+                        $this->tag('h2', gT("Page").": ".$questions[0]['group_name']);
                     }
                     $this->openTag('table', array(
                         'class' => 'group',

@@ -29,7 +29,7 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * questiongroup::import()
-     * Function responsible to import a question group.
+     * Function responsible to import a question page.
      *
      * @access public
      * @return void
@@ -104,7 +104,7 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
-     * Import a question group
+     * Import a question page
      *
      */
     public function importView($surveyid)
@@ -136,14 +136,14 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * questiongroup::add()
-     * Load add new question group screen.
+     * Load add new question page screen.
      * @return
      */
     public function add($surveyid)
     {
         $this->view($surveyid, null);
         return;
-        /////
+        ///// TODO: Delete this code in the future?
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($iSurveyID);
         $aViewUrls = $aData = array();
@@ -164,7 +164,7 @@ class questiongroups extends Survey_Common_Action
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-            $aData['subaction'] = gT('Add question group');
+            $aData['subaction'] = gT('Add survey page');
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
@@ -211,8 +211,8 @@ class questiongroups extends Survey_Common_Action
                 $oGroupLS->language = $sLanguage;
                 $oGroupLS->save();
             }
-            Yii::app()->setFlashMessage(gT("New question group was saved."));
-            Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'), '<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">', '</a>'), 'info');
+            Yii::app()->setFlashMessage(gT("New survey page was saved."));
+            Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this page.'), '<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">', '</a>'), 'info');
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
                 $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
             } elseif (Yii::app()->request->getPost('saveandnew', '') !== '') {
@@ -230,19 +230,19 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
-     * Action to delete a question group.
+     * Action to delete a question page.
      *
      * @access public
      * @return void
      */
-    public function delete($iSurveyId=null, $iGroupId=null)
+    public function delete($iSurveyId=null, $iGroupId=null, $asJson=false)
     {
         if (is_null($iGroupId)) {
             $iGroupId = Yii::app()->getRequest()->getPost('gid');
         }
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid"=>$iGroupId));
         if (empty($oQuestionGroup)) {
-            throw new CHttpException(401, gT("Invalid question id"));
+            throw new CHttpException(401, gT("Invalid survey page id"));
         }
         /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
@@ -257,13 +257,28 @@ class questiongroups extends Survey_Common_Action
 
         $iGroupId = sanitize_int($iGroupId);
         $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
+        
+        if ($asJson !== false) {
+            $success = $iGroupsDeleted > 0;
+            $this->renderJSON(
+                [
+                    'success' => $success,
+                    'deletedGroups' => $iGroupsDeleted, 
+                    'message' => ($success ?gT('The survey page was deleted.') : gT('Page could not be deleted')),
+                    'redirect' => $this->getController()->createUrl('admin/survey/sa/listquestiongroups/', ['surveyid' => $iSurveyId])
+                ]
+            );
+            return;
+        }
+
 
         if ($iGroupsDeleted > 0) {
             QuestionGroup::model()->updateGroupOrder($iSurveyId);
-            Yii::app()->setFlashMessage(gT('The question group was deleted.'));
+            Yii::app()->setFlashMessage(gT('The survey page was deleted.'));
         } else {
-            Yii::app()->setFlashMessage(gT('Group could not be deleted'), 'error');
+            Yii::app()->setFlashMessage(gT('Page could not be deleted'), 'error');
         }
+        
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyId));
@@ -321,14 +336,14 @@ class questiongroups extends Survey_Common_Action
             'openQuestionUrl' => $this->getController()->createUrl('admin/questioneditor/sa/view/', ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']),
             'createQuestionUrl' => $this->getController()->createUrl("admin/questioneditor/sa/view/" ,["surveyid" =>  $surveyid, 'gid' => $gid]),
             'i10N' => [
-                'Question group' => gT('Question group'),
-                'Group overview' => gT('Group overview'),
+                'Survey page' => gT('Survey page'),
+                'Page overview' => gT('Page overview'),
                 'Question list' => gT('Question list'),
-                'Create new question group' => gT('Create new question group'),
-                'Question group overview' => gT('Question group overview'),
-                'Question group editor' => gT('Question group editor'),
+                'Create new survey page' => gT('Create new survey page'),
+                'Survey page overview' => gT('Survey page overview'),
+                'Survey page editor' => gT('Survey page editor'),
                 'General Settings' => gT("General Settings"),
-                'Group summary' => gT('Group summary'),
+                'Page summary' => gT('Page summary'),
                 'Random Group' => gT('Random Group'),
                 'Title' => gT('Title'),
                 'Relevance' => gT('Relevance'),
@@ -442,22 +457,33 @@ class questiongroups extends Survey_Common_Action
         } else {
             $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup, $questionGroup);
         }
+
+        $sRedirectUrl = $this->getController()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $iSurveyId, 'gid' => $oQuestionGroup->gid]);
         //$this->_applyI10N($oQuestionGroup, $oQuestionGroupI10N);
 
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
-        $this->renderJSON([
-            'success' => $success,
-            'message' => gT('Question group successfully stored'),
-            'questionGroupId' => $oQuestionGroup->gid,
-            'redirect' => $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId),
-            'transfer' => [$questionGroup, $questionGroupI10N],
-        ]);
+        $aQuestionGroup = $oQuestionGroup->attributes;
+        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
+        $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
+            LimeExpressionManager::GetLastPrettyPrintExpression()
+        );
+
+        $this->renderJSON(
+            [
+                'success' => $success,
+                'message' => gT('Survey page successfully stored'),
+                'questionGroupId' => $oQuestionGroup->gid,
+                'questiongroupData' => $aQuestionGroup,
+                'redirect' => $sRedirectUrl,
+                'transfer' => [$questionGroup, $questionGroupI10N],
+            ]
+        );
         Yii::app()->close();
     }
     /**
      * questiongroup::edit()
-     * Load editing of a question group screen.
+     * Load editing of a survey page screen.
      *
      * @access public
      * @param int $surveyid
@@ -572,21 +598,43 @@ class questiongroups extends Survey_Common_Action
                 foreach ($grouparray as $aQuestiongroup) {
 
                     //first set up the ordering for questiongroups
-                    $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-                    array_map(function ($oQuestiongroup) use ($aQuestiongroup, $success) {
-                        $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                        $success = $success && $oQuestiongroup->save();
-                    }, $oQuestiongroups);
-
+                    $oQuestiongroups = QuestionGroup::model()->findAll(
+                        "gid=:gid AND sid=:sid", 
+                        [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]
+                    );
+                    array_map(
+                        function ($oQuestiongroup) use ($aQuestiongroup, $success) {
+                            $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                            $success = $success && $oQuestiongroup->save();
+                        }, 
+                        $oQuestiongroups
+                    );
+                    
                     $aQuestiongroup['questions'] = isset($aQuestiongroup['questions']) ? $aQuestiongroup['questions'] : [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                        $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
-                        array_map(function ($oQuestion) use ($aQuestion, $success) {
-                            $oQuestion->question_order = $aQuestion['question_order'];
-                            $oQuestion->gid = $aQuestion['gid'];
-                            $success = $success && $oQuestion->save(true);
-                        }, $oQuestions);
+                        $aQuestions = Question::model()->findAll(
+                            "qid=:qid AND sid=:sid", 
+                            [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]
+                        );
+                        array_walk(
+                            $aQuestions,
+                            function ($oQuestion) use ($aQuestion, $success) {
+                                $oQuestion->question_order = $aQuestion['question_order'];
+                                $oQuestion->gid = $aQuestion['gid'];
+                                if(safecount($oQuestion->subquestions) > 0) {
+                                    $aSubquestions = $oQuestion->subquestions;
+                                    array_walk(
+                                        $aSubquestions,
+                                        function ($oSubQuestion) use ($aQuestion, $success) {
+                                            $oSubQuestion->gid = $aQuestion['gid'];
+                                            $success = $success && $oSubQuestion->save(true);
+                                        }
+                                    );
+                                }
+                                $success = $success && $oQuestion->save(true);
+                            }
+                        );
                     }
                 }
             }
@@ -692,7 +740,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
-            Yii::app()->setFlashMessage(gT("Question group successfully saved."));
+            Yii::app()->setFlashMessage(gT("Survey page successfully saved."));
 
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
                 $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid));
@@ -708,7 +756,7 @@ class questiongroups extends Survey_Common_Action
     public function getQuestionGroupTopBar($sid, $gid=null) {
         $oSurvey = Survey::model()->findByPk($sid);
         $oQuestionGroup = null;
-        if( $gid !== null ) {
+        if( $gid ) {
             $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
             $sumcount  = safecount($oQuestionGroup->questions);
         } else {
@@ -766,10 +814,12 @@ class questiongroups extends Survey_Common_Action
 
         $oQuestionGroup = new QuestionGroup();
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
+        
         if ($oQuestionGroup == null) {
             throw new CException("Object creation failed, input array malformed or invalid");
         }
-
+        // Always add at the end
+        $oQuestionGroup->group_order = safecount($oSurvey->groups)+1;
         $saved = $oQuestionGroup->save();
         if ($saved == false) {
             throw new CException("Object creation failed, couldn't save.\n ERRORS:".print_r($oQuestionGroup->getErrors(), true));
@@ -824,21 +874,6 @@ class questiongroups extends Survey_Common_Action
         return $storeValid;
     }
 
-    /**
-     * Method to render an array as a json document
-     *
-     * @param array $aData
-     * @return void
-     */
-    protected function renderJSON($aData)
-    {
-        if (Yii::app()->getConfig('debug') > 0) {
-            $aData['debug'] = [$_POST, $_GET];
-        }
-
-        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
-        return;
-    }
     /**
      * Renders template(s) wrapped in header and footer
      *

@@ -73,11 +73,14 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $aTranslate = [
             'File management' => gT('File management'),
             'Upload' => gT('Upload'),
-            'Cancel transit' => gT('Cancel transit'),
-            'Copy/Move' => gT('Copy/Move'),
+            'Cancel move' => gT('Cancel move'),
+            'Cancel copy' => gT('Cancel copy'),
+            'Move' => gT('Move'),
+            'Copy' => gT('Copy'),
             'Upload a file' => gT('Upload a file'),
             'Drag and drop here, or click once to start uploading' => gT('Drag and drop here, or click once to start uploading'),
             'File is uploaded to currently selected folder' => gT('File is uploaded to currently selected folder'),
+            'An error has happened and no files could be located' => gT('An error has happened and no files could be located'),
             'File name' => gT('File name'),
             'Type' => gT('Type'),
             'Size' => gT('Size'),
@@ -100,6 +103,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         if ($surveyid !== null) {
             $oSurvey = Survey::model()->findByPk($surveyid);
             $aData['surveyid'] = $surveyid;
+            $aData['presetFolder'] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid;
             $aData['surveybar']['buttons']['view'] = true;
             $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
             $aData['subaction'] = gT("File manager");
@@ -423,7 +427,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $fileRelativePath = $folderPath . DIRECTORY_SEPARATOR . $file;
             $fileRealpath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $fileRelativePath;
             $fileIsDirectoy = @is_dir($fileRealpath);
-            $isImage =  !!exif_imagetype($fileRealpath);
+            $isImage =  @exif_imagetype($fileRealpath) !== false;
             if ($fileIsDirectoy) {
                 continue;
             } else {
@@ -583,7 +587,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
         if (!file_exists($realPath)) {
-            @mkdir($realPath, null, true);
+            $this->_recursiveMkdir($realPath, 0750, true);
         }
         $allFiles = scandir($realPath);
 
@@ -612,6 +616,17 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'children' => $childFolders,
         ];
         return $folderArray;
+    }
+
+    private function _recursiveMkdir($folder, $rights=0755) {
+        $folders = explode(DIRECTORY_SEPARATOR, $folder);
+        $curFolder = array_shift($folders).DIRECTORY_SEPARATOR;
+        foreach ($folders as $folder) {
+            $curFolder.= DIRECTORY_SEPARATOR.$folder;
+            if (!is_dir($curFolder) && strlen($curFolder) > 0 && !preg_match("/^[A-Za-z]:$/", $curFolder)) {
+                mkdir($curFolder, $rights);
+            }
+        }
     }
 
     /**

@@ -139,9 +139,12 @@ export default {
     },
 
     //view controllers
-    setQuestionAdvancedSettingsCategory : (state, newValue) => {
+    setQuestionAdvancedSettingsCategory: (state, newValue) => {
         state.questionAdvancedSettingsCategory = newValue;
     },
+    setCollapsedGeneralSettings: (state, newValue) => {
+        state.collapsedGeneralSettings = newValue;
+    }, 
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;
     },

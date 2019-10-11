@@ -87,12 +87,13 @@ export default {
             }))
         ]);
     },
-    getQuestionGeneralSettings: (context) => {
+    getQuestionGeneralSettings: (context, questionTheme='core') => {
         return new Promise((resolve, reject) => {
             const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getGeneralOptions' : '/getGeneralOptions';
             const parameters = {
                 'gid' : window.QuestionEditData.gid || null, 
                 sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
+                question_template: questionTheme
             };
 
             if(context.state.currentQuestionGeneralSettings.question_template != undefined) {
@@ -183,7 +184,7 @@ export default {
     },
     saveQuestionData: (context) => {
         if(context.state.inTransfer) {
-            return Promise.resolve(false);
+            return Promise.reject("Transfer in progress");
         }
 
         let transferObject = merge({

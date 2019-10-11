@@ -26,36 +26,43 @@ if (!defined('BASEPATH')) {
 */
 class questionedit extends Survey_Common_Action
 {
-    public function view($surveyid, $gid, $qid=null)
+    /**
+     * @param integer $surveyid
+     * @param integer $gid
+     * @param integer $qid
+     * @param string $landOnSideMenuTab
+     */
+    public function view($surveyid, $gid=null, $qid=null, $landOnSideMenuTab = '')
     {
         $aData = array();
         $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->_getQuestionObject($qid, null, $gid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
         Yii::app()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
-        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
-        $DisplayArray = array();
-
-        foreach ($aAttributesWithValues as $aAttribute) {
-            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
-                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
-                if ($aAttribute['inputtype'] == 'singleselect') {
-                    if (isset($aAttribute['options'][$aAttribute['value']])) {
-                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
-                    }
-                }
-                $DisplayArray[] = $aAttribute;
-            }
-        }
+        // TODO: can we delete this?
+//        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
+//        $DisplayArray = array();
+//
+//        foreach ($aAttributesWithValues as $aAttribute) {
+//            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
+//                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
+//                if ($aAttribute['inputtype'] == 'singleselect') {
+//                    if (isset($aAttribute['options'][$aAttribute['value']])) {
+//                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
+//                    }
+//                }
+//                $DisplayArray[] = $aAttribute;
+//            }
+//        }
 
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
-
-        $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
+      //  $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // can we delete this?
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['questionbar']['buttons']['view'] = true;
 
@@ -83,17 +90,17 @@ class questionedit extends Survey_Common_Action
         // combine aData
         $aData['surveyid'] = $iSurveyID;
         $aData['oSurvey'] = $oSurvey;
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
-        //$aData['qct']
-        //$aData['sqct']
         $aData['activated'] = $oSurvey->active;
         $aData['oQuestion'] = $oQuestion;
         $aData['languagelist'] = $oSurvey->allLanguages;
         $aData['qshowstyle'] = '';
         $aData['qrrow'] = $qrrow;
         $aData['baselang'] = $baselang;
-        $aData['advancedsettings'] = $DisplayArray;
+//        $aData['advancedsettings'] = $DisplayArray;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
         $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['display']['menu_bars']['qid_action'] = 'editquestion';
@@ -110,6 +117,10 @@ class questionedit extends Survey_Common_Action
             'gid' => $gid,
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,
+            'baseSQACode' => [
+                'answeroptions' => SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id),
+                'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id),
+            ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor', ['sid' => $iSurveyID, 'gid' => $gid, 'sa' => '']),
             'i10N' => [
@@ -147,7 +158,8 @@ class questionedit extends Survey_Common_Action
                 'Scale' => gT('Scale'),
                 'Save and Close' => gT('Save and Close'),
                 'Script' => gT('Script'),
-                '__SCRIPTHELP' => gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored")
+                '__SCRIPTHELP' => gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"),
+                "noCodeWarning" => gT("Please put in a code. Only letters and numbers are allowed. For example [Question1]"),
             ]
         ];
         
@@ -158,6 +170,9 @@ class questionedit extends Survey_Common_Action
         $aData['topBar']['savebuttonform'] = 'frmeditgroup';
         $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
 
+        if ($landOnSideMenuTab !== '') {
+            $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
+        }
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
 
@@ -178,12 +193,14 @@ class questionedit extends Survey_Common_Action
     {
         $questionData = App()->request->getPost('questionData', []);
         $iSurveyId = (int) $sid;
+        $isNewQuestion = false;
 
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
         if ($oQuestion != null) {
             $oQuestion = $this->_editQuestion($oQuestion, $questionData['question']);
         } else {
             $oQuestion = $this->_newQuestion($questionData['question']);
+            $isNewQuestion = true;
         }
         //$questionData['questionAttributes'];
         $setApplied = [];
@@ -208,7 +225,7 @@ class questionedit extends Survey_Common_Action
 
         $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
         $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, $oQuestion->gid, true);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true, $aQuestionAttributeData['question_template']);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
         $this->renderJSON([
@@ -218,7 +235,7 @@ class questionedit extends Survey_Common_Action
             'message' => gT('Question successfully stored'),
             'successDetail' => $setApplied,
             'questionId' => $oQuestion->qid,
-            'redirect' => $this->getController()->createUrl('admin/survey/sa/listquestions', ['surveyid' => $iSurveyId]),
+            'redirect' => $this->getController()->createUrl('admin/questioneditor/sa/view/', ['surveyid' => $iSurveyId, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]),
             'newQuestionDetails' => [
                 "question" => $aCompiledQuestionData['question'],
                 "scaledSubquestions" => $aCompiledQuestionData['subquestions'],
@@ -455,16 +472,19 @@ class questionedit extends Survey_Common_Action
     }
 
 
-    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid=null)
+    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid = null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oQuestion =  Question::model()->findByPk($iQuestionId);
+
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
+
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
         }
+
         if ($gid != null) {
             $oQuestion->gid = $gid;
         }
@@ -553,7 +573,7 @@ class questionedit extends Survey_Common_Action
         $aQuestionAttributes = $oQuestion->questionAttributes;
 
         foreach ($dataSet as $sAttributeKey => $aAttributeValueArray) {
-            if ($sAttributeKey === 'debug') {
+            if ($sAttributeKey === 'debug' || !isset($aAttributeValueArray['formElementValue'])) {
                 continue;
             }
             if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
@@ -748,24 +768,6 @@ class questionedit extends Survey_Common_Action
             'subquestions' => $aScaledSubquestions,
             'answerOptions' => $aScaledAnswerOptions,
         ];
-    }
-
-    /******************************/
-
-    /**
-     * Method to render an array as a json document
-     *
-     * @param array $aData
-     * @return void
-     */
-    protected function renderJSON($aData)
-    {
-        if (Yii::app()->getConfig('debug') > 0) {
-            $aData['debug'] = [$_POST, $_GET];
-        }
-
-        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
-        return;
     }
 
     /**

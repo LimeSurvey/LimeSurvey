@@ -270,7 +270,7 @@ class TemplateConfig extends CActiveRecord
         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
         // Remove/Replace mother template files
-        if ( ( $this->template instanceof Template &&  $this->template->extends) || !empty($this->config->metadata->extends) || Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') ){
+        if ( Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') || ( $this->template instanceof Template &&  $this->template->extends) || !empty($this->config->metadata->extends)   ){
           $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
           $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
@@ -817,7 +817,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['questioncontainer'] = $aClassAndAttributes['attr']['questiontitlecontainer'] = $aClassAndAttributes['attr']['questionasterix'] = $aClassAndAttributes['attr']['questionasterixspan'] = $aClassAndAttributes['attr']['questionnumber'] = $aClassAndAttributes['attr']['questioncode'] = '';
         $aClassAndAttributes['attr']['questiontext'] = $aClassAndAttributes['attr']['lsquestiontext'] = $aClassAndAttributes['attr']['questionvalidcontainer'] = $aClassAndAttributes['attr']['answercontainer'] = $aClassAndAttributes['attr']['helpcontainer'] = '';
 
-        // Question group
+        // Survey page
         $aClassAndAttributes['class']['groupcontainer'] = ' group-container ';
         $aClassAndAttributes['class']['groupoutercontainer'] = ' group-outer-container ';
         $aClassAndAttributes['class']['grouptitle']     = ' group-title  ';
@@ -1009,7 +1009,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate                   = new Template;
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
-        $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title
+        $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
         $oNewTemplate->creation_date    = date("Y-m-d H:i:s");
         $oNewTemplate->author           = Yii::app()->user->name;
         $oNewTemplate->author_email     = ''; // privacy

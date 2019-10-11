@@ -1,7 +1,6 @@
 <script>
 
 import Treeview from './subcomponents/_treeView';
-
 import applyLoader from '../mixins/applyLoader';
 
 export default {
@@ -12,13 +11,14 @@ export default {
   mixins: [applyLoader],
   props: {
     cols: {type: Number, default: 6},
+    presetFolder: {type: String|null, default: null}
   },
 }
 </script>
 
 <template>
   <div class="scoped-folder-list" :class="'col-xs-'+cols">
-    <treeview :folders="$store.state.folderList" @setLoading="setLoading" :loading="loading"/>
+    <treeview :folders="$store.state.folderList" @setLoading="setLoading" :loading="loading" :preset-folder="presetFolder"/>
   </div>
 </template>
 

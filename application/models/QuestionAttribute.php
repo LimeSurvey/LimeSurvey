@@ -235,7 +235,7 @@ class QuestionAttribute extends LSActiveRecord
             $aAttributeNames = self::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
+            $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
 
             foreach ($oAttributeValues as $oAttributeValue) {
                 if ($oAttributeValue->attribute == 'question_template') {
@@ -411,7 +411,7 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Read question attributes from XML file and convert it to array
-     * @param $sType: type pof question
+     * @param $sType: type of question
      * @return array : the attribute settings for this question type
      */
     public static function getQuestionAttributesFromXml($sType = ''){

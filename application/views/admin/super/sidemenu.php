@@ -2,16 +2,15 @@
    /**
     * This view displays the sidemenu on the left side, containing the question explorer
     *
-    * Var to manage open/close state of the sidemenu, question explorer :
-    * @var $sidemenu['state'] : if set, the sidemnu is close
-    * @var $sidemenu['explorer']['state'] : if set to true, question explorer will be opened
     */
 ?>
 <?php
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
-    if ($sideMenuBehaviour == 'alwaysClosed'
+    if (
+        $sideMenuBehaviour == 'alwaysClosed'
         || ($sideMenuBehaviour == 'adaptive'
-        && !$sidemenu['state'])) {
+        && !$sidemenu['state'])
+    ) {
         $showSideMenu = false;
     } else {
         $showSideMenu = true;
@@ -19,11 +18,8 @@
     $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
-    if (isset($gid)) {
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid, "gid" => $gid]);
-    } else {
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid]);
-    }
+    $createQuestionLink = "admin/questioneditor/sa/view/surveyid/".$surveyid;
+    $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
     $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
 
@@ -32,19 +28,19 @@
         $createQuestionGroupLink = "";
         $createQuestionLink = "";
     }
-
+    
+    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
+    
     $menuObjectArray =  [
         "side" => [],
         "collapsed" => [],
         "top" => [],
         "bottom" => [],
     ];
-    
     foreach ($menuObjectArray as $position => $arr) {
         $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
     }
     
-    $menuObject =  json_encode($menuObjectArray);
 
     Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
         window.SideMenuData = {
@@ -56,24 +52,33 @@
             options: [],
             surveyid: '.$surveyid.',
             isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
-            getQuestionsUrl: "'.$getQuestionsUrl.'",
-            getMenuUrl: "'.$getMenuUrl.'",
-            basemenus: '.$menuObject.',
-            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
-            createQuestionLink: "'.$createQuestionLink.'",
+            basemenus: '.json_encode($menuObjectArray).',
             updateOrderLink: "'.$updateOrderLink.'",
-            translate: '.json_encode([
-                "settings" => gT("Settings"),
-                "structure" => gT("Structure"),
-                "createQuestionGroup" => gT("Add question group"),
-                "createQuestion" => gT("Add question")
-            ]).'
-        };
-    ', LSYii_ClientScript::POS_HEAD);
+            unlockLockOrganizerUrl: "'.$unlockLockOrganizerUrl.'",
+            allowOrganizer: '.(SettingsUser::getUserSettingValue('lock_organizer') ? '1' : '0').',
+            translate: '
+            .json_encode(
+                [
+                    "settings" => gT("Settings"),
+                    "structure" => gT("Structure"),
+                    "createPage" => gT("Add page"),
+                    "createQuestion" => gT("Add question"),
+                    "lockOrganizerTitle" => gT("Lock question organizer"),
+                    "unlockOrganizerTitle" => gT("Unlock question organizer"),
+                    "collapseAll" => gT("Collapse all survey pages"),
+                ]
+            )
+        .'};', 
+        LSYii_ClientScript::POS_HEAD
+    );
 ?>
 
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container"
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
-    <sidebar />
+    <?php if($landOnSideMenuTab !== ''): ?>
+        <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>' />
+    <?php else: ?>
+        <sidebar />
+    <?php endif; ?>
 </div>

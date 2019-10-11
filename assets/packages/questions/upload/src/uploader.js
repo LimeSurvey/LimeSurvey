@@ -1,24 +1,25 @@
+import './ajaxupload.js';
+import './modaldialog.js';
+
 "use strict"
 var uploadHandler = function (qid, options) {
 
     var init = function () {
-        $(document).on('ready pjax:scriptcomplete', function () {
-            doFileUpload();
-            // fixParentHeigth();
-        });
+        doFileUpload();
     };
-
+    
     var fixParentHeigth = function () {
         return;
     }
     var renderPreviewItem = function (fieldname, item, iterator) {
 
-        var i = iterator + 1;
+        var i = iterator;
+        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
          
         var previewblock = $('<li id="' + fieldname + '_li_' + i + '" class="previewblock file-element"></li>');
         var previewContainer = $('<div class="file-preview"></div>');
 
-        if (RegExp(image_extensions).test(item.ext.toLowerCase())) {
+        if (isValueInArray(image_extensions, item.ext.toLowerCase())){
             previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
         } else {
             previewContainer.append('<div class="upload-placeholder"></div>');
@@ -73,20 +74,22 @@ var uploadHandler = function (qid, options) {
             .wrap('<div class="file-info"></div>')
             .appendTo(previewContainer);
 
-        previewblock.append(previewContainer);
-
-        $('<input type="hidden" />').attr('id', fieldname + '_size_' + i).attr('value', item.size).appendTo(previewblock);
-        $('<input type="hidden" />').attr('id', fieldname + '_name_' + i).attr('value', item.name).appendTo(previewblock);
-        $('<input type="hidden" />').attr('id', fieldname + '_file_index_' + i).attr('value', i).appendTo(previewblock);
-        $('<input type="hidden" />').attr('id', fieldname + '_filename_' + i).attr('value', item.filename).appendTo(previewblock);
-        $('<input type="hidden" />').attr('id', fieldname + '_ext_' + i).attr('value', item.ext).appendTo(previewblock);
-
-        // add file to the list
-        $('#field' + fieldname + '_listfiles').append(previewblock);
+            
+            $('<input type="hidden" />').attr('id', fieldname + '_size_' + i).attr('value', item.size).appendTo(previewblock);
+            $('<input type="hidden" />').attr('id', fieldname + '_name_' + i).attr('value', item.name).appendTo(previewblock);
+            $('<input type="hidden" />').attr('id', fieldname + '_file_index_' + i).attr('value', i).appendTo(previewblock);
+            $('<input type="hidden" />').attr('id', fieldname + '_filename_' + i).attr('value', item.filename).appendTo(previewblock);
+            $('<input type="hidden" />').attr('id', fieldname + '_ext_' + i).attr('value', item.ext).appendTo(previewblock);
+            
+        // add file to the list only if it doesn't exists already
+        if ($("#" + fieldname + "_li_" + i).length === 0){
+            previewblock.append(previewContainer);
+            $('#field' + fieldname + '_listfiles').append(previewblock);
+        }
     }
 
     var doFileUpload = function () {
-        var fieldname = options.fieldname;
+        var fieldname = options.sFieldName;
         /* Load the previously uploaded files */
         var filecount = $('#' + fieldname + '_filecount').val();
 
@@ -109,13 +112,12 @@ var uploadHandler = function (qid, options) {
             $('#' + fieldname + '_licount').val(filecount);
 
             json.forEach(function (item, iterator) {
-                renderPreviewItem(fieldname, item, iterator);
+                renderPreviewItem(fieldname, item, iterator+1);
             });
         }
 
         // The upload button
-        var button = $('#button1');
-
+        var button = $('#button_' + qid);
         new AjaxUpload(button, {
             action: options.uploadurl + '/sid/' + surveyid + '/preview/' + options.questgrppreview + '/fieldname/' + fieldname + '/',
             name: 'uploadfile',
@@ -132,7 +134,6 @@ var uploadHandler = function (qid, options) {
                 var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
                 var filecount = parseInt($('#' + fieldname + '_filecount').val());
                 var allowed_filetypes = $('#' + fieldname + '_allowed_filetypes').val().split(",");
-
                 /* If maximum number of allowed filetypes have already been uploaded,
                  * do not upload the file and display an error message ! */
                 if (filecount >= maxfiles) {
@@ -172,7 +173,13 @@ var uploadHandler = function (qid, options) {
 
                 // Once the file has been uploaded via AJAX,
                 // the preview is appended to the list of files
-                var metadata = eval('(' + response + ')');
+                try{
+                    var metadata = JSON.parse(response);
+                } catch(e) {
+                    /* Suppose we get an HTML error ? Replace whole HTML (without head) */
+                    $('body').html(response);
+                    return;
+                }
 
                 var count = parseInt($('#' + fieldname + '_licount').val());
                 count++;
@@ -280,6 +287,11 @@ var uploadHandler = function (qid, options) {
         copyJSON(filecount, fieldname, show_title, show_comment, pos);
     }
 
+    function copyJSON(filecount, fieldname, show_title, show_comment, pos) {
+        $('#'+fieldname+'_filecount').val(filecount);
+        displayUploadedFiles(filecount, fieldname, show_title, show_comment, pos);
+    }
+
     var saveAndExit = function (fieldname, show_title, show_comment, pos) {
         var filecount = parseInt($('#' + fieldname + '_filecount').val());
         var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
@@ -314,7 +326,7 @@ var uploadHandler = function (qid, options) {
                     'fieldname': fieldname,
                     'filename': filename,
                     'name': name,
-                    YII_CSRF_TOKEN: csrfToken
+                    YII_CSRF_TOKEN: options.csrfToken
                 }
             })
             .done(function (msg) {
@@ -344,6 +356,11 @@ var uploadHandler = function (qid, options) {
                 }
             });
     }
+
+    return {
+        init: init,
+        saveAndExit: saveAndExit,
+    };
 }
 
 
@@ -357,5 +374,9 @@ function escapeHtml(unsafe) {
 }
 
 window.getUploadHandler = function(qid, options){
-    return new uploadHandler(qid, options);
+    if (!window.currentUplaodHandler){
+        window.currentUplaodHandler = new uploadHandler(qid, options);
+    }
+    window.currentUplaodHandler.init();
+    return window.currentUplaodHandler;
 }

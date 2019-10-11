@@ -65,7 +65,7 @@ class UploaderController extends SurveyController
             }
             if (is_file($sFileDir.$sFileGetContent)) {
                 // Validate file before else 500 error by getMimeType
-                $mimeType = CFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
+                $mimeType = LSFileHelper::getMimeType($sFileDir.$sFileGetContent, null, false);
                 if (is_null($mimeType)) {
                     $mimeType = "application/octet-stream"; // Can not really get content if not image
                 }
@@ -183,12 +183,13 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             /* extension checked : check mimeType */
-            $extByMimeType = CFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null);
+            $extByMimeType = LSFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null);
             $disableCheck = false;
             if(is_null($extByMimeType)) {
                 /* Lack of finfo_open or mime_content_type ? But can be a not found extension too.*/
                 /* Check if can find mime type of favicon.ico , without extension */
-                if(CFileHelper::getMimeType(APPPATH."favicon.ico", null, false) != 'ico') { // hope we have favicon.ico for a long time
+                /* Use CFileHelper because sure it work with included */
+                if(CFileHelper::getExtensionByMimeType(APPPATH."favicon.ico", null) != 'ico') {
                     $disableCheck = true;
                     Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.",\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
                     if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
@@ -199,16 +200,18 @@ class UploaderController extends SurveyController
             }
             if(!$disableCheck && empty($extByMimeType)) {
                 // FileInfo is OK, but can not find the mime type of file …
+                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
+                Yii::log("Unable to extension for mime type ".$realMimeType,\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
                 $return = array(
                     "success" => false,
-                    "msg" => gT("Sorry, unable to check this file type!"),
+                    "msg" => gT("Sorry, unable to check extension of this file type %s.", $realMimeType),
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
             if (!$disableCheck && !in_array($extByMimeType, $valid_extensions_array)) {
-                $realMimeType = CFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
+                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
                 $return = array(
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType,$extByMimeType)
@@ -298,10 +301,10 @@ class UploaderController extends SurveyController
             var surveyid = surveyid || "'.$surveyid.'";
             showpopups="'.$oTemplate->showpopups.'";
         ';
-        $sLangScriptVar = "
-                uploadLang = {
+        $sLangScript = "{
                      titleFld: '" . gT('Title', 'js')."',
                      commentFld: '" . gT('Comment', 'js')."',
+                     filenameFld: '" . gT('File name', 'js')."',
                      errorNoMoreFiles: '" . gT('Sorry, no more files can be uploaded!', 'js')."',
                      errorOnlyAllowed: '" . gT('Sorry, only %s files can be uploaded for this question!', 'js')."',
                      uploading: '" . gT('Uploading', 'js')."',
@@ -312,19 +315,18 @@ class UploaderController extends SurveyController
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.', 'js')."',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?", 'js')."',
                      deleteFile : '".gT('Delete', 'js')."',
-                     editFile : '".gT('Edit', 'js')."',
-                    };
+                     editFile : '".gT('Edit', 'js')."'
+                    }
         ";
+
+        $sLangScriptVar = "
+            uploadLang = " . $sLangScript . ";";
+
         $oTemplate = Template::model()->getInstance('', $surveyid);
-        Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
-        // App()->getClientScript()->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
-        // App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
-        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js', LSYii_ClientScript::POS_END);
-        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js', LSYii_ClientScript::POS_END);
-
-        App()->bootstrap->register();
+        App()->getClientScript()->registerScriptFile('/assets/packages/questions/upload/build/uploadquestion.js');
+        App()->getClientScript()->registerScriptFile('/assets/packages/questions/upload/src/ajaxupload.js');
 
         $header = getHeader($meta);
 
@@ -355,12 +357,16 @@ class UploaderController extends SurveyController
                 window.uploadModalObjects = window.uploadModalObjects || {};
                 window.uploadModalObjects['".$fn."'] = window.getUploadHandler(  "
                     . $qid.", {"
+                    . "qid : '".$qid."', "
                     . "sFieldName : '".$sFieldName."', "
                     . "sPreview : '".$sPreview."', "
+                    . "questgrppreview : '".$sPreview."', "
+                    . "uploadurl : '".$this->createUrl('/uploader/index/mode/upload/')."', "
                     . "csrfToken: '".ls_json_encode(Yii::app()->request->csrfToken)."', "
-                    . "showpopups: '".Yii::app()->getConfig("showpopups")."'"
-                    . "});"
-            . "});
+                    . "showpopups: '".Yii::app()->getConfig("showpopups")."', "
+                    . "uploadLang: ".$sLangScript
+                    . "});
+            });
         </script>";
         $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
         $body .= $container.$scripts;

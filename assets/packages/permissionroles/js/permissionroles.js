@@ -75,7 +75,7 @@ var RoleControl = function () {
                     if (result.success == true) {
                         $('#RoleControl--modalform').off('submit.ROLECONTROLMODAL');
                         $('#RoleControl-action-modal').find('.modal-content').html(result.html);
-                        wireExportDummyUser();
+                        
                         $('#exitForm').on('click.ROLECONTROLMODAL', function (e) {
                             e.preventDefault();
                             $('#exitForm').off('click.ROLECONTROLMODAL');
@@ -123,8 +123,8 @@ var RoleControl = function () {
             tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1);
         })
 
-        $('#RoleControl--userpermissions-table tr').each(function () {
-            if ($(this).find('.specific-settings-block input:checked').size() == $(this).closest('tr').find('.specific-settings-block input').size()) {
+        $('#RoleControl--permissions-table tr').each(function () {
+            if ($(this).find('.specific-permission-selector:checked').size() == $(this).closest('tr').find('.specific-permission-selector').size()) {
                 $(this).find('.general-row-selector').prop('checked', true);
                 $(this).find('.general-row-selector').removeClass('incomplete-selection');
             } else if ($(this).find('.specific-settings-block input:checked').size() == 0) {
@@ -178,6 +178,12 @@ var RoleControl = function () {
             });
 
         });
+        $('#RoleControl--action-toggleAllRoles').on('click', function(){
+            var curVal = $(this).prop('checked');
+            $('.RoleControl--selector-roleCheckbox').each(function(){
+                $(this).prop('checked', curVal);
+            })
+        })
     };
 
     var bindModals = function () {

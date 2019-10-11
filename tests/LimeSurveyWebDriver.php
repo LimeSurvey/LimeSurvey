@@ -115,4 +115,41 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $body = $this->findElement(WebDriverBy::tagName('body'));
         var_dump('body text = ' . $body->getText());
     }
+
+    /**
+     * @param string $id
+     * @return \Facebook\WebDriver\Remote\RemoteWebElement
+     */
+    public function findById($id)
+    {
+        return $this->findElement(WebDriverBy::id($id));
+    }
+
+    /**
+     * @param string $css
+     * @return \Facebook\WebDriver\Remote\RemoteWebElement
+     */
+    public function findByCss($css)
+    {
+        return $this->findElement(WebDriverBy::cssSelector($css));
+    }
+
+    /**
+     * Click "Close" on notification modal.
+     *
+     * @return void
+     */
+    public function dismissModal()
+    {
+        try {
+            // If not clickable, dismiss modal.
+            $button = $this->findElement(
+                WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn')
+            );
+            $button->click();
+            sleep(1);
+        } catch (\Exception $ex) {
+            // Do nothing.
+        }
+    }
 }

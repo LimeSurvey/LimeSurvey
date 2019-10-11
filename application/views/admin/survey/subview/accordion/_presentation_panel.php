@@ -42,7 +42,7 @@ if ($bShowInherited){
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                     <label class=" control-label"  for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
-                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
+                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
                         <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
@@ -87,15 +87,15 @@ if ($bShowInherited){
 
         <!-- Show group name and/or group description -->
         <div class="form-group">
-            <label class=" control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+            <label class=" control-label" for="showgroupinfo"><?php  eT('Show page name and/or page description:'); ?></label>
             <div class="">
                 <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
                     <?php if ($bShowInherited){ ?>
                         <option value="I"<?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->showgroupinfo . ']'; ?></option>
                     <?php } ?>
                     <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
-                    <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
-                    <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show group description only'); ?></option>
+                    <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show page name only'); ?></option>
+                    <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show page description only'); ?></option>
                     <option value="X"<?php echo $sel_showgri['X']; ?>><?php  eT('Hide both'); ?></option>
                 </select>
                 <?php unset($sel_showgri,$set_showgri); ?>

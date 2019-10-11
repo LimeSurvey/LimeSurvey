@@ -31,7 +31,7 @@
                         echo CHtml::tag('p',array(),gT("Using type coercion may break your data; use with care or not at all if possible."));
                         echo CHtml::tag('p',array(),gT("Currently we detect and handle the following changes:"));
                         $list = array(
-                            gT("Question is moved to another group (result is imported correctly)."),
+                            gT("Question is moved to another survey page (result is imported correctly)."),
                             gT("Question is removed from target (result is ignored)."),
                             gT("Question is added to target (result is set to database default value).")
                         );

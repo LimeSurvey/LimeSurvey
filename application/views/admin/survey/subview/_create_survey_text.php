@@ -8,7 +8,7 @@
 
 $standardthemerooturl = Yii::app()->getConfig('standardthemerooturl');
 $templaterooturl      = Yii::app()->getConfig('userthemerooturl');
-$sAdminEmailAddressNeeded = gT("If you are using token functions or notifications emails you need to set an administrator email address.");
+$sAdminEmailAddressNeeded = gT("If you are using participants or notification emails you need to set an administrator email address.");
 
 App()->getClientScript()->registerScript(
     "createSurveyText-variables",
@@ -79,7 +79,7 @@ $surveyid = $aTabContents['surveyid'];
         </div>
         <div class="col-md-6">
              <div class="form-group">
-                <label for="createsample" class=" control-label"><?php eT("Create example question group and question?") ?></label>
+                <label for="createsample" class=" control-label"><?php eT("Create example survey page and question?") ?></label>
                 <!--<input type="checkbox" name="createsample" id="createsample" />-->
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(

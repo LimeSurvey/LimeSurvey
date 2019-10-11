@@ -14,7 +14,7 @@
     <?php unset($aResults['global']); ?>
     <table class="table table-striped">
         <thead>
-            <th><?php eT('Token ID');?></th>
+            <th><?php eT('Participant ID');?></th>
             <th><?php eT('Status');?></th>
         </thead>
         <tbody>

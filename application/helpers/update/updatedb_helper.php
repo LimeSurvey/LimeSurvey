@@ -2432,7 +2432,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }        
 
         if ($iOldDBVersion < 400) {
-            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
+            // This update moves localization-dependant strings from survey page/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
             
             // Question table 
@@ -2868,7 +2868,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if($iOldDBVersion < 418) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->insert("{{plugins}}", [
-                'id' => null,
                 'name'               => 'PasswordRequirement',
                 'plugin_type'        => 'core',
                 'active'             => 1,
@@ -2904,6 +2903,65 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addPrimaryKey('{{user_in_permissionrole_pk}}', '{{user_in_permissionrole}}', ['ptid','uid']);
             
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>419),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 420) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                "{{surveymenu_entries}}",
+                [
+                    'name' =>  "listSurveyPages",
+                    'title' =>  gT('List survey pages','unescaped'),
+                    'menu_title' =>  gT('List survey pages','unescaped'),
+                    'menu_description' =>  gT('List survey pages','unescaped'),
+                ],
+                'name=\'listQuestionGroups\''
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 421) {
+            $oTransaction = $oDB->beginTransaction();
+            // question_themes
+            $oDB->createCommand()->createTable('{{question_themes}}', [
+                'id' => "pk",
+                'name' => "string(150) NOT NULL",
+                'visible' => "string(1) NULL",
+                'xml_path' => "string(255) NULL",
+                'image_path' => 'string(255) NULL',
+                'title' => "string(100) NOT NULL",
+                'creation_date' => "datetime NULL",
+                'author' => "string(150) NULL",
+                'author_email' => "string(255) NULL",
+                'author_url' => "string(255) NULL",
+                'copyright' => "text",
+                'license' => "text",
+                'version' => "string(45) NULL",
+                'api_version' => "string(45) NOT NULL",
+                'description' => "text",
+                'last_update' => "datetime NULL",
+                'owner_id' => "integer NULL",
+                'theme_type' => "string(150)",
+                'question_type' => "string(150) NOT NULL",
+                'core_theme' => 'boolean',
+                'extends' => "string(150) NULL",
+                'group' => "string(150)",
+                'settings' => "text"
+            ], $options);
+
+            $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
+
+            $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
+            switchMSSQLIdentityInsert('question_themes', true);
+            foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
+                $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
+            }
+            switchMSSQLIdentityInsert('question_themes', false);
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>421),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 

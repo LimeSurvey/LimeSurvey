@@ -94,7 +94,7 @@ export default {
 </script>
 
 <template>
-    <div class="col-xs-12 scope-apply-base-style scope-min-height">
+    <div class="col-12 scope-apply-base-style scope-min-height">
         <transition name="slide-fade">
             <div class="container-fluid" v-if="!loading">
                 <div class="row scoped-tablist-container">

@@ -50,7 +50,7 @@
             $criteria->compare('type', Question::QT_VERTICAL_FILE_UPLOAD);
             $criteria->compare('questionL10ns.language', $survey->language);
             if ($qid !== null) {
-                $criteria->compare('qid', $qid);
+                $criteria->compare('t.qid', $qid);
             }
 
             $questions = Question::model()->with('questionL10ns')->findAll($criteria);

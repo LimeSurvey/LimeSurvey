@@ -4,7 +4,8 @@
     <!-- Metadata -->
     <metadata>
         <name>shortfreetext</name>
-        <title>Short free text</title>
+        <type>question_theme</type>
+        <title>Short Free Text</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -14,8 +15,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Short free text question type configuration</description>
-        <type>S</type>
+        <questionType>S</questionType>
+        <group>Text questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>text-short</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         List of the css/js files to load.

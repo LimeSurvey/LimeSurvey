@@ -12,6 +12,8 @@ $topbar = [
         ],
     ],
 ];
+$oSurvey = Survey::model()->findByPk($sid);
+$isActive  = $oSurvey->active == 'Y';
 
 // Left Buttons for Survey Summary
 // TODO: SurveyBar Activation Buttons
@@ -58,8 +60,8 @@ if (!$isActive) {
 if ($hasSurveyContentPermission) {
     
     // Preview Survey Button
-    $title = ($isActive) ? 'preview_survey' : 'execute_survey';
-    $name = ($isActive) ? gT('Preview survey') : gT('Execute survey');
+    $title = (!$isActive) ? 'preview_survey' : 'execute_survey';
+    $name = (!$isActive) ? gT('Preview survey') : gT('Execute survey');
 
     if (safecount($oSurvey->allLanguages) > 1) {
         $preview_buttons = [];
@@ -293,10 +295,10 @@ if (!$isActive && $hasSurveyContentPermission) {
     ];
     array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['straight']);
 
-    // By Question Group
+    // By Survey Page
     $buttons['by_question_group'] = [
         'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
-        'name' => gT('By question group'),
+        'name' => gT('By survey page'),
         'icon' => 'icon-resetsurveylogic',
         'id' => 'by_question_group'
     ];
@@ -402,6 +404,29 @@ array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
 
 
 $finalJSON = [
+    'debug' => [
+        'sid' => $sid,
+        'canactivate' => $canactivate,
+        'expired' => $expired,
+        'notstarted' => $notstarted,
+        'context' => $context,
+        'contextbutton' => $contextbutton,
+        'language' => $language,
+        'hasSurveyContentPermission' => $hasSurveyContentPermission,
+        'countLanguage' => $countLanguage,
+        'hasDeletePermission' => $hasDeletePermission,
+        'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
+        'hasAdditionalLanguages' => $hasAdditionalLanguages,
+        'conditionsCount' => $conditionsCount,
+        'hasSurveyReadPermission' => $hasSurveyReadPermission,
+        'oneLanguage' => $oneLanguage,
+        'sumcount' => $sumcount,
+        'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
+        'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
+        'hasResponsesReadPermission'   => $hasResponsesReadPermission,
+        'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
+        'addSaveButton'  => $addSaveButton,
+    ],
     'permissions' => $permissions,
     'topbar' => $topbar,
 ];

@@ -151,6 +151,7 @@ export default {
             }).then(datas => {
                 this.$log.log("Promise resolved with datas", datas);
                 this.counter++;
+                //LS.pageLoadActions.saveBindings();
             }).catch(error => {
                 this.$log.error(errorHeader);
                 this.$log.error(error);
@@ -209,9 +210,9 @@ export default {
 
             if(currentType === this.type) {
                 this.loading = false;
-            } else {
-                this.setType();
-            }
+            } 
+            
+            this.setType();
         });
     },
     render(h) {
@@ -254,11 +255,19 @@ export default {
     .navbar {
         flex-wrap: wrap;
     }
+    .navbar-btn {
+        margin-top: 0;
+    }
 }
 
 .navbar,
 .navbar-default {
-    padding-left: 15px;
+    padding-left: 1px;
+    @media(max-width:1280px) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
     border: none;
 }
 

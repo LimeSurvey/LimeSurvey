@@ -685,6 +685,9 @@ class UserAction extends Survey_Common_Action
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
                 SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
                 SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
+                SettingsUser::setUserSetting('answeroptionprefix', Yii::app()->request->getPost('answeroptionprefix'));
+                SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
+                SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -705,6 +708,7 @@ class UserAction extends Survey_Common_Action
         foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind) {
             $aLanguageData[$langkey] = html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'], ENT_COMPAT, 'utf-8');
         }
+
         $aData = array();
         $aData['aLanguageData'] = $aLanguageData;
         $aData['sSavedLanguage'] = $oUser->lang;
@@ -728,8 +732,14 @@ class UserAction extends Survey_Common_Action
         array_walk($aRawUserSettings, function ($oUserSetting) use (&$aUserSettings) {
             $aUserSettings[$oUserSetting->stg_name] = $oUserSetting->stg_value;
         });
-        
+
+        $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
+
+        $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['aUserSettings'] = $aUserSettings;
+        $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype);
+
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view
@@ -738,6 +748,18 @@ class UserAction extends Survey_Common_Action
         } else {
             $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
         }
+    }
+
+    public function togglesetting($surveyid=0) 
+    {
+        $setting  = Yii::app()->request->getPost('setting');
+        $newValue = Yii::app()->request->getPost('newValue');
+
+        $result = SettingsUser::setUserSetting($setting, $newValue);
+
+        $this->renderJSON([
+            "result" => SettingsUser::getUserSettingValue($setting)
+        ]);
     }
 
     /**

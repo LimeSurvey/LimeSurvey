@@ -28,7 +28,7 @@
 
     $formatSelectOptions = array(
         'S' => gT('Question by Question','unescaped'),
-        'G' => gT('Group by Group','unescaped'),
+        'G' => gT('Page by Page','unescaped'),
         'A' => gT('All in one','unescaped')
     );
     if ($bShowInherited){
@@ -148,7 +148,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $admin === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $admin === 'inherit' ? 'hide' : 'show'); ?>" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
                             <input class="form-control inherit-readonly <?php echo ($bShowInherited && $admin === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->admin); ?>" readonly />
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
@@ -197,7 +197,7 @@
                 <?php $bounce_email = $oSurvey->bounce_email; ?>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
-                        <label class=" control-label"  for='bounce_email'><?php  eT("Administrator email address:"); ?></label>
+                        <label class=" control-label"  for='bounce_email'><?php  eT("Bounce email address:"); ?></label>
                             <input class="form-control inherit-edit <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
                             <input class="form-control inherit-readonly <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly />
                     </div>
@@ -215,6 +215,22 @@
                     </div>
                 </div>
             </div>
+                
+            <?php if ($bShowAllOptions === true){ ?>
+                <!-- Fax to -->
+                <div class="form-group">
+                    <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
+                    <div class="">
+                        <?php echo CHtml::textField('faxto',$oSurvey->faxto,array(
+                            'class' => 'form-control',
+                            'id' => 'faxto',
+                            'size' => '20',
+                            'maxlength' => '20',
+                        )); ?>
+                    </div>
+                </div>
+            <?php } ?>
+
 
             <?php else: ?>
             <!-- End URL -->

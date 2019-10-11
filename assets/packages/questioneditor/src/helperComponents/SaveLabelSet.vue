@@ -43,7 +43,7 @@ export default {
                 languages: keys(this.$store.state.languages).join(' ')
             }
             this.$store.dispatch('saveAsLabelSet', payload).then(
-                (result) => { LS.LsGlobalNotifier.create(result.message, result.classes); this.$emit('close'); },
+                (result) => { LS.LsGlobalNotifier.create(result.data.message, result.data.classes || 'well backgroung-success '); this.$emit('close'); },
                 error => {this.$log.error(error); this.$emit('close'); }
             );
         }

@@ -183,10 +183,10 @@ export default {
 </script>
 
 <template>
-    <div class="col-sm-8 col-xs-12">
-        <transition-group name="slide-fade">
-            <template v-show="!loading">
-                <div class="panel panel-default question-option-general-container" key="mainPanel">
+    <div class="ls-flex grow-2">
+        <transition name="slide-fade">
+            <div class="col-12" v-show="!loading">
+                <div class="panel panel-default col-12 question-option-general-container" key="mainPanel">
                     <div class="panel-heading">
                         {{"Text elements" | translate }}
                     </div>
@@ -239,8 +239,8 @@ export default {
                         </div>
                     </div>
                 </div>
-            </template>
-        </transition-group>
+            </div>
+        </transition>
         <transition name="slide-fade">
             <div class="row" v-if="loading">
                 <loader-widget id="mainQuestionGroupEditorLoader" />

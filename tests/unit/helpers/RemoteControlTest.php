@@ -4,9 +4,6 @@ namespace ls\tests;
 
 /**
  * Tests for the LimeSurvey remote API.
- *
- * @since 2019-04-26
- * @group remote
  */
 class RemoteControlTest extends TestBaseClass
 {

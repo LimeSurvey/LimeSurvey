@@ -1,13 +1,13 @@
 <?php
 /**
- * Set question group and position modal body (parsed to massive action widget)
+ * Set survey page and position modal body (parsed to massive action widget)
  */
 
 /** @var AdminController $this */
 /** @var Question $model */
 ?>
 
-<?php eT("Set question group for those question"); ?>
+<?php eT("Set survey page for those question"); ?>
 <form class="custom-modal-datas  form-horizontal">
     <!-- select group -->
     <div class="form-group">

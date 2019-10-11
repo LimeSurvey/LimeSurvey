@@ -303,7 +303,7 @@ class SurveyRuntimeHelper
                         }
 
                         //Display the "validation" popup if necessary
-                        if ($okToShowErrors && !$this->aStepInfo['valid']) {
+                        if ($okToShowErrors && !$this->aStepInfo['valid'] && empty(App()->request->getPost('mandSoft'))) {
                             list($validationpopup, $vpopup) = validation_popup($ia, $this->notvalidated);
                         }
 
@@ -388,6 +388,7 @@ class SurveyRuntimeHelper
 
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
         $this->aSurveyInfo['mandSoft'] = array_key_exists('mandSoft', $this->aMoveResult) ? $this->aMoveResult['mandSoft'] : false;
+        $this->aSurveyInfo['mandNonSoft'] = array_key_exists('mandNonSoft', $this->aMoveResult) ? $this->aMoveResult['mandNonSoft'] : false;
 
         $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
         $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups==0;
@@ -1353,7 +1354,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['include_content'] = 'submit_preview';
             }
             $sHtml = Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> $oSurvey, 'aSurveyInfo'=>$this->aSurveyInfo), true);
-            $oTemplate = Template::model()->getInstance();
+            $oTemplate = Template::getLastInstance();
             // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
                 killSurveySession($this->iSurveyid);
@@ -1744,13 +1745,13 @@ class SurveyRuntimeHelper
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
 
             if ($gseq == -1) {
-                $sMessage = gT('Invalid group number for this survey: ').$_gid;
+                $sMessage = gT('Invalid page number for this survey: ').$_gid;
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
 
             $this->aMoveResult = LimeExpressionManager::JumpTo($gseq + 1, 'group', false, true);
             if (is_null($this->aMoveResult)) {
-                $sMessage = gT('This group contains no questions.  You must add questions to this group before you can preview it');
+                $sMessage = gT('This page contains no questions.  You must add questions to this page before you can preview it');
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
 
@@ -1760,7 +1761,7 @@ class SurveyRuntimeHelper
 
             // #14595
             if(empty($this->aStepInfo)) {
-                $sMessage = gT('This group is empty');
+                $sMessage = gT('This page is empty');
                 renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
             }
 

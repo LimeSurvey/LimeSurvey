@@ -4,14 +4,11 @@
  * // TODO not complete views list
  */
 return [
-
-
     // Survey general stuff -------------------------------------
     // --------------------------------------------------
 
     // NB the import_id is needed only for the first item OR if you need to change the survey you want to work with
     ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287']],
-
 
     // Survey main menu
     ['surveyGeneralSettings', ['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}']],
@@ -19,8 +16,7 @@ return [
     ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
     ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
 
-
-    ['surveyResources', ['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}']],
+    ['surveyResources', ['route'=>'filemanager/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
     ['surveyParticipantTokenOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}']],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
@@ -31,7 +27,6 @@ return [
     ['surveyPanelIntegration', ['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}']],
     ['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],
     ['surveyListQuestions', ['route'=>'survey/sa/listquestions/surveyid/{SID}']],
-
 
     // going deeper -------------------------------------
     // --------------------------------------------------
@@ -46,9 +41,7 @@ return [
 
     // open surveysummary again with new survey (triggers some needed session variables duh)
     ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'496242']],
-    ['editAnswerOptions', ['route'=>'questions/sa/answeroptions/surveyid/{SID}/gid/{GID}/qid/{QID}','questionType'=>Question::QT_L_LIST_DROPDOWN]],
     ['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
-
 
     // Below are views need an activated survey
     ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287', 'activate'=>true]],
@@ -59,6 +52,4 @@ return [
     ['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
     ['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
     ['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
-
-
 ];

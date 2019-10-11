@@ -177,14 +177,14 @@ class ExpressionValidate extends Survey_Common_Action
         $aReplacement["SURVEYDESCRIPTION"] = gT("Description of the survey");
         // Replaced when sending email with Survey
         $aAttributes = getTokenFieldsAndNames($iSurveyId, true);
-        $aReplacement["TOKEN"] = gT("Token code for this participant");
-        $aReplacement["TOKEN:EMAIL"] = gT("Email from the token");
-        $aReplacement["TOKEN:FIRSTNAME"] = gT("First name from token");
-        $aReplacement["TOKEN:LASTNAME"] = gT("Last name from token");
-        $aReplacement["TOKEN:TOKEN"] = gT("Token code for this participant");
-        $aReplacement["TOKEN:LANGUAGE"] = gT("language of token");
+        $aReplacement["TOKEN"] = gT("Access code for this participant");
+        $aReplacement["TOKEN:EMAIL"] = gT("Email from the participant");
+        $aReplacement["TOKEN:FIRSTNAME"] = gT("First name from participant");
+        $aReplacement["TOKEN:LASTNAME"] = gT("Last name from participant");
+        $aReplacement["TOKEN:TOKEN"] = gT("Access code for this participant");
+        $aReplacement["TOKEN:LANGUAGE"] = gT("language of participant");
         foreach ($aAttributes as $sAttribute=>$aAttribute) {
-            $aReplacement['TOKEN:'.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+            $aReplacement['TOKEN:'.strtoupper($sAttribute).''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
         }
 
         switch ($sType) {
@@ -192,24 +192,24 @@ class ExpressionValidate extends Survey_Common_Action
             case 'reminder' :
             case 'registration' :
                 // Replaced when sending email (registration too ?)
-                $aReplacement["EMAIL"] = gT("Email from the token");
-                $aReplacement["FIRSTNAME"] = gT("First name from token");
-                $aReplacement["LASTNAME"] = gT("Last name from token");
-                $aReplacement["LANGUAGE"] = gT("language of token");
+                $aReplacement["EMAIL"] = gT("Email from the participant");
+                $aReplacement["FIRSTNAME"] = gT("First name from participant");
+                $aReplacement["LASTNAME"] = gT("Last name from participant");
+                $aReplacement["LANGUAGE"] = gT("language of participant");
                 $aReplacement["OPTOUTURL"] = gT("URL for a respondent to opt-out of this survey");
                 $aReplacement["OPTINURL"] = gT("URL for a respondent to opt-in to this survey");
                 $aReplacement["SURVEYURL"] = gT("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute) {
-                    $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation' :
-                $aReplacement["EMAIL"] = gT("Email from the token");
-                $aReplacement["FIRSTNAME"] = gT("First name from token");
-                $aReplacement["LASTNAME"] = gT("Last name from token");
+                $aReplacement["EMAIL"] = gT("Email from the participant");
+                $aReplacement["FIRSTNAME"] = gT("First name from participant");
+                $aReplacement["LASTNAME"] = gT("Last name from participant");
                 $aReplacement["SURVEYURL"] = gT("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute) {
-                    $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Participant attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;

@@ -49,7 +49,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerPublicCssFile($sPublicCssFileName)
     {
-        Yii::app()->getClientScript()->registerCssFile(
+        Yii::app()->clientScript->registerCssFile(
             Yii::app()->getConfig('publicstyleurl').
             $sPublicCssFileName
         );
@@ -72,7 +72,7 @@ class LS_Twig_Extension extends Twig_Extension
         */
 
         $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
-        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['css'][] = $sTemplateCssFileName;
+        Yii::app()->clientScript->packages[$oTemplate->sPackageName]['css'][] = $sTemplateCssFileName;
     }
 
     /**
@@ -85,7 +85,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerGeneralScript($sGeneralScriptFileName, $position = null, array $htmlOptions = array())
     {
         $position = self::getPosition($position);
-        Yii::app()->getClientScript()->registerScriptFile(
+        Yii::app()->clientScript->registerScriptFile(
             App()->getConfig('generalscripts').
             $sGeneralScriptFileName,
             $position,
@@ -103,7 +103,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerTemplateScript($sTemplateScriptFileName, $position = null, array $htmlOptions = array())
     {
         $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
-        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['js'][] = $sTemplateScriptFileName;
+        Yii::app()->clientScript->packages[$oTemplate->sPackageName]['js'][] = $sTemplateScriptFileName;
     }
 
     /**
@@ -117,7 +117,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerScript($id, $script, $position = null, array $htmlOptions = array())
     {
         $position = self::getPosition($position);
-        Yii::app()->getClientScript()->registerScript(
+        Yii::app()->clientScript->registerScript(
             $id,
             $script,
             $position,
@@ -261,7 +261,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function assetPublish($sRessource)
     {
-        return App()->getAssetManager()->publish($sRessource);
+        return App()->assetManager->publish($sRessource);
     }
 
     /**
@@ -395,7 +395,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function getTemplateForRessource($sRessource)
     {
-        $oRTemplate = Template::getInstance();
+        $oRTemplate =  Template::getLastInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
@@ -433,7 +433,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function unregisterPackage($name)
     {
-        return Yii::app()->getClientScript()->unregisterPackage($name);
+        return Yii::app()->clientScript->unregisterPackage($name);
     }
 
     /**
@@ -441,23 +441,23 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function unregisterScriptFile($name)
     {
-        return Yii::app()->getClientScript()->unregisterScriptFile($name);
+        return Yii::app()->clientScript->unregisterScriptFile($name);
     }
 
     public static function registerScriptFile($path, $position = null)
     {
 
-        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? LSYii_ClientScript::POS_BEGIN : self::getPosition($position)));
+        Yii::app()->clientScript->registerScriptFile($path, ($position === null ? LSYii_ClientScript::POS_BEGIN : self::getPosition($position)));
     }
 
     public static function registerCssFile($path)
     {
-        Yii::app()->getClientScript()->registerCssFile($path);
+        Yii::app()->clientScript->registerCssFile($path);
     }
 
     public static function registerPackage($name)
     {
-        Yii::app()->getClientScript()->registerPackage($name, LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerPackage($name, LSYii_ClientScript::POS_BEGIN);
     }
 
     /**
@@ -465,7 +465,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function unregisterScriptForAjax()
     {
-        $oTemplate            = Template::getInstance();
+        $oTemplate            = Template::getLastInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
         self::unregisterPackage('template-core');
@@ -483,7 +483,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function listCoreScripts()
     {
-        foreach (Yii::app()->getClientScript()->coreScripts as $key => $package) {
+        foreach (Yii::app()->clientScript->coreScripts as $key => $package) {
 
             echo "<hr>";
             echo "$key: <br>";
@@ -494,7 +494,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function listScriptFiles()
     {
-        foreach (Yii::app()->getClientScript()->getScriptFiles() as $key => $file) {
+        foreach (Yii::app()->clientScript->getScriptFiles() as $key => $file) {
 
             echo "<hr>";
             echo "$key: <br>";

@@ -82,4 +82,13 @@ img.uploaded {
     height: auto;
     max-height: 100px;
     max-width: 96%;
+    padding: 5px;
+}
+
+.uploadedfiles tbody tr td {
+    text-align: left;
+}
+
+.uploadedfiles thead tr th {
+    font-weight: bold;
 }

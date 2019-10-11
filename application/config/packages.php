@@ -65,14 +65,32 @@ return array(
             'jquery',
         )
     ),
+
+    'themeoptions-core' => [
+        'devBaseUrl'  => 'assets/packages/themeoptions-core/',
+        'basePath' => 'core.themeoptions-core',
+        'position' =>CClientScript::POS_END,
+        'css'=> [
+            'themeoptions-core.css',
+        ],
+        'js'=>[
+            'themeoptions-core.js',
+        ],
+        'depends' => [
+            'jquery',
+            'bootstrap'
+        ]
+    ],
     /* For public template extended functionnality (based on default template) */
     'template-core'=>array(
         'devBaseUrl'  => 'assets/packages/template-core/',
         'basePath' => 'core.template-core',
         'css'=> array(
+            'spectrum.css',
             'template-core.css',
         ),
         'js'=>array(
+            'spectrum.js',
             'template-core.js',
         ),
         'depends' => array(
@@ -219,7 +237,6 @@ return array(
     'adminsidepanelltr' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
-       'position' =>CClientScript::POS_HEAD,
        'css' => (
            $debug > 0
             ? array(
@@ -236,7 +253,6 @@ return array(
     'adminsidepanelrtl' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
-       'position' =>CClientScript::POS_HEAD,
        'css' => (
            $debug > 0
             ? array(
@@ -488,7 +504,6 @@ return array(
     'adminbasicsrtl' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_BEGIN,
         'css' => array(
             'build/adminbasics.rtl'.$minVersion.'.css'
         ),
@@ -499,7 +514,6 @@ return array(
     'adminbasicsltr' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_BEGIN,
         'css' => array(
             'build/adminbasics'.$minVersion.'.css'
         ),
@@ -518,6 +532,7 @@ return array(
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'lslog'
         )
     ),
 

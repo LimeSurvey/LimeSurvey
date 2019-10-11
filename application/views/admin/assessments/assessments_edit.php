@@ -33,10 +33,10 @@
                   </div>
                 </div>
               </div>
-              <!-- Question group -->
+              <!-- Survey page -->
               <div class='form-group col-md-12'>
                 <label class='control-label col-sm-2' for='gid'>
-                  <?php eT("Question group:");?>
+                  <?php eT("Survey page:");?>
                 </label>
                 <div class='col-sm-10'>
                   <?php if (isset($groups)) { ?>
@@ -45,7 +45,7 @@
                         <option value="<?=$groupId?>" ><?=flattenText($groupName)?></option>
                         <?php } ?>
                     </select>
-                    <?php } else { echo eT("No question group found."); } ?>
+                    <?php } else { echo eT("No survey page found."); } ?>
                 </div>
                 <div class='col-sm-2 hide-xs'></div>
               </div>

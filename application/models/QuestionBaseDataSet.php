@@ -22,9 +22,11 @@ abstract class QuestionBaseDataSet extends StaticModel
      *
      * @param int $iQuestionID
      * @param int $sQuestionType
-     * @param int $iSurveyID
      * @param string $sLanguage
+     * @param null   $question_template
+     *
      * @return array
+     * @throws CException
      */
     public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
     {
@@ -37,13 +39,15 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
+
+        //TODO: is this even used for anything? 30.08.2019
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
 
         /*
         @todo Discussion:
         General options currently are
         - Question theme => this should have a seperate advanced tab in my opinion
-        - Question group
+        - Question page
         - Mandatory switch
         - Save as default switch
         - Clear default switch (if default value record exists)
@@ -95,18 +99,20 @@ abstract class QuestionBaseDataSet extends StaticModel
     /**
      * Returns a preformatted block of the advanced settings for the question editor
      *
-     * @param int $iQuestionID
-     * @param int $sQuestionType
-     * @param int $iSurveyID
+     * @param int    $iQuestionID
+     * @param int    $sQuestionType
      * @param string $sLanguage
+     * @param string   $sQuestionTemplate
+     *
      * @return array
+     * @throws CException
      */
     public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null,  $sQuestionTemplate = null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
         } else {
-            $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
+            $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
             $this->oQuestion = $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
         
@@ -121,8 +127,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
-        $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
-        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTemplateFolderName, $sQuestionTemplate);
+        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionType, $sQuestionTemplate);
 
         $aAdvancedOptionsArray = [];
         if ($iQuestionID == null) {
@@ -130,8 +135,10 @@ abstract class QuestionBaseDataSet extends StaticModel
             if ($userSetting !== null){
                 $aAdvancedOptionsArray = (array) json_decode($userSetting);
             }
-        } 
-        
+        }
+
+        // this is how the sorting should work but is overwritten by returning the json to the ajax result, sorting is done in _settingstab.vue for now
+        uasort($aQuestionTypeAttributes, 'categorySort');
         if (empty($aAdvancedOptionsArray)){
             foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
                 if($sAttributeName == 'question_template') { continue; } // Avoid double displaying
@@ -157,27 +164,27 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         if ($currentSetQuestionTheme == null) {
-            $currentSetQuestionTheme = (isset($aQuestionTemplateAttributes['value']) &&  $aQuestionTemplateAttributes['value'] !== '') 
-            ? $aQuestionTemplateAttributes['value'] 
-            : 'core';
+            $currentSetQuestionTheme = (isset($aQuestionTemplateAttributes['value']) && $aQuestionTemplateAttributes['value'] !== '')
+                ? $aQuestionTemplateAttributes['value']
+                : 'core';
         }
 
         return [
-                'name' => 'question_template',
-                'title' => gT('Question theme'),
-                'formElementId' => 'question_template',
-                'formElementName' => false, //false means identical to id
-                'formElementHelp' => gT("Use a customized question theme for this question"),
-                'inputtype' => 'questiontheme',
-                'formElementValue' => $currentSetQuestionTheme,
-                'formElementOptions' => [
-                    'classes' => ['form-control'],
-                    'options' => $aOptionsArray,
-                ],
-            ];
+            'name' => 'question_template',
+            'title' => gT('Question theme'),
+            'formElementId' => 'question_template',
+            'formElementName' => false, //false means identical to id
+            'formElementHelp' => gT("Use a customized question theme for this question"),
+            'inputtype' => 'questiontheme',
+            'formElementValue' => $currentSetQuestionTheme,
+            'formElementOptions' => [
+                'classes' => ['form-control'],
+                'options' => $aOptionsArray,
+            ],
+        ];
     }
 
-    //Question group
+    //Question page
     protected function getQuestionGroupSelector()
     {
         $aGroupsToSelect = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->oQuestion->sid), array('order'=>'group_order'));
@@ -194,10 +201,10 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         return [
             'name' => 'gid',
-            'title' => gT('Question group'),
+            'title' => gT('Question page'),
             'formElementId' => 'gid',
             'formElementName' => false,
-            'formElementHelp' => gT("If you want to change the question group this question is in."),
+            'formElementHelp' => gT("If you want to change the survey page this question is in."),
             'inputtype' => 'questiongroup',
             'formElementValue' => $this->oQuestion->gid,
             'formElementOptions' => [
@@ -244,7 +251,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'title' => gT('Mandatory'),
                 'formElementId' => 'mandatory',
                 'formElementName' => false,
-                'formElementHelp' => gT('Makes this question mandatory in your survey'),
+                'formElementHelp' => gT('Makes this question mandatory in your survey. Option "Soft" gives a possibility to skip a question without giving any answer.'),
                 'inputtype' => 'buttongroup',
                 'formElementValue' => $this->oQuestion->mandatory,
                 'formElementOptions' => [

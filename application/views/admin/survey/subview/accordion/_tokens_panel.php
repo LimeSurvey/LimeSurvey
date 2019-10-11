@@ -14,7 +14,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+    var sAdminEmailAddressNeeded = '".gT("If you are using participants or notifications emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
     
@@ -41,8 +41,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 <?php $tokenlength = $oSurvey->tokenlength; ?>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
-                        <label class=" control-label"  for='tokenlength'><?php  eT("Set token length to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength === '-1' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
+                        <label class=" control-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength === '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
                             <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength === '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
@@ -63,7 +63,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
         <div class="col-sm-12 col-md-6">
             <!-- Anonymized responses -->
             <div class="form-group">
-                <label  class=" control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their token."); ?>'>
+                <label  class=" control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between survey participants table and survey responses table. You won't be able to identify responses by their access code."); ?>'>
                     <?php  eT("Anonymized responses:"); ?>
                 </label>
                 <div class="">
@@ -92,7 +92,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
             <!-- Enable token-based response persistence -->
             <div class="form-group">
                 <label class=" control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the survey participants table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
-                    <?php  eT("Enable token-based response persistence:"); ?>
+                    <?php  eT("Enable participant-based response persistence:"); ?>
                 </label>
                 <div class="">
                 <?php
@@ -118,8 +118,8 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 
             <!-- Allow multiple responses or update responses with one token -->
             <div class="form-group">
-                <label class=" control-label" for='alloweditaftercompletion' title='<?php  eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
-                    <?php  eT("Allow multiple responses or update responses with one token:"); ?>
+                <label class=" control-label" for='alloweditaftercompletion' title='<?php  eT("If participant-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
+                    <?php  eT("Allow multiple responses or update responses with one access code:"); ?>
                 </label>
                 <div class="">
                 <?php
@@ -148,7 +148,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 
             <!-- Use HTML format for token emails -->
             <div class="form-group">
-                <label class=" control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
+                <label class=" control-label" for='htmlemail'><?php  eT("Use HTML format for participant emails:"); ?></label>
                 <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
@@ -189,7 +189,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     $this->widget('bootstrap.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
         'header' => gt('Warning','unescaped'),
-        'content' => '<p>'.gT("You can't use Anonymized responses when Token-based answers persistence is enabled.").'</p>',
+        'content' => '<p>'.gT("You can't use Anonymized responses when participant-based answer persistence is enabled.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));
     $this->widget('bootstrap.widgets.TbModal', array(

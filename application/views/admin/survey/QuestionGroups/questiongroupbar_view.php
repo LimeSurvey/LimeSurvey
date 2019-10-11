@@ -1,6 +1,6 @@
 <?php
 /**
- * Question group bar
+ * Survey page bar
  * Also used to Edit question
  */
 
@@ -48,7 +48,7 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-do"></span>
-                                <?php eT("Preview question group"); ?>
+                                <?php eT("Preview question page"); ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" style="min-width : 252px;">
@@ -68,20 +68,20 @@
                             href="<?=$this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
                             role="button" target="_blank">
                             <span class="icon-do"></span>
-                            <?=gT("Preview question group");?>
+                            <?=gT("Preview survey page");?>
                         </a>
                     <?php endif; ?>
                     <?php if (isset($questiongroupbar['importbutton']) && $questiongroupbar['importbutton']): ?>
                         <a class="btn btn-default" href="<?php echo App()->createUrl('admin/questiongroups/sa/importview/surveyid/' . $surveyid); ?>" role="button">
                             <span class="icon-import"></span>
-                            <?php eT('Import a group'); ?>
+                            <?php eT('Import a page'); ?>
                         </a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
         <?php endif;?>
 
-        <!-- Left Buttons (only shown for question groups) -->
+        <!-- Left Buttons (only shown for question pages) -->
         <?php if (isset($questiongroupbar['buttons']['view'])):?>
             <!-- Buttons -->
             <div id="questiongroupbar--questiongroupbuttons" class="text-center ls-flex-item grow-2">
@@ -91,7 +91,7 @@
                         href="<?= $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
                         role="button">
                         <span class="icon-expressionmanagercheck"></span>
-                        <?php eT("Check survey logic for current question group"); ?>
+                        <?php eT("Check survey logic for current question page"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -100,29 +100,29 @@
                     <?php if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y"):?>
                         <!-- has question -->
                         <?php if (empty($condarray)):?>
-                            <!-- can delete group and question -->
+                            <!-- can delete page and question -->
                             <button class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal"
                                 data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?>'
-                                data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
+                                data-message="<?php eT("Deleting this page will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
                                 <span class="fa fa-trash"></span>
-                                <?php eT("Delete current question group"); ?>
+                                <?php eT("Delete current question page"); ?>
                             </button>
                         <?php else: ?>
                         <!-- there is at least one question having a condition on its content -->
                             <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip"
                                 data-placement="bottom"
-                                title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>">
+                                title="<?php eT("Impossible to delete this page because there is at least one question having a condition on its content"); ?>">
                                 <span class="fa fa-trash"></span>
-                                <?php eT("Delete current question group"); ?>
+                                <?php eT("Delete current question page"); ?>
                             </button>
                         <?php endif; ?>
                     <?php else:?>
                         <!-- Activated -->
                         <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip"
                             data-placement="bottom"
-                            title="<?php eT("You can't delete this question group because the survey is currently active."); ?>">
+                            title="<?php eT("You can't delete this question page because the survey is currently active."); ?>">
                             <span class="fa fa-trash"></span>
-                            <?php eT("Delete current question group"); ?>
+                            <?php eT("Delete current question page"); ?>
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -134,7 +134,7 @@
                         role="button">
 
                         <span class="icon-export"></span>
-                        <?php eT("Export this question group"); ?>
+                        <?php eT("Export this question page"); ?>
                     </a>
                 <?php endif; ?>
 
@@ -172,7 +172,7 @@
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
-                            <?php eT("Preview question group"); ?>
+                            <?php eT("Preview survey page"); ?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" style="min-width : 252px;">
@@ -232,7 +232,7 @@
                         href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
                         role="button" target="_blank">
                         <span class="icon-do"></span>
-                        <?php eT("Preview question group");?>
+                        <?php eT("Preview survey page");?>
                     </a>
                 <?php endif; ?>
             </div>

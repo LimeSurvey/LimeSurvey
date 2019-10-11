@@ -5,11 +5,15 @@ class QuestionCreate extends Question
     public static function getInstance($iSurveyId, $type)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        
-        $temporaryTitle = 'S'.$iSurveyId.'Q'.(safecount($oSurvey->baseQuestions)+1);
+        $gid = Yii::app()->request->getParam('gid', 0);
+        if($gid == 0) {
+            $gid = array_values($oSurvey->groups)[0]->gid;
+        }
+        $oCurrentGroup = Questiongroup::model()->findByPk($gid);
+        $temporaryTitle = 'G'.str_pad($oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT).'Q'.str_pad((safecount($oSurvey->baseQuestions)+1), 2, '0', STR_PAD_LEFT);
         $aQuestionData = [
                 'sid' => $iSurveyId,
-                'gid' => Yii::app()->request->getParam('gid'),
+                'gid' => $gid,
                 'type' => SettingsUser::getUserSettingValue('preselectquestiontype', null, null, null, Yii::app()->getConfig('preselectquestiontype')),
                 'other' => 'N',
                 'mandatory' => 'N',

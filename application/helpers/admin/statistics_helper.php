@@ -2168,6 +2168,7 @@ class statistics_helper
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
+
         /* Set up required variables */
         $TotalCompleted     = 0; //Count of actually completed answers
         $statisticsoutput   = "";
@@ -3269,7 +3270,19 @@ class statistics_helper
         //PCHART has to be enabled and we need some data
         //
         if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+
+            // NOTE: in ls3, not so many tests were needed. We suscpect that a bug has been introduced (like no "show graph" attribute for certains question type, also, why now sometime $outputs['parentqid']=0 at this point? )
+            //       so if debug mode is on, we'll show a warning, so dev will not strugle to find a deeper bug.
+            if (YII_DEBUG){
+                if (!$aattr){
+                    Yii::app()->setFlashMessage('Warning: could not get question attributes for '. $qqid . ' parent qid: ' . $outputs['parentqid'], 'error');
+                }elseif (!array_key_exists("statistics_showgraph", $aattr)){
+                    Yii::app()->setFlashMessage('Warning: question '. $qqid .' has not attribute "statistics_showgraph" ', 'error');
+                }
+            }
+
+            $bShowGraph = ( $aattr && array_key_exists("statistics_showgraph", $aattr) && $aattr["statistics_showgraph"] == "1");
+
             $bAllowPieChart = ($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE && $outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
@@ -3596,6 +3609,7 @@ class statistics_helper
      */
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
+
         $aStatisticsData = array();
         $survey = Survey::model()->findByPk($surveyid);
 
@@ -3617,6 +3631,7 @@ class statistics_helper
         $language = $sLanguageCode;
 
         if ($q2show == 'all') {
+
             $summarySql = " SELECT gid, parent_qid, qid, type "
             ." FROM {{questions}} WHERE parent_qid=0"
             ." AND sid=$surveyid ";
@@ -3627,36 +3642,37 @@ class statistics_helper
                 $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
                 // Multiple choice get special treatment
-                if ($field['type'] == Question::QT_M_MULTIPLE_CHOICE) {$myField = "M".$myField; }
-                if ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {$myField = "P".$myField; }
+                if ($field['type'] == Question::QT_M_MULTIPLE_CHOICE)               { $myField = "M".$myField; }
+                if ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) { $myField = "P".$myField; }
                 //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($field['type'] == Question::QT_N_NUMERICAL) {$myField = "N".$myField; }
-                if ($field['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {$myField = "|".$myField; }
-                if ($field['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {$myField = "Q".$myField; }
+                if ($field['type'] == Question::QT_N_NUMERICAL)                     { $myField = "N".$myField; }
+                if ($field['type'] == Question::QT_VERTICAL_FILE_UPLOAD)            { $myField = "|".$myField; }
+                if ($field['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT)           { $myField = "Q".$myField; }
                 // textfields get special treatment
-                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT) {$myField = "T".$myField; }
+                if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT)
+                                                                                    { $myField = "T".$myField; }
                 //statistics for Date questions are not implemented yet.
-                if ($field['type'] == Question::QT_D_DATE) {$myField = "D".$myField; }
-                if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN") {
-                    {
-                        //Get answers. We always use the answer code because the label might be too long elsewise
-                        $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='".$field['qid']."' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
-                        $result = Yii::app()->db->createCommand($query)->query();
+                if ($field['type'] == Question::QT_D_DATE)                          { $myField = "D".$myField; }
 
-                        //check all the answers
-                        foreach ($result->readAll() as $row) {
+                if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN")
+                {
+                    //Get answers. We always use the answer code because the label might be too long elsewise
+                    $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='".$field['qid']."' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
+                    $result = Yii::app()->db->createCommand($query)->query();
+
+                    //check all the answers
+                    foreach ($result->readAll() as $row) {
                             $row = array_values($row);
                             $myField = "$myField{$row[0]}";
-                        }
-                        //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
-
                     }
-                    if ($q2show == 'all') {
+                    //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
+                }
+
+                if ($q2show == 'all') {
                         $summary[] = $myField;
-                    }
-
-                    //$allfields[]=$myField;
-                } else {
+                }
+          }                  //$allfields[]=$myField;
+        } else {
                     // This gets all the 'to be shown questions' from the POST and puts these into an array
                     if (!is_array($q2show)) {
                         $summary = returnGlobal('summary');
@@ -3669,8 +3685,9 @@ class statistics_helper
                     if (isset($summary) && !is_array($summary)) {
                         $summary = explode("+", $summary);
                     }
-                }
-        }}
+        }
+
+
         /**
          * Start generating
          */
@@ -3740,6 +3757,7 @@ class statistics_helper
 
 
         if (isset($summary) && $summary) {
+
             //let's run through the survey
             $runthrough = $summary;
 

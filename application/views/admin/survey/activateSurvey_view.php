@@ -92,7 +92,7 @@
     </p>
     <div class='col-sm-6 col-sm-offset-4'>
         <ul class=''>
-            <li><?php eT("Add or delete groups"); ?></li>
+            <li><?php eT("Add or delete survey pages"); ?></li>
             <li><?php eT("Add or delete questions"); ?></li>
             <li><?php eT("Add or delete subquestions or change their codes"); ?></li>
         </ul>
@@ -220,7 +220,7 @@
         </div>
 
         <p class='col-sm-7 col-sm-offset-2'>
-            <?php eT("Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."); ?><br /><br />
+            <?php eT("Please note that once responses have collected with this survey and you want to add or remove survey pages/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."); ?><br /><br />
         </p>
         <?php if($oSurvey->getIsDateExpired()):?>
         <div class="row">

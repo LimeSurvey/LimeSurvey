@@ -1492,13 +1492,13 @@ class dataentry extends Survey_Common_Action
             // First Check if the survey uses tokens and if a token has been provided
             if ($tokenTableExists && (!$_POST['token'])) {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
+                $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a access code.  Please contact the administrator for assistance."));
             } elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken') {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("The token you have provided is not valid or has already been used."));
+                $errormsg .= CHtml::tag('p', array(), gT("The access code have provided is not valid or has already been used."));
             } elseif ($tokenTableExists && $lastanswfortoken != '') {
                 $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this token"));
+                $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this access code"));
 
                 if ($lastanswfortoken != 'PrivacyProtected') {
                     $errormsg .= "<br /><br />".gT("Follow the following link to update it").":\n";

@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid scoped-table-aloud">
-        <div class="ls-flex ls-flex-row row bg-info">
+        <div class="ls-flex ls-flex-row row bg-info head-row">
             <div class="ls-flex ls-flex-column col-4 cell">
             {{"File name" | translate }}
             </div>
@@ -17,7 +17,7 @@
             {{"Action" | translate }}
             </div>
         </div>
-        <div class="ls-flex ls-flex-row row" v-for="file in $store.state.fileList" :key="file.shortName" :class="fileClass(file)">
+        <div class="ls-flex ls-flex-row row" v-for="file in $store.state.fileList" :key="file.hash" :id="'file-row-'+file.hash" :class="fileClass(file)">
             <div class="ls-flex ls-flex-column col-4 cell">
             {{file.shortName}}
             </div>
@@ -32,12 +32,12 @@
             </div>
             <div class="ls-flex ls-flex-row col-2 cell" >
             <template v-if="!inTransit(file)">
-                <button class="btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>
-                <button class="btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"><i class="fa fa-clone"></i></button>
-                <button class="btn btn-default" @click="moveFile(file)" :title="translate('Move file')" data-toggle="tooltip"><i class="fa fa-files-o"></i></button>
+                <button class="FileManager--file-action-delete btn btn-default" @click="deleteFile(file)" :title="translate('Delete file')" data-toggle="tooltip"><i class="fa fa-trash-o text-danger"></i></button>
+                <button class="FileManager--file-action-startTransit-copy btn btn-default" @click="copyFile(file)" :title="translate('Copy file')" data-toggle="tooltip"><i class="fa fa-clone"></i></button>
+                <button class="FileManager--file-action-startTransit-move btn btn-default" @click="moveFile(file)" :title="translate('Move file')" data-toggle="tooltip"><i class="fa fa-files-o"></i></button>
             </template>
             <template  v-if="inTransit(file)">
-                <button class="btn btn-default" @click="cancelTransit(file)" :title="translate('Cancel transit of file')" data-toggle="tooltip"><i class="fa fa-times text-warning"></i></button>
+                <button class="FileManager--file-action-cancelTransit btn btn-default" @click="cancelTransit(file)" :title="translate('Cancel transit of file')" data-toggle="tooltip"><i class="fa fa-times text-warning"></i></button>
             </template>
             </div>
         </div>
@@ -78,10 +78,10 @@ export default {
       if(this.inTransit(file)) {
         htmlClasses += 'file-in-transit ';
         if(this.$store.state.transitType == 'move') {
-          htmlClasses += ' move ';
+          htmlClasses += 'move ';
         } 
         if(this.$store.state.transitType == 'copy') {
-          htmlClasses += ' copy ';
+          htmlClasses += 'copy ';
         }
       }
       return htmlClasses;
@@ -98,8 +98,8 @@ export default {
               (error) => { this.$log.error(error); }
             ).finally(()=>{ this.loadingState = false; })
         })
-        .catch(function () {
-          console.log('Clicked on cancel');
+        .catch(() => {
+          this.$log.log('Dialog closed');
         });
     },
     copyFile(file) {
@@ -118,13 +118,20 @@ export default {
 
 <style lang="scss" scoped>
     .file-in-deletion {
-        background-color: #999999;
+        background-color: var(--LS-admintheme-hintedhovercolor);
         opacity: 0.5;
+    }
+    .file-in-transit {
+        background-color: var(--LS-admintheme-hintedbasecolor);
+        opacity: 0.7;
     }
     .scoped-table-aloud {
         .row {
             margin: 1px 0;
             border-bottom: 1px solid #798979;
+            &.head-row {
+                color: #efefef;
+            }
         }
         .cell {
             border-left: 1px solid #798979;

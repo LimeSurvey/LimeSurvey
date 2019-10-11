@@ -41,22 +41,22 @@
                         <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <strong><?php eT('Warning!');?></strong> <?php eT("While the survey is activated, you can't add or remove a group or question.");?>
+                                <strong><?php eT('Warning!');?></strong> <?php eT("While the survey is activated, you can't add or remove a survey page or question.");?>
                             </div>
 
                         <?php elseif(!$groups_count > 0):?>
 
-                            <!-- To add questions, first, you must add a question group -->
+                            <!-- To add questions, first, you must add a survey page -->
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <strong><?php eT('Warning!');?></strong> <?php eT('Before you can add questions you must add a question group first.');?>
+                                <strong><?php eT('Warning!');?></strong> <?php eT('Before you can add questions you must add a survey page first.');?>
                             </div>
 
-                            <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
+                            <!-- If you want a single page survey, just add a single page, and switch on "Show questions page by page -->
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <span class="fa fa-info-sign" ></span>&nbsp;&nbsp;&nbsp;
-                                <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.');?>
+                                <?php eT('Set below if your questions are shown one at a time, page by page or all on one page.');?>
                             </div>
                         <?php endif;?>
                     </div>
@@ -76,7 +76,7 @@
                                     <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
                                         <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($oSurvey->format=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
-                                        <button type="button" data-value='G' class="btn btn-default <?php if($oSurvey->format=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
+                                        <button type="button" data-value='G' class="btn btn-default <?php if($oSurvey->format=='G'){echo 'active';}?>"><?php eT('Page by page');?></button>
                                         <button type="button" data-value='A' class="btn btn-default <?php if($oSurvey->format=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
                                     </div>
                                     <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$oSurvey->sid);?>" />
@@ -89,24 +89,24 @@
 
                         <!-- Add Question / group -->
                         <div class="row row-eq-height">
-                            <!-- Survey active, so it's impossible to add new group/question -->
+                            <!-- Survey active, so it's impossible to add new page/question -->
                             <?php if ($oSurvey->isActive): ?>
 
-                                    <!-- Can't add new group to survey  -->
+                                    <!-- Can't add new page to survey  -->
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary disabled" id="panel-1">
                                             <div class="panel-heading">
-                                                <div class="panel-title h4"><?php eT('Add group');?></div>
+                                                <div class="panel-title h4"><?php eT('Add page');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
                                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                                        <span class="sr-only"><?php eT('Add new group');?></span>
+                                                        <span class="sr-only"><?php eT('Add new page');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="#"><?php eT('Add new group');?></a></p>
+                                                    <p><a href="#"><?php eT('Add new page');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,27 +139,27 @@
                                     <!-- survey is not active, and user has permissions, so buttons are shown and active -->
                                 <?php elseif(Permission::model()->hasSurveyPermission($oSurvey->sid,'surveycontent','create')): ?>
 
-                                    <!-- Add group -->
+                                    <!-- Add page -->
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="panel-heading">
-                                                <div class="panel-title h4"><?php eT('Add group');?></div>
+                                                <div class="panel-title h4"><?php eT('Add page');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
                                                     <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                                        <span class="sr-only"><?php eT('Add new group');?></span>
+                                                        <span class="sr-only"><?php eT('Add new page');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
+                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new page');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Survey has no group, so can't add a question -->
+                                    <!-- Survey has no page, so can't add a question -->
                                     <?php if(!$groups_count > 0): ?>
                                         <div class="col-sm-6" >
                                             <div class="panel panel-primary disabled" id="panel-2">
@@ -168,14 +168,14 @@
                                                 </div>
                                                 <div class="panel-body  ">
                                                     <div class="panel-body-ico">
-                                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+                                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a survey page."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                <span class="sr-only"><?php eT("You must first create a question group."); ?></span>
+                                <span class="sr-only"><?php eT("You must first create a survey page."); ?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
                                                         <p>
-                                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
+                                                            <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a survey page."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                                                                 <?php eT("Add new question"); ?>
                                 <span class="sr-only"><?php eT("Add new question"); ?></span>
                                                             </a>
@@ -185,7 +185,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Survey has a group, so can add a question -->
+                                        <!-- Survey has a page, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
                                             <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>">

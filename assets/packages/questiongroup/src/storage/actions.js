@@ -26,6 +26,29 @@ export default {
             });
         });
     },
+    reloadQuestionGroup: (context, gid=false) => {
+        LOG.log('Reloading questionGroup with gid -> ', gid || context.state.currentQuestionGroup.gid);
+        return new Promise((resolve, reject) => {
+            context.commit('setCurrentQuestionGroup', {});
+            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'loadQuestionGroup' : '/loadQuestionGroup';
+            ajax.methods.$_get(
+                window.QuestionGroupEditData.connectorBaseUrl+subAction, 
+                {'iQuestionGroupId' : gid || context.state.currentQuestionGroup.gid }
+            ).then((result) => {
+                context.commit('setLanguages', result.data.languages);
+                context.commit('setActiveLanguage', keys(result.data.languages)[0]);
+
+                context.commit('setPermissions', result.data.permissions);
+                context.commit('setCurrentQuestionGroup', result.data.questionGroup);
+                context.commit('setCurrentQuestionGroupI10N', result.data.questonGroupI10N);
+                context.commit('setInTransfer', false);
+                resolve(true);
+            },
+            (rejectAnswer) => {
+                reject(rejectAnswer);
+            });
+        });
+    },
     getQuestionsForGroup: (context) => {
         return new Promise((resolve, reject) => {
             const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionsForGroup' : '/getQuestionsForGroup';
@@ -60,6 +83,9 @@ export default {
             ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+subAction, transferObject)
                 .then(
                     (result) => {
+                        LOG.log("Result data -> ", result.data);
+                        LOG.log("Result data questiongroupData-> ", result.data.questiongroupData);
+                        context.commit('setCurrentQuestionGroup', result.data.questiongroupData);
                         context.commit('setInTransfer', false);
                         resolve(result);
                     },

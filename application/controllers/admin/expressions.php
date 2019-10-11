@@ -85,8 +85,7 @@ class Expressions extends Survey_Common_Action
         
         $gid = Yii::app()->request->getParam('gid', null);
         $qid = Yii::app()->request->getParam('qid', null);
-        
-        
+
         $oSurvey = Survey::model()->findByPk($sid);
 
         $language = Yii::app()->request->getParam('lang', null); 
@@ -98,6 +97,8 @@ class Expressions extends Survey_Common_Action
         $aData['lang'] = $language;
 
         $aData['sid'] = $sid;
+        $aData['gid'] = $gid;
+        $aData['qid'] = $qid;
         $aData['title_bar']['title'] = gT("Survey logic file");
         $aData['subaction'] = gT("Survey logic file");
         $aData['sidemenu']['state'] = false;

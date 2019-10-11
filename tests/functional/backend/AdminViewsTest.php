@@ -30,6 +30,7 @@ class AdminViewsTest extends TestBaseClassView
         return require __DIR__."/../../data/views/adminBaseViews.php";
     }
 
+    // TODO: Routes are wrong. Please fix it.
     public function addSurveyViews()
     {
         return require __DIR__."/../../data/views/adminSurveyViews.php";
@@ -58,6 +59,7 @@ class AdminViewsTest extends TestBaseClassView
      * @param string $name
      * @param array$view
      * @dataProvider addBaseViews
+     * 
      */
     public function testAdminViews($name, $view)
     {
@@ -71,8 +73,10 @@ class AdminViewsTest extends TestBaseClassView
 
     /**
      * @param string $name
-     * @param array$view
+     * @param array $view
      * @dataProvider addSurveyViews
+     * 
+     * TODO: Marked as incomplete cause the routes for the views are wrong.
      */
     public function testAdminSurveyViews($name, $view)
     {

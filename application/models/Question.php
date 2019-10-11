@@ -225,7 +225,7 @@ class Question extends LSActiveRecord
     
 
     /**
-     * Rewrites sort order for questions in a group
+     * Rewrites sort order for questions in a page
      *
      * @static
      * @access public
@@ -249,7 +249,7 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a group
+     * Fix sort order for questions in a page
      * @param int $gid
      * @param int $position
      */
@@ -335,14 +335,14 @@ class Question extends LSActiveRecord
                 $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
-                    foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
-                        $sAttributeName = (string) $oCustomAttribute->name;
-                        $sInputType = (string)$oCustomAttribute->inputtype;
+                    foreach ($oQuestionTemplate->oConfig->attributes as $attribute) {
+                        $sAttributeName = (string) $attribute->name;
+                        $sInputType = (string)$attribute->inputtype;
                         // remove attribute if inputtype is empty
                         if (empty($sInputType)) {
                             unset($aAttributeNames[$sAttributeName]);
                         } else {
-                            $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
+                            $aCustomAttribute = json_decode(json_encode((array) $attribute), 1);
                             $aCustomAttribute = array_merge(
                                 QuestionAttribute::getDefaultSettings(),
                                 array("category"=>gT("Template")),
@@ -791,7 +791,7 @@ class Question extends LSActiveRecord
                 'value'=>'$data->qid',
             ),
             array(
-                'header' => gT("Group / Question order"),
+                'header' => gT("Page / Question order"),
                 'name' => 'question_order',
                 'value'=>'$data->group->group_order ." / ". $data->question_order',
             ),
@@ -816,7 +816,7 @@ class Question extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Group'),
+                'header' => gT('Page'),
                 'name' => 'group',
                 'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
             ),
@@ -901,13 +901,12 @@ class Question extends LSActiveRecord
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';              
-        $criteria->with = array('group', 'questionL10ns');
+        $criteria->with = array('group', 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
         
         if (!empty($this->title)) {     
             $criteria2 = new CDbCriteria;
-            $criteria2->join = 'JOIN {{question_l10ns}} q_L10n ON t.qid = q_L10n.qid ';
             $criteria2->compare('t.title', $this->title, true, 'OR');
-            $criteria2->compare('q_L10n.question', $this->title, true, 'OR');
+            $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');
             /* search exact qid and make sure it's a numeric */
             if(is_numeric($this->title)) {
@@ -932,7 +931,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Make sure we don't save a new question group
+     * Make sure we don't save a new question page
      * while the survey is active.
      *
      * @return bool
@@ -992,10 +991,14 @@ class Question extends LSActiveRecord
     public function getBasicFieldName()
     {
         if ($this->parent_qid != 0) {
+            /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
+            // Use parents relation
+            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ? 
+                return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
+            }
             return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
-        } else {
-            return "{$this->sid}X{$this->gid}X{$this->qid}";
         }
+        return "{$this->sid}X{$this->gid}X{$this->qid}";
     }
 
     /**
@@ -1120,14 +1123,14 @@ class Question extends LSActiveRecord
             case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListRadio($this->qid);
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListDropdown($this->qid);
             case Question::QT_O_LIST_WITH_COMMENT:              return new DataSetListWithComment($this->qid);
-            case Question::QT_R_RANKING_STYLE:                  return new RenderRanking($this->qid);
+            case Question::QT_R_RANKING_STYLE:                  return new DataSetRanking($this->qid);
             case Question::QT_M_MULTIPLE_CHOICE:                return new DataSetMultipleChoice($this->qid);
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  return new DataSetMultipleChoiceWithComments($this->qid);
             case Question::QT_I_LANGUAGE:                       return new DataSetLanguage($this->qid);
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:            return new DataSetMultipleShortText($this->qid);
             case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
             case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new RenderMultipleNumerical($this->qid);
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new DataSetMultipleNumerical($this->qid);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:       return new DataSetArray5ChoiceQuestion($this->qid);
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:      return new DataSetArray10ChoiceQuestion($this->qid);
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:         return new DataSetArrayYesUncertainNo($this->qid);

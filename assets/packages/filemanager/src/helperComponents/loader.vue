@@ -1,5 +1,5 @@
 <template>
-<div :id="'loader-'+id" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center"
+    <div :id="'loader-'+id" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center"
         style="min-height: 100%;">
         <div class="ls-flex align-content-center align-items-center">
             <div class="loader-questioneditor text-center">

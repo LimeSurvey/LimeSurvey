@@ -4,7 +4,8 @@
     <!-- Metadata -->
     <metadata>
         <name>multipleshorttext</name>
-        <title>Multiple short text</title>
+        <type>question_theme</type>
+        <title>Multiple Short Text</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -14,8 +15,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Multiple short text question type configuration</description>
-        <type>Q</type>
+        <questionType>Q</questionType>
+        <group>Text questions</group>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>multiple-short-txt</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         List of the css/js files to load.

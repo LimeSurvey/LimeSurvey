@@ -207,7 +207,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         //Prepare the edition panes
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
-        $aData['datasecdata']              = array_merge($aData, $this->_getDataSecurityEditData($survey));
+        $aData['datasecdata']               = array_merge($aData, $this->_getDataSecurityEditData($survey));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
@@ -607,7 +607,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Load list question groups view for a specified by $iSurveyID
+     * Load list survey pages view for a specified by $iSurveyID
      *
      * @access public
      * @param mixed $surveyid The survey ID
@@ -632,7 +632,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
         $aData['title_bar']['title']                         = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['subaction']                                  = gT("Question groups in this survey");
+        $aData['subaction']                                  = gT("Survey pages in this survey");
 
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
@@ -1242,7 +1242,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * questiongroup::organize()
-     * Load ordering of question group screen.
+     * Load ordering of survey page screen.
      *
      * @param int $iSurveyID
      * @return void
@@ -1293,7 +1293,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Show the form for Organize question groups/questions
+     * Show the form for Organize survey pages/questions
      *
      * @todo Change function name to _showOrganizeGroupsAndQuestions?
      * @param int $iSurveyID
@@ -1383,7 +1383,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+        Yii::app()->session['flashmessage'] = gT("The new survey page/question order was successfully saved.");
     }
 
     /**
@@ -1830,7 +1830,7 @@ class SurveyAdmin extends Survey_Common_Action
             // Check if survey title was set
             if (Yii::app()->request->getPost('surveyls_title') == '') {
                 $alertError = gT("Survey could not be created because it did not have a title");
-                //Yii::app()->session['flashmessage'] = $alertError;
+    
                 return Yii::app()->getController()->renderPartial(
                     '/admin/super/_renderJson',
                     array(
@@ -1921,8 +1921,6 @@ class SurveyAdmin extends Survey_Common_Action
 
             );
 
-            //var_dump($aInsertData);
-
             $warning = '';
 
             if (!is_null($iSurveyID)) {
@@ -1951,16 +1949,18 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Insert base language into surveys_language_settings table
             $aInsertData = array(
-                'surveyls_survey_id'      => $iNewSurveyid,
-                'surveyls_title'          => $sTitle,
-                'surveyls_description'    => $sDescription,
-                'surveyls_welcometext'    => $sWelcome,
-                'surveyls_language'       => Yii::app()->request->getPost('language'),
-                'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip', ''),
-                'surveyls_endtext'        => Yii::app()->request->getPost('endtext', ''),
-                'surveyls_url'            => Yii::app()->request->getPost('url', ''),
-                'surveyls_dateformat'     => (int) Yii::app()->request->getPost('dateformat'),
-                'surveyls_numberformat'   => (int) Yii::app()->request->getPost('numberformat'),
+                'surveyls_survey_id'           => $iNewSurveyid,
+                'surveyls_title'               => $sTitle,
+                'surveyls_description'         => $sDescription,
+                'surveyls_welcometext'         => $sWelcome,
+                'surveyls_language'            => Yii::app()->request->getPost('language'),
+                'surveyls_urldescription'      => Yii::app()->request->getPost('urldescrip', ''),
+                'surveyls_endtext'             => Yii::app()->request->getPost('endtext', ''),
+                'surveyls_url'                 => Yii::app()->request->getPost('url', ''),
+                'surveyls_dateformat'          => (int)Yii::app()->request->getPost('dateformat'),
+                'surveyls_numberformat'        => (int)Yii::app()->request->getPost('numberformat'),
+                'surveyls_policy_notice'       => App()->request->getPost('surveyls_policy_notice'),
+                'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
             );
 
             $langsettings = new SurveyLanguageSetting;
@@ -1970,19 +1970,17 @@ class SurveyAdmin extends Survey_Common_Action
 
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
-            $createSample = ((int) App()->request->getPost('createsample', 0)) === 1;
+            $createSample = App()->request->getPost('createsample');
+            $createSampleChecked = ($createSample === 'on');
 
             // Figure out destination
-
-            if ($createSample) {
+            if ($createSampleChecked) {
                 $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
-                $redirecturl = $this->getController()->createUrl(
-                    "admin/questions/sa/view/",
-                    ['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
-                );
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first survey page and an example question for you."), 'info');
+                $landOnSideMenuTab   = 'structure';
+                $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
                 $redirecturl = $this->getController()->createUrl(
                     'admin/survey/sa/view/',
@@ -2003,6 +2001,25 @@ class SurveyAdmin extends Survey_Common_Action
         }
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
 
+    }
+    
+    /**
+     * This method will return the url for the current survey and set the direction for 
+     * the sidemenue. 
+     * 
+     * @param integer $sid 
+     * @param integer $gid  
+     * @param integer $qid 
+     * @return string
+     */
+    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab) {
+        $url = 'admin/questioneditor/sa/view/';
+        $params = [
+            'surveyid' => $sid, 
+            'gid'      => $gid, 
+            'qid'      => $qid, 
+            'landOnSideMenuTab'   => $landOnSideMenuTab];
+        return $this->getController()->createUrl($url, $params);
     }
 
     /**
@@ -2125,11 +2142,13 @@ class SurveyAdmin extends Survey_Common_Action
             $oSurveyLanguageSetting->surveyls_urldescription = $contentChange['endUrlDescription'];
             $oSurveyLanguageSetting->surveyls_dateformat = $contentChange['dateFormat'];
             $oSurveyLanguageSetting->surveyls_numberformat = $contentChange['decimalDivider'];
-            $success[$sLanguage] = $oSurveyLanguageSetting->save();
+            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
 
-        $success = array_reduce($aSuccess, function($carry, $subsuccess){ $carry = $carry && $subsuccess; }, true);
+        $success = array_reduce($aSuccess, function ($carry, $subsuccess) {
+            return $carry = $carry && $subsuccess;
+        }, true);
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
@@ -2233,17 +2252,19 @@ class SurveyAdmin extends Survey_Common_Action
             $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
             $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
             $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
-            $success[$sLanguage] = $oSurveyLanguageSetting->save();
+            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
 
-        $success = array_reduce($aSuccess, function($carry, $subsuccess){ $carry = $carry && $subsuccess; }, true);
+        $success = array_reduce($aSuccess, function ($carry, $subsuccess) {
+            return $carry = $carry && $subsuccess;
+        }, true);
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => [
                 "success" => $success,
-                "message" => ($success ? gT("Successfully stored survey texts") : gT("Error in storing survey texts"))
+                "message" => ($success ? gT("Successfully stored data security texts") : gT("Error in storing data security texts"))
                 ]
             ],
             false,
@@ -2267,7 +2288,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oGroup->save();
         $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
-        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->group_name = gt('My first survey page', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
         LimeExpressionManager::SetEMLanguage($sLanguage);
@@ -2443,18 +2464,18 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     public function getSurveyTopbar($sid, $saveButton=false) {
-      $oSurvey   = Survey::model()->findByPk($sid);
+      $oSurvey                       = Survey::model()->findByPk($sid);
       $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
       $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
       $hasDeletePermission           = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
       $hasSurveyTranslatePermission  = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
       $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
-      $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') ||
-                                       Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
-      $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
-      $hasResponsesReadPermission   = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+      $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') 
+                                       || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+      $hasResponsesCreatePermission  = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
+      $hasResponsesReadPermission    = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
 
-      $isActive  = $oSurvey->isActive;
+      $isActive  = $oSurvey->active == 'Y';
       $condition = array('sid' => $sid, 'parent_qid' => 0);
       $sumcount  = Question::model()->countByAttributes($condition);
       $countLanguage = count($oSurvey->allLanguages);
@@ -2478,8 +2499,6 @@ class SurveyAdmin extends Survey_Common_Action
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
         array(
-          'oSurvey' => $oSurvey,
-          'isActive' => $isActive,
           'sid' => $sid,
           'canactivate' => $canactivate,
           'expired' => $expired,
@@ -2487,6 +2506,7 @@ class SurveyAdmin extends Survey_Common_Action
           'context' => $context,
           'contextbutton' => $contextbutton,
           'language' => $language,
+          'sumcount' => $sumcount,
           'hasSurveyContentPermission' => $hasSurveyContentPermission,
           'countLanguage' => $countLanguage,
           'hasDeletePermission' => $hasDeletePermission,
@@ -2498,6 +2518,7 @@ class SurveyAdmin extends Survey_Common_Action
           'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
           'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
           'hasResponsesReadPermission'   => $hasResponsesReadPermission,
+          'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
           'addSaveButton'  => $saveButton,
         ),
         false,

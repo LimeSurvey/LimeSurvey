@@ -61,9 +61,9 @@ export default {
 </script>
 
 <template>
-    <div class="col-sm-8 col-xs-12">
+    <div class="ls-flex grow-3">
         <transition name="slide-fade">
-            <div v-if="!loading"  class="panel panel-default" @dblclick="toggleEditMode">
+            <div v-if="!loading"  class="panel panel-default col-12" @dblclick="toggleEditMode">
                 <div class="panel-heading">
                     {{'Text elements'|translate}}
                 </div>

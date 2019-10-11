@@ -85,9 +85,9 @@ For a full list of possible input types please have a look at the questionHelper
 
 A full list is coming someday.
 
-The `custom attributes` part should look something like this:
+The `attributes` part should look something like this:
 ```xml
-<custom_attributes>
+<attributes>
     <attribute>
         <name>myCustomAttribute</name>
         <category>Display</category>
@@ -98,7 +98,7 @@ The `custom attributes` part should look something like this:
         <caption>My custom Attribute: </caption>
         <i18n>en</i18n>
     </attribute>
-</custom_attributes>
+</attributes>
 ```
 
 ### Engine - Or, Somehow the system has to know about this.
@@ -156,7 +156,7 @@ Just take this as a base and build on top of it.
         </preview>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>customAttribute1</name>
             <category>My attributes</category>
@@ -177,7 +177,7 @@ Just take this as a base and build on top of it.
             <caption>My custom Attribute 2: </caption>
             <i18n>en</i18n>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <engine>
         <load_core_css>true</load_core_css>

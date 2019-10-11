@@ -46,7 +46,7 @@ export default {
                 
                 if(blocks.length == 1) {               
                     newBlock[this.$store.state.activeLanguage] = blocks[0];     
-                    newBlockObject[this.type+''+rowCount] = newBlock;
+                    newBlockObject[this.baseNonNumericPart+String(rowCount).padStart(2,'0')] = newBlock;
                     return;
                 } 
 
@@ -106,7 +106,7 @@ export default {
             this.$emit('close');
         },
         replaceCurrent() {
-            this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
+            //this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
             this.$emit('modalEvent', {target: this.type, method: 'replaceFromQuickAdd', content: this.parsed});
             this.$emit('close');
         },

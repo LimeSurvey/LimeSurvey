@@ -72,7 +72,7 @@ $config['allowexportalldb']          = 0; // 0 will only export prefixed tables 
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['shownoanswer']              = 1; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
+$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
@@ -514,6 +514,11 @@ $config['force_ssl'] = 'neither'; // DO not turn on unless you are sure your ser
 $config['ssl_emergency_override'] = false;
 
 /**
+* @var $ssl_disable_alert boolean disable alert for super admin
+*/
+$config['ssl_disable_alert'] = false;
+
+/**
 * Sets if any part of LimeSUrvey may be embedded in an iframe
 * Valid values are allow, sameorigin
 * Default / Recommended: sameorigin
@@ -559,6 +564,21 @@ $config['iFileUploadTotalSpaceMB'] = 0;
 
 
 $config['uniq_upload_dir'] = false; // Use a single KCFinder upload directory for all surveys
+
+/**
+ * Allow to use a different MIME database for finfo_open
+ * @see https://www.php.net/manual/en/function.finfo-open.php
+ * Example : '/usr/share/misc/magic.mgc' for redhat based linux
+ */
+$config['magic_database'] = null;
+
+/**
+ * Allow to use a different magic file array 
+ * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
+ * This file must return a PHP array of extension by mimeTypes
+ * Example : https://github.com/LimeSurvey/LimeSurvey/blob/master/framework/utils/fileExtensions.php
+ */
+$config['magic_file'] = null;
 
 
 // defines if the CKeditor toolbar should be opened by default
@@ -672,7 +692,7 @@ $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'ap
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
 $config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user custom twig extensions
 $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; // The directory containing the user's question themes.
-$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
+$config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
 $config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
 $config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";

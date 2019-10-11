@@ -26,6 +26,7 @@ export default {
             editQuestion: false,
             questionEditButton: window.questionEditButton,
             loading: true,
+            noCodeWarning: false
         }
     },
     computed: {
@@ -53,7 +54,21 @@ export default {
         },
         storedEvent() {
             return this.$store.state.storedEvent;
-        }
+        },
+        getLanguages() {
+            return this.$store.state.languages;
+        },
+        getLanguageCount() {
+            let languages = this.getLanguages;
+            let count = 0;
+            for (let language in languages) {
+                count += 1;
+            }
+            return count;
+        },
+        containsMultipleLanguages() {
+            return (this.getLanguageCount > 1);
+        },
     },
     watcher: {
         storedEvent(newValue) {
@@ -115,39 +130,53 @@ export default {
             this.event = null;
         },
         submitCurrentState(redirect = false, redirectUrl = false) {
-            this.$store.dispatch('saveQuestionData').then(
-                (result) => {
-                    if(result === false) {
-                        return;
+            if(this.checkCanSubmit()) {
+                this.loading = true;
+                this.noCodeWarning = false;
+                this.$store.dispatch('saveQuestionData').then(
+                    (result) => {
+                        if(result === false) {
+                            return;
+                        }
+                        window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
+                        this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
+                        LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
+                        $('#in_survey_common').trigger('lsStopLoading');
+                        this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+                        this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                        if(redirect == true || this.isCreateQuestion || redirectUrl !== false) {
+                            window.location.href = redirectUrl || result.data.redirect || window.location.href;
+                            return;
+                        }
+                        window.history.pushState({},result.data.newQuestionDetails.question.title, result.data.redirect);
+                        this.loading = false;
+                        LS.EventBus.$emit('loadingFinished');
+                    },
+                    (reject) => {
+                        $('#in_survey_common').trigger('lsStopLoading');
+                        window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                        this.$log.error(reject);
+                        //setTimeout(()=>{window.location.reload();}, 1500);
                     }
-
-                    if(redirect == true || redirectUrl !== false) {
-                        window.location.href = redirectUrl || result.data.redirect || window.location.href;
-                    }
-
-                    $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
-                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
-                    LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
-                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
-                    this.$log.log('OBJECT AFTER TRANSFER: ', result);
-                },
-                (reject) => {
-                    $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                    //setTimeout(()=>{window.location.reload();}, 1500);
-                }
-            )
+                )
+            } else {
+                window.setTimeout(()=>{LS.EventBus.$emit('loadingFinished')},1);
+                this.noCodeWarning = true;
+            }
         },
-        questionTypeChangeTriggered(newValue) {
-            this.$log.log('CHANGE OF TYPE', newValue);
-            this.currentQuestionType = newValue;
+        checkCanSubmit(){
+            return !LS.ld.isEmpty(this.$store.state.currentQuestion.title);
+        },
+        questionTypeChangeTriggered(newValueArray) {
+            this.$log.log('CHANGE OF TYPE', newValueArray.value);
+            this.currentQuestionType = newValueArray.value;
             let tempQuestionObject = this.$store.state.currentQuestion;
-            tempQuestionObject.type = newValue;
+            tempQuestionObject.type = newValueArray.value;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
+            this.$store.commit('setQuestionGeneralSetting', {settingName: 'question_template', newValue: newValueArray.options.name });
             this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' };
             Promise.all([
-                this.$store.dispatch('getQuestionGeneralSettings'),
+                this.$store.dispatch('getQuestionGeneralSettings', newValueArray.options.name),
                 this.$store.dispatch('getQuestionAdvancedSettings')
             ]).finally(()=>{
                 this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' };
@@ -159,15 +188,19 @@ export default {
         },
     },
     created(){
-        this.$store.commit('setInTransfer', false);
         Promise.all([
             this.$store.dispatch('loadQuestion'),
             this.$store.dispatch('getQuestionTypes')
         ]).then(()=>{
             this.loading = false;
+            this.$store.commit('setInTransfer', false);
+            if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
+                this.triggerEditQuestion(true);
+            }
         })
         LS.EventBus.$on('questionTypeChanged', (payload) => {
-            this.$log.log("questiontype changed to -> ", payload);
+            this.$log.log("questiontype changed to -> ", payload.content.value);
+            this.$log.log("with data -> ", payload.content.options);
             this.questionTypeChangeTriggered(payload.content);
         });
     },
@@ -181,23 +214,10 @@ export default {
             e.preventDefault();
         });
 
-        LS.EventBus.$on('saveButtonCalled', (payload) => {
-            this.submitCurrentState(payload.id == '#save-and-close-button', (payload.url != '#' ? payload.url : false));
+        LS.EventBus.$off('componentFormSubmit');
+        LS.EventBus.$on('componentFormSubmit', (payload) => {
+            this.submitCurrentState((payload.id == '#save-and-close-button'), payload.url != '#' ? payload.url : false);
         });
-
-        $('#save-button').on('click', (e)=>{
-            e.preventDefault();
-            this.submitCurrentState();
-        });
-
-        $('#save-and-close-button').on('click', (e)=>{
-            e.preventDefault();
-            this.submitCurrentState(true);
-        });
-
-        if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
-           this.triggerEditQuestion(true);
-        }
     }
 }
 </script>
@@ -245,61 +265,77 @@ export default {
         </div>
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion">
+                    <x-test id="action::addQuestion"></x-test>
                     {{'Create new Question'|translate}}
             </template>
             <template v-else>
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
             </template>
         </div>
-        <template v-if="!loading">
-            <div class="row">
-                <div class="form-group col-sm-6">
-                    <label for="questionCode">{{'Code' | translate }}</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="questionCode"
-                        :readonly="!(editQuestion || isCreateQuestion)"
-                        v-model="currentQuestionCode"
-                        @dblclick="setEditQuestion"
+        <transition-group name="fade">
+            <template v-if="!loading">
+                <div class="row" key="questioncode-block">
+                    <div class="form-group col-sm-6">
+                        <label for="questionCode">{{'Code' | translate }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="questionCode"
+                            :readonly="!(editQuestion || isCreateQuestion)"
+                            required="required"
+                            v-model="currentQuestionCode"
+                            @dblclick="setEditQuestion"
+                        />
+                        <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
+                    </div>
+                    <div class="form-group col-sm-6 contains-question-selector">
+                        <label for="questionCode">{{'Question type' | translate }}</label>
+                        <div v-if="(editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y'"  v-html="questionEditButton" />
+                        <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
+                        <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                    </div>
+                </div>
+                <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
+                    <languageselector
+                        :elId="'question-language-changer'"
+                        :aLanguages="$store.state.languages"
+                        :parentCurrentLanguage="$store.state.activeLanguage"
+                        @change="selectLanguage"
                     />
                 </div>
-                <div class="form-group col-sm-6 contains-question-selector">
-                    <label for="questionCode">{{'Question type' | translate }}</label>
-                    <div v-if="(editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y'"  v-html="questionEditButton" />
-                    <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
-                    <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                <div key="editorcontent-block">
+                    <div class="ls-flex ls-flex-row scope-create-gutter">
+                        <transition name="slide-fade-left">
+                            <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                        </transition>
+                        <transition name="slide-fade-left">
+                            <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                        </transition>
+                        <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
+                    </div>
+                    <div class="ls-flex ls-flex-row">
+                        <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <languageselector
-                    :elId="'question-language-changer'"
-                    :aLanguages="$store.state.languages"
-                    :parentCurrentLanguage="$store.state.activeLanguage"
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row">
-                <transition name="slide-fade-left">
-                    <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                </transition>
-                <transition name="slide-fade-left">
-                    <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
-                </transition>
-                <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
-                <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
-            </div>
-        </template>
-        <template v-if="loading">
-            <loader-widget id="mainViewLoader" />
-        </template>
+            </template>
+        </transition-group>
+        <transition name="fade">
+            <loader-widget id="mainViewLoader" v-if="loading"/>
+        </transition>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .scoped-unset-pointer-events {
     pointer-events: none;
+}
+
+.scope-create-gutter {
+    &>div {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }
 
 .scoped-new-questioneditor {

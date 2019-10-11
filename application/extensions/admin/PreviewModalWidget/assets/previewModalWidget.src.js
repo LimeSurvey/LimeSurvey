@@ -14,6 +14,7 @@ class PreviewModalScript {
             onGetDetails: (curDetailPage, itemData) => curDetailPage,
             value: '',
             selectedClass: '',
+            option: false,
             debugString: 'Key: ',
             debug: false
         };
@@ -43,6 +44,7 @@ class PreviewModalScript {
         $(`#selector__${this.widgetsJsName}--buttonText`).html(`${itemData.title} ${this.getForDebug(itemData.key)}`);
         $(`#selector__${this.widgetsJsName}-detailPage`).html(this.options.onGetDetails(itemData.itemArray.detailpage, itemData));
         this.inputItem.val(itemData.key);
+        this.options.option = itemData.itemArray;
         this.options.value = itemData.key;
     };
     /**
@@ -103,7 +105,7 @@ class PreviewModalScript {
             $(this.modalItem).on('shown.bs.modal', ()=>{this.onModalShown()});
             $(`.selector__Item--select-${this.widgetsJsName}:not(.disabled)`).on('click', (ev)=>{this.selectItemClick(ev)});
             $(`#selector__select-this-${this.widgetsJsName}`).on('click', () => {
-                this.options.onUpdate(this.options.value);
+                this.options.onUpdate(this.options.value, this.options.option);
                 this.modalItem.modal('hide');
             });
         } else {

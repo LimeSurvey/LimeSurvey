@@ -63,6 +63,12 @@ class participantsaction extends Survey_Common_Action
         Yii::import('application.helpers.admin.ajax_helper', true);
         Yii::import('application.helpers.admin.permission_helper', true);
 
+        // Default AjaxHelper (overridden in tests).
+        // NB: The reason we "inject" this here is because the
+        // tests need a mock AjaxHelper instead of the "real thing"
+        // that dies.
+        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
+
         parent::runWithParams($params);
     }
 
@@ -99,7 +105,6 @@ $url .= "_view"; });
      */
     public function openModalParticipantPanel()
     {
-        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
         $target = Yii::app()->request->getPost('modalTarget');
         switch ($target) {
             case "editparticipant":
@@ -133,7 +138,6 @@ $url .= "_view"; });
      */
     public function editValueParticipantPanel()
     {
-        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
         $target = Yii::app()->request->getPost('actionTarget');
         switch ($target) {
             case "changeBlacklistStatus":
@@ -401,7 +405,7 @@ $url .= "_view"; });
         // Abort if no permission
         $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
         if (!$deletePermission) {
-            AjaxHelper::outputNoPermission();
+            $this->ajaxHelper::outputNoPermission();
         }
 
         $selectoption = Yii::app()->request->getPost('selectedoption');
@@ -436,9 +440,9 @@ $url .= "_view"; });
         }
 
         if ($deletedParticipants === 0) {
-            AjaxHelper::outputError(gT('No participants deleted'));
+            $this->ajaxHelper::outputError(gT('No participants deleted'));
         } else {
-            AjaxHelper::outputSuccess(gT('Participant deleted'));
+            $this->ajaxHelper::outputSuccess(gT('Participant deleted'));
         }
     }
 
@@ -484,7 +488,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        AjaxHelper::output($html);
+        $this->ajaxHelper::output($html);
     }
 
     /**
@@ -505,7 +509,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        AjaxHelper::output($html);
+        $this->ajaxHelper::output($html);
     }
 
     /**
@@ -547,7 +551,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        AjaxHelper::output($html);
+        $this->ajaxHelper::output($html);
     }
 
     /**
@@ -566,7 +570,7 @@ $url .= "_view"; });
             array('model' => $model),
             true
         );
-        AjaxHelper::output($html);
+        $this->ajaxHelper::output($html);
     }
 
     /**
@@ -740,15 +744,15 @@ $url .= "_view"; });
                     $attribute->updateParticipantAttributeValue($attribute->attributes);
                 }
 
-                AjaxHelper::outputSuccess(gT("Participant successfully added"));
+                $this->ajaxHelper::outputSuccess(gT("Participant successfully added"));
             } else if (is_string($result)) {
-                AjaxHelper::outputError('Could not add new participant: '.$result);
+                $this->ajaxHelper::outputError('Could not add new participant: '.$result);
             } else {
                 // "Impossible"
                 safeDie('Could not add participant.');
             }
         } else {
-            AjaxHelper::outputNoPermission();
+            $this->ajaxHelper::outputNoPermission();
         }
     }
 
@@ -1509,7 +1513,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        AjaxHelper::output($html);
+        $this->ajaxHelper::output($html);
     }
 
     /**
@@ -1534,7 +1538,7 @@ $url .= "_view"; });
             $data,
             true
         );
-        AjaxHelper::output($html);
+        $this->ajaxHelper::output($html);
     }
 
     /**
@@ -1618,7 +1622,7 @@ $url .= "_view"; });
                 }
             }
             $oTransaction->commit();
-            AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
+            $this->ajaxHelper::outputSuccess(gT("Attribute successfully updated"));
         } catch (\Exception $e) {
             $oTransaction->rollback();
             return false;
@@ -1638,9 +1642,9 @@ $url .= "_view"; });
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
         if (count($AttributePackage->participant_attribute_names_lang) > 1) {
             ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            AjaxHelper::outputSuccess(gT("Language successfully deleted"));
+            $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
         } else {
-            AjaxHelper::outputError(gT("There has to be at least one language."));
+            $this->ajaxHelper::outputError(gT("There has to be at least one language."));
         }
     }
     /**
@@ -1653,7 +1657,7 @@ $url .= "_view"; });
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         ParticipantAttributeName::model()->delAttribute($attribute_id);
-        AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
+        $this->ajaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
 
     /**
@@ -1664,7 +1668,7 @@ $url .= "_view"; });
     public function deleteAttributes()
     {
         if (!Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
-            AjaxHelper::outputNoPermission();
+            $this->ajaxHelper::outputNoPermission();
             return;
         }
 
@@ -1679,12 +1683,12 @@ $url .= "_view"; });
                 $deletedAttributes++;
             }
 
-            AjaxHelper::outputSuccess(sprintf(
+            $this->ajaxHelper::outputSuccess(sprintf(
                 ngT('%s attribute deleted|%s attributes deleted', $deletedAttributes),
                 $deletedAttributes)
             );
         } catch (Exception $e) {
-            AjaxHelper::outputError(sprintf(
+            $this->ajaxHelper::outputError(sprintf(
                 gT('Error. Deleted %s attribute(s). Error message: %s'),
                 $deletedAttributes,
                 $e->getMessage()
@@ -2284,7 +2288,7 @@ $url .= "_view"; });
                 $i++;
             }
         }
-        AjaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
+        $this->ajaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 
     /**
@@ -2318,9 +2322,9 @@ $url .= "_view"; });
             );
             ParticipantShare::model()->storeParticipantShare($aData, $permissions);
 
-            AjaxHelper::outputSuccess(gT("Participant shared."));
+            $this->ajaxHelper::outputSuccess(gT("Participant shared."));
         } else {
-            AjaxHelper::outputNoPermission();
+            $this->ajaxHelper::outputNoPermission();
         }
     }
 
@@ -2332,7 +2336,7 @@ $url .= "_view"; });
     {
         $participant_id = yii::app()->request->getPost('participant_id');
         ParticipantShare::model()->deleteAllByAttributes(array('participant_id' => $participant_id));
-        AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
+        $this->ajaxHelper::outputSuccess(gT("Participant removed from sharing"));
     }
 
     /**
@@ -2350,7 +2354,7 @@ $url .= "_view"; });
         ));
 
         if (empty($participantShare)) {
-            AjaxHelper::outputError(gT('Found no participant share'));
+            $this->ajaxHelper::outputError(gT('Found no participant share'));
         } else {
             $userId = Yii::app()->user->id;
             $isOwner = $participantShare->participant->owner_uid == $userId;
@@ -2358,9 +2362,9 @@ $url .= "_view"; });
 
             if ($isOwner || $isSuperAdmin) {
                 $participantShare->delete();
-                AjaxHelper::outputSuccess(gT('Participant share deleted'));
+                $this->ajaxHelper::outputSuccess(gT('Participant share deleted'));
             } else {
-                AjaxHelper::outputNoPermission();
+                $this->ajaxHelper::outputNoPermission();
             }
         }
     }
@@ -2398,9 +2402,9 @@ $url .= "_view"; });
         }
 
         if ($sharesDeleted == 0) {
-            AjaxHelper::outputError(gT('No participant shares were deleted'));
+            $this->ajaxHelper::outputError(gT('No participant shares were deleted'));
         } else {
-            AjaxHelper::outputSuccess(
+            $this->ajaxHelper::outputSuccess(
                 sprintf(ngT('%s participant share was deleted|%s participant shares were deleted', $sharesDeleted),
                 $sharesDeleted
             ));
@@ -2452,7 +2456,7 @@ $url .= "_view"; });
         }
         if ($response['overwriteman'] == "true" || $response['overwriteauto']) {
             echo "<p>";
-            eT("Attribute values for existing participants have been updated from the token records");
+            eT("Attribute values for central participants have been updated from the survey participants");
             echo "</p>";
         }
     }
@@ -2509,7 +2513,7 @@ $url .= "_view"; });
             echo $e->getMessage();
             return;
         } catch (Exception $e) {
-            printf("Error: Could not copy attributes to tokens: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
+            printf("Error: Could not copy attributes to participants: file %s, line %s; %s", $e->getFile(), $e->getLine(), $e->getMessage());
             return;
         }
 

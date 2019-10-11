@@ -5,12 +5,12 @@
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
-        <h3><?php eT('Organize question groups/questions');?></h3>
+        <h3><?php eT('Organize survey pages/questions');?></h3>
         <div class='row'>
             <div class='col-sm-8'>
                 <p class='alert alert-info'>
                     <span class='fa fa-info-circle'></span>&nbsp;
-                    <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
+                    <?php eT("To reorder questions/survey pages just drag the question/survey page with your mouse to the desired position.");?>
                     <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
                 </p>
             </div>

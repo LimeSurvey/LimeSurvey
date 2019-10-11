@@ -52,6 +52,7 @@ const all = args.includes('-a');
 const single = args.includes('-s');
 const verbose = args.includes('-v');
 const prepareOnly = args.includes('-p');
+const noReleaseBuild = args.includes('-d');
 
 if(!all && !single) {
     console.log(`
@@ -80,10 +81,22 @@ if(!all && !single) {
 ||   Options:                                                                              ||
 ||     -v -> Verbose mode, show all build processes                                        ||
 ||     -p -> Only prepare (install dependencies)                                           ||
+||     -d -> build only the development part                                               ||
 ||                                                                                         ||
 =============================================================================================
 `);
 process.exit(0);
+}
+
+const processDate = (date) => {
+    const D = String(date.getDay()).padStart(2,'0');
+    const M = String(date.getMonth()).padStart(2,'0');
+    const Y = date.getFullYear();
+    const h = String(date.getHours()).padStart(2,'0');
+    const m = String(date.getMinutes()).padStart(2,'0');
+    const s = String(date.getSeconds()).padStart(2,'0');
+
+    return `${Y}-${M}-${D} ${h}:${m}:${s}`;
 }
 
 const runGetDependenciesInFolder = function (folder) {
@@ -106,9 +119,9 @@ const runGetDependenciesInFolder = function (folder) {
 
 const runBuildFolder = function (folder) {
     return new Promise((resolve, reject) => {
-        console.log(`|| === Descending into ${folder} and running 'yarn build'`);
+        console.log(`|| === Descending into ${folder} and running 'yarn ${(noReleaseBuild ? 'run dev' : 'build')}'`);
         const fullPath = folder; //path.normalize(folder);
-        const command = spawn('yarn', ['build'], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
+        const command = spawn('yarn', [(noReleaseBuild ? 'run dev' : 'build')], {cwd:fullPath, shell:true, stdio: [ 'pipe', (verbose ? process.stdout : 'ignore'), process.stderr ]});
 
         command.on('error', (err) => {
             console.log(err);
@@ -130,6 +143,7 @@ const runBuild = function() {
         ['labelsets', 'assets/packages/labelsets/'],
         ['questioneditor', 'assets/packages/questioneditor/'],
         ['questiongroup', 'assets/packages/questiongroup/'],
+        ['panelintegration', 'assets/packages/questiongroup/'],
         ['textelements', 'assets/packages/textelements/'],
     ];
     const pathArray = [
@@ -170,7 +184,8 @@ const runBuild = function() {
 
 if(!single) {
     console.log(`
-|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the components ${(verbose ? 'and using verbose mode.' : '.')}`);
+|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the components ${(verbose ? 'and using verbose mode.' : '.')}
+|| ===  Starting time: ${processDate(new Date)}`);
     const finalPromise = pathArray.reduce( 
         async (promise, item) => {
             try{
@@ -223,7 +238,8 @@ if(!single) {
     }
 
     console.log(`
-|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component(s) ${JSON.stringify(componentsToBuild)}${(verbose ? ' and using verbose mode.' : '.')}`);
+|| ===  Starting to ${(prepareOnly ? 'prepare' : 'compile')} the component(s) ${JSON.stringify(componentsToBuild)}${(verbose ? ' and using verbose mode.' : '.')}
+|| ===  Starting time: ${processDate(new Date)}`);
 
     const finalPromise = componentToBuildArray.reduce( 
         async (promise, item) => {
@@ -254,7 +270,9 @@ if(!single) {
             console.log(`|| === Ended at ${endTime.toLocaleTimeString('de-DE')}`);
             console.log(`|| === Total milliseconds ${difference}`);
         }
-        console.log(`|| === All build in ${minutes}:${seconds}.${milliseconds}`);
+        console.log(`
+|| ===  All build in ${minutes}:${seconds}.${milliseconds}
+|| ===  Finished at: ${processDate(new Date)}`);
     }); 
 }
 

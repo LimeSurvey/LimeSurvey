@@ -25,7 +25,7 @@
 
 
                     <?php if ($survey->hasTokensTable): ?>
-                        <span class="text-warning"><?php eT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."); ?><br /><br />
+                        <span class="text-warning"><?php eT("This survey has an associated participant table. If you delete this survey this participant table will be deleted. We recommend that you export or backup these participants before deleting this survey."); ?><br /><br />
                     <?php endif; ?>
 
                 </p>

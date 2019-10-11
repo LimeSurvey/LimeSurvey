@@ -4,6 +4,7 @@
     <!-- Metadata -->
     <metadata>
         <name>gender</name>
+        <type>question_theme</type>
         <title>Gender</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
@@ -14,8 +15,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Gender question type configuration</description>
-        <type>G</type>
+        <questionType>G</questionType>
+        <group>Mask questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>gender</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         List of the css/js files to load.

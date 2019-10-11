@@ -85,6 +85,7 @@ class translate extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+            $aData['topBar']['showSaveButton'] = true;
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
@@ -169,6 +170,9 @@ class translate extends Survey_Common_Action
                 $amTypeOptions2 = $this->setupTranslateFields($type2);
                 $resultbase2 = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
                 $resultto2 = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
+            } else {
+                $resultbase2 = $resultbase;
+                $resultto2 = $resultto;
             }
 
             $aData['type'] = $type;
@@ -178,17 +182,48 @@ class translate extends Survey_Common_Action
 
             $countResultBase = count($resultbase);
             for ($j = 0; $j < $countResultBase; $j++) {
-                $rowfrom = $resultbase[$j];
-                $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
-                
-                $textto = $resultto[$j][$amTypeOptions["dbColumn"]];
+                $oRowfrom = $resultbase[$j];
+                $oResultBase2 = $resultbase2[$j];
+                $oResultTo = $resultto[$j];
+                $oResultTo2 = $resultto2[$j];
+
+                $aRowfrom = array();
+                $aResultBase2 = array();
+                $aResultTo = array();
+                $aResultTo2 = array();
+
+                $class = get_class($oRowfrom);
+                if ($class == 'QuestionGroup'){
+                    $aRowfrom = $oRowfrom->questionGroupL10ns[$baselang]->getAttributes();
+                    $aResultBase2 = !empty($type2) ? $oResultBase2->questionGroupL10ns[$baselang]->getAttributes() : $aRowfrom;
+                    $aResultTo = $oResultTo->questionGroupL10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionGroupL10ns[$tolang]->getAttributes() : $aResultTo;
+                } elseif ($class == 'Question' || $class == 'Subquestion'){
+                    $aRowfrom = $oRowfrom->questionL10ns[$baselang]->getAttributes();
+                    $aResultBase2 = !empty($type2) ? $oResultBase2->questionL10ns[$baselang]->getAttributes() : $aRowfrom;
+                    $aResultTo = $oResultTo->questionL10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionL10ns[$tolang]->getAttributes() : $aResultTo;
+                } elseif ($class == 'Answer'){
+                    $aRowfrom = $oRowfrom->answerL10ns[$baselang]->getAttributes();
+                    $aResultBase2 = !empty($type2) ? $oResultBase2->answerL10ns[$baselang]->getAttributes() : $aRowfrom;
+                    $aResultTo = $oResultTo->answerL10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->answerL10ns[$tolang]->getAttributes() : $aResultTo;
+                }
+                $aRowfrom = array_merge($aRowfrom, $oRowfrom->getAttributes());
+                $aResultBase2 = array_merge($aResultBase2, $oResultBase2->getAttributes());
+                $aResultTo = array_merge($aResultTo, $oResultTo->getAttributes());
+                $aResultTo2 = array_merge($aResultTo2, $oResultTo2->getAttributes());
+
+                $textfrom = htmlspecialchars_decode($aRowfrom[$amTypeOptions["dbColumn"]]);
+//                
+                $textto = $aResultTo[$amTypeOptions["dbColumn"]];
                 if ($associated) {
-                    $textfrom2 = htmlspecialchars_decode($resultbase2[$j][$amTypeOptions2["dbColumn"]]);
-                    $textto2 = $resultto2[$j][$amTypeOptions2["dbColumn"]];
+                    $textfrom2 = htmlspecialchars_decode($aResultBase2[$amTypeOptions2["dbColumn"]]);
+                    $textto2 = $aResultTo2[$amTypeOptions2["dbColumn"]];
                 }
                
-                $gid = ($amTypeOptions["gid"] == true) ? $gid = $rowfrom['gid'] : null;
-                $qid = ($amTypeOptions["qid"] == true) ? $qid = $rowfrom['qid'] : null;
+                $gid = ($amTypeOptions["gid"] == true) ? $gid = $aRowfrom['gid'] : null;
+                $qid = ($amTypeOptions["qid"] == true) ? $qid = $aRowfrom['qid'] : null;
 
                 $textform_length = strlen(trim($textfrom));
 
@@ -199,8 +234,8 @@ class translate extends Survey_Common_Action
                                 'textfrom2' => $this->_cleanup($textfrom2, array()),
                                 'textto' => $this->_cleanup($textto, array()),
                                 'textto2' => $this->_cleanup($textto2, array()),
-                                'rowfrom' => $rowfrom,
-                                'rowfrom2' => $resultbase2,
+                                'rowfrom' => $aRowfrom,
+                                'rowfrom2' => $aResultBase2,
                                 'evenRow' => $evenRow,
                                 'gid' => $gid,
                                 'qid' => $qid,
@@ -213,10 +248,10 @@ class translate extends Survey_Common_Action
                             ));
 
                 $aData['translateFields'] = $this->displayTranslateFields($iSurveyID, $gid, $qid, $type,
-                                            $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $j, $rowfrom, $evenRow);
+                                            $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $j, $aRowfrom, $evenRow);
                 if ($associated && strlen(trim((string) $textfrom2)) > 0) {
                     $aData['translateFields'] .= $this->displayTranslateFields($iSurveyID, $gid, $qid, $type2,
-                                            $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $j, $resultbase2[$j], $evenRow);
+                                            $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $j, $aResultBase2, $evenRow);
                 }
 
                 $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefields_view", $aData, true);
@@ -477,7 +512,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => true,
                     'qid' => false,
-                    'description' => gT("Question groups"),
+                    'description' => gT("Survey pages"),
                     'HTMLeditorType' => "group",
                     'HTMLeditorDisplay' => "Popup",
                     'associated' => "group_desc"
@@ -492,7 +527,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => true,
                     'qid' => false,
-                    'description' => gT("Group description"),
+                    'description' => gT("Page description"),
                     'HTMLeditorType' => "group_desc",
                     'HTMLeditorDisplay' => "Popup",
                     'associated' => ""
@@ -742,14 +777,22 @@ class translate extends Survey_Common_Action
                         return SurveyLanguageSetting::model()->resetScope()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
-                        return QuestionGroup::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'language'=>$baselang), array('order' => 'gid'));
+                        return QuestionGroup::model()->with('questionGroupL10ns', array('condition' => 'language = ' . $baselang))->findAllByAttributes(array('sid'=>$iSurveyID), array('order' => 't.gid'));
                     case 'question':
                     case 'question_help':
-                        return Question::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID, 'language' => $baselang, 'parent_qid' => 0), array('order' => 'groups.group_order, t.question_order, t.scale_id'));
+                        return Question::model()->with('questionL10ns', array('condition' => 'language = ' . $baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group.group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
-                        return Question::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $iSurveyID, 'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang1 AND groups.language=:baselang2 AND t.parent_qid>0', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang)));
+                        return Question::model()
+                        ->with('questionL10ns', array('condition' => 'language = ' . $baselang))
+                        ->with('parent', array('condition' => 'language = ' . $baselang))
+                        ->with('group', array('condition' => 'language = ' . $baselang))
+                        ->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 'group.group_order, parent.question_order, t.scale_id, t.question_order', 'condition'=>'t.parent_qid>0', 'params'=>array()));
                     case 'answer':
-                        return Answer::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang1 AND groups.language=:baselang2', 'params'=>array(':baselang1'=>$baselang, ':baselang2'=>$baselang, ':sid' => $iSurveyID)));
+                        return Answer::model()
+                        ->with('answerL10ns', array('condition' => 'language = ' . $baselang))
+                        ->with('question') 
+                        ->with('group')
+                        ->findAllByAttributes(array(), array('order' => 'group.group_order, question.question_order, t.scale_id, t.sortorder', 'condition'=>'question.sid=:sid', 'params'=>array(':sid' => $iSurveyID)));
                 }
             case "queryupdate":
                 switch ($type) {
@@ -782,17 +825,18 @@ class translate extends Survey_Common_Action
                     case 'email_confirmbody':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_confirm'=>$new));
                     case 'group':
-                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('group_name' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroupL10n::model()->updateAll(array('group_name' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'group_desc':
-                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('description' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'question':
-                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang), array('question' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
+                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
                     case 'question_help':
-                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang), array('help' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$iSurveyID));
+                        return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
                     case 'subquestion':
-                        return Question::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang), array('question' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
                     case 'answer':
-                        return Answer::model()->updateByPk(array('qid'=>$id1, 'code'=>$id2, 'language'=>$tolang, 'scale_id'=>$iScaleID), array('answer' => $new));
+                        $oAnswer = Answer::model()->find('qid = :qid and code = :code and scale_id = :scale_id', array(':qid'=>$id1, ':code'=>$id2, ':scale_id'=>$iScaleID));
+                        return AnswerL10n::model()->updateAll(array('answer' => $new), 'aid = :aid and language = :language', array(':aid'=>$oAnswer->aid, ':language'=>$tolang));
                 }
 
         }
@@ -846,15 +890,12 @@ class translate extends Survey_Common_Action
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
             if ($type == 'answer') {
-                //print_r($rowfrom->attributes);die();
-                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.") </td>";
+                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom['answer'])." (".$rowfrom['qid'].") </td>";
             }
             if ($type == 'question_help' || $type == 'question') {
-                //print_r($rowfrom->attributes);die();
-                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->title)." ({$rowfrom->qid}) </td>";
+                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom['question'])." ({$rowfrom['qid']}) </td>";
             } else if ($type == 'subquestion') {
-                //print_r($rowfrom->attributes);die();
-                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid}) </td>";
+                $translateoutput .= "<td class='col-sm-2'>".htmlspecialchars($rowfrom['question'])." ({$rowfrom['qid']}) </td>";
             }
 
             $translateoutput .= "<td class='_from_ col-sm-5' id='".$type."_from_".$i."'>"

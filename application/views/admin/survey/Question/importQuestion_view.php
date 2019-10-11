@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class=" control-label" for='the_file'><?php eT("Destination question group:"); ?></label>
+                    <label class=" control-label" for='the_file'><?php eT("Destination survey page:"); ?></label>
                     <div class="">
                         <select name='gid' id='gid' class="form-control">
                             <?php echo getGroupList3($groupid, $surveyid); ?>

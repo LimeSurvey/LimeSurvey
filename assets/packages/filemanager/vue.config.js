@@ -19,7 +19,7 @@ class EchoBuildTime {
             cb();
         });
     }
-};
+}
 
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',

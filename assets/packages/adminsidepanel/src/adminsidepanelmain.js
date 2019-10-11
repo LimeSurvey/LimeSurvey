@@ -81,6 +81,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
                 const maxHeight = $("#in_survey_common").height() - 35 || 400;
                 this.$store.commit("changeMaxHeight", maxHeight);
+                this.$store.commit("setAllowOrganizer", window.SideMenuData.allowOrganizer);
                 this.updatePjaxLinks();
 
 
