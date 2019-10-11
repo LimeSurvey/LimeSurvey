@@ -3477,7 +3477,7 @@ class statistics_helper
                 $aData['charttype'] = (isset($charttype)) ? $charttype : 'Bar';
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
-                $aData['color'] = rand(0, 70);
+                $aData['color'] = 0;
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 $aData['lbl'] = $lbl;
                 ///
