@@ -1582,7 +1582,25 @@ class remotecontrol_handle
                         } else {
                                                     $aResult['answeroptions'] = 'No available answer options';
                         }
-                    } else if ($sPropertyName == 'defaultvalue') {
+                    } else if ($sPropertyName == 'answeroptions_multiscale') {
+                        $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'sortorder'));
+                        if (count($oAttributes) > 0) {
+                            $aData = array();
+                            foreach ($oAttributes as $oAttribute) {
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['code'] = $oAttribute['code'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['answer'] = $oAttribute['answer'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['order'] = $oAttribute['sortorder'];
+                            }
+                            $aResult['answeroptions'] = $aData;
+                        } else {
+                                                    $aResult['answeroptions'] = 'No available answer options';
+                        }
+                    }
+                    
+                    
+                    else if ($sPropertyName == 'defaultvalue') {
                         $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
