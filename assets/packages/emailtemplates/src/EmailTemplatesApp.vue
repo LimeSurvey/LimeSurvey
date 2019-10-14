@@ -59,7 +59,7 @@
                         <div class="row ls-space margin top-15" v-if="hasAttachments">
                             <div class="scoped-simple-carousel">
                                 <div 
-                                    v-for="file in currentLanguageAttachments"
+                                    v-for="file in currentAttachments"
                                     :key="file.hash"
                                     class="simple-carousel-item"
                                 >
@@ -115,11 +115,17 @@ export default {
         isNewSurvey() {
             return window.EmailTemplateData.isNewSurvey;
         },
-        currentLanguageAttachments() {
-            return this.$store.state.templateTypeContents[this.$store.state.activeLanguage].attachments;
+        currentAttachments: {
+            get() {
+                return this.$store.state.templateTypeContents[this.$store.state.activeLanguage]
+                        .attachments[this.$store.state.currentTemplateType];
+            },
+            set(newVal) {
+                this.$store.commit('setAttachementForTypeAndLanguage', newVal);
+            }
         },
         hasAttachments() {
-            return this.currentLanguageAttachments != null;
+            return this.currentAttachments != null;
         },
         currentSubject: {
             get() { 

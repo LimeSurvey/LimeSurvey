@@ -46,7 +46,7 @@ export default {
             }
         },
         saveAttachments() {
-            this.$store.commit('setAttachmentForCurrentLanguage', this.selectedFiles);
+            this.$store.commit('setAttachementForTypeAndLanguage', this.selectedFiles);
             this.$emit('close');
         }
     },

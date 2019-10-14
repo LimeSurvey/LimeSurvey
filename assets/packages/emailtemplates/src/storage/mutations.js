@@ -31,6 +31,12 @@ export default {
         tmp[state.activeLanguage]['attachments'] = newValue;
         state.templateTypeContents = tmp;
     },
+    setAttachementForTypeAndLanguage: (state, newValue) => {
+        let tmp = state.templateTypeContents;
+        tmp[state.activeLanguage]['attachments'] = tmp[state.activeLanguage]['attachments'] || {};
+        tmp[state.activeLanguage]['attachments'][state.currentTemplateType] = newValue;
+        state.templateTypeContents = tmp;
+    },
 
     //view controllers
     setCurrentTemplateType : (state, newValue) => {

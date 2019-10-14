@@ -685,16 +685,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
         if(!empty($oSurveyLanguageSetting->attachments) ) {
-            $aAttachments = json_decode($oSurveyLanguageSetting->attachments);
+            $aAttachments = json_decode($oSurveyLanguageSetting->attachments, true);
             if(!empty($aAttachments[$attachementType])) {
                 if($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
                     if ($this->_attachementExists($aAttachment)) {
-                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                            $this->addAttachment($aAttachment['path']);
-                        }
+                        $this->addAttachment($aAttachment['path']);
                     }
                 }
             }
