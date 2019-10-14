@@ -1479,6 +1479,15 @@ class ExpressionManager
                 case 'NUMBER':
                     $stringParts[] = $token[0];
                     break;
+                case 'COMPARE':
+                    if ($thisTokenHasError) {
+                        $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-assign'>";
+                        $stringParts[] = ' '.$token[0].' ';
+                        $stringParts[] = "</span>";
+                    } else {
+                        $stringParts[] = ' '.$token[0] . ' ';
+                    }
+                    break;
                 default:
                     $stringParts[] = ' '.$token[0].' ';
                     break;
