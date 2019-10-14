@@ -653,6 +653,29 @@
             <expression></expression>
         </attribute>
         <attribute>
+            <name>statistics_showgraph</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>101</sortorder>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Display a chart in the statistics?</help>
+            <caption>Display chart</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
             <name>statistics_graphtype</name>
             <category>Statistics</category>
             <inputtype>singleselect</inputtype>

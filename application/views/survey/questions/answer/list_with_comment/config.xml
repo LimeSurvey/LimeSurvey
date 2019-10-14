@@ -337,6 +337,68 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
+        <attribute>
+            <name>statistics_showgraph</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>101</sortorder>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Display a chart in the statistics?</help>
+            <caption>Display chart</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>statistics_graphtype</name>
+            <category>Statistics</category>
+            <inputtype>singleselect</inputtype>
+            <sortorder>102</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Bar chart</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Pie chart</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Radar</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Line</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>PolarArea</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>Doughnut</text>
+                </option>
+            </options>
+            <help>Select the type of chart to be displayed</help>
+            <caption>Chart type</caption>
+            <default>0</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
         <!-- Statistics Attributes END -->
         <!-- Timer Attributes START -->
         <!-- Timer Attributes END -->
