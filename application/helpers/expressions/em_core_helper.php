@@ -1223,7 +1223,6 @@ class ExpressionManager
                     //~ $staticString = LimeExpressionManager::ProcessStepString("{".$staticStringToParse."}",array(),3,true);
                     $staticString = $this->sProcessStringContainingExpressions("{".$staticStringToParse."}",0,3,1,-1,-1,true); // As static : no gseq,qseq etc …
                     $stringParts[] = $staticString;
-                    $staticFunction = null;
                     $staticStringToParse = "";
                 }
             } else {
@@ -1244,9 +1243,6 @@ class ExpressionManager
                                 $staticStringToParse = $token[0]; // The function name
                                 $bracket = 0; // Reset bracket (again)
                             } else {
-                                if ($funcInfo[1] == 'NA') {
-                                    return ''; // to indicate that this is trying to use a undefined function.  Need more graceful solution
-                                }
                                 $stringParts[] = $funcInfo[1]; // the PHP function name
                             }
                         } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
