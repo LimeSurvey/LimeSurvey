@@ -319,6 +319,19 @@ class ExpressionManager
             return false;
         }
 
+        /**
+         * PHP and JS type cast differently when doing "2" > "18".
+         * Easiest solution is to ban compare < and > when both args are strings.
+         */
+        $stringTypes = array('DQ_STRING', 'DS_STRING', 'WORD');
+        if ($token[2] === 'COMPARE'
+            && $token[0] != '=='  // Allow equality compare
+            && $token[0] != '!='
+            && (in_array($arg1[2], $stringTypes) && in_array($arg2[2], $stringTypes))) {
+            $this->RDP_AddError(self::gT("It's not allowed to compare two strings with 'higher than'/'lower than', only numbers. Use intval() to cast a string to a number, or make sure a hard-coded number is not written inside quotes. To compare two strings alpabetically, use the function strcmp()."), $token);
+            return false;
+        }
+
         list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
 
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
@@ -691,7 +704,7 @@ class ExpressionManager
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function RDP_EvaluateExpressions()
+   private function RDP_EvaluateExpressions()
     {
         $evalStatus = $this->RDP_EvaluateExpression();
         if (!$evalStatus) {
@@ -2233,9 +2246,9 @@ class ExpressionManager
 
         // $aInitTokens = array of tokens from equation, showing value and offset position.  Will include SPACE.
         if ($bOnEdit) {
-                    $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
         } else {
-                    $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
         }
 
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
