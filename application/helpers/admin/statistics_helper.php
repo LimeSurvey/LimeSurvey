@@ -604,6 +604,9 @@ class statistics_helper
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid'=>$qqid));
+            $qtitle = $nresult->title;
+            $qtype = $nresult->type;
+            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
             $qother = 'N';
             if (!empty($nresult)) {
                 $qother = $nresult->other;
