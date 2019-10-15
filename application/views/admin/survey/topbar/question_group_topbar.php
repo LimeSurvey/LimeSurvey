@@ -31,7 +31,7 @@ if (count($languages) > 1) {
     foreach ($languages as $language) {
         $survey_preview_buttons[$title.'_'.$language] = [
             'url' => $this->createAbsoluteUrl(
-                "survey/index", 
+                "survey/index",
                 array(
                     'sid' => $sid,
                     'newtest' => "Y",
@@ -67,7 +67,7 @@ if (count($languages) > 1) {
 } else {
     $buttons[$title] = [
         'url' => $this->createAbsoluteUrl(
-            "survey/index", 
+            "survey/index",
             array(
                 'sid' => $sid,
                 'newtest' => "Y",
@@ -92,7 +92,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
         foreach ($languages as $language) {
             $questiongroup_preview_buttons[$title.'_'.$language] = [
                 'url' => $this->createAbsoluteUrl(
-                    "survey/index/action/previewgroup", 
+                    "survey/index/action/previewgroup",
                     array(
                         'sid' => $sid,
                         'gid' => $gid,
@@ -129,7 +129,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
     } else {
         $buttons[$title] = [
             'url' => $this->createAbsoluteUrl(
-                "survey/index/action/previewgroup", 
+                "survey/index/action/previewgroup",
                 array(
                     'sid' => $sid,
                     'gid' => $gid,
@@ -145,6 +145,14 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
 
         array_push($topbar['alignment']['left']['buttons'], $buttons[$title]);
     }
+    $import_group_button = [
+        'id'    => 'import',
+        'url'   => $this->createUrl("admin/questiongroups/sa/importview/surveyid/$sid"),
+        'icon'  => 'icon-import',
+        'name'  => gT("Import a Page"),
+        'class' => ' btn-default ',
+    ];
+    array_push($topbar['alignment']['left']['buttons'], $import_group_button);
 }
 
 // Right Buttons (only shown for survey page)
@@ -225,10 +233,10 @@ $topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['
 // Save and Close Button
 if ($ownsSaveButton == true) {
     $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
-    
+
     $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
     $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
-    
+
     $saveButton = [
         'id' => 'save',
         'name' => gT('Save'),
