@@ -31,6 +31,8 @@ class themeoptions  extends Survey_Common_Action
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
+     * @throws CException
+     * @throws CHttpException
      */
     public function view($id)
     {
@@ -225,6 +227,7 @@ class themeoptions  extends Survey_Common_Action
      * Updates a particular model (globally)
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
+     * @throws CException
      * @throws CHttpException
      */
     public function update($id)
@@ -263,13 +266,20 @@ class themeoptions  extends Survey_Common_Action
         if ($hasOptions) {
             $options = $attributes['options'];
             $optionsJSON = json_decode($options, true);
-            $hasAjaxMode = isset($optionsJSON['ajaxmode']);
-            if ($hasAjaxMode) {
-                $optionsJSON['ajaxmode'] = 'off';
-                $options = json_encode($optionsJSON);
-                $templateConfiguration->setAttribute('options', $options);
-            }
 
+            if ($options !== 'inherit' && $optionsJSON !== null) {
+                $hasAjaxMode = isset($optionsJSON['ajaxmode']);
+                $ajaxModeOn  = ($optionsJSON['ajaxmode'] == 'on');
+
+                if ($hasAjaxMode && $ajaxModeOn) {
+                    $optionsJSON['ajaxmode'] = 'off';
+                    $options = json_encode($optionsJSON);
+                    $templateConfiguration->setAttribute('options', $options);
+                }
+            } else {
+                // todo: If its inherited do something else and set pageOptions to '' cause this is rendering string and this is not good. wee need the
+                // todo: json
+            }
         }
         return $templateConfiguration;
     }
@@ -458,7 +468,7 @@ class themeoptions  extends Survey_Common_Action
 
 
     /**
-     * Import the Theme Condigurations into the database
+     * Import or install the Theme Condigurations into the database
      *
      * @throws Exception
      */
@@ -554,8 +564,10 @@ class themeoptions  extends Survey_Common_Action
      * @param int $sid : survey id
      * @param int $gsid : survey group id
      * @return void
+     * @throws CException
+     * @throws CHttpException
      */
-    private function _updateCommon(TemplateConfiguration $model, $sid = null,$gsid = null)
+    private function _updateCommon(TemplateConfiguration $model, $sid = null, $gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         $oTemplate = Template::model()->getInstance($model->template_name,$sid,$gsid);
