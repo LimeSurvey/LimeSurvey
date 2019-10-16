@@ -71,6 +71,7 @@ export default {
                         id={this.id}
                         class={'dropdown-box ' + this.list.class}
                         aria-labelledby={this.list.arialabelledby}
+                        
                     >
                         {listItems}
                         
