@@ -1,7 +1,4 @@
 import Vue from "vue";
-import keys from "lodash/keys";
-import indexOf from "lodash/indexOf";
-
 export default {
     setTemplateTypes : (state, newValue) => {
         state.templateTypes = newValue;
@@ -49,29 +46,29 @@ export default {
         state.languages = newValue;
     },
     nextLanguage: (state) => {
-        let keyList = keys(state.languages);
-        let currentIndex = indexOf(keyList, state.activeLanguage);
-        if(currentIndex < keyList.length) {
+        let keyList = LS.ld.keys(state.languages);
+        let currentIndex = LS.ld.indexOf(keyList, state.activeLanguage);
+        if((currentIndex+1) < keyList.length) {
             state.activeLanguage = keyList[currentIndex+1];
         }
     },
     previousLanguage: (state) => {
-        let keyList = keys(state.languages);
-        let currentIndex = indexOf(keyList, state.activeLanguage);
+        let keyList = LS.ld.keys(state.languages);
+        let currentIndex = LS.ld.indexOf(keyList, state.activeLanguage);
         if(currentIndex > 0) {
             state.activeLanguage = keyList[currentIndex-1];
         }
     },
     nextTemplateType : (state) => {
-        let keyList = keys(state.templateTypes);
-        let currentIndex = indexOf(keyList, state.currentTemplateType);
-        if(currentIndex < keyList.length) {
+        let keyList = LS.ld.keys(state.templateTypes);
+        let currentIndex = LS.ld.indexOf(keyList, state.currentTemplateType);
+        if((currentIndex+1) < keyList.length) {
             state.currentTemplateType = keyList[currentIndex+1];
         }
     },
     previousTemplateType : (state) => {
-        let keyList = keys(state.templateTypes);
-        let currentIndex = indexOf(keyList, state.currentTemplateType);
+        let keyList = LS.ld.keys(state.templateTypes);
+        let currentIndex = LS.ld.indexOf(keyList, state.currentTemplateType);
         if(currentIndex > 0) {
             state.currentTemplateType = keyList[currentIndex-1];
         }

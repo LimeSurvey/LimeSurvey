@@ -6,8 +6,8 @@ export default {
     languages: templateData.languages,
     survey: {},
     debugMode: false,
-    activeLanguage: 'en',
+    activeLanguage: 'de',
     useHtml: true,
-    currentTemplateType: 'invite',
+    currentTemplateType: 'invitation',
     permissions: templateData.permissions
 }

@@ -4,9 +4,9 @@ import {
 } from '@vue/test-utils'
 import _ from 'lodash';
 import Vuex from 'vuex';
-import he from 'he';
-import Loader from '@/helperComponents/loader.vue';
-import ValidationScreen from '@/components/ValidationScreen.vue';
+
+import Loader from '_@/helperComponents/loader.vue';
+import ValidationScreen from '_@/components/ValidationScreen.vue';
 import mockState from '../mocks/mockState.js';
 import validationHtml from '../mocks/validationHtml.html';
 

@@ -4,11 +4,11 @@ import {
 } from '@vue/test-utils'
 import _ from 'lodash';
 import Vuex from 'vuex';
-import FileSelectModal from '@/components/FileSelectModal.vue'
-import Loader from '@/helperComponents/loader.vue';
+import FileSelectModal from '_@/components/FileSelectModal.vue'
+import Loader from '_@/helperComponents/loader.vue';
 
 import mockState from '../mocks/mockState.js';
-import mutations from '@/storage/mutations.js';
+import mutations from '_@/storage/mutations.js';
 import availableFilesList from '../mocks/availableFilesList.json';
 
 global.LS = {
@@ -53,13 +53,15 @@ global.$ = {
 describe('FileSelectModal.vue', () => {
     let store;
     let wrapper;
-    const testableSetAttachment = jest.fn(mutations.setAttachmentForCurrentLanguage);
-
-    const mockedMutations = _.extend(mutations, {
-        setAttachmentForCurrentLanguage: testableSetAttachment
-    });
-
+    let testableSetAttachment;
+    
+    
     beforeEach(() => {
+        testableSetAttachment = jest.fn(mutations.setAttachementForTypeAndLanguage);
+        const mockedMutations = _.extend(mutations, {
+            setAttachementForTypeAndLanguage: testableSetAttachment
+        });
+    
         store = new Vuex.Store({
                     state: mockState,
                     mutations: mockedMutations,
