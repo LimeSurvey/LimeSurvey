@@ -91,7 +91,7 @@
                         href="<?= $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
                         role="button">
                         <span class="icon-expressionmanagercheck"></span>
-                        <?php eT("Check survey logic for current question page"); ?>
+                        <?php eT("Check survey logic for current survey page"); ?>
                     </a>
                 <?php endif; ?>
 
