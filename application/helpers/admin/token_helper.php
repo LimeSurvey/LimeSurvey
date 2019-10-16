@@ -100,6 +100,8 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
             }
         }
 
+        $fieldsarray["{SID}"] = $iSurveyID;
+
         //mail headers
         $customheaders = array('1' => "X-surveyid: ".$iSurveyID, '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
