@@ -18,6 +18,7 @@ export default {
             <div class="topbarlink">
                 <a
                     href={this.item.url}
+                    target='_blank'
                 >
                     {this.item.icon != '' ? <i class={this.item.icon + ' icon'} /> : '' }
                     {he.decode('&nbsp;')}{this.item.name }{he.decode('&nbsp;')}
