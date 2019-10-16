@@ -1,6 +1,7 @@
 import max from 'lodash/max';
 import keys from 'lodash/keys';
 import merge from 'lodash/merge';
+import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
 import reduce from 'lodash/reduce';
 import foreach from 'lodash/forEach';
@@ -33,14 +34,14 @@ export default {
             }
             return 0;
         },
-        getNewTitleFromCurrent(scaleId) {
+        getNewTitleFromCurrent(scaleId, relativeObject = null) {
             let nonNumericPart = this.baseNonNumericPart;
-            
-            if(this.getLength(this.currentDataSet[scaleId]) > 0) {
-                nonNumericPart = (this.currentDataSet[scaleId][0].title || this.currentDataSet[scaleId][0].code).replace(/[0-9]/g,'');
+            relativeObject = relativeObject || this.currentDataSet[scaleId];
+            if(this.getLength(relativeObject) > 0) {
+                nonNumericPart = (relativeObject[0].title || relativeObject[0].code).replace(/[0-9]/g,'');
             }
 
-            let numericPart = reduce(this.currentDataSet[scaleId],(prev, oDataSet) => {
+            let numericPart = reduce(relativeObject,(prev, oDataSet) => {
                 return max([prev, parseInt((oDataSet.title || oDataSet.code  ).replace(/[^0-9]/g,''))]);
             }, 0) + 1 ;
 
@@ -157,9 +158,16 @@ export default {
             this.$log.log('addToFromQuickAdd triggered on: '+this.$options.name, contents);
             let tempObject = merge({}, this.currentDataSet);
             foreach(contents, (scaleObject, scale) => {
+                const currentKeys = uniqBy(tempObject[scale], this.typeDefininitionKey);
                 foreach(scaleObject, (lngSet, key) => {
                     const newDataSetBlock = this.getTemplate(scale);
-                    newDataSetBlock[this.typeDefininitionKey] = key;
+
+                    if(currentKeys.indexOf(key) != -1) {
+                        newDataSetBlock[this.typeDefininitionKey] = this.getNewTitleFromCurrent(scale, tempObject)
+                    } else {
+                        newDataSetBlock[this.typeDefininitionKey] = key;
+                    }
+
                     foreach(lngSet, (dataSetValue, lngKey) => { 
                         newDataSetBlock[lngKey][this.typeDefininition] = dataSetValue; 
                     });
