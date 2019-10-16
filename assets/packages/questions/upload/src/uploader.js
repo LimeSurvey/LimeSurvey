@@ -143,7 +143,8 @@ var uploadHandler = function (qid, options) {
                 }
 
                 /* If the file being uploaded is not allowed,
-                 * do not upload the file and display an error message ! */
+                 * do not upload the file and display an error message!
+                 */
                 var allowSubmit = allowed_filetypes.reduce(function (col, item) {
                     return col || ext.toLowerCase() === item;
                 }, false);
