@@ -499,19 +499,6 @@ class Survey_Common_Action extends CAction
         }
     }
 
-    private function _tokenbar($aData)
-    {
-        if (isset($aData['token_bar'])) {
-
-            if (isset($aData['token_bar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['token_bar']['closebutton']['url'];
-                $aData['token_bar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $this->getController()->renderPartial("/admin/token/token_bar", $aData);
-        }
-    }
-
     /**
      * Render the save/cancel bar for Organize survey pages/questions
      *

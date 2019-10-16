@@ -39,8 +39,6 @@ $this->_showHeaders($aData, false);
 
                 //Rendered through /admin/responses/browsemenubar_view
                 $this->_browsemenubar($aData);
-                //Rendered through /admin/token/token_bar
-                //$this->_tokenbar($aData);
                 //Rendered through /admin/survey/Question/questionbar_view
                 $this->_organizequestionbar($aData);
 
