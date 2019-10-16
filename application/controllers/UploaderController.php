@@ -115,7 +115,7 @@ class UploaderController extends SurveyController
             Yii::app()->end();
         }
 
-
+        // TODO: Split into two controller methods.
         if ($sMode == "upload") {
             $sTempUploadDir = $tempdir.'/upload/';
             // Check if exists and is writable
