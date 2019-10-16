@@ -604,6 +604,9 @@ class statistics_helper
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid'=>$qqid));
+            $qtitle = $nresult->title;
+            $qtype = $nresult->type;
+            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
             $qother = 'N';
             if (!empty($nresult)) {
                 $qother = $nresult->other;
@@ -1431,7 +1434,7 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
+        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>(int)$qqid);
     }
 
     /**
@@ -2669,7 +2672,7 @@ class statistics_helper
             //noncompleted is NOT checked
             else {
                 //calculate total number of incompleted records
-                $TotalIncomplete = $results - $TotalCompleted;
+                $TotalIncomplete = max(($results - $TotalCompleted), 0); // don't show negative number
 
                 //output
                 if ((incompleteAnsFilterState() != "complete")) {
@@ -3265,7 +3268,8 @@ class statistics_helper
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
+        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
         //PCHART has to be enabled and we need some data
         //
@@ -3476,7 +3480,7 @@ class statistics_helper
                 $aData['charttype'] = (isset($charttype)) ? $charttype : 'Bar';
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
-                $aData['color'] = rand(0, 70);
+                $aData['color'] = 0;
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 $aData['lbl'] = $lbl;
                 ///

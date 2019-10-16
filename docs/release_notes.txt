@@ -34,6 +34,74 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC4 (build 190930) to 4.0.0-RC5 (build 191014) October 14, 2019
+-Fixed issue: user statistics on survey completion is not working (Dominik Vitt)
+-Fixed issue: survey template options not saving (lacrioque)
+-Fixed issue: exception when trying to save participant (Olle Haerstedt)
+-Fixed issue: exception when trying to save participant (Dominik Vitt)
+-Fixed issue: emailtemplates not accessible (lacrioque)
+-Fixed issue: Syntax error in saved list view (Olle Haerstedt)
+-Fixed issue: List questions page display wrong number of questions (Dominik Vitt)
+-Fixed issue: Group conflict between sidebar and question editing (lacrioque)
+-Fixed issue: Captcha sometimes not visible because font file could not be found (Carsten Schmitz)
+-Fixed issue: CDbException when accesing group relation in Answer model (Dominik Vitt)
+-Fixed issue: Both max and min answers can be expressions (Olle Haerstedt)
+-Fixed issue [security] : no CRSF control when delete saved response (Denis Chenu)
+-Fixed issue #15400: RC4 cannot be installed (locally) (Dominik Vitt)
+-Fixed issue #15389: Line breaks at question text get lots at "print answers" overview (Dominik Vitt)
+-Fixed issue #15378: removed color randomization in expert statistics (Patrick Teichmann)
+-Fixed issue #15375: Cannot save text elements and datasecurity settings (survey settings) (Patrick Teichmann)
+-Fixed issue #15372: Collapse button in Structure - wrong text (Olle Haerstedt)
+-Fixed issue #15371: Modal does not get closed once you change the personal info of an admin user (Dominik Vitt)
+-Fixed issue #15369: Ranking with filter didn't save all value (Denis Chenu)
+-Fixed issue #15368: Filtered ranking didn't appear if in same page than the filter (Denis Chenu)
+-Fixed issue #15366: ParseError on data entry page (Dominik Vitt)
+-Fixed issue #15354:  Add User - with non valid email adress causes no screen-message for this error (Eddy Lackmann)
+-Fixed issue #15350: Unable to delete saved reponse (Denis Chenu)
+-Fixed issue #15348: Ranking question does not save answers when array (Olle Haerstedt)
+-Fixed issue #15342: Error message when opening survey quick translate page (Dominik Vitt)
+-Fixed issue #15306: Can't upload file in "Create survey" view (lacrioque)
+-Fixed issue #15162: Images in the answer options of an array are shown on the very left when switch to Arabic on small screens (Dominik Vitt)
+-Fixed issue #15160: Upload button not working (File Upload question type) (Dominik Vitt)
+-Fixed issue #15147: PHP notice message when exporting survey as TSV (Dominik Vitt)
+-Fixed issue #15030: Css and font issue, Arabic is not displayed properly (Dominik Vitt)
+-Fixed issue #15008: Captcha for later use not working in IE11 (Eddy Lackmann)
+-Fixed issue #14628: Array numbers question type doesn't include proper subquestion and answer details at "print answers" overview (Dominik Vitt)
+-FIxed issue #15315: View statistics - expert mode not working (LouisGac)
+-Fixed issue #15367: Run code format (Kai Ravesloot)
+-Fixed issue #15367: Can’t save edited admin user (Kai Ravesloot)
+#Updated translation: Turkish by eddylackmann
+#Updated translation: Thai by Mazi, tomzt
+#Updated translation: Swahili by eddylackmann
+#Updated translation: Slovak by dusanm
+#Updated translation: Russian by vipgroup
+#Updated translation: Romanian by eddylackmann
+#Updated translation: Portuguese (Portugal) by effgarces
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Persian by mdavoodian,  ESH
+#Updated translation: Persian by
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Korean by Mazi
+#Updated translation: Japanese by Mazi
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by vargazsoltivan
+#Updated translation: Hungarian by kkd, cdorin
+#Updated translation: German by marvinthemartian13
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by marvinthemartian13, c_schmitz
+#Updated translation: French (France) by eddylackmann,  b00z00
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Danish by Mikkel
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Chinese (Simplified) by Mazi
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC3 (build 190807) to 4.0.0-RC4 (build 190930) September 30, 2019
 -New feature: define theme editor screens list from theme manifest. (LouisGac)
 -New feature: allow twig tmp files generation from command line to allow GlotPress parsing (LouisGac)

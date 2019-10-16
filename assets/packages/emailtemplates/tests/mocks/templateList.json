@@ -1,0 +1,166 @@
+{
+    "useHtml": true,
+    "templateTypes": {
+        "invitation": {
+            "title": "Invitation",
+            "subject": "Invitation email subject:",
+            "body": "Invitation email body:",
+            "attachments": "Invitation attachments:",
+            "field": {
+                "subject": "surveyls_email_invite_subj",
+                "body": "surveyls_email_invite"
+            },
+            "default": {
+                "subject": "Einladung zu einer Umfrage",
+                "body": "Hallo {FIRSTNAME},&#10;&#10;Hiermit m\u00f6chten wir Sie zu einer Umfrage einladen.&#10;&#10;Der Titel der Umfrage ist &#10;&#039;{SURVEYNAME}&#039;&#10;&#10;&#039;{SURVEYDESCRIPTION}&#039;&#10;&#10;Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.&#10;&#10;Mit freundlichen Gr\u00fc\u00dfen,&#10;&#10;{ADMINNAME} ({ADMINEMAIL})&#10;&#10;----------------------------------------------&#10;Klicken Sie hier um die Umfrage zu starten:&#10;{SURVEYURL}\n\nWenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten m\u00f6chten, klicken Sie bitte auf den folgenden Link:&#10;{OPTOUTURL}\n\nWenn Sie geblockt sind, jedoch wieder teilnehmen und weitere Einladungen erhalten m\u00f6chten, klicken Sie bitte auf den folgenden Link:&#10;{OPTINURL}"
+            }
+        },
+        "reminder": {
+            "title": "Reminder",
+            "subject": "Reminder email subject:",
+            "body": "Reminder email body:",
+            "attachments": "Reminder attachments:",
+            "field": {
+                "subject": "surveyls_email_remind_subj",
+                "body": "surveyls_email_remind"
+            },
+            "default": {
+                "subject": "Erinnerung an die Teilnahme an einer Umfrage",
+                "body": "Hallo {FIRSTNAME},&#10;&#10;Vor kurzem haben wir Sie zu einer Umfrage eingeladen.&#10;&#10;Zu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgef\u00fcllt haben. Wir m\u00f6chten Ihnen mitteilen, dass die Umfrage noch aktiv ist und w\u00fcrden uns freuen, wenn Sie teilnehmen k\u00f6nnten.&#10;&#10;Der Titel der Umfrage ist &#10;&#039;{SURVEYNAME}&#039;&#10;&#10;&#039;{SURVEYDESCRIPTION}&#039;&#10;&#10;Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.&#10;&#10; Mit freundlichen Gr\u00fc\u00dfen,&#10;&#10;{ADMINNAME} ({ADMINEMAIL})&#10;&#10;----------------------------------------------&#10;Klicken Sie hier um die Umfrage zu starten:&#10;{SURVEYURL}\n\nWenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten m\u00f6chten, klicken Sie bitte auf den folgenden Link:&#10;{OPTOUTURL}"
+            }
+        },
+        "confirmation": {
+            "title": "Confirmation",
+            "subject": "Confirmation email subject:",
+            "body": "Confirmation email body:",
+            "attachments": "Confirmation attachments:",
+            "field": {
+                "subject": "surveyls_email_confirm_subj",
+                "body": "surveyls_email_confirm"
+            },
+            "default": {
+                "subject": "Best\u00e4tigung f\u00fcr die Teilnahme an unserer Umfrage",
+                "body": "Hallo {FIRSTNAME},&#10;&#10;Vielen Dank f\u00fcr die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Ihre Antworten wurden bei uns gespeichert.&#10;&#10;Wenn Sie irgendwelche Fragen zu dieser E-Mail haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.&#10;&#10;Mit freundlichen Gr\u00fc\u00dfen,&#10;&#10;{ADMINNAME}"
+            }
+        },
+        "registration": {
+            "title": "Registration",
+            "subject": "Registration email subject:",
+            "body": "Registration email body:",
+            "attachments": "Registration attachments:",
+            "field": {
+                "subject": "surveyls_email_register_subj",
+                "body": "surveyls_email_register"
+            },
+            "default": {
+                "subject": "Registrierungsbest\u00e4tigung f\u00fcr Teilnahmeumfrage",
+                "body": "Hallo {FIRSTNAME},&#10;&#10;Sie (oder jemand, der Ihre E-Mail benutzt hat) haben sich f\u00fcr eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.&#10;&#10;Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.&#10;&#10;{SURVEYURL}&#10;&#10;Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ f\u00fcr diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese E-Mail irrt\u00fcmlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}."
+            }
+        },
+        "admin_notification": {
+            "title": "Basic admin notification",
+            "subject": "Basic admin notification subject:",
+            "body": "Basic admin notification email body:",
+            "attachments": "Basic notification attachments:",
+            "field": {
+                "subject": "email_admin_notification_subj",
+                "body": "email_admin_notification"
+            },
+            "default": {
+                "subject": "Antwortabsendung f\u00fcr Umfrage {SURVEYNAME}",
+                "body": "Hallo,&#10;&#10;Eine neue Antwort wurde f\u00fcr die Umfrage &#039;{SURVEYNAME}&#039; abgegeben.&#10;&#10;Klicken Sie auf den folgenden Link um den Antwortdatensatz anzusehen:&#10;{VIEWRESPONSEURL}&#10;&#10;Klicken Sie auf den folgenden Link um den Antwortdatensatz zu bearbeiten:&#10;{EDITRESPONSEURL}&#10;&#10;Um die Statistik zu sehen, klicken Sie hier:&#10;{STATISTICSURL}"
+            }
+        },
+        "admin_detailed_notification": {
+            "title": "Detailed admin notification",
+            "subject": "Detailed admin notification subject:",
+            "body": "Detailed admin notification email body:",
+            "attachments": "Detailed notification attachments:",
+            "field": {
+                "subject": "email_admin_responses_subj",
+                "body": "email_admin_responses"
+            },
+            "default": {
+                "subject": "Antwortabsendung f\u00fcr Umfrage {SURVEYNAME} mit Ergebnissen",
+                "body": "Hallo,&#10;&#10;Eine neue Antwort wurde f\u00fcr die Umfrage &#039;{SURVEYNAME}&#039; abgegeben.&#10;&#10;Klicken Sie auf den folgenden Link um den Antwortdatensatz anzusehen:&#10;{VIEWRESPONSEURL}&#10;&#10;Klicken Sie auf den folgenden Link um den Antwortdatensatz zu bearbeiten:&#10;{EDITRESPONSEURL}&#10;&#10;Um die Statistik zu sehen, klicken Sie hier:&#10;{STATISTICSURL}&#10;&#10;&#10;Die folgenden Antworten wurden vom Teilnehmer gegeben:&#10;{ANSWERTABLE}"
+            }
+        }
+    },
+    "templateTypeContents": {
+        "de": {
+            "surveyls_survey_id": "157647",
+            "surveyls_language": "de",
+            "surveyls_title": "Intranet-Umfrage",
+            "surveyls_description": "",
+            "surveyls_welcometext": "<p><span style=\"font-size:20px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><strong><span style=\"color:#000000;\"><big>Liebe Kolleginnen und Kollegen,<\/big><\/span><\/strong><\/span><\/span><br \/><br \/><br \/><span style=\"font-size:20px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"color:#000000;\"><big>seit November k\u00f6nnen Sie auf die neue Intranet-Startseite zugreifen, unsere Topnews- und Klartext-Beitr\u00e4ge sowie die anderen Blogs lesen. Uns interessiert: Wie kommt die neue Startseite und ihre einzelnen Blogformate bei Ihnen an? Welche Artikel lesen Sie, welche nicht? W\u00fcnschen Sie<span style=\"color:#000000;\"><big> <\/big><\/span>sich in Zukunft noch andere Themen <\/big><\/span><\/span><\/span><span style=\"font-size:22px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"margin:0px;color:#000000;\">oder Ver\u00e4nderungen an der Seite<\/span><span style=\"color:#000000;\"><big>?<\/big><\/span><\/span><\/span><\/p>\n\n<p><br \/><span style=\"font-size:20px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"color:#000000;\"><big>Deshalb starten wir eine Umfrage. Wir wollen Sie mitnehmen und die Themen finden, die Sie interessieren, <\/big><\/span><\/span><\/span><span style=\"font-size:22px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"margin:0px;color:#000000;\">um die Startseite nach Ihren Bed\u00fcrfnissen anzupassen.<\/span><\/span><\/span><br \/><br \/><span style=\"font-size:20px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"color:#000000;\"><big>Bitte schenken Sie uns maximal <strong>5 Minuten <\/strong>Ihrer Zeit f\u00fcr die Beantwortung der folgenden Fragen.<\/big><\/span><\/span><\/span><br \/><br \/><br \/><span style=\"font-size:20px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><strong><span style=\"color:#000000;\"><big>Beste Gr\u00fc\u00dfe, Team Unternehmenskommunikation<\/big><\/span><\/strong><\/span><\/span><\/p>\n\n<p>\u00a0<\/p>\n",
+            "surveyls_endtext": "<p><big><span style=\"font-size:20px;\"><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"color:#000000;\">Sie haben es geschafft. Mit Ihren Antworten haben Sie einen wertvollen Beitrag zu unserer Arbeit geleistet. Vielen Dank daf\u00fcr.<\/span><\/span><\/span><br \/><br \/><br \/><span style=\"font-size:20px;\"><strong><span style=\"font-family:Arial, Helvetica, sans-serif;\"><span style=\"color:#000000;\">Ihr Team Unternehmenskommunikation<\/span><\/span><\/strong><\/span><\/big><\/p>\n",
+            "surveyls_policy_notice": "",
+            "surveyls_policy_error": "",
+            "surveyls_policy_notice_label": "",
+            "surveyls_url": "",
+            "surveyls_urldescription": "",
+            "surveyls_email_invite_subj": "Einladung zu einer Umfrage",
+            "surveyls_email_invite": "Hallo {FIRSTNAME},<br \/><br \/>\nHiermit m\u00f6chten wir Sie zu einer Umfrage einladen.<br \/><br \/>\nDer Titel der Umfrage ist <br \/>\n'{SURVEYNAME}'<br \/><br \/>\n'{SURVEYDESCRIPTION}'<br \/><br \/>\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.<br \/><br \/>\nMit freundlichen Gr\u00fc\u00dfen,<br \/><br \/>\n{ADMINNAME} ({ADMINEMAIL})<br \/><br \/>\n----------------------------------------------<br \/>\nKlicken Sie hier um die Umfrage zu starten:<br \/>\n{SURVEYURL}<br \/><br \/>\nWenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten m\u00f6chten, klicken Sie bitte auf den folgenden Link:<br \/>\n{OPTOUTURL}<br \/><br \/>\nWenn Sie geblockt sind, jedoch wieder teilnehmen und weitere Einladungen erhalten m\u00f6chten, klicken Sie bitte auf den folgenden Link:<br \/>\n{OPTINURL}",
+            "surveyls_email_remind_subj": "Erinnerung an die Teilnahme an einer Umfrage",
+            "surveyls_email_remind": "Hallo {FIRSTNAME},<br \/><br \/>\nVor kurzem haben wir Sie zu einer Umfrage eingeladen.<br \/><br \/>\nZu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgef\u00fcllt haben. Wir m\u00f6chten Ihnen mitteilen, dass die Umfrage noch aktiv ist und w\u00fcrden uns freuen, wenn Sie teilnehmen k\u00f6nnten.<br \/><br \/>\nDer Titel der Umfrage ist <br \/>\n'{SURVEYNAME}'<br \/><br \/>\n'{SURVEYDESCRIPTION}'<br \/><br \/>\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.<br \/><br \/>\n Mit freundlichen Gr\u00fc\u00dfen,<br \/><br \/>\n{ADMINNAME} ({ADMINEMAIL})<br \/><br \/>\n----------------------------------------------<br \/>\nKlicken Sie hier um die Umfrage zu starten:<br \/>\n{SURVEYURL}<br \/><br \/>\nWenn Sie an diese Umfrage nicht teilnehmen und keine weiteren Erinnerungen erhalten m\u00f6chten, klicken Sie bitte auf den folgenden Link:<br \/>\n{OPTOUTURL}",
+            "surveyls_email_register_subj": "Registrierungsbest\u00e4tigung f\u00fcr Teilnahmeumfrage",
+            "surveyls_email_register": "Hallo {FIRSTNAME},<br \/><br \/>\nSie (oder jemand, der Ihre E-Mail benutzt hat) haben sich f\u00fcr eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.<br \/><br \/>\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.<br \/><br \/>\n{SURVEYURL}<br \/><br \/>\nWenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ f\u00fcr diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese E-Mail irrt\u00fcmlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.",
+            "surveyls_email_confirm_subj": "Best\u00e4tigung f\u00fcr die Teilnahme an unserer Umfrage",
+            "surveyls_email_confirm": "Hallo {FIRSTNAME},<br \/><br \/>\nVielen Dank f\u00fcr die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Ihre Antworten wurden bei uns gespeichert.<br \/><br \/>\nWenn Sie irgendwelche Fragen zu dieser E-Mail haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.<br \/><br \/>\nMit freundlichen Gr\u00fc\u00dfen,<br \/><br \/>\n{ADMINNAME}",
+            "surveyls_dateformat": "1",
+            "surveyls_attributecaptions": "",
+            "email_admin_notification_subj": "Antwortabsendung f\u00fcr Umfrage {SURVEYNAME}",
+            "email_admin_notification": "Hallo,<br \/><br \/>\nEine neue Antwort wurde f\u00fcr die Umfrage '{SURVEYNAME}' abgegeben.<br \/><br \/>\nKlicken Sie auf den folgenden Link um den Antwortdatensatz anzusehen:<br \/>\n{VIEWRESPONSEURL}<br \/><br \/>\nKlicken Sie auf den folgenden Link um den Antwortdatensatz zu bearbeiten:<br \/>\n{EDITRESPONSEURL}<br \/><br \/>\nUm die Statistik zu sehen, klicken Sie hier:<br \/>\n{STATISTICSURL}",
+            "email_admin_responses_subj": "Antwortabsendung f\u00fcr Umfrage {SURVEYNAME} mit Ergebnissen",
+            "email_admin_responses": "Hallo,<br \/><br \/>\nEine neue Antwort wurde f\u00fcr die Umfrage '{SURVEYNAME}' abgegeben.<br \/><br \/>\nKlicken Sie auf den folgenden Link um den Antwortdatensatz anzusehen:<br \/>\n{VIEWRESPONSEURL}<br \/><br \/>\nKlicken Sie auf den folgenden Link um den Antwortdatensatz zu bearbeiten:<br \/>\n{EDITRESPONSEURL}<br \/><br \/>\nUm die Statistik zu sehen, klicken Sie hier:<br \/>\n{STATISTICSURL}<br \/><br \/><br \/>\nDie folgenden Antworten wurden vom Teilnehmer gegeben:<br \/>\n{ANSWERTABLE}",
+            "surveyls_numberformat": "0",
+            "attachments": null
+        },
+        "en": {
+            "surveyls_survey_id": "157647",
+            "surveyls_language": "en",
+            "surveyls_title": "",
+            "surveyls_description": null,
+            "surveyls_welcometext": null,
+            "surveyls_endtext": null,
+            "surveyls_policy_notice": null,
+            "surveyls_policy_error": null,
+            "surveyls_policy_notice_label": null,
+            "surveyls_url": "",
+            "surveyls_urldescription": null,
+            "surveyls_email_invite_subj": "Invitation to participate in a survey",
+            "surveyls_email_invite": "Dear {FIRSTNAME},<br \/>\n<br \/>\nyou have been invited to participate in a survey.<br \/>\n<br \/>\nThe survey is titled:<br \/>\n\"{SURVEYNAME}\"<br \/>\n<br \/>\n\"{SURVEYDESCRIPTION}\"<br \/>\n<br \/>\nTo participate, please click on the link below.<br \/>\n<br \/>\nSincerely,<br \/>\n<br \/>\n{ADMINNAME} ({ADMINEMAIL})<br \/>\n<br \/>\n----------------------------------------------<br \/>\nClick here to do the survey:<br \/>\n{SURVEYURL}<br \/>\n<br \/>\nIf you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br \/>\n{OPTOUTURL}<br \/>\n<br \/>\nIf you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:<br \/>\n{OPTINURL}",
+            "surveyls_email_remind_subj": "Reminder to participate in a survey",
+            "surveyls_email_remind": "Dear {FIRSTNAME},<br \/>\n<br \/>\nRecently we invited you to participate in a survey.<br \/>\n<br \/>\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.<br \/>\n<br \/>\nThe survey is titled:<br \/>\n\"{SURVEYNAME}\"<br \/>\n<br \/>\n\"{SURVEYDESCRIPTION}\"<br \/>\n<br \/>\nTo participate, please click on the link below.<br \/>\n<br \/>\nSincerely,<br \/>\n<br \/>\n{ADMINNAME} ({ADMINEMAIL})<br \/>\n<br \/>\n----------------------------------------------<br \/>\nClick here to do the survey:<br \/>\n{SURVEYURL}<br \/>\n<br \/>\nIf you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br \/>\n{OPTOUTURL}",
+            "surveyls_email_register_subj": "Survey registration confirmation",
+            "surveyls_email_register": "Dear {FIRSTNAME},<br \/>\n<br \/>\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.<br \/>\n<br \/>\nTo complete this survey, click on the following URL:<br \/>\n<br \/>\n{SURVEYURL}<br \/>\n<br \/>\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",
+            "surveyls_email_confirm_subj": "Confirmation of your participation in our survey",
+            "surveyls_email_confirm": "Dear {FIRSTNAME},<br \/>\n<br \/>\nthis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.<br \/>\n<br \/>\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.<br \/>\n<br \/>\nSincerely,<br \/>\n<br \/>\n{ADMINNAME}",
+            "surveyls_dateformat": "9",
+            "surveyls_attributecaptions": null,
+            "email_admin_notification_subj": "Response submission for survey {SURVEYNAME}",
+            "email_admin_notification": "Hello,<br \/>\n<br \/>\nA new response was submitted for your survey '{SURVEYNAME}'.<br \/>\n<br \/>\nClick the following link to see the individual response:<br \/>\n{VIEWRESPONSEURL}<br \/>\n<br \/>\nClick the following link to edit the individual response:<br \/>\n{EDITRESPONSEURL}<br \/>\n<br \/>\nView statistics by clicking here:<br \/>\n{STATISTICSURL}",
+            "email_admin_responses_subj": "Response submission for survey {SURVEYNAME} with results",
+            "email_admin_responses": "Hello,<br \/>\n<br \/>\nA new response was submitted for your survey '{SURVEYNAME}'.<br \/>\n<br \/>\nClick the following link to see the individual response:<br \/>\n{VIEWRESPONSEURL}<br \/>\n<br \/>\nClick the following link to edit the individual response:<br \/>\n{EDITRESPONSEURL}<br \/>\n<br \/>\nView statistics by clicking here:<br \/>\n{STATISTICSURL}<br \/>\n<br \/>\n<br \/>\nThe following answers were given by the participant:<br \/>\n{ANSWERTABLE}",
+            "surveyls_numberformat": "0",
+            "attachments": null
+        }
+    },
+    "permissions": {
+        "read": true,
+        "update": true,
+        "editorpreset": "default"
+    },
+    "languages": {
+        "de": "German",
+        "en": "English"
+    },
+    "success": true,
+    "debug": [
+        [], {
+            "YII_CSRF_TOKEN": "UmQxeDA1WFNMUnhMSjVLem1IeGVvNzRPWTdkYlpkUXYB8mC2kkdLSd2sE9zgZznzX8e-Gls-6njd3xvN0oUBXA==",
+            "iSurveyId": "157647",
+            "sa": "getEmailTemplateData"
+        }
+    ]
+}

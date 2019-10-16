@@ -681,24 +681,55 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if(!array_key_exists($this->emailType,$this->_aAttachementByType)) {
             return;
         }
-        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId,'surveylocale','update'));
+        
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
         if(!empty($oSurveyLanguageSetting->attachments) ) {
-            $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
+            $aAttachments = json_decode($oSurveyLanguageSetting->attachments);
             if(!empty($aAttachments[$attachementType])) {
                 if($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$this->surveyId,$throwError)) {
+                    if ($this->_attachementExists($aAttachment)) {
                         if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                            $this->addAttachment($aAttachment['url']);
+                            $this->addAttachment($aAttachment['path']);
                         }
                     }
                 }
             }
         }
+    }
+
+    private function _attachementExists($aAttachment) 
+    {
+        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId,'surveylocale','update'));
+
+        $isInSurvey = Yii::app()->is_file(
+            $aAttachment['path'],
+            Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$this->surveyId,
+            false
+        );
+
+        $isInGlobal = Yii::app()->is_file(
+            $aAttachment['path'],
+            Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."global",
+            false
+        );
+
+        if ($isInSurvey || $isInGlobal) {
+            return true;
+        }
+
+        if ($throwError && !($isInSurvey || $isInGlobal)) {
+            throw new CErrorEvent(
+                $this, 
+                "FILE_NOT_FOUND", 
+                gT("An attachment could not be found: ".json_encode($aAttachment))
+            );
+        }
+
+        return false;
     }
 
     /**
@@ -756,4 +787,5 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         return $aOutList;
     }
+
 }

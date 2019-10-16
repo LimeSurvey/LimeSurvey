@@ -1,5 +1,6 @@
 <template>
     <div class="container-center scoped-new-emailTemplatesEditor">
+        <x-test id="action::surveyEmailTemplates"></x-test>
         <template v-show="!loading">
             <div class="row" v-if="languageChangerEnabled">
                 <language-selector 
@@ -30,15 +31,15 @@
                     <div class="container-fluid">
                         <div class="row ls-space margin top-5">
                             <div class="ls-flex-row col-12">
-                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}:</label>
+                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}</label>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" />
                             <input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/>
                         </div>
-                        <div class="row ls-space margin top-15">
+                        <div class="row ls-space margin top-15 ckedit-nocollapse">
                             <div class="ls-flex-row col-12">
                                 <div class="ls-flex-item text-left">
-                                    <label class="">{{currentTemplateTypeData.body}}:</label>
+                                    <label class="">{{currentTemplateTypeData.body}}</label>
                                 </div>
                                 <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
                                     <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
@@ -51,8 +52,20 @@
                         <div class="row ls-space margin top-15">
                             <div class="ls-flex-row col-12">
                                 <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
-                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset current"}} </button>
-                                <!-- <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button> -->
+                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset to default"}} </button>
+                                <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add attachment to templates"}} </button>
+                            </div>
+                        </div>
+                        <div class="row ls-space margin top-15" v-if="hasAttachments">
+                            <div class="scoped-simple-carousel">
+                                <div 
+                                    v-for="file in currentLanguageAttachments"
+                                    :key="file.hash"
+                                    class="simple-carousel-item"
+                                >
+                                    <img v-if="file.isImage" class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
+                                    <i v-else :class="'fa '+file.iconClass+' fa-4x'"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,12 +80,13 @@
 <script>
 import Mousetrap from 'mousetrap';
 import he from 'he';
-import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
+import LsEditor from '../../meta/LsCkeditor/src/LsCkEditorInline';
 
 import ValidationScreen from './components/ValidationScreen';
 import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
+import FileSelectModal from './components/FileSelectModal';
 import runAjax from './mixins/runAjax';
 
 export default {
@@ -100,6 +114,12 @@ export default {
     computed: {
         isNewSurvey() {
             return window.EmailTemplateData.isNewSurvey;
+        },
+        currentLanguageAttachments() {
+            return this.$store.state.templateTypeContents[this.$store.state.activeLanguage].attachments;
+        },
+        hasAttachments() {
+            return this.currentLanguageAttachments != null;
         },
         currentSubject: {
             get() { 
@@ -129,7 +149,11 @@ export default {
                 try{    
                     if (this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
                         let descriptor = this.currentTemplateTypeData.field.body;
-                        returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
+                        if(!this.$store.state.useHtml) {
+                            returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
+                        } else {
+                            returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
+                        }
                     }
                 } catch(e) {}
                 return returner;
@@ -255,6 +279,18 @@ ${scriptContent}
             if (this.editorInstance != null) { 
                 this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);
             }
+        },
+        addFileToCurrent() {
+            this.$modal.show(
+                FileSelectModal,
+                {},
+                {
+                    width: '75%',
+                    height: '75%',
+                    scrollable: true,
+                    resizable: false
+                },
+            );
         }
     },
     created(){
@@ -282,7 +318,7 @@ ${scriptContent}
         });
 
         if(!window.EmailTemplateData.isNewSurvey) {
-            $('#save-button').on('click', (e)=>{
+           LS.EventBus.$on('componentFormSubmit', () => {
                 this.submitCurrentState();
             });
         }
@@ -320,6 +356,31 @@ ${scriptContent}
         padding: 0.5rem 0.3rem;
         &.active {
             font-weight:bold;
+        }
+    }
+}
+.scoped-simple-carousel {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    .simple-carousel-item {
+        width: 23%;
+        margin: 1%;
+        height: 6.5em;
+        box-shadow: 1px 3px 5px #cfcfcf;
+        display: inline-flex;
+        align-content: center;
+        &>.scoped-contain-image {
+            max-width: 100%;
+            max-height: 5em;
+            display: block;
+            margin: auto;
+        }
+        &>i.fa {
+            max-height: 5em;
+            display: block;
+            margin: auto;
         }
     }
 }

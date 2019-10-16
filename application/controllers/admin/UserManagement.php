@@ -163,9 +163,9 @@ class UserManagement extends Survey_Common_Action
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
             $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $new_pass . '</b>') : '';
 
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                 'success' => $success,
-                'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => $sReturnMessage], true),
+                'message' => $sReturnMessage
             ]]);
             Yii::app()->end();
         }
@@ -180,11 +180,13 @@ class UserManagement extends Survey_Common_Action
             ]);
         }
         $sMessage = gT('User successfully updated');
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => true,
-                'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', $sMessage, true),
-            ]
+                'message' => $sMessage
+            ],
+            false,
+            false
         ]);
     }
 

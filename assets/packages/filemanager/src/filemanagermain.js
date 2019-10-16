@@ -32,8 +32,11 @@ Vue.mixin({
       }
   }
 });
+
+const surveyId = LS.reparsedParameters().combined.surveyid || null;
+
 const fileManager = new Vue({
   el: '#limeSurveyFileManager',
-  store: store(),
+  store: store(surveyId),
   components: {filemanager: App},
 });

@@ -121,32 +121,27 @@ function init_chart_js_graph_with_datasets($type, $qid) {
 
     var dataDefinition = {
         labels: $labels,
-        datasets: [{
-            label: $qid,
-            data: $grawdata,
-            backgroundColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",0.2)",
-            borderColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",1)",
-            hoverBackgroundColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",1)",
-            pointBackgroundColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",1)",
-
-        }],
     };
 
-    // We need to give a different color to each bar
-    if ($type == 'Bar') {
-        dataDefinition.datasets.backgroundColor = [];
-    	dataDefinition.datasets.borderColor = [];
-        dataDefinition.datasets.hoverBackgroundColor = [];
-        
-        LS.ld.forEach($labels, function(label, key) {
-            var colorIndex = (parseInt(key) + $color);
-            dataDefinition.datasets.backgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.6)");
-            dataDefinition.datasets.borderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
-            dataDefinition.datasets.hoverBackgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.9)");
-        });
-    }
+    dataDefinition.datasets = [{
+        label: $qid,
+        data: $grawdata,
+        backgroundColor: [],
+        borderColor: [],
+        hoverBackgroundColor: [],
+        pointBackgroundColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: []
+    }];
+
+    // different color for each bar
+    LS.ld.forEach($labels, function (label, key) {
+        var colorIndex = (parseInt(key) + $color);
+        dataDefinition.datasets[0].backgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.6)");
+        dataDefinition.datasets[0].borderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
+        dataDefinition.datasets[0].hoverBackgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.9)");
+        dataDefinition.datasets[0].pointHoverBorderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
+    });
 
     console.ls.log("Creating chart with definition: ", dataDefinition);
 

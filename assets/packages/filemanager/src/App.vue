@@ -1,5 +1,6 @@
 <template>
     <div id="filemanager-app" class="row">
+        <x-test id="action::surveyResources"></x-test>
         <div class="container-fluid">
             <nav-bar :loading="loading" @setLoading="setLoading" />
             <div class="row" v-if="!hasError">

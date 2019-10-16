@@ -4,9 +4,6 @@ namespace ls\tests;
 
 /**
  * Tests for the LimeSurvey remote API.
- *
- * @since 2019-04-26
- * @group remote
  */
 class RemoteControlTest extends TestBaseClass
 {
@@ -37,11 +34,9 @@ class RemoteControlTest extends TestBaseClass
 
     /**
      * Test the add_response API call.
-     * @todo Marked as incomplete, cause its failing.
      */
     public function testAddResponse()
     {
-        $this->markTestIncomplete();
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);

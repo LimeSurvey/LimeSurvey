@@ -59,7 +59,6 @@ class ThemeControllerTest extends TestBaseClassWeb
      */
     public function testCopyTemplate()
     {
-        $this->markTestIncomplete();
         \Yii::app()->session['loginID'] = 1;
 
         // TODO: Clean up should be inside teardown()!
@@ -105,10 +104,10 @@ class ThemeControllerTest extends TestBaseClassWeb
     /**
      * @group extendtheme
      * @todo Split up in separate tests.
-     * TODO: Marked as incomplete cause this test is failing
+     * @todo: Marked as incomplete cause this test is failing
      */
     public function testExtendTheme()
-    {   
+    {
         $this->markTestIncomplete();
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
@@ -145,18 +144,18 @@ class ThemeControllerTest extends TestBaseClassWeb
         // Wait for modal to appear.
         sleep(1);
 
-        $this->dismissModal();
+        $w->dismissModal();
 
         try {
             // Click "Theme editor" for vanilla theme.
-            // TODO: Unable to locate element! 
+            // TODO: Unable to locate element!
             $button = $w->findElement(WebDriverBy::id('template_editor_link_vanilla'));
             $button->click();
 
             // Wait for possible modal.
             sleep(1);
 
-            $this->dismissModal();
+            $w->dismissModal();
 
             $button = $w->findElement(WebDriverBy::id('button-extend-vanilla'));
             $button->click();
@@ -213,7 +212,6 @@ class ThemeControllerTest extends TestBaseClassWeb
                 'Theme editor: vanilla_version_renamed',
                 $header->getText() . ' should equal "Theme editor: vanilla_version_renamed"'
             );
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -225,18 +223,26 @@ class ThemeControllerTest extends TestBaseClassWeb
 
     /**
      * Test upload and delete file.
-     * @group themeuploadfile
+     * @todo Don't test two things in one test
+     * @todo Must be run as web user for templatecopy() to work
      */
     public function testUploadFile()
     {
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
+        // Clear flashes.
+        \Yii::app()->session['aFlashMessage'] = [];
+
         // Extend vanilla.
-        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
+        $dummy = new \ls\tests\DummyController('dummyid');
+        $contr = new \themes($dummy);
         $_POST['copydir'] = 'vanilla';
         $_POST['newname'] = 'vanilla_version_1';
+        // NB: Must run as web user to get correct permissions here.
         $contr->templatecopy();
+        //$dummy->lastAction;
+        //$flashes = \Yii::app()->session['aFlashMessage'];
 
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
@@ -259,7 +265,8 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Wait for possible modal to appear.
             sleep(1);
 
-            $this->dismissModal();
+            $w->dismissModal();
+            $w->dismissModal();
 
             // Test upload file.
             $fileInput = $w->findElement(WebDriverBy::id('upload_file'));
@@ -288,7 +295,6 @@ class ThemeControllerTest extends TestBaseClassWeb
             foreach ($files as $file) {
                 $this->assertNotEquals($file->getText(), 'dalahorse.jpg');
             }
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -338,8 +344,8 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Wait for possible modal to appear.
             // Two modals on fresh install.
             sleep(1);
-            $this->dismissModal();
-            $this->dismissModal();
+            $w->dismissModal();
+            $w->dismissModal();
 
             // Extend vanilla.
             $w->clickButton('button-extend-vanilla');
@@ -401,30 +407,12 @@ class ThemeControllerTest extends TestBaseClassWeb
                 'Theme editor: vanilla_test_3',
                 $header->getText() . ' should equal "Theme editor: vanilla_test_3"'
             );
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 self::$testHelper->javaTrace($ex)
             );
-        }
-    }
-
-    /**
-     * Click "Close" on notification modal.
-     * @return void
-     */
-    protected function dismissModal()
-    {
-        try {
-            // If not clickable, dismiss modal.
-            $w = self::$webDriver;
-            $button = $w->findElement(WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn'));
-            $button->click();
-            sleep(1);
-        } catch (\Exception $ex) {
-            // Do nothing.
         }
     }
 }

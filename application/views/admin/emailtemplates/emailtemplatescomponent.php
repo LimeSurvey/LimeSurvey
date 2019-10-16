@@ -8,7 +8,7 @@ window.EmailTemplateData = ".json_encode($jsData).";
     <h3><?php eT("Edit email templates"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
-            <?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'', 'id'=>'emailtemplates'));?>
+            <?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'data-isvuecomponent' => 'true','class'=>'', 'id'=>'emailtemplates'));?>
                 <div id="emailTemplatesEditor"><emailtemplateseditor /></div>
             <?php echo CHtml::endForm() ?>  
         </div>

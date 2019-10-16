@@ -599,7 +599,7 @@ class userstatistics_helper
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
             $qlid = $nresult->parent_qid;
             $qother = $nresult->other;
 
@@ -1960,7 +1960,7 @@ class userstatistics_helper
             //noncompleted is NOT checked
             else {
                 //calculate total number of incompleted records
-                $TotalIncomplete = $results - $TotalCompleted;
+                $TotalIncomplete = max(($results - $TotalCompleted), 0); // don't show negative number
 
                 //output
                 if ((incompleteAnsFilterState() != "complete")) {

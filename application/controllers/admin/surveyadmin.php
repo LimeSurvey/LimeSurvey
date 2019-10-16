@@ -1949,16 +1949,18 @@ class SurveyAdmin extends Survey_Common_Action
 
             // Insert base language into surveys_language_settings table
             $aInsertData = array(
-                'surveyls_survey_id'      => $iNewSurveyid,
-                'surveyls_title'          => $sTitle,
-                'surveyls_description'    => $sDescription,
-                'surveyls_welcometext'    => $sWelcome,
-                'surveyls_language'       => Yii::app()->request->getPost('language'),
-                'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip', ''),
-                'surveyls_endtext'        => Yii::app()->request->getPost('endtext', ''),
-                'surveyls_url'            => Yii::app()->request->getPost('url', ''),
-                'surveyls_dateformat'     => (int) Yii::app()->request->getPost('dateformat'),
-                'surveyls_numberformat'   => (int) Yii::app()->request->getPost('numberformat'),
+                'surveyls_survey_id'           => $iNewSurveyid,
+                'surveyls_title'               => $sTitle,
+                'surveyls_description'         => $sDescription,
+                'surveyls_welcometext'         => $sWelcome,
+                'surveyls_language'            => Yii::app()->request->getPost('language'),
+                'surveyls_urldescription'      => Yii::app()->request->getPost('urldescrip', ''),
+                'surveyls_endtext'             => Yii::app()->request->getPost('endtext', ''),
+                'surveyls_url'                 => Yii::app()->request->getPost('url', ''),
+                'surveyls_dateformat'          => (int)Yii::app()->request->getPost('dateformat'),
+                'surveyls_numberformat'        => (int)Yii::app()->request->getPost('numberformat'),
+                'surveyls_policy_notice'       => App()->request->getPost('surveyls_policy_notice'),
+                'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
             );
 
             $langsettings = new SurveyLanguageSetting;
@@ -2140,11 +2142,13 @@ class SurveyAdmin extends Survey_Common_Action
             $oSurveyLanguageSetting->surveyls_urldescription = $contentChange['endUrlDescription'];
             $oSurveyLanguageSetting->surveyls_dateformat = $contentChange['dateFormat'];
             $oSurveyLanguageSetting->surveyls_numberformat = $contentChange['decimalDivider'];
-            $success[$sLanguage] = $oSurveyLanguageSetting->save();
+            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
 
-        $success = array_reduce($aSuccess, function($carry, $subsuccess){ $carry = $carry && $subsuccess; }, true);
+        $success = array_reduce($aSuccess, function ($carry, $subsuccess) {
+            return $carry = $carry && $subsuccess;
+        }, true);
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
@@ -2248,17 +2252,19 @@ class SurveyAdmin extends Survey_Common_Action
             $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
             $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
             $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
-            $success[$sLanguage] = $oSurveyLanguageSetting->save();
+            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
             unset($oSurveyLanguageSetting);
         }
 
-        $success = array_reduce($aSuccess, function($carry, $subsuccess){ $carry = $carry && $subsuccess; }, true);
+        $success = array_reduce($aSuccess, function ($carry, $subsuccess) {
+            return $carry = $carry && $subsuccess;
+        }, true);
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => [
                 "success" => $success,
-                "message" => ($success ? gT("Successfully stored survey texts") : gT("Error in storing survey texts"))
+                "message" => ($success ? gT("Successfully stored data security texts") : gT("Error in storing data security texts"))
                 ]
             ],
             false,

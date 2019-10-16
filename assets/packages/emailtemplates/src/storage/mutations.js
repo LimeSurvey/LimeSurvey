@@ -26,6 +26,11 @@ export default {
         tmp[state.activeLanguage][descriptor] = newValue;
         state.templateTypeContents = tmp;
     },
+    setAttachmentForCurrentLanguage: (state, newValue) => {
+        let tmp = state.templateTypeContents;
+        tmp[state.activeLanguage]['attachments'] = newValue;
+        state.templateTypeContents = tmp;
+    },
 
     //view controllers
     setCurrentTemplateType : (state, newValue) => {
@@ -67,6 +72,9 @@ export default {
     },
     setSurvey : (state, newValue) => {
         state.survey = newValue;
+    },
+    setUseHtml : (state, newValue) => {
+        state.useHtml = newValue;
     },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;

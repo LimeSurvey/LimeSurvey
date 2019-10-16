@@ -38,7 +38,7 @@ export default {
             ).then(
                 (result) => {
                     this.$log.log(result);
-                    window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-error'));
+                    window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
                     setTimeout(() => {window.location.href = result.data.redirect}, 1500);
                 }, 
                 (reject) => {

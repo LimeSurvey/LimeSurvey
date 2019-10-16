@@ -71,7 +71,7 @@ export default {
                         window.location.href = result.data.redirect;
                     }
                     $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
+                    window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {

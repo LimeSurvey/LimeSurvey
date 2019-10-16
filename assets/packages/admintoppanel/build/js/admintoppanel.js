@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "7cb8d9af90dd330476f9";
+/******/ 	var hotCurrentHash = "2232abfb3738df5aa71e";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1810,7 +1810,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$_post(this.button.dataurl, postdata).then(function (result) {
         _this.$log.log(result);
 
-        window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-error'));
+        window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
         setTimeout(function () {
           window.location.href = result.data.redirect;
         }, 1500);
