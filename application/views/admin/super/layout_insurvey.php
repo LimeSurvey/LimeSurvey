@@ -37,10 +37,6 @@ $this->_showHeaders($aData, false);
 
             echo '<div id="pjax-content" class="col-12">';
 
-                //Rendered through /admin/survey/surveybar_view
-                // $this->_surveybar($aData);
-                //Rendered through /admin/survey/QuestionGroups/questiongroupbar_view
-                // $this->_nquestiongroupbar($aData);
                 //Rendered through /admin/survey/Question/questionbar_view
                 //This function may redirect to the main controller with an error of wrong survey id
                 // $this->_questionbar($aData);
