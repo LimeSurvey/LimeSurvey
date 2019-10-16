@@ -156,16 +156,27 @@ export default {
                         $('#in_survey_common').trigger('lsStopLoading');
                         window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                         this.$log.error(reject);
-                        //setTimeout(()=>{window.location.reload();}, 1500);
+                        setTimeout(()=>{window.location.reload();}, 1500);
                     }
                 )
             } else {
                 window.setTimeout(()=>{LS.EventBus.$emit('loadingFinished')},1);
-                this.noCodeWarning = true;
             }
         },
         checkCanSubmit(){
-            return !LS.ld.isEmpty(this.$store.state.currentQuestion.title);
+            if(!this.$store.getters.hasTitleSet) {
+                this.noCodeWarning = true;
+                return false;
+            }
+            if(!this.$store.getters.hasIndividualSubquestionTitles) {
+                window.LS.notifyFader("Question cannot be stored. Please check the subquestion codes for duplicates.", 'well-lg bg-danger text-center');
+                return false;
+            }
+            if(!this.$store.getters.hasIndividualAnsweroptionCodes) {
+                window.LS.notifyFader("Question cannot be stored. Please check the answer option for duplicates.", 'well-lg bg-danger text-center');
+                return false;
+            }
+            return true;
         },
         questionTypeChangeTriggered(newValueArray) {
             this.$log.log('CHANGE OF TYPE', newValueArray.value);

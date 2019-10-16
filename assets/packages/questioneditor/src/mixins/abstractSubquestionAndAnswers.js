@@ -60,6 +60,7 @@ export default {
             let tmpArray = merge([], this.currentDataSet);
             let newDataSet = merge({}, oDataSet);
             newDataSet[this.uniqueSelector] = this.getRandomId();
+            newDataSet[this.typeDefininitionKey] = this.getNewTitleFromCurrent(scaleId);
             tmpArray[scaleId].push(newDataSet);
             this.currentDataSet = tmpArray;
         },
