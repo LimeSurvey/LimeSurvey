@@ -101,7 +101,7 @@ function isValueInArray(arr, val) {
     return inArray;
 }
 
-var displayUploadedFiles = function (filecount, fieldname, show_title, show_comment) {
+window.displayUploadedFiles = function (filecount, fieldname, show_title, show_comment) {
     var jsonstring = $("#"+fieldname).val();
     var i;
     var display = '';
