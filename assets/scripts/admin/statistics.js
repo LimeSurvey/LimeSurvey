@@ -18,7 +18,7 @@ var COLORS_FOR_SURVEY = new Array('20,130,200', '232,95,51', '34,205,33', '210,2
 var initChartGraph = function (element, type, qid) {
     if (typeof chartjs[qid] == "undefined" || typeof chartjs == "undefined") // typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined"
     {
-        if (type == 'Bar' || type == 'Radar' || type == 'Line') {
+        if (type === 'Bar' || type === 'Radar' || type === 'Line' || type === 'Doughnut' || type === 'Pie' || type === 'PolarArea') {
             init_chart_js_graph_with_datasets(type, qid);
         } else {
             init_chart_js_graph_with_datas(type, qid);
@@ -109,10 +109,6 @@ function init_chart_js_graph_with_datasets($type, $qid) {
     var $grawdata = $statistics.grawdata
     var $color = $canva.data('color');
 
-    $('#legend-no-percent-' + $qid).show();
-    $('#legend-percent-' + $qid).hide();
-    $('#stat-no-answer-' + $qid).hide();
-
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
             window.chartjs[$qid].destroy();
@@ -172,10 +168,6 @@ function init_chart_js_graph_with_datas($type, $qid) {
         }],
     };
     var $max = 0;
-
-    $('#legend-no-percent-' + $qid).hide();
-    $('#legend-percent-' + $qid).show();
-    $('#stat-no-answer-' + $qid).show();
 
     $.each($labels, function($i, $label) {
         $max = $max + parseInt($grawdata[$i]);
@@ -291,7 +283,7 @@ LS.Statistics2 = function () {
             $qid = $(this).data('qid');
 
             // chartjs
-            if ($type == 'Bar' || $type == 'Radar' || $type == 'Line') {
+            if ($type === 'Bar' || $type === 'Radar' || $type === 'Line' || $type === 'Doughnut' || $type === 'Pie' || $type === 'PolarArea') {
                 init_chart_js_graph_with_datasets($type, $qid);
             } else {
                 init_chart_js_graph_with_datas($type, $qid);
