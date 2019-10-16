@@ -31,8 +31,6 @@ class themeoptions  extends Survey_Common_Action
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
-     * @throws CException
-     * @throws CHttpException
      */
     public function view($id)
     {
@@ -128,7 +126,6 @@ class themeoptions  extends Survey_Common_Action
      * @return void
      * @throws CException
      */
-
     public function uninstallMultiple()
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
@@ -349,7 +346,7 @@ class themeoptions  extends Survey_Common_Action
     }
 
     /**
-     * @param $sAdminThemeName
+     * @param string $sAdminThemeName
      */
     public function setAdminTheme($sAdminThemeName)
     {
@@ -515,7 +512,7 @@ class themeoptions  extends Survey_Common_Action
     }
 
     /**
-     * @param $gsid
+     * @param integer $gsid
      * @throws Exception
      */
     public function reset($gsid)
@@ -564,8 +561,6 @@ class themeoptions  extends Survey_Common_Action
      * @param int $sid : survey id
      * @param int $gsid : survey group id
      * @return void
-     * @throws CException
-     * @throws CHttpException
      */
     private function _updateCommon(TemplateConfiguration $model, $sid = null, $gsid = null)
     {
