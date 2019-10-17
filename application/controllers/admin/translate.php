@@ -33,10 +33,10 @@ class translate extends Survey_Common_Action
         //~ }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $tolang = Yii::app()->getRequest()->getParam('lang');
-        //~ if(!empty($tolang) && !in_array($tolang,$oSurvey->getAllLanguages())) {
-            //~ Yii::app()->setFlashMessage(gT("Invalid language"),'warning');
-            //~ $tolang = null;
-        //~ }
+        if(!empty($tolang) && !in_array($tolang,$oSurvey->getAllLanguages())) {
+            Yii::app()->setFlashMessage(gT("Invalid language"),'warning');
+            $tolang = null;
+        }
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
 
@@ -243,16 +243,13 @@ class translate extends Survey_Common_Action
     /**
      * showTranslateAdminmenu() creates the main menu options for the survey translation page
      * @param string $iSurveyID The survey ID
-     * @param string $survey_title
+     * @param string $survey_title @deprecated
      * @param string $tolang
      * @return string
      */
     private function showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
     {
-
-        $adminmenu = "";
-        $adminmenu .= $this->_getLanguageList($iSurveyID, $tolang);
-        return $adminmenu;
+        return $this->_getLanguageList($iSurveyID, $tolang);
     }
 
     /*
@@ -339,7 +336,7 @@ class translate extends Survey_Common_Action
             'select',
             array(
                 'id' => 'translationlanguage',
-                'name' => 'translationlanguage',
+                'name' => 'lang',
                 'class' => 'form-control',
                 'onchange' => "$(this).closest('form').submit();"
             )
@@ -864,12 +861,13 @@ class translate extends Survey_Common_Action
             $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
             $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
             $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
-                                    array(
-                                        'class' => 'col-sm-10',
-                                        'cols' => '75',
-                                        'rows' => $nrows,
-                                    )
-                                );
+                array(
+                    'class' => 'col-sm-10',
+                    'cols' => '75',
+                    'rows' => $nrows,
+                    'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')
+                )
+            );
             $htmleditor_data = array(
                 "edit".$type,
                 $type."_newvalue_".$i,
