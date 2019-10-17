@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.19.1 (build 191009) to 3.19.2 (build 191017) October 17, 2019
+-Fixed issue: {SID} placeholder can't be used in invite_participants API method (Dominik Vitt)
+-Fixed issue: Comparing two string with greater-than operation fails (Olle Haerstedt)
+-Fixed issue: Captcha sometimes not visible because font file could not be found (Carsten Schmitz)
+-Fixed issue [security] #15411: CVE-2019-17660 : XSS in quick edit (#1333) (Denis Chenu)
+-Fixed issue #15389: Line breaks at question text get lots at "print answers" overview (Dominik Vitt)
+-Fixed issue #15368: Filtered ranking didn't appear if in same page than the filter (Denis Chenu)
+-Fixed issue #14628: Array numbers question type doesn't include proper subquestion and answer details at "print answers" overview (Dominik Vitt)
+-Fixed issue #13312: Get all answers for dualscale questions (Jakob Wögerbauer)
+-Fixed issue #13312: Get all answers for dualscale questions (Jakob Wögerbauer)
+#Updated translation: Swedish by vectorson
+#Updated translation: Spanish (Mexican) by sugeek
+#Updated translation: Slovak by dusanm
+#Updated translation: Russian by vipgroup
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by VBraun, jelen1
+#Updated translation: Croatian by dominikvitt, qualitatuvic
+
+
+
 Changes from 3.19.0 (build 191008) to 3.19.1 (build 191009) October 9, 2019
 -Fixed issue: Syntax error in saved list view (Olle Haerstedt)
 
