@@ -3,8 +3,10 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <form name='translatemenu' id='translatemenu' action='<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}");?>' method='get'  class="">
-                <?php echo $adminmenu; ?>
+            <?php
+                echo CHtml::form(array("admin/translate/sa/index",'surveyid'=>$surveyid),'get',array('id'=>'translatemenu','class'=>'form-inline'));
+            ?>
+            <?php echo $adminmenu; ?>
             </form>
         </div>
     </div>

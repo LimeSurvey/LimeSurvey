@@ -24,11 +24,19 @@
 class translate extends Survey_Common_Action
 {
 
-    public function index()
+    public function index($surveyid)
     {
-        $iSurveyID = sanitize_int($_REQUEST['surveyid']);
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        /* existing + read (survey) already checked in Survey_Common_Action : existing use model : then if surveyid is not valid : return a 404 */
+        /* survey : read OK, not survey:tranlations:read … */
+        //~ if(!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
+            //~ throw new CHttpException(401, "401 Unauthorized");
+        //~ }
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $tolang = Yii::app()->getRequest()->getParam('lang');
+        //~ if(!empty($tolang) && !in_array($tolang,$oSurvey->getAllLanguages())) {
+            //~ Yii::app()->setFlashMessage(gT("Invalid language"),'warning');
+            //~ $tolang = null;
+        //~ }
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
 
@@ -57,10 +65,10 @@ class translate extends Survey_Common_Action
         $baselangdesc = $supportedLanguages[$baselang]['description'];
 
         $aData = array(
-            "surveyid" => $iSurveyID,
+            "surveyid" => $surveyid,
             "survey_title" => $survey_title,
             "tolang" => $tolang,
-            "adminmenu" => $this->showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
+            "adminmenu" => $this->showTranslateAdminmenu($surveyid, $survey_title, $tolang)
         );
         $aViewUrls['translateheader_view'][] = $aData;
 
@@ -69,22 +77,22 @@ class translate extends Survey_Common_Action
 
         if (!empty($tolang)) {
             // Only save if the administration user has the correct permission
-            if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')) {
-                $this->_translateSave($iSurveyID, $tolang, $baselang, $tab_names);
+            if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
+                $this->_translateSave($surveyid, $tolang, $baselang, $tab_names);
                 Yii::app()->setFlashMessage(gT("Saved"), 'success');
             }
 
             $tolangdesc = $supportedLanguages[$tolang]['description'];
             // Display tabs with fields to translate, as well as input fields for translated values
-            $aViewUrls = array_merge($aViewUrls, $this->_displayUntranslatedFields($iSurveyID, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc));
+            $aViewUrls = array_merge($aViewUrls, $this->_displayUntranslatedFields($surveyid, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc));
             //var_dump(array_keys($aViewUrls));die();
         }
 
             $aData['sidemenu']['state'] = false;
-            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid; // Close button
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
@@ -242,12 +250,8 @@ class translate extends Survey_Common_Action
     private function showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
     {
 
-        $publicurl = Yii::app()->getConfig('publicurl');
-        $menuitem_url = "{$publicurl}/index.php?sid={$iSurveyID}&newtest=Y&lang=";
-
         $adminmenu = "";
         $adminmenu .= $this->_getLanguageList($iSurveyID, $tolang);
-
         return $adminmenu;
     }
 
@@ -324,59 +328,49 @@ class translate extends Survey_Common_Action
     {
         $language_list = "";
 
-
-
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
-        $language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
-        $language_list .= CHtml::openTag('div', array('class'=>'row'));
-        $language_list .= CHtml::openTag('div', array('class'=>'col-sm-12'));
+        $language_list .= CHtml::openTag('div', array('class'=>'form-group')); // Opens .menubar-right div
 
-        $language_list .= CHtml::tag('label', array('for'=>'translationlanguage', 'class' => 'col-sm-1  control-label'), gT("Translate to").":");
+        $language_list .= CHtml::tag('label', array('for'=>'translationlanguage', 'class' => 'control-label'), gT("Translate to").":");
 
-        $language_list .= CHtml::openTag('div', array('class'=>'col-sm-2'));
         $language_list .= CHtml::openTag(
-                            'select',
-                            array(
-                                'id' => 'translationlanguage',
-                                'name' => 'translationlanguage',
-                                'class' => 'form-control',
-                                'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
-                            )
-                        );
+            'select',
+            array(
+                'id' => 'translationlanguage',
+                'name' => 'translationlanguage',
+                'class' => 'form-control',
+                'onchange' => "$(this).closest('form').submit();"
+            )
+        );
         if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1) {
             $selected = (!isset($tolang)) ? "selected" : "";
-
             $language_list .= CHtml::tag(
-                                'option',
-                                array(
-                                    'selected' => $selected,
-                                    'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/")
-                                ),
-                                gT("Please choose...")
-                            );
+                'option',
+                array(
+                    'selected' => $selected,
+                    'value' => ''
+                ),
+                gT("Please choose...")
+            );
         }
 
         foreach ($langs as $lang) {
             $selected = ($tolang == $lang) ? "selected" : "";
-
             $tolangtext = $supportedLanguages[$lang]['description'];
             $language_list .= CHtml::tag(
-                                'option',
-                                array(
-                                    'selected' => $selected,
-                                    'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$iSurveyID}/lang/{$lang}")
-                                ),
-                                $tolangtext
-                            );
+                'option',
+                array(
+                    'selected' => $selected,
+                    'value' => $lang
+                ),
+                $tolangtext
+            );
         }
 
         $language_list .= CHtml::closeTag('select');
-        $language_list .= CHtml::closeTag('div'); // End of menubar-right
-        $language_list .= CHtml::closeTag('div');
-        $language_list .= CHtml::closeTag('div');
-        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div'); // form-group
 
         return $language_list;
     }
@@ -977,6 +971,7 @@ class translate extends Survey_Common_Action
     public function ajaxtranslategoogleapi()
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
+        /* No Permission check on survey, seems unneded (return a josn with current string posted */
         if (Yii::app()->request->isPostRequest) {
             echo self::translate_google_api();
         }
