@@ -28,9 +28,9 @@ class translate extends Survey_Common_Action
     {
         /* existing + read (survey) already checked in Survey_Common_Action : existing use model : then if surveyid is not valid : return a 404 */
         /* survey : read OK, not survey:tranlations:read … */
-        //~ if(!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
-            //~ throw new CHttpException(401, "401 Unauthorized");
-        //~ }
+        if(!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
+            throw new CHttpException(401, "401 Unauthorized");
+        }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $tolang = Yii::app()->getRequest()->getParam('lang');
         if(!empty($tolang) && !in_array($tolang,$oSurvey->getAllLanguages())) {
@@ -88,11 +88,13 @@ class translate extends Survey_Common_Action
             //var_dump(array_keys($aViewUrls));die();
         }
 
-            $aData['sidemenu']['state'] = false;
-            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
-
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
+        if(Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid; // Close button
+        }
+        /* Unused currently */
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid; // Close button
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
