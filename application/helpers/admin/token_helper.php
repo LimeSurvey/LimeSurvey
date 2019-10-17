@@ -82,6 +82,3 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     }
     return $aResult;
 }
-
-
-
