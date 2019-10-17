@@ -430,8 +430,8 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('sid', 'unique'),// Not in pk
             array('sid', 'numerical', 'integerOnly'=>true,'min'=>1), // max ?
+            array('sid', 'unique'),// Not in pk
             array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default', 'value'=>date("Y-m-d")),
             array('startdate', 'default', 'value'=>null),
