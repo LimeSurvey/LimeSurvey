@@ -33,7 +33,6 @@ foreach ($aQuestionTypeList as $questionType) {
     } elseif ($imageName == "*") {
         $imageName = "EQUATION";
     }
-
         $questionType['type'] = $questionType['question_type'];
     $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
