@@ -1,7 +1,8 @@
 //Import vue and the Component
 import {
     shallowMount,
-    createLocalVue
+    createLocalVue,
+    config
 } from '@vue/test-utils';
 import _ from 'lodash';
 import Vuex from 'vuex';
@@ -13,6 +14,8 @@ import VueXState from '../../src/storage/state.js';
 import VueXMutations from '../../src/storage/mutations.js';
 import MockActions from '../mocks/mockActions.js';
 import FailingMockActions from '../mocks/failingMockActions.js';
+
+config.stubs['x-test'] = true;
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

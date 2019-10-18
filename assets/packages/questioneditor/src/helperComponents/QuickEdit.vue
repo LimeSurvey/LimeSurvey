@@ -25,7 +25,12 @@ export default {
         },
         scales(){
             return keys(this.current);
-        }
+        },
+        baseNonNumericPart() {
+            return this.type == 'answeroptions' 
+                ? window.QuestionEditData.baseSQACode.subquestions 
+                : window.QuestionEditData.baseSQACode.answeroptions
+        },
     },
     watch: {
         delimiter(newDelimiter, oldDelimiter) {
@@ -46,7 +51,7 @@ export default {
                 
                 if(blocks.length == 1) {               
                     newBlock[this.$store.state.activeLanguage] = blocks[0];     
-                    newBlockObject[this.baseNonNumericPart+String(rowCount).padStart(2,'0')] = newBlock;
+                    newBlockObject[this.baseNonNumericPart+String((rowCount)).padStart(2,'0')] = newBlock;
                     return;
                 } 
 
@@ -111,7 +116,8 @@ export default {
             this.$emit('close');
         },
         addToCurrent() {
-            this.$store.dispatch('addToCurrentFromQuickEdit', {type: this.type, payload: this.parsed});
+            
+            //this.$store.dispatch('addToFromQuickAdd', {type: this.type, payload: toBeAdded});
             this.$emit('modalEvent', {target: this.type, method: 'addToFromQuickAdd', content: this.parsed});
             this.$emit('close');
         },

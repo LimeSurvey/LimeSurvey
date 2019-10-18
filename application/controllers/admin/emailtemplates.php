@@ -74,6 +74,7 @@ class emailtemplates extends Survey_Common_Action
         array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, &$aTemplateTypeContents, $aAllLanguages, $oSurvey) {
             $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
             $aTemplateTypeContents[$lngString] = $oSurvey->languagesettings[$lngString];
+            $aTemplateTypeContents[$lngString]['attachments'] = json_decode($aTemplateTypeContents[$lngString]['attachments']);
         });
         
         $aTemplateTypes = $this->getTabTypeArray($iSurveyId);

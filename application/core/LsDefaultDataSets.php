@@ -1180,7 +1180,6 @@ class LsDefaultDataSets
     {
         $aBaseQuestionThemes = [
             array(
-                "id" => 1,
                 "name" => "5pointchoice",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/5pointchoice",
@@ -1205,7 +1204,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"choice-5-pt-radio\"}",
             ),
             array(
-                "id" => 2,
                 "name" => "arrays/10point",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/10point",
@@ -1230,7 +1228,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-10-pt\"}",
             ),
             array(
-                "id" => 3,
                 "name" => "arrays/5point",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/5point",
@@ -1255,7 +1252,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-5-pt\"}",
             ),
             array(
-                "id" => 4,
                 "name" => "arrays/array",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/array",
@@ -1280,7 +1276,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-row\"}",
             ),
             array(
-                "id" => 5,
                 "name" => "arrays/column",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/column",
@@ -1305,7 +1300,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-column\"}",
             ),
             array(
-                "id" => 6,
                 "name" => "arrays/dualscale",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/dualscale",
@@ -1330,7 +1324,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-duel-scale\"}",
             ),
             array(
-                "id" => 7,
                 "name" => "arrays/increasesamedecrease",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/increasesamedecrease",
@@ -1355,7 +1348,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-increase-same-decrease\"}",
             ),
             array(
-                "id" => 8,
                 "name" => "arrays/multiflexi",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/multiflexi",
@@ -1380,7 +1372,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"2\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-multi-flexi\"}",
             ),
             array(
-                "id" => 9,
                 "name" => "arrays/texts",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/texts",
@@ -1405,7 +1396,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"2\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"array-multi-flexi-text\"}",
             ),
             array(
-                "id" => 10,
                 "name" => "arrays/yesnouncertain",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/arrays/yesnouncertain",
@@ -1430,7 +1420,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-yes-uncertain-no\"}",
             ),
             array(
-                "id" => 11,
                 "name" => "boilerplate",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/boilerplate",
@@ -1455,7 +1444,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"boilerplate\"}",
             ),
             array(
-                "id" => 12,
                 "name" => "date",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/date",
@@ -1480,7 +1468,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"date\"}",
             ),
             array(
-                "id" => 13,
                 "name" => "equation",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/equation",
@@ -1505,7 +1492,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"equation\"}",
             ),
             array(
-                "id" => 14,
                 "name" => "file_upload",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/file_upload",
@@ -1530,7 +1516,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"upload-files\"}",
             ),
             array(
-                "id" => 15,
                 "name" => "gender",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/gender",
@@ -1555,7 +1540,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"gender\"}",
             ),
             array(
-                "id" => 16,
                 "name" => "hugefreetext",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/hugefreetext",
@@ -1580,7 +1564,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"text-huge\"}",
             ),
             array(
-                "id" => 17,
                 "name" => "language",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/language",
@@ -1605,7 +1588,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"0\",\"assessable\":\"0\",\"class\":\"language\"}",
             ),
             array(
-                "id" => 18,
                 "name" => "listradio",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/listradio",
@@ -1630,7 +1612,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"list-radio\"}",
             ),
             array(
-                "id" => 19,
                 "name" => "list_dropdown",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/list_dropdown",
@@ -1655,7 +1636,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"list-dropdown\"}",
             ),
             array(
-                "id" => 20,
                 "name" => "list_with_comment",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/list_with_comment",
@@ -1680,7 +1660,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"list-with-comment\"}",
             ),
             array(
-                "id" => 21,
                 "name" => "longfreetext",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/longfreetext",
@@ -1705,7 +1684,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"text-long\"}",
             ),
             array(
-                "id" => 22,
                 "name" => "multiplechoice",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/multiplechoice",
@@ -1730,7 +1708,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"multiple-opt\"}",
             ),
             array(
-                "id" => 23,
                 "name" => "multiplechoice_with_comments",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/multiplechoice_with_comments",
@@ -1755,7 +1732,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"multiple-opt-comments\"}",
             ),
             array(
-                "id" => 24,
                 "name" => "multiplenumeric",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/multiplenumeric",
@@ -1780,7 +1756,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"numeric-multi\"}",
             ),
             array(
-                "id" => 25,
                 "name" => "multipleshorttext",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/multipleshorttext",
@@ -1805,7 +1780,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"multiple-short-txt\"}",
             ),
             array(
-                "id" => 26,
                 "name" => "numerical",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/numerical",
@@ -1830,7 +1804,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"numeric\"}",
             ),
             array(
-                "id" => 27,
                 "name" => "ranking",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/ranking",
@@ -1855,7 +1828,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"ranking\"}",
             ),
             array(
-                "id" => 28,
                 "name" => "shortfreetext",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/shortfreetext",
@@ -1880,7 +1852,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"text-short\"}",
             ),
             array(
-                "id" => 29,
                 "name" => "yesno",
                 "visible" => "Y",
                 "xml_path" => "application/views/survey/questions/answer/yesno",
@@ -1905,7 +1876,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"yes-no\"}",
             ),
             array(
-                "id" => 30,
                 "name" => "bootstrap_buttons",
                 "visible" => "Y",
                 "xml_path" => "themes/question/bootstrap_buttons/survey/questions/answer/listradio",
@@ -1930,7 +1900,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"list-radio\"}",
             ),
             array(
-                "id" => 31,
                 "name" => "bootstrap_buttons",
                 "visible" => "Y",
                 "xml_path" => "themes/question/bootstrap_buttons/survey/questions/answer/multiplechoice",
@@ -1955,7 +1924,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"multiple-opt\"}",
             ),
             array(
-                "id" => 32,
                 "name" => "browserdetect",
                 "visible" => "Y",
                 "xml_path" => "themes/question/browserdetect/survey/questions/answer/shortfreetext",
@@ -1980,7 +1948,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"text-short\"}",
             ),
             array(
-                "id" => 33,
                 "name" => "image_select-listradio",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select/survey/questions/answer/listradio",
@@ -2005,7 +1972,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"0\",\"answerscales\":\"1\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"list-radio\"}",
             ),
             array(
-                "id" => 34,
                 "name" => "image_select-multiplechoice",
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select/survey/questions/answer/multiplechoice",
@@ -2030,7 +1996,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"1\",\"class\":\"multiple-opt\"}",
             ),
             array(
-                "id" => 35,
                 "name" => "inputondemand",
                 "visible" => "Y",
                 "xml_path" => "themes/question/inputondemand/survey/questions/answer/multipleshorttext",
@@ -2055,7 +2020,6 @@ class LsDefaultDataSets
                 "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"0\",\"hasdefaultvalues\":\"1\",\"assessable\":\"0\",\"class\":\"multiple-short-txt\"}",
             ),
             array(
-                "id" => 36,
                 "name" => "ranking_advanced",
                 "visible" => "Y",
                 "xml_path" => "themes/question/ranking_advanced/survey/questions/answer/ranking",

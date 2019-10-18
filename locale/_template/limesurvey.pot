@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-10-08 08:17:02+00:00\n"
+"POT-Creation-Date: 2019-10-17 09:19:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -452,7 +452,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2407
 #: application/controllers/admin/tokens.php:2474
 #: application/controllers/admin/tokens.php:2514
-#: application/controllers/admin/translate.php:84
+#: application/controllers/admin/translate.php:92
 #: application/helpers/admin/statistics_helper.php:2363
 #: application/helpers/admin/statistics_helper.php:2373
 #: application/helpers/admin/statistics_helper.php:2413
@@ -617,7 +617,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:229
 #: application/controllers/UploaderController.php:257
-#: application/helpers/remotecontrol/remotecontrol_handle.php:2787
+#: application/helpers/remotecontrol/remotecontrol_handle.php:2802
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -765,7 +765,7 @@ msgid "Validate quota"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:110
-#: application/controllers/admin/translate.php:570
+#: application/controllers/admin/translate.php:563
 msgid "Invitation email subject"
 msgstr ""
 
@@ -774,7 +774,7 @@ msgid "Invitation email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:120
-#: application/controllers/admin/translate.php:600
+#: application/controllers/admin/translate.php:593
 msgid "Reminder email subject"
 msgstr ""
 
@@ -783,8 +783,8 @@ msgid "Reminder email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:130
-#: application/controllers/admin/translate.php:630
-#: application/controllers/admin/translate.php:690
+#: application/controllers/admin/translate.php:623
+#: application/controllers/admin/translate.php:683
 msgid "Confirmation email subject"
 msgstr ""
 
@@ -793,7 +793,7 @@ msgid "Confirmation email body"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:140
-#: application/controllers/admin/translate.php:660
+#: application/controllers/admin/translate.php:653
 msgid "Registration email subject"
 msgstr ""
 
@@ -5135,11 +5135,15 @@ msgstr ""
 msgid "A survey participants table has been created for this survey and the old tokens were imported."
 msgstr ""
 
-#: application/controllers/admin/translate.php:74
+#: application/controllers/admin/translate.php:37
+msgid "Invalid language"
+msgstr ""
+
+#: application/controllers/admin/translate.php:82
 msgid "Saved"
 msgstr ""
 
-#: application/controllers/admin/translate.php:269
+#: application/controllers/admin/translate.php:272
 #: application/core/LsDefaultDataSets.php:840
 #: application/core/Survey_Common_Action.php:699
 #: application/views/admin/survey/Question/questionbar_view.php:19
@@ -5151,7 +5155,7 @@ msgstr ""
 msgid "Preview survey"
 msgstr ""
 
-#: application/controllers/admin/translate.php:269
+#: application/controllers/admin/translate.php:272
 #: application/core/Survey_Common_Action.php:701
 #: application/views/admin/survey/Question/questionbar_view.php:21
 #: application/views/admin/survey/Question/questionbar_view.php:81
@@ -5162,15 +5166,15 @@ msgstr ""
 msgid "Execute survey"
 msgstr ""
 
-#: application/controllers/admin/translate.php:300
+#: application/controllers/admin/translate.php:303
 msgid "Please select a language:"
 msgstr ""
 
-#: application/controllers/admin/translate.php:336
+#: application/controllers/admin/translate.php:335
 msgid "Translate to"
 msgstr ""
 
-#: application/controllers/admin/translate.php:357
+#: application/controllers/admin/translate.php:354
 #: application/helpers/common_helper.php:246
 #: application/helpers/common_helper.php:716
 #: application/helpers/common_helper.php:779
@@ -5186,11 +5190,11 @@ msgstr ""
 msgid "Please choose..."
 msgstr ""
 
-#: application/controllers/admin/translate.php:419
+#: application/controllers/admin/translate.php:412
 msgid "Survey title and description"
 msgstr ""
 
-#: application/controllers/admin/translate.php:434
+#: application/controllers/admin/translate.php:427
 #: application/helpers/expressions/em_manager_helper.php:9483
 #: application/models/Boxes.php:59
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:57
@@ -5208,11 +5212,11 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: application/controllers/admin/translate.php:449
+#: application/controllers/admin/translate.php:442
 msgid "Welcome and end text"
 msgstr ""
 
-#: application/controllers/admin/translate.php:464
+#: application/controllers/admin/translate.php:457
 #: application/helpers/expressions/em_manager_helper.php:9497
 #: application/views/admin/survey/editLocalSettings_view.php:128
 #: application/views/admin/survey/editLocalSettings_view.php:132
@@ -5222,18 +5226,18 @@ msgstr ""
 msgid "End message:"
 msgstr ""
 
-#: application/controllers/admin/translate.php:479
+#: application/controllers/admin/translate.php:472
 #: application/views/admin/survey/QuestionGroups/import_view.php:24
 #: application/views/admin/survey/copySurvey_view.php:30
 #: application/views/admin/survey/importSurvey_view.php:85
 msgid "Question groups"
 msgstr ""
 
-#: application/controllers/admin/translate.php:494
+#: application/controllers/admin/translate.php:487
 msgid "Group description"
 msgstr ""
 
-#: application/controllers/admin/translate.php:509
+#: application/controllers/admin/translate.php:502
 #: application/views/admin/conditions/includes/form_editconditions_header.php:126
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:91
 #: application/views/admin/survey/Question/import_view.php:16
@@ -5243,11 +5247,11 @@ msgstr ""
 msgid "Questions"
 msgstr ""
 
-#: application/controllers/admin/translate.php:524
+#: application/controllers/admin/translate.php:517
 msgid "Question help"
 msgstr ""
 
-#: application/controllers/admin/translate.php:539
+#: application/controllers/admin/translate.php:532
 #: application/views/admin/survey/Question/import_view.php:17
 #: application/views/admin/survey/QuestionGroups/import_view.php:26
 #: application/views/admin/survey/copySurvey_view.php:35
@@ -5255,28 +5259,28 @@ msgstr ""
 msgid "Subquestions"
 msgstr ""
 
-#: application/controllers/admin/translate.php:555
+#: application/controllers/admin/translate.php:548
 msgid "Answer options"
 msgstr ""
 
-#: application/controllers/admin/translate.php:585
+#: application/controllers/admin/translate.php:578
 msgid "Invitation email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:615
+#: application/controllers/admin/translate.php:608
 msgid "Reminder email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:645
-#: application/controllers/admin/translate.php:705
+#: application/controllers/admin/translate.php:638
+#: application/controllers/admin/translate.php:698
 msgid "Confirmation email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:675
+#: application/controllers/admin/translate.php:668
 msgid "Registration email"
 msgstr ""
 
-#: application/controllers/admin/translate.php:813
+#: application/controllers/admin/translate.php:806
 msgid "Question code / ID"
 msgstr ""
 
@@ -20007,7 +20011,7 @@ msgid "Detailed Error"
 msgstr ""
 
 #: application/views/admin/translate/translateheader_view.php:2
-#: application/views/admin/translate/translateheader_view.php:15
+#: application/views/admin/translate/translateheader_view.php:16
 msgid "Translate survey"
 msgstr ""
 

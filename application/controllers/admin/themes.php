@@ -1081,12 +1081,12 @@ class themes extends Survey_Common_Action
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
                     'QUESTIONHELP' => $this->getController()->renderPartial('/survey/questions/question_help/questionhelp', array('classes' => '', 'questionHelp'=>gT("This is some helpful text.")), true),
-                    'QUESTION_MANDATORY' => App()->twigRenderer->renderPartial('/survey/questions/question_help/asterisk', array()),
+                    'QUESTION_MANDATORY' => App()->twigRenderer->renderPartial('/survey/questions/question_help/asterisk.twig', array()),
                     'QUESTION_MAN_CLASS' => ' mandatory',
                     'QUESTION_ESSENTIALS' => 'id="question1"',
                     'QUESTION_CLASS' => 'list-radio',
                     'QUESTION_NUMBER' => '1',
-                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/questions/question_help/em-tip', array(
+                    'QUESTION_VALID_MESSAGE'=>App()->twigRenderer->renderPartial('/survey/questions/question_help/em_tip.twig', array(
                         'coreId'=>"vmsg_4496_num_answers",
                         'coreClass'=>"em-tip ", // Unsure for this one
                         'vtip'=>gT('Hint when response is valid')

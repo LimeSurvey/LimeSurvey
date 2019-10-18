@@ -25,7 +25,6 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     if(!in_array($sType,['invite','remind','register','confirm'])) {
         throw new Exception('Invalid email type');
     }
-    //Yii::app()->loadHelper('common'); (for dateShift ?)
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $mail = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
     $mail->setSurvey($iSurveyID);
@@ -82,6 +81,3 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     }
     return $aResult;
 }
-
-
-

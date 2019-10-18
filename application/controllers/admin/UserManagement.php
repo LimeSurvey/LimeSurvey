@@ -806,8 +806,6 @@ class UserManagement extends Survey_Common_Action
         $this->_renderWrappedTemplate('usermanagement', 'importfromjson', ['result' => $result]);
     }
 
-    ##### PRIVATE METHODS #####
-
     /**
      * Resets the password for one user
      *
@@ -815,7 +813,7 @@ class UserManagement extends Survey_Common_Action
      * @param boolean $sendMail Send a mail to the user
      * @return array [success, uid, username, password]
      */
-    private function resetLoginData(&$oUser, $sendMail = false)
+    public function resetLoginData(&$oUser, $sendMail = false)
     {
         $newPassword = $this->getRandomPassword(8);
         $oUser->setPassword($newPassword);
@@ -830,7 +828,7 @@ class UserManagement extends Survey_Common_Action
         ];
     }
 
-    private function _createNewUser($aUser, $sendMail = true)
+    public function _createNewUser($aUser, $sendMail = true)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
@@ -892,10 +890,20 @@ class UserManagement extends Survey_Common_Action
      * @param $aUser
      * @return object
      */
-    private function updateAdminUser($aUser)
+    public function updateAdminUser($aUser)
     {
         $oUser = User::model()->findByPk($aUser['uid']);
+        //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
+        //Therefore we need to make sure no non-superadmin can modify superadmin accounts
+        //Since this should NEVER be the case without hacking the software, this will silently just do nothing.
+        if( !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id) 
+            && Permission::model()->hasGlobalPermission('superadmin', 'read', $oUser->uid)
+        ) {
+            throw new CException("This action is not allowed, and should never happen", 500);
+        }
+
         $oUser->setAttributes($aUser);
+        $oUser->setPassword($oUser->password);
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
 
@@ -964,13 +972,15 @@ class UserManagement extends Survey_Common_Action
 
     }
 
+    ##### protected METHODS #####
+
     /**
      * Filters special characters to simple ones
      *
      * @param string $in String that needs to be changed
      * @return string
      */
-    private function filterSpecials($in)
+    protected function filterSpecials($in)
     {
         $was = array("ä", "ö", "ü", "Ä", "Ö", "Ü", "ß", "é", "â", " ");
         $wie = array("ae", "oe", "ue", "Ae", "Oe", "Ue", "ss", 'e', "a", ".");
@@ -983,7 +993,7 @@ class UserManagement extends Survey_Common_Action
      *
      * @return string
      */
-    private function getRandomString()
+    protected function getRandomString()
     {
         if (is_callable('openssl_random_pseudo_bytes')) {
             $uiq = openssl_random_pseudo_bytes(128);
@@ -1001,7 +1011,7 @@ class UserManagement extends Survey_Common_Action
      * @param string $prefix der Präfix
      * @return string
      */
-    private function getRandomUsername($prefix)
+    protected function getRandomUsername($prefix)
     {
         do {
             $rand = $this->getRandomString();
@@ -1017,7 +1027,7 @@ class UserManagement extends Survey_Common_Action
      * @param integer $length Length of the password
      * @return string
      */
-    private function getRandomPassword($length = 8)
+    protected function getRandomPassword($length = 8)
     {
         $oGetPasswordEvent = new PluginEvent('createRandomPassword');
         $oGetPasswordEvent->set('targetSize', $length);
@@ -1034,7 +1044,7 @@ class UserManagement extends Survey_Common_Action
      * @param array $aPermissionArray
      * @return array
      */
-    private function applyPermissionFromArray($iUserId, $aPermissionArray)
+    protected function applyPermissionFromArray($iUserId, $aPermissionArray)
     {
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('uid', $iUserId);
@@ -1075,7 +1085,7 @@ class UserManagement extends Survey_Common_Action
      * @param array $entity_ids
      * @return array
      */
-    private function applyPermissionTemplate($oUser, $permissionclass, $entity_ids = [])
+    protected function applyPermissionTemplate($oUser, $permissionclass, $entity_ids = [])
     {
         if ($permissionclass == 'Gruppenmanager' && empty($entity_ids)) {
             return [
@@ -1110,7 +1120,7 @@ class UserManagement extends Survey_Common_Action
      * @param string $permissionclass
      * @return array
      */
-    private function applyGlobalPermissionTemplate($oUser, $permissionclass)
+    protected function applyGlobalPermissionTemplate($oUser, $permissionclass)
     {
         $permissionTemplate = []; //PermissionTemplates::getPermissionTemplateBlock($permissionclass, $oUser->uid);
         $check = [];
@@ -1133,7 +1143,7 @@ class UserManagement extends Survey_Common_Action
      * @param array $entity_ids
      * @return array
      */
-    private function applySurveyPermissionTemplate($oUser, $permissionclass, $entity_ids)
+    protected function applySurveyPermissionTemplate($oUser, $permissionclass, $entity_ids)
     {
         $permissionTemplate = []; //PermissionTemplates::getPermissionTemplateBlock($permissionclass, $oUser->uid);
         $check = [];

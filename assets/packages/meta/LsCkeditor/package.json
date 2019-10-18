@@ -26,6 +26,7 @@
     "@ckeditor/ckeditor5-table": "^13.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^13.0.1",
     "@ckeditor/ckeditor5-ui": "^13.0.0",
+    "core-js": "2",
     "he": "^1.2.0"
   },
   "devDependencies": {
