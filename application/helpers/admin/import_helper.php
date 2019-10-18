@@ -85,6 +85,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $aDataL10n['group_name'] = $insertdata['group_name'];
             $aDataL10n['description'] = $insertdata['description'];
             $aDataL10n['language'] = $insertdata['language'];
+            $aDataL10n['grelevance'] = $insertdata['grelevance'];
             unset($insertdata['group_name']);
             unset($insertdata['description']);
             unset($insertdata['language']);
@@ -94,7 +95,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $questionGroup->sid = $insertdata['sid'];
             $questionGroup->group_order = $insertdata['group_order'];
             $questionGroup->randomization_group = $insertdata['randomization_group'];
-            $questionGroup->grelevance = $insertdata['grelevance'];
             if (!$questionGroup->save()) {
                 safeDie(gT("Error").": Failed to insert data [3]<br />");
             }
