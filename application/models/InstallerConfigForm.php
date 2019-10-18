@@ -411,10 +411,10 @@ class InstallerConfigForm extends CFormModel
             $this->db = new DbConnection($sDsn, $this->dbuser, $this->dbpwd);
             if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
                 $this->db->emulatePrepare = true;
-                $this->setMySQLDefaultEngine($this->dbengine);
             } else {
                 $this->db->emulatePrepare = null;
             }
+            $this->setMySQLDefaultEngine($this->dbengine);
             $this->db->tablePrefix = $this->dbprefix;
 
         } catch (\Exception $e) {
