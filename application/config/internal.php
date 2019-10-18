@@ -324,6 +324,7 @@ $internalConfig = array(
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include', 'macro', 'import'),
                 'filters' => array(
+                    'default',
                     'escape',
                     'raw',
                     't',
