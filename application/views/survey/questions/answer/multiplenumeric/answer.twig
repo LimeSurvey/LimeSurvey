@@ -27,14 +27,18 @@
         {% endif %}
     {% endblock %}
     {% block dynamic %}
-        {{ include(dynamicTemplate, {
-            'id' : id,
-            'sumRemainingEqn' : sumRemainingEqn,
-            'sumEqn' : sumEqn,
-            'sLabelWidth' : sLabelWidth,
-            'sInputContainerWidth' : sInputContainerWidth,
-            'prefix' : prefix,
-            'suffix' : suffix,
-        })}}
+        {{ 
+            include(dynamicTemplate|default("/survey/questions/answer/multiplenumeric/rows/dynamic.twig"), 
+                {
+                'id' : id,
+                'sumRemainingEqn' : sumRemainingEqn,
+                'sumEqn' : sumEqn,
+                'sLabelWidth' : sLabelWidth,
+                'sInputContainerWidth' : sInputContainerWidth,
+                'prefix' : prefix,
+                'suffix' : suffix,
+                }
+            )
+        }}
     {% endblock %}
 </ul>
