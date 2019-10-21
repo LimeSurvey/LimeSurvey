@@ -644,12 +644,14 @@ class statistics_helper
 
                 $mfield = substr($rt, 1, strlen($rt));
 
-                //Text questions either have an answer, or they don't. There's no other way of quantising the results.
-                // So, instead of building an array of predefined answers like we do with lists & other types,
-                // we instead create two "types" of possible answer - either there is a response.. or there isn't.
-                // This question type then can provide a % of the question answered in the summary.
-                $alist[] = array("Answer", gT("Answer"), $mfield);
-                $alist[] = array("NoAnswer", gT("No answer"), $mfield);
+            //Text questions either have an answer, or they don't. There's no other way of quantising the results.
+            // So, instead of building an array of predefined answers like we do with lists & other types,
+            // we instead create two "types" of possible answer - either there is a response.. or there isn't.
+            // This question type then can provide a % of the question answered in the summary.
+            $alist[] = array("Answer", gT("Answer"), $mfield);
+            $alist[] = array("NoAnswer", gT("No answer"), $mfield);
+            if ($qtype == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT){
+                $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
             }
         }
 
