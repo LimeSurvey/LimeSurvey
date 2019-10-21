@@ -243,7 +243,7 @@ class themeoptions  extends Survey_Common_Action
                     $this->getController()->redirect(array('admin/themeoptions/sa/update/id/'.$model->id));
                 }
             }
-            $this->_updateCommon($model);
+            $this->updateCommon($model);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions"));
@@ -304,7 +304,7 @@ class themeoptions  extends Survey_Common_Action
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
                 }
             }
-            $this->_updateCommon($model, $sid);
+            $this->updateCommon($model, $sid);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
@@ -326,22 +326,22 @@ class themeoptions  extends Survey_Common_Action
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
 
             if ($model->bJustCreated === true && $l === null) {
-                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurveygroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
+                $this->getController()->redirect(App()->getController()->createUrl("/admin/themeoptions/sa/updatesurveygroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
             }
 
             if (isset($_POST['TemplateConfiguration'])) {
                 $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
+                    App()->user->setFlash('success', gT('Theme options saved.'));
+                    $this->getController()->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
                 }
             }
 
-            $this->_updateCommon($model);
+            $this->updateCommon($model);
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
         }
     }
 
@@ -351,13 +351,13 @@ class themeoptions  extends Survey_Common_Action
     public function setAdminTheme($sAdminThemeName)
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array('/admin'));
         }
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
-        $this->getController()->redirect(Yii::app()->getController()->createUrl("admin/themeoptions#adminthemes"));
+        $this->getController()->redirect(App()->getController()->createUrl("admin/themeoptions#adminthemes"));
     }
 
     /**
@@ -387,7 +387,7 @@ class themeoptions  extends Survey_Common_Action
             }
 
             /// FOR GRID View
-            $filterForm = Yii::app()->request->getPost('TemplateConfiguration', false);
+            $filterForm = App()->request->getPost('TemplateConfiguration', false);
             if ($filterForm) {
                 $oSurveyTheme->setAttributes($filterForm, false);
                 if (array_key_exists('template_description', $filterForm)){
@@ -402,18 +402,18 @@ class themeoptions  extends Survey_Common_Action
             }
 
             // Page size
-            if (Yii::app()->request->getParam('pageSize')) {
-                Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+            if (App()->request->getParam('pageSize')) {
+                App()->user->setState('pageSizeTemplateView', (int) App()->request->getParam('pageSize'));
             }
 
             $aData['oSurveyTheme'] = $oSurveyTheme;
             $aData['canImport']  = $canImport;
             $aData['importErrorMessage']  = $importErrorMessage;
-            $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
+            $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
     }
@@ -434,7 +434,7 @@ class themeoptions  extends Survey_Common_Action
                 'model'=>$model,
             ));
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
     }
@@ -489,7 +489,7 @@ class themeoptions  extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/themeoptions#surveythemes"));
             }
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array("admin/themeoptions"));
         }
 
@@ -497,15 +497,15 @@ class themeoptions  extends Survey_Common_Action
 
     public function uninstall()
     {
-        $templatename = Yii::app()->request->getPost('templatename');
+        $templatename = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (!Template::hasInheritance($templatename)) {
                 TemplateConfiguration::uninstall($templatename);
             } else {
-                Yii::app()->setFlashMessage(sprintf(gT("You can't uninstall template '%s' because some templates inherit from it."), $templatename), 'error');
+                App()->setFlashMessage(sprintf(gT("You can't uninstall template '%s' because some templates inherit from it."), $templatename), 'error');
             }
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
         $this->getController()->redirect(array("admin/themeoptions"));
@@ -517,15 +517,15 @@ class themeoptions  extends Survey_Common_Action
      */
     public function reset($gsid)
     {
-        $templatename = Yii::app()->request->getPost('templatename');
+        $templatename = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             TemplateConfiguration::uninstall($templatename);
             TemplateManifest::importManifest($templatename);
-            Yii::app()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
+            App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
             $this->getController()->redirect(array("admin/themeoptions"));
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));            
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
         }
     }
 
@@ -537,16 +537,16 @@ class themeoptions  extends Survey_Common_Action
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'template-options-form') {
             echo CActiveForm::validate($model);
-            Yii::app()->end();
+            App()->end();
         }
     }
 
     public function getPreviewTag()
     {
-        $templatename = Yii::app()->request->getPost('templatename');
+        $templatename = App()->request->getPost('templatename');
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
         $previewTag = $oTemplate->getPreview();
-        return Yii::app()->getController()->renderPartial(
+        return App()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => ['image' =>  $previewTag]],
             false,
@@ -562,26 +562,34 @@ class themeoptions  extends Survey_Common_Action
      * @param int $gsid : survey group id
      * @return void
      */
-    private function _updateCommon(TemplateConfiguration $model, $sid = null, $gsid = null)
+    private function updateCommon(TemplateConfiguration $model, $sid = null, $gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
-        $oTemplate = Template::model()->getInstance($model->template_name,$sid,$gsid);
+        $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
 
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
         $aTemplateConfiguration = $oModelWithInheritReplacement->getOptionPageAttributes();
-        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         
-        if($aOptionAttributes['optionsPage'] == 'core') {
-            Yii::app()->clientScript->registerPackage('themeoptions-core');
+        if ($aOptionAttributes['optionsPage'] == 'core') {
+            App()->clientScript->registerPackage('themeoptions-core');
             $templateOptionPage = '';
         } else {
             $templateOptionPage = $oModelWithInheritReplacement->optionPage;
         }
 
-        $oSimpleInheritance = Template::getInstance($oModelWithInheritReplacement->sTemplateName, $sid, $gsid, null, true);
+        $oSimpleInheritance = Template::getInstance(
+            $oModelWithInheritReplacement->sTemplateName,
+            $sid,
+            $gsid,
+            null,
+            true
+        );
         $oSimpleInheritance->options = 'inherit';
-        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($oModelWithInheritReplacement->sTemplateName);
+        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering(
+            $oModelWithInheritReplacement->sTemplateName
+        );
         $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
         $oParentOptions = TemplateConfiguration::translateOptionLabels($oParentOptions);
 
