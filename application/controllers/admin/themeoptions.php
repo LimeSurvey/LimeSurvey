@@ -502,7 +502,13 @@ class themeoptions  extends Survey_Common_Action
             if (!Template::hasInheritance($templatename)) {
                 TemplateConfiguration::uninstall($templatename);
             } else {
-                App()->setFlashMessage(sprintf(gT("You can't uninstall template '%s' because some templates inherit from it."), $templatename), 'error');
+                App()->setFlashMessage(
+                    sprintf(
+                        gT("You can't uninstall template '%s' because some templates inherit from it."),
+                        $templatename
+                    ),
+                    'error'
+                );
             }
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
@@ -525,7 +531,9 @@ class themeoptions  extends Survey_Common_Action
             $this->getController()->redirect(array("admin/themeoptions"));
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
+            $this->getController()->redirect(
+                App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid])
+            );
         }
     }
 
@@ -541,6 +549,10 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
+    /**
+     * @return string|string[]|null
+     * @throws CException
+     */
     public function getPreviewTag()
     {
         $templatename = App()->request->getPost('templatename');
