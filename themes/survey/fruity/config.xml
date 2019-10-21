@@ -55,7 +55,6 @@
         </css>
         <js>
             <replace>scripts/theme.js</replace>
-            <replace>scripts/ajaxify.js</replace>
             <replace>scripts/custom.js</replace>
         </js>
         <print_css>
@@ -69,7 +68,6 @@
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
         <!-- simple options -->
-        <ajaxmode type="buttons" category="Simple options" width="4" title="Ajax mode" options="on|off" optionlabels="Yes|No">on</ajaxmode>
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
         <zebrastriping type="buttons" category="Simple options" width="4" title="Zebra-striped questions" options="on|off" optionlabels="Yes|No">off</zebrastriping>
         <stickymatrixheaders type="buttons" category="Simple options" width="4" title="Sticky array headers" options="on|off" optionlabels="Yes|No">off</stickymatrixheaders>
