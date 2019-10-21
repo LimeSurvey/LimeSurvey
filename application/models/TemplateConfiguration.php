@@ -898,7 +898,6 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param string $file with Path
      * @return array|null
-     * @throws CException
      */
     private function getImageInfo($file)
     {
@@ -925,7 +924,6 @@ class TemplateConfiguration extends TemplateConfig
      * @todo document me
      *
      * @return array
-     * @throws CException
      */
     public function getOptionPageAttributes()
     {
@@ -962,7 +960,6 @@ class TemplateConfiguration extends TemplateConfig
      * @todo document me
      *
      * @return mixed
-     * @throws CException
      */
     public function getOptionPage()
     {
@@ -1416,7 +1413,6 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param string $name the name of the attribute
      * @return mixed
-     * @throws CException
      */
     public function __get($name)
     {
