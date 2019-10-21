@@ -402,7 +402,6 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null, $abstractInstance = false)
     {
-
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
         if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null) {
