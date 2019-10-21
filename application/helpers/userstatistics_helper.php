@@ -622,7 +622,7 @@ class userstatistics_helper
 
         //S - Short Free Text and T - Long Free Text
         elseif ($firstletter == "T" || $firstletter == "S") {
-//Short and long text
+            //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
             $fielddata = $fieldmap[$fld];
@@ -642,6 +642,9 @@ class userstatistics_helper
             // This question type then can provide a % of the question answered in the summary.
             $alist[] = array("Answer", gT("Answer"), $mfield);
             $alist[] = array("NoAnswer", gT("No answer"), $mfield);
+            if ($qtype == ";"){
+                $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
+            }
         }
 
         //Q - Multiple short text
