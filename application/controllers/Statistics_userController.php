@@ -62,7 +62,7 @@ class Statistics_userController extends SurveyController
 
         $this->sLanguage = $language;
 
-        $iSurveyID = (int) $survey->sid;
+        $iSurveyID = (int)$survey->sid;
         $this->iSurveyID = $survey->sid;
 
         //$postlang = returnglobal('lang');
@@ -75,7 +75,7 @@ class Statistics_userController extends SurveyController
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         } else {
-            $iSurveyID = (int) $iSurveyID;
+            $iSurveyID = (int)$iSurveyID;
         }
         if (!$iSurveyID) {
             //This next line ensures that the $iSurveyID value is never anything but a number.
@@ -111,18 +111,20 @@ class Statistics_userController extends SurveyController
         //True -> include
         //False -> forget about charts
         if (isset($publicgraphs) && $publicgraphs == 1) {
-            require_once(APPPATH.'third_party/pchart/pChart.class.php');
-            require_once(APPPATH.'third_party/pchart/pData.class.php');
-            require_once(APPPATH.'third_party/pchart/pCache.class.php');
+            require_once(APPPATH . 'third_party/pchart/pChart.class.php');
+            require_once(APPPATH . 'third_party/pchart/pData.class.php');
+            require_once(APPPATH . 'third_party/pchart/pCache.class.php');
 
-            $MyCache = new pCache(Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR);
+            $MyCache = new pCache(Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR);
             //$currentuser is created as prefix for pchart files
             if (isset($_SERVER['REDIRECT_REMOTE_USER'])) {
                 $currentuser = $_SERVER['REDIRECT_REMOTE_USER'];
-            } else if (session_id()) {
-                $currentuser = substr(session_id(), 0, 15);
             } else {
-                $currentuser = "standard";
+                if (session_id()) {
+                    $currentuser = substr(session_id(), 0, 15);
+                } else {
+                    $currentuser = "standard";
+                }
             }
         }
         // Set language for questions and labels to base language of this survey
@@ -245,7 +247,7 @@ class Statistics_userController extends SurveyController
             //~ $prb->hide();
         }
 
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'statistics_user.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
         $this->layout = "public";
         $this->render('/statistics_user_view', $data);
 
