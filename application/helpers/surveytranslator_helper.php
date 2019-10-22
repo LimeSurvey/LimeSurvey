@@ -677,6 +677,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['es-CL']['dateformat'] = 5;
     $supportedLanguages['es-CL']['radixpoint'] = 0;
 
+    // Spanish (Colombia)
+    $supportedLanguages['es-CO']['description'] = gT('Spanish (Colombia)');
+    $supportedLanguages['es-CO']['nativedescription'] = 'Espa&#241;ol colombiano';
+    $supportedLanguages['es-CO']['rtl'] = false;
+    $supportedLanguages['es-CO']['dateformat'] = 5;
+    $supportedLanguages['es-CO']['radixpoint'] = 0; 
+        
     // Spanish (Mexico)
     $supportedLanguages['es-MX']['description'] = gT('Spanish (Mexico)');
     $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol mexicano';
