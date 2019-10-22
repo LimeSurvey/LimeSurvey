@@ -34,6 +34,129 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC5 (build 191014) to 4.0.0-RC6 (build 191022) October 22, 2019
+-New translation: Spanish (Colombia) - translation kindly provided by https://www.sugeek.co/ (Carsten Schmitz)
+-Fixed issue: {SID} placeholder can't be used in invite_participants API method (Dominik Vitt)
+-Fixed issue: unable to install LS4 on Sql Server database (Dominik Vitt)
+-Fixed issue: statistics graph for Array text question type is not displayed (Dominik Vitt)
+-Fixed issue: reset password did save cleartext (lacrioque)
+-Fixed issue: negative values in Count column in user statistics summary tables (Dominik Vitt)
+-Fixed issue: negative values in Count column in statistics summary tables (Dominik Vitt)
+-Fixed issue: missing question titles and descriptions in statistics summary table (Dominik Vitt)
+-Fixed issue: error when importing survey page from lsg file created with LS4 (Dominik Vitt)
+-Fixed issue: error message during the installation of LS4 on Sql server database (Dominik Vitt)
+-Fixed issue: Question type select falls back after saving or switching to overview (lacrioque)
+-Fixed issue: Prepend publicurl when fetching metadata to question type selector (Olle Harstedt)
+-Fixed issue: Comparing two string with greater-than operation fails (Olle Haerstedt)
+-Fixed issue [security] #15411: CVE-2019-17660 : XSS in quick edit (#1333) (Denis Chenu)
+-Fixed issue #15444: UserStatistics throws error because of outdated queries (Patrick Teichmann)
+-Fixed issue #15365: Standard themes are not compatible with version 4 of LS API (Eddy Lackmann)
+-Fixed issue #15319: "Execute survey" link doesn't open in new window (eddylackmann)
+-Fixed issue #15053: Error with non-numeric SID on pgsql (Jean-Sébastien B)
+-Fixed issue #13312: Get all answers for dualscale questions (Jakob Wögerbauer)
+#Updated translation: Zulu by cmkeet, Tanita93
+#Updated translation: Welsh by c_schmitz, NortonT, AlfNathan, ChrisWilliams
+#Updated translation: Vietnamese by c_schmitz, rinodung, cuongestih, thanhthao, vouhieuso1, votsdb, bdthuy, manhvs, vietguitar, quangndcet, namphuong, dnvservices, tuannm
+#Updated translation: Valencian by valdomir, c_schmitz, vbraque, joamuran, jeskiv, jvribell
+#Updated translation: Urdu by c_schmitz
+#Updated translation: Ukrainian by c_schmitz, myksyd, skipenko, TatyAly, JNNSoftSign, uszername, Rusya, kuzenka167, bkrupinski, exlibris69, NPO, zvorchik, RebeccaAwdry
+#Updated translation: Uighur by c_schmitz
+#Updated translation: Turkish by c_schmitz, kayazeren, bulent, eddylackmann
+#Updated translation: Thai by c_schmitz, miracles, sismiracles, adzpire, heartjavac, bordin, vinate, naphatthakorn, tomzt, Mazi
+#Updated translation: Tamil by seesiva, c_schmitz, apmuthu
+#Updated translation: Tajik by Iskandar_r, c_schmitz
+#Updated translation: Tagalog by lolskidoodles, avevengers, arriz08, Mazi
+#Updated translation: Swedish by vectorson
+#Updated translation: Swedish by c_schmitz, klaster, Basse, mr2jswe, seniorcoach, gogl, Mazi, khan, maxzomborszki, PeanutButter9000, ipwnin3D, sofve, bardts, nitramh, bictorv, eddylackmann, vectorson
+#Updated translation: Swahili by c_schmitz, jmbaria, eddylackmann
+#Updated translation: Spanish (Spain) by c_schmitz, pavelwil, Nodens, jbermudezperez, larjona, xtingray, jaimealvarezv, valdomir, kadejo, aesteban, atavei, fercavero, jigal, artasom, elkinjosetm, asntcrz, pnueda, cbrito, titanio256, grudolf, dgimeno, jmlorenzo, ecocitizen, fernandoessv, jeskiv, cripton, Dhel210, gabrieljenik, rodrirokr, nicolasfranco, oleggorfinkel, Gianinna, MeryKilicMeT19
+#Updated translation: Spanish (Mexican) by c_schmitz, pedrogk, k001, miguelsanchez, rhernandez, emphasis034, javoguadas, larjona, aesteban, fernandoestrada, fernandoessv, eusebiocuke, cripton, Dhel210, rodrirokr, gabrieljenik, oleggorfinkel, sugeek
+#Updated translation: Spanish (Chile) by c_schmitz, masterbip, SirCrovax, jcarcamo, jrojas, gabrieljenik, fernandoessv, Dhel210, Gianinna
+#Updated translation: Spanish (Argentina) by pomiagos, topiim, fvergniaud, Eescudero, c_schmitz, aesteban, Dhel210, gabrieljenik
+#Updated translation: Spanish (Argentina) (Informal) by Eescudero, miguelsanchez, Ayelen, gap1981, feippe, grudolf, cripton, Gustavo_Kremer
+#Updated translation: Slovenian by c_schmitz, Aambro, kaysersoze, doklb, AndrejL, gregy1403, dusan, tejac, lado, senior, parsifal, andrej.lindic
+#Updated translation: Slovak by dusanm
+#Updated translation: Slovak by c_schmitz, jmi239, wargo, Union, rundmg, sweetakasha, gadeynebram, gmambro, dusanm, YanChii
+#Updated translation: Sinhala by c_schmitz
+#Updated translation: Serbian by MilaVeljovic, OnSpot, zlukovic
+#Updated translation: Serbian (Latin script) by OnSpot, YLotus
+#Updated translation: Russian by vipgroup
+#Updated translation: Russian by c_schmitz, Fencer, vipgroup, ldemeschew, Dominik, Dangar, JNNSoftSign, ddrmoscow, severt, nickdsl, ilgizy, kmaksat, t6nnp6nn, winterheart, c0der, smilez, quarrier, panch_evg, vavankor, T34
+#Updated translation: Romanian by c_schmitz, izbieta, filipguttman, oroles, vundicind, ionicat, christianC, c_ionut2002, Borgie, cookiemonster, jmlorenzo, icm76, enedelcu, cdorin, andreig, eddylackmann
+#Updated translation: Punjabi by c_schmitz
+#Updated translation: Portuguese (Portugal) by c_schmitz, jtrigo, ecoutinho, samarta, taborda, jginga, nostradumusfdx, algarvio, hmlc, nery, cmcsilvaster, PauloJFMartins, jweberhofer, efialho, sazevedo, valins, devUSIT, anticorpo, susete, holch, thiagosmartins, mauriciofurtado, educaticteced, Heldinha, castrosergioms, joseluisfaria, effgarces
+#Updated translation: Portuguese (Brazil) by c_schmitz, gchehab, mauriciofurtado, wagner, marciojv, arthurassuncao, oberdan, tagosc, hugomusetti, amcorreia, santanabeto, andreass, tpazos, nfuria, fboaventura, gabrielcavalari, fabiomachado, dariodallago, rhnascimento, holch, andrepacheco, samirfor, rubensqueiroz, paulohpmoraes, valins, victorgoncalves, thiagosmartins, alantygel, flaviove, Davinch, femariso, jjesusfilho, fermacedo, edgard, edneymatias, alexandremiquelin, alfonso-peixoto, GabrielLF
+#Updated translation: Polish by c_schmitz, elisa, zozlak, borluuk, elissa, tomasz
+#Updated translation: Polish (Informal) by c_schmitz, elisa, elissa
+#Updated translation: Persian by c_schmitz, moohebat, ardalan, blackeve, ehsan, KingAsghar, delarammahdaviii, ahadzadeh, UTeQ, ESH, hmd_bakhshi, mdavoodian
+#Updated translation: Persian (Afghanistan) - Dari by c_schmitz, toxindoom
+#Updated translation: Pashto by c_schmitz
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult, c_schmitz, ransano
+#Updated translation: Occitan by c_schmitz, Cedric31
+#Updated translation: Norwegian (Nynorsk) by c_schmitz, pmonstad
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad, peterhol, finni
+#Updated translation: Myanmar by AlexEDGE1
+#Updated translation: Montenegrin by c_schmitz
+#Updated translation: Mongolian by Erdenebayar, erka, c_schmitz, baatar, samsharav
+#Updated translation: Marathi by c_schmitz
+#Updated translation: Maltese by c_schmitz
+#Updated translation: Malayalam by nikhildascl, c_schmitz
+#Updated translation: Malay by c_schmitz, addaashar, xbonize, ayahanda, asklinux, irah, sintiches, apisznasdin, kayrooldeen, betakerotin, astrasia, qfirdaus, norazlannorden, LS_fan
+#Updated translation: Macedonian by c_schmitz, acikabt, cdorin, SimonaOgnenovska
+#Updated translation: Luxembourgish by sim0nx
+#Updated translation: Lithuanian by c_schmitz, simasj, serzas, justasg, apklausos, vipgroup, liudas, dariusp
+#Updated translation: Latvian by c_schmitz, vipgroup, marcic, zemnieks, daugavietis
+#Updated translation: Latvian (Informal) by marcic
+#Updated translation: Kyrgyz by esen, kmaksat
+#Updated translation: Kurdish (Sorani) by havalabdulkarim, c_schmitz, bryar1991, Daban88, Ayeneh, AhamdSaber, Qat, Rawand, Rebaz, nabaz, rahand, RastiK5, AryaSarhan12
+#Updated translation: Korean by c_schmitz, cnsla, cloudgarden, kswcfe, spn, hosunlee, Mazi
+#Updated translation: Kirundi by c_schmitz, Vicks
+#Updated translation: Kannada by OLRProject
+#Updated translation: Japanese by c_schmitz, nomoto, inaba, ifjapon, yamatt, ngyuki, panrex, Mazi
+#Updated translation: Italian by c_schmitz, lfanfoni, lfortunato, floccs, miguelsanchez, cubeAtWork, myliserta, metaworx, Zeos, tebala, emp, ritapas, arioli, NdK, darpao, duristef, bienen, Prosperocco, seccalisca
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni, gifino, alesarrett, mike73rn, lpittalis, murya, filipguttman, myliserta, olif, mzzvtr, metaworx, ciampix, ritapas
+#Updated translation: Irish by c_schmitz
+#Updated translation: Indonesian by c_schmitz, sys_sby, budiain, hendrikots, sancaka, ysulistya, wisnu, ganiutomo, radhwaw, xty, chikomurai
+#Updated translation: Icelandic by c_schmitz, Bragi_H, svelgur
+#Updated translation: Hungarian by c_schmitz, hunkissleslie, EnDaN, anikoken, debugz, johnyh, jgege, MTamas, cxi, lukacs, Zoltan, erik_gerhardt, drcrazy, intavg, Kengo06, tdombos, pszilard, kkd, kutigeza, fcsanyi, bacskaicsaba, vargazsoltivan, cdorin
+#Updated translation: Hindi by c_schmitz, gautamgupta, ajparag, amit01
+#Updated translation: Hebrew by c_schmitz, tabakman, yavin, gadeynebram, devbyu, aviv, vis_kerem, golanta
+#Updated translation: Gujarati by c_schmitz, gautamarya
+#Updated translation: Greek by c_schmitz, kiolalis, mele_lime, MikeConom, christof75, theseek3r, nasprok, lenasterg, korina, nkatsar
+#Updated translation: German by c_schmitz, debianese, tomscher, macwig, Ebenezer_Arvigenius, actxcellence, woelfchen, rado, ResearchOnBlogs, finnnns, mfaber, Mazi, hermann, metaworx, DLange, pseitz, Liam, madflow, jweberhofer, jankal, AnnaHerwig, bardts, cookiemonster, holch, HonkXL, surveyunihi, rnck, ecoplan, Joffm, Thomas218, Magnar, tuxmaster, StuartJKondziella, markusfluer, sebuin, boppy, tbart, ulisdd, bewi, timeco, Basil, eddylackmann, marvinthemartian13
+#Updated translation: German (Informal) by c_schmitz, groetzner, tomscher, PDrews, Basil, actxcellence, mfaber, Akaer, senden9, metaworx, DLange, Liam, jweberhofer, plusQ, cbloecher, HonkXL, hermann, ecoplan, holch, manselmo, Rolime, fwittmann, gregi, tuxmaster, markusfluer, KRav, boppy, Joffm, tbart, ulisdd, bewi, eddylackmann, marvinthemartian13
+#Updated translation: Georgian by giorgi, c_schmitz, larisa, Davitus, zch5368
+#Updated translation: Galician by c_schmitz, dariogomez, Calidonia, cegar, monfero, jeskiv, jparis
+#Updated translation: Fula by c_schmitz
+#Updated translation: French (France) by c_schmitz, ulysse68, BenoitBouvarel, DenisChenu, titoun31, Qat, olcell, riqcles, kharec, Zeste, emmanuh, arnaud21, Gemelos, Brunotwm, karld, FabienC, jkurz, ipwnin3D, MVT, JMI, odarteve, tendanceh, cestmoimeme, yompyamper, b00z00, persometrics, LouisGac, eddylackmann
+#Updated translation: Finnish by c_schmitz, klaster, hirvojo1, shrike, tigger, kirsikka, Matti, morbid, hannikkala, jhnrk, Tuomo, jeskiv, Ramiky, Jmantysalo
+#Updated translation: Filipino by c_schmitz
+#Updated translation: Estonian by c_schmitz, LimAlf, Erhi, klaster, aivokoger, mariliis, t6nnp6nn, toomasuba, rogeriff, jeskiv, TonisOrmisson
+#Updated translation: Esperanto by Fabricio, sudastelaro, c_schmitz
+#Updated translation: English by c_schmitz, quaint, akeyser, cedac
+#Updated translation: Dutch by c_schmitz, MrP, tammo, mdekker, kris, Han, coeneisma, hclaus, Nickko, Sybren, kpadm, theej, L191, cookiemonster, Geert1969, DonMul, zfocuz, Petra017, Yewnoful, markusfluer
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han, Nickko, bramr, atvoogt, coeneisma, tammo, DonMul, zfocuz, Petra017, markusfluer
+#Updated translation: Danish by c_schmitz, nielsb, docl, marvindk, robin_sharp, stefangranholm, overfrakken, lovepade, Vasilij, Tobm, SigneT, antispam, statman13, abc99, achstil, pedesjensen, bjorn82dk, Mikkel
+#Updated translation: Czech by c_schmitz, slansky, pavelwil, sedlacev, kubaj, Artaud, VBraun, jelen1, dusanm, nekola
+#Updated translation: Czech (Informal) by slansky, jelen1, c_schmitz, VBraun, dusanm
+#Updated translation: Croatian by c_schmitz, rovinj, daniflo, rsedak, eraser, rambo, doklb, Apach3, buzadovec, netcom, pstrbenac, nmisic, kmilojev, dominikvitt
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz, pochuenw, katy50306, chungyi, drawinglee, m27387, hsyin, asakous, linuslin, terrywei, jayhsu21, joyce, ChadPeng, imacat, sylsylsylvie, comuss, hms5232
+#Updated translation: Chinese (Simplified) by c_schmitz, yooyooh, jun9, yanglaw, siyang1982, xsb, aifie, limecat, sothmch, rachelfeiya, zhoubin86282972, popcorner, liudidi, leadingsoci, mapleshadow, Bobo001, elan365, huageorg, johnxan, xingpz2008, Mazi
+#Updated translation: Chinese (Hong Kong) (Traditional) by c_schmitz, cmj, superleo888, achan, alviniun, wksosam, aqualam, oc25, LS_fan, unixwise
+#Updated translation: Catalan by c_schmitz, valdomir, jmontane, qualitatuvic, Ben_V
+#Updated translation: Bulgarian by c_schmitz, klaster, tnovakova, DCLXVI, simid, YanaTsoneva, jmlorenzo
+#Updated translation: Bosnian by c_schmitz, dichteros, RebeccaAwdry
+#Updated translation: Bengali by khadijaashraf
+#Updated translation: Belarusian by c_schmitz
+#Updated translation: Basque by c_schmitz, josegovia, artasom, losimo, ikt, zubiegi
+#Updated translation: Armenian by c_schmitz, Satenik, bagrig, Lilit
+#Updated translation: Arabic by c_schmitz, ysaad, mdchaara, ahmedsherpiny, Rawand, samiubuntu, fadimhanna, safi00972, sessid, malkadi, malbariqi, AmalHanna, tamimaleter, DeveloperChris, noway, ktharwat, Macropsyco, Macropsy, mosaab, iceclimber81, LucaAzzalini, abusaud1981, AbdelmalekTEBBOUB, zainabalbazzal, waseemz, Muhammad_Hosny, RayhaneK
+#Updated translation: Amharic by c_schmitz, addis_1001, Dereje, hizkiel, cdorin
+#Updated translation: Albanian by c_schmitz, acanga, florianika, lulzimavdiu, Dorina1988, Helda, eunacal, iebner, amirbuzo
+#Updated translation: Afrikaans by c_schmitz, claudiog, geebee100, karoohosting
+
+
 Changes from 4.0.0-RC4 (build 190930) to 4.0.0-RC5 (build 191014) October 14, 2019
 -Fixed issue: user statistics on survey completion is not working (Dominik Vitt)
 -Fixed issue: survey template options not saving (lacrioque)
