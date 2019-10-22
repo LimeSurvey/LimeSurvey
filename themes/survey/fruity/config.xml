@@ -17,12 +17,12 @@
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <copyright>Copyright (C) 2005 - 2019 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>3.0.1</version>
-        <apiVersion>3</apiVersion>
+        <version>4.0</version>
+        <apiVersion>4</apiVersion>
         <description  twig="on"><![CDATA[<strong>{{gT("LimeSurvey Fruity Theme")}}</strong><br>{{gT("A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.")}}]]></description>
-        <lastUpdate>2018-06-12 16:26:42</lastUpdate>
+        <lastUpdate>2019-10-22 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 
