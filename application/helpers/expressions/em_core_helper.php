@@ -325,7 +325,7 @@ class ExpressionManager
         // Not sure if needed to test if [2] is set. : TODO review
         if ($bBothNumeric) {
             $aForceStringArray = array('DQ_STRING', 'DS_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
-            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
+            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) && (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
                 $bBothNumeric = false;
                 $bBothString = true;
                 $bMismatchType = false;
