@@ -51,7 +51,6 @@
         </css>
         <js>
             <replace>scripts/theme.js</replace>
-            <replace>scripts/ajaxify.js</replace>
             <replace>scripts/custom.js</replace>
         </js>
         <print_css>
@@ -63,7 +62,6 @@
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <options>
         <!-- simple options -->
-        <ajaxmode type="buttons" category="Simple options" width="4" title="Ajax mode" options="on|off" optionlabels="Yes|No">on</ajaxmode>
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
         <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
         <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>

@@ -313,32 +313,36 @@ class Survey_Common_Action extends CAction
      * NOTE FROM LOUIS : We want to remove this function, wich doesn't respect MVC pattern.
      * The work it's doing should be handle by layout files, and subviews inside views.
      * Eg : for route "admin/survey/sa/listquestiongroups/surveyid/282267"
-     *       the Group controller should use a main layout (with admin menu bar as a widget), then render the list view, in wich the survey page bar is called as a subview.
+     *       the Group controller should use a main layout (with admin menu bar as a widget),
+     *       then render the list view, in wich the survey page bar is called as a subview.
      *
-     * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.) to subfunctions, then it will be easier to remove.
+     * So for now, we try to evacuate all the renderWrappedTemplate logic (if statements, etc.)
+     * to subfunctions, then it will be easier to remove.
      * Comments starting with //// indicate how it should work in the future
      *
      * @param string $sAction Current action, the folder to fetch views from
      * @param array|string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      * @param string|boolean $sRenderFile File to be rendered as a layout. Optional.
+     * @throws CHttpException
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
-        $aData = $this->_addPseudoParams($aData); // This call 2 times _addPseudoParams because it's already done in runWithParams : why ?
+
+        // This call 2 times _addPseudoParams because it's already done in runWithParams : why ?
+        $aData = $this->_addPseudoParams($aData);
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
 
         if ($sRenderFile == false) {
             if (!empty($aData['surveyid'])) {
-
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
                 // Needed to evaluate EM expressions in question summary
                 // See bug #11845
                 LimeExpressionManager::SetSurveyId($aData['surveyid']);
-                LimeExpressionManager::StartProcessingPage(false,true);
+                LimeExpressionManager::StartProcessingPage(false, true);
 
                 $renderFile = $basePath.'/layout_insurvey.php';
             } else {

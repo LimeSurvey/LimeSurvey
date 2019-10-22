@@ -650,6 +650,9 @@ class statistics_helper
                 // This question type then can provide a % of the question answered in the summary.
                 $alist[] = array("Answer", gT("Answer"), $mfield);
                 $alist[] = array("NoAnswer", gT("No answer"), $mfield);
+                if ($qtype == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT){
+                    $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
+                }
             }
         }
 
