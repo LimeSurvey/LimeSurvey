@@ -2983,6 +2983,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'version' =>  "4.0",
                 'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
             ), "name='bootwatch'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>422),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
