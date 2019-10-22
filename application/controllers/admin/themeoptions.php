@@ -74,11 +74,16 @@ class themeoptions  extends Survey_Common_Action
      * Updates a particular model (globally)
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
+     * @throws CHttpException
      */
     public function update($id)
     {
         $model = $this->loadModel($id);
-        if (Permission::model()->hasTemplatePermission($model->template_name,'update')) {
+        if (Permission::model()->hasTemplatePermission($model->template_name, 'update')) {
+            // Turn Ajax off as defualt save it after.
+            $model = $this->turnAjaxmodeOffAsDefault($model);
+            $model->save();
+
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
@@ -93,6 +98,33 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
+    /**
+     * This method turns ajaxmode off as default.
+     *
+     * @param TemplateConfiguration $templateConfiguration
+     * @return TemplateConfiguration
+     */
+    public function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
+    {
+        $attributes = $templateConfiguration->getAttributes();
+        $hasOptions = isset($attributes['options']);
+        if ($hasOptions) {
+            $options = $attributes['options'];
+            $optionsJSON = json_decode($options, true);
+
+            if ($options !== 'inherit' && $optionsJSON !== null) {
+                $hasAjaxMode = isset($optionsJSON['ajaxmode']);
+                $ajaxModeOn  = ($optionsJSON['ajaxmode'] == 'on');
+
+                if ($hasAjaxMode && $ajaxModeOn) {
+                    $optionsJSON['ajaxmode'] = 'off';
+                    $options = json_encode($optionsJSON);
+                    $templateConfiguration->setAttribute('options', $options);
+                }
+            }
+        }
+        return $templateConfiguration;
+    }
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.

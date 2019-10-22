@@ -320,32 +320,6 @@
 
             {# First settings row #}
             <div class='row action_hide_on_inherit'>
-                <div class='col-sm-12 col-md-4 col-lg-2'>
-
-                    {# Ajaxmode setting #}
-                    <div class='form-group row'>
-                        <label for='simple_edit_options_ajaxmode' class='control-label'> {{ gT("Ajax mode") }} </label>
-                        <div class='col-sm-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input name='ajaxmode' type='radio' value='on' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input name='ajaxmode' type='radio' value='off' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
-                                        <input name='ajaxmode' type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                        {{ gT("Inherit") }}
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 {# Container #}
                 <div class='col-sm-12 col-md-4 col-lg-2'>
