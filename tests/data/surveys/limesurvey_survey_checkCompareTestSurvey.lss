@@ -17,34 +17,7 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[12400]]></qid>
-    <code><![CDATA[20]]></code>
-    <answer><![CDATA[20]]></answer>
-    <sortorder><![CDATA[2]]></sortorder>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <language><![CDATA[en]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[12400]]></qid>
-    <code><![CDATA[3A]]></code>
-    <answer><![CDATA[3A]]></answer>
-    <sortorder><![CDATA[3]]></sortorder>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <language><![CDATA[en]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[12400]]></qid>
-    <code><![CDATA[5]]></code>
-    <answer><![CDATA[5]]></answer>
-    <sortorder><![CDATA[1]]></sortorder>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <language><![CDATA[en]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[12399]]></qid>
+    <qid><![CDATA[17719]]></qid>
     <code><![CDATA[0]]></code>
     <answer><![CDATA[0]]></answer>
     <sortorder><![CDATA[4]]></sortorder>
@@ -53,7 +26,7 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12399]]></qid>
+    <qid><![CDATA[17719]]></qid>
     <code><![CDATA[20]]></code>
     <answer><![CDATA[20]]></answer>
     <sortorder><![CDATA[2]]></sortorder>
@@ -62,7 +35,7 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12399]]></qid>
+    <qid><![CDATA[17719]]></qid>
     <code><![CDATA[3A]]></code>
     <answer><![CDATA[3A]]></answer>
     <sortorder><![CDATA[3]]></sortorder>
@@ -71,7 +44,34 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12399]]></qid>
+    <qid><![CDATA[17719]]></qid>
+    <code><![CDATA[5]]></code>
+    <answer><![CDATA[5]]></answer>
+    <sortorder><![CDATA[1]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[17720]]></qid>
+    <code><![CDATA[20]]></code>
+    <answer><![CDATA[20]]></answer>
+    <sortorder><![CDATA[2]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[17720]]></qid>
+    <code><![CDATA[3A]]></code>
+    <answer><![CDATA[3A]]></answer>
+    <sortorder><![CDATA[3]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[17720]]></qid>
     <code><![CDATA[5]]></code>
     <answer><![CDATA[5]]></answer>
     <sortorder><![CDATA[1]]></sortorder>
@@ -94,8 +94,8 @@
   </fields>
   <rows>
    <row>
-    <gid><![CDATA[811]]></gid>
-    <sid><![CDATA[48864]]></sid>
+    <gid><![CDATA[1062]]></gid>
+    <sid><![CDATA[483733]]></sid>
     <group_name><![CDATA[My first question group]]></group_name>
     <group_order><![CDATA[1]]></group_order>
     <description/>
@@ -104,8 +104,8 @@
     <grelevance><![CDATA[1]]></grelevance>
    </row>
    <row>
-    <gid><![CDATA[812]]></gid>
-    <sid><![CDATA[48864]]></sid>
+    <gid><![CDATA[1063]]></gid>
+    <sid><![CDATA[483733]]></sid>
     <group_name><![CDATA[Second group]]></group_name>
     <group_order><![CDATA[2]]></group_order>
     <description/>
@@ -137,10 +137,10 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[12399]]></qid>
+    <qid><![CDATA[17719]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[811]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1062]]></gid>
     <type><![CDATA[L]]></type>
     <title><![CDATA[Q00]]></title>
     <question><![CDATA[Single choice code as number #1]]></question>
@@ -156,10 +156,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12400]]></qid>
+    <qid><![CDATA[17720]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[811]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1062]]></gid>
     <type><![CDATA[L]]></type>
     <title><![CDATA[Q01]]></title>
     <question><![CDATA[Single choice code as number #2]]></question>
@@ -174,10 +174,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[12401]]></qid>
+    <qid><![CDATA[17721]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[811]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1062]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Text]]></title>
     <question><![CDATA[Text question]]></question>
@@ -192,10 +192,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[12402]]></qid>
+    <qid><![CDATA[17722]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[811]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1062]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[CheckJS]]></title>
     <question><![CDATA[<div>CheckinJS</div>
@@ -205,7 +205,13 @@
 <div id='TestJS4'>Q00 ge Q01 : {Q00 ge Q01}</div>
 <div id='TestJS5'>Q00 ge Text : {Q00 ge Text}</div>
 <div id='TestJS6'>Text2 lt Text : {Text2 lt Text}</div>
-<div id='TestJS7'>Text2 ge Text : {Text2 ge Text}</div>]]></question>
+<div id='TestJS7'>Text2 ge Text : {Text2 ge Text}</div>
+<div id='ExtraTest1'>Q00 lt "20" : {if(Q00 lt "20",'true','false')}</div>
+<div id='ExtraTest2'>Q00+"" lt "20" : {if(Q00+"" lt "20",'true','false')}</div>
+<div id='ExtraTest3'>Q00+"" lt 20 : {if(Q00+"" lt 20,'true','false')}</div>
+<div id='ExtraTest4'>Q00 ge "20" : {if(Q00 ge "20",'true','false')}</div>
+<div id='ExtraTest5'>Q00+"" ge "20" : {if(Q00+"" ge "20",'true','false')}</div>
+<div id='ExtraTest6'>Q00+"" ge 20 : {if(Q00+"" ge 20,'true','false')}</div>]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -218,10 +224,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12403]]></qid>
+    <qid><![CDATA[17723]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[812]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1063]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Text3]]></title>
     <question><![CDATA[Text question 3]]></question>
@@ -237,10 +243,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12404]]></qid>
+    <qid><![CDATA[17724]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[812]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1063]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[CheckPHP]]></title>
     <question><![CDATA[<div>CheckinPHP</div>
@@ -252,7 +258,14 @@
 <div id='TestPHP6'>Text2 lt Text : {Text2 lt Text}</div>
 <div id='TestPHP7'>Text2 ge Text : {Text2 ge Text}</div>
 <div id='TestPHP8'>Q00 lt Text2 : {Q00 lt Text2}<div>
-<div id='TestPHP9'>Q00 ge Text2 : {Q00 ge Text2}<div>]]></question>
+<div id='TestPHP9'>Q00 ge Text2 : {Q00 ge Text2}<div>
+
+<div id='ExtraTest1'>Q00 lt "20" : {if(Q00 lt "20",'true','false')}</div>
+<div id='ExtraTest2'>Q00+"" lt "20" : {if(Q00+"" lt "20",'true','false')}</div>
+<div id='ExtraTest3'>Q00+"" lt 20 : {if(Q00+"" lt 20,'true','false')}</div>
+<div id='ExtraTest4'>Q00 ge "20" : {if(Q00 ge "20",'true','false')}</div>
+<div id='ExtraTest5'>Q00+"" ge "20" : {if(Q00+"" ge "20",'true','false')}</div>
+<div id='ExtraTest6'>Q00+"" ge 20 : {if(Q00+"" ge 20,'true','false')}</div>]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -265,10 +278,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12405]]></qid>
+    <qid><![CDATA[17725]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[811]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1062]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Text2]]></title>
     <question><![CDATA[Text question 2]]></question>
@@ -283,10 +296,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[12406]]></qid>
+    <qid><![CDATA[17726]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[811]]></gid>
+    <sid><![CDATA[483733]]></sid>
+    <gid><![CDATA[1062]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[HiddenByRelevance]]></title>
     <question><![CDATA[Hidden By Relevance question]]></question>
@@ -365,7 +378,7 @@
   </fields>
   <rows>
    <row>
-    <sid><![CDATA[48864]]></sid>
+    <sid><![CDATA[483733]]></sid>
     <gsid><![CDATA[1]]></gsid>
     <admin><![CDATA[Administrator]]></admin>
     <adminemail><![CDATA[admin@example.org]]></adminemail>
@@ -448,7 +461,7 @@
   </fields>
   <rows>
    <row>
-    <surveyls_survey_id><![CDATA[48864]]></surveyls_survey_id>
+    <surveyls_survey_id><![CDATA[483733]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[Comparaison check survey]]></surveyls_title>
     <surveyls_description/>
@@ -474,14 +487,113 @@
     <surveyls_endtext/>
     <surveyls_url/>
     <surveyls_urldescription/>
+    <surveyls_email_invite_subj><![CDATA[Invitation to participate in a survey]]></surveyls_email_invite_subj>
+    <surveyls_email_invite><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+you have been invited to participate in a survey.<br />
+<br />
+The survey is titled:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+To participate, please click on the link below.<br />
+<br />
+Sincerely,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Click here to do the survey:<br />
+{SURVEYURL}<br />
+<br />
+If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />
+{OPTOUTURL}<br />
+<br />
+If you are blacklisted but want to participate in this survey and want to receive invitations please click the following link:<br />
+{OPTINURL}]]></surveyls_email_invite>
+    <surveyls_email_remind_subj><![CDATA[Reminder to participate in a survey]]></surveyls_email_remind_subj>
+    <surveyls_email_remind><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+Recently we invited you to participate in a survey.<br />
+<br />
+We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.<br />
+<br />
+The survey is titled:<br />
+"{SURVEYNAME}"<br />
+<br />
+"{SURVEYDESCRIPTION}"<br />
+<br />
+To participate, please click on the link below.<br />
+<br />
+Sincerely,<br />
+<br />
+{ADMINNAME} ({ADMINEMAIL})<br />
+<br />
+----------------------------------------------<br />
+Click here to do the survey:<br />
+{SURVEYURL}<br />
+<br />
+If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:<br />
+{OPTOUTURL}]]></surveyls_email_remind>
+    <surveyls_email_register_subj><![CDATA[Survey registration confirmation]]></surveyls_email_register_subj>
+    <surveyls_email_register><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.<br />
+<br />
+To complete this survey, click on the following URL:<br />
+<br />
+{SURVEYURL}<br />
+<br />
+If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.]]></surveyls_email_register>
+    <surveyls_email_confirm_subj><![CDATA[Confirmation of your participation in our survey]]></surveyls_email_confirm_subj>
+    <surveyls_email_confirm><![CDATA[Dear {FIRSTNAME},<br />
+<br />
+this email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.<br />
+<br />
+If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.<br />
+<br />
+Sincerely,<br />
+<br />
+{ADMINNAME}]]></surveyls_email_confirm>
     <surveyls_dateformat><![CDATA[1]]></surveyls_dateformat>
+    <email_admin_notification_subj><![CDATA[Response submission for survey {SURVEYNAME}]]></email_admin_notification_subj>
+    <email_admin_notification><![CDATA[Hello,<br />
+<br />
+A new response was submitted for your survey '{SURVEYNAME}'.<br />
+<br />
+Click the following link to see the individual response:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Click the following link to edit the individual response:<br />
+{EDITRESPONSEURL}<br />
+<br />
+View statistics by clicking here:<br />
+{STATISTICSURL}]]></email_admin_notification>
+    <email_admin_responses_subj><![CDATA[Response submission for survey {SURVEYNAME} with results]]></email_admin_responses_subj>
+    <email_admin_responses><![CDATA[Hello,<br />
+<br />
+A new response was submitted for your survey '{SURVEYNAME}'.<br />
+<br />
+Click the following link to see the individual response:<br />
+{VIEWRESPONSEURL}<br />
+<br />
+Click the following link to edit the individual response:<br />
+{EDITRESPONSEURL}<br />
+<br />
+View statistics by clicking here:<br />
+{STATISTICSURL}<br />
+<br />
+<br />
+The following answers were given by the participant:<br />
+{ANSWERTABLE}]]></email_admin_responses>
     <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
    </row>
   </rows>
  </surveys_languagesettings>
  <themes>
   <theme>
-   <sid>48864</sid>
+   <sid>483733</sid>
    <template_name>vanilla</template_name>
    <config>
     <options>
@@ -497,4 +609,22 @@
    </config>
   </theme>
  </themes>
+ <themes_inherited>
+  <theme>
+   <sid>483733</sid>
+   <template_name>vanilla</template_name>
+   <config>
+    <options>
+     <font>noto</font>
+     <brandlogofile>./files/logo.png</brandlogofile>
+     <ajaxmode>on</ajaxmode>
+     <container>on</container>
+     <hideprivacyinfo>off</hideprivacyinfo>
+     <showpopups>1</showpopups>
+     <fixnumauto>off</fixnumauto>
+     <brandlogo>on</brandlogo>
+    </options>
+   </config>
+  </theme>
+ </themes_inherited>
 </document>

@@ -70,6 +70,15 @@ class JsPhpCompareTest extends TestBaseClassWeb
             $this->assertEquals('Q00+"" lt Q01+"" :', $checkJsText,"Current text of TestJS2 is \"".$checkJsText."\"");
             // Fill some value to relevant question
             self::$webDriver->findElement(WebDriverBy::id('answer'.$sgqaHiddenByRelevance))->sendKeys("answered");
+
+            // Fill extra js element by JS value
+            $jsExtraTest1 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest1'))->getText();
+            $jsExtraTest2 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest2'))->getText();
+            $jsExtraTest3 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest3'))->getText();
+            $jsExtraTest4 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest4'))->getText();
+            $jsExtraTest5 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest5'))->getText();
+            $jsExtraTest6 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest6'))->getText();
+
             // Click next (to do the test on PHP)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
@@ -82,6 +91,21 @@ class JsPhpCompareTest extends TestBaseClassWeb
             $checkPhpText = $checkPhp->getText();
             $this->assertEquals('Q00+"" lt Q01+"" :', $checkPhpText,"Current text of TestPHP2 is \"".$checkPhpText."\"");
             // Add other check ?
+            // Fill extra js element by JS value
+            $phpExtraTest1 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest1'))->getText();
+            $phpExtraTest2 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest2'))->getText();
+            $phpExtraTest3 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest3'))->getText();
+            $phpExtraTest4 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest4'))->getText();
+            $phpExtraTest5 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest5'))->getText();
+            $phpExtraTest6 = self::$webDriver->findElement(WebDriverBy::id('ExtraTest6'))->getText();
+            /* Do the JS vs PHP compare */
+            $this->assertEquals($jsExtraTest1, $phpExtraTest1, 'Comparaison between js and php broken : «' . $jsExtraTest1 ."» vs «".$phpExtraTest1."»"); // Q00 lt "20" 
+            $this->assertEquals($jsExtraTest2, $phpExtraTest2, 'Comparaison between js and php broken : «' . $jsExtraTest2 ."» vs «".$phpExtraTest2."»"); // Q00+"" lt "20"
+            $this->assertEquals($jsExtraTest3, $phpExtraTest3, 'Comparaison between js and php broken : «' . $jsExtraTest3 ."» vs «".$phpExtraTest3."»"); // Q00+"" lt 20
+            $this->assertEquals($jsExtraTest4, $phpExtraTest4, 'Comparaison between js and php broken : «' . $jsExtraTest4 ."» vs «".$phpExtraTest4."»"); // Q00 ge "20"
+            $this->assertEquals($jsExtraTest5, $phpExtraTest5, 'Comparaison between js and php broken : «' . $jsExtraTest5 ."» vs «".$phpExtraTest5."»"); // Q00+"" ge "20"
+            $this->assertEquals($jsExtraTest6, $phpExtraTest6, 'Comparaison between js and php broken : «' . $jsExtraTest6 ."» vs «".$phpExtraTest6."»"); // Q00+"" ge 20
+
         } catch (\Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/checkCompareTestSurvey.png';
