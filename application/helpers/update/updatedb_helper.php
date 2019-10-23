@@ -2912,8 +2912,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 "{{surveymenu_entries}}",
                 [
                     'name' =>  "listSurveyPages",
-                    'title' =>  gT('List survey pages','unescaped'),
-                    'menu_title' =>  gT('List survey pages','unescaped'),
+                    'title' =>  gT('Page list','unescaped'),
+                    'menu_title' =>  gT('Page list','unescaped'),
                     'menu_description' =>  gT('List survey pages','unescaped'),
                 ],
                 'name=\'listQuestionGroups\''

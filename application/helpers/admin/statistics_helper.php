@@ -358,7 +358,7 @@ function buildSelects($allfields, $surveyid, $language)
                 /*
                 * these question types WON'T be handled here:
                 * M = Multiple choice
-                * T - Long Free Text
+                * T - Long free text
                 * Q - Multiple Short Text
                 * D - Date
                 * N - Numerical Input
@@ -442,7 +442,7 @@ function buildSelects($allfields, $surveyid, $language)
                     }
                 }
 
-                //T - Long Free Text
+                //T - Long free text
                 //Q - Multiple Short Text
                 elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                     $selectSubs = array();

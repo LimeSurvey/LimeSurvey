@@ -64,7 +64,7 @@ class statistics extends Survey_Common_Action
          *  Q - Multiple Short Text
          *  R - Ranking
          *  S - Short Free Text
-         *  T - Long Free Text
+         *  T - Long free text
          *  U - Huge Free Text
          *  X - Boilerplate Question
          *  Y - Yes/No

@@ -361,7 +361,7 @@ function buildSelects($allfields, $surveyid, $language)
                     /*
                     * these question types WON'T be handled here:
                     * M = Multiple choice
-                    * T - Long Free Text
+                    * T - Long free text
                     * Q - Multiple Short Text
                     * D - Date
                     * N - Numerical Input
@@ -445,7 +445,7 @@ function buildSelects($allfields, $surveyid, $language)
                         }
                     }
 
-                    //T - Long Free Text
+                    //T - Long free text
                     //Q - Multiple Short Text
                     elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                         $selectSubs = array();
@@ -618,7 +618,7 @@ class userstatistics_helper
                 $mfield = substr($rt, 1, strlen($rt)) . "other";
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
-        } //S - Short Free Text and T - Long Free Text
+        } //S - Short Free Text and T - Long free text
         elseif ($firstletter == "T" || $firstletter == "S") {
             //Short and long text
             //search for key

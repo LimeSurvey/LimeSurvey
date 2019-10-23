@@ -124,8 +124,8 @@ class questionedit extends Survey_Common_Action
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor', ['sid' => $iSurveyID, 'gid' => $gid, 'sa' => '']),
             'i10N' => [
-                'Create new Question' => gT('Create new Question'),
-                'General Settings' => gT("General Settings"),
+                'Create question' => gT('Create question'),
+                'General settings' => gT("General settings"),
                 'Code' => gT('Code'),
                 'Text elements' => gT('Text elements'),
                 'Question type' => gT('Question type'),

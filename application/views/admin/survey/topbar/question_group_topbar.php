@@ -85,7 +85,7 @@ if (count($languages) > 1) {
 
 // Preview Questiongroup Button
 $title = 'preview_questiongroup';
-$name = gT('Preview survey page');
+$name = gT('Preview current page');
 
 if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update'))) {
     if (count($languages) > 1) {
@@ -149,7 +149,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
         'id'    => 'import',
         'url'   => $this->createUrl("admin/questiongroups/sa/importview/surveyid/$sid"),
         'icon'  => 'icon-import',
-        'name'  => gT("Import a Page"),
+        'name'  => gT("Import page"),
         'class' => ' btn-default ',
     ];
     array_push($topbar['alignment']['left']['buttons'], $import_group_button);
@@ -161,7 +161,7 @@ if ($hasReadPermission) {
     $buttons['check_survey_logic'] = [
         'id' => 'check_survey_logic',
         'url' => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
-        'name' => gT("Check survey logic for current survey page"),
+        'name' => gT("Check logic for current page"),
         'icon' => 'icon-expressionmanagercheck',
         'class' => ' ',
     ];
@@ -185,7 +185,7 @@ if ($hasDeletePermission) {
                 'type' => 'confirm',
                 'message' => gT("Deleting this survey page will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
                 'icon' => 'fa fa-trash',
-                'name' => gT("Delete current survey page"),
+                'name' => gT("Delete current page"),
                 'class' => ' btn-danger ',
             ];
         } else {
@@ -195,7 +195,7 @@ if ($hasDeletePermission) {
                 'url' => '',
                 'title' => gT("Impossible to delete this survey page because there is at least one question having a condition on its content"),
                 'icon' => 'fa fa-trash',
-                'name' => gT("Delete current survey page"),
+                'name' => gT("Delete current page"),
                 'class' => ' btn-danger disabled',
             ];
         }
@@ -205,7 +205,7 @@ if ($hasDeletePermission) {
             'id' => 'delete_current_question_group',
             'title' => gT("You can't delete this survey page because the survey is currently active."),
             'icon' => 'fa fa-trash',
-            'name' => gT("Delete current survey page"),
+            'name' => gT("Delete current page"),
             'class' => ' btn-danger ',
         ];
     }
@@ -220,7 +220,7 @@ if ($hasExportPermission) {
         'id' => 'export',
         'url' => $this->createUrl("admin/export/sa/group/surveyid/$sid/gid/$gid"),
         'icon' => 'icon-export',
-        'name' => gT("Export this survey page"),
+        'name' => gT("Export current page"),
         'class' => ' btn-default ',
     ];
 

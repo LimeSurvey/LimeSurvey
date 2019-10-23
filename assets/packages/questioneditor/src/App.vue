@@ -266,7 +266,7 @@ export default {
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion && !loading">
                     <x-test id="action::addQuestion"></x-test>
-                    {{'Create new Question'|translate}}
+                    {{'Create question'|translate}}
             </template>
             <template v-if="!isCreateQuestion && !loading">
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>

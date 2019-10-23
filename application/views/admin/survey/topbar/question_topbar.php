@@ -89,7 +89,7 @@ if ($hasReadPermission) {
     array_push($topbarextended['alignment']['left']['buttons'], $surveypreview_buttons);
 
     // Preview Survey Page Button
-    $name = gT('Preview survey page');
+    $name = gT('Preview current page');
 
     $questiongrouppreview_buttons = [];
 
