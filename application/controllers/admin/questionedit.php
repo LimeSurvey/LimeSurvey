@@ -197,9 +197,9 @@ class questionedit extends Survey_Common_Action
 
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
         if ($oQuestion != null) {
-            $oQuestion = $this->_editQuestion($oQuestion, $questionData['question']);
+            $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
         } else {
-            $oQuestion = $this->_newQuestion($questionData['question']);
+            $oQuestion = $this->storeNewQuestionData($questionData['question']);
             $isNewQuestion = true;
         }
         //$questionData['questionAttributes'];
@@ -495,7 +495,7 @@ class questionedit extends Survey_Common_Action
     /**
      * Method to store and filter questionData for a new question
      */
-    private function _newQuestion($aQuestionData = null, $subquestion = false)
+    private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -550,7 +550,7 @@ class questionedit extends Survey_Common_Action
     /**
      * Method to store and filter questionData for editing a question
      */
-    private function _editQuestion(&$oQuestion, $aQuestionData)
+    private function updateQuestionData(&$oQuestion, $aQuestionData)
     {
         $aOldQuestionData = $oQuestion->attributes;
         $oQuestion->setAttributes($aQuestionData, false);
@@ -716,10 +716,10 @@ class questionedit extends Survey_Common_Action
             foreach ($aSubquestions as $aSubquestionDataSet) {
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 if ($oSubQuestion != null) {
-                    $oSubQuestion = $this->_editQuestion($oSubQuestion, $aSubquestionDataSet);
+                    $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
                 } else {
                     $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
-                    $oSubQuestion = $this->_newQuestion($aSubquestionDataSet, true);
+                    $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
                 }
                 $storeValid = $storeValid && $this->_applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
             }
