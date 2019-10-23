@@ -5,6 +5,7 @@ import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
 import reduce from 'lodash/reduce';
 import foreach from 'lodash/forEach';
+import sortBy from 'lodash/sortBy';
 import findIndex from 'lodash/findIndex';
 import isArrayLike from 'lodash/isArrayLike';
 import isObjectLike from 'lodash/isObjectLike';
@@ -62,14 +63,18 @@ export default {
             let newDataSet = merge({}, oDataSet);
             newDataSet[this.uniqueSelector] = this.getRandomId();
             newDataSet[this.typeDefininitionKey] = this.getNewTitleFromCurrent(scaleId);
+            newDataSet[this.orderAttribute]++;
             tmpArray[scaleId].push(newDataSet);
-            this.currentDataSet = tmpArray;
+            
+            this.currentDataSet = this.reorder(tmpArray);
         },
         addDataSet(scaleId) {
             let tmpArray = merge([], this.currentDataSet);
             tmpArray[scaleId] = tmpArray[scaleId] || new Array();
-            tmpArray[scaleId].push(this.getTemplate(scaleId));
-            this.currentDataSet = tmpArray;
+            const newDataSet = this.getTemplate(scaleId);
+            newDataSet[this.orderAttribute] = (tmpArray[scaleId].length+1);
+            tmpArray[scaleId].push(newDataSet);
+            this.currentDataSet = this.reorder(tmpArray);
         },
         openLabelSets(scaleId) {
             this.$modal.show(LabelSets, {
@@ -220,6 +225,19 @@ export default {
             tempFullObject[contents.scale_id][identifier] = contents;
             this.$log.log('Event editFromSimplePopupEditor result', {identifier, tempFullObject});
             this.currentDataSet = tempFullObject;
+        },
+        reorder(dataSet) {
+            foreach(dataSet, (scaleArray, scaleId) => {
+                scaleArray.sort((a,b) => (a[this.orderAttribute] < b[this.orderAttribute] ? -1 : 1));
+                let currentOrder = 1;
+                let maxOrder = scaleArray.length;
+                for(;currentOrder<=maxOrder ; currentOrder++) {
+                    scaleArray[(currentOrder-1)][this.orderAttribute] = currentOrder;
+                }
+                dataSet[scaleId] = scaleArray;
+            });
+
+            return dataSet;
         }
     }
 }

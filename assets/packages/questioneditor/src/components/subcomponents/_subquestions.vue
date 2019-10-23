@@ -17,6 +17,7 @@ export default {
         return {
             uniqueSelector: 'qid',
             type: 'subquestions',
+            orderAttribute: 'question_order',
             typeDefininition: 'question',
             typeDefininitionKey: 'title',
             subQuestionDragging: false,
@@ -57,7 +58,7 @@ export default {
                 preg: null,
                 other: "N",
                 mandatory: "N",
-                question_order: (this.currentDataSet.length + 1),
+                question_order: 0,
                 scale_id: ''+scaleId,
                 same_default: "0",
                 relevance: "1",
@@ -246,17 +247,34 @@ export default {
                             </div>
                         </div>
                         <div class="scoped-actions-block" v-show="!readonly">
-                            <button class="btn btn-default btn-small" v-if="!surveyActive" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
+                            <button 
+                                v-if="!surveyActive" 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip"
+                                :title='translate("Delete")'
+                                @click.prevent="deleteThisDataSet(subquestion, subquestionscale)"
+                            >
                                 <i class="fa fa-trash text-danger"></i>
-                                {{ "Delete" | translate }}
+                                <span class="sr-only">{{ "Delete" | translate }}</span>
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(subquestion, subquestionscale)">
+                                <button 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip"
+                                :title='translate("Open editor")'
+                                @click.prevent="openPopUpEditor(subquestion, subquestionscale)"
+                            >
                                 <i class="fa fa-edit"></i>
-                                {{ "Open editor" | translate }}
+                                <span class="sr-only">{{ "Open editor" | translate }}</span>
                             </button>
-                            <button class="btn btn-default btn-small" v-if="!surveyActive" @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)">
+                            <button 
+                                v-if="!surveyActive" 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip"
+                                :title='translate("Duplicate")'
+                                @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)"
+                            >
                                 <i class="fa fa-copy"></i>
-                                {{ "Duplicate" | translate }}
+                                <span class="sr-only">{{ "Duplicate" | translate }}</span>
                             </button>
                         </div>
                     </div>
@@ -334,6 +352,7 @@ export default {
         flex-grow: 1;
     }
     .scoped-relevance-block {
+        min-width:125px;
         @media (min-width: 1279px) {
             width:10%;
             max-width: 20%;
@@ -344,7 +363,8 @@ export default {
         }
     }
     .scoped-actions-block {
-        width:25%;
+        width:15%;
+        padding-left: 1rem;
     }
     
     .movement-active {
