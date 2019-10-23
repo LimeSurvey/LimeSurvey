@@ -350,7 +350,7 @@ class questionedit extends Survey_Common_Action
      * @param boolean $returnArray
      * @return void|array
      */
-    public function getQuestionAttributeData($iQuestionId = null, $gid = null, $returnArray = false)
+    protected function getQuestionAttributeData($iQuestionId = null, $gid = null, $returnArray = false)
     {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
