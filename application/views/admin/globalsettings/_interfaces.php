@@ -41,6 +41,19 @@
     </div>
 </div>
 
+<div class="form-group">
+    <label class=" control-label"  for='add_access_control_header'><?php eT("Set Access-Control-Allow-Origin header:"); ?></label>
+    <div class="">
+        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'add_access_control_header',
+            'id'=>'add_access_control_header',
+            'value' => getGlobalSetting('add_access_control_header'),
+            'onLabel'=>gT('On'),
+            'offLabel' => gT('Off')));
+        ?>
+    </div>
+</div>
+
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
     <?php endif; ?>

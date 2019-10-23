@@ -6343,11 +6343,14 @@
                     $answersCount = \Answer::model()->count('qid = :qid',array(':qid'=>$qid));
 
                     /** @var integer Get number of answers currently filtered (unrelevant) **/
-                    $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
-                        function ($sqRankAnwsers) {
-                            return !$sqRankAnwsers['result'];
-                        }
-                    ));
+                    $answersFilteredCount = 0; // Default : no filter
+                    if(!empty($LEM->subQrelInfo[$qid])) { // If there are filter : count it :)
+                        $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
+                            function ($sqRankAnwsers) {
+                                return !$sqRankAnwsers['result'];
+                            }
+                        ));
+                    }
                     /** var integer the answers available **/
                     $iCountRelevant = $answersCount - $answersFilteredCount;
                     // No need to control if upper than max_columns : count on $sgqa and count($sgqa) == max_columns
