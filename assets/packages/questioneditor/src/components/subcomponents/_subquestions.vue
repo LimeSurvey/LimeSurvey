@@ -99,8 +99,8 @@ export default {
         },
         //dragevents questions
         startDraggingSubQuestion($event, subQuestionObject, scale) {
-            this.$log.log("Dragging started", subQuestionObject);
-            $event.dataTransfer.setData('application/node', this);
+            this.$log.log("Dragging started", {$event, subQuestionObject});
+            $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
             this.subQuestionDragging = true;
             this.draggedSubQuestion = subQuestionObject;
         },
@@ -371,6 +371,8 @@ export default {
         background-color: hsla(0,0,90,0.8);
         &.in-movement {
             background-color: hsla(0,0,60,1);
+            width:102%;
+            margin-left: -1%;
         }
     }
 </style>

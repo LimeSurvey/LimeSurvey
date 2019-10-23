@@ -98,7 +98,7 @@ export default {
         //dragevents questions
         startDraggingAnsweroption($event, answeroptionObject, scale) {
             this.$log.log("Dragging started", answeroptionObject);
-            $event.dataTransfer.setData('application/node', this);
+            $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
             this.answeroptionDragging = true;
             this.draggedAnsweroption = answeroptionObject;
         },
@@ -354,6 +354,8 @@ export default {
         background-color: hsla(0,0,90,0.8);
         &.in-movement {
             background-color: hsla(0,0,60,1);
+            width:102%;
+            margin-left: -1%;
         }
     }
 </style>
