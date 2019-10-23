@@ -52,7 +52,6 @@ class SavedControl extends LSActiveRecord
         return parent::model($class);
     }
 
-
     public function getAllRecords($condition = false)
     {
         if ($condition != false) {
@@ -89,7 +88,7 @@ class SavedControl extends LSActiveRecord
         $criteria = new CDbCriteria;
 
         if ($condition != false) {
-            foreach ($condition as $column=>$value) {
+            foreach ($condition as $column => $value) {
                 $criteria->addCondition("$column='$value'");
             }
         }
@@ -102,33 +101,104 @@ class SavedControl extends LSActiveRecord
         return $this->db->insert('saved_control', $data);
     }
 
-    public function getGridButtons($surveyid)
+    public function getGridButtons()
     {
         $gridButtons = array();
         $gridButtons['editresponse'] = array(
-            'label'=>'<span class="sr-only">'.gT("Edit").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
-            'imageUrl'=>false,
+            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'imageUrl' => false,
             'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
-                'class'=>"btn btn-default btn-xs btn-edit",
-                'data-toggle'=>"tooltip",
-                'title'=>gT("Edit response")
+                'class' => "btn btn-default btn-xs btn-edit",
+                'data-toggle' => "tooltip",
+                'title' => gT("Edit response"),
             ),
-            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update').')',
+            'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'update') . ')',
+        );
+        $gridButtons['resend_accesscode'] = array(
+            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-refresh" aria-hidden="true"></span>',
+            'imageUrl' => false,
+            'url' => 'App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$data->sid,"id"=>$data->srid));',
+            'options' => array(
+                'class' => "btn btn-default btn-xs btn-edit",
+                'data-toggle' => "tooltip",
+                'title' => gT("Resend access code"),
+            ),
+            // 'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update').')',
+            'visible' => false,
         );
         $gridButtons['delete'] = array(
-            'label'=>'<span class="sr-only">'.gT("Delete").'</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
-            'imageUrl'=>false,
-            'icon'=>false,
+            'label' => '<span class="sr-only">' . gT("Delete") . '</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
+            'imageUrl' => false,
+            'icon' => false,
             'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
             'options' => array(
-                'class'=>"btn btn-default btn-xs btn-delete",
-                'data-toggle'=>"tooltip",
-                'title'=>gT("Delete this entry and related response")
+                'class' => "btn btn-default btn-xs btn-delete",
+                'data-toggle' => "tooltip",
+                'title' => gT("Delete this entry and related response"),
             ),
-            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete').')',
+            'visible' => 'boolval(' . Permission::model()->hasSurveyPermission($this->sid, 'responses', 'delete') . ')',
             'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         return $gridButtons;
+    }
+
+    public function getColumns()
+    {
+        return array(
+            array(
+                'header' => gT("ID"),
+                'name' => 'scid',
+                'filter' => false,
+            ),
+            array(
+                'class' => 'bootstrap.widgets.TbButtonColumn',
+                'template' => '{editresponse}{delete}',
+                //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
+                'buttons' => $this->gridButtons,
+            ),
+            array(
+                'header' => gT("Identifier"),
+                'name' => 'identifier',
+            ),
+            array(
+                'header' => gT("IP address"),
+                'name' => 'ip',
+            ),
+            array(
+                'header' => gT("Date saved"),
+                'name' => 'saved_date',
+            ),
+            array(
+                'header' => gT("Email address"),
+                'name' => 'email',
+            ),
+        );
+    }
+
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+        $criteria = new CDbCriteria;
+        $criteria->compare('sid', $this->sid, true); //will not be searchable
+        $criteria->compare('srid', $this->srid, true);
+        $criteria->compare('access_code', $this->access_code, true);
+
+        $criteria->compare('scid', $this->scid);
+        $criteria->compare('identifier', $this->identifier, true);
+        $criteria->compare('email', $this->email);
+        $criteria->compare('ip', $this->ip, true);
+        $criteria->compare('saved_thisstep', $this->saved_thisstep, true);
+        $criteria->compare('status', $this->status, true);
+        $criteria->compare('saved_date', $this->saved_date, true);
+        $criteria->compare('refurl', $this->refurl, true);
+        $pageSize = Yii::app()->user->getState('savedResponsesPageSize', Yii::app()->params['defaultPageSize']);
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSize,
+            ),
+        ));
     }
 }
