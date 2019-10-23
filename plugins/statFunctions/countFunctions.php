@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of reloadAnyResponse plugin
+ * This file is part of statFunctions plugin
  */
 namespace statFunctions;
 use Yii;
@@ -16,7 +16,6 @@ class countFunctions
     /**
      * Return the count of reponse on current Expression Manager survey equal to a specific value
      * Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
-     * @todo
      * @param string $qCode
      * @param string $comparaison
      * @param boolean $submitted respnse
@@ -49,7 +48,6 @@ class countFunctions
     /**
      * Return the count of reponse on current Expression Manager survey equal to a specific value
      * Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
-     * @todo
      * @param string $qCode
      * @param boolean $submitted response
      * @return integer|string
