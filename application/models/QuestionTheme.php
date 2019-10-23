@@ -524,7 +524,11 @@ class QuestionTheme extends LSActiveRecord
             if (empty($baseQuestion['extends'])) {
                 $baseQuestion['name'] = 'core';
             }
-            $baseQuestion['image_path'] = App()->getConfig('publicurl') . $baseQuestion['image_path'];
+            $baseQuestion['image_path'] = str_replace(
+                '//',
+                '/',
+                App()->getConfig('publicurl') . $baseQuestion['image_path']
+            );
             $baseQuestionsModified[] = $baseQuestion;
         }
         libxml_disable_entity_loader($bOldEntityLoaderState);
