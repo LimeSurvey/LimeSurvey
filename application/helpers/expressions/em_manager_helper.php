@@ -8171,18 +8171,12 @@
                     $neededCanonicalAttr[] = $LEM->varNameAttr[$nc];
                 }
                 $neededAliases = array_unique($neededAliases);
-                if (count($neededAliases) > 0)
-                {
-                    $jsParts[] = "var LEMalias2varName = {\n";
-                    $jsParts[] = implode(",\n",$neededAliases);
-                    $jsParts[] = "};\n";
-                }
-                if (count($neededCanonicalAttr) > 0)
-                {
-                    $jsParts[] = "var LEMvarNameAttr = {\n";
-                    $jsParts[] = implode(",\n",$neededCanonicalAttr);
-                    $jsParts[] = "};\n";
-                }
+                $jsParts[] = "var LEMalias2varName = {\n";
+                $jsParts[] = implode(",\n",$neededAliases);
+                $jsParts[] = "};\n";
+                $jsParts[] = "var LEMvarNameAttr = {\n";
+                $jsParts[] = implode(",\n",$neededCanonicalAttr);
+                $jsParts[] = "};\n";
             }
 
             if (!$bReturnArray){
