@@ -57,9 +57,10 @@ class questionedit extends Survey_Common_Action
         //            }
         //        }
 
+        // TODO: Variable not used - why?
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
 
-      //  $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // can we delete this?
+        //  $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true); // can we delete this?
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['questionbar']['buttons']['view'] = true;
 
@@ -387,10 +388,12 @@ class questionedit extends Survey_Common_Action
      * @param string $question_template
      * @return void|array
      */
-    public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $gid=null, $returnArray = false, $question_template='core')
+    public function getGeneralOptions($iQuestionId = null, $sQuestionType = null, $gid = null, $returnArray = false, $question_template = 'core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType, $gid);
-        $aGeneralOptionsArray = $oQuestion->getDataSetObject()->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
+        $aGeneralOptionsArray = $oQuestion
+            ->getDataSetObject()
+            ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
 
         if ($returnArray === true) {
             return $aGeneralOptionsArray;
@@ -406,10 +409,11 @@ class questionedit extends Survey_Common_Action
      * @param string $question_template
      * @return void|array
      */
-    public function getAdvancedOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false, $question_template='core')
+    public function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $returnArray = false, $question_template = 'core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
-        $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getAdvancedOptions($oQuestion->qid, $sQuestionType, null, $question_template);
+        $aAdvancedOptionsArray = $oQuestion->getDataSetObject()
+            ->getAdvancedOptions($oQuestion->qid, $sQuestionType, null, $question_template);
         if ($returnArray === true) {
             return $aAdvancedOptionsArray;
         }
@@ -429,7 +433,7 @@ class questionedit extends Survey_Common_Action
      *
      * @return void
      */
-    public function getRenderedPreview($iQuestionId, $sLanguage, $root=false)
+    public function getRenderedPreview($iQuestionId, $sLanguage, $root = false)
     {
         if ($iQuestionId == null) {
             echo "<h3>No Preview available</h3>";
@@ -488,7 +492,8 @@ class questionedit extends Survey_Common_Action
             ]
         );
         Template::resetInstance();
-        $oTemplate = Template::getInstance($oQuestion->survey->template);
+        // TODO: Needed? Please state why.
+        Template::getInstance($oQuestion->survey->template);
         Yii::app()->twigRenderer->renderTemplateForQuestionEditPreview(
             '/subviews/survey/question_container.twig',
             ['aSurveyInfo' => $aSurveyInfo, 'aQuestion' => $aQuestion, 'session' => $_SESSION],
@@ -500,7 +505,8 @@ class questionedit extends Survey_Common_Action
      * @param int $qid
      * @return ?
      */
-    public function getQuestionTopbar($qid = null) {
+    public function getQuestionTopbar($qid = null)
+    {
         $oQuestion = $this->_getQuestionObject($qid);
         $qtypes    = Question::typeList();
         $qrrow     = $oQuestion->attributes;
@@ -532,7 +538,7 @@ class questionedit extends Survey_Common_Action
      * @param int $gid
      * @return Question
      */
-    private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid = null)
+    private function _getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
         $oQuestion =  Question::model()->findByPk($iQuestionId);
@@ -622,7 +628,6 @@ class questionedit extends Survey_Common_Action
      */
     private function updateQuestionData(&$oQuestion, $aQuestionData)
     {
-        $aOldQuestionData = $oQuestion->attributes;
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new CException("Object update failed, input array malformed or invalid");
@@ -644,6 +649,7 @@ class questionedit extends Survey_Common_Action
     {
         $storeValid = true;
         $aQuestionBaseAttributes = $oQuestion->attributes;
+        // TODO: Variable not used - why?
         $aQuestionAttributes = $oQuestion->questionAttributes;
 
         foreach ($dataSet as $sAttributeKey => $aAttributeValueArray) {
@@ -670,6 +676,7 @@ class questionedit extends Survey_Common_Action
     private function _unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
+        // TODO: Variable not used - why?
         $aQuestionAttributes = $oQuestion->questionAttributes;
         $aQuestionBaseAttributes = $oQuestion->attributes;
 
@@ -818,7 +825,7 @@ class questionedit extends Survey_Common_Action
     {
         $storeValid = true;
         $this->_cleanSubquestions($oQuestion, $dataSet);
-        foreach ($dataSet as $scaleId => $aSubquestions) {
+        foreach ($dataSet as $aSubquestions) {
             foreach ($aSubquestions as $aSubquestionDataSet) {
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 if ($oSubQuestion != null) {
@@ -843,7 +850,7 @@ class questionedit extends Survey_Common_Action
     {
         $aAnsweroptions = $oQuestion->answers;
         array_walk(
-            $aAnsweroptions, 
+            $aAnsweroptions,
             function ($oAnsweroption) use (&$dataSet) {
                 $exists = false;
                 foreach ($dataSet as $scaleId => $aAnsweroptions) {
@@ -874,7 +881,7 @@ class questionedit extends Survey_Common_Action
     {
         $storeValid = true;
         $this->_cleanAnsweroptions($oQuestion, $dataSet);
-        foreach ($dataSet as $scaleId => $aAnswerOptions) {
+        foreach ($dataSet as $aAnswerOptions) {
             foreach ($aAnswerOptions as $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
