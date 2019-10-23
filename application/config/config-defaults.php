@@ -596,6 +596,7 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+$config['add_access_control_header'] = 1;
 
 /**
 * This parameter sets the default session expiration time in seconds
