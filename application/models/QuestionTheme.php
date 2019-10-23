@@ -501,7 +501,7 @@ class QuestionTheme extends LSActiveRecord
 
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
         $baseQuestionsModified = [];
-        foreach ($baseQuestions as $key => $baseQuestion) {
+        foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
             $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $baseQuestion['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
@@ -524,6 +524,7 @@ class QuestionTheme extends LSActiveRecord
             if (empty($baseQuestion['extends'])) {
                 $baseQuestion['name'] = 'core';
             }
+            $baseQuestion['image_path'] = App()->getConfig('publicurl') . $baseQuestion['image_path'];
             $baseQuestionsModified[] = $baseQuestion;
         }
         libxml_disable_entity_loader($bOldEntityLoaderState);

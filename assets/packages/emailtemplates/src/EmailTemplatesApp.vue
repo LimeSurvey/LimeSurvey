@@ -15,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-md-2 col-sm-12">
-                    <div class="scoped-flex-bysize">
+                    <div class="scoped-flex-bysize" id="emailtemplates--type-select-sidebar">
                         <div 
                             v-for="(templateType,type) in possibletemplateTypes" 
                             :key="type"
@@ -27,19 +27,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-10 col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <div class="container-fluid">
+                <div class="col-md-10 col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor" id="emailtemplates--type-select-editorbody">
+                    <div class="container-fluid"> 
                         <div class="row ls-space margin top-5">
                             <div class="ls-flex-row col-12">
-                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject}}:</label>
+                                <label for="currentSubject" class="">{{currentTemplateTypeData.subject || ''}}</label>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" />
                             <input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/>
                         </div>
-                        <div class="row ls-space margin top-15">
+                        <div class="row ls-space margin top-15 ckedit-nocollapse" id="EmailTemplates--editor-container">
                             <div class="ls-flex-row col-12">
                                 <div class="ls-flex-item text-left">
-                                    <label class="">{{currentTemplateTypeData.body}}:</label>
+                                    <label class="">{{currentTemplateTypeData.body}}</label>
                                 </div>
                                 <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
                                     <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
@@ -51,16 +51,31 @@
                         </div>
                         <div class="row ls-space margin top-15">
                             <div class="ls-flex-row col-12">
-                                <button class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
-                                <button class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset current"}} </button>
-                                <!-- <button class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add file to current"}} </button> -->
+                                <button id="EmailTemplates--actionbutton-validateCurrentContent" class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
+                                <button id="EmailTemplates--actionbutton-resetCurrentContent" class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset to default"}} </button>
+                                <button id="EmailTemplates--actionbutton-addFileToCurrent" class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add attachment to templates"}} </button>
+                            </div>
+                        </div>
+                        <div class="row ls-space margin top-15" v-if="hasAttachments">
+                            <div class="scoped-simple-carousel ls-flex-row">
+                                <div 
+                                    v-for="file in currentAttachments"
+                                    :key="file.hash"
+                                    class="simple-carousel-item"
+                                >
+                                    <i class="fa fa-times text-danger simple-carousel-delete" @click="deleteAttachment(file)" />
+                                    <img v-if="file.isImage !='false'" class="scoped-contain-image" :src="file.src" :alt="file.shortName" />
+                                    <i v-else :class="'fa '+file.iconClass+' fa-4x'"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </template>
-        <div v-if="loading"><loader-widget id="emailtemplatesinternalloader" /></div>
+        <div v-if="loading">
+            <loader-widget id="emailtemplatesinternalloader" />
+        </div>
         <modals-container />
     </div>
 </template>
@@ -68,12 +83,13 @@
 <script>
 import Mousetrap from 'mousetrap';
 import he from 'he';
-import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
+import LsEditor from '../../meta/LsCkeditor/src/LsCkEditorInline';
 
 import ValidationScreen from './components/ValidationScreen';
 import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
+import FileSelectModal from './components/FileSelectModal';
 import runAjax from './mixins/runAjax';
 
 export default {
@@ -102,6 +118,21 @@ export default {
         isNewSurvey() {
             return window.EmailTemplateData.isNewSurvey;
         },
+        currentAttachments: {
+            get() {
+                if(this.$store.state.templateTypeContents[this.$store.state.activeLanguage].attachments != null) {
+                    return this.$store.state.templateTypeContents[this.$store.state.activeLanguage]
+                            .attachments[this.$store.state.currentTemplateType];
+                }
+                return null;
+            },
+            set(newVal) {
+                this.$store.commit('setAttachementForTypeAndLanguage', newVal);
+            }
+        },
+        hasAttachments() {
+            return this.currentAttachments != null;
+        },
         currentSubject: {
             get() { 
                 let returner = '';
@@ -114,7 +145,7 @@ export default {
                 return returner;
             },
             set(newValue) { 
-                if (newValue.subject) {
+                if (newValue.subject != undefined) {
                     this.$store.commit('setSubjectForCurrentState', newValue.subject); 
                 } else {
                     this.$store.commit('setSubjectForCurrentState', newValue); 
@@ -130,7 +161,11 @@ export default {
                 try{    
                     if (this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
                         let descriptor = this.currentTemplateTypeData.field.body;
-                        returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
+                        if(!this.$store.state.useHtml) {
+                            returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));
+                        } else {
+                            returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
+                        }
                     }
                 } catch(e) {}
                 return returner;
@@ -197,10 +232,9 @@ export default {
             }
         },
         submitCurrentState(redirect = false) {
-            this.toggleLoading();
+            this.loading = true;
             this.$store.dispatch('saveData').then(
                 (result) => {
-                    this.toggleLoading();
                     if(redirect == true) {
                         window.location.href = result.data.redirect;
                     }
@@ -210,12 +244,11 @@ export default {
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
-                    this.toggleLoading();
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader("Texts could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     //setTimeout(()=>{window.location.reload();}, 1500);
                 }
-            )
+            ).finally(() => { this.loading = false; })
         },
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
@@ -256,6 +289,21 @@ ${scriptContent}
             if (this.editorInstance != null) { 
                 this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);
             }
+        },
+        addFileToCurrent() {
+            this.$modal.show(
+                FileSelectModal,
+                {},
+                {
+                    width: '75%',
+                    height: '75%',
+                    scrollable: true,
+                    resizable: false
+                },
+            );
+        },
+        deleteAttachment(file) {
+            this.currentAttachments = LS.ld.filter(this.currentAttachments, (att) => att.hash != file.hash );
         }
     },
     created(){
@@ -283,11 +331,11 @@ ${scriptContent}
         });
 
         if(!window.EmailTemplateData.isNewSurvey) {
-            $('#save-button').on('click', (e)=>{
+           LS.EventBus.$on('componentFormSubmit', () => {
                 this.submitCurrentState();
             });
         }
-        this.toggleLoading(false);
+        this.loading = false;
     }
 }
 </script>
@@ -321,6 +369,36 @@ ${scriptContent}
         padding: 0.5rem 0.3rem;
         &.active {
             font-weight:bold;
+        }
+    }
+}
+.scoped-simple-carousel {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    .simple-carousel-item {
+        width: 23%;
+        margin: 1%;
+        height: 6.5em;
+        box-shadow: 1px 3px 5px #cfcfcf;
+        display: inline-flex;
+        align-content: center;
+        position: relative;
+        &>.simple-carousel-delete {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
+        &>.scoped-contain-image {
+            max-width: 100%;
+            max-height: 5em;
+            display: block;
+            margin: auto;
+        }
+        &>i.fa {
+            max-height: 5em;
+            display: block;
+            margin: auto;
         }
     }
 }

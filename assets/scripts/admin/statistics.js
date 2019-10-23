@@ -18,7 +18,7 @@ var COLORS_FOR_SURVEY = new Array('20,130,200', '232,95,51', '34,205,33', '210,2
 var initChartGraph = function (element, type, qid) {
     if (typeof chartjs[qid] == "undefined" || typeof chartjs == "undefined") // typeof chartjs[$qid] == "undefined" || typeof chartjs == "undefined"
     {
-        if (type == 'Bar' || type == 'Radar' || type == 'Line') {
+        if (type === 'Bar' || type === 'Radar' || type === 'Line' || type === 'Doughnut' || type === 'Pie' || type === 'PolarArea') {
             init_chart_js_graph_with_datasets(type, qid);
         } else {
             init_chart_js_graph_with_datas(type, qid);
@@ -109,10 +109,6 @@ function init_chart_js_graph_with_datasets($type, $qid) {
     var $grawdata = $statistics.grawdata
     var $color = $canva.data('color');
 
-    $('#legend-no-percent-' + $qid).show();
-    $('#legend-percent-' + $qid).hide();
-    $('#stat-no-answer-' + $qid).hide();
-
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
             window.chartjs[$qid].destroy();
@@ -121,32 +117,27 @@ function init_chart_js_graph_with_datasets($type, $qid) {
 
     var dataDefinition = {
         labels: $labels,
-        datasets: [{
-            label: $qid,
-            data: $grawdata,
-            backgroundColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",0.2)",
-            borderColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",1)",
-            hoverBackgroundColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",1)",
-            pointBackgroundColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(" + COLORS_FOR_SURVEY[$color] + ",1)",
-
-        }],
     };
 
-    // We need to give a different color to each bar
-    if ($type == 'Bar') {
-        dataDefinition.datasets.backgroundColor = [];
-    	dataDefinition.datasets.borderColor = [];
-        dataDefinition.datasets.hoverBackgroundColor = [];
-        
-        LS.ld.forEach($labels, function(label, key) {
-            var colorIndex = (parseInt(key) + $color);
-            dataDefinition.datasets.backgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.6)");
-            dataDefinition.datasets.borderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
-            dataDefinition.datasets.hoverBackgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.9)");
-        });
-    }
+    dataDefinition.datasets = [{
+        label: $qid,
+        data: $grawdata,
+        backgroundColor: [],
+        borderColor: [],
+        hoverBackgroundColor: [],
+        pointBackgroundColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: []
+    }];
+
+    // different color for each bar
+    LS.ld.forEach($labels, function (label, key) {
+        var colorIndex = (parseInt(key) + $color);
+        dataDefinition.datasets[0].backgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.6)");
+        dataDefinition.datasets[0].borderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
+        dataDefinition.datasets[0].hoverBackgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.9)");
+        dataDefinition.datasets[0].pointHoverBorderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
+    });
 
     console.ls.log("Creating chart with definition: ", dataDefinition);
 
@@ -177,10 +168,6 @@ function init_chart_js_graph_with_datas($type, $qid) {
         }],
     };
     var $max = 0;
-
-    $('#legend-no-percent-' + $qid).hide();
-    $('#legend-percent-' + $qid).show();
-    $('#stat-no-answer-' + $qid).show();
 
     $.each($labels, function($i, $label) {
         $max = $max + parseInt($grawdata[$i]);
@@ -296,7 +283,7 @@ LS.Statistics2 = function () {
             $qid = $(this).data('qid');
 
             // chartjs
-            if ($type == 'Bar' || $type == 'Radar' || $type == 'Line') {
+            if ($type === 'Bar' || $type === 'Radar' || $type === 'Line' || $type === 'Doughnut' || $type === 'Pie' || $type === 'PolarArea') {
                 init_chart_js_graph_with_datasets($type, $qid);
             } else {
                 init_chart_js_graph_with_datas($type, $qid);

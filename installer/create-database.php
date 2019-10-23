@@ -967,11 +967,9 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
         $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
-        switchMSSQLIdentityInsert('question_themes', true);
         foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
             $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
         }
-        switchMSSQLIdentityInsert('question_themes', false);
 
         //tutorials
         $oDB->createCommand()->createTable(

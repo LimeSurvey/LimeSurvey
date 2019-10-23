@@ -12,11 +12,11 @@ class PreviewModalScript {
             onModalOpen: () => {},
             dataFilter: () => {},
             onGetDetails: (curDetailPage, itemData) => curDetailPage,
-            value: '',
             selectedClass: '',
             option: false,
             debugString: 'Key: ',
-            debug: false
+            debug: false,
+            secondaryInputElement: null
         };
 
         const toBeEvaluated = ['onUpdate', 'onReady', 'onModalClose', 'onModalOpen', 'dataFilter', 'onGetDetails'];
@@ -63,15 +63,7 @@ class PreviewModalScript {
      */
     preSelectFromValue (value){
         value = value || this.inputItem.val() || this.options.value;
-        let selectedItem = null;
-        if(/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)){
-            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-key=${value.toString().trim()}]`);
-        }
-        if((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
-            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-key=${this.options.selectedClass.toString().trim()}]`);
-        }
-
-        return selectedItem;
+        return $(`.selector__Item--select-${this.widgetsJsName}[data-key='${value.toString().trim()}']`);
     }
 
     /**
@@ -82,7 +74,7 @@ class PreviewModalScript {
         const selectedItem = this.preSelectFromValue();
 
         if(selectedItem) {
-            $(selectedItem).trigger('click');
+            $(selectedItem).addClass('mark-as-selected');
             $(selectedItem).closest('div.panel-collapse').addClass('in');
         }
         this.options.onModalOpen();
@@ -100,9 +92,19 @@ class PreviewModalScript {
      * bind to all necessary events
      */
     bind() {
+        
+        if(this.options.secondaryInputElement != null) {
+            this.options.value = $(this.options.secondaryInputElement).val();
+            
+            $(this.options.secondaryInputElement).off('change.previewModal');
+            $(this.options.secondaryInputElement).on('change.previewModal', (e) => { 
+                this.selectItemClick(this.preSelectFromValue($(e.currentTarget).val()));                
+            })
+        }
+
         if(/modal/.test(this.options.viewType)){
-            $(this.modalItem).on('hide.bs.modal', ()=>{this.onModalClosed()});
-            $(this.modalItem).on('shown.bs.modal', ()=>{this.onModalShown()});
+            $(this.modalItem).on('hide.bs.modal', ()=>{ this.onModalClosed() });
+            $(this.modalItem).on('shown.bs.modal', ()=>{ this.onModalShown() });
             $(`.selector__Item--select-${this.widgetsJsName}:not(.disabled)`).on('click', (ev)=>{this.selectItemClick(ev)});
             $(`#selector__select-this-${this.widgetsJsName}`).on('click', () => {
                 this.options.onUpdate(this.options.value, this.options.option);
@@ -115,5 +117,7 @@ class PreviewModalScript {
                 this.options.onUpdate($(e.currentTarget).val());
             });
         }
+        
+        this.options.onReady(this);
     }
 }

@@ -98,8 +98,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
 
         sleep(1);
 
-        $answers[0]->refresh();
-        $answers[1]->refresh();
+        $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);
         $this->assertEquals('abc', $answers[1]->answerL10ns['en']->answer);
 

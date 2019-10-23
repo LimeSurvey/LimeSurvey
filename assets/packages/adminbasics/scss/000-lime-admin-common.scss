@@ -1105,6 +1105,12 @@ div.panel.disabled a {
 .ck-blurred {
     max-height:35vh;
 }
+.ckedit-nocollapse {
+    .ck-blurred {
+        max-height: initial;
+    }
+
+}
 .ck-focused {
     max-height: initial;
 }

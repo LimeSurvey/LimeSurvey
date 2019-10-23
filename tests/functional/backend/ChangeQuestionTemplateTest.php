@@ -223,7 +223,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $web = self::$webDriver;
             $web->get($url);
 
-            sleep(2);
+            sleep(3);
 
             // Select Question Editor View
             try {

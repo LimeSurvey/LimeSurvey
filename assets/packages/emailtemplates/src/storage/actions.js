@@ -9,6 +9,7 @@ export default {
             ajax.methods.$_get(requestUrl).then((result) => {
                 LOG.log('Getting Data', result);
                 
+                context.commit('setUseHtml', result.data.useHtml);
                 context.commit('setTemplateTypes', result.data.templateTypes);
                 context.commit('setCurrentTemplateType', _.keys(result.data.templateTypes)[0]);
                 context.commit('setLanguages', result.data.languages);

@@ -42,7 +42,7 @@ if( ENVIRONEMENT=='production' ) {
 }
 
 module.exports = {
-    input: ['src/uploader.js', 'src/modaldialog.js', 'src/ajaxupload.js'],
+    input: 'src/uploader.js',
     output,
     plugins
   };

@@ -39,11 +39,11 @@ function () {
       onGetDetails: function onGetDetails(curDetailPage, itemData) {
         return curDetailPage;
       },
-      value: '',
       selectedClass: '',
       option: false,
       debugString: 'Key: ',
-      debug: false
+      debug: false,
+      secondaryInputElement: null
     };
     var toBeEvaluated = ['onUpdate', 'onReady', 'onModalClose', 'onModalOpen', 'dataFilter', 'onGetDetails'];
     $.each(transOptions, function (key, val) {
@@ -99,17 +99,7 @@ function () {
      */
     value: function preSelectFromValue(value) {
       value = value || this.inputItem.val() || this.options.value;
-      var selectedItem = null;
-
-      if (/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)) {
-        selectedItem = $(".selector__Item--select-".concat(this.widgetsJsName, "[data-key=").concat(value.toString().trim(), "]"));
-      }
-
-      if ((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
-        selectedItem = $(".selector__Item--select-".concat(this.widgetsJsName, "[data-key=").concat(this.options.selectedClass.toString().trim(), "]"));
-      }
-
-      return selectedItem;
+      return $(".selector__Item--select-".concat(this.widgetsJsName, "[data-key='").concat(value.toString().trim(), "']"));
     }
     /**
      * event triggered when the modal opens
@@ -121,7 +111,7 @@ function () {
       var selectedItem = this.preSelectFromValue();
 
       if (selectedItem) {
-        $(selectedItem).trigger('click');
+        $(selectedItem).addClass('mark-as-selected');
         $(selectedItem).closest('div.panel-collapse').addClass('in');
       }
 
@@ -148,6 +138,14 @@ function () {
     value: function bind() {
       var _this = this;
 
+      if (this.options.secondaryInputElement != null) {
+        this.options.value = $(this.options.secondaryInputElement).val();
+        $(this.options.secondaryInputElement).off('change.previewModal');
+        $(this.options.secondaryInputElement).on('change.previewModal', function (e) {
+          _this.selectItemClick(_this.preSelectFromValue($(e.currentTarget).val()));
+        });
+      }
+
       if (/modal/.test(this.options.viewType)) {
         $(this.modalItem).on('hide.bs.modal', function () {
           _this.onModalClosed();
@@ -169,6 +167,8 @@ function () {
           _this.options.onUpdate($(e.currentTarget).val());
         });
       }
+
+      this.options.onReady(this);
     }
   }]);
 

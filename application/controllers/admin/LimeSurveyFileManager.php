@@ -385,7 +385,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $inInAllowedFolders = false;
 
         foreach ($aAllowedFolders as $folderName => $folderPath) {
-            $inInAllowedFolders = (preg_match('%/?' . $folderPath . '/?%', $sFolderPath)) || $inInAllowedFolders;
+            $inInAllowedFolders = (preg_match('%/?' . preg_quote($folderPath) . '/?%', $sFolderPath)) || $inInAllowedFolders;
         }
 
         if (!$inInAllowedFolders) {

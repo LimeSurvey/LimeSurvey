@@ -14,12 +14,15 @@
 use \LimeSurvey\Helpers\questionHelper;
 
 /**
-* This function imports a LimeSurvey .lsg survey page XML file
-*
-* @param string $sFullFilePath  The full filepath of the uploaded file
-* @param integer $iNewSID The new survey id - the page will always be added after the last page in the survey
-*/
-function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
+ * This function imports a LimeSurvey .lsg survey page XML file
+ *
+ * @param string  $sFullFilePath The full filepath of the uploaded file
+ * @param integer $iNewSID       The new survey id - the page will always be added after the last page in the survey
+ * @param boolean $bTranslateLinksFields
+ *
+ * @return mixed
+ */
+function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
     $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
@@ -82,6 +85,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
             $aDataL10n['group_name'] = $insertdata['group_name'];
             $aDataL10n['description'] = $insertdata['description'];
             $aDataL10n['language'] = $insertdata['language'];
+            $aDataL10n['grelevance'] = $insertdata['grelevance'];
             unset($insertdata['group_name']);
             unset($insertdata['description']);
             unset($insertdata['language']);
@@ -91,7 +95,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
             $questionGroup->sid = $insertdata['sid'];
             $questionGroup->group_order = $insertdata['group_order'];
             $questionGroup->randomization_group = $insertdata['randomization_group'];
-            $questionGroup->grelevance = $insertdata['grelevance'];
             if (!$questionGroup->save()) {
                 safeDie(gT("Error").": Failed to insert data [3]<br />");
             }
@@ -161,7 +164,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
             }
             // now translate any links
             if (!isset($xml->question_l10ns->rows->row)) {
-                if ($bTranslateInsertansTags) {
+                if ($bTranslateLinksFields) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
                 }
@@ -174,7 +177,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
                 unset($insertdata['language']);
             }
             
-            if (!$bConvertInvalidQuestionCodes) {
+            if (!$bTranslateLinksFields) {
                 $sScenario = 'archiveimport';
             } else {
                 $sScenario = 'import';
@@ -254,7 +257,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
                 $insertdata['help'] = '';
             }            // now translate any links
             if (!isset($xml->question_l10ns->rows->row)) {
-                if ($bTranslateInsertansTags) {
+                if ($bTranslateLinksFields) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
                 }
@@ -266,7 +269,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
                 unset($insertdata['help']);
                 unset($insertdata['language']);
             }
-            if (!$bConvertInvalidQuestionCodes) {
+            if (!$bTranslateLinksFields) {
                 $sScenario = 'archiveimport';
             } else {
                 $sScenario = 'import';

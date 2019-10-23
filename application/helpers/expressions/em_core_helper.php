@@ -280,6 +280,10 @@ class ExpressionManager
      */
     public function ExpressionManagerStartEvent()
     {
+        if (Yii::app() instanceof CConsoleApplication) {
+            return;
+        }
+
         $event = new \LimeSurvey\PluginManager\PluginEvent('ExpressionManagerStart');
         $result = App()->getPluginManager()->dispatchEvent($event);
         $newValidFunctions = (array) $result->get('functions');

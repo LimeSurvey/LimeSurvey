@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/EmailTemplatesApp.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\prettify.css" />
+    <link rel="stylesheet" href="..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\index.html">All files</a> / <a href="index.html">src</a> EmailTemplatesApp.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">71.05% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>81/114</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>16/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">55.56% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">71.05% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>81/114</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+    &lt;div class="container-center scoped-new-emailTemplatesEditor"&gt;
+        &lt;x-test id="action::surveyEmailTemplates"&gt;&lt;/x-test&gt;
+        &lt;template v-show="!loading"&gt;
+            &lt;div class="row" v-if="languageChangerEnabled"&gt;
+                &lt;language-selector 
+                    elId="emailTemplatesEditor" 
+                    :aLanguages="$store.state.languages" 
+                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    @change="selectLanguage"
+                /&gt;
+            &lt;/div&gt;
+            &lt;div class="row"&gt;
+                &lt;hr /&gt;
+            &lt;/div&gt;
+            &lt;div class="row"&gt;
+                &lt;div class="col-md-2 col-sm-12"&gt;
+                    &lt;div class="scoped-flex-bysize" id="emailtemplates--type-select-sidebar"&gt;
+                        &lt;div 
+                            v-for="(templateType,type) in possibletemplateTypes" 
+                            :key="type"
+                            class="scoped-tabbable-item btn btn-block btn-default"
+                            :class="currentTemplateType==type?'active':''"
+                            @click.prevent="setTemplateType(type)"
+                        &gt;
+                            {{templateType.title|translate}}
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="col-md-10 col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor" id="emailtemplates--type-select-editorbody"&gt;
+                    &lt;div class="container-fluid"&gt; 
+                        &lt;div class="row ls-space margin top-5"&gt;
+                            &lt;div class="ls-flex-row col-12"&gt;
+                                &lt;label for="currentSubject" class=""&gt;{{currentTemplateTypeData.subject || ''}}&lt;/label&gt;
+                            &lt;/div&gt;
+                            &lt;div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentSubject)" /&gt;
+                            &lt;input class="form-control" v-model="currentSubject" name="currentSubject" id="currentSubject"/&gt;
+                        &lt;/div&gt;
+                        &lt;div class="row ls-space margin top-15 ckedit-nocollapse" id="EmailTemplates--editor-container"&gt;
+                            &lt;div class="ls-flex-row col-12"&gt;
+                                &lt;div class="ls-flex-item text-left"&gt;
+                                    &lt;label class=""&gt;{{currentTemplateTypeData.body}}&lt;/label&gt;
+                                &lt;/div&gt;
+                                &lt;div class="ls-flex-item text-right" v-if="$store.state.permissions.update"&gt;
+                                    &lt;button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"&gt;&lt;i class="fa fa-file-code-o"&gt;&lt;/i&gt;{{'Toggle source mode'|translate}}&lt;/button&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" /&gt;
+                            &lt;lsckeditor v-if="!sourceMode &amp;&amp; $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"&gt;&lt;/lsckeditor&gt;
+                            &lt;aceeditor v-if="sourceMode &amp;&amp; $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"&gt;&lt;/aceeditor&gt;
+                        &lt;/div&gt;
+                        &lt;div class="row ls-space margin top-15"&gt;
+                            &lt;div class="ls-flex-row col-12"&gt;
+                                &lt;button id="EmailTemplates--actionbutton-validateCurrentContent" class="btn btn-default" @click.prevent="validateCurrentContent"&gt; {{"Validate Expressions"}} &lt;/button&gt;
+                                &lt;button id="EmailTemplates--actionbutton-resetCurrentContent" class="btn btn-default" @click.prevent="resetCurrentContent"&gt; {{"Reset to default"}} &lt;/button&gt;
+                                &lt;button id="EmailTemplates--actionbutton-addFileToCurrent" class="btn btn-default" @click.prevent="addFileToCurrent"&gt; {{"Add attachment to templates"}} &lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div class="row ls-space margin top-15" v-if="hasAttachments"&gt;
+                            &lt;div class="scoped-simple-carousel ls-flex-row"&gt;
+                                &lt;div 
+                                    v-for="file in currentAttachments"
+                                    :key="file.hash"
+                                    class="simple-carousel-item"
+                                &gt;
+                                    &lt;i class="fa fa-times text-danger simple-carousel-delete" @click="deleteAttachment(file)" /&gt;
+                                    &lt;img v-if="file.isImage !='false'" class="scoped-contain-image" :src="file.src" :alt="file.shortName" /&gt;
+                                    &lt;i v-else :class="'fa '+file.iconClass+' fa-4x'"&gt;&lt;/i&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/template&gt;
+        &lt;div v-if="loading"&gt;
+            &lt;loader-widget id="emailtemplatesinternalloader" /&gt;
+        &lt;/div&gt;
+        &lt;modals-container /&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&nbsp;
+&lt;script&gt;
+import Mousetrap from 'mousetrap';
+import he from 'he';
+import LsEditor from '../../meta/LsCkeditor/src/LsCkEditorInline';
+&nbsp;
+import ValidationScreen from './components/ValidationScreen';
+import LanguageSelector from './components/subcomponents/_languageSelector';
+import Aceeditor from './helperComponents/AceEditor';
+&nbsp;
+import FileSelectModal from './components/FileSelectModal';
+import runAjax from './mixins/runAjax';
+&nbsp;
+export default {
+    name: 'emailtemplateeditor',
+    components: {
+        'language-selector' : LanguageSelector,
+        Aceeditor
+    },
+    mixins: [runAjax],
+    data() {
+        return {
+            loading: true,
+            event: null,
+            editorInstance: null,
+            currentEditor: LsEditor,
+            currentEditorOptions : {
+                'lsExtension:fieldtype': 'email_general', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid },
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
+            sourceMode: false,
+            applyExternalChange: true
+        }
+    },
+    computed: {
+        isNewSurvey() {
+<span class="cstat-no" title="statement not covered" >            return window.EmailTemplateData.isNewSurvey;</span>
+        },
+        currentAttachments: {
+            get() {
+<span class="missing-if-branch" title="if path not taken" >I</span>                if(this.$store.state.templateTypeContents[this.$store.state.activeLanguage].attachments != null) {
+<span class="cstat-no" title="statement not covered" >                    return this.$store.state.templateTypeContents[this.$store.state.activeLanguage]</span>
+                            .attachments[this.$store.state.currentTemplateType];
+                }
+                return null;
+            },
+            set(newVal) {
+<span class="cstat-no" title="statement not covered" >                this.$store.commit('setAttachementForTypeAndLanguage', newVal);</span>
+            }
+        },
+        hasAttachments() {
+            return this.currentAttachments != null;
+        },
+        currentSubject: {
+            get() { 
+                let returner = '';
+                try{    
+<span class="missing-if-branch" title="else path not taken" >E</span>                    if(this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
+                        try {
+                            let descriptor = this.currentTemplateTypeData.field.subject;
+                        } catch (e) {
+<span class="cstat-no" title="statement not covered" >                            throw new Error('L 141 -&gt; Subject for descriptor not found');</span>
+                        }
+                        returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
+                    }
+                } catch(e) {}
+                return returner;
+            },
+            set(newValue) { 
+<span class="cstat-no" title="statement not covered" >                if (newValue.subject != undefined) {</span>
+<span class="cstat-no" title="statement not covered" >                    this.$store.commit('setSubjectForCurrentState', newValue.subject); </span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                    this.$store.commit('setSubjectForCurrentState', newValue); </span>
+                }
+            },
+        },
+        editorExtraOptions() { 
+            return {'fieldtype': 'email_'+this.$store.state.currentTemplateType };
+        },
+        currentEditorContent: {
+            get() { 
+                let returner = '';
+                try{    
+<span class="missing-if-branch" title="else path not taken" >E</span>                    if (this.$store.state.templateTypeContents[this.$store.state.activeLanguage]) {
+                        let descriptor = this.currentTemplateTypeData.field.body;
+<span class="missing-if-branch" title="if path not taken" >I</span>                        if(!this.$store.state.useHtml) {
+<span class="cstat-no" title="statement not covered" >                            returner = this.nl2br(he.decode(this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor]));</span>
+                        } else {
+                            returner = this.$store.state.templateTypeContents[this.$store.state.activeLanguage][descriptor];
+                        }
+                    }
+                } catch(e) {}
+                return returner;
+            },
+            set(newValue) { 
+<span class="cstat-no" title="statement not covered" >                if (newValue.body) {</span>
+<span class="cstat-no" title="statement not covered" >                    this.$store.commit('setEditorContentForCurrentState', newValue.body); </span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                    this.$store.commit('setEditorContentForCurrentState', newValue); </span>
+                }
+            },
+        },
+        currentTemplateTypeData() {
+            return this.$store.state.templateTypes[this.$store.state.currentTemplateType];
+        },
+        currentTemplateType: {
+            get() { return this.$store.state.currentTemplateType; },
+<span class="cstat-no" title="statement not covered" >            set(newValue) { this.$store.commit('setCurrentTemplateType', newValue); },</span>
+        },
+        possibletemplateTypes(){ return this.$store.state.templateTypes; },
+        languageChangerEnabled() {
+            return LS.ld.size(this.$store.state.languages) &gt; 1;
+        },
+    },
+    methods: {
+        nl2br (str, is_xhtml=true) {
+            if (typeof str === 'undefined' || str === null) {
+                return '';
+            }
+<span class="branch-1 cbranch-no" title="branch not covered" >            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '&lt;br /&gt;' : '&lt;br&gt;';</span>
+            return (str + '').replace(/([^&gt;\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+        },
+        onReadySetEditor(editor) {
+<span class="cstat-no" title="statement not covered" >            this.editorInstance = editor;</span>
+        },
+        applyHotkeys() {
+            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
+            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
+            Mousetrap.bind('ctrl+up', this.choosePreviousTemplateType);
+            Mousetrap.bind('ctrl+down', this.chooseNextTemplateType);
+            Mousetrap.bind('ctrl+shift+s', this.submitCurrentState);
+<span class="fstat-no" title="function not covered" >            Mousetrap.bind('ctrl+alt+d', () =&gt; {this.$store.commit('toggleDebugMode');});</span>
+        },
+        chooseNextLanguage() {
+            this.$log.log('HOTKEY', 'chooseNextLanguage');
+            this.$store.commit('nextLanguage');
+        },
+        choosePreviousLanguage() {
+            this.$log.log('HOTKEY', 'choosePreviousLanguage');
+            this.$store.commit('previousLanguage');
+        },
+        choosePreviousTemplateType(){
+            this.$log.log('HOTKEY', 'previousTemplateType');
+            this.$store.commit('previousTemplateType');
+<span class="missing-if-branch" title="if path not taken" >I</span>            if (this.editorInstance != null) { 
+<span class="cstat-no" title="statement not covered" >                this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);</span>
+            }
+        },
+        chooseNextTemplateType(){
+            this.$log.log('HOTKEY', 'nextTemplateType');
+            this.$store.commit('nextTemplateType');
+<span class="missing-if-branch" title="if path not taken" >I</span>            if (this.editorInstance != null) { 
+<span class="cstat-no" title="statement not covered" >                this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);</span>
+            }
+        },
+        submitCurrentState(redirect = false) {
+            this.loading = true;
+            this.$store.dispatch('saveData').then(
+                (result) =&gt; {
+<span class="missing-if-branch" title="if path not taken" >I</span>                    if(redirect == true) {
+<span class="cstat-no" title="statement not covered" >                        window.location.href = result.data.redirect;</span>
+                    }
+&nbsp;
+                    $('#in_survey_common').trigger('lsStopLoading');
+                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
+                    this.$log.log('OBJECT AFTER TRANSFER: ', result);
+<span class="fstat-no" title="function not covered" >                },</span>
+                (reject) =&gt; {
+<span class="cstat-no" title="statement not covered" >                    $('#in_survey_common').trigger('lsStopLoading');</span>
+<span class="cstat-no" title="statement not covered" >                    window.LS.notifyFader("Texts could not be stored. Reloading page.", 'well-lg bg-danger text-center');</span>
+                    //setTimeout(()=&gt;{window.location.reload();}, 1500);
+                }
+            ).finally(() =&gt; { this.loading = false; })
+        },
+        selectLanguage(sLanguage) {
+<span class="cstat-no" title="statement not covered" >            this.$log.log('LANGUAGE CHANGED', sLanguage);</span>
+<span class="cstat-no" title="statement not covered" >            this.$store.commit('setActiveLanguage', sLanguage);</span>
+        },
+        stripScripts(s) {
+            const div = document.createElement('div');
+            div.innerHTML = s;
+            const scripts = div.getElementsByTagName('script');
+            let i = scripts.length;
+            while (i--) {
+                let scriptContent = scripts[i].innerHTML;
+                let cleanScript = document.createElement('pre');
+                cleanScript.innerHTML = `[script]
+${scriptContent}
+[/script]`;
+                scripts[i].parentNode.appendChild(cleanScript);
+                scripts[i].parentNode.removeChild(scripts[i]);
+            }
+            return div.innerHTML;
+        },
+        resetCurrentContent(){
+<span class="cstat-no" title="statement not covered" >            try {</span>
+<span class="cstat-no" title="statement not covered" >                this.currentSubject = this.currentTemplateTypeData.subject;</span>
+            } catch (e) {
+<span class="cstat-no" title="statement not covered" >                throw new Error('L 278 -&gt; Subject for currentSubject not found');</span>
+            }
+<span class="cstat-no" title="statement not covered" >            this.currentEditorContent = this.currentTemplateTypeData.default;</span>
+        },
+        validateCurrentContent(){
+<span class="cstat-no" title="statement not covered" >            this.$modal.show(ValidationScreen, {</span>
+              }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+              }
+            );
+        },
+        setTemplateType(type) {
+<span class="cstat-no" title="statement not covered" >            this.applyExternalChange=true;</span>
+<span class="cstat-no" title="statement not covered" >            this.currentTemplateType=type;</span>
+<span class="cstat-no" title="statement not covered" >            if (this.editorInstance != null) { </span>
+<span class="cstat-no" title="statement not covered" >                this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);</span>
+            }
+        },
+        addFileToCurrent() {
+<span class="cstat-no" title="statement not covered" >            this.$modal.show(</span>
+                FileSelectModal,
+                {},
+                {
+                    width: '75%',
+                    height: '75%',
+                    scrollable: true,
+                    resizable: false
+                },
+            );
+        },
+        deleteAttachment(file) {
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >            this.currentAttachments = LS.ld.filter(this.currentAttachments, (att) =&gt; att.hash != file.hash );</span></span>
+        }
+    },
+    created(){
+        this.$store.dispatch('getDataSet'). then(
+            () =&gt; {
+<span class="missing-if-branch" title="if path not taken" >I</span>                if(this.$store.state.permissions.editorpreset == 'source') {
+<span class="cstat-no" title="statement not covered" >                    this.sourceMode = true;</span>
+                }
+                this.loading = false;
+                this.applyExternalChange = false;
+            },
+            (error) =&gt; {
+                this.$log.error(error);
+                this.loading = false;
+            }
+        );
+    },
+    
+    mounted() {
+        $('#emailTemplatesEditor').on('jquery:trigger', this.jqueryTriggered);
+        this.applyHotkeys();
+&nbsp;
+<span class="fstat-no" title="function not covered" >        $('#emailtemplates').on('submit', (e)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >            e.preventDefault();</span>
+        });
+&nbsp;
+<span class="missing-if-branch" title="else path not taken" >E</span>        if(!window.EmailTemplateData.isNewSurvey) {
+           LS.EventBus.$on('componentFormSubmit', () =&gt; {
+                this.submitCurrentState();
+            });
+        }
+        this.loading = false;
+    }
+}
+&lt;/script&gt;
+&nbsp;
+&lt;style lang="scss" scoped&gt;
+&nbsp;
+.scope-contains-ckeditor {
+    min-height: 10rem;
+}
+&nbsp;
+.scoped-editor-row {
+    &amp;:before {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        border-top: 1px solid #dedede;
+        width: 95%;
+        margin: 0.5rem auto;
+        display: block
+    }
+}
+.scoped-flex-bysize {
+    flex-direction: row;
+    @media(max-width: 767px) {
+        flex-direction: column;
+    }
+&nbsp;
+    &amp;&gt;div {
+        flex: 1;
+        border-radius: 0;
+        flex-wrap: wrap;
+        padding: 0.5rem 0.3rem;
+        &amp;.active {
+            font-weight:bold;
+        }
+    }
+}
+.scoped-simple-carousel {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    .simple-carousel-item {
+        width: 23%;
+        margin: 1%;
+        height: 6.5em;
+        box-shadow: 1px 3px 5px #cfcfcf;
+        display: inline-flex;
+        align-content: center;
+        position: relative;
+        &amp;&gt;.simple-carousel-delete {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+        }
+        &amp;&gt;.scoped-contain-image {
+            max-width: 100%;
+            max-height: 5em;
+            display: block;
+            margin: auto;
+        }
+        &amp;&gt;i.fa {
+            max-height: 5em;
+            display: block;
+            margin: auto;
+        }
+    }
+}
+&lt;/style&gt;
+&nbsp;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 16 2019 14:32:56 GMT+0200 (GMT+02:00)
+</div>
+</div>
+<script src="..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\sorter.js"></script>
+</body>
+</html>

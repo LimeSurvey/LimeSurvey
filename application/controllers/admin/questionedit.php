@@ -222,8 +222,8 @@ class questionedit extends Survey_Common_Action
         if (isset($questionData['scaledAnswerOptions'])) {
             $setApplied['scaledAnswerOptions'] = $this->_storeAnswerOptions($oQuestion, $questionData['scaledAnswerOptions']);
         }
-
-        $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
+        $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        $aCompiledQuestionData = $this->_getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, $oQuestion->gid, true);
         $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true, $aQuestionAttributeData['question_template']);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
@@ -682,9 +682,36 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    private function _cleanSubquestions(&$oQuestion, &$dataSet)
+    {
+        $aSubquestions = $oQuestion->subquestions;
+        array_walk(
+            $aSubquestions, 
+            function ($oSubquestion) use (&$dataSet) {
+                $exists = false;
+                foreach ($dataSet as $scaleId => $aSubquestions) {
+                    foreach ($aSubquestions as $i => $aSubquestionDataSet) {
+                        if (((is_numeric($aSubquestionDataSet['qid']) && $oSubquestion->qid == $aSubquestionDataSet['qid'])
+                            ||  $oSubquestion->title == $aSubquestionDataSet['title'])
+                            && ($oSubquestion->scale_id == $scaleId)
+                        ) {
+                            $exists = true;
+                            $dataSet[$scaleId][$i]['qid'] = $oSubquestion->qid;
+                        }
+
+                        if (!$exists) {
+                            $oSubquestion->delete();
+                        }
+                    }
+                }
+            }
+        );
+    }
+
     private function _storeSubquestions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
+        $this->_cleanSubquestions($oQuestion, $dataSet);
         foreach ($dataSet as $scaleId => $aSubquestions) {
             foreach ($aSubquestions as $aSubquestionDataSet) {
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
@@ -697,12 +724,39 @@ class questionedit extends Survey_Common_Action
                 $storeValid = $storeValid && $this->_applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
             }
         }
+
+
         return $storeValid;
     }
+    private function _cleanAnsweroptions(&$oQuestion, &$dataSet)
+    {
+        $aAnsweroptions = $oQuestion->answers;
+        array_walk(
+            $aAnsweroptions, 
+            function ($oAnsweroption) use (&$dataSet) {
+                $exists = false;
+                foreach ($dataSet as $scaleId => $aAnsweroptions) {
+                    foreach ($aAnsweroptions as $i => $aAnsweroptionDataSet) {
+                        if (((is_numeric($aAnsweroptionDataSet['aid']) && $oAnsweroption->aid == $aAnsweroptionDataSet['aid'])
+                            ||  $oAnsweroption->code == $aAnsweroptionDataSet['code'])
+                            && ($oAnsweroption->scale_id == $scaleId)
+                        ) {
+                            $exists = true;
+                            $dataSet[$scaleId][$i]['aid'] = $oAnsweroption->aid;
+                        }
 
+                        if (!$exists) {
+                            $oAnsweroption->delete();
+                        }
+                    }
+                }
+            }
+        );
+    }
     private function _storeAnswerOptions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
+        $this->_cleanAnsweroptions($oQuestion, $dataSet);
         foreach ($dataSet as $scaleId => $aAnswerOptions) {
             foreach ($aAnswerOptions as $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];

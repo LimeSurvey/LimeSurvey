@@ -115,7 +115,7 @@ class UploaderController extends SurveyController
             Yii::app()->end();
         }
 
-
+        // TODO: Split into two controller methods.
         if ($sMode == "upload") {
             $sTempUploadDir = $tempdir.'/upload/';
             // Check if exists and is writable
@@ -282,7 +282,7 @@ class UploaderController extends SurveyController
         }
         /* No action */
         $meta = '';
-        // App()->getClientScript()->registerPackage('jqueryui');
+        App()->getClientScript()->registerPackage('jquery');
         App()->getClientScript()->registerPackage('question-file-upload');
         
         $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);

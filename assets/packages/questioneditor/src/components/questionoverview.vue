@@ -61,7 +61,7 @@ export default {
 </script>
 
 <template>
-    <div class="ls-flex grow-3">
+    <div class="ls-flex grow-3" id="QuestionEditor--test--questionoverviewcontainer">
         <transition name="slide-fade">
             <div v-if="!loading"  class="panel panel-default col-12" @dblclick="toggleEditMode">
                 <div class="panel-heading">

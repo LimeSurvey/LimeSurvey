@@ -16,12 +16,12 @@
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <copyright>Copyright (C) 2005 - 2019 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>3.0</version>
-        <apiVersion>3</apiVersion>
+        <version>4.0</version>
+        <apiVersion>4</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
-        <lastUpdate>2018-04-11 17:00:00</lastUpdate>
+        <lastUpdate>2019-10-22 12:00:00</lastUpdate>
     </metadata>
 
     <!--
@@ -48,7 +48,6 @@
         </css>
         <js>
             <add>scripts/theme.js</add>
-            <add>scripts/ajaxify.js</add>
             <add>scripts/custom.js</add>
         </js>
         <print_css>
@@ -60,7 +59,6 @@
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <options>
         <!-- simple options -->
-        <ajaxmode type="buttons" category="Simple options" width="4" title="Ajax mode" options="on|off" optionlabels="Yes|No">on</ajaxmode>
         <animatebody type="buttons" category="Simple options" width="4" title="Animate body" options="on|off" optionlabels="Yes|No">off</animatebody>
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>

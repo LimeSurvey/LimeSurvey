@@ -86,6 +86,9 @@ export default {
                 this.editQuestion = force;
             }
             LS.EventBus.$emit('doFadeEvent', this.editQuestion);
+            if(this.editQuestion) {
+                LS.EventBus.$emit('setQuestionType', this.$store.state.currentQuestion.type);
+            }
         },
         toggleLoading(force=null){
             if(force===null) {
@@ -151,21 +154,35 @@ export default {
                         window.history.pushState({},result.data.newQuestionDetails.question.title, result.data.redirect);
                         this.loading = false;
                         LS.EventBus.$emit('loadingFinished');
+                        this.$nextTick().then(() => {
+                            LS.EventBus.$emit('setQuestionType', result.data.newQuestionDetails.question.type);
+                        });
                     },
                     (reject) => {
                         $('#in_survey_common').trigger('lsStopLoading');
                         window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                         this.$log.error(reject);
-                        //setTimeout(()=>{window.location.reload();}, 1500);
+                        setTimeout(()=>{window.location.reload();}, 1500);
                     }
                 )
             } else {
                 window.setTimeout(()=>{LS.EventBus.$emit('loadingFinished')},1);
-                this.noCodeWarning = true;
             }
         },
         checkCanSubmit(){
-            return !LS.ld.isEmpty(this.$store.state.currentQuestion.title);
+            if(!this.$store.getters.hasTitleSet) {
+                this.noCodeWarning = true;
+                return false;
+            }
+            if(!this.$store.getters.hasIndividualSubquestionTitles) {
+                window.LS.notifyFader("Question cannot be stored. Please check the subquestion codes for duplicates.", 'well-lg bg-danger text-center');
+                return false;
+            }
+            if(!this.$store.getters.hasIndividualAnsweroptionCodes) {
+                window.LS.notifyFader("Question cannot be stored. Please check the answer option for duplicates.", 'well-lg bg-danger text-center');
+                return false;
+            }
+            return true;
         },
         questionTypeChangeTriggered(newValueArray) {
             this.$log.log('CHANGE OF TYPE', newValueArray.value);
@@ -224,51 +241,34 @@ export default {
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <transition name="slide-fade-left">
-            <div class="ls-flex ls-flex-row" v-show="showAlerts">
-                <div
-                    v-for="alert in currentAlerts"
-                    :key="alert.key"
-                    class="col-xs-12 alert"
-                    :class="alert.class"
-                    v-on:load="alert.shown=true"
+        <div class="btn-group pull-right clear" v-if="allowSwitchEditing && !loading">
+            <transition-group name="fade">
+                <button
+                    id="questionOverviewButton"
+                    key="questionOverviewButton"
+                    @click.prevent="triggerEditQuestion(false)"
+                    :class="editQuestion ? 'btn-default' : 'btn-primary'"
+                    class="btn "
                 >
-                    <button
-                        type="button"
-                        class="close"
-                        @click="$store.commit('removeAlert', alert.key)"
-                        aria-label="Close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{alert.message}}
-                </div>
-            </div>
-        </transition>
-        <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-            <button
-                id="questionOverviewButton"
-                @click.prevent="triggerEditQuestion(false)"
-                :class="editQuestion ? 'btn-default' : 'btn-primary'"
-                class="btn "
-            >
-                {{'Question overview'| translate}}
-            </button>
-            <button
-                id="questionEditorButton"
-                @click.prevent="triggerEditQuestion(true)"
-                :class="editQuestion ? 'btn-primary' : 'btn-default'"
-                class="btn "
-            >
-                {{'Question editor'| translate}}
-            </button>
+                    {{'Question overview'| translate}}
+                </button>
+                <button
+                    id="questionEditorButton"
+                    key="questionEditorButton"
+                    @click.prevent="triggerEditQuestion(true)"
+                    :class="editQuestion ? 'btn-primary' : 'btn-default'"
+                    class="btn "
+                >
+                    {{'Question editor'| translate}}
+                </button>
+            </transition-group>
         </div>
         <div class="pagetitle h3 scoped-unset-pointer-events">
-            <template v-if="isCreateQuestion">
+            <template v-if="isCreateQuestion && !loading">
                     <x-test id="action::addQuestion"></x-test>
                     {{'Create new Question'|translate}}
             </template>
-            <template v-else>
+            <template v-if="!isCreateQuestion && !loading">
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
             </template>
         </div>
@@ -290,9 +290,26 @@ export default {
                     </div>
                     <div class="form-group col-sm-6 contains-question-selector">
                         <label for="questionCode">{{'Question type' | translate }}</label>
-                        <div v-if="(editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y'"  v-html="questionEditButton" />
-                        <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
-                        <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                        <div 
+                            v-if="$store.getters.surveyObject.active !='Y'" 
+                            v-show="(editQuestion || isCreateQuestion)"
+                            v-html="questionEditButton" 
+                        />
+                        <input 
+                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')" 
+                            type="text" 
+                            class="form-control" id="questionTypeVisual" 
+                            :readonly="true" 
+                            :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"
+                        />
+                        <input 
+                            v-if="$store.getters.surveyObject.active !='Y'" 
+                            type="hidden" 
+                            id="question_type" 
+                            name="type" 
+                            :value="$store.state.currentQuestion.type" 
+                            @change="questionTypeChangeTriggered" 
+                        />
                     </div>
                 </div>
                 <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">

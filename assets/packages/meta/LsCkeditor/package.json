@@ -14,6 +14,7 @@
     "@ckeditor/ckeditor5-clipboard": "^11.0.2",
     "@ckeditor/ckeditor5-core": "^12.1.0",
     "@ckeditor/ckeditor5-editor-classic": "^12.1.1",
+    "@ckeditor/ckeditor5-editor-inline": "^12.3.0",
     "@ckeditor/ckeditor5-essentials": "^11.0.2",
     "@ckeditor/ckeditor5-heading": "^11.0.2",
     "@ckeditor/ckeditor5-image": "^13.1.0",
@@ -25,6 +26,7 @@
     "@ckeditor/ckeditor5-table": "^13.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^13.0.1",
     "@ckeditor/ckeditor5-ui": "^13.0.0",
+    "core-js": "2",
     "he": "^1.2.0"
   },
   "devDependencies": {
