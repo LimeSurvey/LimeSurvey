@@ -231,7 +231,7 @@ class questionedit extends Survey_Common_Action
         }
         $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
         $aCompiledQuestionData = $this->_getCompiledQuestionData($oNewQuestion);
-        $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, $oQuestion->gid, true);
+        $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, true);
         $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, true, $aQuestionAttributeData['question_template']);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
@@ -346,11 +346,10 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @param int $iQuestionId
-     * @param int $gid
      * @param boolean $returnArray
      * @return void|array
      */
-    protected function getQuestionAttributeData($iQuestionId = null, $gid = null, $returnArray = false)
+    protected function getQuestionAttributeData($iQuestionId = null, $returnArray = false)
     {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
