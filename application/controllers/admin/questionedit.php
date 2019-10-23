@@ -182,6 +182,10 @@ class questionedit extends Survey_Common_Action
     **** All called via ajax
     ****/
 
+    /**
+     * @param int $iSurveyId
+     * @return void
+     */
     public function getPossibleLanguages($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
@@ -189,6 +193,12 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aLanguages);
     }
 
+    /**
+     * ???
+     *
+     * @param int $sid Survey id
+     * @return void
+     */
     public function saveQuestionData($sid)
     {
         $questionData = App()->request->getPost('questionData', []);
@@ -250,7 +260,15 @@ class questionedit extends Survey_Common_Action
         Yii::app()->close();
     }
 
-
+    /**
+     * ??
+     *
+     * @param int $iQuestionId
+     * @param string $type
+     * @param int $gid Group id
+     * @param string $question_template
+     * @return void
+     */
     public function reloadQuestionData($iQuestionId=null, $type=null, $gid=null, $question_template='core')
     {
         $iQuestionId = (int) $iQuestionId;
@@ -282,6 +300,12 @@ class questionedit extends Survey_Common_Action
         );
     }
 
+    /**
+     * @param int $iQuestionId
+     * @param int $gid
+     * @param string $type
+     * @return void
+     */
     public function getQuestionData($iQuestionId=null, $gid=null, $type=null)
     {
         $iQuestionId = (int) $iQuestionId;
@@ -302,6 +326,10 @@ class questionedit extends Survey_Common_Action
         ]));
     }
 
+    /**
+     * @param $iQuestionId
+     * @return void
+     */
     public function getQuestionPermissions($iQuestionId=null)
     {
         $iQuestionId = (int) $iQuestionId;
@@ -317,6 +345,12 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aPermissions);
     }
 
+    /**
+     * @param int $iQuestionId
+     * @param int $gid
+     * @param boolean $returnArray
+     * @return void|array
+     */
     public function getQuestionAttributeData($iQuestionId=null, $gid=null, $returnArray = false)
     {
         $iQuestionId = (int) $iQuestionId;
@@ -327,11 +361,18 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aQuestionAttributes);
     }
 
+    /**
+     * @return void
+     */
     public function getQuestionTypeList()
     {
         $this->renderJSON(QuestionType::modelsAttributes());
     }
 
+    /**
+     * @param string $sQuestionType
+     * @return void
+     */
     public function getQuestionTypeInformation($sQuestionType)
     {
         $aTypeInformations = QuestionType::modelsAttributes();
@@ -339,7 +380,15 @@ class questionedit extends Survey_Common_Action
 
         $this->renderJSON($aQuestionTypeInformation);
     }
-    
+
+    /**
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @param boolean $returnArray
+     * @param string $question_template
+     * @return void|array
+     */
     public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $gid=null, $returnArray = false, $question_template='core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType, $gid);
@@ -352,6 +401,13 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aGeneralOptionsArray);
     }
 
+    /**
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param boolean $returnArray
+     * @param string $question_template
+     * @return void|array
+     */
     public function getAdvancedOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false, $question_template='core')
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
@@ -398,19 +454,19 @@ class questionedit extends Survey_Common_Action
         }
 
         $aFieldArray = [
-        //*  0 => string qid
+            //  0 => string qid
             $oQuestion->qid,
-        //*  1 => string sgqa | This should be working because it is only about parent questions here!
+            //  1 => string sgqa | This should be working because it is only about parent questions here!
             "{$oQuestion->sid}X{$oQuestion->gid}X{$oQuestion->qid}",
-        //*  2 => string questioncode
+            //  2 => string questioncode
             $oQuestion->title,
-        //*  3 => string question | technically never used in the new renderers and totally unessecary therefor empty
+            //  3 => string question | technically never used in the new renderers and totally unessecary therefor empty
             "",
-        //*  4 => string type
+            //  4 => string type
             $oQuestion->type,
-        //*  5 => string gid
+            //  5 => string gid
             $oQuestion->gid,
-        //*  6 => string mandatory,
+            //  6 => string mandatory,
             ($oQuestion->mandatory == 'Y'),
         ];
         Yii::import('application.helpers.qanda_helper', true);
@@ -440,11 +496,12 @@ class questionedit extends Survey_Common_Action
             ['aSurveyInfo' => $aSurveyInfo, 'aQuestion' => $aQuestion, 'session' => $_SESSION],
             $root
         );
-
-
-        return;
     }
 
+    /**
+     * @param int $qid
+     * @return ?
+     */
     public function getQuestionTopbar($qid = null) {
         $oQuestion = $this->_getQuestionObject($qid);
         $qtypes    = Question::typeList();
@@ -452,7 +509,7 @@ class questionedit extends Survey_Common_Action
         $ownsSaveButton = true;
         $ownsSaveAndCloseButton = true;
         $ownsCloseButton = true;
-    
+
         return Yii::app()->getController()->renderPartial(
             '/admin/survey/topbar/question_topbar',
             array(
@@ -471,7 +528,12 @@ class questionedit extends Survey_Common_Action
         );
     }
 
-
+    /**
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @return Question
+     */
     private function _getQuestionObject($iQuestionId=null, $sQuestionType=null, $gid = null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
@@ -494,6 +556,11 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Method to store and filter questionData for a new question
+     *
+     * @param array $aQuestionData
+     * @param boolean $subquestion
+     * @return Question
+     * @throws CException
      */
     private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
     {
@@ -549,6 +616,11 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Method to store and filter questionData for editing a question
+     *
+     * @param Question $oQuestion
+     * @param array $aQuestionData
+     * @return Question
+     * @throws CException
      */
     private function updateQuestionData(&$oQuestion, $aQuestionData)
     {
@@ -565,7 +637,11 @@ class questionedit extends Survey_Common_Action
         return $oQuestion;
     }
 
-
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _unparseAndSetGeneralOptions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -588,6 +664,11 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -626,6 +707,11 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _applyI10N(&$oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -643,6 +729,11 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _applyI10NSubquestion($oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -660,6 +751,12 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    /**
+     * @param Answer $oAnswer
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _applyAnswerI10N($oAnswer, $oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -682,11 +779,17 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return void
+     * @todo PHPDoc description
+     */
     private function _cleanSubquestions(&$oQuestion, &$dataSet)
     {
         $aSubquestions = $oQuestion->subquestions;
         array_walk(
-            $aSubquestions, 
+            $aSubquestions,
             function ($oSubquestion) use (&$dataSet) {
                 $exists = false;
                 foreach ($dataSet as $scaleId => $aSubquestions) {
@@ -708,6 +811,11 @@ class questionedit extends Survey_Common_Action
         );
     }
 
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _storeSubquestions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -725,9 +833,14 @@ class questionedit extends Survey_Common_Action
             }
         }
 
-
         return $storeValid;
     }
+
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return void
+     */
     private function _cleanAnsweroptions(&$oQuestion, &$dataSet)
     {
         $aAnsweroptions = $oQuestion->answers;
@@ -753,6 +866,12 @@ class questionedit extends Survey_Common_Action
             }
         );
     }
+
+    /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     */
     private function _storeAnswerOptions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
@@ -778,13 +897,16 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
+    /**
+     * @param Question $oQuestion
+     * @return array
+     */
     private function _getCompiledQuestionData(&$oQuestion)
     {
         LimeExpressionManager::StartProcessingPage(false, true);
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
         $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);
-
 
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
