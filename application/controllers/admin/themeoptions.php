@@ -265,10 +265,12 @@ class themeoptions  extends Survey_Common_Action
             $optionsJSON = json_decode($options, true);
 
             if ($options !== 'inherit' && $optionsJSON !== null) {
+                /** @var boolean */
                 $hasAjaxMode = isset($optionsJSON['ajaxmode']);
-                $ajaxModeOn  = ($optionsJSON['ajaxmode'] == 'on');
+                /** @var boolean */
+                $ajaxModeOn  = $hasAjaxMode && $optionsJSON['ajaxmode'] == 'on';
 
-                if ($hasAjaxMode && $ajaxModeOn) {
+                if ($ajaxModeOn) {
                     $optionsJSON['ajaxmode'] = 'off';
                     $options = json_encode($optionsJSON);
                     $templateConfiguration->setAttribute('options', $options);
