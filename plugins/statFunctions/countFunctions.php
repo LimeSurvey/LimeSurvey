@@ -15,10 +15,9 @@ class countFunctions
 {
     /**
      * Return the count of reponse on current Expression Manager survey equal to a specific value
-     * Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
-     * @param string $qCode
-     * @param string $comparaison
-     * @param boolean $submitted respnse
+     * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
+     * @param string $comparaison : comparre with value. Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
+     * @param boolean $submitted (or not) response
      * @return integer|string
      */
     public static function statCountIf($qCode, $comparaison, $submitted = true)
@@ -47,9 +46,8 @@ class countFunctions
 
     /**
      * Return the count of reponse on current Expression Manager survey equal to a specific value
-     * Can use < or > … see https://www.yiiframework.com/doc/api/1.1/CDbCriteria#compare-detail
-     * @param string $qCode
-     * @param boolean $submitted response
+     * @param string $qCode : code of question, currently must be existing sgqa. Sample Q01.sgqa.
+     * @param boolean $submitted (or not)  response
      * @return integer|string
      */
     public static function statCount($qCode, $submitted = true)
@@ -79,7 +77,7 @@ class countFunctions
     /**
      * Check the survey
      * @param $surveyId
-     * @return integer|string|null null man surveyId can be used
+     * @return integer|string|null : return 0 or string : value to be directly shown, null : final value must be evaluated
      */
     private static function _checkSurveyId($surveyId)
     {
@@ -93,9 +91,10 @@ class countFunctions
     }
 
     /**
-     * Check the survey
-     * @param $surveyId
-     * @return null|string null mean an invalid column/code
+     * Get the column name from a code.
+     * @param integer $surveyId
+     * @param string $qCode
+     * @return null|string : null mean an invalid column/code, string is the column in reponse database, null if not found
      */
     private static function _getColumnByQCode($surveyId,$qCode)
     {
