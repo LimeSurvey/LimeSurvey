@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.19.2 (build 191017) to 3.19.3 (build 191023) October 23, 2019
+-Fixed issue: statistics graph for Array text question type is not displayed (Dominik Vitt)
+-Fixed issue: No Access-Control header in RPC (lacrioque)
+-Fixed issue #15450: The GridView in "Saved but not submitted[...]" is incomplete and lacks pagination and filtering (lacrioque)
+-Fixed issue #15053: Error with non-numeric SID on pgsql (Jean-Sébastien B)
+-New translation: Spanish (Colombia) - translation kindly provided by https://www.sugeek.co/ (Carsten Schmitz)
+
+
+
 Changes from 3.19.1 (build 191009) to 3.19.2 (build 191017) October 17, 2019
 -Fixed issue: {SID} placeholder can't be used in invite_participants API method (Dominik Vitt)
 -Fixed issue: Comparing two string with greater-than operation fails (Olle Haerstedt)
