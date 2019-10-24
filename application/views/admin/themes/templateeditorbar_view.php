@@ -257,7 +257,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             ?>
         </div>
     <?php endif;?>
-    <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
+    <?php if(intval($templateapiversion) < intval(App()->getConfig("templateapiversion")) ):?>
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <div class="h4">
