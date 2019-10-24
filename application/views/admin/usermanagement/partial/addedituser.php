@@ -19,7 +19,7 @@
             <?php echo $form->labelEx($oUser,'users_name', ['for' => 'User_Form_users_name']); ?>
             <?php 
                 if($oUser->isNewRecord) {
-                   echo $form->textField($oUser,'users_name', ['id' => 'User_Form_users_name']);
+                   echo $form->textField($oUser,'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']);
                 } else {
                     echo '<input class="form-control" type="text" name="usernameshim" value="'.$oUser->users_name.'" disabled="true" />';
                 }
@@ -34,7 +34,7 @@
         </div>
         <div class="row ls-space margin top-5">
             <?php echo $form->labelEx($oUser,'email', ['for'=>'User_Form_email']); ?>
-            <?php echo $form->emailField($oUser,'email', ['id'=>'User_Form_email']); ?>
+            <?php echo $form->emailField($oUser,'email', ['id'=>'User_Form_email', 'required' => 'required']); ?>
             <?php echo $form->error($oUser,'email'); ?>
         </div>
         <?php if(!$oUser->isNewRecord) { ?> 

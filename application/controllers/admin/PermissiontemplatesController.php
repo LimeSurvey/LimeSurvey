@@ -62,39 +62,53 @@ class PermissiontemplatesController extends Survey_Common_Action
         Yii::app()->getController()->renderPartial( 'permissiontemplates/partials/_form', ['model' => $model]);
     }
 
-    public function applyedit() {
+    /**
+     * @return string|string[]|null
+     * @throws CException
+     * @throws CHttpException
+     */
+    public function applyedit()
+    {
         $aPermissiontemplate = Yii::app()->request->getPost('Permissiontemplates');
-        $model = $this->loadModel($aPermissiontemplate['ptid']); 
-        
+        $model = $this->loadModel($aPermissiontemplate['ptid']);
+
         $newAttributes = array_merge($model->attributes, $aPermissiontemplate);
         $model->attributes = $newAttributes;
 
         if ($model->save()) {
-            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
-                "data"=>[
-                'success' => true,
-                'html' => Yii::app()->getController()->renderPartial(
-                    '/admin/permissiontemplates/partials/success', 
-                    ['sMessage' => gT('Role successfully saved') ], 
-                    true
-                )
-            ]]);
-            return;
+            $success = true;
+            $message = gT('Role successfully saved');
+        } else {
+            $success = false;
+            $message = gT('Failed saving the role');
+            $errors = $model->getErrors();
+
+            $errorDiv = $this->renderErrors($errors);
         }
+        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => $success,
+                'message' => $message,
+                'errors'  => $errorDiv ?? ''
+            ]
+        ]);
+    }
 
-        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
-            "data"=>[
-            'success' => false,
-            'html' => Yii::app()->getController()->renderPartial(
-                '/admin/permissiontemplates/partials/error',
-                [
-                    'sMessage' => gT('Failed saving the role'),
-                    'errors' => $model->getErrors()
-                ], 
-                true
-            )
-        ]]);
-
+    /**
+     * @param array $errors
+     *
+     * @return string $errorDiv
+     */
+    private function renderErrors($errors)
+    {
+        $errorDiv = '<ul class="list-unstyled">';
+        foreach ($errors as $key => $error) {
+            foreach ($error as $errormessages) {
+                $errorDiv .= '<li>' . print_r($errormessages, true) . '</li>';
+            }
+        }
+        $errorDiv .= '</ul>';
+        return (string)$errorDiv;
     }
 
     public function showImportXML() {
@@ -159,7 +173,7 @@ class PermissiontemplatesController extends Survey_Common_Action
     public function setpermissions() {
         if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             return $this->getController()->renderPartial(
-                '/admin/permissiontemplates/partial/error', 
+                '/admin/permissiontemplates/partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
           );
         }

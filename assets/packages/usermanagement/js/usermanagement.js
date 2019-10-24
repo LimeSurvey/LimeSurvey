@@ -75,18 +75,31 @@ var UserManagement = function () {
                 dataType: 'json',
                 success: function (result) {
                     stopSubmit();
-                    if (result.success == true) {
+                    if (result.success === true)
+                    {
                         $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         wireExportDummyUser();
-                        triggerModalClose();
+                        if (!result.hasOwnProperty('html')) {
+                            triggerModalClose();
+                            window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            return;
+                        }
+                        $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
+                            e.preventDefault();
+                            $('#exitForm').off('click.USERMANAGERMODAL');
+                            triggerModalClose();
+                        });
                         return;
                     }
-                    $('#UserManagement--errors').append(
-                        "<div class='alert alert-danger'>" + result.error + "</div>"
+                    $('#UserManagement--errors').html(
+                        "<div class='alert alert-danger'>" + result.errors + "</div>"
                     ).removeClass('hidden');
+                },
+                error: function () {
+                    alert('An error occured while trying to save, please reload the page Code:1571926261195');
                 }
-            })
+            });
         });
 
         $('#exitForm').on('click.AUMMODAL', function (e) {
@@ -279,7 +292,7 @@ var UserManagement = function () {
         triggerRunAction: triggerRunAction,
         wirePermissions: wirePermissions,
         wireMassPermissions: wireMassPermissions
-    }
+    };
 };
 
 LS.UserManagement = LS.UserManagement || new UserManagement();

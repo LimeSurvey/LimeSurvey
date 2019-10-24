@@ -108,9 +108,9 @@ class UserManagement extends Survey_Common_Action
     public function applyedit()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json.php', ["data" => [
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                 'success' => false,
-                'error' => gT("You do not have permission to access this page."),
+                'errors' => gT("You do not have permission to access this page."),
             ]]);
         }
 
@@ -120,9 +120,9 @@ class UserManagement extends Survey_Common_Action
         if (!empty($paswordTest)) {
 
             if ($paswordTest !== $aUser['password']) {
-                return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+                return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'error' => gT('Passwords do not match'),
+                    'errors' => gT('Passwords do not match'),
                 ]]);
             }
 
@@ -133,9 +133,9 @@ class UserManagement extends Survey_Common_Action
             Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
 
             if (!$oPasswordTestEvent->get('passwordOk')) {
-                return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+                return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'error' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
+                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
                 ]]);
             }
         }
@@ -143,7 +143,7 @@ class UserManagement extends Survey_Common_Action
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $sendMail = (bool)Yii::app()->request->getPost('preset_password', false);
             $aUser = $this->_createNewUser($aUser);
-            $sReturnMessage = '';
+            $sReturnMessage = gT('User successfully created');
             $success = true;
 
             if ($sendMail && (isset($newUser['sendMail']) && $newUser['sendMail'] == true)) {
@@ -163,31 +163,46 @@ class UserManagement extends Survey_Common_Action
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
             $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $new_pass . '</b>') : '';
 
-            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
-                'success' => $success,
-                'message' => $sReturnMessage
-            ]]);
-            Yii::app()->end();
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => $success,
+                    'message' => $sReturnMessage
+                ]
+            ]);
         }
 
         $oUser = $this->updateAdminUser($aUser);
         if ($oUser->hasErrors()) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'error' => print_r($oUser->getErrors(), true),
+                    'errors'  => $this->renderErrors($oUser->getErrors()) ?? ''
                 ]
             ]);
         }
-        $sMessage = gT('User successfully updated');
-        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+        return App()->getController()->renderPartial('/admin/super/_renderJson', [
             'data' => [
                 'success' => true,
-                'message' => $sMessage
-            ],
-            false,
-            false
+                'message' => gT('User successfully updated')
+            ]
         ]);
+    }
+
+    /**
+     * @param array $errors
+     *
+     * @return string $errorDiv
+     */
+    private function renderErrors($errors)
+    {
+        $errorDiv = '<ul class="list-unstyled">';
+        foreach ($errors as $key => $error) {
+            foreach ($error as $errormessages) {
+                $errorDiv .= '<li>' . print_r($errormessages, true) . '</li>';
+            }
+        }
+        $errorDiv .= '</ul>';
+        return (string) $errorDiv;
     }
 
     /**
@@ -385,10 +400,12 @@ class UserManagement extends Survey_Common_Action
             $results[$key] = $oPermission->save();
         }
 
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
-        ]]);
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => true,
+                'html'    => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
+            ]
+        ]);
     }
 
     /**
@@ -412,10 +429,12 @@ class UserManagement extends Survey_Common_Action
         $oUser->modified = date('Y-m-d H:i:s');
         $save = $oUser->save();
 
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
-        ]]);
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => true,
+                'html'    => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
+            ]
+        ]);
     }
 
     /**
@@ -469,18 +488,22 @@ class UserManagement extends Survey_Common_Action
         $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
         $results = [];
 
-        $results['clear'] = Permissiontemplates::model()->clearUser($iUserId);
+        $clearUser = Permissiontemplates::model()->clearUser($iUserId);
         foreach ($aUserRoleIds as $iUserRoleId) {
             if ($iUserRoleId == '') {
                 continue;
             }
             $results[$iUserRoleId] = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
         }
-
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
-        ]]);
+        if (empty($aUserRoleIds)) {
+            $results['clear'] = $clearUser;
+        }
+        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+            "data" => [
+                'success' => true,
+                'html'    => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
+            ]
+        ]);
     }
 
     /**
@@ -577,7 +600,14 @@ class UserManagement extends Survey_Common_Action
             $results[$oUser->uid] = $oUser->delete();
         }
 
-        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success',
+            [
+                'sMessage' => gT('Users successfully deleted'),
+                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
     }
 
     /**
@@ -604,14 +634,21 @@ class UserManagement extends Survey_Common_Action
             }
         }
 
-        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success',
+            [
+                'sMessage' => gT('User groups successfully updated'),
+                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
     }
 
     /**
      * Mass edition apply roles
      *
-     *
      * @return string
+     * @throws CException
      */
     public function batchApplyRoles()
     {
@@ -630,7 +667,14 @@ class UserManagement extends Survey_Common_Action
             }
         }
 
-        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success',
+            [
+                'sMessage' => gT('User roles successfully updated'),
+                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
     }
 
     /**
@@ -681,7 +725,7 @@ class UserManagement extends Survey_Common_Action
             //Permission::model()->setGlobalPermission($oUser->uid, 'auth_db');
         }
 
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
             'success' => true,
             'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/createdrandoms', ['randomUsers' => $randomUsers, 'filename' => $prefix], true),
         ]]);
@@ -831,26 +875,32 @@ class UserManagement extends Survey_Common_Action
     public function _createNewUser($aUser, $sendMail = true)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => gT("You do not have permissionfor this action."),
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => gT("You do not have permissionfor this action."),
+                ]
+            ]);
         }
 
         $aUser['users_name'] = flattenText($aUser['users_name']);
 
         if (empty($aUser['users_name'])) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => gT("A username was not supplied or the username is invalid."),
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => gT("A username was not supplied or the username is invalid."),
+                ]
+            ]);
         }
 
         if (User::model()->find("users_name=:users_name", array(':users_name' => $aUser['users_name']))) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => gT("A user with this username already exists."),
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => gT("A user with this username already exists."),
+                ]
+            ]);
         }
 
         $event = new PluginEvent('createNewUser');
@@ -862,11 +912,13 @@ class UserManagement extends Survey_Common_Action
         Yii::app()->getPluginManager()->dispatchEvent($event);
 
         if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => $event->get('errorMessageTitle') . '<br/>' . $event->get('errorMessageBody'),
-                'debug' => ['title' => $event->get('errorMessageTitle'), 'body' => $event->get('errorMessageBody'), 'code' => $event->get('errorCode'), 'event' => $event],
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => $event->get('errorMessageTitle') . '<br/>' . $event->get('errorMessageBody'),
+                    'debug'   => ['title' => $event->get('errorMessageTitle'), 'body' => $event->get('errorMessageBody'), 'code' => $event->get('errorCode'), 'event' => $event],
+                ]
+            ]);
         }
 
         $success = true;

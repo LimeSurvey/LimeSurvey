@@ -22,17 +22,19 @@
             'action' => App()->createUrl('admin/roles/sa/applyedit'),
             'enableAjaxValidation'=>false,
         )); ?>
+            <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
+            </div>
             <?php echo $form->hiddenField($model,'ptid'); ?>
 
             <div class="row">
                 <?php echo $form->labelEx($model,'name'); ?>
-                <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>192)); ?>
+                <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>192, 'required' => 'required')); ?>
                 <?php echo $form->error($model,'name'); ?>
             </div>
 
             <div class="row">
                 <?php echo $form->labelEx($model,'description'); ?>
-                <?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50, 'required' => 'required')); ?>
                 <?php echo $form->error($model,'description'); ?>
             </div>
 
