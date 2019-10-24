@@ -47,7 +47,7 @@
         <?php } else { ?>
             <div class="row ls-space margin top-10" id="utility_set_password">
                 <div class="col-xs-6" >
-                    <label><?=gT("Set password in this mask?")?></label>
+                    <label><?=gT("Set password now?")?></label>
                 </div>
                 <div class="btn-group col-xs-6" data-toggle="buttons">
                     <label for="utility_set_password_yes" class="btn btn-default col-xs-6">
