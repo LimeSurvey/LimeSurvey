@@ -1472,8 +1472,8 @@ class printablesurvey extends Survey_Common_Action
             $output .= "\n<div class='extrahelp'>";
             foreach ($aFilter as $sFilter) {
                 $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter, 'sid' => $surveyid));
-                $oQuestionl10ns = QuestionL10n::model()->findByAttributes(array('qid' => $oQuestion->getAttribute('qid'), 'language' => $sLanguageCode));
                 if ($oQuestion) {
+                    $oQuestionl10ns = QuestionL10n::model()->findByAttributes(array('qid' => $oQuestion->getAttribute('qid'), 'language' => $sLanguageCode));
                     $sNewQuestionText = flattenText(breakToNewline($oQuestionl10ns->getAttribute('question')));
                     $output .= sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], $sNewQuestionText);
                 }
@@ -1485,8 +1485,8 @@ class printablesurvey extends Survey_Common_Action
             $output .= "\n<div class='extrahelp'>";
             foreach ($aFilter as $sFilter) {
                 $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter, 'sid' => $surveyid));
-                $oQuestionl10ns = QuestionL10n::model()->findByAttributes(array('qid' => $oQuestion->getAttribute('qid'), 'language' => $sLanguageCode));
                 if ($oQuestion) {
+                    $oQuestionl10ns = QuestionL10n::model()->findByAttributes(array('qid' => $oQuestion->getAttribute('qid'), 'language' => $sLanguageCode));
                     $sNewQuestionText = flattenText(breakToNewline($oQuestionl10ns->getAttribute('question')));
                     $output .= sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter'], $sNewQuestionText);
                 }
