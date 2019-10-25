@@ -291,6 +291,7 @@ if ($hasDeletePermission) {
         'id' => 'delete_button',
         'icon' => 'fa fa-trash text-danger',
         'class' => ' btn-danger',
+        'message' => gT('Are you sure you want to delete this question?')
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['delete']);
 }
