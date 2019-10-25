@@ -631,15 +631,11 @@ class Question extends LSActiveRecord
 
     public function getOrderedAnswers($scale_id=null)
     {
-
-        $alpha = $this->getQuestionAttribute('alphasort');
-        // Get questions and answers by defined order
-        $sOrder = $alpha ? 'answer' : 'question_order';
-
         //reset answers set prior to this call
         $aAnswerOptions = [
             0 => []
         ];
+
         foreach ($this->answers as $oAnswer) {
             if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
                 continue;
@@ -652,14 +648,36 @@ class Question extends LSActiveRecord
             return $aAnswerOptions[$scale_id];
         }
 
+        // Random order
         if ($this->getQuestionAttribute('random_order') == 1){
           $keys = array_keys($aAnswerOptions[0]);
           shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
-          foreach($keys as $key) {
-              $new[$key] = $aAnswerOptions[0][$key];
-          }
-          $aAnswerOptions[0] = $new;
 
+          $aNew = array();
+          foreach($keys as $key) {
+              $aNew[$key] = $aAnswerOptions[0][$key];
+          }
+          $aAnswerOptions[0] = $aNew;
+        }
+
+        // Alphabetic ordrer
+        if ($this->getQuestionAttribute('alphasort')){
+
+          $aSorted = array();
+
+          // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
+          foreach($aAnswerOptions[0] as $iKey => $oAnswer){
+              $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+          }
+
+          ksort($aSorted);
+
+          // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
+          $aNew = array();
+          foreach($aSorted as $sAnswer => $iKey) {
+              $aNew[] = $aAnswerOptions[0][$iKey];
+          }
+          $aAnswerOptions[0] = $aNew;
         }
 
         return $aAnswerOptions;
@@ -905,10 +923,10 @@ class Question extends LSActiveRecord
         $criteria = new CDbCriteria;
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
-        //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';              
+        //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
         $criteria->with = array('group', 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
-        
-        if (!empty($this->title)) {     
+
+        if (!empty($this->title)) {
             $criteria2 = new CDbCriteria;
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
