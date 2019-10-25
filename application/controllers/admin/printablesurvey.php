@@ -1432,9 +1432,10 @@ case Question::QT_G_GENDER_DROPDOWN:
             $aFilter = explode(';', $qidattributes['array_filter']);
             $output .= "\n<div class='extrahelp'>";
             foreach ($aFilter as $sFilter) {
-                $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter, 'language' => $sLanguageCode, 'sid' => $surveyid));
+                $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter,'sid' => $surveyid));
+                $oQuestionl10ns = QuestionL10n::model()->findByAttributes(array('qid' => $oQuestion->getAttribute('qid'), 'language' => $sLanguageCode));
                 if ($oQuestion) {
-                    $sNewQuestionText = flattenText(breakToNewline($oQuestion->getAttribute('question')));
+                    $sNewQuestionText = flattenText(breakToNewline($oQuestionl10ns->getAttribute('question')));
                     $output .= sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], $sNewQuestionText);
 
                 }
@@ -1445,14 +1446,16 @@ case Question::QT_G_GENDER_DROPDOWN:
             $aFilter = explode(';', $qidattributes['array_filter']);
             $output .= "\n<div class='extrahelp'>";
             foreach ($aFilter as $sFilter) {
-                $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter, 'language' => $sLanguageCode, 'sid' => $surveyid));
+                $oQuestion = Question::model()->findByAttributes(array('title' => $sFilter,'sid' => $surveyid));
+                $oQuestionl10ns = QuestionL10n::model()->findByAttributes(array('qid' => $oQuestion->getAttribute('qid'), 'language' => $sLanguageCode));
                 if ($oQuestion) {
-                    $sNewQuestionText = flattenText(breakToNewline($oQuestion->getAttribute('question')));
+                    $sNewQuestionText = flattenText(breakToNewline($oQuestionl10ns->getAttribute('question')));
                     $output .= sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter'], $sNewQuestionText);
                 }
             }
             $output .= "</div>\n";
         }
+        
         return $output;
     }
 
