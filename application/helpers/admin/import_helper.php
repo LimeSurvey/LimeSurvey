@@ -461,9 +461,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             if (isset($aQIDReplacements[$oldsqid])) {
                 $insertdata['qid'] = $aQIDReplacements[$oldsqid];
             }
-            if ($insertdata) {
-                            XSSFilterArray($insertdata);
-            }
             $ques = new Question;
             foreach ($insertdata as $k => $v) {
                             $ques->$k = $v;
@@ -490,13 +487,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
-            // now translate any links
             $answers = new Answer;
-            if ($insertdata) {
-                            XSSFilterArray($insertdata);
-            }
             foreach ($insertdata as $k => $v) {
-                            $answers->$k = $v;
+                $answers->$k = $v;
             }
 
             $answers->save();
@@ -522,22 +515,16 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 foreach ($importlanguages as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
                     $attributes = new QuestionAttribute;
-                    if ($insertdata) {
-                                            XSSFilterArray($insertdata);
-                    }
                     foreach ($insertdata as $k => $v) {
-                                            $attributes->$k = $v;
+                        $attributes->$k = $v;
                     }
 
                     $attributes->save();
                 }
             } else {
                 $attributes = new QuestionAttribute;
-                if ($insertdata) {
-                                    XSSFilterArray($insertdata);
-                }
                 foreach ($insertdata as $k => $v) {
-                                    $attributes->$k = $v;
+                    $attributes->$k = $v;
                 }
 
                 $attributes->save();
@@ -561,9 +548,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
 
             // now translate any links
             $default = new DefaultValue;
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
 
             foreach ($insertdata as $k => $v) {
                 $default->$k = $v;
@@ -613,9 +597,6 @@ function XMLImportLabelsets($sFullFilePath, $options)
         $oldlsid = $insertdata['lid'];
         unset($insertdata['lid']); // save the old qid
 
-        if ($insertdata) {
-                    XSSFilterArray($insertdata);
-        }
         // Insert the new question
         Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
         $results['labelsets']++;
@@ -633,10 +614,6 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['lid'] = $aLSIDReplacements[$insertdata['lid']];
-            if ($insertdata) {
-                            XSSFilterArray($insertdata);
-            }
-
             Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
             $results['labels']++;
         }
@@ -1061,10 +1038,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             }
 
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
-
             if (!$bConvertInvalidQuestionCodes) {
                 $sScenario = 'archiveimport';
             } else {
@@ -1167,12 +1140,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 switchMSSQLIdentityInsert('questions', true);
             }
 
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
-
-
-
             if (!$bConvertInvalidQuestionCodes) {
                 $sScenario = 'archiveimport';
             } else {
@@ -1265,10 +1232,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
 
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
-
             if (Answer::model()->insertRecords($insertdata)) {
                 $results['answers']++;
             }
@@ -1312,10 +1275,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
 
-                    if ($insertdata) {
-                        XSSFilterArray($insertdata);
-                    }
-
                     $result = QuestionAttribute::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[7]<br />");
                 }
             } else {
@@ -1340,9 +1299,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
 // remap the subquestion id   
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; 
-            }
-            if ($insertdata) {
-                            XSSFilterArray($insertdata);
             }
             // now translate any links
             $result = DefaultValue::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[9]<br />");
@@ -2134,21 +2090,6 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     switchMSSQLIdentityInsert('survey_'.$iSurveyID.'_timings', false);
 
     return $results;
-}
-
-
-function XSSFilterArray(&$array)
-{
-    if (Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-        $filter = new CHtmlPurifier();
-        $filter->options = array('URI.AllowedSchemes'=>array(
-        'http' => true,
-        'https' => true,
-        ));
-        foreach ($array as &$value) {
-            $value = $filter->purify($value);
-        }
-    }
 }
 
 /**
