@@ -1256,15 +1256,16 @@ class export extends Survey_Common_Action
         // set language back (get's changed in loop above)
         Yii::app()->language = $siteLanguage;
 
-        $this->_addHeaders($fn, "application/zip", 0);
-        // if ($readFile) {
+        if ($readFile) {
+            $this->_addHeaders($fn, "application/zip", 0);
             header('Content-Transfer-Encoding: binary');
             header("Content-disposition: attachment; filename=\"".$fn."\"");
             readfile($zipfile);
             unlink($zipfile);
             Yii::app()->end();
-        // }
-        //return $zipfile;
+        }
+        
+        return $zipfile;
 
     }
 
