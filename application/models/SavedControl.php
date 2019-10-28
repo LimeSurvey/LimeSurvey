@@ -60,6 +60,17 @@ class SavedControl extends LSActiveRecord
         return parent::model($class);
     }
 
+    public function getAllRecords($condition = false)
+    {
+        if ($condition != false) {
+            $this->db->where($condition);
+        }
+
+        $data = $this->db->get('saved_control');
+
+        return $data;
+    }
+
     /**
      * @param int $sid
      * @return mixed
