@@ -40,9 +40,6 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
 
-        //TODO: is this even used for anything? 30.08.2019
-        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
-
         /*
         @todo Discussion:
         General options currently are
@@ -139,9 +136,12 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         // this is how the sorting should work but is overwritten by returning the json to the ajax result, sorting is done in _settingstab.vue for now
         uasort($aQuestionTypeAttributes, 'categorySort');
-        if (empty($aAdvancedOptionsArray)){
+        if (empty($aAdvancedOptionsArray)) {
             foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
-                if($sAttributeName == 'question_template') { continue; } // Avoid double displaying
+                if ($sAttributeName == 'question_template') {
+                    continue;
+                } // Avoid double displaying
+
                 $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
             }
         }

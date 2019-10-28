@@ -387,8 +387,12 @@ class QuestionAttribute extends LSActiveRecord
      */
     public static function getQuestionAttributesSettings($sType)
     {
+        $sXmlFilePath = QuestionTheme::getQuestionXMLPathForBaseType($sType);
         // get attributes from config.xml
-        self::$questionAttributesSettings[$sType] = self::getQuestionAttributesFromXml($sType);
+        $generalAttributes = self::getGeneralAttibutesFromXml($sXmlFilePath);
+        $advancedAttributes = self::getAdvancedAttributesFromXml($sXmlFilePath);
+        self::$questionAttributesSettings[$sType] = array_merge($generalAttributes, $advancedAttributes);
+
         // if empty, fall back to getting attributes from questionHelper
         if (empty(self::$questionAttributesSettings[$sType])) {
             self::$questionAttributesSettings[$sType] = array();
@@ -411,14 +415,14 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Read question attributes from XML file and convert it to array
-     * @param $sType: type of question
-     * @return array : the attribute settings for this question type
+     *
+     * @param string $sXmlFilePath Path to XML
+     *
+     * @return array The advanced attribute settings for this question type
      */
-    public static function getQuestionAttributesFromXml($sType = ''){
+    public static function getAdvancedAttributesFromXml($sXmlFilePath){
         $aXmlAttributes = array();
         $aAttributes = array();
-        $sFolderName = QuestionTemplate::getFolderName($sType);
-        $sXmlFilePath = Yii::app()->getConfig('rootdir').'/application/views/survey/questions/answer/'.$sFolderName.'/config.xml';
 
         if(file_exists($sXmlFilePath)){
             // load xml file
@@ -463,4 +467,46 @@ class QuestionAttribute extends LSActiveRecord
         }
         return $aAttributes;
     }
+
+    /**
+     * Read question attributes from XML file and convert it to array
+     *
+     * @param string $sXmlFilePath Path to XML
+     *
+     * @return array The general attribute settings for this question type
+     */
+    public static function getGeneralAttibutesFromXml($sXmlFilePath)
+    {
+        $aXmlAttributes = array();
+        $aAttributes = array();
+
+        if (file_exists($sXmlFilePath)) {
+            // load xml file
+            libxml_disable_entity_loader(false);
+            $xml_config = simplexml_load_file($sXmlFilePath);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
+            // if only one attribute, then it doesn't return numeric index
+            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
+                $aTemp = $aXmlAttributes['attribute'];
+                unset($aXmlAttributes);
+                $aXmlAttributes['attribute'][0] = $aTemp;
+
+            }
+            libxml_disable_entity_loader(true);
+        } else {
+            return null;
+        }
+
+        // set $aAttributes array with attribute data
+        if (!empty($aXmlAttributes['attribute'])) {
+            foreach ($aXmlAttributes['attribute'] as $key => $xmlAttribute) {
+                /* settings the default value */
+                $aAttributes[$xmlAttribute] = self::getDefaultSettings();
+                /* settings the xml value */
+                $aAttributes[$xmlAttribute]['name'] = $xmlAttribute;
+            }
+        }
+        return $aAttributes;
+    }
+
 }

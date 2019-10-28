@@ -535,6 +535,7 @@ class QuestionTemplate extends CFormModel
     /**
      * @param string $type
      * @return string|null
+     * @deprecated use QuestionTheme::getQuestionXMLPathForBaseType
      */
     static public function getFolderName($type)
     {

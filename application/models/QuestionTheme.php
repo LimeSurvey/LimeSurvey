@@ -646,4 +646,20 @@ class QuestionTheme extends LSActiveRecord
         $cacheMemo[$cacheKey] = $answerColumnDefinition;
         return $answerColumnDefinition;
     }
+
+    /**
+     * Returns the Config Path for the selected Question Type base definition
+     *
+     * @param string $type
+     *
+     * @return string Path to config XML
+     */
+    static public function getQuestionXMLPathForBaseType($type)
+    {
+        $questionXMLPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
+        $configXMLPath = App()->getConfig('rootdir') .'/'. $questionXMLPath['xml_path'] . '/config.xml';
+
+        return $configXMLPath;
+
+    }
 }
