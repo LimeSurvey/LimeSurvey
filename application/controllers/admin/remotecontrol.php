@@ -110,6 +110,7 @@ class remotecontrol extends Survey_Common_Action
             require_once('Zend/XmlRpc/Client.php');
             
             $client = new Zend_XmlRpc_Client($serverUrl);
+            $client->getHttpClient()->setConfig(array('timeout'=>30));            
         } elseif ($RPCType == 'json') {
             Yii::app()->loadLibrary('jsonRPCClient');
             $client = new jsonRPCClient($serverUrl);

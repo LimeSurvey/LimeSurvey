@@ -207,7 +207,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Import a survey in a known format
+     * Import survey in a known format (RPC function)
      *
      * Allow importing lss, csv, xls or survey zip archive in BASE 64 encoded.
      *
@@ -253,13 +253,13 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to copy a survey.
+     * Copy survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
-     * @return On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * @return array On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
     public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
     {
@@ -306,7 +306,7 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to get survey properties.
+     * Get survey properties (RPC function)
      * Get properties of a survey
      *
      * All internal properties of a survey are available.
@@ -353,7 +353,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Set survey properties.
+     * Set survey properties (RPC function)
      *
      * @see \Survey for the list of available properties
      * Properties available are restricted
@@ -439,7 +439,7 @@ class remotecontrol_handle
 
 
     /**
-     * Activate an existing survey
+     * Activate survey (RPC function)
      *
      * Return the result of the activation
      * Failure status : Invalid Survey ID, Constistency check error, Activation Error, Invalid session key, No permission
@@ -481,7 +481,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Export statistics of a survey to a user.
+     * Export survey statistics (RPC function)
      *
      * Allow to export statistics available Returns string - base64 encoding of the statistics.
      *
@@ -582,7 +582,7 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to export submission timeline.
+     * Export submission timeline (RPC function)
      * Returns an array of values (count and period)
      *
      * @access public
@@ -629,7 +629,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Get survey summary, regarding token usage and survey participation.
+     * Get survey summary, regarding token usage and survey participation (RPC function)
      *
      * Returns the requested value as string, or all status in an array
      *
@@ -731,7 +731,7 @@ class remotecontrol_handle
     /*Survey language specific functions */
 
     /**
-     * RPC Routine to add a survey language.
+     * Add a survey language (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -791,7 +791,7 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to delete a language from a survey.
+     * Delete a language from a survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -841,7 +841,7 @@ class remotecontrol_handle
 
 
     /**
-     * Get survey language properties.
+     * Get survey language properties (RPC function)
      *
      * @see \SurveyLanguageSetting for available properties
      *
@@ -895,7 +895,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Set survey language properties.
+     * Set survey language properties (RPC function)
      *
      * @see \SurveyLanguageSetting for available properties.
      *
@@ -973,9 +973,9 @@ class remotecontrol_handle
     /* Group specific functions */
 
     /**
-     * Add an empty group with minimum details to a chosen survey.
+     * Add an empty page with minimum details to a survey (RPC function)
      * Used as a placeholder for importing questions.
-     * Returns the groupid of the created group.
+     * Returns the groupid of the created page.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1018,7 +1018,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete a group from a chosen survey .
+     * Delete a page from a chosen survey (RPC function)
      * Returns the id of the deleted group.
      *
      * @access public
@@ -1069,7 +1069,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Import a group and add to a chosen survey - imports lsg,csv
+     * Import a group and add to a survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1151,7 +1151,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Find response IDs given a survey ID and a token.
+     * Find response IDs given a survey ID and a token (RPC function)
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @param string $sToken
@@ -1174,7 +1174,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Get the properties of a group of a survey .
+     * Get the properties of a survey page (RPC function)
      *
      * Returns array of properties needed or all properties
      * @see \QuestionGroup for available properties
