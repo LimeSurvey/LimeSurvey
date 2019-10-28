@@ -1252,34 +1252,35 @@ class export extends Survey_Common_Action
         $zipdir = createRandomTempDir();
 
         $fn = "printable_survey_".preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)."_{$oSurvey->primaryKey}.zip";
-
+       
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipfile = "$tempdir/".$fn;
-
+    
         Yii::app()->loadLibrary('admin.pclzip');
         $z = new PclZip($zipfile);
         $z->create($zipdir, PCLZIP_OPT_REMOVE_PATH, $zipdir);
         $z->add($fullAssetsDir, PCLZIP_OPT_REMOVE_PATH, $fullAssetsDir, PCLZIP_OPT_ADD_PATH, $assetsDir);
-
+        
         // Store current language
         $siteLanguage = Yii::app()->language;
         foreach ($aLanguages as $language) {
-            $file = $this->_exportPrintableHtml($oSurvey, $language, $tempdir);
+            $file = $this->_exportPrintableHtml($oSurvey, $language, $tempdir);        
             $z->add($file, PCLZIP_OPT_REMOVE_PATH, $tempdir);
             unlink($file);
         }
         // set language back (get's changed in loop above)
         Yii::app()->language = $siteLanguage;
-
-        $this->_addHeaders($fn, "application/zip", 0);
-        // if ($readFile) {
+   
+        if ($readFile) {
+            $this->_addHeaders($fn, "application/zip", 0);
             header('Content-Transfer-Encoding: binary');
             header("Content-disposition: attachment; filename=\"".$fn."\"");
             readfile($zipfile);
             unlink($zipfile);
             Yii::app()->end();
-        // }
-        //return $zipfile;
+        }
+        //needed for massive actios 
+        return $zipfile;
 
     }
 
