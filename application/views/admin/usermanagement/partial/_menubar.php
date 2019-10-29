@@ -11,16 +11,16 @@
                         <i class="fa fa-plus-square text-success"></i> <?=gT('Add dummy user')?>
                     </button>
                     <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/importuser")?>" data-toggle="modal" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-default UserManagement--action--openmodal">
-                        <i class="fa fa-upload text-success"></i> <?php eT("Import (CSV)"); ?>
+                        <span class="icon-import text-success"></span> <?php eT("Import (CSV)"); ?>
                     </button>
                     <a  href="<?=App()->createUrl("admin/usermanagement/sa/importfromjson")?>" data-toggle="modal" title="<?php eT('Import survey administrators from JSON'); ?>" class="btn btn-default">
-                        <i class="fa fa-upload text-success"></i> <?php eT("Import (JSON)"); ?>
+                        <span class="icon-import text-success"></span> <?php eT("Import (JSON)"); ?>
                     </a>
                 <?php
                 } ?>
                 <?php if(Permission::model()->hasGlobalPermission('users', 'export')) { ?>
                     <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/exportusers")?>" data-toggle="modal" title="<?php eT('Export survey administrators'); ?>" class="btn btn-default UserManagement--action--openmodal">
-                        <i class="fa fa-upload text-success"></i> <?php eT("Export (CSV)");?>
+                        <i class="fa fa-upload text-success"></i> <?php eT("Export");?>
                     </button>
                 <?php } ?>
             <?php } else {

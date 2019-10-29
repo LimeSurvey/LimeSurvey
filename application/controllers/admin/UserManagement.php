@@ -749,9 +749,91 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
+     * Export users to csv formt 
+     *
+     *
+     * @return string
+     */
+    public function exportUsers()
+    {   
+        //Check if user has permissions to export users 
+        if (!Permission::model()->hasGlobalPermission('users', 'export')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $users = User::model()->findAll();
+        $aUsers = array();
+        foreach ($users as $user) {
+            $exportuser = $user->attributes;
+            $exportuser['password'] = '';
+            array_push($aUsers,$exportuser);
+        }
+
+        return $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/userexport',['json' => json_encode($aUsers)]
+        );           
+    }
+
+    /**
+     * Export users with specific format (json or csv)
+     * @param $outputFormat string json or csv
+     * @return mixed
+     */
+    public function exportUser(string $outputFormat) 
+    {
+        //Check if user has permissions to export users 
+        if (!Permission::model()->hasGlobalPermission('users', 'export')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $oUsers = User::model()->findAll();
+        $aUsers = array();
+        $sTempDir = Yii::app()->getConfig("tempdir");
+        $exportFile = $sTempDir.DIRECTORY_SEPARATOR.'users_export.'.$outputFormat;
+
+        foreach ($oUsers as $user) {
+            $exportUser = $user->attributes;
+            $exportUser['password'] = '';
+            array_push($aUsers,$exportUser);
+        }
+
+        switch ($outputFormat) {
+            case "json":
+                $json = json_encode($aUsers);
+                $fp = fopen($exportFile, 'w');
+                fwrite($fp, $json);
+                fclose($fp);
+                header("Content-Type:application/json; charset=UTF-8"); 
+                break;
+
+            case "csv":
+                $fp = fopen($exportFile, 'w');
+                foreach ($aUsers as $fields) {
+                    fputcsv($fp, $fields);
+                }
+                fclose($fp);
+                header("Content-type: text/csv");
+                break;
+        }
+        //end file to download
+        header("Content-Disposition: attachment; filename=userExport.".$outputFormat);
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        @readfile($exportFile);
+        unlink($exportFile);
+
+    }
+
+    
+
+    /**
      * Creates users from an uploaded CSV file
-     *
-     *
      * @return string
      */
     public function importcsv()
@@ -1023,8 +1105,8 @@ class UserManagement extends Survey_Common_Action
         return $mailer->sendMessage();
 
     }
-
-    ##### protected METHODS #####
+    
+ ##### protected METHODS #####
 
     /**
      * Filters special characters to simple ones
