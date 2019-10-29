@@ -62,8 +62,8 @@ App()->getClientScript()->registerScript("tab-survey-view-tab-switch-conditions"
     <?php if ($action == "newsurvey"): ?>
         <!-- Import -->
         <li role="presentation" <?php if($active=='import'){echo 'class="active"';}?>>
-            <a role="tab" data-toggle="tab" data-button-title="<i class='fa fa-upload'></i>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
-                <i class="fa fa-upload"></i>&nbsp;
+            <a role="tab" data-toggle="tab" data-button-title=" <span class='icon-import text-success'></span>&nbsp;<?= gT('Import'); ?>" data-form-id="importsurvey" href="#import">
+            <span class="icon-import text-success"></span>&nbsp;
                 <?php  eT("Import"); ?>
             </a>
         </li>
