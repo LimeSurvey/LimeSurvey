@@ -1,6 +1,5 @@
 <script>
 
-import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
@@ -20,7 +19,6 @@ export default {
     },
     data() {
         return {
-            editorQuestion: LsEditor,
             editorQuestionData: '',
             editorQuestionConfig: {
                 'lsExtension:fieldtype': 'editquestion', 
@@ -32,7 +30,6 @@ export default {
                 },
                 'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
             },
-            editorHelp: LsEditor,
             editorHelpData: '',
             editorHelpConfig: {
                 'lsExtension:fieldtype': 'editquestion_help', 
@@ -200,7 +197,7 @@ export default {
                                     <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditQuestion"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                                 </div>
                             </div>
-                            <lsckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></lsckeditor>
+                            <lsckeditor v-if="!questionEditSource" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></lsckeditor>
                             <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange"> </aceeditor>
                         </div>
                         <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
@@ -212,7 +209,7 @@ export default {
                                     <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditHelp"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                                 </div>
                             </div>
-                            <lsckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></lsckeditor>
+                            <lsckeditor v-if="!helpEditSource" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></lsckeditor>
                             <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp" v-on:input="runDebouncedChange"> </aceeditor>
                         </div>
                         <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">

@@ -2,9 +2,7 @@ import { shallowMount, createLocalVue, config } from '@vue/test-utils'
 import _ from 'lodash';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Mousetrap from 'mousetrap';
 
-import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditorInline';
 import EmailTemplatesApp from '_@/EmailTemplatesApp.vue'
 import Loader from '_@/helperComponents/loader.vue';
 
@@ -12,8 +10,6 @@ import mockState from '../mocks/mockState.js';
 import mockActions from '../mocks/mockActions.js';
 import realMutations from '_@/storage/mutations.js';
 import availableFilesList from '../mocks/availableFilesList.json';
-
-jest.mock('../../../meta/LsCkeditor/src/LsCkEditorInline');
 
 config.stubs['lsckeditor'] = '<div class="test--selector--lsckeditor"/>';
 config.stubs['modals-container'] = '<div class="test--selector--modals-container"/>';

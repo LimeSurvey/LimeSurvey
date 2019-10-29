@@ -1,6 +1,5 @@
 
 <script>
-import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
 import keys from 'lodash/keys';
 import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
@@ -19,7 +18,6 @@ export default {
     data(){
         return {
             currentTab: '',
-            editorDescription: LsEditor,
             editorDescriptionConfig: {
                 'lsExtension:fieldtype': 'editgroup_desc', 
                 'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, gid: this.$store.state.currentQuestionGroup.gid },
@@ -114,7 +112,7 @@ ${scriptContent}
                             <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                         </div>
                     </div>
-                    <lsckeditor  v-if="!sourceMode" :editor="editorDescription" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></lsckeditor>
+                    <lsckeditor  v-if="!sourceMode" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></lsckeditor>
                     <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionGroupDescription"></aceeditor>
                 </div>
                 <div class="col-sm-6 col-xs-12 ls-space margin top-5 bottom-5">
