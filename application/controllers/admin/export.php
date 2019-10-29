@@ -1264,6 +1264,11 @@ class export extends Survey_Common_Action
         // Store current language
         $siteLanguage = Yii::app()->language;
         foreach ($aLanguages as $language) {
+            //set session for replacement helper if session not set
+            if(!isset($_SESSION['LEMsid'])) {
+                $_SESSION['LEMsid'] = $oSurvey->getPrimaryKey();
+            }
+
             $file = $this->_exportPrintableHtml($oSurvey, $language, $tempdir);        
             $z->add($file, PCLZIP_OPT_REMOVE_PATH, $tempdir);
             unlink($file);
