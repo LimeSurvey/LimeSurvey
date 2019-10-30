@@ -115,7 +115,6 @@ class UserManagement extends Survey_Common_Action
         }
 
         $aUser = Yii::app()->request->getParam('User');
-
         $paswordTest = Yii::app()->request->getParam('password_repeat', false);
         if (!empty($paswordTest)) {
 
@@ -142,36 +141,51 @@ class UserManagement extends Survey_Common_Action
 
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $sendMail = (bool)Yii::app()->request->getPost('preset_password', false);
-            $aUser = $this->_createNewUser($aUser);
+            $newUser = $this->_createNewUser($aUser);
             $sReturnMessage = gT('User successfully created');
             $success = true;
-
-            if ($sendMail && (isset($newUser['sendMail']) && $newUser['sendMail'] == true)) {
-                if ($this->_sendAdminMail('registration', $aUser)) {
-                    $sReturnMessage = gT("Success");
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $aUser['users_name'], $aUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
+        
+            if ($sendMail) {
+                $mailer = $this->_sendAdminMail('registration', $aUser);
+               
+                if ($mailer->getError()) {
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Error")); 
+                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $newUser['users_name'] . "</strong>", $newUser['email']));
+                    $sReturnMessage .= CHtml::tag("p", array(), $mailer->getError());
+                    $success = false;
                 } else {
                     // has to be sent again or no other way
-                    $sReturnMessage = gT("Warning");
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $aUser['users_name'] . "</strong>", $aUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array('class' => 'alert alert-danger'), $mailer->getError());
-                    $success = false;
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));  ;
+                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
+                    $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
             }
 
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $new_pass . '</b>') : '';
+            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $paswordTest . '</b>') : '';
+            
+            $data = array();
 
-            return App()->getController()->renderPartial('/admin/super/_renderJson', [
-                "data" => [
+            if($success) {
+                $data = [
                     'success' => $success,
                     'message' => $sReturnMessage
-                ]
+                ];
+
+            }else{
+                $data = [
+                    'success' => $success,
+                    'errors' => $sReturnMessage
+                ];
+            }
+
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => $data
             ]);
         }
 
         $oUser = $this->updateAdminUser($aUser);
+
         if ($oUser->hasErrors()) {
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
@@ -1003,12 +1017,9 @@ class UserManagement extends Survey_Common_Action
             ]);
         }
 
-        $success = true;
-        $new_user = $aUser['users_name'];
+        
         $iNewUID = $event->get('newUserID');
-        $new_pass = $event->get('newPassword');
-        $new_email = $event->get('newEmail');
-        $new_full_name = $event->get('newFullName');
+      
 
         // add default template to template rights for user
         Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
@@ -1081,7 +1092,7 @@ class UserManagement extends Survey_Common_Action
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
                     'username' => $aUser['users_name'],
-                    'password' => $aUser['rawPassword'],
+                    'password' => $aUser['password'],
                     'mainLogoFile' => LOGO_URL,
                     'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
                     'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
@@ -1102,7 +1113,8 @@ class UserManagement extends Survey_Common_Action
         $mailer->Body = $body;
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
-        return $mailer->sendMessage();
+        $mailer->sendMessage();
+        return $mailer;
 
     }
     

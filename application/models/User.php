@@ -817,18 +817,6 @@ class User extends LSActiveRecord
         $criteria->compare('full_name',$this->searched_value,true);
         $criteria->compare('users_name',$this->searched_value,true, 'OR');
         $criteria->compare('email',$this->searched_value,true, 'OR');
-
-        // $criteria->compare('uid',$this->uid);
-        // $criteria->compare('password',$this->password,true);
-        // $criteria->compare('parent_id',$this->parent_id);
-        // $criteria->compare('lang',$this->lang,true);
-        // $criteria->compare('htmleditormode',$this->htmleditormode,true);
-        // $criteria->compare('templateeditormode',$this->templateeditormode,true);
-        // $criteria->compare('questionselectormode',$this->questionselectormode,true);
-        // $criteria->compare('one_time_pw',$this->one_time_pw,true);
-        // $criteria->compare('dateformat',$this->dateformat);
-        // $criteria->compare('created',$this->created,true);
-        // $criteria->compare('modified',$this->modified,true);
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination' => array(
