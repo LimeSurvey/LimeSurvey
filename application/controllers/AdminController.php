@@ -315,6 +315,7 @@ class AdminController extends LSYii_Controller
         'questiongroups'   => 'questiongroups',
         'questions'        => 'questions',
         'questioneditor'   => 'questionedit',
+        'questionthemes'   => 'QuestionThemesController',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',
         'responses'        => 'responses',

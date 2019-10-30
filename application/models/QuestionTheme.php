@@ -3,12 +3,13 @@
 use LimeSurvey\Helpers\questionHelper;
 
 /**
- * Class QuestionThemes
+ * This is the model class for table "{{question_themes}}".
  *
- * Stores all the Metadata and
+ * The followings are the available columns in table '{{question_themes}}':
  *
- * @property int     $id
- * @property string  $name   Template name
+ * @property integer $id
+ * @property string  $name
+ * @property string  $visible
  * @property string  $xml_path
  * @property string  $image_path
  * @property string  $title
@@ -19,6 +20,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property string  $copyright
  * @property string  $license
  * @property string  $version
+ * @property string  $api_version
  * @property string  $description
  * @property string  $last_update
  * @property integer $owner_id
@@ -27,10 +29,138 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $core_theme
  * @property string  $extends
  * @property string  $group
- * @property array   $settings
+ * @property string  $settings
  */
 class QuestionTheme extends LSActiveRecord
 {
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{question_themes}}';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            [
+                'name',
+                'unique',
+                'caseSensitive' => false,
+                'criteria'      => [
+                    'condition' => '`extends`=:extends',
+                    'params'    => [
+                        ':extends' => $this->extends
+                    ]
+                ],
+            ],
+            array('name, title, api_version, question_type', 'required'),
+            array('owner_id, core_theme', 'numerical', 'integerOnly' => true),
+            array('name, author, theme_type, question_type, extends, group', 'length', 'max' => 150),
+            array('visible', 'length', 'max' => 1),
+            array('xml_path, image_path, author_email, author_url', 'length', 'max' => 255),
+            array('title', 'length', 'max' => 100),
+            array('version, api_version', 'length', 'max' => 45),
+            array('creation_date, copyright, license, description, last_update, settings', 'safe'),
+            // The following rule is used by search().
+            array('id, name, visible, xml_path, image_path, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, description, last_update, owner_id, theme_type, question_type, core_theme, extends, group, settings', 'safe', 'on' => 'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        return array();
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id'            => 'ID',
+            'name'          => 'Name',
+            'visible'       => 'Visible',
+            'xml_path'      => 'Xml Path',
+            'image_path'    => 'Image Path',
+            'title'         => 'Title',
+            'creation_date' => 'Creation Date',
+            'author'        => 'Author',
+            'author_email'  => 'Author Email',
+            'author_url'    => 'Author Url',
+            'copyright'     => 'Copyright',
+            'license'       => 'License',
+            'version'       => 'Version',
+            'api_version'   => 'Api Version',
+            'description'   => 'Description',
+            'last_update'   => 'Last Update',
+            'owner_id'      => 'Owner',
+            'theme_type'    => 'Theme Type',
+            'question_type' => 'Question Type',
+            'core_theme'    => 'Core Theme',
+            'extends'       => 'Extends',
+            'group'         => 'Group',
+            'settings'      => 'Settings',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
+
+        $criteria = new CDbCriteria;
+        $criteria->compare('id', $this->id);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('visible', $this->visible, true);
+        $criteria->compare('xml_path', $this->xml_path, true);
+        $criteria->compare('image_path', $this->image_path, true);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('creation_date', $this->creation_date, true);
+        $criteria->compare('author', $this->author, true);
+        $criteria->compare('author_email', $this->author_email, true);
+        $criteria->compare('author_url', $this->author_url, true);
+        $criteria->compare('copyright', $this->copyright, true);
+        $criteria->compare('license', $this->license, true);
+        $criteria->compare('version', $this->version, true);
+        $criteria->compare('api_version', $this->api_version, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('last_update', $this->last_update, true);
+        $criteria->compare('owner_id', $this->owner_id);
+        $criteria->compare('theme_type', $this->theme_type, true);
+        $criteria->compare('question_type', $this->question_type, true);
+        $criteria->compare('core_theme', $this->core_theme);
+        $criteria->compare('extends', $this->extends, true);
+        $criteria->compare('group', $this->group, true);
+        $criteria->compare('settings', $this->settings, true);
+        return new CActiveDataProvider($this, array(
+            'criteria'   => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSizeTemplateView,
+            ),
+        ));
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -45,22 +175,6 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * @return string the associated database table name
-     */
-    public function tableName()
-    {
-        return '{{question_themes}}';
-    }
-
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        return array();
-    }
-
-    /**
      * Returns this table's primary key
      *
      * @access public
@@ -69,23 +183,6 @@ class QuestionTheme extends LSActiveRecord
     public function primaryKey()
     {
         return 'id';
-    }
-
-    public function rules()
-    {
-        return [
-            [
-                'name',
-                'unique',
-                'caseSensitive' => false,
-                'criteria' => [
-                    'condition' => '`extends`=:extends',
-                    'params' => [
-                        ':extends' => $this->extends
-                    ]
-                ],
-            ]
-        ];
     }
 
     /**
@@ -143,81 +240,22 @@ class QuestionTheme extends LSActiveRecord
         libxml_disable_entity_loader($bOldEntityLoaderState);
     }
 
-    public function search()
-    {
-        $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
-
-        $criteria = new CDbCriteria;
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => $pageSizeTemplateView,
-            ),
-        ));
-    }
-
-
     // TODO: Enable when Configuration Model is ready
     public function getButtons()
     {
-        //            // don't show any buttons if user doesn't have update permission
-        //            if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
-        //                return '';
-        //            }
-        //            $gsid = Yii::app()->request->getQuery('id', null);
-        //            $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename" => $this->template_name));
-        //            $sExtendUrl = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
-        //            $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ? Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id" => $this->id, "gsid" => $gsid)) : Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id" => $this->id));
-        //
-        //            $sEditorLink = "<a
-        //            id='template_editor_link_" . $this->template_name . "'
-        //            href='" . $sEditorUrl . "'
-        //            class='btn btn-default btn-block'>
-        //                <span class='icon-templates'></span>
-        //                " . gT('Theme editor') . "
-        //            </a>";
-        //
-        //            $OptionLink = '';
-        //            if ($this->hasOptionPage) {
-        //                $OptionLink .= "<a
-        //                id='template_options_link_" . $this->template_name . "'
-        //                href='" . $sOptionUrl . "'
-        //                class='btn btn-default btn-block'>
-        //                    <span class='fa fa-tachometer'></span>
-        //                    " . gT('Theme options') . "
-        //                </a>";
-        //            }
-        //
-        //
-        //            $sExtendLink = '<a
-        //            id="extendthis_' . $this->template_name . '"
-        //            href="' . $sExtendUrl . '"
-        //            data-post=\''
-        //                . json_encode([
-        //                    "copydir" => $this->template_name,
-        //                    "action" => "templatecopy",
-        //                    "newname" => ["value" => "extends_" . $this->template_name, "type" => "text", "class" => "form-control col-sm-12"]
-        //                ])
-        //                . '\'
-        //            data-text="' . gT('Please type in the new theme name above.') . '"
-        //            title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
-        //            class="btn btn-primary btn-block selector--ConfirmModal">
-        //                <i class="fa fa-copy"></i>
-        //                ' . gT('Extend') . '
-        //            </a>';
-        //
-        //
-        //            if (App()->getController()->action->id == "surveysgroups") {
-        //                $sButtons = $OptionLink;
-        //            } else {
-        //                $sButtons = $sEditorLink . $OptionLink . $sExtendLink;
-        //
-        //            }
-        //
-        //
-        //
-        //
-        //            return $sButtons;
+        // don't show any buttons if user doesn't have update permission
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
+            return '';
+        }
+        $sVisible = $this->visible == 'Y' ? true : false;
+        $aButtons = [
+            'visibility_button' => [
+                'url' => $sToggleVisibilityUrl = Yii::app()->getController()->createUrl('admin/questionthemes/sa/togglevisibility', ['id' => $this->id]),
+                'visible' => $sVisible
+            ]
+        ];
+        $sButtons = Yii::app()->getController()->renderPartial('/admin/themeoptions/partials/question_themes/theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
+        return $sButtons;
     }
 
     /**
@@ -241,6 +279,7 @@ class QuestionTheme extends LSActiveRecord
      * Import config manifest to database.
      *
      * @param string $pathToXML
+     *
      * @return bool|string
      * @throws InvalidArgumentException
      */
@@ -259,7 +298,7 @@ class QuestionTheme extends LSActiveRecord
             ->find(
                 '(name = :name AND extends = :extends)',
                 [
-                    ':name' => $questionMetaData['name'],
+                    ':name'    => $questionMetaData['name'],
                     ':extends' => $questionMetaData['extends']
                 ]
             );
@@ -369,11 +408,11 @@ class QuestionTheme extends LSActiveRecord
 
         // set settings as json
         $questionMetaData['settings'] = json_encode([
-            'subquestions' => $questionMetaData['subquestions'] ?? 0,
-            'answerscales' => $questionMetaData['answerscales'] ?? 0,
+            'subquestions'     => $questionMetaData['subquestions'] ?? 0,
+            'answerscales'     => $questionMetaData['answerscales'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
-            'assessable' => $questionMetaData['assessable'] ?? 0,
-            'class' => $questionMetaData['class'] ?? '',
+            'assessable'       => $questionMetaData['assessable'] ?? 0,
+            'class'            => $questionMetaData['class'] ?? '',
         ]);
 
         // override MetaData depending on directory
@@ -467,8 +506,7 @@ class QuestionTheme extends LSActiveRecord
         $criteria = new CDbCriteria();
         $criteria->condition = 'extends = :extends';
         $criteria->addCondition('question_type = :question_type', 'AND');
-        $criteria->addCondition('visible = :visible', 'AND');
-        $criteria->params = [':extends' => '', ':question_type' => $question_type, ':visible' => 'Y'];
+        $criteria->params = [':extends' => '', ':question_type' => $question_type];
 
         $baseQuestion = self::model()->query($criteria, false, false);
 
@@ -556,28 +594,28 @@ class QuestionTheme extends LSActiveRecord
     private function getMetaDataArray($questionMetaData)
     {
         $questionMetaData = [
-            'name' => $questionMetaData['name'],
-            'visible' => 'Y', //todo
-            'xml_path' => $questionMetaData['xml_path'],
-            'image_path' => $questionMetaData['image_path'] ?? '',
-            'title' => $questionMetaData['title'],
+            'name'          => $questionMetaData['name'],
+            'visible'       => 'Y', //todo
+            'xml_path'      => $questionMetaData['xml_path'],
+            'image_path'    => $questionMetaData['image_path'] ?? '',
+            'title'         => $questionMetaData['title'],
             'creation_date' => date('Y-m-d H:i:s', strtotime($questionMetaData['creationDate'])),
-            'author' => $questionMetaData['author'],
-            'author_email' => $questionMetaData['authorEmail'],
-            'author_url' => $questionMetaData['authorUrl'],
-            'copyright' => $questionMetaData['copyright'],
-            'license' => $questionMetaData['license'],
-            'version' => $questionMetaData['version'],
-            'api_version' => $questionMetaData['apiVersion'],
-            'description' => $questionMetaData['description'],
-            'last_update' => date('Y-m-d H:i:s'), //todo
-            'owner_id' => 1, //todo
-            'theme_type' => $questionMetaData['type'],
+            'author'        => $questionMetaData['author'],
+            'author_email'  => $questionMetaData['authorEmail'],
+            'author_url'    => $questionMetaData['authorUrl'],
+            'copyright'     => $questionMetaData['copyright'],
+            'license'       => $questionMetaData['license'],
+            'version'       => $questionMetaData['version'],
+            'api_version'   => $questionMetaData['apiVersion'],
+            'description'   => $questionMetaData['description'],
+            'last_update'   => date('Y-m-d H:i:s'), //todo
+            'owner_id'      => 1, //todo
+            'theme_type'    => $questionMetaData['type'],
             'question_type' => $questionMetaData['questionType'],
-            'core_theme' => $questionMetaData['coreTheme'],
-            'extends' => $questionMetaData['extends'],
-            'group' => $questionMetaData['group'] ?? '',
-            'settings' => $questionMetaData['settings'] ?? ''
+            'core_theme'    => $questionMetaData['coreTheme'],
+            'extends'       => $questionMetaData['extends'],
+            'group'         => $questionMetaData['group'] ?? '',
+            'settings'      => $questionMetaData['settings'] ?? ''
         ];
         return $questionMetaData;
     }
@@ -657,7 +695,7 @@ class QuestionTheme extends LSActiveRecord
     static public function getQuestionXMLPathForBaseType($type)
     {
         $questionXMLPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
-        $configXMLPath = App()->getConfig('rootdir') .'/'. $questionXMLPath['xml_path'] . '/config.xml';
+        $configXMLPath = App()->getConfig('rootdir') . '/' . $questionXMLPath['xml_path'] . '/config.xml';
 
         return $configXMLPath;
 
