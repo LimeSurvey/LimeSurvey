@@ -71,8 +71,24 @@
 
             $this->sTemplate = $oTemplate->sTemplateName;
 
+            /** @var array */
             $error = Yii::app()->errorHandler->error;
-            if ($error) {
+            $request = Yii::app()->getRequest();
+            if ($error && $request->isAjaxRequest) {
+                echo Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    [
+                        'data' => [
+                            'success' => false,
+                            'message' => $error['message'],
+                            'error'   => $error
+                        ]
+                    ],
+                    true,
+                    false
+                );
+                App()->end();
+            } elseif ($error) {
                 $admin = Yii::app()->getConfig('siteadminname');
                 if(App()->getConfig('showEmailInError')) {// Never show email by default
                     $admin = CHtml::mailto(Yii::app()->getConfig('siteadminname'),Yii::app()->getConfig('siteadminemail'));
