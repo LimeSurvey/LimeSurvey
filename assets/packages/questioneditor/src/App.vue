@@ -160,7 +160,8 @@ export default {
                     },
                     (reject) => {
                         $('#in_survey_common').trigger('lsStopLoading');
-                        window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                        reject.data.message
+                        window.LS.notifyFader(reject.data.message, 'well-lg bg-danger text-center');
                         this.$log.error(reject);
                         setTimeout(()=>{window.location.reload();}, 1500);
                     }
