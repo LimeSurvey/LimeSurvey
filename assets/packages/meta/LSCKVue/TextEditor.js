@@ -1,7 +1,4 @@
 const INPUT_EVENT_DEBOUNCE_WAIT = 300;
-import {LsCkEditor, LsCkDefaultConfig} from '../LsCkeditor/src/LsCkEditor';
-import {LsCkEditorInline, LsCkInlineDefaultConfig} from '../LsCkeditor/src/LsCkEditorInline';
-
 export default {
 	name: 'TextEditor',
 
@@ -10,6 +7,10 @@ export default {
 	},
 
 	props: {
+        editor: {
+            type: Function,
+			default: null
+        },
         editorType: {
             type: String,
 			default: 'classic'
@@ -52,17 +53,14 @@ export default {
 	data() {
 		return {
 			instance: null,
-            editor: null,
-            defaultConfig: null,
 			$_lastEditorData: {
 				type: String,
 				default: ''
 			}
 		};
 	},
-    created() {
-        this.editor = this.editorType == 'inline' ? LsCkEditorInline : LsCkEditor;
-        this.defaultConfig = this.editorType == 'inline' ? LsCkInlineDefaultConfig : LsCkDefaultConfig;
+	created() {
+        window.CKEDITOR_VERSION = null;
     },
 	mounted() {
 		window.LS.debug.cks = window.LS.debug.cks || [];
@@ -92,7 +90,10 @@ export default {
 				if(this.onError !== null) {this.onError(error);}
             });
             
-            
+            $(document).on("pjax:send", () => {
+                this.instance.destroy();
+			    this.instance = null;
+            });
 		       
 	},
 

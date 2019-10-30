@@ -5,6 +5,10 @@
   "main": "LsCkEditor.js",
   "author": "Markus Fluer <markus.fluer@limesurvey.org>",
   "license": "GPL-2.0-or-later",
+  "scripts": {
+      "build" : "webpack --mode=production",
+      "dev" : "webpack --mode=development"
+  },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^15.0.0",
     "@ckeditor/ckeditor5-autoformat": "^15.0.0",
@@ -31,10 +35,13 @@
     "he": "^1.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
     "@ckeditor/ckeditor5-dev-utils": "^12.0.5",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.5",
     "@ckeditor/ckeditor5-inspector": "^1.4.0",
     "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "eslint": "^6.6.0",
     "eslint-config-ckeditor5": "^2.0.0",

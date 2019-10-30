@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" />
-                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" editorType="inline" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"></lsckeditor>
+                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditorObject" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"></lsckeditor>
                             <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
                         </div>
                         <div class="row ls-space margin top-15">
@@ -86,6 +86,7 @@ import he from 'he';
 
 import ValidationScreen from './components/ValidationScreen';
 import LanguageSelector from './components/subcomponents/_languageSelector';
+import InlineEditor from '../../meta/LsCkeditor/src/LsCkEditorInline.js';
 import Aceeditor from './helperComponents/AceEditor';
 
 import FileSelectModal from './components/FileSelectModal';
@@ -103,6 +104,7 @@ export default {
             loading: true,
             event: null,
             editorInstance: null,
+            currentEditorObject: InlineEditor,
             currentEditorOptions : {
                 'lsExtension:fieldtype': 'email_general', 
                 'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid },

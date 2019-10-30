@@ -27,10 +27,9 @@ import LsImageSizePlugin from './plugins/LsImage/lsimagesize';
 
 import './plugins/assets/styles.scss';
 
-class LsCkEditorInline extends InlineEditorBase {}
+export default class LsCkEditorInline extends InlineEditorBase {}
 
-const LsCkInlineDefaultConfig = {
-    plugins: [
+LsCkEditorInline.builtinPlugins = [
         EssentialsPlugin,
         FontPlugin,
         PasteFromOfficePlugin,
@@ -54,7 +53,9 @@ const LsCkInlineDefaultConfig = {
         LsFileUploadPlugin,
         LsImageSelectPlugin,
         LsImageSizePlugin,
-    ],
+    ];
+
+LsCkEditorInline.defaultConfig = {
     toolbar: {
         items: [
             'heading',
@@ -82,5 +83,3 @@ const LsCkInlineDefaultConfig = {
     },
     language: LS.data.language
 };
-
-export {LsCkEditorInline, LsCkInlineDefaultConfig};
