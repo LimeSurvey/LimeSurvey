@@ -1275,7 +1275,7 @@ class export extends Survey_Common_Action
         }
         // set language back (get's changed in loop above)
         Yii::app()->language = $siteLanguage;
-   
+
         if ($readFile) {
             $this->_addHeaders($fn, "application/zip", 0);
             header('Content-Transfer-Encoding: binary');
