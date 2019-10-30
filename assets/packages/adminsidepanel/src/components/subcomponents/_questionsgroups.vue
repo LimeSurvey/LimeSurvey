@@ -64,7 +64,7 @@ export default {
             this.active = [];
         },
         createFullQuestionLink() { 
-            if(LS.parameters.combined.gid) {
+            if(LS.reparsedParameters().combined.gid) {
                 return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid}); 
             }
             return LS.createUrl(this.createQuestionLink, {}); 
