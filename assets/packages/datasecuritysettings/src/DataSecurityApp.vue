@@ -2,7 +2,7 @@
 import Mousetrap from 'mousetrap';
 
 import LanguageSelector from './components/subcomponents/_languageSelector.vue';
-
+import ClassicEditor from '../../meta/LsCkeditor/src/LsCkEditorClassic.js';
 import runAjax from './mixins/runAjax.js';
 import Aceeditor from './helperComponents/AceEditor';
 
@@ -15,6 +15,7 @@ export default {
     },
     data() {
         return {
+            datasecmessageEditorObject: ClassicEditor,
             datasecmessageEditorData : {
                 'lsExtension:fieldtype': 'survey-datasec', 
                 'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
@@ -193,7 +194,7 @@ ${scriptContent}
                             </div>
                         </div>
                         <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentDatasecmessage)" />
-                        <lsckeditor  v-if="!sourceEditEnable && $store.state.permissions.update" v-model="currentDatasecmessage" :config="datasecmessageEditorData"></lsckeditor>
+                        <lsckeditor :editor="datasecmessageEditorObject" v-if="!sourceEditEnable && $store.state.permissions.update" v-model="currentDatasecmessage" :config="datasecmessageEditorData"></lsckeditor>
                         <aceeditor v-if="sourceEditEnable && $store.state.permissions.update" thisID="datasecmessageSourceEditor" v-model="currentDatasecmessage" :showLangSelector="false"></aceeditor>
                         <input v-if="$store.state.permissions.update" type="hidden" name="surveyls_policy_notice" v-model="currentDatasecmessage"/>
                     </div>
