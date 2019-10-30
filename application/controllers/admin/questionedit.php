@@ -695,12 +695,13 @@ class questionedit extends Survey_Common_Action
         $oQuestion = new Question();
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
-            throw new CException("Object creation failed, input array malformed or invalid");
+            throw new CHttpException(500, "Object creation failed, input array malformed or invalid");
         }
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw new CException(
+            throw new CHttpException(
+                500,
                 "Object creation failed, couldn't save.\n ERRORS:"
                 . print_r($oQuestion->getErrors(), true)
             );
@@ -733,12 +734,13 @@ class questionedit extends Survey_Common_Action
     {
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
-            throw new CException("Object update failed, input array malformed or invalid");
+            throw new CHttpException(500, "Object update failed, input array malformed or invalid");
         }
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw new CException(
+            throw new CHttpException(
+                500,
                 "Object update failed, couldn't save. ERRORS:"
                 . print_r($oQuestion->getErrors(), true)
             );
@@ -767,13 +769,13 @@ class questionedit extends Survey_Common_Action
                     $sAttributeKey,
                     $aAttributeValueArray['formElementValue']
                 )) {
-                    throw new CException(gT("Could not store general options"));
+                    throw new CHttpException(500, gT("Could not store general options"));
                 }
             }
         }
 
         if (!$oQuestion->save()) {
-            throw new CException(gT("Could not store general options"));
+            throw new CHttpException(500, gT("Could not store general options"));
         }
 
         return true;
@@ -810,7 +812,7 @@ class questionedit extends Survey_Common_Action
                             $content,
                             $lngKey
                         )) {
-                            throw new CException(gT("Could not store advanced options"));
+                            throw new CHttpException(500, gT("Could not store advanced options"));
                         }
                     }
                 } else {
@@ -822,7 +824,7 @@ class questionedit extends Survey_Common_Action
                             $sAttributeKey,
                             $newValue
                         )) {
-                            throw new CException(gT("Could not store advanced options"));
+                            throw new CHttpException(500, gT("Could not store advanced options"));
                         }
                     }
                 }
@@ -830,7 +832,7 @@ class questionedit extends Survey_Common_Action
         }
 
         if (!$oQuestion->save()) {
-            throw new CException(gT("Could not store advanced options"));
+            throw new CHttpException(500, gT("Could not store advanced options"));
         }
 
         return true;
@@ -852,7 +854,7 @@ class questionedit extends Survey_Common_Action
                 'script' => $aI10NBlock['script'],
             ], false);
             if (!$i10N->save()) {
-                throw new CException(gT("Could not store translation"));
+                throw new CHttpException(500, gT("Could not store translation"));
             }
         }
 
@@ -875,7 +877,7 @@ class questionedit extends Survey_Common_Action
                 'help' => $aI10NBlock['help'],
             ], false);
             if (!$i10N->save()) {
-                throw new CException(gT("Could not store translation for subquestion"));
+                throw new CHttpException(500, gT("Could not store translation for subquestion"));
             }
         }
 
@@ -904,7 +906,7 @@ class questionedit extends Survey_Common_Action
             ], false);
 
             if (!$i10N->save()) {
-                throw new CException(gT("Could not store translation for answer option"));
+                throw new CHttpException(500, gT("Could not store translation for answer option"));
             }
         }
 
@@ -1018,7 +1020,13 @@ class questionedit extends Survey_Common_Action
                     unset($aAnswerOptionDataSet['aid']);
                     unset($aAnswerOptionDataSet['qid']);
                 }
-                $oAnswer->setAttributes($aAnswerOptionDataSet, false);
+                if (empty($aAnswerOptionDataSet['code'])) {
+                    throw new CHttpException(
+                        500,
+                        "Answer option code cannot be empty"
+                    );
+                }
+                $oAnswer->setAttributes($aAnswerOptionDataSet);
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
                     throw new CException(

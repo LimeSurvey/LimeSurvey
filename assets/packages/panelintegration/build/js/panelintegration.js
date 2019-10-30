@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "d3ab9c63df072ac3e38c";
+/******/ 	var hotCurrentHash = "57a588a9fbc91dc09f17";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -23329,9 +23329,11 @@ __webpack_require__.r(__webpack_exports__);
             });
           },
           error: function error(xhr, status, _error) {
+            var responseData = xhr.responseJSON || xhr.responseText;
             reject({
               success: false,
               error: _error,
+              data: responseData,
               transferStatus: status,
               xhr: xhr
             });

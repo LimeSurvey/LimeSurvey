@@ -184,7 +184,7 @@ export default {
     },
     saveQuestionData: (context) => {
         if(context.state.inTransfer) {
-            return Promise.reject("Transfer in progress");
+            return Promise.reject({data: { message: "Transfer in progress", error: "Transfer in progress"}});
         }
 
         let transferObject = merge({
@@ -207,7 +207,10 @@ export default {
                         context.commit('setInTransfer', false);
                         resolve(result);
                     },
-                    reject
+                    (error) => {
+                        context.commit('setInTransfer', false);
+                        reject(error);
+                    }
                 )
         });
     },

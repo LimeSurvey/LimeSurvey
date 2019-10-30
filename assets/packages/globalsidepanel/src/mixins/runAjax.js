@@ -19,11 +19,13 @@ export default {
             });
           },
           error: (xhr, status, error) => {
+            const responseData = xhr.responseJSON || xhr.responseText;
             reject({
-              success: false,
-              error: error,
-              transferStatus: status,
-              xhr: xhr
+                success: false,
+                error: error,
+                data: responseData,
+                transferStatus: status,
+                xhr: xhr
             });
           }
         });
