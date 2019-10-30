@@ -330,7 +330,7 @@ export default {
                         </transition>
                         <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
                     </div>
-                    <div class="ls-flex ls-flex-row">
+                    <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
                         <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
                     </div>
                 </div>
@@ -371,4 +371,7 @@ export default {
      border-radius: 4px;
  }
 
+.scoped-advanced-settings-block {
+    position: relative;
+}
 </style>

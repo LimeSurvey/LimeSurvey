@@ -135,6 +135,7 @@ export default {
     }
 }
 .scoped-general-settings {
+    position: relative;
     min-width: 30%;
     &.collapsed {
         min-width: 0%;
