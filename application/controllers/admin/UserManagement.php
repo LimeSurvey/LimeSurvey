@@ -841,10 +841,12 @@ class UserManagement extends Survey_Common_Action
             case "csv":
                 $fp = fopen($exportFile, 'w');
                 foreach ($aUsers as $fields) {
+                    fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
                     fputcsv($fp, $fields);
                 }
                 fclose($fp);
-                header("Content-type: text/csv");
+                header('Content-Encoding: UTF-8');
+                header("Content-type: text/csv; charset=UTF-8");
                 break;
         }
         //end file to download
