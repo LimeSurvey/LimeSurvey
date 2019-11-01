@@ -58,7 +58,6 @@ if (!$isActive) {
 }
 
 if ($hasSurveyContentPermission) {
-    
     // Preview Survey Button
     $title = (!$isActive) ? 'preview_survey' : 'execute_survey';
     $name = (!$isActive) ? gT('Preview survey') : gT('Execute survey');
@@ -170,7 +169,7 @@ if ($hasSurveyTranslatePermission) {
         array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['quick_translation']);
     } else {
         // Quick-translation disabled
-        // TODO: In Vue onClick Alert hinzufügen
+        // TODO: In Vue onClick Alert add
         $buttons['quick_translation'] = [
             'url' => '#',
             'type' => 'alert',
@@ -212,7 +211,6 @@ if ($hasSurveyContentPermission) {
 // TODO: menues from database
 
 if ($hasSurveyReadPermission) {
-   
     // Check Logic Button
     if (safecount($oSurvey->allLanguages) > 1) {
         $buttons_check_logic = [];
@@ -322,13 +320,13 @@ if ($hasSurveyTokensPermission) {
 // Statistics
 if ($isActive) {
     $buttonsgroup['statistics'] = [
-        'class' => 'btn-group',
+        'class' => 'btn-group hidden-xs',
         'id' => 'statistics_dropdown',
         'main_button' => [
             'class' => 'dropdown-toggle',
             'datatoggle' => 'dropdown',
-            'ariahaspopup' => true,
-            'ariaexpanded' => false,
+            'ariahaspopup' => 'true',
+            'ariaexpanded' => 'false',
             'icon' => 'icon-responses',
             'name' => gT('Responses'),
             'iconclass' => 'caret',
@@ -336,17 +334,18 @@ if ($isActive) {
         ],
         'dropdown' => [
             'class' => 'dropdown-menu',
+            'arialabelledby' => 'statistics_button',
             'items' => [],
         ],
     ];
 
     // Responses & statistics
-    if (isset($respstatsread) && $respstatsread && $isActive) {
+    if ($hasResponsesStatisticsReadPermission && $isActive) {
         $buttons['responses_statistics'] = [
             'class' => 'pjax',
             'url' => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),
             'icon' => 'icon-browse',
-            'name' => gT('Responses & statistics'),
+            'name' => gT('Responses & statistics', 'js'),
             'id' => 'responses_statistics',
         ];
 
@@ -376,7 +375,7 @@ if ($isActive) {
 
         array_push($buttonsgroup['statistics']['dropdown']['items'], $buttons['partial_saved_responses']);
     }
-
+    array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['statistics']);
 } else {
     $button_statistics = [
         'class' => 'readonly',
