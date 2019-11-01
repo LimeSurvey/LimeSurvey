@@ -52,7 +52,7 @@ class UserManagement extends Survey_Common_Action
             );
         }
         if (isset($_GET['pageSize'])) {
-            Yii::app()->user->setState('pageSize', $this->api->getRequest()->getParam('pageSize'));
+            Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
         App()->getClientScript()->registerPackage('bootstrap-select2');
@@ -287,6 +287,12 @@ class UserManagement extends Survey_Common_Action
             );
         }
         $userId = Yii::app()->request->getPost('userid');
+        if ($userId == Yii::app()->user->id) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
+            );
+        }
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
         App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
@@ -621,8 +627,16 @@ class UserManagement extends Survey_Common_Action
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $results = [];
+        
+        if (array_search(Yii::app()->user->id, $aItems) !== false) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
+            );
+        }
+
         foreach ($aItems as $sItem) {
-            $oUser = User::model()->findByPk($sItem);
+            $oUser = User::model()->findByPk($sItem);          
             $results[$oUser->uid] = $oUser->delete();
         }
 
