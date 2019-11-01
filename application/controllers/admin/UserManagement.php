@@ -815,7 +815,11 @@ class UserManagement extends Survey_Common_Action
         $exportFile = $sTempDir.DIRECTORY_SEPARATOR.'users_export.'.$outputFormat;
 
         foreach ($oUsers as $user) {
-            $exportUser = $user->attributes;
+            $exportUser['uid'] = $user->attributes['uid'];
+            $exportUser['users_name'] = $user->attributes['users_name'];
+            $exportUser['full_name'] = $user->attributes['full_name'];
+            $exportUser['email'] = $user->attributes['email'];
+            $exportUser['lang'] = $user->attributes['lang'];
             $exportUser['password'] = '';
             array_push($aUsers,$exportUser);
         }
@@ -826,21 +830,29 @@ class UserManagement extends Survey_Common_Action
                 $fp = fopen($exportFile, 'w');
                 fwrite($fp, $json);
                 fclose($fp);
+                header('Content-Encoding: UTF-8');
                 header("Content-Type:application/json; charset=UTF-8"); 
                 break;
 
             case "csv":
                 $fp = fopen($exportFile, 'w');
-                foreach ($aUsers as $fields) {
-                    fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
-                    fputcsv($fp, $fields);
+
+                //Add utf-8 encoding
+                fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
+
+                //Add csv header
+                fputcsv($fp, array('uid','users_name','ful_name','email','lang','password'), ';');
+                
+                //add csv row datas
+                foreach ($aUsers as $fields) { 
+                    fputcsv($fp, $fields, ';');
                 }
                 fclose($fp);
+                header('Content-Encoding: UTF-8');
                 header("Content-type: text/csv; charset=UTF-8");
                 break;
         }
         //end file to download
-        header('Content-Encoding: UTF-8');
         header("Content-Disposition: attachment; filename=userExport.".$outputFormat);
         header("Pragma: no-cache");
         header("Expires: 0");
