@@ -254,6 +254,12 @@ var UserManagement = function () {
         $('.action_usercontrol_button').on('click', function () {
             runAction(this);
         });
+        $('#usermanagement--action-toggleAllUsers').on('change', function () {
+            var toggled = $(this).prop('checked');
+            $('.usermanagement--selector-userCheckbox').each(function() {
+                $(this).prop('checked', toggled);
+            })
+        });
         $('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function (event, state) {
             $('input[id$="_use"]').prop('checked', state).trigger('change');
         });
