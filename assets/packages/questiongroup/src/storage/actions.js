@@ -20,9 +20,10 @@ export default {
                 context.commit('setCurrentQuestionGroupI10N', result.data.questonGroupI10N);
                 context.commit('setInTransfer', false);
                 resolve(true);
-            },
-            (rejectAnswer) => {
-                reject(rejectAnswer);
+            })
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
             });
         });
     },
@@ -43,9 +44,10 @@ export default {
                 context.commit('setCurrentQuestionGroupI10N', result.data.questonGroupI10N);
                 context.commit('setInTransfer', false);
                 resolve(true);
-            },
-            (rejectAnswer) => {
-                reject(rejectAnswer);
+            })
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
             });
         });
     },
@@ -60,9 +62,10 @@ export default {
             ).then((result) => {
                 context.commit('setQuestionList', result.data);
                 resolve(true);
-            },
-            (rejectAnswer) => {
-                reject(rejectAnswer);
+            })
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
             });
         });
     },
@@ -88,9 +91,12 @@ export default {
                         context.commit('setCurrentQuestionGroup', result.data.questiongroupData);
                         context.commit('setInTransfer', false);
                         resolve(result);
-                    },
-                    reject
+                    }
                 )
+                .catch((error) => {
+                    context.commit('setInTransfer', false);
+                    reject(error);
+                });
         });
     }
 };

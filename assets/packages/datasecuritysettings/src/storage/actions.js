@@ -10,19 +10,24 @@ export default {
             const subAction = window.DataSecTextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDataSecTextSettings' : '/getDataSecTextSettings';
             ajax.methods.$_get(
                 window.DataSecTextEditData.connectorBaseUrl+subAction, {}
-            ).then((result) => {
-                LOG.log('AjaxCall: ',result);
-                context.commit('setShowsurveypolicynotice', parseInt(result.data.showsurveypolicynotice) );
-                context.commit('setDataseclabel', result.data.textdata.dataseclabel );
-                context.commit('setDatasecmessage', result.data.textdata.datasecmessage );
-                context.commit('setDatasecerror', result.data.textdata.datasecerror );
-                
-                context.commit('setPermissions', result.data.permissions );
-                context.commit('setLanguages', result.data.languages);
-                context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
-                context.commit('toggleVisible', true);
-                resolve();
-            }, reject);
+            )
+            .then((result) => {
+                    LOG.log('AjaxCall: ',result);
+                    context.commit('setShowsurveypolicynotice', parseInt(result.data.showsurveypolicynotice) );
+                    context.commit('setDataseclabel', result.data.textdata.dataseclabel );
+                    context.commit('setDatasecmessage', result.data.textdata.datasecmessage );
+                    context.commit('setDatasecerror', result.data.textdata.datasecerror );
+                    
+                    context.commit('setPermissions', result.data.permissions );
+                    context.commit('setLanguages', result.data.languages);
+                    context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
+                    context.commit('toggleVisible', true);
+                    resolve();
+                }
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     saveData: (context) => {

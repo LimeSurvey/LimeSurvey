@@ -4,18 +4,18 @@ import {LOG} from '../mixins/logSystem.js'
 export default {
     getLabelSetData: (context) => {
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(window.LabelSetData.getDataUrl).then(
+            ajax.methods.$_get(window.LabelSetData.getDataUrl)
+            .then(
                 (result) => {
                     context.commit('setLanguages', result.data.languages);
                     context.commit('setActiveLanguage', result.data.mainLanguage);
                     context.commit('setLabels', result.data.labels);
                     resolve();
-                },
-                (error) => {
-                    LOG.error(error);
-                    reject(error);
                 }
-            );
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     saveLabelSetData: (context) => {
@@ -31,15 +31,15 @@ export default {
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'labelSetData': transferObject});
         return new Promise((resolve, reject) => {
-            context.commit('setInTransfer', true);
             ajax.methods.$_post(window.LabelSetData.setDataUrl, transferObject)
                 .then(
                     (result) => {
-                        context.commit('setInTransfer', false);
                         resolve(result);
-                    },
-                    reject
+                    }
                 )
+                .catch((error) => {
+                    reject(error);
+                });
         });
     },
     resetContentFromQuickEdit(context, payload) {},

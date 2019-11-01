@@ -14,7 +14,10 @@ export default {
                 context.commit('setLanguages', result.data.languages);
                 context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
                 resolve();
-            }, reject);
+            })
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     updateObjects: (context, newObjectBlock) => {
@@ -35,6 +38,9 @@ export default {
             window.TextEditData.connectorBaseUrl+subAction
         ).then((result) => {
             context.commit('setDateFormatOptions', result.data);
+        })
+        .catch((error) => {
+            reject(error);
         });
     },
     saveData: (context) => {
@@ -55,6 +61,6 @@ export default {
         let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
         const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveTextData' : '/saveTextData';
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
-        return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+subAction, transferObject)
+        return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+subAction, transferObject);
     }
 };

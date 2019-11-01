@@ -21,7 +21,8 @@ export default {
                     context.commit('updateSidemenus', newSidemenus);
                     context.dispatch('updatePjax');
                     resolve();
-                },reject);
+                })
+                .catch((error) => {reject(error)});
             }
         );
     },
@@ -40,7 +41,8 @@ export default {
                     context.commit('updateCollapsedmenus', newCollapsedmenus);
                     context.dispatch('updatePjax');
                     resolve();
-                },reject);
+                })
+                .catch((error) => {reject(error)});
             }
         );
     },
@@ -52,7 +54,8 @@ export default {
                 context.commit("updateQuestiongroups", newQuestiongroups);
                 context.dispatch('updatePjax');
                 resolve();
-            },reject);
+            })
+            .catch((error) => {reject(error)});
         });
     },
     collectMenus(context) {
@@ -74,11 +77,7 @@ export default {
                 result => {
                     LOG.log('setUsersettingLog', result);
                     context.commit("setAllowOrganizer", parseInt(result.data.result));
-                },
-                rejection => {+
-                    LOG.error('URL Rejection => ', rejection);
-                }
-            )}
+            }).catch((error) => {reject(error)});}
         );
     }
 }
