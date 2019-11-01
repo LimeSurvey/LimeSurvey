@@ -660,7 +660,7 @@ class questionedit extends Survey_Common_Action
      * @param array $aQuestionData
      * @param boolean $subquestion
      * @return Question
-     * @throws CException
+     * @throws CHttpException
      */
     private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
     {
@@ -731,7 +731,7 @@ class questionedit extends Survey_Common_Action
      * @param Question $oQuestion
      * @param array $aQuestionData
      * @return Question
-     * @throws CException
+     * @throws CHttpException
      */
     private function updateQuestionData(&$oQuestion, $aQuestionData)
     {
@@ -1019,7 +1019,7 @@ class questionedit extends Survey_Common_Action
     {
         $this->cleanAnsweroptions($oQuestion, $dataSet);
         foreach ($dataSet as $aAnswerOptions) {
-            foreach ($aAnswerOptions as $aAnswerOptionDataSet) {
+            foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
                 if ($oAnswer == null) {
@@ -1037,7 +1037,7 @@ class questionedit extends Survey_Common_Action
                 $oAnswer->setAttributes($aAnswerOptionDataSet);
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
-                    throw new CException(
+                    throw new CHttpException(
                         "Answer option couldn't be saved. Error: "
                         . print_r($oAnswer->getErrors(), true)
                     );
