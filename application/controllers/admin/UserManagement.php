@@ -102,7 +102,6 @@ class UserManagement extends Survey_Common_Action
     /**
      * Stores changes to user, or triggers userCreateEvent
      *
-     * @param integer $userid
      * @return string | JSON
      */
     public function applyedit()
@@ -115,10 +114,10 @@ class UserManagement extends Survey_Common_Action
         }
 
         $aUser = Yii::app()->request->getParam('User');
-        $paswordTest = Yii::app()->request->getParam('password_repeat', false);
-        if (!empty($paswordTest)) {
+        $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+        if (!empty($passwordTest)) {
 
-            if ($paswordTest !== $aUser['password']) {
+            if ($passwordTest !== $aUser['password']) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
                     'errors' => gT('Passwords do not match'),
@@ -126,7 +125,7 @@ class UserManagement extends Survey_Common_Action
             }
 
             $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $paswordTest);
+            $oPasswordTestEvent->set('password', $passwordTest);
             $oPasswordTestEvent->set('passwordOk', true);
             $oPasswordTestEvent->set('passwordError', '');
             Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
@@ -138,7 +137,37 @@ class UserManagement extends Survey_Common_Action
                 ]]);
             }
         }
+        
+        if(isset($aUser['uid']) && $aUser['uid'] ) {
 
+            $oUser = $this->updateAdminUser($aUser);
+            if ($oUser->hasErrors()) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => false,
+                        'errors'  => $this->renderErrors($oUser->getErrors()) ?? ''
+                    ]
+                ]);
+            }
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => true,
+                    'message' => gT('User successfully updated')
+                ]
+            ]);
+
+        }else{
+            $this->createAdminUser($aUser);
+        }   
+    }
+
+    /**
+     * this method create a new admin user 
+     * @param array a$user
+     * @return string
+     */
+    private function createAdminUser($aUser) 
+    {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $sendMail = (bool)Yii::app()->request->getPost('preset_password', false);
             $newUser = $this->_createNewUser($aUser);
@@ -162,8 +191,8 @@ class UserManagement extends Survey_Common_Action
             }
 
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $paswordTest . '</b>') : '';
-            
+            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $aUser['password']. '</b>') : '';
+    
             $data = array();
 
             if($success) {
@@ -184,24 +213,7 @@ class UserManagement extends Survey_Common_Action
             ]);
         }
 
-        $oUser = $this->updateAdminUser($aUser);
-
-        if ($oUser->hasErrors()) {
-            return App()->getController()->renderPartial('/admin/super/_renderJson', [
-                "data" => [
-                    'success' => false,
-                    'errors'  => $this->renderErrors($oUser->getErrors()) ?? ''
-                ]
-            ]);
-        }
-        return App()->getController()->renderPartial('/admin/super/_renderJson', [
-            'data' => [
-                'success' => true,
-                'message' => gT('User successfully updated')
-            ]
-        ]);
     }
-
     /**
      * @param array $errors
      *
@@ -916,31 +928,37 @@ class UserManagement extends Survey_Common_Action
         if ($sJsonUserString != '{}') {
             $aJsonUsers = json_decode($sJsonUserString, true);
             $result = ['created' => [], 'updated' => []];
+           
             foreach ($aJsonUsers as $aUserData) {
+                
                 $storeTo = 'updated';
-                $oUser = User::model()->findByAttributes(['email' => $aUserData['email']]);
+                $oUser = User::model()->findByAttributes(['users_name' => $aUserData['users_name']]);
                 if ($oUser == null) {
+
                     $storeTo = 'created';
-                    $aUser = $this->_createNewUser($aUserData, false);
                     $oUser = new User;
-                    $oUser->users_name = $aUserData['username'];
+                    $oUser->users_name = $aUserData['users_name'];
                     $oUser->full_name = $aUserData['full_name'];
                     $oUser->email = $aUserData['email'];
                     $oUser->parent_id = App()->user->id;
                     $oUser->created = date('Y-m-d H:i:s');
                     $oUser->modified = date('Y-m-d H:i:s');
-                }
-                $oUser->password = password_hash($aUserData['password'], PASSWORD_DEFAULT);
-                $save = $oUser->save();
-
-                $result[$storeTo][] = [
-                    'uid' => $oUser->uid,
-                    'username' => $oUser->users_name,
-                    'full_name' => $oUser->full_name,
-                    'email' => $oUser->email,
-                    'password' => $aUserData['password'],
-                    'save' => $save,
-                ];
+                    //hash password if import password is defined
+                    if($aUserData['password']){
+                        $oUser->password = password_hash($aUserData['password'], PASSWORD_DEFAULT);
+                    }
+                   
+                    $save = $oUser->save();
+                    $newUser = $this->_createNewUser($aUserData,false);
+                    $result[$storeTo][] = [
+                        'uid' => $newUser['uid'],
+                        'username' => $newUser['users_name'],
+                        'full_name' => $newUser['full_name'],
+                        'email' => $newUser['email'],
+                        'password' =>$aUserData['password'],
+                        'save' => $save,
+                    ];
+                }  
             }
         }
         $this->_renderWrappedTemplate('usermanagement', 'importfromjson', ['result' => $result]);
@@ -967,6 +985,7 @@ class UserManagement extends Survey_Common_Action
             'success' => $success, 'uid' => $oUser->uid, 'username' => $oUser->users_name, 'password' => $newPassword,
         ];
     }
+
 
     public function _createNewUser($aUser, $sendMail = true)
     {
@@ -1016,11 +1035,7 @@ class UserManagement extends Survey_Common_Action
                 ]
             ]);
         }
-
-        
         $iNewUID = $event->get('newUserID');
-      
-
         // add default template to template rights for user
         Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
         // add default usersettings to the user
@@ -1046,9 +1061,12 @@ class UserManagement extends Survey_Common_Action
         ) {
             throw new CException("This action is not allowed, and should never happen", 500);
         }
-
+       
         $oUser->setAttributes($aUser);
-        $oUser->setPassword($oUser->password);
+
+        if(isset($aUser['password']) && $aUser['password']) {
+            $oUser->password = password_hash($aUser['password'], PASSWORD_DEFAULT);
+        }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
 
