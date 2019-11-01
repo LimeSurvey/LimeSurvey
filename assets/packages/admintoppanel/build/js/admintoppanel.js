@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "6b03f28bf9b3ad9fad13";
+/******/ 	var hotCurrentHash = "87a183464a82add55de6";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1810,12 +1810,14 @@ __webpack_require__.r(__webpack_exports__);
         this.$log.error('ERROR: Postdata no valid json, exiting');
       }
 
-      this.$_post(this.button.dataurl, postdata).then(function (result) {
+      postdata.ajax = 1;
+
+      this.__runAjax(this.button.dataurl, postdata, 'POST', '').then(function (result) {
         _this.$log.log(result);
 
         window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
         setTimeout(function () {
-          window.location.href = result.data.redirect;
+          window.location.href = result.data.redirectUrl;
         }, 1500);
       }, function (reject) {
         _this.$log.error(reject);

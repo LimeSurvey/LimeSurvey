@@ -1025,7 +1025,7 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid=null, $qid=null, $ajax = false, $gid = 0)
+    public function delete($surveyid=null, $qid=null, $gid = 0)
     {
         if(is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
@@ -1072,13 +1072,19 @@ class questions extends Survey_Common_Action
         }
 
         $sMessage = gT("Question was successfully deleted.");
-        if (!$ajax) {
-            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
-            Yii::app()->session['flashmessage'] = $sMessage;
-            $this->getController()->redirect($redirectUrl);
-        } else {
-            return array('status'=>true, 'message'=>$sMessage);
+        $redirectUrl = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
+        if (Yii::app()->request->isAjaxRequest) {
+            $this->renderJSON(
+                [
+                    'status'=>true,
+                    'message'=>$sMessage,
+                    'redirectUrl' => $redirectUrl
+                ]
+            );
+            return;
         }
+        Yii::app()->session['flashmessage'] = $sMessage;
+        $this->getController()->redirect($redirectUrl);
     }
 
 
