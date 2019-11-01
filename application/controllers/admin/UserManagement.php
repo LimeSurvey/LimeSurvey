@@ -808,7 +808,7 @@ class UserManagement extends Survey_Common_Action
 
         switch ($outputFormat) {
             case "json":
-                $json = json_encode($aUsers);
+                $json = json_encode($aUsers,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
                 $fp = fopen($exportFile, 'w');
                 fwrite($fp, $json);
                 fclose($fp);
@@ -822,11 +822,11 @@ class UserManagement extends Survey_Common_Action
                     fputcsv($fp, $fields);
                 }
                 fclose($fp);
-                header('Content-Encoding: UTF-8');
                 header("Content-type: text/csv; charset=UTF-8");
                 break;
         }
         //end file to download
+        header('Content-Encoding: UTF-8');
         header("Content-Disposition: attachment; filename=userExport.".$outputFormat);
         header("Pragma: no-cache");
         header("Expires: 0");
