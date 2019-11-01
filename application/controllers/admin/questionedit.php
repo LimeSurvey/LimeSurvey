@@ -788,7 +788,6 @@ class questionedit extends Survey_Common_Action
      */
     private function unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
     {
-        $storeValid = true;
         $aQuestionBaseAttributes = $oQuestion->attributes;
 
         foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
