@@ -799,6 +799,12 @@ class questionedit extends Survey_Common_Action
                 }
                 $newValue = $aAttributeValueArray['formElementValue'];
 
+                // Set default value if empty.
+                if ($newValue === ""
+                    && isset($aAttributeValueArray['aFormElementOptions']['default'])) {
+                    $newValue = $aAttributeValueArray['aFormElementOptions']['default'];
+                }
+
                 if (is_array($newValue)) {
                     foreach ($newValue as $lngKey => $content) {
                         if ($lngKey == 'expression') {
