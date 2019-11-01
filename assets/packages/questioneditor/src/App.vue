@@ -163,7 +163,7 @@ export default {
                         this.loading = false;
                         window.LS.notifyFader(reject.data.message, 'well-lg bg-danger text-center');
                         this.$log.error(reject.data.error);
-                        // setTimeout(()=>{window.location.reload();}, 1500);
+                        setTimeout(()=>{window.location.reload();}, 1500);
                     }
                 )
             } else {
@@ -176,11 +176,17 @@ export default {
                 return false;
             }
             if(!this.$store.getters.hasIndividualSubquestionTitles) {
-                window.LS.notifyFader("Question cannot be stored. Please check the subquestion codes for duplicates.", 'well-lg bg-danger text-center');
+                window.LS.notifyFader(
+                    this.translate("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
+                    'well-lg bg-danger text-center'
+                );
                 return false;
             }
             if(!this.$store.getters.hasIndividualAnsweroptionCodes) {
-                window.LS.notifyFader("Question cannot be stored. Please check the answer option for duplicates.", 'well-lg bg-danger text-center');
+                window.LS.notifyFader(
+                    this.translate("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
+                    'well-lg bg-danger text-center'
+                );
                 return false;
             }
             return true;
