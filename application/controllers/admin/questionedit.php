@@ -39,7 +39,6 @@ class questionedit extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->getQuestionObject($qid, null, $gid);
-        $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
         Yii::app()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
