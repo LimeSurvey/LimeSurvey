@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "57a588a9fbc91dc09f17";
+/******/ 	var hotCurrentHash = "0c5008962b226e61d651";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -23457,14 +23457,13 @@ __webpack_require__.r(__webpack_exports__);
         });
         context.commit('setRowdata', dataSet);
         resolve();
-      }, function (error) {
-        _mixins_logSystem__WEBPACK_IMPORTED_MODULE_3__["LOG"].error(error);
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   getCurrentQuestionlist: function getCurrentQuestionlist(context) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       context.commit('setQuestionlist', window.PanelIntegrationData.questionList);
       resolve();
     });

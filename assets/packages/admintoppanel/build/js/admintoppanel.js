@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "87a183464a82add55de6";
+/******/ 	var hotCurrentHash = "146c0f6d7942883c69a2";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -31033,8 +31033,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom.iterable */ "./node_modules/core-js/modules/web.dom.iterable.js");
 /* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mixins/runAjax.js */ "./src/mixins/runAjax.js");
-/* harmony import */ var _mixins_logSystem_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mixins/logSystem.js */ "./src/mixins/logSystem.js");
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -31054,9 +31052,7 @@ __webpack_require__.r(__webpack_exports__);
         context.commit('setPermissions', data.data.permissions);
         resolve(data.data.topbar);
       }).catch(function (error) {
-        reject({
-          error: error
-        });
+        reject(error);
       });
     });
   },
@@ -31075,9 +31071,7 @@ __webpack_require__.r(__webpack_exports__);
         context.commit('setPermissions', data.data.permissions);
         resolve(data.data.topbar);
       }).catch(function (error) {
-        reject({
-          error: error
-        });
+        reject(error);
       });
     });
   },
@@ -31096,9 +31090,7 @@ __webpack_require__.r(__webpack_exports__);
         context.commit('setPermissions', data.data.permissions);
         resolve(data.data.topbar);
       }).catch(function (error) {
-        reject({
-          error: error
-        });
+        reject(error);
       });
     });
   },
@@ -31117,9 +31109,7 @@ __webpack_require__.r(__webpack_exports__);
         context.commit('setPermissions', data.data.permissions);
         resolve(data.data.topbar);
       }).catch(function (error) {
-        reject({
-          error: error
-        });
+        reject(error);
       });
     });
   },
@@ -31135,9 +31125,7 @@ __webpack_require__.r(__webpack_exports__);
         context.commit('setTopBarLeft', topbarLeft);
         resolve(data);
       }).catch(function (error) {
-        reject({
-          error: error
-        });
+        reject(error);
       });
     });
   }
