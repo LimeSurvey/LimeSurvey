@@ -19,9 +19,20 @@
                 <?php
                 } ?>
                 <?php if(Permission::model()->hasGlobalPermission('users', 'export')) { ?>
-                    <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/exportusers")?>" data-toggle="modal" title="<?php eT('Export survey administrators'); ?>" class="btn btn-default UserManagement--action--openmodal">
-                        <i class="fa fa-upload text-success"></i> <?php eT("Export");?>
-                    </button>
+                    <div div class="btn-group">
+                        <button class="btn btn-default" type="button" data-toggle="dropdown">
+                            <i class="fa fa-upload text-success"></i> <?php eT("Export");?>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <?= CHtml::link(gT("CSV"),App()->createUrl("admin/usermanagement/sa/exportUser",["outputFormat"=>"csv"]));?>
+                            </li>
+                            <li>
+                                <?= CHtml::link(gT("JSON"),App()->createUrl("admin/usermanagement/sa/exportUser",["outputFormat"=>"json"]));?>
+                            </li>
+                        </ul>
+                    </div>
                 <?php } ?>
             <?php } else {
                 ?>

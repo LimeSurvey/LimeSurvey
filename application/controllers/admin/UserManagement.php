@@ -775,40 +775,12 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Export users to csv formt 
-     *
-     *
-     * @return string
-     */
-    public function exportUsers()
-    {   
-        //Check if user has permissions to export users 
-        if (!Permission::model()->hasGlobalPermission('users', 'export')) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-
-        $users = User::model()->findAll();
-        $aUsers = array();
-        foreach ($users as $user) {
-            $exportuser = $user->attributes;
-            $exportuser['password'] = '';
-            array_push($aUsers,$exportuser);
-        }
-
-        return $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/userexport',['json' => json_encode($aUsers)]
-        );           
-    }
-
-    /**
      * Export users with specific format (json or csv)
-     * @param $outputFormat string json or csv
+     * @param string $outputFormat json or csv
+     * @param int $uid userId
      * @return mixed
      */
-    public function exportUser(string $outputFormat) 
+    public function exportUser(string $outputFormat,int $uid = 0) 
     {
         //Check if user has permissions to export users 
         if (!Permission::model()->hasGlobalPermission('users', 'export')) {
@@ -817,8 +789,13 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
+        
+        if($uid > 0) {
+            $oUsers = User::model()->findByPk($uid);
+        }else{
+            $oUsers = User::model()->findAll();
+        }
 
-        $oUsers = User::model()->findAll();
         $aUsers = array();
         $sTempDir = Yii::app()->getConfig("tempdir");
         $exportFile = $sTempDir.DIRECTORY_SEPARATOR.'users_export.'.$outputFormat;
@@ -855,7 +832,6 @@ class UserManagement extends Survey_Common_Action
         header("Expires: 0");
         @readfile($exportFile);
         unlink($exportFile);
-
     }
 
     
