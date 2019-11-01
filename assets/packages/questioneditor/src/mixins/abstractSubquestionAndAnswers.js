@@ -238,6 +238,10 @@ export default {
             });
 
             return dataSet;
+        },
+        preventDisallowedCursor($event) {
+            $event.dataTransfer.dropEffect = "move";
+            return;
         }
     }
 }

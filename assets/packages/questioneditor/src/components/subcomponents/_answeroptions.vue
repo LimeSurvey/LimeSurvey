@@ -99,6 +99,8 @@ export default {
         startDraggingAnsweroption($event, answeroptionObject, scale) {
             this.$log.log("Dragging started", answeroptionObject);
             $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
+            $event.dataTransfer.dropEffect = "move";
+            $event.dataTransfer.setDragImage(document.createElement('span'), 0, 0)
             this.answeroptionDragging = true;
             this.draggedAnsweroption = answeroptionObject;
         },
@@ -160,6 +162,7 @@ export default {
                 <div 
                     :key="answeroptionscale+'answeroptions'"
                     class="row list-group scoped-answeroption-row-container"
+                    @dragover.prevent="preventDisallowedCursor"
                 >
                     <div class="list-group-item scoped-answeroption-block header-block">
                         <div class="scoped-move-block" v-show="!readonly">
@@ -183,7 +186,7 @@ export default {
                         class="list-group-item scoped-answeroption-block"
                         v-for="answeroption in currentDataSet[answeroptionscale]"
                         :key="answeroption.aid"
-                        @dragenter="dragoverAnsweroption($event, answeroption, answeroptionscale)"
+                        @dragenter.prevent="dragoverAnsweroption($event, answeroption, answeroptionscale)"
                         :class="(answeroptionDragging ? 'movement-active'+ ((answeroption.aid == draggedAnsweroption.aid) ? ' in-movement' : '') : '')"
                     >
                         <div class="scoped-move-block" v-show="!readonly">
@@ -324,6 +327,10 @@ export default {
     .scoped-move-block {
         width:5%;
         text-align: center;
+        cursor: move;
+        &:active {
+            cursor: grabbing;
+        }
         &>i {
             font-size: 28px;
             line-height: 32px;

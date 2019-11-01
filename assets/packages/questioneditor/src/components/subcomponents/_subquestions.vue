@@ -101,6 +101,7 @@ export default {
         startDraggingSubQuestion($event, subQuestionObject, scale) {
             this.$log.log("Dragging started", {$event, subQuestionObject});
             $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
+            $event.dataTransfer.setDragImage(document.createElement('span'), 0, 0)
             this.subQuestionDragging = true;
             this.draggedSubQuestion = subQuestionObject;
         },
@@ -163,7 +164,8 @@ export default {
             >
                 <div 
                     :key="subquestionscale+'subquestions'"
-                    class="row list-group scoped-subquestion-row-container"
+                    class="row list-group scoped-subquestion-row-container" 
+                    @dragover.prevent="preventDisallowedCursor"
                 >
                     <div class="list-group-item scoped-subquestion-block header-block">
                         <div class="scoped-move-block" v-show="!readonly">
@@ -186,7 +188,7 @@ export default {
                         class="list-group-item scoped-subquestion-block"
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
-                        @dragenter="dragoverSubQuestion($event, subquestion, subquestionscale)"
+                        @dragenter.prevent="dragoverSubQuestion($event, subquestion, subquestionscale)"
                         :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
                     >
                         <div class="scoped-move-block" v-show="!readonly">
@@ -327,6 +329,10 @@ export default {
     .scoped-move-block {
         text-align: center;
         width: 5%;
+        cursor: move;
+        &:active {
+            cursor: grabbing;
+        }
         &>i {
             font-size: 28px;
             line-height: 32px;
