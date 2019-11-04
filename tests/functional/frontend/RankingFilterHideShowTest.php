@@ -43,6 +43,7 @@ class RankingFilterHideShowTest extends TestBaseClassWeb
         try {
             $web->get($url); // Open survey.
             $web->next(); // Click next.
+            sleep(1);
             /* Check if ranking question is totally hidden */
             /** @var RemoteWebElement */
             $rankingQuestion = self::$webDriver->findElement(WebDriverBy::id('question'.$questions['Rank']->qid));
