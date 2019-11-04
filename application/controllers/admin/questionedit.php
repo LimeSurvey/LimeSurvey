@@ -147,6 +147,10 @@ class questionedit extends Survey_Common_Action
                     . " If you do not have the correct permissions, this will be ignored"),
                 "noCodeWarning" =>
                 gT("Please put in a code. Only letters and numbers are allowed. For example [Question1]"),
+                "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes." =>
+                gT("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
+                "Question cannot be stored. Please check the answer option for duplicates or empty titles." =>
+                gT("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
             ],
         ];
 
@@ -656,7 +660,7 @@ class questionedit extends Survey_Common_Action
      * @param array $aQuestionData
      * @param boolean $subquestion
      * @return Question
-     * @throws CException
+     * @throws CHttpException
      */
     private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
     {
@@ -727,7 +731,7 @@ class questionedit extends Survey_Common_Action
      * @param Question $oQuestion
      * @param array $aQuestionData
      * @return Question
-     * @throws CException
+     * @throws CHttpException
      */
     private function updateQuestionData(&$oQuestion, $aQuestionData)
     {
@@ -1015,7 +1019,7 @@ class questionedit extends Survey_Common_Action
     {
         $this->cleanAnsweroptions($oQuestion, $dataSet);
         foreach ($dataSet as $aAnswerOptions) {
-            foreach ($aAnswerOptions as $aAnswerOptionDataSet) {
+            foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
                 if ($oAnswer == null) {
@@ -1033,7 +1037,7 @@ class questionedit extends Survey_Common_Action
                 $oAnswer->setAttributes($aAnswerOptionDataSet);
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
-                    throw new CException(
+                    throw new CHttpException(
                         "Answer option couldn't be saved. Error: "
                         . print_r($oAnswer->getErrors(), true)
                     );

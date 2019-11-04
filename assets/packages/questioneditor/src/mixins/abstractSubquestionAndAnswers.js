@@ -39,11 +39,11 @@ export default {
             let nonNumericPart = this.baseNonNumericPart;
             relativeObject = relativeObject || this.currentDataSet[scaleId];
             if(this.getLength(relativeObject) > 0) {
-                nonNumericPart = (relativeObject[0].title || relativeObject[0].code).replace(/[0-9]/g,'');
+                nonNumericPart = (relativeObject[0][this.typeDefininitionKey]).replace(/[0-9]/g,'');
             }
 
             let numericPart = reduce(relativeObject,(prev, oDataSet) => {
-                return max([prev, parseInt((oDataSet.title || oDataSet.code  ).replace(/[^0-9]/g,''))]);
+                return max([prev, parseInt((relativeObject[0][this.typeDefininitionKey]).replace(/[^0-9]/g,''))]);
             }, 0) + 1 ;
 
             this.$log.log('NewTitle', {nonNumericPart, numericPart});

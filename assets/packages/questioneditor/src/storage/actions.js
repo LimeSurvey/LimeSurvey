@@ -64,10 +64,11 @@ export default {
                     context.commit('setActiveLanguage', result.data.mainLanguage);
                     context.commit('setInTransfer', false);
                     resolve(true);
-                },
-                (rejectAnswer) => {
-                    reject(rejectAnswer);
                 })
+                .catch((error) => {
+                    context.commit('setInTransfer', false);
+                    reject(error);
+                });
             })),
             (new Promise((resolve, reject) => {
                 const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionPermissions' : '/getQuestionPermissions';
@@ -80,9 +81,10 @@ export default {
                 ).then((result) => {
                     context.commit('setCurrentQuestionPermissions', result.data);
                     resolve(true);
-                },
-                (rejectAnswer) => {
-                    reject(rejectAnswer);
+                })
+                .catch((error) => {
+                    context.commit('setInTransfer', false);
+                    reject(error);
                 });
             }))
         ]);
@@ -111,9 +113,10 @@ export default {
                 context.commit('unsetImmutableQuestionGeneralSettings', result.data);
                 context.commit('setImmutableQuestionGeneralSettings', result.data);
                 resolve(true);
-            },
-            (rejectAnswer) => {
-                reject(rejectAnswer);
+            })
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
             });
         });
     },
@@ -141,9 +144,10 @@ export default {
                 context.commit('setImmutableQuestionAdvancedSettings', result.data.advancedSettings);
                 context.commit('setQuestionTypeDefinition', result.data.questionTypeDefinition);
                 resolve(true);
-            },
-            (rejectAnswer) => {
-                reject(rejectAnswer);
+            })
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
             });
         });
     },
@@ -151,8 +155,13 @@ export default {
         const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionTypeList' : '/getQuestionTypeList';
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+subAction
-        ).then((result) => {
+        )
+        .then((result) => {
             context.commit('setQuestionTypeList', result.data);
+        })
+        .catch((error) => {
+            context.commit('setInTransfer', false);
+            reject(error);
         });
     },
     reloadQuestion: (context) => {
@@ -179,7 +188,11 @@ export default {
                 context.commit('updateCurrentQuestionAdvancedSettings', result.data.advancedSettings);
                 context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
                 resolve();
-            }, reject);
+            })
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
+            });
         });
     },
     saveQuestionData: (context) => {
@@ -206,12 +219,12 @@ export default {
                     (result) => {
                         context.commit('setInTransfer', false);
                         resolve(result);
-                    },
-                    (error) => {
-                        context.commit('setInTransfer', false);
-                        reject(error);
                     }
                 )
+                .catch((error) => {
+                    context.commit('setInTransfer', false);
+                    reject(error);
+                })
         });
     },
     saveAsLabelSet: (context, payload) => {
@@ -220,9 +233,12 @@ export default {
         return new Promise((resolve, reject) => {
             ajax.methods.$_post(LS.createUrl('admin/labels/sa/newLabelSetFromQuestionEditor'), transferObject)
             .then(
-                (result) => {resolve(result);},
-                reject
-            );
+                (result) => {resolve(result);}
+            )
+            .catch((error) => {
+                context.commit('setInTransfer', false);
+                reject(error);
+            });
         });
     }
 };

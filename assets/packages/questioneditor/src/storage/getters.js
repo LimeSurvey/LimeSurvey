@@ -29,7 +29,9 @@ export default {
         return reduce(
             state.currentQuestionSubquestions, 
             (coll, scaleArray, scaleId) => {
-                return coll && (uniqBy(scaleArray, 'title').length == scaleArray.length);
+                const unique = (uniqBy(scaleArray, 'title').length == scaleArray.length);
+                const notEmpty  = reduce(scaleArray, (sum, curr) => (sum && curr.title != ''), true);
+                return coll && unique && notEmpty;
             }, 
             true
         );
@@ -38,7 +40,9 @@ export default {
         return reduce(
             state.currentQuestionAnswerOptions, 
             (coll, scaleArray, scaleId) => {
-                return coll && (uniqBy(scaleArray, 'code').length == scaleArray.length);
+                const unique = (uniqBy(scaleArray, 'code').length == scaleArray.length);
+                const notEmpty  = reduce(scaleArray, (sum, curr) => (sum && curr.code != ''), true);
+                return coll && unique && notEmpty;
             }, 
             true
         );
