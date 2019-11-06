@@ -27,6 +27,8 @@
  * @property Question $question
  * @property Survey $survey
  *
+ * @todo Should probably change question_attributes table to question_attribute_values
+ * @see participant_attributes and participant_attribute_values
  */
 class QuestionAttribute extends LSActiveRecord
 {
