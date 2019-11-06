@@ -1666,7 +1666,12 @@ class questionHelper
             $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
         }
 
-        return array_merge($aQuestionAttributes,$additionalAttributes);
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
+        $eventAttributes = (array) $result->get('questionAttributes');
+
+        return array_merge($aQuestionAttributes, $additionalAttributes, $eventAttributes);
     }
 
     /**
