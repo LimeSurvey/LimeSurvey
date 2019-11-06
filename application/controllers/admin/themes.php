@@ -375,6 +375,19 @@ class themes extends Survey_Common_Action
                 if ($themeType !== 'question') {
                     TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                 }
+                if ($themeType == 'question') {
+                    $questionTheme = new QuestionTheme();
+                    $sThemeDirectory = scandir("$extractDir")[2];
+                    $sQuestionThemeTitle = $questionTheme->importManifest($extractDir . DIRECTORY_SEPARATOR . $sThemeDirectory);
+                    if (empty($sQuestionThemeTitle)){
+                        rmdirr($destdir);
+                        App()->setFlashMessage(
+                            gT("An error occured while generating the Question theme"),
+                            'error'
+                        );
+                        $this->getController()->redirect(array("admin/themeoptions/sa/index/#questionthemes"));
+                    }
+                }
             }
         } else {
             App()->setFlashMessage(

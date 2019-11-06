@@ -188,7 +188,7 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Import all Questiontypes and Themes to the {{questions_themes}} table
      *
-     * @param array $questionThemeDirectories
+     * @param bool $useTransaction
      *
      * @throws CException
      */
@@ -281,43 +281,32 @@ class QuestionTheme extends LSActiveRecord
      * @param string $pathToXML
      *
      * @return bool|string
-     * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function importManifest($pathToXML)
     {
         if (empty($pathToXML)) {
             throw new InvalidArgumentException('$templateFolder cannot be empty');
         }
-        /** @var string[] */
-        $questionDirectories = $this->getQuestionThemeDirectories();
         /** @var array */
-        $questionMetaData = $this->getQuestionMetaData($pathToXML, $questionDirectories);
+        $aQuestionMetaData = $this->getQuestionMetaData($pathToXML);
 
-        /** @var QuestionTheme */
-        $questionTheme = QuestionTheme::model()
-            ->find(
-                '(name = :name AND extends = :extends)',
-                [
-                    ':name'    => $questionMetaData['name'],
-                    ':extends' => $questionMetaData['extends']
-                ]
-            );
-
-        if ($questionTheme == null) {
-            /** @var array<string, mixed> */
-            $metaDataArray = $this->getMetaDataArray($questionMetaData);
-            $this->setAttributes($metaDataArray, false);
-            if ($this->save()) {
-                return $questionMetaData['title'];
-            };
+        /** @var array<string, mixed> */
+        $aMetaDataArray = $this->getMetaDataArray($aQuestionMetaData);
+        $this->setAttributes($aMetaDataArray, false);
+        if ($this->save()) {
+            return $aQuestionMetaData['title'];
+        } else {
+            // todo detailed error handling
+            return null;
         }
-        return null;
     }
 
     /**
      * Returns all Questions that can be installed
      *
      * @return QuestionTheme[]
+     * @throws Exception
      */
     public function getAvailableQuestions()
     {
@@ -356,12 +345,11 @@ class QuestionTheme extends LSActiveRecord
     public function getAllQuestionMetaData()
     {
         $questionsMetaData = [];
-        $questionDirectories = $this->getQuestionThemeDirectories();
-        $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths($questionDirectories);
+        $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths();
         if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
             foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
                 foreach ($questionConfigFilePaths as $questionConfigFilePath) {
-                    $questionMetaData = self::getQuestionMetaData($questionConfigFilePath, $questionDirectories);
+                    $questionMetaData = self::getQuestionMetaData($questionConfigFilePath);
                     $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['questionType']] = $questionMetaData;
                 }
             }
@@ -370,13 +358,22 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
+     * Read all the MetaData for given Question XML definition
+     *
      * @param $pathToXML
-     * @param $questionDirectories
      *
      * @return array Question Meta Data
+     * @throws Exception
      */
-    public static function getQuestionMetaData($pathToXML, $questionDirectories)
+    public static function getQuestionMetaData($pathToXML)
     {
+        $questionDirectories = self::getQuestionThemeDirectories();
+
+        foreach ($questionDirectories as $key => $questionDirectory) {
+            $questionDirectories[$key] = str_replace('\\', '/', $questionDirectory);
+        }
+        $pathToXML = str_replace('\\', '/', $pathToXML);
+
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
         $publicurl = App()->getConfig('publicurl');
 
@@ -397,6 +394,7 @@ class QuestionTheme extends LSActiveRecord
             );
         }
 
+        // read all metadata from the provided $pathToXML
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
 
         // get custom previewimage if defined
@@ -404,6 +402,7 @@ class QuestionTheme extends LSActiveRecord
             $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
             $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $previewFileName;
         }
+
         $questionMetaData['xml_path'] = $pathToXML;
 
         // set settings as json
@@ -442,15 +441,15 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Find all XML paths for specified Question Root folders
      *
-     * @param array $questionDirectories
-     * @param bool  $core
-     * @param bool  $custom
-     * @param bool  $user
+     * @param bool $core
+     * @param bool $custom
+     * @param bool $user
      *
      * @return array
      */
-    public function getAllQuestionXMLPaths($questionDirectories, $core = true, $custom = true, $user = true)
+    public function getAllQuestionXMLPaths($core = true, $custom = true, $user = true)
     {
+        $questionDirectories = $this->getQuestionThemeDirectories();
         $questionDirectoriesAndPaths = [];
         if ($core) {
             $coreQuestionsPath = $questionDirectories['coreQuestion'];
@@ -593,9 +592,6 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns all Question Meta Data for the selector
      *
-     * @param bool $typeAsKey
-     * @param bool $asAR
-     *
      * @return mixed $baseQuestions Questions as Array or Object
      */
     public static function findAllQuestionMetaDataForSelector()
@@ -645,7 +641,7 @@ class QuestionTheme extends LSActiveRecord
         return $baseQuestions;
     }
 
-    public function getQuestionThemeDirectories()
+    public static function getQuestionThemeDirectories()
     {
         $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
         $questionThemeDirectories['customCoreTheme'] = App()->getConfig('userquestionthemedir');
