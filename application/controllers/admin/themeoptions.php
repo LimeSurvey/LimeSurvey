@@ -88,18 +88,16 @@ class themeoptions  extends Survey_Common_Action
                 $model = $this->loadModel($template, $gridid);
                 if ($gridid == 'questionthemes-grid') {
                     $templatename = $model->name;
-                    $templateid = $model->id;
                     $templatefolder = $model->xml_path;
                     $aResults[$template]['title'] = $templatename;
-                    $aResults[$template]['result'] = QuestionTheme::uninstall($templateid);
-                    $model->importManifest($templatefolder);
-                } elseif ($gridid == 'themeoptions-grid'){
+                    $sQuestionThemeName = $model->importManifest($templatefolder);
+                    $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
+                } elseif ($gridid == 'themeoptions-grid') {
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
                     TemplateManifest::importManifest($templatename);
                 }
-
             }
             //set Modal table labels
             $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
@@ -140,9 +138,10 @@ class themeoptions  extends Survey_Common_Action
                 if ($gridid == 'questionthemes-grid') {
                     $aResults[$template]['title'] = $model->name;
                     $templatename = $model->name;
-                    $templateid = $model->id;
                     $aResults[$template]['title'] = $templatename;
-                    $aResults[$template]['result'] = QuestionTheme::uninstall($templateid);
+                    $aUninstallResult = QuestionTheme::uninstall($model);
+                    $aResults[$template]['result'] = isset($aUninstallResult['result']) ? $aUninstallResult['result'] : false;
+                    $aResults[$template]['error'] = isset($aUninstallResult['error']) ? $aUninstallResult['error'] : null;
 
                 } elseif ($gridid == 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;

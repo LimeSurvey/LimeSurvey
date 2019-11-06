@@ -484,13 +484,83 @@ class QuestionTheme extends LSActiveRecord
     }
 
 
-    public static function uninstall($templateid)
+    /**
+     * @param QuestionTheme $oQuestionTheme
+     *
+     * @return array
+     */
+    public static function uninstall($oQuestionTheme)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $oTemplate = self::model()->findByPk($templateid);
-            return $oTemplate->delete();
+        if (!Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            return false;
         }
-        return false;
+
+        // if this questiontype is extended, it cannot be deleted
+        if (empty($oQuestionTheme->extends)) {
+            $aQuestionThemes = self::model()->findAll(
+                'extends = :extends AND NOT id = :id',
+                [
+                    ':extends' => $oQuestionTheme->question_type,
+                    ':id'      => $oQuestionTheme->id
+                ]
+            );
+            if (!empty($aQuestionThemes)) {
+                return [
+                    'error'  => gT('Question type is being extended and cannot be uninstalled'),
+                    'result' => false
+                ];
+            };
+        }
+
+        // transform theme name compatible with question attributes for core/default theme_template
+        if (empty($oQuestionTheme->extends)) {
+            $sThemeName = 'core';
+        } else {
+            $sThemeName = $oQuestionTheme->name;
+        }
+
+        // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader
+//        $query = new CDbDataReader($command);
+//        $query->read();
+        $aQuestions = Question::model()->with('questionAttributes')->findAll(
+            'type = :type AND parent_qid = :parent_qid',
+            [
+                ':type' => $oQuestionTheme->question_type,
+                ':parent_qid' => 0
+            ]
+        );
+        foreach ( $aQuestions as $oQuestion) {
+            if (isset($oQuestion['questionAttributes']['question_template'])) {
+                if ($sThemeName == $oQuestion['questionAttributes']['question_template']) {
+                    $bDeleteTheme = false;
+                    break;
+                };
+            } else {
+                if ($sThemeName == 'core') {
+                    $bDeleteTheme = false;
+                    break;
+                };
+            }
+        }
+        // if this questiontheme is used, it cannot be deleted
+        if (isset($bDeleteTheme) && !$bDeleteTheme) {
+            return [
+                'error'  => gT('Question type is used in a Survey and cannot be uninstalled'),
+                'result' => false
+            ];
+        }
+
+        // delete questiontheme if it is not used
+        try {
+            return [
+                'result' => $oQuestionTheme->delete()
+            ];
+        } catch (CDbException $e) {
+            return [
+                'error'  => $e->getMessage(),
+                'result' => false
+            ];
+        }
     }
 
     /**
