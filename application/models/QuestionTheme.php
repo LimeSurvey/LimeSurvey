@@ -397,6 +397,20 @@ class QuestionTheme extends LSActiveRecord
         // read all metadata from the provided $pathToXML
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
 
+        $aQuestionThemes = QuestionTheme::model()->findAll(
+            '(question_type = :question_type AND extends = :extends)',
+            [
+                ':question_type' => $questionMetaData['questionType'],
+                ':extends'       => '',
+            ]
+        );
+        //set extends if there is allready an existing Question with this type
+        if (empty($aQuestionThemes)) {
+            $questionMetaData['extends'] = '';
+        } else {
+            $questionMetaData['extends'] = $questionMetaData['questionType'];
+        }
+
         // get custom previewimage if defined
         if (!empty($oQuestionConfig->files->preview->filename)) {
             $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
@@ -417,16 +431,14 @@ class QuestionTheme extends LSActiveRecord
         // override MetaData depending on directory
         if (substr($pathToXML, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
             $questionMetaData['coreTheme'] = 1;
-            $questionMetaData['extends'] = '';
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
             $questionMetaData['coreTheme'] = 1;
-            $questionMetaData['extends'] = $questionMetaData['questionType'];
+
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
             $questionMetaData['coreTheme'] = 0;
-            $questionMetaData['extends'] = $questionMetaData['questionType'];
         }
 
         // get Default Image if undefined
