@@ -402,6 +402,20 @@ class themeoptions  extends Survey_Common_Action
                 }
             }
 
+            $filterForm = App()->request->getPost('QuestionTheme', false);
+            if ($filterForm) {
+                $aData['oQuestionTheme']->setAttributes($filterForm, false);
+                if (array_key_exists('description', $filterForm)){
+                    $aData['oQuestionTheme']->description = $filterForm['description'];
+                }
+                if (array_key_exists('core_theme', $filterForm)){
+                    $aData['oQuestionTheme']->core_theme = $filterForm['core_theme'] == '1' || $filterForm['core_theme'] == '0' ? intval($filterForm['core_theme']) : '';
+                }
+                if (array_key_exists('extends', $filterForm)){
+                    $aData['oQuestionTheme']->extends = $filterForm['extends'];
+                }
+            }
+
             // Page size
             if (App()->request->getParam('pageSize')) {
                 App()->user->setState('pageSizeTemplateView', (int) App()->request->getParam('pageSize'));

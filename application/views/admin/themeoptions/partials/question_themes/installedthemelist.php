@@ -58,9 +58,10 @@
                 array(
                     'header'      => gT('Type'),
                     'name'        => 'core_theme',
-                    'value'       => '($data->core_theme == 1) ? gT("Core Theme") : gT("User theme")',
+                    'value'       => '($data->core_theme == 1) ? gT("Core Theme") : gT("User Theme")',
                     'type'        => 'raw',
                     'htmlOptions' => array('class' => 'col-md-2'),
+                    "filter"      => array(1 => gT("Core Theme"), 0 => gT('User Theme'))
                 ),
 
                 array(
@@ -103,7 +104,6 @@
         ));
         ?>
 
-        <!-- To update rows per page via ajax setSession-->
         <?php
         $script = '
                 jQuery(document).on("change", "#pageSize", function(){

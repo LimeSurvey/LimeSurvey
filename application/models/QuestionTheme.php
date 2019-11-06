@@ -240,7 +240,6 @@ class QuestionTheme extends LSActiveRecord
         libxml_disable_entity_loader($bOldEntityLoaderState);
     }
 
-    // TODO: Enable when Configuration Model is ready
     public function getButtons()
     {
         // don't show any buttons if user doesn't have update permission
@@ -250,7 +249,7 @@ class QuestionTheme extends LSActiveRecord
         $sVisible = $this->visible == 'Y' ? true : false;
         $aButtons = [
             'visibility_button' => [
-                'url' => $sToggleVisibilityUrl = Yii::app()->getController()->createUrl('admin/questionthemes/sa/togglevisibility', ['id' => $this->id]),
+                'url'     => $sToggleVisibilityUrl = Yii::app()->getController()->createUrl('admin/questionthemes/sa/togglevisibility', ['id' => $this->id]),
                 'visible' => $sVisible
             ]
         ];
