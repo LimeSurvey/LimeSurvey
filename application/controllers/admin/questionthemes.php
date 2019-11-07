@@ -3,14 +3,14 @@
 class questionthemes extends Survey_Common_Action
 {
     /**
-     * @param string  $id
+     * @param string $id
      *
-     * @param boolean $visible
+     * @throws CHttpException
      */
     public function toggleVisibility($id)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
-            return;
+            throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
         }
         $aQuestionThemes = QuestionTheme::model()->findAllByAttributes([], 'id = :id', ['id' => $id]);
 
