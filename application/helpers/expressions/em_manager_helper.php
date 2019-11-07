@@ -9917,13 +9917,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /* Construct the warnings */
                 $sWarningsText = "";
                 if(count($aWarnings) > 0) {
-                    $sWarningsText .= "<div class=''>";
-                    $sWarningsText .= "<em class='label label-warning'>".$LEM->ngT("This question has at least {n} warning.|This question has at least {n} warnings.",count($aWarnings))."</em>";
+                    $sWarningsText .= "<div class='alert alert-warning'>";
+                    $sWarningsText .= "<strong class=''>".$LEM->ngT("This question has at least {n} warning.|This question has at least {n} warnings.",count($aWarnings))."</strong>";
                     $sWarningsText .= "<ul class='list-unstyled small text-warning'>";
                     foreach($aWarnings as $aWarning) {
                         $sWarningsText .= "<li>";
                         if(!empty($aWarning[2])) {
-                            $sWarningsText .= CHtml::link($aWarning[0],$aWarning[2],array("_target"=>"blank"));
+                            $sWarningsText .= CHtml::link($aWarning[0],$aWarning[2],array("_target"=>"blank",'class'=>' text-warning'));
                         } else {
                             $sWarningsText .= $aWarning[0];
                         }
