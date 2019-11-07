@@ -72,7 +72,7 @@
             v-if="(elHelp.length>0) && !readonly"
             :aria-expanded="!triggerShowHelp" 
             :aria-controls="'help-'+(elName || elId)"
-        />
+        ></i>
         <label class="form-label" :for="elId"> {{elLabel}} </label>
         <div class="inputtype--toggle-container" :class="getClasses">
             <bootstrap-toggle v-model="curValue" :options="switchOptions" :disabled="disabled || readonly" />
