@@ -558,6 +558,10 @@ class questionedit extends Survey_Common_Action
         Yii::import('application.helpers.qanda_helper', true);
         setNoAnswerMode(['shownoanswer' => $oQuestion->survey->shownoanswer]);
 
+        if (!isset($_SESSION["survey_{$oQuestion->sid}"])) {
+            buildsurveysession($oQuestion->sid, true);
+        }
+
         $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray, $changedType);
         $aRendered = $oQuestionRenderer->render();
         $aSurveyInfo = $oQuestion->survey->attributes;
