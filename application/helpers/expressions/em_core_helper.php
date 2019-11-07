@@ -45,6 +45,7 @@ class ExpressionManager
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos; // position within the $token array while processing equation
     private $RDP_errs; // array of syntax errors
+    private $RDP_warnings = array(); // array of warnings
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
     private $RDP_result; // final result of evaluating the expression;
@@ -266,6 +267,19 @@ class ExpressionManager
     }
 
     /**
+     * Add a warning to the error log
+     *
+     * @param string $errMsg
+     * @param array|null $token
+     * @param string $helpLink
+     * @return void
+     */
+    private function RDP_AddWarning($warningMsg, $token, $helpLink = "")
+    {
+        $this->RDP_warnings[] = array($warningMsg, $token, "");
+    }
+
+    /**
      * @return array
      */
     public function RDP_GetErrors()
@@ -318,21 +332,35 @@ class ExpressionManager
             $this->RDP_AddError(self::gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-
         list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
-
+        /* @var : did this a COMPARE */
+        $bIsCompare = in_array(strtolower($token[0]),array('==','eq','!=','ne','<','lt','<=','le','>','gt','>=','ge'));
+        $asWarning = false;
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
         if ($bBothNumeric) {
-            $aForceStringArray = array('DQ_STRING', 'DS_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
-            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
+            $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
+            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) && (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
                 $bBothNumeric = false;
                 $bBothString = true;
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
+                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information."), $token);
+                $asWarning = true;
             }
         }
+
+        if($bIsCompare && $bMismatchType) {
+        /* Add the warning */
+            $this->RDP_AddWarning(self::gT("This expression compare values with different type: this can broke internet (really)."), $token);
+            $asWarning = true;
+        }
+        $aPotentialStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING', 'WORD', 'SGQA');
+        if ($bIsCompare && !$asWarning && ((isset($arg1[2]) && in_array($arg1[2], $aPotentialStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aPotentialStringArray))))) {
+            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information."), $token);
+        }
+
         switch (strtolower($token[0])) {
             case 'or':
             case '||':
@@ -360,7 +388,7 @@ class ExpressionManager
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
                 break;
-                case '<=';
+            case '<=';
             case 'le':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
@@ -390,7 +418,7 @@ class ExpressionManager
                     }
                 }
                 break;
-                case '>=';
+            case '>=';
             case 'ge':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
@@ -433,6 +461,7 @@ class ExpressionManager
                 }
                 break;
         }
+
         $this->RDP_StackPush($result);
         return true;
     }
@@ -1301,6 +1330,11 @@ class ExpressionManager
         if ($errCount > 0) {
             usort($errs, "cmpErrorTokens");
         }
+        $warnings = $this->RDP_warnings;
+        $warningsCount = count($warnings);
+        if(!empty($warnings)) {
+            usort($warnings, "cmpErrorTokens");
+        }
         $stringParts = array();
         $numTokens = count($tokens);
         $bHaveError = false;
@@ -1326,20 +1360,34 @@ class ExpressionManager
                 }
                 $errIndex++;
             }
+            $thisTokenHasWarning = false;
+            $warningIndex = 0;
+            while ($warningIndex < $warningsCount) {
+                if ($warnings[$warningIndex][1] == $token) { // Error related to this token
+                    $messages[] = $warnings[$warningIndex][0];
+                    $thisTokenHasWarning = true;
+                }
+                $warningIndex++;
+            }
             if ($thisTokenHasError) {
-                $stringParts[] = "<span class='em-error'>";
+                $stringParts[] = "<span class='em-error' title=' ' >";
                 $bHaveError = true;
+            } elseif($thisTokenHasWarning) {
+                $stringParts[] = "<span class='em-warning' title=' '>";
             }
             switch ($token[2]) {
                 case 'DQ_STRING':
-                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-var-string'>\"";
-                    $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "\"</span>";
+                    /* Check $token[0] forced string */
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-var-string'
+                    ),"\"".$token[0]."\"");
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-var-string'>'";
-                    $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "'</span>";
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-var-string'
+                    ),"'".$token[0]."'");
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1454,9 +1502,10 @@ class ExpressionManager
                     break;
                 case 'ASSIGN':
                     $messages[] = self::gT('Assigning a new value to a variable.');
-                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-assign'>";
-                    $stringParts[] = $token[0];
-                    $stringParts[] = "</span>";
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-assign em-warning'
+                    ),' '.$token[0].' ');
                     break;
                 case 'COMMA':
                     $stringParts[] = $token[0].' ';
@@ -1466,11 +1515,19 @@ class ExpressionManager
                 case 'NUMBER':
                     $stringParts[] = $token[0];
                     break;
+                case 'COMPARE':
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-compare'
+                    ),' '.$token[0].' ');
+                    break;
                 default:
-                    $stringParts[] = ' '.$token[0].' ';
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                    ),' '.$token[0].' ');
                     break;
             }
-            if ($thisTokenHasError) {
+            if ($thisTokenHasError || $thisTokenHasWarning) {
                 $stringParts[] = "</span>";
                 ++$errIndex;
             }
@@ -1517,6 +1574,15 @@ class ExpressionManager
     public function HasErrors()
     {
         return (count($this->RDP_errs) > 0);
+    }
+
+    /**
+     * Return array of warnings
+     * @return array
+     */
+    public function getWarnings()
+    {
+        return $this->RDP_warnings;
     }
 
     /**
