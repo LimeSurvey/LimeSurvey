@@ -698,7 +698,7 @@ class ExpressionManager
                                 $evalStatus = false;
                             }
                         }
-                        $this->RDP_AddWarning(self::gT('Assigning a new value to a variable.','unescaped'),$token2);
+                        $this->RDP_AddWarning(self::gT('Assigning a new value to a variable.','unescaped'),$token2, 'https://manual.limesurvey.org/Expression_Manager#Using_Assignment_Operator');
                         return $evalStatus;
                     } else {
                         $this->RDP_AddError(self::gT('The value of this variable can not be changed'), $token1);
