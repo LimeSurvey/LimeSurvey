@@ -71,16 +71,18 @@
                     'htmlOptions' => array('class' => 'col-md-2'),
                 ),
                 array(
-                    'header'      => '',
-                    'name'        => 'actions',
-                    'value'       => '$data->buttons',
-                    'type'        => 'raw',
-                    'htmlOptions' => array('class' => 'col-md-1'),
-                    'filter'      => false,
-                ),
+                    'header'            => gT('Visibility'),
+                    'headerHtmlOptions' => ['title' => gT('Visible inside the Question Selector')],
+                    'name'              => 'visible',
+                    'value'             => '$data->getVisibilityButton()',
+                    'type'              => 'raw',
+                    'htmlOptions'       => array('class' => 'col-md-1'),
+                    "filter"            => array('N' => gT("Off"), 'Y' => gT('On')),
+                )
             ),
             'ajaxUpdate'      => 'questionthemes-grid',
             'ajaxType'        => 'POST',
+            // todo create a new javascript file and call function from here, related: 1573120573738
             'afterAjaxUpdate' => '
                                 function(id, data){
                                     window.LS.doToolTip();
@@ -105,6 +107,7 @@
         ?>
 
         <?php
+        // todo create a new javascript file and call function from here, related: 1573120573738
         $script = '
                 jQuery(document).on("change", "#pageSize", function(){
                     $.fn.yiiGridView.update("questionthemes-grid",{ data:{ pageSize: $(this).val() }});

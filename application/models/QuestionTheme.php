@@ -240,7 +240,7 @@ class QuestionTheme extends LSActiveRecord
         libxml_disable_entity_loader($bOldEntityLoaderState);
     }
 
-    public function getButtons()
+    public function getVisibilityButton()
     {
         // don't show any buttons if user doesn't have update permission
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
