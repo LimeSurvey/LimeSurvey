@@ -303,7 +303,6 @@ class ExpressionManager
         
         $bNumericArg1 = $arg1[0]!== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
         $bNumericArg2 = $arg2[0]!== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
-
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg2[0] || !$bNumericArg2;
 
@@ -336,32 +335,19 @@ class ExpressionManager
         list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
         /* @var : did this a COMPARE */
         $bIsCompare = in_array(strtolower($token[0]),array('==','eq','!=','ne','<','lt','<=','le','>','gt','>=','ge'));
-        $asWarning = false;
+        $isForcedString = false;
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
-        // Not sure if needed to test if [2] is set. : TODO review
+        $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
         if ($bBothNumeric) {
-            $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
             if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
                 $bBothNumeric = false;
                 $bBothString = true;
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
-                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
-                $asWarning = true;
+                $isForcedString = true;
             }
         }
-
-        if($bIsCompare && $bMismatchType) {
-            /* Add the warning */
-            $this->RDP_AddWarning(self::gT("This expression compare values with different type: this can broke internet (really).",'unescaped'), $token);
-            $asWarning = true;
-        }
-        $aPotentialStringArray = array('WORD', 'SGQA');
-        if ($bIsCompare && !$asWarning && ((isset($arg1[2]) && in_array($arg1[2], $aPotentialStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aPotentialStringArray))))) {
-            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped', "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string"));
-        }
-
         switch (strtolower($token[0])) {
             case 'or':
             case '||':
@@ -382,8 +368,12 @@ class ExpressionManager
             case '<':
             case 'lt':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    }
                     $result = array(strcmp($arg1[0],$arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
@@ -392,12 +382,16 @@ class ExpressionManager
             case '<=';
             case 'le':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(true, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
+                        if($isForcedString) {
+                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                        }
                         $result = array(strcmp($arg1[0],$arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] <= $arg2[0]), $token[1], 'NUMBER');
@@ -407,12 +401,16 @@ class ExpressionManager
             case '>':
             case 'gt':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
+                        if($isForcedString) {
+                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                        }
                         $result = array(strcmp($arg1[0],$arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] > $arg2[0]), $token[1], 'NUMBER');
@@ -422,8 +420,12 @@ class ExpressionManager
             case '>=';
             case 'ge':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    }
                     $result = array(strcmp($arg1[0],$arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] >= $arg2[0]), $token[1], 'NUMBER');
