@@ -4679,6 +4679,7 @@
             $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
             $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
             $hasErrors = $this->em->HasErrors();
+            $aWarnings = $this->em->GetWarnings();
             $prettyPrint = '';
             if (($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
                 $prettyPrint= $this->em->GetPrettyPrintString();
@@ -4715,21 +4716,25 @@
                     $this->subQrelInfo[$questionNum] = array();
                 }
                 $this->subQrelInfo[$questionNum][$rowdivid] = array(
-                'qid' => $questionNum,
-                'eqn' => $eqn,
-                'prettyPrintEqn' => $prettyPrint,
-                'result' => $result,
-                'numJsVars' => count($jsVars),
-                'relevancejs' => $relevanceJS,
-                'relevanceVars' => $relevanceVars,
-                'rowdivid' => $rowdivid,
-                'type'=>$type,
-                'qtype'=>$qtype,
-                'sgqa'=>$sgqa,
-                'hasErrors'=>$hasErrors,
-                'isExclusiveJS'=>$isExclusiveJS,
-                'irrelevantAndExclusiveJS'=>$irrelevantAndExclusiveJS,
+                    'qid' => $questionNum,
+                    'eqn' => $eqn,
+                    'prettyPrintEqn' => $prettyPrint,
+                    'result' => $result,
+                    'numJsVars' => count($jsVars),
+                    'relevancejs' => $relevanceJS,
+                    'relevanceVars' => $relevanceVars,
+                    'rowdivid' => $rowdivid,
+                    'type'=>$type,
+                    'qtype'=>$qtype,
+                    'sgqa'=>$sgqa,
+                    'hasErrors'=>$hasErrors,
+                    'isExclusiveJS'=>$isExclusiveJS,
+                    'irrelevantAndExclusiveJS'=>$irrelevantAndExclusiveJS,
                 );
+                /* Not needed elsewhere … */
+                if($this->sPreviewMode == 'logic') {
+                    $this->subQrelInfo[$questionNum][$rowdivid]['aWarnings'] = $aWarnings;
+                }
             }
             return $result;
         }
@@ -9703,6 +9708,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors']) {
                     ++$errorCount;
                 }
+                tracevar($LEM->ParseResultCache[$relevanceEqn]['aWarnings']);
                 $aWarnings = array_merge($aWarnings, $LEM->ParseResultCache[$relevanceEqn]['aWarnings']);
 
                 //////
@@ -9718,16 +9724,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $prettyPrint = viewHelper::stripTagsEM($LEM->em->GetPrettyPrintString());
                         $hasErrors =  $LEM->em->HasErrors();
                         $LEM->ParseResultCache[$validationEqn] = array(
-                        'result' => $result,
-                        'prettyprint' => $prettyPrint,
-                        'hasErrors' => $hasErrors,
+                            'result' => $result,
+                            'prettyprint' => $prettyPrint,
+                            'hasErrors' => $hasErrors,
                         );
                     }
                     $prettyValidEqn = '<hr />(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
                     if ($LEM->ParseResultCache[$validationEqn]['hasErrors']) {
                         ++$errorCount;
                     }
-                    $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
                 }
 
                 //////
@@ -9822,7 +9827,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         if ($sq['hasErrors']) {
                             ++$errorCount;
                         }
-                        $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                        $aWarnings = array_merge($aWarnings,$sq['aWarnings']);
                     }
 
                     $sgqaInfo = $LEM->knownVars[$sgqa];
