@@ -45,6 +45,7 @@ class ExpressionManager
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos; // position within the $token array while processing equation
     private $RDP_errs; // array of syntax errors
+    /* @var array[] informations about current warnings : array wisth string, $token (EM internal value) and optionnal link */
     private $RDP_warnings = array(); // array of warnings
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
@@ -340,13 +341,13 @@ class ExpressionManager
         // Not sure if needed to test if [2] is set. : TODO review
         if ($bBothNumeric) {
             $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
-            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) && (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
+            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
                 $bBothNumeric = false;
                 $bBothString = true;
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
-                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token);
+                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Access_to_Functions");
                 $asWarning = true;
             }
         }
@@ -358,7 +359,7 @@ class ExpressionManager
         }
         $aPotentialStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING', 'WORD', 'SGQA');
         if ($bIsCompare && !$asWarning && ((isset($arg1[2]) && in_array($arg1[2], $aPotentialStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aPotentialStringArray))))) {
-            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token);
+            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped', "https://manual.limesurvey.org/Expression_Manager#Access_to_Functions"), $token,  "https://manual.limesurvey.org/Expression_Manager#Access_to_Functions");
         }
 
         switch (strtolower($token[0])) {
@@ -513,6 +514,7 @@ class ExpressionManager
         $this->RDP_count = count($this->RDP_tokens);
         $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
         $this->RDP_errs = array();
+        $this->RDP_warnings = array();
         $this->RDP_onlyparse = $onlyparse;
         $this->RDP_stack = array();
         $this->RDP_evalStatus = false;
@@ -1580,7 +1582,7 @@ class ExpressionManager
      * Return array of warnings
      * @return array
      */
-    public function getWarnings()
+    public function GetWarnings()
     {
         return $this->RDP_warnings;
     }
