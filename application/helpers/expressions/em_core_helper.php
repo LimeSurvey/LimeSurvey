@@ -276,7 +276,7 @@ class ExpressionManager
      */
     private function RDP_AddWarning($warningMsg, $token, $helpLink = "")
     {
-        $this->RDP_warnings[] = array($warningMsg, $token, "");
+        $this->RDP_warnings[] = array($warningMsg, $token, $helpLink);
     }
 
     /**
@@ -346,19 +346,19 @@ class ExpressionManager
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
-                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information."), $token);
+                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token);
                 $asWarning = true;
             }
         }
 
         if($bIsCompare && $bMismatchType) {
         /* Add the warning */
-            $this->RDP_AddWarning(self::gT("This expression compare values with different type: this can broke internet (really)."), $token);
+            $this->RDP_AddWarning(self::gT("This expression compare values with different type: this can broke internet (really).",'unescaped'), $token);
             $asWarning = true;
         }
         $aPotentialStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING', 'WORD', 'SGQA');
         if ($bIsCompare && !$asWarning && ((isset($arg1[2]) && in_array($arg1[2], $aPotentialStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aPotentialStringArray))))) {
-            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information."), $token);
+            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token);
         }
 
         switch (strtolower($token[0])) {
@@ -696,6 +696,7 @@ class ExpressionManager
                                 $evalStatus = false;
                             }
                         }
+                        $this->RDP_AddWarning(self::gT('Assigning a new value to a variable.','unescaped'),$token2);
                         return $evalStatus;
                     } else {
                         $this->RDP_AddError(self::gT('The value of this variable can not be changed'), $token1);
@@ -1501,7 +1502,6 @@ class ExpressionManager
                     }
                     break;
                 case 'ASSIGN':
-                    $messages[] = self::gT('Assigning a new value to a variable.');
                     $stringParts[] = CHtml::tag('span',array(
                         'title' => !empty( $messages) ? implode('; ', $messages) : null,
                         'class'=> 'em-assign em-warning'
@@ -2366,23 +2366,12 @@ class ExpressionManager
      * Show a translated string for admin user, always in admin language #12208
      * public for geterrors_exprmgr_regexMatch function only
      * @param string $string to translate
+     * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
      * @return string : translated string
      */
-    public static function gT($string)
+    public static function gT($string, $sEscapeMode  = 'html')
     {
-        /**
-         * @var string|null $baseLang set the previous language if need to be set
-         */
-        $baseLang = null;
-        if (Yii::app() instanceof CWebApplication && Yii::app()->session['adminlang']) {
-            $baseLang = Yii::app()->getLanguage();
-            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
-        }
-        $string = gT($string);
-        if ($baseLang) {
-            Yii::app()->setLanguage($baseLang);
-        }
-        return $string;
+        return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
     }
 }
 
