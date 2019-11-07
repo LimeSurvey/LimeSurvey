@@ -188,11 +188,11 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Import all Questiontypes and Themes to the {{questions_themes}} table
      *
-     * @param bool $useTransaction
+     * @param bool $bUseTransaction
      *
      * @throws CException
      */
-    public function loadAllQuestionXMLConfigurationsIntoDatabase($useTransaction = true)
+    public function loadAllQuestionXMLConfigurationsIntoDatabase($bUseTransaction = true)
     {
         $missingQuestionThemeAttributes = [];
         $questionThemeDirectories = $this->getQuestionThemeDirectories();
@@ -202,7 +202,7 @@ class QuestionTheme extends LSActiveRecord
         // process XML Question Files
         if (isset($questionThemeDirectories)) {
             try {
-                if ($useTransaction) {
+                if ($bUseTransaction) {
                     $transaction = App()->db->beginTransaction();
                 }
                 $questionsMetaData = self::getAllQuestionMetaData();
@@ -222,7 +222,7 @@ class QuestionTheme extends LSActiveRecord
                     $questionTheme->setAttributes($metaDataArray, false);
                     $questionTheme->save();
                 }
-                if ($useTransaction) {
+                if ($bUseTransaction) {
                     $transaction->commit();
                 }
             } catch (Exception $e) {
@@ -230,7 +230,7 @@ class QuestionTheme extends LSActiveRecord
                 echo $e->getMessage();
                 var_dump($e->getTrace());
                 var_dump($missingQuestionThemeAttributes);
-                if ($useTransaction) {
+                if ($bUseTransaction) {
                     $transaction->rollback();
                 }
             }
@@ -246,14 +246,14 @@ class QuestionTheme extends LSActiveRecord
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             return '';
         }
-        $sVisible = $this->visible == 'Y' ? true : false;
+        $bVisible = $this->visible == 'Y' ? true : false;
         $aButtons = [
             'visibility_button' => [
-                'url'     => $sToggleVisibilityUrl = Yii::app()->getController()->createUrl('admin/questionthemes/sa/togglevisibility', ['id' => $this->id]),
-                'visible' => $sVisible
+                'url'     => $sToggleVisibilityUrl = App()->getController()->createUrl('admin/questionthemes/sa/togglevisibility', ['id' => $this->id]),
+                'visible' => $bVisible
             ]
         ];
-        $sButtons = Yii::app()->getController()->renderPartial('/admin/themeoptions/partials/question_themes/theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
+        $sButtons = App()->getController()->renderPartial('/admin/themeoptions/partials/question_themes/theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
         return $sButtons;
     }
 
@@ -498,6 +498,7 @@ class QuestionTheme extends LSActiveRecord
      * @param QuestionTheme $oQuestionTheme
      *
      * @return array
+     * todo move actions to its controller and split between controller and model, related search for: 1573123789741
      */
     public static function uninstall($oQuestionTheme)
     {
@@ -523,15 +524,9 @@ class QuestionTheme extends LSActiveRecord
         }
 
         // transform theme name compatible with question attributes for core/default theme_template
-        if (empty($oQuestionTheme->extends)) {
-            $sThemeName = 'core';
-        } else {
-            $sThemeName = $oQuestionTheme->name;
-        }
+        $sThemeName = empty($oQuestionTheme->extends) ? 'core' : $oQuestionTheme->name;
 
-        // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader
-//        $query = new CDbDataReader($command);
-//        $query->read();
+        // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader $query = new CDbDataReader($command), $query->read()
         $aQuestions = Question::model()->with('questionAttributes')->findAll(
             'type = :type AND parent_qid = :parent_qid',
             [
@@ -772,11 +767,11 @@ class QuestionTheme extends LSActiveRecord
      */
     static public function getQuestionXMLPathForBaseType($type)
     {
-        $oQuestionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
-        if (empty($oQuestionTheme)) {
+        $aQuestionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
+        if (empty($aQuestionTheme)) {
             throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
         }
-        $configXMLPath = App()->getConfig('rootdir') . '/' . $oQuestionTheme['xml_path'] . '/config.xml';
+        $configXMLPath = App()->getConfig('rootdir') . '/' . $aQuestionTheme['xml_path'] . '/config.xml';
 
         return $configXMLPath;
 
