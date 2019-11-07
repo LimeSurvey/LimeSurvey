@@ -431,10 +431,10 @@ class ExpressionManager
                 break;
             case '+':
                 if ($bBothNumeric) {
-                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, youn can replace with sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29")
+                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, youn can replace with sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
                 } else {
-                    $this->RDP_AddWarning(self::gT("Usage of + with string value, youn can replace with join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29")
+                    $this->RDP_AddWarning(self::gT("Usage of + with string value, youn can replace with join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
                     $result = array($arg1[0].$arg2[0], $token[1], 'STRING');
                 }
                 break;
