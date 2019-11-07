@@ -347,19 +347,19 @@ class ExpressionManager
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
-                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Access_to_Functions");
+                $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                 $asWarning = true;
             }
         }
 
         if($bIsCompare && $bMismatchType) {
-        /* Add the warning */
+            /* Add the warning */
             $this->RDP_AddWarning(self::gT("This expression compare values with different type: this can broke internet (really).",'unescaped'), $token);
             $asWarning = true;
         }
-        $aPotentialStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING', 'WORD', 'SGQA');
+        $aPotentialStringArray = array('WORD', 'SGQA');
         if ($bIsCompare && !$asWarning && ((isset($arg1[2]) && in_array($arg1[2], $aPotentialStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aPotentialStringArray))))) {
-            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped', "https://manual.limesurvey.org/Expression_Manager#Access_to_Functions"), $token,  "https://manual.limesurvey.org/Expression_Manager#Access_to_Functions");
+            $this->RDP_AddWarning(self::gT("This expression compare 2 values that can be numeric but string too. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped', "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string"));
         }
 
         switch (strtolower($token[0])) {
@@ -431,8 +431,10 @@ class ExpressionManager
                 break;
             case '+':
                 if ($bBothNumeric) {
+                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, youn can replace with sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29")
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
                 } else {
+                    $this->RDP_AddWarning(self::gT("Usage of + with string value, youn can replace with join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29")
                     $result = array($arg1[0].$arg2[0], $token[1], 'STRING');
                 }
                 break;
