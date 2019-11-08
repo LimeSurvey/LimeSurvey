@@ -4677,6 +4677,7 @@
             }
 
             $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
+            $this->em->ResetWarnings();
             $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
             $hasErrors = $this->em->HasErrors();
             $aWarnings = $this->em->GetWarnings();
@@ -4684,7 +4685,7 @@
             if (($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
                 $prettyPrint= $this->em->GetPrettyPrintString();
             }
-
+            $this->em->ResetWarnings();
             if (!is_null($questionNum)) {
                 // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
                 if ($hasErrors)
@@ -9435,8 +9436,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $warnings = 0;
 
             $surveyOptions = array(
-            'assessments'=> $assessments===NULL ? ($aSurveyInfo['assessments']=='Y') : $assessments,
-            'hyperlinkSyntaxHighlighting'=>true,
+                'assessments'=> $assessments===NULL ? ($aSurveyInfo['assessments']=='Y') : $assessments,
+                'hyperlinkSyntaxHighlighting'=>true,
             );
 
             $varNamesUsed = array(); // keeps track of whether variables have been declared
@@ -9550,6 +9551,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $errorCount=0;
                 /* @var warnings information for current question, see ExpressionManager::RDP_warnings */
                 $aWarnings = array();
+                $LEM->em->ResetWarnings();
                 //////
                 // SHOW GROUP-LEVEL INFO
                 //////
@@ -9580,6 +9582,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "<td>".$sGroupText."</td>"
                     . "</tr>\n";
                     $out .= $groupRow;
+                    $LEM->em->ResetWarnings();
                 }
 
                 //////
@@ -9602,6 +9605,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         ++$errorCount;
                     }
                     $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                    $LEM->em->ResetWarnings();
                     $default = '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                 }
                 else
@@ -9626,6 +9630,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         ++$errorCount;
                     }
                     $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                    $LEM->em->ResetWarnings();
                     $sQuestionHelp = '<hr />[' . $LEM->gT("Help:") . ' ' . $sQuestionHelp . ']';
                 }
                 $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr />(' . $LEM->gT("Tip:") . ' ' . viewHelper::stripTagsEM($q['prettyValidTip']) . ')');// Unsure need to filter
@@ -9672,6 +9677,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 ++$errorCount;
                             }
                             $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                            $LEM->em->ResetWarnings();
                         }
                         if (is_null($value)) {
                             continue;   // since continuing from within a switch statement doesn't work
@@ -9692,6 +9698,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // Must parse Relevance this way, otherwise if try to first split expressions, regex equations won't work
                 $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+                $LEM->em->ResetWarnings();
                 if (!isset($LEM->ParseResultCache[$relevanceEqn]))
                 {
                     $result = $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $qseq);
@@ -9703,12 +9710,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         'hasErrors' => $hasErrors,
                         'aWarnings'=> $LEM->em->GetWarnings(),
                     );
+                    $LEM->em->ResetWarnings();
                 }
                 $relevance = $LEM->ParseResultCache[$relevanceEqn]['prettyprint'];
                 if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors']) {
                     ++$errorCount;
                 }
-                tracevar($LEM->ParseResultCache[$relevanceEqn]['aWarnings']);
                 $aWarnings = array_merge($aWarnings, $LEM->ParseResultCache[$relevanceEqn]['aWarnings']);
 
                 //////
@@ -9727,12 +9734,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             'result' => $result,
                             'prettyprint' => $prettyPrint,
                             'hasErrors' => $hasErrors,
+                            'aWarnings'=> $LEM->em->GetWarnings(),
                         );
+                        $LEM->em->ResetWarnings();
                     }
                     $prettyValidEqn = '<hr />(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
                     if ($LEM->ParseResultCache[$validationEqn]['hasErrors']) {
                         ++$errorCount;
                     }
+                    $aWarnings = array_merge($aWarnings, $LEM->ParseResultCache[$validationEqn]['aWarnings']);
                 }
 
                 //////
@@ -9828,6 +9838,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             ++$errorCount;
                         }
                         $aWarnings = array_merge($aWarnings,$sq['aWarnings']);
+                        $LEM->em->ResetWarnings();
                     }
 
                     $sgqaInfo = $LEM->knownVars[$sgqa];
@@ -9839,6 +9850,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         ++$errorCount;
                     }
                     $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                    $LEM->em->ResetWarnings();
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
                     {
                         $LEM->ProcessString($sgqaInfo['default'], $qid,$qReplacement,1,1,false,false);
@@ -9847,6 +9859,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             ++$errorCount;
                         }
                         $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                        $LEM->em->ResetWarnings();
                         $subQeqn .= '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                     }
                     $sqRows .= "<tr class='LEMsubq'>"
@@ -9897,6 +9910,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 ++$errorCount;
                             }
                             $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                            $LEM->em->ResetWarnings();
                         }
                         $sAnswerText=$valInfo[1];
                         $LEM->ProcessString($sAnswerText, $qid,$qReplacement,1,1,false,false);
@@ -9905,6 +9919,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             ++$errorCount;
                         }
                         $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                        $LEM->em->ResetWarnings();
                         $answerRows .= "<tr class='LEManswer'>"
                         . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
                         . "<td><b>" . $ansInfo[1]. "</b></td>"

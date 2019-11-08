@@ -368,11 +368,11 @@ class ExpressionManager
             case '<':
             case 'lt':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
                     if($isForcedString) {
-                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     }
                     $result = array(strcmp($arg1[0],$arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
@@ -382,7 +382,7 @@ class ExpressionManager
             case '<=';
             case 'le':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript
@@ -390,7 +390,7 @@ class ExpressionManager
                         $result = array(true, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
                         if($isForcedString) {
-                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                         }
                         $result = array(strcmp($arg1[0],$arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
@@ -401,7 +401,7 @@ class ExpressionManager
             case '>':
             case 'gt':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
@@ -409,7 +409,7 @@ class ExpressionManager
                         $result = array(false, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
                         if($isForcedString) {
-                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                         }
                         $result = array(strcmp($arg1[0],$arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
@@ -420,11 +420,11 @@ class ExpressionManager
             case '>=';
             case 'ge':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
                     if($isForcedString) {
-                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual about strcmp and intval for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     }
                     $result = array(strcmp($arg1[0],$arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
@@ -433,10 +433,10 @@ class ExpressionManager
                 break;
             case '+':
                 if ($bBothNumeric) {
-                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, youn can replace with sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
+                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, see manual about usage of sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
                 } else {
-                    $this->RDP_AddWarning(self::gT("Usage of + with string value, youn can replace with join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
+                    $this->RDP_AddWarning(self::gT("Usage of + with string value, see manual about usage of join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
                     $result = array($arg1[0].$arg2[0], $token[1], 'STRING');
                 }
                 break;
@@ -518,7 +518,6 @@ class ExpressionManager
         $this->RDP_count = count($this->RDP_tokens);
         $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
         $this->RDP_errs = array();
-        $this->RDP_warnings = array();
         $this->RDP_onlyparse = $onlyparse;
         $this->RDP_stack = array();
         $this->RDP_evalStatus = false;
@@ -1589,6 +1588,18 @@ class ExpressionManager
     public function GetWarnings()
     {
         return $this->RDP_warnings;
+    }
+
+    /**
+     * Reset current warnings
+     * @see Related issue #15547: Invalid error count on Survey Logic file for subquestion relevance
+     * @link https://bugs.limesurvey.org/view.php?id=15547
+     * ProcessBooleanExpression didn't reset RDP_errors anb RDP_warnings, need a way to reset for Survey logic checking
+     * @return void
+     */
+    public function ResetWarnings()
+    {
+        return $this->RDP_warnings = array();
     }
 
     /**
