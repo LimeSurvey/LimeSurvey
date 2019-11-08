@@ -9957,7 +9957,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     $sWarningsText .= "</ul>";
                     $sWarningsText .= "</div>";
-                    $aQuestionWarnings = array([
+                    $aQuestionWarnings[] = array([
                         'gid' => $gid,
                         'qid' => $qid,
                         'count' => count($aWarnings)
