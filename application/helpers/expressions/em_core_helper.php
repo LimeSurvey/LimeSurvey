@@ -358,6 +358,12 @@ class ExpressionManager
                 break;
             case '==':
             case 'eq':
+                if($isForcedString) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                }
+                if($isForcedString) {
+                    $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                }
                 $result = array(($arg1[0] == $arg2[0]), $token[1], 'NUMBER');
                 break;
             case '!=':
