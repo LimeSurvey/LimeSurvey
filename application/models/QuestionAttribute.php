@@ -422,7 +422,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return array The advanced attribute settings for this question type
      */
-    public static function getAdvancedAttributesFromXml($sXmlFilePath){
+    protected static function getAdvancedAttributesFromXml($sXmlFilePath){
         $aXmlAttributes = array();
         $aAttributes = array();
 
@@ -477,7 +477,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return array The general attribute settings for this question type
      */
-    public static function getGeneralAttibutesFromXml($sXmlFilePath)
+    protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
         $aXmlAttributes = array();
         $aAttributes = array();
