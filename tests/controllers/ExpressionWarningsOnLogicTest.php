@@ -283,7 +283,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have a warning alert */
-            $findWarnings = self::$webDriver->findElement(WebDriverBy::cssSelector('.alert-warning'));
+            $findWarnings = self::$webDriver->findElements(WebDriverBy::cssSelector('.alert-warning'));
             $this->assertCount(0, $findWarnings, 'There are a false warnings with a valid compare.');
         }  catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
