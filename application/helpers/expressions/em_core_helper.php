@@ -333,8 +333,6 @@ class ExpressionManager
             return false;
         }
         list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
-        /* @var : did this a COMPARE */
-        $bIsCompare = in_array(strtolower($token[0]),array('==','eq','!=','ne','<','lt','<=','le','>','gt','>=','ge'));
         $isForcedString = false;
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
@@ -1599,7 +1597,7 @@ class ExpressionManager
      */
     public function ResetWarnings()
     {
-        return $this->RDP_warnings = array();
+        $this->RDP_warnings = array();
     }
 
     /**
