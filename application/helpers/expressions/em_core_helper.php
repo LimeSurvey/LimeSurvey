@@ -46,7 +46,7 @@ class ExpressionManager
     private $RDP_pos; // position within the $token array while processing equation
     /** @var array[] informations about current errors : array with string, $token (EM internal array). Resetted in RDP_Evaluate (and only in RDP_Evaluate) */
     private $RDP_errs;
-    /** @var array[] informations about current warnings : array with string, $token (EM internal array) and optional link */
+    /** @var array[] informations about current warnings : array with string, $token (EM internal array) and optional link Resetted in RDP_Evaluate or manually */
     private $RDP_warnings = array();
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
@@ -523,6 +523,7 @@ class ExpressionManager
         $this->RDP_count = count($this->RDP_tokens);
         $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
         $this->RDP_errs = array();
+        $this->RDP_warnings = array();
         $this->RDP_onlyparse = $onlyparse;
         $this->RDP_stack = array();
         $this->RDP_evalStatus = false;
