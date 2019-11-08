@@ -44,9 +44,10 @@ class ExpressionManager
     private $RDP_tokens; // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos; // position within the $token array while processing equation
-    private $RDP_errs; // array of syntax errors
-    /* @var array[] informations about current warnings : array wisth string, $token (EM internal value) and optionnal link */
-    private $RDP_warnings = array(); // array of warnings
+    /** @var array[] informations about current errors : array with string, $token (EM internal array). Resetted in RDP_Evaluate (and only in RDP_Evaluate) */
+    private $RDP_errs;
+    /** @var array[] informations about current warnings : array with string, $token (EM internal array) and optional link */
+    private $RDP_warnings = array();
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
     private $RDP_result; // final result of evaluating the expression;

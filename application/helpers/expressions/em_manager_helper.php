@@ -9433,6 +9433,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             /* All final survey string must be shown in survey language #12208 */
             Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
+            /** @var array[] questions with warnings : gid,qid and count to create a list ? */
+            $aQuestionWarnings = array();
             $warnings = 0;
 
             $surveyOptions = array(
@@ -9945,7 +9947,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         if(!in_array($aWarning[0],$warningsDone) ) {
                             $sWarningsText .= "<li>";
                             if(!empty($aWarning[2])) {
-                                $sWarningsText .= CHtml::link($aWarning[0],$aWarning[2],array("_target"=>"blank",'class'=>' text-warning'));
+                                $sWarningsText .= CHtml::link($aWarning[0],$aWarning[2],array("target"=>"_blank",'class'=>'text-warning'));
                             } else {
                                 $sWarningsText .= $aWarning[0];
                             }
@@ -9955,7 +9957,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     $sWarningsText .= "</ul>";
                     $sWarningsText .= "</div>";
-
+                    $aQuestionWarnings = array([
+                        'gid' => $gid,
+                        'qid' => $qid,
+                        'count' => count($aWarnings)
+                    ]);
                 }
                 $questionRow = "<tr class='LEMquestion'>"
                 . "<td class='$errclass'>Q-" . $q['info']['qseq'] . "</td>"
@@ -9992,11 +9998,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
                 $out .= LimeExpressionManager::GetDebugTimingMessage();
             }
-
+            // Here it's added at top 
+            if(count($aQuestionWarnings) > 0) {
+                $out = "<p class='alert alert-warning'>". $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)) . "</p>\n" . $out;
+            }
             if (count($allErrors) > 0) {
                 $out = "<p class='alert alert-danger'>". $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allErrors)) . "</p>\n" . $out;
-            }
-            else {
+            } else {
                 switch ($surveyMode)
                 {
                     case 'survey':
@@ -10012,8 +10020,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = '';
                         break;
                 }
-                $out = "<p class='LEMheading'>$message</p>\n" . $out;
+                $out = "<p class='LEMheading alert alert-success'>$message</p>\n" . $out;
             }
+
             $out .="</div>";
             return array(
                 'errors'=>$allErrors,
