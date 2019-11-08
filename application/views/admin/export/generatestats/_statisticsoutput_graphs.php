@@ -54,25 +54,6 @@
                     </div>
                 <?php endforeach;?>
             </div>
-
-            <!-- legends in percents -->
-            <?php // var_dump($labels); var_dump($graph_labels_percent);?>
-            <div class="legend legend-percent col-lg-4  col-md-12" id="legend-percent-<?php echo $qqid;?>">
-                <?php if (count($graph_labels_percent)>0):?>
-                    <?php foreach($graph_labels_percent as $i=>$label): ?>
-                        <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
-                        <div class="row" style="margin-bottom: 10px;">
-                            <div class="col-sm-1">
-                                <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
-                                </span>
-                            </div>
-                            <div class="col-sm-10">
-                                <?php echo $label;?>
-                            </div>
-                        </div>
-                    <?php endforeach;?>
-                <?php endif; ?>
-            </div>
         </div>
     </td>
 </tr>
