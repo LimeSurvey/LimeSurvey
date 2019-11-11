@@ -603,7 +603,6 @@ window.addEventListener('message', function(event) {
     private function getPluginsData($sString, $aDatas)
     {
         $event = new PluginEvent('beforeTwigRenderTemplate');
-        $aDatas['aSurveyInfo']['bShowClearAll'] = false; // default to not show "Exit and clear survey" button
 
         if (!empty($aDatas['aSurveyInfo']['sid'])) {
             $surveyid = $aDatas['aSurveyInfo']['sid'];
