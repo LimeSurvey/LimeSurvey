@@ -26,6 +26,9 @@ $topbarextended = [
         ],
     ],
 ];
+
+
+
 if (!$onlyclose) {
     ###### Left aligned
     // Display participants
@@ -273,8 +276,9 @@ if (!$onlyclose) {
 
     ###### Right aligned
 
-    if (Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
-        || Permission::model()->hasSurveyPermission($sid, 'tokens', 'delete')
+    
+    if ( Yii::app()->request->getParam('saveButton', 'false')!='true' && (Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
+        || Permission::model()->hasSurveyPermission($sid, 'tokens', 'delete'))
     ) {
         $buttons['delete_tokens'] = [
             'url' => $this->createUrl("admin/tokens/sa/kill/surveyid/$sid"),
