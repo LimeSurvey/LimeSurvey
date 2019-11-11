@@ -6,5 +6,8 @@
             <directory>tests/unit</directory>
             <directory>tests/functional</directory>
         </testsuite>
+        <testsuite name="Acceptance">
+            <directory>tests/functional/acceptance</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
