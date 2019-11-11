@@ -2148,7 +2148,6 @@ class statistics_helper
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 // Output graph
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
-
             } else {
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_nograph', array(), true);
             }
