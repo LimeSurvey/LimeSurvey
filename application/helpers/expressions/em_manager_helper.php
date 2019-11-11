@@ -10164,6 +10164,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /* Construct the warnings */
                 $sWarningsText = "";
                 if(count($aWarnings) > 0) {
+                    // TODO: Factor out in warning classes OOP
                     $sWarningsText .= "<div class='alert alert-warning'>";
                     $sWarningsText .= "<strong class=''>".$LEM->ngT("This question has at least {n} warning.|This question has at least {n} warnings.",count($aWarnings))."</strong>";
                     $sWarningsText .= "<ul class='list-unstyled small text-warning'>";
