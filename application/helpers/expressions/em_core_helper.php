@@ -44,7 +44,10 @@ class ExpressionManager
     private $RDP_tokens; // the list of generated tokens
     private $RDP_count; // total number of $RDP_tokens
     private $RDP_pos; // position within the $token array while processing equation
-    private $RDP_errs; // array of syntax errors
+    /** @var array[] informations about current errors : array with string, $token (EM internal array). Resetted in RDP_Evaluate (and only in RDP_Evaluate) */
+    private $RDP_errs;
+    /** @var array[] informations about current warnings : array with string, $token (EM internal array) and optional link Resetted in RDP_Evaluate or manually */
+    private $RDP_warnings = array();
     private $RDP_onlyparse;
     private $RDP_stack; // stack of intermediate results
     private $RDP_result; // final result of evaluating the expression;
@@ -266,6 +269,19 @@ class ExpressionManager
     }
 
     /**
+     * Add a warning to the error log
+     *
+     * @param string $errMsg
+     * @param array|null $token
+     * @param string $helpLink
+     * @return void
+     */
+    private function RDP_AddWarning($warningMsg, $token, $helpLink = "")
+    {
+        $this->RDP_warnings[] = array($warningMsg, $token, $helpLink);
+    }
+
+    /**
      * @return array
      */
     public function RDP_GetErrors()
@@ -288,7 +304,6 @@ class ExpressionManager
         
         $bNumericArg1 = $arg1[0]!== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
         $bNumericArg2 = $arg2[0]!== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
-
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg2[0] || !$bNumericArg2;
 
@@ -318,19 +333,18 @@ class ExpressionManager
             $this->RDP_AddError(self::gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-
         list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
-
+        $isForcedString = false;
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
-        // Not sure if needed to test if [2] is set. : TODO review
+        $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
         if ($bBothNumeric) {
-            $aForceStringArray = array('DQ_STRING', 'DS_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
             if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
                 $bBothNumeric = false;
                 $bBothString = true;
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
+                $isForcedString = true;
             }
         }
         switch (strtolower($token[0])) {
@@ -344,6 +358,12 @@ class ExpressionManager
                 break;
             case '==':
             case 'eq':
+                if($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                }
+                if($isForcedString) {
+                    $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                }
                 $result = array(($arg1[0] == $arg2[0]), $token[1], 'NUMBER');
                 break;
             case '!=':
@@ -353,22 +373,30 @@ class ExpressionManager
             case '<':
             case 'lt':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    }
                     $result = array(strcmp($arg1[0],$arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
                 break;
-                case '<=';
+            case '<=';
             case 'le':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(true, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
+                        if($isForcedString) {
+                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                        }
                         $result = array(strcmp($arg1[0],$arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] <= $arg2[0]), $token[1], 'NUMBER');
@@ -378,23 +406,31 @@ class ExpressionManager
             case '>':
             case 'gt':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
+                        if($isForcedString) {
+                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                        }
                         $result = array(strcmp($arg1[0],$arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] > $arg2[0]), $token[1], 'NUMBER');
                     }
                 }
                 break;
-                case '>=';
+            case '>=';
             case 'ge':
                 if ($bMismatchType) {
+                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_number_and_string_and_force_comparisons_as_string");
+                    }
                     $result = array(strcmp($arg1[0],$arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] >= $arg2[0]), $token[1], 'NUMBER');
@@ -402,8 +438,10 @@ class ExpressionManager
                 break;
             case '+':
                 if ($bBothNumeric) {
+                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, see manual about usage of sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
                 } else {
+                    $this->RDP_AddWarning(self::gT("Usage of + with string value, see manual about usage of join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
                     $result = array($arg1[0].$arg2[0], $token[1], 'STRING');
                 }
                 break;
@@ -433,6 +471,7 @@ class ExpressionManager
                 }
                 break;
         }
+
         $this->RDP_StackPush($result);
         return true;
     }
@@ -484,6 +523,7 @@ class ExpressionManager
         $this->RDP_count = count($this->RDP_tokens);
         $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
         $this->RDP_errs = array();
+        $this->RDP_warnings = array();
         $this->RDP_onlyparse = $onlyparse;
         $this->RDP_stack = array();
         $this->RDP_evalStatus = false;
@@ -667,6 +707,7 @@ class ExpressionManager
                                 $evalStatus = false;
                             }
                         }
+                        $this->RDP_AddWarning(self::gT('Assigning a new value to a variable.','unescaped'),$token2, 'https://manual.limesurvey.org/Expression_Manager#Using_Assignment_Operator');
                         return $evalStatus;
                     } else {
                         $this->RDP_AddError(self::gT('The value of this variable can not be changed'), $token1);
@@ -1301,6 +1342,11 @@ class ExpressionManager
         if ($errCount > 0) {
             usort($errs, "cmpErrorTokens");
         }
+        $warnings = $this->RDP_warnings;
+        $warningsCount = count($warnings);
+        if(!empty($warnings)) {
+            usort($warnings, "cmpErrorTokens");
+        }
         $stringParts = array();
         $numTokens = count($tokens);
         $bHaveError = false;
@@ -1326,20 +1372,34 @@ class ExpressionManager
                 }
                 $errIndex++;
             }
+            $thisTokenHasWarning = false;
+            $warningIndex = 0;
+            while ($warningIndex < $warningsCount) {
+                if ($warnings[$warningIndex][1] == $token) { // Error related to this token
+                    $messages[] = $warnings[$warningIndex][0];
+                    $thisTokenHasWarning = true;
+                }
+                $warningIndex++;
+            }
             if ($thisTokenHasError) {
-                $stringParts[] = "<span class='em-error'>";
+                $stringParts[] = "<span class='em-error' title=' ' >";
                 $bHaveError = true;
+            } elseif($thisTokenHasWarning) {
+                $stringParts[] = "<span class='em-warning' title=' '>";
             }
             switch ($token[2]) {
                 case 'DQ_STRING':
-                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-var-string'>\"";
-                    $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "\"</span>";
+                    /* Check $token[0] forced string */
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-var-string'
+                    ),"\"".$token[0]."\"");
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-var-string'>'";
-                    $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "'</span>";
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-var-string'
+                    ),"'".$token[0]."'");
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1453,10 +1513,10 @@ class ExpressionManager
                     }
                     break;
                 case 'ASSIGN':
-                    $messages[] = self::gT('Assigning a new value to a variable.');
-                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-assign'>";
-                    $stringParts[] = $token[0];
-                    $stringParts[] = "</span>";
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-assign em-warning'
+                    ),' '.$token[0].' ');
                     break;
                 case 'COMMA':
                     $stringParts[] = $token[0].' ';
@@ -1466,11 +1526,19 @@ class ExpressionManager
                 case 'NUMBER':
                     $stringParts[] = $token[0];
                     break;
+                case 'COMPARE':
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                        'class'=> 'em-compare'
+                    ),' '.$token[0].' ');
+                    break;
                 default:
-                    $stringParts[] = ' '.$token[0].' ';
+                    $stringParts[] = CHtml::tag('span',array(
+                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                    ),' '.$token[0].' ');
                     break;
             }
-            if ($thisTokenHasError) {
+            if ($thisTokenHasError || $thisTokenHasWarning) {
                 $stringParts[] = "</span>";
                 ++$errIndex;
             }
@@ -1517,6 +1585,27 @@ class ExpressionManager
     public function HasErrors()
     {
         return (count($this->RDP_errs) > 0);
+    }
+
+    /**
+     * Return array of warnings
+     * @return array
+     */
+    public function GetWarnings()
+    {
+        return $this->RDP_warnings;
+    }
+
+    /**
+     * Reset current warnings
+     * @see Related issue #15547: Invalid error count on Survey Logic file for subquestion relevance
+     * @link https://bugs.limesurvey.org/view.php?id=15547
+     * ProcessBooleanExpression didn't reset RDP_errors anb RDP_warnings, need a way to reset for Survey logic checking
+     * @return void
+     */
+    public function ResetWarnings()
+    {
+        $this->RDP_warnings = array();
     }
 
     /**
@@ -2300,23 +2389,12 @@ class ExpressionManager
      * Show a translated string for admin user, always in admin language #12208
      * public for geterrors_exprmgr_regexMatch function only
      * @param string $string to translate
+     * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
      * @return string : translated string
      */
-    public static function gT($string)
+    public static function gT($string, $sEscapeMode  = 'html')
     {
-        /**
-         * @var string|null $baseLang set the previous language if need to be set
-         */
-        $baseLang = null;
-        if (Yii::app() instanceof CWebApplication && Yii::app()->session['adminlang']) {
-            $baseLang = Yii::app()->getLanguage();
-            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
-        }
-        $string = gT($string);
-        if ($baseLang) {
-            Yii::app()->setLanguage($baseLang);
-        }
-        return $string;
+        return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
     }
 }
 

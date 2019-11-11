@@ -299,6 +299,7 @@ class viewHelper
                 'em-var-error',
                 'em-assign',
                 'em-error',
+                'em-warning',
             ),
             'URI.AllowedSchemes'=>array( // Maybe only local ?
                 'http' => true,
