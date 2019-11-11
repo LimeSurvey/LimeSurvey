@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+
 /**
  * @since 2019-11-08
  * @author Denis Chenu
@@ -39,7 +40,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckInvalid()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -54,12 +55,12 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(),"Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.","Numbers of warning seems invalid, need one warning.");
-        }  catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -68,7 +69,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -78,7 +79,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckValidString()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -93,12 +94,12 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(),"Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 2 warnings.","Numbers of warning seems invalid, need 2 warnings.");
-        }  catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 2 warnings.", "Numbers of warning seems invalid, need 2 warnings.");
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -107,7 +108,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -116,7 +117,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckOnRelevance()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -131,12 +132,12 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(),"Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.","Numbers of warning seems invalid, need one warning.");
-        }  catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need one warning.");
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -145,7 +146,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -154,7 +155,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckSubQRelevance()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -169,12 +170,12 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(),"Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 2 warnings.","Numbers of warning seems invalid, need 2 warnings.");
-        }  catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 2 warnings.", "Numbers of warning seems invalid, need 2 warnings.");
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -183,7 +184,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -192,7 +193,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckAssigment()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -207,12 +208,12 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(),"Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 1 warning.","Numbers of warning seems invalid, need 1 warning.");
-        }  catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 1 warning.", "Numbers of warning seems invalid, need 1 warning.");
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -221,7 +222,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -230,7 +231,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckAnswersText()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -245,12 +246,12 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have thew warning alert */
-            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(),"Unable to find the alert");
+            $this->assertTrue(self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning'))->isDisplayed(), "Unable to find the alert");
             /* We found the count of warnings */
             $elementStrong = self::$webDriver->findElement(WebDriverBy::cssSelector('#logicfiletable .alert-warning strong'));
             $strongAlert = $elementStrong->getText();
-            $this->assertEquals($strongAlert, "This question has at least 4 warnings.","Numbers of warning seems invalid, need 4 warnings.");
-        }  catch (Exception $ex) {
+            $this->assertEquals($strongAlert, "This question has at least 4 warnings.", "Numbers of warning seems invalid, need 4 warnings.");
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -259,7 +260,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -268,7 +269,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      **/
     public function testCheckNoIssue()
     {
-        $questions = $this->_getQuestions();
+        $questions = $this->getQuestions();
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -285,7 +286,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             /* Did we have a warning alert */
             $findWarnings = self::$webDriver->findElements(WebDriverBy::cssSelector('.alert-warning'));
             $this->assertCount(0, $findWarnings, 'There are a false warnings with a valid compare.');
-        }  catch (Exception $ex) {
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
             file_put_contents($filename, $screenshot);
@@ -294,7 +295,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
                 'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
-        }    
+        }
     }
 
     /**
@@ -303,11 +304,11 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
      * Array return questions attributes
      * @return array[]
      */
-    private function _getQuestions()
+    private function getQuestions()
     {
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $questions = [];
-        foreach($survey->groups as $group) {
+        foreach ($survey->groups as $group) {
             $questionObjects = $group->questions;
             foreach ($questionObjects as $q) {
                 $questions[$q->title] = $q;
@@ -326,5 +327,4 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
         self::openView($url);
         parent::tearDownAfterClass();
     }
-
 }
