@@ -437,6 +437,7 @@ class questions extends Survey_Common_Action
         $aData['sidemenu']['explorer']['state'] = true;
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
+        $aData['topBar']['showSaveButton'] = true;
         $aData['hasUpdatePermission'] =
             Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') ?
             '' :

@@ -54,7 +54,6 @@
             'stub-set' : StubSet
         },
         computed: {
-            
             currentAdvancedSettingsList() {
                 return filter(this.$store.state.currentQuestionAdvancedSettings[this.currentTab], (settingOption) => {
                     return !isEmpty(this.parseForLocalizedOption(settingOption.formElementValue));
@@ -78,6 +77,15 @@
             }
         },
         methods: {
+            currentValue(oAdvancedSettingObject) {
+                if(!isEmpty(oAdvancedSettingObject.formElementValue)) {
+                    return oAdvancedSettingObject.formElementValue;
+                } 
+                if(!isEmpty(oAdvancedSettingObject.aFormElementOptions.default)) {
+                    return oAdvancedSettingObject.aFormElementOptions.default;
+                } 
+                return "";
+            },
             reactOnChange(newValue, oAdvancedSettingObject) {
                 this.$store.commit('setQuestionAdvancedSetting', {newValue, settingName: oAdvancedSettingObject.formElementId});
             },
@@ -118,7 +126,7 @@
                 :elName="advancedSetting.formElementName"
                 :elLabel="advancedSetting.title"
                 :elHelp="advancedSetting.formElementHelp"
-                :currentValue="advancedSetting.formElementValue"
+                :currentValue="currentValue(advancedSetting)"
                 :elOptions="advancedSetting.aFormElementOptions"
                 :debug="advancedSetting"
                 :readonly="isReadonly(advancedSetting)"

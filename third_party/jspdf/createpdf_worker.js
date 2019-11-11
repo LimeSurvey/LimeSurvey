@@ -21,7 +21,7 @@ var CreatePDF = function(){
                 h_max = 247, w_max = 180,
                 w_relative = ((w_max/imgData.sizes.w)),
                 h_relative = ((h_max/imgData.sizes.h));
-            
+
             if(imgData.sizes.h < imgData.sizes.w){
                 width = w_max;
                 height = Math.floor((imgData.sizes.h*w_relative));
@@ -52,11 +52,15 @@ var CreatePDF = function(){
                 function(imgObjects){
                     countPages = imgObjects.length;
                     for( var i in imgObjects){
-                        var imageObject = imgObjects[i];
-                        compileCanvas(i,imageObject);
-                        preparedPages++;
-                        if((preparedPages)<countPages) 
-                            doc.addPage();
+                      // Exclude __proto__
+                      // see: https://stackoverflow.com/questions/1107681/javascript-hiding-prototype-methods-in-for-loop
+                      if (imgObjects.hasOwnProperty(i)) {
+                          var imageObject = imgObjects[i];
+                          compileCanvas(i,imageObject);
+                          preparedPages++;
+                          if((preparedPages)<countPages)
+                              doc.addPage();
+                      }
                     }
                     resolve("all done");
                 },
@@ -103,11 +107,11 @@ var CreatePDF = function(){
         unknown : function(method){
             return {
                 success: false,
-                type: "error", 
+                type: "error",
                 error: "CRITICAL! Method unknown.",
                 msg: "Unknown Method: "+method
                 };
-        }   
+        }
         }
     ,  action = function(method, eventData){
         switch(method){

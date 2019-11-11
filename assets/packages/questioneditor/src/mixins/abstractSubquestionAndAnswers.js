@@ -42,10 +42,13 @@ export default {
                 nonNumericPart = (relativeObject[0][this.typeDefininitionKey]).replace(/[0-9]/g,'');
             }
 
-            let numericPart = reduce(relativeObject,(prev, oDataSet) => {
-                return max([prev, parseInt((relativeObject[0][this.typeDefininitionKey]).replace(/[^0-9]/g,''))]);
-            }, 0) + 1 ;
+            let numericPart = reduce(relativeObject, (prev, oDataSet) => {
+                return max([prev, parseInt((oDataSet[this.typeDefininitionKey]).replace(/[^0-9]/g,''))]);
+            }, 0);
 
+            numericPart = numericPart+1;
+
+            this.$log.log('relativeObject', relativeObject);
             this.$log.log('NewTitle', {nonNumericPart, numericPart});
 
             return nonNumericPart+String(numericPart).padStart(2,'0');

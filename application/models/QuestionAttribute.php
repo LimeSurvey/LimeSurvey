@@ -27,6 +27,8 @@
  * @property Question $question
  * @property Survey $survey
  *
+ * @todo Should probably change question_attributes table to question_attribute_values
+ * @see participant_attributes and participant_attribute_values
  */
 class QuestionAttribute extends LSActiveRecord
 {
@@ -420,7 +422,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return array The advanced attribute settings for this question type
      */
-    public static function getAdvancedAttributesFromXml($sXmlFilePath){
+    protected static function getAdvancedAttributesFromXml($sXmlFilePath){
         $aXmlAttributes = array();
         $aAttributes = array();
 
@@ -475,7 +477,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return array The general attribute settings for this question type
      */
-    public static function getGeneralAttibutesFromXml($sXmlFilePath)
+    protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
         $aXmlAttributes = array();
         $aAttributes = array();
