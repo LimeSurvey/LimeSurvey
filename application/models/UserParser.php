@@ -63,7 +63,7 @@ class UserParser
                 $val = (isset($row[$i]) ? $row[$i] : '');
                 // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
                 if (preg_match('/^".*"$/', $val)) {
-                    $val = str_replace('""', '"', substr($val, 1, -1));
+                    $val = trim(str_replace('""', '"', substr($val, 1, -1)), "\xC2\xA0\n");
                 }
                 $rowarray[$aFirstLine[$i]] = $val;
             }
@@ -72,5 +72,31 @@ class UserParser
         fclose($oCSVFile);
         
         return $aToBeAddedUsers;
+    }
+
+
+    /**
+     * reads an uploaded json file
+     *
+     * @param array $FILES PHP Global $_FILES
+     * @return array List of users to create
+     */
+    public static function getDataFromJSON($FILES)
+    {
+        $json = file_get_contents($FILES['the_file']['tmp_name']);
+        $decoded = json_decode($json, true);
+
+        foreach($decoded as $data){
+            if(!isset($data["email"]) || !isset($data["users_name"]) || !isset($data["full_name"]) || !isset($data["lang"]) || !isset($data["password"])){
+                Yii::app()->setFlashMessage(
+                    sprintf(gT("Wrong offset definition!!! Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>'),
+                    'error'
+                    );
+                Yii::app()->getController()->redirect(array('/admin/usermanagement'));
+                Yii::app()->end();
+            }
+        }
+
+        return $decoded;
     }
 }

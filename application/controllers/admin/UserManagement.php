@@ -777,7 +777,7 @@ class UserManagement extends Survey_Common_Action
      *
      * @return string
      */
-    public function importuser()
+    public function renderUserImport(string $importFormat = 'csv')
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return $this->getController()->renderPartial(
@@ -785,8 +785,116 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        return $this->getController()->renderPartial('/admin/usermanagement/partial/importuser', []);
+
+        $importNote = sprintf(gT("Please make sure that your CSV contains the columns '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
+        $allowFileType = ".csv";  
+
+        if($importFormat == 'json') {
+            $importNote = sprintf(gT("Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
+            $allowFileType = ".json,application/json"; 
+        }
+        
+        return $this->getController()->renderPartial('/admin/usermanagement/partial/importuser', [
+            "note"         => $importNote,
+            "importFormat" => $importFormat,
+            "allowFile"    => $allowFileType
+        ]);
     }
+
+    /**
+     * Creates users from an uploaded CSV file
+     * @return string
+     */
+    public function importUsers(string $importFormat = 'csv')
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $overwriteUsers = false; 
+
+        if(isset($_POST['overwrite'])) {
+            $overwriteUsers = true;
+        }
+
+        switch ($importFormat) {
+            case "csv":
+                $aNewUsers = UserParser::getDataFromCSV($_FILES);
+                break;
+            case "json":
+                $aNewUsers = UserParser::getDataFromJSON($_FILES);
+                break; 
+        }
+       
+        $created = [];
+        $updated = [];
+
+        foreach ($aNewUsers as $aNewUser) {
+            
+            $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
+        
+            if($oUser  !== null) {
+                if($overwriteUsers) {
+                
+                    $oUser->full_name = $aNewUser['full_name'];
+                    $oUser->email = $aNewUser['email'];
+                    $oUser->parent_id = App()->user->id;
+                    $oUser->modified = date('Y-m-d H:i:s');
+                    if($aNewUser['password'] != ' ') {
+                        $oUser->password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                    }
+                    
+                    $save = $oUser->save();
+                    if($save){
+                        $updated[] = [
+                            'username' => $aNewUser['users_name'],
+                            'full_name' => $aNewUser['full_name'],
+                            'email' => $aNewUser['email'],
+                        ];
+                    }
+                  
+                }
+               
+            }else{
+                
+                $password = $this->getRandomPassword(8);
+                $passwordText = $password;
+                if($aNewUser['password'] != ' ') {
+                    $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                }
+                
+                $save = $this->_createNewUser([
+                    'users_name' => $aNewUser['users_name'],
+                    'full_name' => $aNewUser['full_name'],
+                    'password' => $password,
+                    'email' => $aNewUser['email'],
+                    'lang' => $aNewUser['lang'],
+                ], false);
+
+                if ($save) {
+                    $created[] = [
+                        'username' => $aNewUser['users_name'],
+                        'full_name' => $aNewUser['full_name'],
+                        'email' => $aNewUser['email'],
+                        'password' => $passwordText,
+                    ];
+                }
+
+            }
+               
+        }
+
+        return $this->getController()->renderPartial('/admin/usermanagement/userimported',
+         ['created' => $created,
+          'updated' => $updated      
+        ], 
+          
+         true);
+    }
+
 
     /**
      * Export users with specific format (json or csv)
@@ -836,12 +944,12 @@ class UserManagement extends Survey_Common_Action
 
             case "csv":
                 $fp = fopen($exportFile, 'w');
-
+                
                 //Add utf-8 encoding
                 fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
-
+                $header = array('uid','users_name','full_name','email','lang','password');
                 //Add csv header
-                fputcsv($fp, array('uid','users_name','ful_name','email','lang','password'), ';');
+                fputcsv($fp,$header, ';');
                 
                 //add csv row datas
                 foreach ($aUsers as $fields) { 
@@ -874,34 +982,29 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
+       
         $created = [];
         $aNewUsers = UserParser::getDataFromCSV($_FILES);
+        
         foreach ($aNewUsers as $aNewUser) {
-            if (isset($aNewUser['firstname']) && isset($aNewUser['surname'])) {
-                $name = $this->filterSpecials("{$aNewUser['firstname']}.{$aNewUser['surname']}");
-                $fullname = "{$aNewUser['firstname']} {$aNewUser['surname']}";
-            } elseif (isset($aNewUser['full_name'])) {
-                $fullname = $aNewUser['full_name'];
-                $name = $this->filterSpecials($fullname);
-            }
-
+            
             $password = $this->getRandomPassword(8);
-            if (User::model()->findByAttributes(['users_name' => $name]) !== null) {
+            if (User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]) !== null) {
                 continue;
             }
 
             $save = $this->_createNewUser([
-                'users_name' => $name,
-                'full_name' => $fullname,
+                'users_name' => $aNewUser['users_name'],
+                'full_name' => $aNewUser['full_name'],
                 'password' => $password,
                 'email' => $aNewUser['email'],
+                'lang' => $aNewUser['lang'],
             ], false);
 
             if ($save) {
                 $created[] = [
-                    'uid' => $oUser->uid,
-                    'username' => $name,
-                    'full_name' => $fullname,
+                    'username' => $aNewUser['users_name'],
+                    'full_name' => $aNewUser['full_name'],
                     'email' => $aNewUser['email'],
                     'password' => $password,
                     'save' => $save,
@@ -1051,7 +1154,7 @@ class UserManagement extends Survey_Common_Action
     /**
      * Update admin-user
      *
-     * @param $aUser
+     * @param array $aUser
      * @return object
      */
     public function updateAdminUser($aUser)
