@@ -24,6 +24,12 @@
     use \LimeSurvey\Helpers\questionHelper;
 
     Yii::import('application.helpers.expressions.em_core_helper', true);
+    // TODO: Fix autoloading of warnings.
+    Yii::import('application.helpers.expressions.warnings.EMWarningInterface', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningBase', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningInvalidComparison', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningPlusOperator', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningAssignment', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
@@ -10170,16 +10176,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $sWarningsText .= "<ul class='list-unstyled small text-warning'>";
                     $warningsDone = array();
                     foreach($aWarnings as $aWarning) {
-                        if(!in_array($aWarning[0],$warningsDone) ) {
+                        if(!in_array($aWarning->getMessage(),$warningsDone) ) {
                             $sWarningsText .= "<li>";
-                            if(!empty($aWarning[2])) {
-                                $sWarningsText .= CHtml::link($aWarning[0],$aWarning[2],array("target"=>"_blank",'class'=>'text-warning'));
+                            if($aWarning->hasHelpLink()) {
+                                $sWarningsText .= $aWarning->bakeHelpLink();
                             } else {
-                                $sWarningsText .= $aWarning[0];
+                                $sWarningsText .= $aWarning->getMessage();
                             }
                             $sWarningsText .= "</li>";
                         }
-                        $warningsDone[] = $aWarning[0];
+                        $warningsDone[] = $aWarning->getMessage();
                     }
                     $sWarningsText .= "</ul>";
                     $sWarningsText .= "</div>";

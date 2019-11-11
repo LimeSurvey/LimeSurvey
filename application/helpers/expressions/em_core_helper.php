@@ -325,14 +325,12 @@ class ExpressionManager
     /**
      * Add a warning to the error log
      *
-     * @param string $errMsg
-     * @param array|null $token
-     * @param string $helpLink
+     * @param EMWarningInterface $warning
      * @return void
      */
-    private function RDP_AddWarning($warningMsg, $token, $helpLink = "")
+    private function RDP_AddWarning(EMWarningInterface $warning)
     {
-        $this->RDP_warnings[] = array($warningMsg, $token, $helpLink);
+        $this->RDP_warnings[] = $warning;
     }
 
     /**
@@ -413,10 +411,10 @@ class ExpressionManager
             case '==':
             case 'eq':
                 if($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                 }
                 if($isForcedString) {
-                    $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                 }
                 $result = array(($arg1[0] == $arg2[0]), $token[1], 'NUMBER');
                 break;
@@ -427,11 +425,11 @@ class ExpressionManager
             case '<':
             case 'lt':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
                     if($isForcedString) {
-                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                        $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
                     $result = array(strcmp($arg1[0],$arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
@@ -441,7 +439,7 @@ class ExpressionManager
             case '<=';
             case 'le':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript
@@ -449,7 +447,7 @@ class ExpressionManager
                         $result = array(true, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
                         if($isForcedString) {
-                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                            $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                         }
                         $result = array(strcmp($arg1[0],$arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
@@ -460,7 +458,7 @@ class ExpressionManager
             case '>':
             case 'gt':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
@@ -468,7 +466,7 @@ class ExpressionManager
                         $result = array(false, $token[1], 'NUMBER');
                     } elseif(!$bBothNumeric && $bBothString) {
                         if($isForcedString) {
-                            $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                            $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                         }
                         $result = array(strcmp($arg1[0],$arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
@@ -479,11 +477,11 @@ class ExpressionManager
             case '>=';
             case 'ge':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(self::gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
                     if($isForcedString) {
-                        $this->RDP_AddWarning(self::gT("This expression uses alphabetical compare. Are you sure you didn't mean numerical compare? See manual for more information.",'unescaped'), $token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison");
+                        $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
                     $result = array(strcmp($arg1[0],$arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
@@ -492,10 +490,10 @@ class ExpressionManager
                 break;
             case '+':
                 if ($bBothNumeric) {
-                    $this->RDP_AddWarning(self::gT("Usage of + with numeric value, see manual about usage of sum.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
+                    $this->RDP_AddWarning(new EMWarningPlusOperator($token));
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
                 } else {
-                    $this->RDP_AddWarning(self::gT("Usage of + with string value, see manual about usage of join.",'unescaped'),$token, "https://manual.limesurvey.org/Expression_Manager#Warning_with_plus_operator_.28.2B.29");
+                    $this->RDP_AddWarning(new EMWarningPlusOperator($token));
                     $result = array($arg1[0].$arg2[0], $token[1], 'STRING');
                 }
                 break;
@@ -761,7 +759,7 @@ class ExpressionManager
                                 $evalStatus = false;
                             }
                         }
-                        $this->RDP_AddWarning(self::gT('Assigning a new value to a variable.','unescaped'),$token2, 'https://manual.limesurvey.org/Expression_Manager#Using_Assignment_Operator');
+                        $this->RDP_AddWarning(new EMWarningAssignment($token2));
                         return $evalStatus;
                     } else {
                         $this->RDP_AddError(self::gT('The value of this variable can not be changed'), $token1);
@@ -1398,7 +1396,7 @@ class ExpressionManager
         $warnings = $this->RDP_warnings;
         $warningsCount = count($warnings);
         if(!empty($warnings)) {
-            usort($warnings, "cmpErrorTokens");
+            usort($warnings, "cmpWarningTokens");
         }
         $stringParts = array();
         $numTokens = count($tokens);
@@ -1428,8 +1426,8 @@ class ExpressionManager
             $thisTokenHasWarning = false;
             $warningIndex = 0;
             while ($warningIndex < $warningsCount) {
-                if ($warnings[$warningIndex][1] == $token) { // Error related to this token
-                    $messages[] = $warnings[$warningIndex][0];
+                if ($warnings[$warningIndex]->getToken() == $token) { // Error related to this token
+                    $messages[] = $warnings[$warningIndex]->getMessage();
                     $thisTokenHasWarning = true;
                 }
                 $warningIndex++;
@@ -2491,6 +2489,33 @@ function cmpErrorTokens($a, $b)
         return 0;
     }
     return ($a[1][1] < $b[1][1]) ? -1 : 1;
+}
+
+/**
+ * @param EMWarningInterface $a
+ * @param EMWarningInterface $b
+ * @return int
+ * @todo Unify errors and warnings with a EMErrorComparableInterface
+ */
+function cmpWarningTokens(EMWarningInterface $a, EMWarningInterface $b)
+{
+    $tokenA = $a->getToken();
+    $tokenB = $b->getToken();
+
+    if (is_null($tokenA)) {
+        if (is_null($tokenB)) {
+            return 0;
+        }
+        return 1;
+    }
+    if (is_null($tokenB)) {
+        return -1;
+    }
+
+    if ($tokenA[1] == $tokenB[1]) {
+        return 0;
+    }
+    return ($tokenA[1] < $tokenB[1]) ? -1 : 1;
 }
 
 /**
