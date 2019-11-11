@@ -772,9 +772,9 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Calls up a modal to import users via csv file
+     * Calls up a modal to import users via csv/json file
      *
-     *
+     *@param string $importFormat - Importformat (csv/json) to render 
      * @return string
      */
     public function renderUserImport(string $importFormat = 'csv')
@@ -802,7 +802,9 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Creates users from an uploaded CSV file
+     * Creates users from an uploaded CSV / JSON file
+     * 
+     * @param string importFormat - format of the imported file - Choice between csv / json
      * @return string
      */
     public function importUsers(string $importFormat = 'csv')
@@ -968,109 +970,6 @@ class UserManagement extends Survey_Common_Action
         unlink($exportFile);
     }
 
-    
-
-    /**
-     * Creates users from an uploaded CSV file
-     * @return string
-     */
-    public function importcsv()
-    {
-        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-       
-        $created = [];
-        $aNewUsers = UserParser::getDataFromCSV($_FILES);
-        
-        foreach ($aNewUsers as $aNewUser) {
-            
-            $password = $this->getRandomPassword(8);
-            if (User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]) !== null) {
-                continue;
-            }
-
-            $save = $this->_createNewUser([
-                'users_name' => $aNewUser['users_name'],
-                'full_name' => $aNewUser['full_name'],
-                'password' => $password,
-                'email' => $aNewUser['email'],
-                'lang' => $aNewUser['lang'],
-            ], false);
-
-            if ($save) {
-                $created[] = [
-                    'username' => $aNewUser['users_name'],
-                    'full_name' => $aNewUser['full_name'],
-                    'email' => $aNewUser['email'],
-                    'password' => $password,
-                    'save' => $save,
-                ];
-            }
-        }
-        return $this->getController()->renderPartial('userimported', ['created' => $created], true);
-    }
-
-    /**
-     * Mass import from a well-formed json string
-     *
-     * @return void
-     */
-    public function importfromjson()
-    {
-        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-
-        $sJsonUserString = Yii::app()->request->getPost('jsonstring', '{}');
-
-        $result = [];
-
-        if ($sJsonUserString != '{}') {
-            $aJsonUsers = json_decode($sJsonUserString, true);
-            $result = ['created' => [], 'updated' => []];
-           
-            foreach ($aJsonUsers as $aUserData) {
-                
-                $storeTo = 'updated';
-                $oUser = User::model()->findByAttributes(['users_name' => $aUserData['users_name']]);
-                if ($oUser == null) {
-
-                    $storeTo = 'created';
-                    $oUser = new User;
-                    $oUser->users_name = $aUserData['users_name'];
-                    $oUser->full_name = $aUserData['full_name'];
-                    $oUser->email = $aUserData['email'];
-                    $oUser->parent_id = App()->user->id;
-                    $oUser->created = date('Y-m-d H:i:s');
-                    $oUser->modified = date('Y-m-d H:i:s');
-                    //hash password if import password is defined
-                    if($aUserData['password']){
-                        $oUser->password = password_hash($aUserData['password'], PASSWORD_DEFAULT);
-                    }
-                   
-                    $save = $oUser->save();
-                    $newUser = $this->_createNewUser($aUserData,false);
-                    $result[$storeTo][] = [
-                        'uid' => $newUser['uid'],
-                        'username' => $newUser['users_name'],
-                        'full_name' => $newUser['full_name'],
-                        'email' => $newUser['email'],
-                        'password' =>$aUserData['password'],
-                        'save' => $save,
-                    ];
-                }  
-            }
-        }
-        $this->_renderWrappedTemplate('usermanagement', 'importfromjson', ['result' => $result]);
-    }
-
     /**
      * Resets the password for one user
      *
@@ -1093,7 +992,13 @@ class UserManagement extends Survey_Common_Action
         ];
     }
 
-
+    /**
+     * Create new user
+     * 
+     * @param array $aUser array with user details
+     * @param bool $sendMail - option to send mail to user when created
+     * @return object user - created user object
+     */
     public function _createNewUser($aUser, $sendMail = true)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
@@ -1154,8 +1059,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Update admin-user
      *
-     * @param array $aUser
-     * @return object
+     * @param array $aUser array with user details
+     * @return object user - updated user object
      */
     public function updateAdminUser($aUser)
     {
