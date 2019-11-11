@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.19.3 (build 191023) to 3.20.0 (build 191112) November 12, 2019
+-New features #15532: Show warnings when implicit alphabetical compare (#1341) (Denis Chenu)
+-Fixed issue: generate PDF for a single stat is not working (LouisGac)
+-Fixed issue: Template api version compatibility (Eddy Lackmann)
+-Fixed issue: Slow import/copy survey if XSS filter is activated (Carsten Schmitz)
+-Fixed issue: Export printable Survey not working with massive action (Eddy Lackmann)
+-Fixed issue #15532: Show warnings when implicit alphabetical compare is used in expressions (Denis Chenu)
+-Fixed issue #15430: Bars at statistics are often hardly visible / Wrong bar colors (Patrick Teichmann)
+
+
 Changes from 3.19.2 (build 191017) to 3.19.3 (build 191023) October 23, 2019
 -Fixed issue: statistics graph for Array text question type is not displayed (Dominik Vitt)
 -Fixed issue: No Access-Control header in RPC (lacrioque)
