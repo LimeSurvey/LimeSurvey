@@ -1053,13 +1053,14 @@ class InstallerController extends CController
             $sConfig .= "\t\t"."),"."\n"
             ."\t\t".""."\n"
 
-            ."\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
-            ."\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
-            ."\t\t"."// 'session' => array ("."\n"
+            ."\t\t"." 'session' => array ("."\n"
+            ."\t\t\t"."'sessionName'=>'LS-".$this->_getRandomString(5)."'"."\n"
+            ."\t\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
+            ."\t\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
             ."\t\t\t"."// 'class' => 'application.core.web.DbHttpSession',"."\n"
             ."\t\t\t"."// 'connectionID' => 'db',"."\n"
             ."\t\t\t"."// 'sessionTableName' => '{{sessions}}',"."\n"
-            ."\t\t"."// ),"."\n"
+            ."\t\t"." ),"."\n"
             ."\t\t".""."\n"
 
             /** @todo Uncomment after implementing the error controller */
@@ -1117,9 +1118,8 @@ class InstallerController extends CController
      *
      * @return string
      */
-    private function _getRandomString()
+    private function _getRandomString($iTotalChar=64)
     {
-        $iTotalChar = 64; // number of chars in the sid
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
             $sResult .= chr(rand(33, 126));
