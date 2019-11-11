@@ -42,6 +42,15 @@ class saved extends Survey_Common_Action
         $aThisSurvey = getSurveyInfo($iSurveyId);
         $oSavedControlModel = SavedControl::model();
         $oSavedControlModel->sid = $iSurveyId;
+
+        // Filter state
+        if (Yii::app()->request->getParam('SavedControl',false)){
+          $aFilters = Yii::app()->request->getParam('SavedControl');
+          foreach($aFilters as $sFilterName => $sFilterValue){
+              $oSavedControlModel->$sFilterName = $sFilterValue;
+          }
+        }
+
         $aData['model'] = $oSavedControlModel;
         $aData['sSurveyName'] = $aThisSurvey['name'];
         $aData['iSurveyId'] = $iSurveyId;
