@@ -34,6 +34,7 @@ class QuestionGroup extends LSActiveRecord
     public $group_name;
     public $language;
     public $description;
+
     /**
      * @inheritdoc
      * @return QuestionGroup
@@ -61,9 +62,11 @@ class QuestionGroup extends LSActiveRecord
     /** @inheritdoc */
     public function rules()
     {
-        return array(
-            array('group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-        );
+        return [
+            ['group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true],
+            ['grelevance', 'safe'],
+            ['randomization_group', 'safe']
+        ];
     }
 
     /** @inheritdoc */
