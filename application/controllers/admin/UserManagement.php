@@ -291,13 +291,13 @@ class UserManagement extends Survey_Common_Action
             return $this->getController()->renderPartial(
                 '/admin/usermanagement/partial/error',
                 ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
-            );
+            );  
         }
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
-        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
+        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));    
     }
-
+	
     /**
      * Opens a modal to edit user template permissions
      *
@@ -884,9 +884,7 @@ class UserManagement extends Survey_Common_Action
                         'password' => $passwordText,
                     ];
                 }
-
-            }
-               
+            }            
         }
 
         Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
