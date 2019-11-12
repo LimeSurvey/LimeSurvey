@@ -3,6 +3,7 @@
  * This file is part of statFunctions plugin
  */
 namespace statFunctions;
+
 use Yii;
 use CHtml;
 use LimeExpressionManager;
@@ -24,23 +25,23 @@ class countFunctions
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
         $checkSurveyId = self::_checkSurveyId($surveyId);
-        if(!is_null($checkSurveyId)) {
+        if (!is_null($checkSurveyId)) {
             return $checkSurveyId;
         }
-        $column = self::_getColumnByQCode($surveyId,$qCode);
-        if(is_null($column)) {
-            if(Permission::model()->hasSurveyPermission($surveyId,'surveycontent')) { // update ???
-                return sprintf(gT("Invalid question code %s"),CHtml::encode($qCode));
+        $column = self::_getColumnByQCode($surveyId, $qCode);
+        if (is_null($column)) {
+            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
+                return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
             }
             return "";
         }
         $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria;
         $oCriteria->condition= "$sQuotedColumn IS NOT NULL";
-        if($submitted) {
+        if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        $oCriteria->compare($sQuotedColumn,$comparaison);
+        $oCriteria->compare($sQuotedColumn, $comparaison);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
     }
 
@@ -54,13 +55,13 @@ class countFunctions
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
         $checkSurveyId = self::_checkSurveyId($surveyId);
-        if(!is_null($checkSurveyId)) {
+        if (!is_null($checkSurveyId)) {
             return $checkSurveyId;
         }
-        $column = self::_getColumnByQCode($surveyId,$qCode);
-        if(is_null($column)) {
-            if(Permission::model()->hasSurveyPermission($surveyId,'surveycontent')) { // update ???
-                return sprintf(gT("Invalid question code %s"),CHtml::encode($qCode));
+        $column = self::_getColumnByQCode($surveyId, $qCode);
+        if (is_null($column)) {
+            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
+                return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
             }
             return "";
         }
@@ -68,7 +69,7 @@ class countFunctions
         $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria;
         $oCriteria->condition= "$sQuotedColumn IS NOT NULL and $sQuotedColumn <> ''";
-        if($submitted) {
+        if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
@@ -82,10 +83,10 @@ class countFunctions
     private static function _checkSurveyId($surveyId)
     {
         $oSurvey = Survey::model()->findByPk($surveyId);
-        if(!$oSurvey) {
+        if (!$oSurvey) {
             return "Invalid survey"; // Can not happen … (hope)
         }
-        if(!$oSurvey->getIsActive()) {
+        if (!$oSurvey->getIsActive()) {
             return 0;
         }
     }
@@ -96,11 +97,11 @@ class countFunctions
      * @param string $qCode
      * @return null|string : null mean an invalid column/code, string is the column in reponse database, null if not found
      */
-    private static function _getColumnByQCode($surveyId,$qCode)
+    private static function _getColumnByQCode($surveyId, $qCode)
     {
         $availableColumns = SurveyDynamic::model($surveyId)->getAttributes();
         /* Sample : Q01.sgqa Q01_SQ01.sgqa */
-        if(array_key_exists($qCode,$availableColumns)) {
+        if (array_key_exists($qCode, $availableColumns)) {
             return $qCode;
         }
         /* @todo : allow "Q0" and "Q0_SQ0" …

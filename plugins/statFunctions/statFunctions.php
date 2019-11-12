@@ -20,17 +20,17 @@
  */
 class statFunctions extends PluginBase
 {
-    static protected $description = 'Add some function in expression manager to get count from other responses';
-    static protected $name = 'statCountFunctions';
+    protected static $description = 'Add some function in expression manager to get count from other responses';
+    protected static $name = 'statCountFunctions';
 
     public function init()
     {
-        $this->subscribe('ExpressionManagerStart','newValidFunctions');
+        $this->subscribe('ExpressionManagerStart', 'newValidFunctions');
     }
 
     public function newValidFunctions()
     {
-        Yii::setPathOfAlias(get_class($this),dirname(__FILE__));
+        Yii::setPathOfAlias(get_class($this), dirname(__FILE__));
         //~ Yii::import(get_class($this).".exampleFunctions");
         $newFunctions = array(
             'statCountIf' => array(
