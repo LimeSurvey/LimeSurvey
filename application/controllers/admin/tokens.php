@@ -1291,7 +1291,7 @@ class tokens extends Survey_Common_Action
 
         $aTokenIds = $this->getTokenIds();
         $sSubAction = $this->getSubAction();
-        $bEmail = $sSubAction == 'invite';
+        $bIsInvitation = $sSubAction == 'invite';
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('/admin/htmleditor');
@@ -1315,7 +1315,7 @@ class tokens extends Survey_Common_Action
         }
         $aData['surveyid'] = $iSurveyId;
         $aData['sSubAction'] = $sSubAction;
-        $aData['bEmail'] = $bEmail;
+        $aData['bEmail'] = $bIsInvitation;
         $aData['aSurveyLangs'] = $aData['surveylangs'] = $aSurveyLangs;
         $aData['baselang'] = $sBaseLanguage;
         $aData['tokenfields'] = array_keys($aTokenFields);
@@ -1332,12 +1332,12 @@ class tokens extends Survey_Common_Action
         } else {
             $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
-            $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bEmail);
+            $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
 
-            $ctresult = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $ctresult = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
 
-            $emresult = TokenDynamic::model($iSurveyId)->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $emresult = TokenDynamic::model($iSurveyId)->findUninvited($aTokenIds, $iMaxEmails, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $emcount = count($emresult);
 
             foreach ($aSurveyLangs as $language) {
@@ -1353,10 +1353,10 @@ class tokens extends Survey_Common_Action
             $bSendError = false;
             if ($emcount > 0) {
                 foreach ($emresult as $emrow) {
-                    if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
+                    if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'],$bIsInvitation)) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".
-                        if ($bEmail) {
+                        if ($bIsInvitation) {
                             $tokenoutput .= sprintf(gT("Invitation %s skipped, already sent."), $emrow['tid']) . "<br/>";
                         } else {
                             $tokenoutput .= sprintf(gT("Reminder %s skipped, already sent."), $emrow['tid']) . "<br/>";
@@ -1481,7 +1481,7 @@ class tokens extends Survey_Common_Action
                         if ($success) {
                             // Put date into sent
                             $token = Token::model($iSurveyId)->findByPk($emrow['tid']);
-                            if ($bEmail) {
+                            if ($bIsInvitation) {
                                 $tokenoutput .= gT("Invitation sent to:");
                                 $token->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                             } else {
@@ -1493,9 +1493,10 @@ class tokens extends Survey_Common_Action
 
                             // Mark token email as send this session.
                             // NB: This cache is cleared on form page for invitation/reminder.
-                            $_SESSION[$this->getEmailCacheName($iSurveyId)][$emrow['tid']] = 1;
+                            $sType = $bIsInvitation?'i':'r';
+                            $_SESSION[$this->getEmailCacheName($iSurveyId)][$sType][$emrow['tid']] = 1;
 
-                            //Update central participant survey_links
+                            //Update central participant survey_links        
                             if (!empty($emrow['participant_id'])) {
                                 $slquery = SurveyLink::model()->find('participant_id = :pid AND survey_id = :sid AND token_id = :tid', array(':pid' => $emrow['participant_id'], ':sid' => $iSurveyId, ':tid' => $emrow['tid']));
                                 if (!is_null($slquery)) {
@@ -2757,13 +2758,15 @@ class tokens extends Survey_Common_Action
      * Being set means the email has already been send.
      * @param int $iSurveyId
      * @param string $token
-     * $return boolean
+     * @param boolean $bIsInvitation
+     * $return  boolean
      */
-    protected function tokenIsSetInEmailCache($iSurveyId, $tid)
+    protected function tokenIsSetInEmailCache($iSurveyId, $tid, $bIsInvitation)
     {
+        $sType = $bIsInvitation?'i':'r';
         $cacheName = $this->getEmailCacheName($iSurveyId);
         return isset($_SESSION[$cacheName])
-            && isset($_SESSION[$cacheName][$tid])
-            && $_SESSION[$cacheName][$tid] > 0;
+            && isset($_SESSION[$cacheName][$sType][$tid])
+            && $_SESSION[$cacheName][$sType][$tid] > 0;
     }
 }
