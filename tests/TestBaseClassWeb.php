@@ -162,6 +162,7 @@ class TestBaseClassWeb extends TestBaseClass
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
+        /*
         try {
             sleep(1);
             self::$webDriver->wait(5)->until(
@@ -179,6 +180,7 @@ class TestBaseClassWeb extends TestBaseClass
                 'Found no welcome jumbotron after login.'
             );
         }
+         */
     }
 
     /**
