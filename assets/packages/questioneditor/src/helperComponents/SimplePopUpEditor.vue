@@ -1,13 +1,11 @@
 <script>
 
-import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
 import merge from 'lodash/merge';
 
 export default {
     name: 'SimplePopUpEditor',
     data(){
         return {
-        editor: LsEditor,
         abstractObject: {},
     }},
     props: {
@@ -60,7 +58,7 @@ export default {
         </div>
         <div class="panel-body ls-flex-column grow-1 fill">
             <div class="ls-flex-column fill unscoped--SimplePopup-editor-container">
-                <lsckeditor class="ls-flex-column fill" :editor="editor" v-model="abstractObject[$store.state.activeLanguage][typeDef]" :config="editorConfig"></lsckeditor>
+                <lsckeditor class="ls-flex-column fill" v-model="abstractObject[$store.state.activeLanguage][typeDef]" :config="editorConfig"></lsckeditor>
             </div>
         </div>
         <div class="panel-footer">

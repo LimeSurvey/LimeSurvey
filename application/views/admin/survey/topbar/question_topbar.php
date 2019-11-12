@@ -89,7 +89,7 @@ if ($hasReadPermission) {
     array_push($topbarextended['alignment']['left']['buttons'], $surveypreview_buttons);
 
     // Preview Survey Page Button
-    $name = gT('Preview survey page');
+    $name = gT('Preview current page');
 
     $questiongrouppreview_buttons = [];
 
@@ -291,6 +291,7 @@ if ($hasDeletePermission) {
         'id' => 'delete_button',
         'icon' => 'fa fa-trash text-danger',
         'class' => ' btn-danger',
+        'message' => gT('Are you sure you want to delete this question?')
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['delete']);
 }

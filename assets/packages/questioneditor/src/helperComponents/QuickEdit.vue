@@ -162,7 +162,8 @@ export default {
         </div>
         <div class="panel-body ls-flex-column grow-1 fill">
             <div 
-                class="ls-flex-column fill ls-space margin top-5 bottom-5"
+                class="ls-flex-column ls-space margin top-5 bottom-5"
+                :class="'scoped-fix-height-1-' + scales.length"
                 v-for="scale in scales"
                 :key="scale"
             >
@@ -198,5 +199,13 @@ export default {
 .scoped-textarea-class {
     height: 100%;
     width: 100%;
+}
+.scoped-fix-height-1-1 {
+    margin-top: 1%;
+    height: 99%;
+}
+.scoped-fix-height-1-2 {
+    height: 48%;
+    margin-top: 1%;
 }
 </style>

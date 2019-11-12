@@ -220,18 +220,12 @@ $this->renderPartial('super/fullpagebar_view', array(
         </div>
         <div id="questionthemes" class="tab-pane">
             <div class="col-lg-12 list-surveys">
-
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
-
-                Under Development.
-
                 <!-- Installed Question Themes -->
-                <?php // $this->renderPartial('themeoptions/surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
-                <?php // $this->renderPartial('themeoptions/partials/question_themes/installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-
-                <!-- Available Quesiton Themes -->
-                <?php // $this->renderPartial('themeoptions/partials/question_themes/availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
-
+                <?php $this->renderPartial('themeoptions/surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
+                <?php $this->renderPartial('themeoptions/partials/question_themes/installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <!-- Available Quesiton Themes-->
+                <?php $this->renderPartial('themeoptions/partials/question_themes/availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
         </div>
     </div>

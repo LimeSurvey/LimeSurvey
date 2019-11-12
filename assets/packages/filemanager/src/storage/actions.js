@@ -3,24 +3,30 @@ import ajax from '../mixins/runAjax';
 export default {
     getFolderList: (ctx) => {
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(window.FileManager.baseUrl+'getFolderList', {surveyid: ctx.state.currentSurveyId}).then(
+            ajax.methods.$_get(window.FileManager.baseUrl+'getFolderList', {surveyid: ctx.state.currentSurveyId})
+            .then(
                 (result)=>{
                     ctx.commit('setFolderList', result.data);
                     resolve(result);
                 }, 
-                (error) =>{ reject(error); }
-            );
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     getFileList: (ctx) => {
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(window.FileManager.baseUrl+'getFileList', {surveyid: ctx.state.currentSurveyId, folder: ctx.state.currentFolder}).then(
+            ajax.methods.$_get(window.FileManager.baseUrl+'getFileList', {surveyid: ctx.state.currentSurveyId, folder: ctx.state.currentFolder})
+            .then(
                 (result)=>{
                     ctx.commit('setFileList', result.data);
                     resolve(result);
-                }, 
-                (error) =>{ reject(error); }
-            );
+                }
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     folderSelected: (ctx, folderObject) => {
@@ -44,9 +50,11 @@ export default {
                         }, 
                         (error) =>{ reject(error); }
                     )
-                },
-                (error) =>{ reject(error); }
-            );
+                }
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     applyTransition: (ctx) => {
@@ -67,9 +75,11 @@ export default {
                         }, 
                         (error) =>{ reject(error); }
                     )
-                },
-                (error) =>{ ctx.commit('cancelTransit'); reject(error); }
-            );
+                }
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     }
 };

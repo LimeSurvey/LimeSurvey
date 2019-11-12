@@ -17,6 +17,7 @@ export default {
         return {
             uniqueSelector: 'aid',
             type: 'answeroptions',
+            orderAttribute: 'sortorder',
             typeDefininition: 'answer',
             typeDefininitionKey: 'code',
             answeroptionDragging: false,
@@ -57,7 +58,7 @@ export default {
                 aid: randomId,
                 qid: this.$store.state.currentQuestion.qid,
                 code: this.getNewTitleFromCurrent(scaleId),
-                sortorder: (this.currentDataSet.length + 1),
+                sortorder: 0,
                 scale_id: ''+scaleId,
                 assessment_value: 0,
                 };
@@ -97,7 +98,9 @@ export default {
         //dragevents questions
         startDraggingAnsweroption($event, answeroptionObject, scale) {
             this.$log.log("Dragging started", answeroptionObject);
-            $event.dataTransfer.setData('application/node', this);
+            $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
+            $event.dataTransfer.dropEffect = "move";
+            $event.dataTransfer.setDragImage(document.createElement('span'), 0, 0)
             this.answeroptionDragging = true;
             this.draggedAnsweroption = answeroptionObject;
         },
@@ -159,6 +162,7 @@ export default {
                 <div 
                     :key="answeroptionscale+'answeroptions'"
                     class="row list-group scoped-answeroption-row-container"
+                    @dragover.prevent="preventDisallowedCursor"
                 >
                     <div class="list-group-item scoped-answeroption-block header-block">
                         <div class="scoped-move-block" v-show="!readonly">
@@ -182,7 +186,7 @@ export default {
                         class="list-group-item scoped-answeroption-block"
                         v-for="answeroption in currentDataSet[answeroptionscale]"
                         :key="answeroption.aid"
-                        @dragenter="dragoverAnsweroption($event, answeroption, answeroptionscale)"
+                        @dragenter.prevent="dragoverAnsweroption($event, answeroption, answeroptionscale)"
                         :class="(answeroptionDragging ? 'movement-active'+ ((answeroption.aid == draggedAnsweroption.aid) ? ' in-movement' : '') : '')"
                     >
                         <div class="scoped-move-block" v-show="!readonly">
@@ -238,17 +242,34 @@ export default {
                             />
                         </div>
                         <div class="scoped-actions-block" v-show="!readonly">
-                            <button v-if="!surveyActive" class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)">
+                            <button 
+                                v-if="!surveyActive" 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip" 
+                                :title='translate("Delete")'
+                                @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)"
+                            >
                                 <i class="fa fa-trash text-danger"></i>
-                                {{ "Delete" | translate }}
+                                <span class="sr-only">{{ "Delete" | translate }}</span>
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(answeroption, answeroptionscale)">
+                            <button 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip" 
+                                :title='translate("Open editor")'
+                                @click.prevent="openPopUpEditor(answeroption, answeroptionscale)"
+                            >
                                 <i class="fa fa-edit"></i>
-                                {{ "Open editor" | translate }}
+                                <span class="sr-only">{{ "Open editor" | translate }}</span>
                             </button>
-                            <button v-if="!surveyActive" class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)">
+                            <button 
+                                v-if="!surveyActive" 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip" 
+                                :title='translate("Duplicate")'
+                                @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)"
+                            >
                                 <i class="fa fa-copy"></i>
-                                {{ "Duplicate" | translate }}
+                                <span class="sr-only">{{ "Duplicate" | translate }}</span>
                             </button>
                         </div>
 
@@ -306,6 +327,10 @@ export default {
     .scoped-move-block {
         width:5%;
         text-align: center;
+        cursor: move;
+        &:active {
+            cursor: grabbing;
+        }
         &>i {
             font-size: 28px;
             line-height: 32px;
@@ -329,12 +354,15 @@ export default {
         flex-grow: 1;
     }
     .scoped-actions-block {
-        width: 25%;
+        width: 15%;
+        padding-left: 1rem;
     }
     .movement-active {
         background-color: hsla(0,0,90,0.8);
         &.in-movement {
             background-color: hsla(0,0,60,1);
+            width:102%;
+            margin-left: -1%;
         }
     }
 </style>

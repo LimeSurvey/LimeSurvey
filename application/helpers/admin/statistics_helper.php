@@ -358,7 +358,7 @@ function buildSelects($allfields, $surveyid, $language)
                 /*
                 * these question types WON'T be handled here:
                 * M = Multiple choice
-                * T - Long Free Text
+                * T - Long free text
                 * Q - Multiple Short Text
                 * D - Date
                 * N - Numerical Input
@@ -442,7 +442,7 @@ function buildSelects($allfields, $surveyid, $language)
                     }
                 }
 
-                //T - Long Free Text
+                //T - Long free text
                 //Q - Multiple Short Text
                 elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                     $selectSubs = array();
@@ -2148,7 +2148,6 @@ class statistics_helper
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                 // Output graph
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
-
             } else {
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_nograph', array(), true);
             }

@@ -345,7 +345,7 @@ class LS_Twig_Extension extends Twig_Extension
      * Get the parsed output of the expression manger for a specific string
      *
      * @param String $sInString
-     * @return String 
+     * @return String
      */
     public static function getExpressionManagerOutput($sInString) {
         templatereplace(flattenText($sInString));
@@ -356,7 +356,7 @@ class LS_Twig_Extension extends Twig_Extension
      * Get the textcontrol widget output for a specific string
      *
      * @param String $sInString
-     * @return String 
+     * @return String
      */
     public static function getTextDisplayWidget($sInString, $name) {
         templatereplace(flattenText($sInString));
@@ -378,7 +378,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @param String $permission
      * @param String $permissionGrade
      * @param Integer|NULL $iSurveyId (default null)
-     * 
+     *
      * @return Boolean
      */
     public static function checkPermission($permission, $permissionGrade, $iSurveyId = null) {
@@ -673,28 +673,4 @@ class LS_Twig_Extension extends Twig_Extension
 
         return $aResponses;
     }
-
-
-    /**
-     * Retreive all the previous answers from a given survey (can be a different survey)
-     * To use it:
-     *  {% set aResponses = getAllAnswers(aSurveyInfo.sid) %}
-     *  {{ dump(aResponses) }}
-     *
-     *  If you want to show it after completion, the you must turn on public statistics
-     */
-    public static function getAllAnswers( $iSurveyID )
-    {
-        $aResponses = array();
-        $oResponses = SurveyDynamic::model($iSurveyID)->findAll();
-
-        if( count($oResponses) > 0 ){
-            foreach($oResponses as $oResponse)
-                array_push($aResponses,$oResponse->attributes);
-        }
-
-        return $aResponses;
-
-    }
-
 }

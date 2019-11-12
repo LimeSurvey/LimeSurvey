@@ -1,10 +1,10 @@
 <script>
 import Mousetrap from 'mousetrap';
 
+import ClassicEditor from '../../meta/LsCkeditor/src/LsCkEditorClassic.js';
 import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
-import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
 import runAjax from './mixins/runAjax.js';
 
 export default {
@@ -32,7 +32,7 @@ export default {
         return {
             loading: true,
             event: null,
-            descriptionEditorObject: LsEditor,
+            descriptionEditorObject: ClassicEditor,
             descriptionEditorConfig: {
                 'lsExtension:fieldtype': 'survey-desc', 
                 'lsExtension:ajaxOptions': this.$store.getters.surveyid != null 
@@ -42,7 +42,7 @@ export default {
                     ? 'upload/surveys/'+this.$store.getters.surveyid+'/' 
                     : 'upload/global/',
             },
-            welcomeEditorObject: LsEditor,
+            welcomeEditorObject: ClassicEditor,
             welcomeEditorConfig: {
                 'lsExtension:fieldtype': 'survey-welc', 
                 'lsExtension:ajaxOptions': this.$store.getters.surveyid != null 
@@ -52,7 +52,7 @@ export default {
                     ? 'upload/surveys/'+this.$store.getters.surveyid+'/' 
                     : 'upload/global/',
             },
-            endTextEditorObject: LsEditor,
+            endTextEditorObject: ClassicEditor,
             endTextEditorConfig: {
                 'lsExtension:fieldtype': 'survey-endtext', 
                 'lsExtension:ajaxOptions': this.$store.getters.surveyid != null 
@@ -302,7 +302,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentDescription)" />
-                    <lsckeditor @error="CKErrorManagement" @focus="CKEventManagement" id="descriptionEditor" v-if="!descriptionSource && $store.state.permissions.update" :editor="descriptionEditorObject" v-model="currentDescription" :config="descriptionEditorConfig"></lsckeditor>
+                    <lsckeditor @error="CKErrorManagement" @focus="CKEventManagement" :editor="descriptionEditorObject" id="descriptionEditor" v-if="!descriptionSource && $store.state.permissions.update" v-model="currentDescription" :config="descriptionEditorConfig"></lsckeditor>
                     <aceeditor id="descriptionSource" v-if="descriptionSource && $store.state.permissions.update" v-model="currentDescription" thisId="currentDescriptionSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="description" v-model="currentDescription" />
                 </div>
@@ -318,7 +318,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentWelcome)" />
-                    <lsckeditor @error="CKErrorManagement" @focus="CKEventManagement" id="welcomeEditor" v-if="!welcomeSource && $store.state.permissions.update" :editor="welcomeEditorObject" v-model="currentWelcome" :config="welcomeEditorConfig"></lsckeditor>
+                    <lsckeditor @error="CKErrorManagement" @focus="CKEventManagement" :editor="welcomeEditorObject" id="welcomeEditor" v-if="!welcomeSource && $store.state.permissions.update" v-model="currentWelcome" :config="welcomeEditorConfig"></lsckeditor>
                     <aceeditor v-if="welcomeSource && $store.state.permissions.update" v-model="currentWelcome" thisId="currentWelcomeSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="welcome" v-model="currentWelcome" />
                 </div>
@@ -334,7 +334,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEndText)" />
-                    <lsckeditor @error="CKErrorManagement" @focus="CKEventManagement" id="endTextEditor" v-if="!endTextSource && $store.state.permissions.update" :editor="endTextEditorObject" v-model="currentEndText" :config="endTextEditorConfig"></lsckeditor>
+                    <lsckeditor @error="CKErrorManagement" @focus="CKEventManagement" :editor="endTextEditorObject" id="endTextEditor" v-if="!endTextSource && $store.state.permissions.update" v-model="currentEndText" :config="endTextEditorConfig"></lsckeditor>
                     <aceeditor v-if="endTextSource && $store.state.permissions.update" v-model="currentEndText" thisId="currentEndTextSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="endtext" v-model="currentEndText" />
                 </div>

@@ -80,21 +80,21 @@
                          <!-- Create a new survey -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
-                                 <?php eT("Create a new survey");?>
+                                 <?php eT("Create");?>
                              </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
                            <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
-                               <?php eT("Import a survey");?>
+                               <?php eT("Import");?>
                            </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
                            <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
-                               <?php eT("Copy a survey");?>
+                               <?php eT("Copy");?>
                            </a>
                          </li>
 
@@ -103,7 +103,7 @@
                          <!-- List surveys -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
-                                 <?php eT("List surveys");?>
+                                 <?php eT("List all");?>
                              </a>
                          </li>
 

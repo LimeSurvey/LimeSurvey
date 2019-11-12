@@ -158,11 +158,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             $iOldQID = $insertdata['qid']; // save the old qid
             unset($insertdata['qid']);
-
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
-            // now translate any links
             if (!isset($xml->question_l10ns->rows->row)) {
                 if ($bTranslateLinksFields) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
@@ -470,9 +465,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                 // remap the subquestion id
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
             }
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
 
             if (!isset($xml->defaultvalue_l10ns->rows->row)) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
@@ -745,9 +737,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             $iOldQID = (int) $insertdata['qid'];
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
             if (!isset($insertdata['help'])) {
                 $insertdata['help'] = '';
             }            // now translate any links
@@ -936,9 +925,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 foreach ($importlanguages as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
                     $attributes = new QuestionAttribute;
-                    if ($insertdata) {
-                        XSSFilterArray($insertdata);
-                    }
                     foreach ($insertdata as $k => $v) {
                         $attributes->$k = $v;
                     }
@@ -947,9 +933,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 }
             } else {
                 $attributes = new QuestionAttribute;
-                if ($insertdata) {
-                    XSSFilterArray($insertdata);
-                }
                 foreach ($insertdata as $k => $v) {
                     $attributes->$k = $v;
                 }
@@ -981,9 +964,6 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
                 // remap the subquestion id
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
-            }
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
             }
 
             if (!isset($xml->defaultvalue_l10ns->rows->row)) {
@@ -1671,9 +1651,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $iOldQID = (int) $insertdata['qid'];
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
-            }
             if (!isset($insertdata['help'])) {
                 $insertdata['help'] = '';
             }            // now translate any links
@@ -1881,9 +1858,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
 
-                    if ($insertdata) {
-                        XSSFilterArray($insertdata);
-                    }
                     $questionAttribute = new QuestionAttribute();
                     $questionAttribute->attributes = $insertdata;
                     if (!$questionAttribute->save()) {
@@ -1923,9 +1897,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
                 // remap the subquestion id
                 $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
-            }
-            if ($insertdata) {
-                XSSFilterArray($insertdata);
             }
 
             if (!isset($xml->defaultvalue_l10ns->rows->row)) {
@@ -2790,21 +2761,6 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         $results['responses']++;
     }
     return $results;
-}
-
-
-function XSSFilterArray(&$array)
-{
-    if (Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-        $filter = new CHtmlPurifier();
-        $filter->options = array('URI.AllowedSchemes'=>array(
-        'http' => true,
-        'https' => true,
-        ));
-        foreach ($array as &$value) {
-            $value = $filter->purify($value);
-        }
-    }
 }
 
 /**

@@ -52,7 +52,7 @@
         <attribute>relevance</attribute>
         <attribute>encrypted</attribute>
         <attribute>save_as_default</attribute>
-        <!--        <attribute>clear_default</attribute>-->
+        <attribute>clear_default</attribute>
         <attribute>preg</attribute>
     </generalattributes>
 
@@ -164,19 +164,6 @@
             <max>100</max>
             <help>Set the percentage width of the answers column (1-100)</help>
             <caption>Answers column width</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>question_template</name>
-            <category>Display</category>
-            <sortorder>100</sortorder>
-            <inputtype>question_template</inputtype>
-            <default>core</default>
-            <help>Use a customized question theme for this question</help>
-            <caption>Question theme</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

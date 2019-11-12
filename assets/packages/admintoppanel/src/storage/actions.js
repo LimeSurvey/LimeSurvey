@@ -1,7 +1,4 @@
 import ajax from '../mixins/runAjax.js';
-import {
-    LOG
-} from '../mixins/logSystem.js'
 
 export default {
     getTopBarButtonsQuestion: (context) => {
@@ -22,11 +19,7 @@ export default {
 
                     resolve(data.data.topbar);
                 })
-                .catch((error) => {
-                    reject({
-                        error: error
-                    });
-                })
+                .catch((error) => {reject(error);})
         })
     },
 
@@ -47,11 +40,7 @@ export default {
 
                     resolve(data.data.topbar);
                 })
-                .catch((error) => {
-                    reject({
-                        error: error
-                    });
-                })
+                .catch((error) => {reject(error);})
         })
     },
 
@@ -72,11 +61,7 @@ export default {
 
                     resolve(data.data.topbar);
                 })
-                .catch((error) => {
-                    reject({
-                        error: error
-                    });
-                })
+                .catch((error) => {reject(error);})
         })
     },
 
@@ -97,11 +82,7 @@ export default {
 
                     resolve(data.data.topbar);
                 })
-                .catch((error) => {
-                    reject({
-                        error: error
-                    });
-                })
+                .catch((error) => {reject(error);})
         })
     },
 
@@ -121,11 +102,7 @@ export default {
                     context.commit('setTopBarLeft', topbarLeft);
                     resolve(data);
                 })
-                .catch((error) => {
-                    reject({
-                        error: error
-                    });
-                })
+                .catch((error) => {reject(error);})
         })
     },
 

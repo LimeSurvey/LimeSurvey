@@ -11,6 +11,7 @@ var uploadHandler = function (qid, options) {
     var fixParentHeigth = function () {
         return;
     }
+
     var renderPreviewItem = function (fieldname, item, iterator) {
 
         var i = iterator;
@@ -288,9 +289,9 @@ var uploadHandler = function (qid, options) {
         copyJSON(filecount, fieldname, show_title, show_comment, pos);
     }
 
-    function copyJSON(filecount, fieldname, show_title, show_comment, pos) {
+    const copyJSON = function(filecount, fieldname, show_title, show_comment, pos) {
         $('#'+fieldname+'_filecount').val(filecount);
-        displayUploadedFiles(filecount, fieldname, show_title, show_comment, pos);
+        window['uploadQuestionController_' + fieldname].displayUploadedFiles(filecount, fieldname, show_title, show_comment, pos);
     }
 
     var saveAndExit = function (fieldname, show_title, show_comment, pos) {
@@ -375,9 +376,9 @@ function escapeHtml(unsafe) {
 }
 
 window.getUploadHandler = function(qid, options){
-    if (!window.currentUplaodHandler){
-        window.currentUplaodHandler = new uploadHandler(qid, options);
+    if (!window.currentUploadHandler){
+        window.currentUploadHandler = new uploadHandler(qid, options);
     }
-    window.currentUplaodHandler.init();
-    return window.currentUplaodHandler;
+    window.currentUploadHandler.init();
+    return window.currentUploadHandler;
 }

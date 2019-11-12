@@ -9,12 +9,17 @@ class QuestionCreate extends Question
         if($gid == 0) {
             $gid = array_values($oSurvey->groups)[0]->gid;
         }
+        if (isset($type) && !empty($type)){
+            $questionType = $type;
+        } else {
+            $questionType = SettingsUser::getUserSettingValue('preselectquestiontype', null, null, null, Yii::app()->getConfig('preselectquestiontype'));
+        }
         $oCurrentGroup = Questiongroup::model()->findByPk($gid);
         $temporaryTitle = 'G'.str_pad($oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT).'Q'.str_pad((safecount($oSurvey->baseQuestions)+1), 2, '0', STR_PAD_LEFT);
         $aQuestionData = [
                 'sid' => $iSurveyId,
                 'gid' => $gid,
-                'type' => SettingsUser::getUserSettingValue('preselectquestiontype', null, null, null, Yii::app()->getConfig('preselectquestiontype')),
+                'type' => $questionType,
                 'other' => 'N',
                 'mandatory' => 'N',
                 'relevance' => 1,

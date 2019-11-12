@@ -14,6 +14,7 @@
 
 class AdminController extends LSYii_Controller
 {
+    public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
     public $layout = false;
     public $aAdminModulesClasses = array();
     protected $user_id = 0;
@@ -315,6 +316,7 @@ class AdminController extends LSYii_Controller
         'questiongroups'   => 'questiongroups',
         'questions'        => 'questions',
         'questioneditor'   => 'questionedit',
+        'questionthemes'   => 'questionthemes',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',
         'responses'        => 'responses',

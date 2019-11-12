@@ -72,6 +72,7 @@ class DefaultValue extends LSActiveRecord
         return array(
             array('qid', 'required'),
             array('qid,sqid,scale_id', 'numerical', 'integerOnly'=>true),
+            array('defaultvalue', 'LSYii_Validators'),
         );
     }
 

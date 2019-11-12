@@ -40,22 +40,41 @@ class saved extends Survey_Common_Action
         }
 
         $aThisSurvey = getSurveyInfo($iSurveyId);
+        $oSavedControlModel = SavedControl::model();
+        $oSavedControlModel->sid = $iSurveyId;
+
+        // Filter state
+        if (Yii::app()->request->getParam('SavedControl',false)){
+          $aFilters = Yii::app()->request->getParam('SavedControl');
+          foreach($aFilters as $sFilterName => $sFilterValue){
+              $oSavedControlModel->$sFilterName = $sFilterValue;
+          }
+        }
+
+        $aData['model'] = $oSavedControlModel;
         $aData['sSurveyName'] = $aThisSurvey['name'];
         $aData['iSurveyId'] = $iSurveyId;
-        $aData['dataProvider'] = new CActiveDataProvider('SavedControl', array(
-            'criteria'=>array(
-                'condition'=>'sid=:sid',
-                'params'=>[':sid'=>$iSurveyId],
-            ),
-            'countCriteria'=>array(
-                'condition'=>'sid=:sid',
-                'params'=>[':sid'=>$iSurveyId],
-            ),
-        ));
-        $aData['SavedControlModel'] = SavedControl::model();
+        // Set page size
+        if (Yii::app()->request->getPost('savedResponsesPageSize')) {
+            Yii::app()->user->setState('savedResponsesPageSize', Yii::app()->request->getPost('savedResponsesPageSize'));
+        }
+        $aData['savedResponsesPageSize'] = Yii::app()->user->getState('savedResponsesPageSize', Yii::app()->params['defaultPageSize']);
         $aViewUrls[] = 'savedlist_view';
         $this->_renderWrappedTemplate('saved', $aViewUrls, $aData);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @todo write function 
+     * @param [type] $surveyid
+     * @param [type] $id
+     * @return void
+     */
+    public function resend_accesscode($surveyid, $id) {
+
+    }
+
 
     /**
      * Function responsible to delete saved responses.

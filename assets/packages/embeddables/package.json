@@ -23,5 +23,10 @@
     "rollup-plugin-scss": "^1.0.1",
     "rollup-plugin-terser": "^5.1.1",
     "terser": "^4.1.3"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

@@ -160,9 +160,10 @@ export default {
                     },
                     (reject) => {
                         $('#in_survey_common').trigger('lsStopLoading');
-                        window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                        this.$log.error(reject);
-                        setTimeout(()=>{window.location.reload();}, 1500);
+                        this.loading = false;
+                        window.LS.notifyFader(reject.data.message, 'well-lg bg-danger text-center');
+                        this.$log.error(reject.data.error);
+                        setTimeout(()=>{window.location.reload();}, 2500);
                     }
                 )
             } else {
@@ -175,11 +176,17 @@ export default {
                 return false;
             }
             if(!this.$store.getters.hasIndividualSubquestionTitles) {
-                window.LS.notifyFader("Question cannot be stored. Please check the subquestion codes for duplicates.", 'well-lg bg-danger text-center');
+                window.LS.notifyFader(
+                    this.translate("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
+                    'well-lg bg-danger text-center'
+                );
                 return false;
             }
             if(!this.$store.getters.hasIndividualAnsweroptionCodes) {
-                window.LS.notifyFader("Question cannot be stored. Please check the answer option for duplicates.", 'well-lg bg-danger text-center');
+                window.LS.notifyFader(
+                    this.translate("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
+                    'well-lg bg-danger text-center'
+                );
                 return false;
             }
             return true;
@@ -266,7 +273,7 @@ export default {
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion && !loading">
                     <x-test id="action::addQuestion"></x-test>
-                    {{'Create new Question'|translate}}
+                    {{'Create question'|translate}}
             </template>
             <template v-if="!isCreateQuestion && !loading">
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
@@ -330,7 +337,7 @@ export default {
                         </transition>
                         <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
                     </div>
-                    <div class="ls-flex ls-flex-row">
+                    <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
                         <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
                     </div>
                 </div>
@@ -371,4 +378,7 @@ export default {
      border-radius: 4px;
  }
 
+.scoped-advanced-settings-block {
+    position: relative;
+}
 </style>

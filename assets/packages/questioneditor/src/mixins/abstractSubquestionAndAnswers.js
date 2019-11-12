@@ -5,6 +5,7 @@ import uniqBy from 'lodash/uniqBy';
 import remove from 'lodash/remove';
 import reduce from 'lodash/reduce';
 import foreach from 'lodash/forEach';
+import sortBy from 'lodash/sortBy';
 import findIndex from 'lodash/findIndex';
 import isArrayLike from 'lodash/isArrayLike';
 import isObjectLike from 'lodash/isObjectLike';
@@ -38,13 +39,16 @@ export default {
             let nonNumericPart = this.baseNonNumericPart;
             relativeObject = relativeObject || this.currentDataSet[scaleId];
             if(this.getLength(relativeObject) > 0) {
-                nonNumericPart = (relativeObject[0].title || relativeObject[0].code).replace(/[0-9]/g,'');
+                nonNumericPart = (relativeObject[0][this.typeDefininitionKey]).replace(/[0-9]/g,'');
             }
 
-            let numericPart = reduce(relativeObject,(prev, oDataSet) => {
-                return max([prev, parseInt((oDataSet.title || oDataSet.code  ).replace(/[^0-9]/g,''))]);
-            }, 0) + 1 ;
+            let numericPart = reduce(relativeObject, (prev, oDataSet) => {
+                return max([prev, parseInt((oDataSet[this.typeDefininitionKey]).replace(/[^0-9]/g,''))]);
+            }, 0);
 
+            numericPart = numericPart+1;
+
+            this.$log.log('relativeObject', relativeObject);
             this.$log.log('NewTitle', {nonNumericPart, numericPart});
 
             return nonNumericPart+String(numericPart).padStart(2,'0');
@@ -62,14 +66,18 @@ export default {
             let newDataSet = merge({}, oDataSet);
             newDataSet[this.uniqueSelector] = this.getRandomId();
             newDataSet[this.typeDefininitionKey] = this.getNewTitleFromCurrent(scaleId);
+            newDataSet[this.orderAttribute]++;
             tmpArray[scaleId].push(newDataSet);
-            this.currentDataSet = tmpArray;
+            
+            this.currentDataSet = this.reorder(tmpArray);
         },
         addDataSet(scaleId) {
             let tmpArray = merge([], this.currentDataSet);
             tmpArray[scaleId] = tmpArray[scaleId] || new Array();
-            tmpArray[scaleId].push(this.getTemplate(scaleId));
-            this.currentDataSet = tmpArray;
+            const newDataSet = this.getTemplate(scaleId);
+            newDataSet[this.orderAttribute] = (tmpArray[scaleId].length+1);
+            tmpArray[scaleId].push(newDataSet);
+            this.currentDataSet = this.reorder(tmpArray);
         },
         openLabelSets(scaleId) {
             this.$modal.show(LabelSets, {
@@ -220,6 +228,23 @@ export default {
             tempFullObject[contents.scale_id][identifier] = contents;
             this.$log.log('Event editFromSimplePopupEditor result', {identifier, tempFullObject});
             this.currentDataSet = tempFullObject;
+        },
+        reorder(dataSet) {
+            foreach(dataSet, (scaleArray, scaleId) => {
+                scaleArray.sort((a,b) => (a[this.orderAttribute] < b[this.orderAttribute] ? -1 : 1));
+                let currentOrder = 1;
+                let maxOrder = scaleArray.length;
+                for(;currentOrder<=maxOrder ; currentOrder++) {
+                    scaleArray[(currentOrder-1)][this.orderAttribute] = currentOrder;
+                }
+                dataSet[scaleId] = scaleArray;
+            });
+
+            return dataSet;
+        },
+        preventDisallowedCursor($event) {
+            $event.dataTransfer.dropEffect = "move";
+            return;
         }
     }
 }

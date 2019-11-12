@@ -8,13 +8,15 @@
     </h4>
 </div>
 <div class="modal-body">
-<div class="container-center">
-    <?=TbHtml::formTb(
-        null, 
-        App()->createUrl('admin/roles/sa/importXML'), 
-        'post', 
-        ["id"=>"RoleControl--modalform-import", 'enctype'=>'multipart/form-data']
-    )?>
+    <div class="container-center">
+        <?= TbHtml::formTb(
+            null,
+            App()->createUrl('admin/roles/sa/importXML'),
+            'post',
+            ["id" => "RoleControl--modalform-import", 'enctype' => 'multipart/form-data']
+        ) ?>
+        <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
+        </div>
         <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
         </div>
         <div class="row ls-space margin top-5 bottom-15">

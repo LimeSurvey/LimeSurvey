@@ -1,5 +1,4 @@
 const INPUT_EVENT_DEBOUNCE_WAIT = 300;
-
 export default {
 	name: 'TextEditor',
 
@@ -8,10 +7,14 @@ export default {
 	},
 
 	props: {
-		editor: {
-			type: Function,
+        editor: {
+            type: Function,
 			default: null
-		},
+        },
+        editorType: {
+            type: String,
+			default: 'classic'
+        },
 		onError: {
 			type: Function,
 			default: null
@@ -50,23 +53,24 @@ export default {
 	data() {
 		return {
 			instance: null,
-
 			$_lastEditorData: {
 				type: String,
 				default: ''
 			}
 		};
 	},
-
+	created() {
+        window.CKEDITOR_VERSION = null;
+    },
 	mounted() {
 		window.LS.debug.cks = window.LS.debug.cks || [];
 		if ( this.value ) {
 			Object.assign( this.config, {
 				initialData: this.value
 			} );
-		}
+        }
 
-		this.editor.create( this.$el, this.config )
+		this.editor.create( this.$el, LS.ld.merge(this.defaultConfig, this.config))
 			.then( editor => {
 				this.instance = editor;
 				editor.isReadOnly = this.disabled;
@@ -86,7 +90,10 @@ export default {
 				if(this.onError !== null) {this.onError(error);}
             });
             
-            
+            $(document).on("pjax:send", () => {
+                this.instance.destroy();
+			    this.instance = null;
+            });
 		       
 	},
 

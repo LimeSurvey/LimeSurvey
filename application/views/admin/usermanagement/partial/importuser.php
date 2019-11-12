@@ -1,6 +1,6 @@
 <?php
 /**
- * Subview: Userimport form csv
+ * Subview: Userimport form 
  * 
  * @package UserManagement
  * @author Markus Flür <markus.fluer@limesurvey.org>
@@ -15,20 +15,25 @@
     <div class="container-center">
     <?=TbHtml::formTb(
         null, 
-        App()->createUrl('admin/usermanagement/sa/importcsv'), 
+        App()->createUrl('admin/usermanagement/sa/importusers',['importFormat' => $importFormat]), 
         'post', 
         ["id"=>"UserManagement--modalform--import", 'enctype'=>'multipart/form-data']
     )?>
         <div class="row">
             <div class="col-sm-12 well">
-                <?=sprintf(gT("Please make sure that your CSV contains the columns '%s' as well as '%s' and '%s' OR '%s'"), '<b>email</b>','<b>firstname</b>','<b>surname</b>','<b>full_name</b>')?>
+                <?=$note?>
             </div>
         </div>
         <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
         </div>
+        <div class="row ls-space margin top-5 bottom-5" >
+            <input type="checkbox" name="overwrite" value="overwrite"> <?= eT("Overwrite existing users")?>
+        </div>
+        <hr>
+        
         <div class="row ls-space margin top-5 bottom-15">
-            <label for="the_file"><?=gT('Select CSV file')?></label>
-            <input type="file" name="the_file" id="the_file" class="form control"/>
+            <label for="the_file"><?=gT('Select '.$importFormat.' file')?></label>
+            <input type="file" accept="<?=$allowFile?>" name="the_file" id="the_file" class="form control" required/>
         </div>
         <div class="row ls-space margin top-5">
             <hr class="ls-space margin top-5 bottom-10"/>

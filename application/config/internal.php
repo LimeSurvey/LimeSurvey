@@ -154,7 +154,9 @@ $internalConfig = array(
             'excludeFiles' => array("config.xml", "node_modules", "src"),
             'class' => 'application.core.LSYii_AssetManager'
         ),
-
+        'errorHandler' => [
+            'errorAction'=>'surveys/error'
+        ],
         'request' => array(
             'class'=>'LSHttpRequest',
             'enableCsrfValidation'=>true, // CSRF protection

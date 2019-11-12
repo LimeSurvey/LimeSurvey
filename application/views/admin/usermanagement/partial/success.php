@@ -1,4 +1,3 @@
-
 <div class="modal-header">
     <?=gT('Saved successfully')?>
 </div>

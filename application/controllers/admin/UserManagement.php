@@ -52,7 +52,7 @@ class UserManagement extends Survey_Common_Action
             );
         }
         if (isset($_GET['pageSize'])) {
-            Yii::app()->user->setState('pageSize', $this->api->getRequest()->getParam('pageSize'));
+            Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
         }
         App()->getClientScript()->registerPackage('usermanagement');
         App()->getClientScript()->registerPackage('bootstrap-select2');
@@ -102,92 +102,133 @@ class UserManagement extends Survey_Common_Action
     /**
      * Stores changes to user, or triggers userCreateEvent
      *
-     * @param integer $userid
      * @return string | JSON
      */
     public function applyedit()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json.php', ["data" => [
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                 'success' => false,
-                'error' => gT("You do not have permission to access this page."),
+                'errors' => gT("You do not have permission to access this page."),
             ]]);
         }
 
         $aUser = Yii::app()->request->getParam('User');
+        $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+        if (!empty($passwordTest)) {
 
-        $paswordTest = Yii::app()->request->getParam('password_repeat', false);
-        if (!empty($paswordTest)) {
-
-            if ($paswordTest !== $aUser['password']) {
-                return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+            if ($passwordTest !== $aUser['password']) {
+                return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'error' => gT('Passwords do not match'),
+                    'errors' => gT('Passwords do not match'),
                 ]]);
             }
 
             $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
-            $oPasswordTestEvent->set('password', $paswordTest);
+            $oPasswordTestEvent->set('password', $passwordTest);
             $oPasswordTestEvent->set('passwordOk', true);
             $oPasswordTestEvent->set('passwordError', '');
             Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
 
             if (!$oPasswordTestEvent->get('passwordOk')) {
-                return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+                return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'error' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
+                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
                 ]]);
             }
         }
+        
+        if(isset($aUser['uid']) && $aUser['uid'] ) {
 
+            $oUser = $this->updateAdminUser($aUser);
+            if ($oUser->hasErrors()) {
+                return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                    "data" => [
+                        'success' => false,
+                        'errors'  => $this->renderErrors($oUser->getErrors()) ?? ''
+                    ]
+                ]);
+            }
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => true,
+                    'message' => gT('User successfully updated')
+                ]
+            ]);
+
+        }else{
+            $this->createAdminUser($aUser);
+        }   
+    }
+
+    /**
+     * this method create a new admin user 
+     * @param array a$user
+     * @return string
+     */
+    private function createAdminUser($aUser) 
+    {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $sendMail = (bool)Yii::app()->request->getPost('preset_password', false);
-            $aUser = $this->_createNewUser($aUser);
-            $sReturnMessage = '';
+            $newUser = $this->_createNewUser($aUser);
+            $sReturnMessage = gT('User successfully created');
             $success = true;
-
-            if ($sendMail && (isset($newUser['sendMail']) && $newUser['sendMail'] == true)) {
-                if ($this->_sendAdminMail('registration', $aUser)) {
-                    $sReturnMessage = gT("Success");
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $aUser['users_name'], $aUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
+        
+            if ($sendMail) {
+                $mailer = $this->_sendAdminMail('registration', $aUser);
+               
+                if ($mailer->getError()) {
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Error")); 
+                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $newUser['users_name'] . "</strong>", $newUser['email']));
+                    $sReturnMessage .= CHtml::tag("p", array(), $mailer->getError());
+                    $success = false;
                 } else {
                     // has to be sent again or no other way
-                    $sReturnMessage = gT("Warning");
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $aUser['users_name'] . "</strong>", $aUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array('class' => 'alert alert-danger'), $mailer->getError());
-                    $success = false;
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));  ;
+                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
+                    $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
             }
 
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $new_pass . '</b>') : '';
+            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $aUser['password']. '</b>') : '';
+    
+            $data = array();
 
-            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
-                'success' => $success,
-                'message' => $sReturnMessage
-            ]]);
-            Yii::app()->end();
-        }
+            if($success) {
+                $data = [
+                    'success' => $success,
+                    'message' => $sReturnMessage
+                ];
 
-        $oUser = $this->updateAdminUser($aUser);
-        if ($oUser->hasErrors()) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
-                "data" => [
-                    'success' => false,
-                    'error' => print_r($oUser->getErrors(), true),
-                ]
+            }else{
+                $data = [
+                    'success' => $success,
+                    'errors' => $sReturnMessage
+                ];
+            }
+
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => $data
             ]);
         }
-        $sMessage = gT('User successfully updated');
-        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
-            'data' => [
-                'success' => true,
-                'message' => $sMessage
-            ],
-            false,
-            false
-        ]);
+
+    }
+    /**
+     * @param array $errors
+     *
+     * @return string $errorDiv
+     */
+    private function renderErrors($errors)
+    {
+        $errorDiv = '<ul class="list-unstyled">';
+        foreach ($errors as $key => $error) {
+            foreach ($error as $errormessages) {
+                $errorDiv .= '<li>' . print_r($errormessages, true) . '</li>';
+            }
+        }
+        $errorDiv .= '</ul>';
+        return (string) $errorDiv;
     }
 
     /**
@@ -246,11 +287,17 @@ class UserManagement extends Survey_Common_Action
             );
         }
         $userId = Yii::app()->request->getPost('userid');
+        if ($userId == Yii::app()->user->id) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
+            );  
+        }
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
-        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
+        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));    
     }
-
+	
     /**
      * Opens a modal to edit user template permissions
      *
@@ -385,10 +432,12 @@ class UserManagement extends Survey_Common_Action
             $results[$key] = $oPermission->save();
         }
 
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
-        ]]);
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => true,
+                'html'    => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
+            ]
+        ]);
     }
 
     /**
@@ -412,10 +461,12 @@ class UserManagement extends Survey_Common_Action
         $oUser->modified = date('Y-m-d H:i:s');
         $save = $oUser->save();
 
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
-        ]]);
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            "data" => [
+                'success' => true,
+                'html'    => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
+            ]
+        ]);
     }
 
     /**
@@ -469,18 +520,22 @@ class UserManagement extends Survey_Common_Action
         $aUserRoleIds = Yii::app()->request->getPost('roleselector', []);
         $results = [];
 
-        $results['clear'] = Permissiontemplates::model()->clearUser($iUserId);
+        $clearUser = Permissiontemplates::model()->clearUser($iUserId);
         foreach ($aUserRoleIds as $iUserRoleId) {
             if ($iUserRoleId == '') {
                 continue;
             }
             $results[$iUserRoleId] = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
         }
-
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-            'success' => true,
-            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
-        ]]);
+        if (empty($aUserRoleIds)) {
+            $results['clear'] = $clearUser;
+        }
+        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', [
+            "data" => [
+                'success' => true,
+                'html'    => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true),
+            ]
+        ]);
     }
 
     /**
@@ -572,12 +627,27 @@ class UserManagement extends Survey_Common_Action
         }
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $results = [];
+        
+        if (array_search(Yii::app()->user->id, $aItems) !== false) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
+            );
+        }
+
         foreach ($aItems as $sItem) {
-            $oUser = User::model()->findByPk($sItem);
+            $oUser = User::model()->findByPk($sItem);          
             $results[$oUser->uid] = $oUser->delete();
         }
 
-        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success',
+            [
+                'sMessage' => gT('Users successfully deleted'),
+                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
     }
 
     /**
@@ -604,14 +674,21 @@ class UserManagement extends Survey_Common_Action
             }
         }
 
-        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success',
+            [
+                'sMessage' => gT('User groups successfully updated'),
+                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
     }
 
     /**
      * Mass edition apply roles
      *
-     *
      * @return string
+     * @throws CException
      */
     public function batchApplyRoles()
     {
@@ -630,7 +707,14 @@ class UserManagement extends Survey_Common_Action
             }
         }
 
-        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/success',
+            [
+                'sMessage' => gT('User roles successfully updated'),
+                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
     }
 
     /**
@@ -681,19 +765,19 @@ class UserManagement extends Survey_Common_Action
             //Permission::model()->setGlobalPermission($oUser->uid, 'auth_db');
         }
 
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
+        return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
             'success' => true,
             'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/createdrandoms', ['randomUsers' => $randomUsers, 'filename' => $prefix], true),
         ]]);
     }
 
     /**
-     * Calls up a modal to import users via csv file
+     * Calls up a modal to import users via csv/json file
      *
-     *
+     *@param string $importFormat - Importformat (csv/json) to render 
      * @return string
      */
-    public function importuser()
+    public function renderUserImport(string $importFormat = 'csv')
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return $this->getController()->renderPartial(
@@ -701,16 +785,29 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        return $this->getController()->renderPartial('/admin/usermanagement/partial/importuser', []);
+
+        $importNote = sprintf(gT("Please make sure that your CSV contains the columns '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
+        $allowFileType = ".csv";  
+
+        if($importFormat == 'json') {
+            $importNote = sprintf(gT("Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
+            $allowFileType = ".json,application/json"; 
+        }
+        
+        return $this->getController()->renderPartial('/admin/usermanagement/partial/importuser', [
+            "note"         => $importNote,
+            "importFormat" => $importFormat,
+            "allowFile"    => $allowFileType
+        ]);
     }
 
     /**
-     * Creates users from an uploaded CSV file
-     *
-     *
+     * Creates users from an uploaded CSV / JSON file
+     * 
+     * @param string importFormat - format of the imported file - Choice between csv / json
      * @return string
      */
-    public function importcsv()
+    public function importUsers(string $importFormat = 'csv')
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return $this->getController()->renderPartial(
@@ -718,92 +815,156 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
+
+        $overwriteUsers = false; 
+
+        if(isset($_POST['overwrite'])) {
+            $overwriteUsers = true;
+        }
+
+        switch ($importFormat) {
+            case "csv":
+                $aNewUsers = UserParser::getDataFromCSV($_FILES);
+                break;
+            case "json":
+                $aNewUsers = UserParser::getDataFromJSON($_FILES);
+                break; 
+        }
+       
         $created = [];
-        $aNewUsers = UserParser::getDataFromCSV($_FILES);
+        $updated = [];
+
         foreach ($aNewUsers as $aNewUser) {
-            if (isset($aNewUser['firstname']) && isset($aNewUser['surname'])) {
-                $name = $this->filterSpecials("{$aNewUser['firstname']}.{$aNewUser['surname']}");
-                $fullname = "{$aNewUser['firstname']} {$aNewUser['surname']}";
-            } elseif (isset($aNewUser['full_name'])) {
-                $fullname = $aNewUser['full_name'];
-                $name = $this->filterSpecials($fullname);
-            }
-
-            $password = $this->getRandomPassword(8);
-            if (User::model()->findByAttributes(['users_name' => $name]) !== null) {
-                continue;
-            }
-
-            $save = $this->_createNewUser([
-                'users_name' => $name,
-                'full_name' => $fullname,
-                'password' => $password,
-                'email' => $aNewUser['email'],
-            ], false);
-
-            if ($save) {
-                $created[] = [
-                    'uid' => $oUser->uid,
-                    'username' => $name,
-                    'full_name' => $fullname,
-                    'email' => $aNewUser['email'],
+            
+            $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
+        
+            if($oUser  !== null) {
+                if($overwriteUsers) {
+                
+                    $oUser->full_name = $aNewUser['full_name'];
+                    $oUser->email = $aNewUser['email'];
+                    $oUser->parent_id = App()->user->id;
+                    $oUser->modified = date('Y-m-d H:i:s');
+                    if($aNewUser['password'] != ' ') {
+                        $oUser->password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                    }
+                    
+                    $save = $oUser->save();
+                    if($save){
+                        $updated[] = [
+                            'username' => $aNewUser['users_name'],
+                            'full_name' => $aNewUser['full_name'],
+                            'email' => $aNewUser['email'],
+                        ];
+                    }
+                  
+                }
+               
+            }else{
+                
+                $password = $this->getRandomPassword(8);
+                $passwordText = $password;
+                if($aNewUser['password'] != ' ') {
+                    $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
+                }
+                
+                $save = $this->_createNewUser([
+                    'users_name' => $aNewUser['users_name'],
+                    'full_name' => $aNewUser['full_name'],
                     'password' => $password,
-                    'save' => $save,
-                ];
-            }
+                    'email' => $aNewUser['email'],
+                    'lang' => $aNewUser['lang'],
+                ], false);
+
+                if ($save) {
+                    $created[] = [
+                        'username' => $aNewUser['users_name'],
+                        'full_name' => $aNewUser['full_name'],
+                        'email' => $aNewUser['email'],
+                        'password' => $passwordText,
+                    ];
+                }
+            }            
         }
-        return $this->getController()->renderPartial('userimported', ['created' => $created], true);
+
+        Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        Yii::app()->getController()->redirect(
+            Yii::app()->createUrl('admin/usermanagement/sa/view')
+        );
+        return;
     }
 
+
     /**
-     * Mass import from a well-formed json string
-     *
-     * @return void
+     * Export users with specific format (json or csv)
+     * @param string $outputFormat json or csv
+     * @param int $uid userId
+     * @return mixed
      */
-    public function importfromjson()
+    public function exportUser(string $outputFormat,int $uid = 0) 
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
+        //Check if user has permissions to export users 
+        if (!Permission::model()->hasGlobalPermission('users', 'export')) {
             return $this->getController()->renderPartial(
                 '/admin/usermanagement/partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-
-        $sJsonUserString = Yii::app()->request->getPost('jsonstring', '{}');
-
-        $result = [];
-
-        if ($sJsonUserString != '{}') {
-            $aJsonUsers = json_decode($sJsonUserString, true);
-            $result = ['created' => [], 'updated' => []];
-            foreach ($aJsonUsers as $aUserData) {
-                $storeTo = 'updated';
-                $oUser = User::model()->findByAttributes(['email' => $aUserData['email']]);
-                if ($oUser == null) {
-                    $storeTo = 'created';
-                    $aUser = $this->_createNewUser($aUserData, false);
-                    $oUser = new User;
-                    $oUser->users_name = $aUserData['username'];
-                    $oUser->full_name = $aUserData['full_name'];
-                    $oUser->email = $aUserData['email'];
-                    $oUser->parent_id = App()->user->id;
-                    $oUser->created = date('Y-m-d H:i:s');
-                    $oUser->modified = date('Y-m-d H:i:s');
-                }
-                $oUser->password = password_hash($aUserData['password'], PASSWORD_DEFAULT);
-                $save = $oUser->save();
-
-                $result[$storeTo][] = [
-                    'uid' => $oUser->uid,
-                    'username' => $oUser->users_name,
-                    'full_name' => $oUser->full_name,
-                    'email' => $oUser->email,
-                    'password' => $aUserData['password'],
-                    'save' => $save,
-                ];
-            }
+        
+        if($uid > 0) {
+            $oUsers = User::model()->findByPk($uid);
+        }else{
+            $oUsers = User::model()->findAll();
         }
-        $this->_renderWrappedTemplate('usermanagement', 'importfromjson', ['result' => $result]);
+
+        $aUsers = array();
+        $sTempDir = Yii::app()->getConfig("tempdir");
+        $exportFile = $sTempDir.DIRECTORY_SEPARATOR.'users_export.'.$outputFormat;
+
+        foreach ($oUsers as $user) {
+            $exportUser['uid'] = $user->attributes['uid'];
+            $exportUser['users_name'] = $user->attributes['users_name'];
+            $exportUser['full_name'] = $user->attributes['full_name'];
+            $exportUser['email'] = $user->attributes['email'];
+            $exportUser['lang'] = $user->attributes['lang'];
+            $exportUser['password'] = '';
+            array_push($aUsers,$exportUser);
+        }
+
+        switch ($outputFormat) {
+            case "json":
+                $json = json_encode($aUsers,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+                $fp = fopen($exportFile, 'w');
+                fwrite($fp, $json);
+                fclose($fp);
+                header('Content-Encoding: UTF-8');
+                header("Content-Type:application/json; charset=UTF-8"); 
+                break;
+
+            case "csv":
+                $fp = fopen($exportFile, 'w');
+                
+                //Add utf-8 encoding
+                fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
+                $header = array('uid','users_name','full_name','email','lang','password');
+                //Add csv header
+                fputcsv($fp,$header, ';');
+                
+                //add csv row datas
+                foreach ($aUsers as $fields) { 
+                    fputcsv($fp, $fields, ';');
+                }
+                fclose($fp);
+                header('Content-Encoding: UTF-8');
+                header("Content-type: text/csv; charset=UTF-8");
+                break;
+        }
+        //end file to download
+        header("Content-Disposition: attachment; filename=userExport.".$outputFormat);
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        @readfile($exportFile);
+        unlink($exportFile);
     }
 
     /**
@@ -828,29 +989,42 @@ class UserManagement extends Survey_Common_Action
         ];
     }
 
+    /**
+     * Create new user
+     * 
+     * @param array $aUser array with user details
+     * @param bool $sendMail - option to send mail to user when created
+     * @return object user - created user object
+     */
     public function _createNewUser($aUser, $sendMail = true)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => gT("You do not have permissionfor this action."),
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => gT("You do not have permissionfor this action."),
+                ]
+            ]);
         }
 
         $aUser['users_name'] = flattenText($aUser['users_name']);
 
         if (empty($aUser['users_name'])) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => gT("A username was not supplied or the username is invalid."),
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => gT("A username was not supplied or the username is invalid."),
+                ]
+            ]);
         }
 
         if (User::model()->find("users_name=:users_name", array(':users_name' => $aUser['users_name']))) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => gT("A user with this username already exists."),
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => gT("A user with this username already exists."),
+                ]
+            ]);
         }
 
         $event = new PluginEvent('createNewUser');
@@ -862,20 +1036,15 @@ class UserManagement extends Survey_Common_Action
         Yii::app()->getPluginManager()->dispatchEvent($event);
 
         if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE) {
-            return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data" => [
-                'success' => false,
-                'error' => $event->get('errorMessageTitle') . '<br/>' . $event->get('errorMessageBody'),
-                'debug' => ['title' => $event->get('errorMessageTitle'), 'body' => $event->get('errorMessageBody'), 'code' => $event->get('errorCode'), 'event' => $event],
-            ]]);
+            return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => [
+                    'success' => false,
+                    'errors'  => $event->get('errorMessageTitle') . '<br/>' . $event->get('errorMessageBody'),
+                    'debug'   => ['title' => $event->get('errorMessageTitle'), 'body' => $event->get('errorMessageBody'), 'code' => $event->get('errorCode'), 'event' => $event],
+                ]
+            ]);
         }
-
-        $success = true;
-        $new_user = $aUser['users_name'];
         $iNewUID = $event->get('newUserID');
-        $new_pass = $event->get('newPassword');
-        $new_email = $event->get('newEmail');
-        $new_full_name = $event->get('newFullName');
-
         // add default template to template rights for user
         Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
         // add default usersettings to the user
@@ -887,8 +1056,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Update admin-user
      *
-     * @param $aUser
-     * @return object
+     * @param array $aUser array with user details
+     * @return object user - updated user object
      */
     public function updateAdminUser($aUser)
     {
@@ -901,9 +1070,12 @@ class UserManagement extends Survey_Common_Action
         ) {
             throw new CException("This action is not allowed, and should never happen", 500);
         }
-
+       
         $oUser->setAttributes($aUser);
-        $oUser->setPassword($oUser->password);
+
+        if(isset($aUser['password']) && $aUser['password']) {
+            $oUser->password = password_hash($aUser['password'], PASSWORD_DEFAULT);
+        }
         $oUser->modified = date('Y-m-d H:i:s');
         $oUser->save();
 
@@ -947,7 +1119,7 @@ class UserManagement extends Survey_Common_Action
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
                     'username' => $aUser['users_name'],
-                    'password' => $aUser['rawPassword'],
+                    'password' => $aUser['password'],
                     'mainLogoFile' => LOGO_URL,
                     'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
                     'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
@@ -968,11 +1140,12 @@ class UserManagement extends Survey_Common_Action
         $mailer->Body = $body;
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
-        return $mailer->sendMessage();
+        $mailer->sendMessage();
+        return $mailer;
 
     }
-
-    ##### protected METHODS #####
+    
+ ##### protected METHODS #####
 
     /**
      * Filters special characters to simple ones

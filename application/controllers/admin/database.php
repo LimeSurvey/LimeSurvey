@@ -574,6 +574,7 @@ class database extends Survey_Common_Action
      * action to do when update question
      * @param integer $iSurveyID
      * @return void (redirect)
+     * @todo Deprecated, replaced by questionedit.php
      */
     private function actionUpdateQuestion($iSurveyID)
     {

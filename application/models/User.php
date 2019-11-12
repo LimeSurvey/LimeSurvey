@@ -524,23 +524,33 @@ class User extends LSActiveRecord
 
         $userDetail = ""
             ."<button 
+                data-toggle='tooltip' 
+                title='".gT("User detail")."'    
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
 
         $editPermissionButton = ""
             ."<button 
+                data-toggle='tooltip' 
+                title='".gT("Edit permissions")."'  
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
         $addRoleButton = ""
             ."<button 
+                data-toggle='tooltip' 
+                title='".gT("User role")."'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
                 data-href='".$setRoleUrl."'><i class='fa fa-users'></i></button>";
         $editTemplatePermissionButton = ""
             ."<button 
+                data-toggle='tooltip' 
+                title='".gT("Template permissions")."'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
                 data-href='".$setTemplatePermissionsUrl."'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             ."<button 
+                data-toggle='tooltip' 
+                title='".gT("Edit User")."'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""
@@ -569,12 +579,11 @@ class User extends LSActiveRecord
                 data-action='deluser' 
                 data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\"))()' 
                 data-message='".gt('Do you want to delete this user?')."'>
-                    <i class='fa fa-trash text-danger'></i>
+                    <span data-toggle='tooltip' title='".gT("Delete User")."'>
+                        <i class='fa fa-trash text-danger'></i>
+                    </span>
               </button>";
 
-        //$oUser = self::model()->findByPK($this->uid);
-        
-        
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // and Except deleting themselves and changing permissions when they are forced superadmin
@@ -817,18 +826,6 @@ class User extends LSActiveRecord
         $criteria->compare('full_name',$this->searched_value,true);
         $criteria->compare('users_name',$this->searched_value,true, 'OR');
         $criteria->compare('email',$this->searched_value,true, 'OR');
-
-        // $criteria->compare('uid',$this->uid);
-        // $criteria->compare('password',$this->password,true);
-        // $criteria->compare('parent_id',$this->parent_id);
-        // $criteria->compare('lang',$this->lang,true);
-        // $criteria->compare('htmleditormode',$this->htmleditormode,true);
-        // $criteria->compare('templateeditormode',$this->templateeditormode,true);
-        // $criteria->compare('questionselectormode',$this->questionselectormode,true);
-        // $criteria->compare('one_time_pw',$this->one_time_pw,true);
-        // $criteria->compare('dateformat',$this->dateformat);
-        // $criteria->compare('created',$this->created,true);
-        // $criteria->compare('modified',$this->modified,true);
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination' => array(

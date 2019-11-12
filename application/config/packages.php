@@ -129,27 +129,6 @@ return array(
             'bootstrap',
         )
     ),
-    'ckeditor' => array(
-        'devBaseUrl'  => 'assets/packages/ckeditor',
-        'basePath' => 'core.ckeditor',
-        'js' => array(
-            //'ckeditor.js',
-            //'config.js',
-        ),
-        'depends' => array(
-            'adminbasics',
-        ),
-    ),
-    'ckeditoradditions' => array(
-        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
-        'basePath' => 'core.ckeditoradditions',
-        'js' => array(
-            //'ckeditoradditions.js',
-        ),
-        'depends' => array(
-            //'ckeditor'
-        )
-    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
@@ -194,7 +173,7 @@ return array(
            'build.min/css/main.css'
        ),
        'depends' => array(
-           'adminbasics'
+           'adminbasics',
        )
     ),
     'globalsidepanel' => array(
@@ -375,7 +354,7 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-            'admintoppanel'
+            'admintoppanel',
         )
     ),
     'datasectextelements' => array(
@@ -396,7 +375,7 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-            'admintoppanel'
+            'admintoppanel',
         )
     ),
     'questiongroupeditor' => array(
@@ -417,7 +396,7 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-            'admintoppanel'
+            'admintoppanel',
         )
     ),
     'questioneditor' => array(
@@ -439,7 +418,7 @@ return array(
         'depends' => array(
             'adminbasics',
             'ace',
-            'admintoppanel'
+            'admintoppanel',
             
         )
     ),
@@ -581,7 +560,7 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-            'ace'
+            'ace',
         )
     ),
 

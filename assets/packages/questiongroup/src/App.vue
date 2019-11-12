@@ -179,7 +179,7 @@ export default {
                 <div class="pagetitle h3 scoped-unset-pointer-events" key="pagetitle-block">
                     <template v-if="isCreateQuestionGroup">
                             <x-test id="action::addQuestionGroup"></x-test>
-                            {{'Create new survey page'|translate}}
+                            {{'Create survey page'|translate}}
                     </template>
                     <template v-else>
                             {{'Survey page'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>

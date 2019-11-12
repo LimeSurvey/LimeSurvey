@@ -221,8 +221,8 @@ class Question extends LSActiveRecord
         }
         return $aRules;
     }
- 
-    
+
+
 
     /**
      * Rewrites sort order for questions in a page
@@ -631,30 +631,53 @@ class Question extends LSActiveRecord
 
     public function getOrderedAnswers($scale_id=null)
     {
-        $alpha = $this->getQuestionAttribute('alphasort');
-        // Get questions and answers by defined order
-        $sOrder = ($this->getQuestionAttribute('random_order') == 1)
-            ? dbRandom()
-            : ($alpha ? 'answer' : 'question_order');
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-
-        $oCriteria->params = [':parent_qid'=>$this->qid];
-
         //reset answers set prior to this call
         $aAnswerOptions = [
             0 => []
         ];
+
         foreach ($this->answers as $oAnswer) {
             if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
                 continue;
             }
             $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
         }
-        
+
+
         if($scale_id !== null) {
             return $aAnswerOptions[$scale_id];
+        }
+
+        // Random order
+        if ($this->getQuestionAttribute('random_order') == 1){
+          $keys = array_keys($aAnswerOptions[0]);
+          shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+
+          $aNew = array();
+          foreach($keys as $key) {
+              $aNew[$key] = $aAnswerOptions[0][$key];
+          }
+          $aAnswerOptions[0] = $aNew;
+        }
+
+        // Alphabetic ordrer
+        if ($this->getQuestionAttribute('alphasort')){
+
+          $aSorted = array();
+
+          // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
+          foreach($aAnswerOptions[0] as $iKey => $oAnswer){
+              $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+          }
+
+          ksort($aSorted);
+
+          // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
+          $aNew = array();
+          foreach($aSorted as $sAnswer => $iKey) {
+              $aNew[] = $aAnswerOptions[0][$iKey];
+          }
+          $aAnswerOptions[0] = $aNew;
         }
 
         return $aAnswerOptions;
@@ -673,12 +696,12 @@ class Question extends LSActiveRecord
             0 => []
         ];
         $excludedSubquestion = null;
-        
+
         $aOrderedSubquestions = $this->subquestions;
         if($this->getQuestionAttribute('random_order') == 1) {
             shuffle($aOrderedSubquestions);
         }
-        
+
         usort($aOrderedSubquestions, function($oQuestionA, $oQuestionB){
             if($oQuestionA->question_order == $oQuestionB->question_order) { return 0; }
             return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
@@ -689,17 +712,17 @@ class Question extends LSActiveRecord
                 continue;
             }
             //if  exclude_all_others is set then the related answer should keep its position at all times
-            //thats why we have to re-position it if it has been randomized            
-            if ( 
+            //thats why we have to re-position it if it has been randomized
+            if (
                 ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
                 && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
             ) {
                 $excludedSubquestion = $oSubquestion;
                 continue;
             }
-            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;   
+            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;
         }
-        
+
         if($excludedSubquestion !== null) {
             array_splice($aSubQuestions[$excludedSubquestion->scale_id][], ($excludedSubquestion->question_order-1), 0, $excludedSubquestion);
         }
@@ -720,7 +743,7 @@ class Question extends LSActiveRecord
                 $sIcon = '<span class="fa fa-asterisk text-danger"> ' . gT('Soft') . '</span>';
             } else {
                 $sIcon = '<span></span>';
-            }            
+            }
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
@@ -767,7 +790,7 @@ class Question extends LSActiveRecord
         }
         return $sNewTitle;
     }
-                           
+
     /*public function language($sLanguage)
     {
         $this->with(
@@ -900,10 +923,10 @@ class Question extends LSActiveRecord
         $criteria = new CDbCriteria;
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
-        //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';              
+        //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
         $criteria->with = array('group', 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
-        
-        if (!empty($this->title)) {     
+
+        if (!empty($this->title)) {
             $criteria2 = new CDbCriteria;
             $criteria2->compare('t.title', $this->title, true, 'OR');
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
@@ -914,7 +937,7 @@ class Question extends LSActiveRecord
             }
             $criteria->mergeWith($criteria2, 'AND');
         }
-        
+
         /* make sure gid is a numeric */
         if ($this->gid != '' and is_numeric($this->gid)) {
             $criteria->compare('group.gid', $this->gid, false, 'AND');
@@ -993,7 +1016,7 @@ class Question extends LSActiveRecord
         if ($this->parent_qid != 0) {
             /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
             // Use parents relation
-            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ? 
+            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ?
                 return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
             }
             return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
@@ -1034,11 +1057,11 @@ class Question extends LSActiveRecord
         $criteria->addCondition('attribute=:attribute');
         $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
         $oQuestionAttribute =  QuestionAttribute::model()->find($criteria);
-        
+
         if($oQuestionAttribute != null) {
-            $oQuestionAttribute->value;
+            return $oQuestionAttribute->value;
         }
-        
+
         return null;
     }
 
@@ -1053,7 +1076,7 @@ class Question extends LSActiveRecord
         }
         return $model;
     }
-  
+
     /**
      * @return array
      */
@@ -1067,7 +1090,7 @@ class Question extends LSActiveRecord
         }
         return $result;
     }
-    
+
     public function getRenderererObject($aFieldArray, $type = null)
     {
         $type = $type === null ? $this->type : $type;
@@ -1105,10 +1128,10 @@ class Question extends LSActiveRecord
             case Question::QT_VERTICAL_FILE_UPLOAD: $oRenderer = new RenderFileUpload($aFieldArray); break;
             default:  $oRenderer = new DummyQuestionEditContainer($aFieldArray); break;
         };
-        
+
         return $oRenderer;
     }
-    
+
     public function getDataSetObject($type = null)
     {
         $type = $type === null ? $this->type : $type;
@@ -1168,8 +1191,8 @@ class Question extends LSActiveRecord
 
     public function getHasSubquestions(){
 
-    }  
-    
+    }
+
     public function getHasAnsweroptions(){
 
     }

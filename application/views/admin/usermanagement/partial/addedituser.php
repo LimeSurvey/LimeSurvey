@@ -19,7 +19,7 @@
             <?php echo $form->labelEx($oUser,'users_name', ['for' => 'User_Form_users_name']); ?>
             <?php 
                 if($oUser->isNewRecord) {
-                   echo $form->textField($oUser,'users_name', ['id' => 'User_Form_users_name']);
+                   echo $form->textField($oUser,'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']);
                 } else {
                     echo '<input class="form-control" type="text" name="usernameshim" value="'.$oUser->users_name.'" disabled="true" />';
                 }
@@ -34,7 +34,7 @@
         </div>
         <div class="row ls-space margin top-5">
             <?php echo $form->labelEx($oUser,'email', ['for'=>'User_Form_email']); ?>
-            <?php echo $form->emailField($oUser,'email', ['id'=>'User_Form_email']); ?>
+            <?php echo $form->emailField($oUser,'email', ['id'=>'User_Form_email', 'required' => 'required']); ?>
             <?php echo $form->error($oUser,'email'); ?>
         </div>
         <?php if(!$oUser->isNewRecord) { ?> 
@@ -47,7 +47,7 @@
         <?php } else { ?>
             <div class="row ls-space margin top-10" id="utility_set_password">
                 <div class="col-xs-6" >
-                    <label><?=gT("Set password in this mask?")?></label>
+                    <label><?=gT("Set password now?")?></label>
                 </div>
                 <div class="btn-group col-xs-6" data-toggle="buttons">
                     <label for="utility_set_password_yes" class="btn btn-default col-xs-6">

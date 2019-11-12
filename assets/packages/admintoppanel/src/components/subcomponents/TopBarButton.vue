@@ -31,15 +31,18 @@ export default {
             } catch(e){
                 this.$log.error('ERROR: Postdata no valid json, exiting');
             }
+            postdata.ajax = 1;
 
-            this.$_post(
+            this.__runAjax(
                 this.button.dataurl,
                 postdata,
+                'POST',
+                ''
             ).then(
                 (result) => {
                     this.$log.log(result);
                     window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
-                    setTimeout(() => {window.location.href = result.data.redirect}, 1500);
+                    setTimeout(() => {window.location.href = result.data.redirectUrl}, 1500);
                 }, 
                 (reject) => {
                     this.$log.error(reject);

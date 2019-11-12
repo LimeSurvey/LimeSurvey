@@ -15,16 +15,32 @@
         <a
             id='upload_{{ fileid }}'
             class='btn btn-primary upload'
-            href='#'
-            onclick='javascript:upload_{{ fileid }}();'
+            href='{{uploadurl}}'
+            data-toggle="modal"
+            data-target="file-upload-modal-{{fileid}}"
+            data-showtitle="{{show_title}}"
+            data-showcomment="{{show_comment}}"
+            data-fieldname="{{basename}}"
         >
             <span class='fa fa-upload'></span>&nbsp;{{ uploadButtonLabel }}
         </a>
     </div>
     <input type='hidden' id='{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
     <input type='hidden' id='{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
-    <div id='{{ fileid }}_uploadedfiles'>
-
+    <div id='{{ fileid }}_uploadedfiles' class="hidden">
+        <table width="100%" class="question uploadedfiles">
+            <thead>
+                <tr>
+                    <th width="20%">&nbsp;</th>
+                    <th>{{ "Title" | gT }}</th>
+                    <th>{{ "Comment" | gT }}</th>
+                    <th>{{ "File name" | gT }}</th>
+                    <th class="edit"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -54,10 +70,6 @@
 
 <script type='text/javascript'>
     var surveyid = '{{surveyId}}',
-        upload_{{fileid}} = function() {
-            var uploadurl = '{{uploadurl}}';
-            $('#upload_{{fileid}}').attr('href',uploadurl);
-        },
         uploadLang = {
              title: '{{ "Upload your files" | gT }}',
              returnTxt: '{{ "Return to survey" | gT }}',
@@ -70,15 +82,15 @@
         imageurl =  '{{imageurl}}',
         uploadurl =  '{{scriptloc}}';
         
-    
-    
+    window.uploadQuestionController_{{ fileid }} = new UploadQuestionController('{{ fileid }}');
+    window.uploadQuestionController_{{ fileid }}.prepareOpenUploadModalDialog();
     
     $(document).on("ready pjax:scriptcomplete", function(){
         var fieldname = "{{fileid}}",
             filecount = $("#"+fieldname+"_filecount").val(),
             show_title = "{{showTitle}}",
             show_comment = "{{showComment}}";
-        displayUploadedFiles( filecount, fieldname, show_title, show_comment);
+        window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, show_title, show_comment);
     });
 
     $(".basic_{{fileid}}").change(function() {
@@ -108,3 +120,16 @@
     });
 </script>
 
+<script type="text/x-template" id="filerowtemplate_{{fileid}}">
+    <tr>
+        <td class="upload {imageOrPlaceholder}">{imageOrPlaceholderHtml}</td>
+        <td class="upload title">{title}</td>
+        <td class="upload comment">{comment}</td>
+        <td class="upload edit">{name}</td>
+        <td>
+            <a class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
+                <i class="fa fa-pencil"></i> &nbsp; {{ "Edit" | gT }}
+            </a>
+        </td>
+    </tr>
+</script>

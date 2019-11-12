@@ -24,6 +24,12 @@
     use \LimeSurvey\Helpers\questionHelper;
 
     Yii::import('application.helpers.expressions.em_core_helper', true);
+    // TODO: Fix autoloading of warnings.
+    Yii::import('application.helpers.expressions.warnings.EMWarningInterface', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningBase', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningInvalidComparison', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningPlusOperator', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningAssignment', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
@@ -4712,13 +4718,15 @@
             }
 
             $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
+            $this->em->ResetWarnings();
             $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
             $hasErrors = $this->em->HasErrors();
+            $aWarnings = $this->em->GetWarnings();
             $prettyPrint = '';
             if (($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
                 $prettyPrint= $this->em->GetPrettyPrintString();
             }
-
+            $this->em->ResetWarnings();
             if (!is_null($questionNum)) {
                 // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
                 if ($hasErrors)
@@ -4750,21 +4758,25 @@
                     $this->subQrelInfo[$questionNum] = array();
                 }
                 $this->subQrelInfo[$questionNum][$rowdivid] = array(
-                'qid' => $questionNum,
-                'eqn' => $eqn,
-                'prettyPrintEqn' => $prettyPrint,
-                'result' => $result,
-                'numJsVars' => count($jsVars),
-                'relevancejs' => $relevanceJS,
-                'relevanceVars' => $relevanceVars,
-                'rowdivid' => $rowdivid,
-                'type'=>$type,
-                'qtype'=>$qtype,
-                'sgqa'=>$sgqa,
-                'hasErrors'=>$hasErrors,
-                'isExclusiveJS'=>$isExclusiveJS,
-                'irrelevantAndExclusiveJS'=>$irrelevantAndExclusiveJS,
+                    'qid' => $questionNum,
+                    'eqn' => $eqn,
+                    'prettyPrintEqn' => $prettyPrint,
+                    'result' => $result,
+                    'numJsVars' => count($jsVars),
+                    'relevancejs' => $relevanceJS,
+                    'relevanceVars' => $relevanceVars,
+                    'rowdivid' => $rowdivid,
+                    'type'=>$type,
+                    'qtype'=>$qtype,
+                    'sgqa'=>$sgqa,
+                    'hasErrors'=>$hasErrors,
+                    'isExclusiveJS'=>$isExclusiveJS,
+                    'irrelevantAndExclusiveJS'=>$irrelevantAndExclusiveJS,
                 );
+                /* Not needed elsewhere … */
+                if($this->sPreviewMode == 'logic') {
+                    $this->subQrelInfo[$questionNum][$rowdivid]['aWarnings'] = $aWarnings;
+                }
             }
             return $result;
         }
@@ -6343,11 +6355,14 @@
                     $answersCount = \Answer::model()->count('qid = :qid',array(':qid'=>$qid));
 
                     /** @var integer Get number of answers currently filtered (unrelevant) **/
-                    $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
-                        function ($sqRankAnwsers) {
-                            return !$sqRankAnwsers['result'];
-                        }
-                    ));
+                    $answersFilteredCount = 0; // Default : no filter
+                    if(!empty($LEM->subQrelInfo[$qid])) { // If there are filter : count it :)
+                        $answersFilteredCount =  count(array_filter($LEM->subQrelInfo[$qid],
+                            function ($sqRankAnwsers) {
+                                return !$sqRankAnwsers['result'];
+                            }
+                        ));
+                    }
                     /** var integer the answers available **/
                     $iCountRelevant = $answersCount - $answersFilteredCount;
                     // No need to control if upper than max_columns : count on $sgqa and count($sgqa) == max_columns
@@ -9643,11 +9658,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             /* All final survey string must be shown in survey language #12208 */
             Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
+            /** @var array[] questions with warnings : gid,qid and count to create a list ? */
+            $aQuestionWarnings = array();
             $warnings = 0;
 
             $surveyOptions = array(
-            'assessments'=> $assessments===NULL ? ($aSurveyInfo['assessments']=='Y') : $assessments,
-            'hyperlinkSyntaxHighlighting'=>true,
+                'assessments'=> $assessments===NULL ? ($aSurveyInfo['assessments']=='Y') : $assessments,
+                'hyperlinkSyntaxHighlighting'=>true,
             );
 
             $varNamesUsed = array(); // keeps track of whether variables have been declared
@@ -9759,7 +9776,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $qid = $q['info']['qid'];
                 $qseq = $q['info']['qseq'];
                 $errorCount=0;
-
+                /* @var warnings information for current question, see ExpressionManager::RDP_warnings */
+                $aWarnings = array();
+                $LEM->em->ResetWarnings();
                 //////
                 // SHOW GROUP-LEVEL INFO
                 //////
@@ -9790,6 +9809,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "<td>".$sGroupText."</td>"
                     . "</tr>\n";
                     $out .= $groupRow;
+                    $LEM->em->ResetWarnings();
                 }
 
                 //////
@@ -9808,10 +9828,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 {
                     $LEM->ProcessString($q['info']['default'], $qid,$qReplacement,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
-                    if ($LEM->em->HasErrors())
-                    {
+                    if ($LEM->em->HasErrors()){
                         ++$errorCount;
                     }
+                    $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                    $LEM->em->ResetWarnings();
                     $default = '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                 }
                 else
@@ -9822,20 +9843,21 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $sQuestionText = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
                 $LEM->ProcessString($sQuestionText, $qid,$qReplacement,1,1,false,false);
                 $sQuestionText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                if ($LEM->em->HasErrors())
-                {
+                if ($LEM->em->HasErrors()) {
                     ++$errorCount;
                 }
+                $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
                 $sQuestionHelp="";
                 if(trim($q['info']['help'])!="")
                 {
                     $sQuestionHelp=$q['info']['help'];
                     $LEM->ProcessString($sQuestionHelp, $qid,$qReplacement,1,1,false,false);
                     $sQuestionHelp = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    if ($LEM->em->HasErrors())
-                    {
+                    if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
+                    $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                    $LEM->em->ResetWarnings();
                     $sQuestionHelp = '<hr />[' . $LEM->gT("Help:") . ' ' . $sQuestionHelp . ']';
                 }
                 $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr />(' . $LEM->gT("Tip:") . ' ' . viewHelper::stripTagsEM($q['prettyValidTip']) . ')');// Unsure need to filter
@@ -9878,73 +9900,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                             $LEM->ProcessString($value, $qid,$qReplacement,1,1,false,false);
                             $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
-                            if ($LEM->em->HasErrors())
-                            {
+                            if ($LEM->em->HasErrors()) {
                                 ++$errorCount;
                             }
+                            $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                            $LEM->em->ResetWarnings();
                         }
-
-                        //~ switch ($key)
-                        //~ {
-                            //~ // @todo: Rather compares the current attribute value to the defaults in the question attributes array to decide which ones should show (only the ones that are non-standard)
-                            //~ default:
-                            //~ case 'exclude_all_others':
-                            //~ case 'exclude_all_others_auto':
-                            //~ case 'hidden':
-                                //~ if ($value == false || $value == '0') {
-                                    //~ $value = NULL; // so can skip this one - just using continue here doesn't work.
-                                //~ }
-                                //~ break;
-                            //~ case 'time_limit_action':
-                                //~ if ( $value == '1') {
-                                    //~ $value = NULL; // so can skip this one - just using continue here doesn't work.
-                                //~ }
-                            //~ case 'relevance':
-                                //~ $value = NULL;  // means an outdate database structure
-                                //~ break;
-                            //~ case 'array_filter':
-                            //~ case 'array_filter_exclude':
-                            //~ case 'code_filter':
-                            //~ case 'date_max':
-                            //~ case 'date_min':
-                            //~ case 'em_validation_q_tip':
-                            //~ case 'em_validation_sq_tip':
-                                //~ break;
-                            //~ case 'equals_num_value':
-                            //~ case 'em_validation_q':
-                            //~ case 'em_validation_sq':
-                            //~ case 'max_answers':
-                            //~ case 'max_num_value':
-                            //~ case 'max_num_value_n':
-                            //~ case 'min_answers':
-                            //~ case 'min_num_value':
-                            //~ case 'min_num_value_n':
-                            //~ case 'min_num_of_files':
-                            //~ case 'max_num_of_files':
-                            //~ case 'multiflexible_max':
-                            //~ case 'multiflexible_min':
-                            //~ case 'slider_accuracy':
-                            //~ case 'slider_min':
-                            //~ case 'slider_max':
-                            //~ case 'slider_default':
-                                //~ $value = '{' . $value . '}';
-                                //~ $LEM->ProcessString($value, $qid,NULL,1,1,false,false);
-                                //~ $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
-                                //~ if ($LEM->em->HasErrors())
-                                //~ {
-                                    //~ ++$errorCount;
-                                //~ }
-                                //~ break;
-                            //~ case 'other_replace_text':
-                            //~ case 'show_totals':
-                            //~ case 'regex_validation':
-                                //~ break;
-                            //~ case 'other':
-                                //~ if ($value == 'N') {
-                                    //~ $value = NULL; // so can skip this one
-                                //~ }
-                                //~ break;
-                        //~ }
                         if (is_null($value)) {
                             continue;   // since continuing from within a switch statement doesn't work
                         }
@@ -9964,22 +9925,25 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // Must parse Relevance this way, otherwise if try to first split expressions, regex equations won't work
                 $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+                $LEM->em->ResetWarnings();
                 if (!isset($LEM->ParseResultCache[$relevanceEqn]))
                 {
                     $result = $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $qseq);
                     $prettyPrint = viewHelper::stripTagsEM($LEM->em->GetPrettyPrintString());
                     $hasErrors =  $LEM->em->HasErrors();
                     $LEM->ParseResultCache[$relevanceEqn] = array(
-                    'result' => $result,
-                    'prettyprint' => $prettyPrint,
-                    'hasErrors' => $hasErrors,
+                        'result' => $result,
+                        'prettyprint' => $prettyPrint,
+                        'hasErrors' => $hasErrors,
+                        'aWarnings'=> $LEM->em->GetWarnings(),
                     );
+                    $LEM->em->ResetWarnings();
                 }
                 $relevance = $LEM->ParseResultCache[$relevanceEqn]['prettyprint'];
-                if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors'])
-                {
+                if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors']) {
                     ++$errorCount;
                 }
+                $aWarnings = array_merge($aWarnings, $LEM->ParseResultCache[$relevanceEqn]['aWarnings']);
 
                 //////
                 // SHOW VALIDATION EQUATION
@@ -9994,15 +9958,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $prettyPrint = viewHelper::stripTagsEM($LEM->em->GetPrettyPrintString());
                         $hasErrors =  $LEM->em->HasErrors();
                         $LEM->ParseResultCache[$validationEqn] = array(
-                        'result' => $result,
-                        'prettyprint' => $prettyPrint,
-                        'hasErrors' => $hasErrors,
+                            'result' => $result,
+                            'prettyprint' => $prettyPrint,
+                            'hasErrors' => $hasErrors,
+                            'aWarnings'=> $LEM->em->GetWarnings(),
                         );
+                        $LEM->em->ResetWarnings();
                     }
                     $prettyValidEqn = '<hr />(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
                     if ($LEM->ParseResultCache[$validationEqn]['hasErrors']) {
                         ++$errorCount;
                     }
+                    $aWarnings = array_merge($aWarnings, $LEM->ParseResultCache[$validationEqn]['aWarnings']);
                 }
 
                 //////
@@ -10035,12 +10002,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     'qid' => $varNamesUsed[$rootVarName]['qid'],
                     'gid' => $gid,
                     );
-                    if (!$LEM->sgqaNaming)
-                    {
+                    if (!$LEM->sgqaNaming) {
                         ++$errorCount;
-                    }
-                    else
-                    {
+                    } else {
                         ++$warnings;
                     }
                 }
@@ -10100,6 +10064,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         if ($sq['hasErrors']) {
                             ++$errorCount;
                         }
+                        $aWarnings = array_merge($aWarnings,$sq['aWarnings']);
+                        $LEM->em->ResetWarnings();
                     }
 
                     $sgqaInfo = $LEM->knownVars[$sgqa];
@@ -10110,14 +10076,17 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
+                    $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                    $LEM->em->ResetWarnings();
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
                     {
                         $LEM->ProcessString($sgqaInfo['default'], $qid,$qReplacement,1,1,false,false);
                         $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
-                        if ($LEM->em->HasErrors())
-                        {
+                        if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }
+                        $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                        $LEM->em->ResetWarnings();
                         $subQeqn .= '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                     }
                     $sqRows .= "<tr class='LEMsubq'>"
@@ -10164,10 +10133,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         {
                             $sq = $LEM->subQrelInfo[$qid][$rowdivid];
                             $subQeqn = ' ' . viewHelper::stripTagsEM($sq['prettyPrintEqn']);
-                            if ($sq['hasErrors'])
-                            {
+                            if ($sq['hasErrors']) {
                                 ++$errorCount;
                             }
+                            $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                            $LEM->em->ResetWarnings();
                         }
                         $sAnswerText=$valInfo[1];
                         $LEM->ProcessString($sAnswerText, $qid,$qReplacement,1,1,false,false);
@@ -10175,6 +10145,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }
+                        $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
+                        $LEM->em->ResetWarnings();
                         $answerRows .= "<tr class='LEManswer'>"
                         . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
                         . "<td><b>" . $ansInfo[1]. "</b></td>"
@@ -10188,7 +10160,35 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
                 //////
                 $errclass = ($errorCount > 0) ? 'danger': '';
-                $errText=($errorCount > 0) ? "<br><em class='label label-danger'>".$LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.",$errorCount)."<em>" : "";
+                $errText=($errorCount > 0) ? "<br><em class='label label-danger'>".$LEM->ngT("This question has at least {n} error.|This question has at least {n} errors.",$errorCount)."</em>" : "";
+                /* Construct the warnings */
+                $sWarningsText = "";
+                if(count($aWarnings) > 0) {
+                    // TODO: Factor out in warning classes OOP
+                    $sWarningsText .= "<div class='alert alert-warning'>";
+                    $sWarningsText .= "<strong class=''>".$LEM->ngT("This question has at least {n} warning.|This question has at least {n} warnings.",count($aWarnings))."</strong>";
+                    $sWarningsText .= "<ul class='list-unstyled small text-warning'>";
+                    $warningsDone = array();
+                    foreach($aWarnings as $aWarning) {
+                        if(!in_array($aWarning->getMessage(),$warningsDone) ) {
+                            $sWarningsText .= "<li>";
+                            if($aWarning->hasHelpLink()) {
+                                $sWarningsText .= $aWarning->bakeHelpLink();
+                            } else {
+                                $sWarningsText .= $aWarning->getMessage();
+                            }
+                            $sWarningsText .= "</li>";
+                        }
+                        $warningsDone[] = $aWarning->getMessage();
+                    }
+                    $sWarningsText .= "</ul>";
+                    $sWarningsText .= "</div>";
+                    $aQuestionWarnings[] = array([
+                        'gid' => $gid,
+                        'qid' => $qid,
+                        'count' => count($aWarnings)
+                    ]);
+                }
                 $questionRow = "<tr class='LEMquestion'>"
                 . "<td class='$errclass'>Q-" . $q['info']['qseq'] . "</td>"
                 . "<td><b>" . $mandatory;
@@ -10205,7 +10205,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
                 }
-                $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $errText</td>"
+                $questionRow .= "</b><br />[<a target='_blank' href='$editlink'>QID $qid</a>]<br/>$typedesc [$type] $errText $sWarningsText</td>"
                 . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
                 . "<td>" . $qdetails . "</td>"
                 . "</tr>\n";
@@ -10224,11 +10224,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
                 $out .= LimeExpressionManager::GetDebugTimingMessage();
             }
-
+            // Here it's added at top 
+            if(count($aQuestionWarnings) > 0) {
+                $out = "<p class='alert alert-warning'>". $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)) . "</p>\n" . $out;
+            }
             if (count($allErrors) > 0) {
                 $out = "<p class='alert alert-danger'>". $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allErrors)) . "</p>\n" . $out;
-            }
-            else {
+            } else {
                 switch ($surveyMode)
                 {
                     case 'survey':
@@ -10244,8 +10246,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = '';
                         break;
                 }
-                $out = "<p class='LEMheading'>$message</p>\n" . $out;
+                $out = "<p class='LEMheading alert alert-success'>$message</p>\n" . $out;
             }
+
             $out .="</div>";
             return array(
                 'errors'=>$allErrors,

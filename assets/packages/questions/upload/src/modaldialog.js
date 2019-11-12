@@ -1,158 +1,159 @@
 window.uploadModalObjects = window.uploadModalObjects || {};
 
-$(function() {
-    openUploadModalDialog();
-});
+class UploadQuestionController {
+    constructor(fieldname) {
+        this.fieldname = fieldname
+        this.$el = $('#upload_'+fieldname);
+        this.$modalEl = $('#file-upload-modal-' + this.fieldname);
+        this.show_title = this.$el.data('showtitle');
+        this.show_comment = this.$el.data('showcomment');
+    }
 
-function openUploadModalDialog(){
-    $('.upload').off('click.lsuploadquestion');
-    $('.upload').on('click.lsuploadquestion',function(e) {
-
-        e.preventDefault();
-
-        var $this = $(this);
-        var show_title   = getQueryVariable('show_title', this.href);
-        var show_comment = getQueryVariable('show_comment', this.href);
-        var pos          = getQueryVariable('pos', this.href);
-        var fieldname    = getQueryVariable('fieldname', this.href);
-        var buttonsOpts = {};
-        buttonsOpts[uploadLang.returnTxt] = function() {
-            $(this).dialog("close");
+    prepareOpenUploadModalDialog() {
+        const buttonsOpts = {};
+        buttonsOpts[uploadLang.returnTxt] = () => {
+            this.$el.dialog("close");
         };
 
-        $('#file-upload-modal-' + fieldname).modal('show');
         $(document).off('shown.bs.modal.lsuploadquestion');
-        $(document).on('shown.bs.modal.lsuploadquestion','#file-upload-modal-' + fieldname, function()
-        {
-            var uploadFrame = $('#uploader'+fieldname);
+        $(document).on('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname, () => {
+            const uploadFrame = $('#uploader' + this.fieldname);
             uploadFrame.load(uploadFrame.data('src'));
-            updateMaxHeightModalbody($(this));
+            this.updateMaxHeightModalbody(this.$el);
         });
-        $('#file-upload-modal-' + fieldname).off('hide.bs.modal.lsuploadquestion');
-        $('#file-upload-modal-' + fieldname).on('hide.bs.modal.lsuploadquestion', function() {
-            var pass;
-            var uploaderId = 'uploader' + fieldname;
-            window.currentUplaodHandler.saveAndExit(fieldname,show_title, show_comment,pos);
-            // if(document.getElementById(uploaderId).contentDocument) {
-            //     if(document.getElementById(uploaderId).contentDocument.defaultView)
-            //         {       /*Firefox*/
-            //         pass=document.getElementById(uploaderId).contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);
-            //     }else{       /*IE8*/
-            //         pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
-            //     }
-            // }else{    /*IE6*/
-            //     pass=document.getElementById(uploaderId).contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);
-            // }
-            $('#uploader'+fieldname).html('');
-            return pass;
+
+        this.$modalEl.off('hide.bs.modal.lsuploadquestion');
+        this.$modalEl.on('hide.bs.modal.lsuploadquestion', () => {
+            const uploadFrame = $('#uploader' + this.fieldname);
+            window.currentUploadHandler.saveAndExit(this.fieldname, this.show_title, this.show_comment, 1);
+            uploadFrame.html('');
+            return true;
 
         });
-    });
-}
 
-/* Function to update upload frame
- *
- * @param frameName name of the frame (here it's id too :) )
- * @param integer heigth
- */
-function updateUploadFrame(frameName,heigth)
-{
-    $("#"+frameName).innerHeight(heigth);
-}
-/* Function to update modal body max height
- *
- * @param modal jquery object : the modal
- */
-function updateMaxHeightModalbody(modal)
-{
-    var modalHeader=$(modal).find(".modal-header").outerHeight();
-    var modalFooter=$(modal).find(".modal-footer").outerHeight();
-    console.ls.log([$(window).height(),modalHeader,modalFooter,(modalHeader+modalFooter)]);
-    var finalMaxHeight=Math.max(150,$(window).height()-(modalHeader+modalFooter+16));// Not less than 150px
-    $(modal).find(".modal-body").css("max-height",finalMaxHeight);
-}
+        this.$el.off('click.lsuploadquestion');
+        this.$el.on('click.lsuploadquestion', (e) => {
+            console.ls.log("File upload modal opening");
+            this.$modalEl.modal('show');
+        });
+    }
 
-function getQueryVariable(variable, url) {
-    var vars = url.split("/");
-    for (var i=0;i<vars.length;i++) {
-        //var pair = vars[i].split("=");
-        if (vars[i] == variable) {
-        return vars[i+1];
+    /* Function to update upload frame
+     *
+     * @param frameName name of the frame (here it's id too :) )
+     * @param integer heigth
+     */
+    updateUploadFrame(frameName, heigth) {
+        $("#" + frameName).innerHeight(heigth);
+    }
+    /* Function to update modal body max height
+     *
+     * @param modal jquery object : the modal
+     */
+    updateMaxHeightModalbody(modal) {
+        const modalHeader = $(modal).find(".modal-header").outerHeight();
+        const modalFooter = $(modal).find(".modal-footer").outerHeight();
+        const finalMaxHeight = Math.max(150, $(window).height() - (modalHeader + modalFooter + 16)); // Not less than 150px
+        console.ls.log([$(window).height(), modalHeader, modalFooter, (modalHeader + modalFooter)]);
+        $(modal).find(".modal-body").css("max-height", finalMaxHeight);
+    }
+
+    getQueryVariable(variable, url) {
+        const vars1 = url.split("/");
+        for (let i = 0; i < vars1.length; i++) {
+            if (vars1[i] == variable) {
+                return vars1[i + 1];
+            }
         }
-    }
-    // If not found try with ?
-    // TODO : replace by a regexp
-   var vars = url.replace(/\&amp;/g,'&').split("&");
-   for (var i=0;i<vars.length;i++) {
-           var pair = vars[i].split("=");
-           if(pair[0] == variable){return pair[1];}
-   }
-   return null;
-}
-
-function isValueInArray(arr, val) {
-    inArray = false;
-    for (i = 0; i < arr.length; i++) {
-        if (val.toLowerCase() == arr[i].toLowerCase()) {
-            inArray = true;
+        // If not found try with ?
+        // TODO : replace by a regexp
+        const vars2 = url.replace(/\&amp;/g, '&').split("&");
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars2[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
         }
+        return null;
     }
 
-    return inArray;
-}
+    isValueInArray(arr, val) {
+        inArray = false;
+        for (let i = 0; i < arr.length; i++) {
+            if (val.toLowerCase() == arr[i].toLowerCase()) {
+                inArray = true;
+            }
+        }
 
-window.displayUploadedFiles = function (filecount, fieldname, show_title, show_comment) {
-    var jsonstring = $("#"+fieldname).val();
-    var i;
-    var display = '';
-
-    if (jsonstring == '[]' || jsonstring == '') {
-        $('#'+fieldname+'_uploadedfiles').html(display);
-        return;
+        return inArray;
     }
 
-    if (jsonstring !== '')
-    {   
-        var jsonobj = [];
-        try{
-            jsonobj = JSON.parse(jsonstring);
-        } catch(e) {};
+    displayUploadedFiles(filecount, fieldname, show_title, show_comment) {
+        const jsonstring = $("#" + fieldname).val();
+        let display = '';
 
-        display = '<table width="100%" class="question uploadedfiles">';
-        display += '<thead>';
-        display += '<tr>';
-        display += '<th width="20%">&nbsp;</th>';
-        
-        
-        if (show_title != 0)
-        display += '<th>'+uploadLang.titleFld+'</th>';
-        if (show_comment != 0)
-        display += '<th>'+uploadLang.commentFld+'</th>';
-        display += '<th>'+uploadLang.filenameFld+'</th><th class="edit"></th></tr></thead><tbody>';
-        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
-                
-        jsonobj.forEach(function(item,iterator) {
-            if (isValueInArray(image_extensions, item.ext))
-            display += '<tr><td class="upload image"><img src="' + uploadurl + '/filegetcontents/'+decodeURIComponent(item.filename)+'" class="uploaded" /></td>';
-            else
-            display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
+        if (jsonstring == '[]' || jsonstring == '') {
+            $('#' + this.fieldname + '_uploadedfiles').addClass('hidden');
+            $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
+            return;
+        }
+
+        if (jsonstring !== '') {
+            let jsonobj = [];
+            try {
+                jsonobj = JSON.parse(jsonstring);
+            } catch (e) {};
+
+            $('#' + this.fieldname + '_uploadedfiles').removeClass('hidden');
+            $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
+
+            const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+            const templateHtml = $('#filerowtemplate_'+this.fieldname).html();
             
-            if (show_title != 0)
-            display += '<td class="upload title">'+item.title+'</td>';
-            if (show_comment != 0)
-            display += '<td class="upload comment">'+item.comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(item.name)+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
-        });
-        display += '</tbody></table>';
-       
-        $('#'+fieldname+'_uploadedfiles').html(display);
+            jsonobj.forEach((item, iterator) => {
+                let imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer;
+                if (this.isValueInArray(image_extensions, item.ext)) {
+                    imageOrPlaceholder = "image";
+                    imageOrPlaceholderHtml = `<img src="${uploadurl}/filegetcontents/${decodeURIComponent(item.filename)}" class="uploaded" />`;
+                } else {
+                    imageOrPlaceholder = "placeholder";
+                    imageOrPlaceholderHtml = `<div class="upload-placeholder"></div>`;
+                }
+
+                title = (show_title != 0) ? item.title : '';
+                comment = (show_comment != 0) ? item.comment : '';
+                name = item.name;
+                filepointer = iterator;
+                const rowHtml = this.replaceWithObject(templateHtml, {imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer});
+                $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').append(rowHtml)
+            });
+            
+            $('.trigger_edit_upload_'+this.fieldname).off('click.lsuploadquestion');
+            $('.trigger_edit_upload_'+this.fieldname).on('click.lsuploadquestion', 
+            () => {
+                this.$modalEl.modal('show');
+            });
+        }
+    };
+
+    replaceWithObject(templateString, objectWithReplacements) {
+        let outString = templateString;
+        for( let key in objectWithReplacements) {
+            outString = outString.replace(new RegExp(`\{${key}\}`), objectWithReplacements[key]);
+        }
+        return outString;
     }
-};
 
-function showBasic() {
-    $('#basic').show();
+
+    showBasic() {
+        $('#basic').show();
+    }
+
+    hideBasic() {
+        $('#basic').hide();
+    }
 }
 
-function hideBasic() {
-    $('#basic').hide();
-}
+
+
+window.UploadQuestionController = UploadQuestionController;
