@@ -889,12 +889,11 @@ class UserManagement extends Survey_Common_Action
                
         }
 
-        return $this->getController()->renderPartial('/admin/usermanagement/userimported',
-         ['created' => $created,
-          'updated' => $updated      
-        ], 
-          
-         true);
+        Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
+        Yii::app()->getController()->redirect(
+            Yii::app()->createUrl('admin/usermanagement/sa/view')
+        );
+        return;
     }
 
 
