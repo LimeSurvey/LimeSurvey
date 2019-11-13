@@ -26,7 +26,7 @@ class EchoBuildTime {
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
     filenameHashing: false,
-    productionSourceMap: false,
+    productionSourceMap: true,
     runtimeCompiler: true,
     // The source of CKEditor is encapsulated in ES6 modules. By default, the code
     // from the node_modules directory is not transpiled, so you must explicitly tell
@@ -40,7 +40,8 @@ module.exports = {
         output: {
             filename: () => {return 'js/'+appName+'.js'},
         },
-        devtool: process.env.NODE_ENV === 'production' ? 'none' : 'source-map',
+        //devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'source-map',
+        devtool: 'source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',

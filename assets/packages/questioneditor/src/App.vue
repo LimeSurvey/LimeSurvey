@@ -158,14 +158,14 @@ export default {
                             LS.EventBus.$emit('setQuestionType', result.data.newQuestionDetails.question.type);
                         });
                     },
-                    (reject) => {
+                    (rejected) => {
                         $('#in_survey_common').trigger('lsStopLoading');
                         this.loading = false;
-                        this.$log.error(reject);
-                        if(reject.data != undefined) {
-                            window.LS.notifyFader(reject.data.message, 'well-lg bg-danger text-center');   
+                        this.$log.error(rejected);
+                        if(rejected.data != undefined) {
+                            window.LS.notifyFader(rejected.data.message, 'well-lg bg-danger text-center');   
                         }
-                        setTimeout(()=>{window.location.reload();}, 2500);
+                        // setTimeout(()=>{window.location.reload();}, 2500);
                     }
                 )
             } else {

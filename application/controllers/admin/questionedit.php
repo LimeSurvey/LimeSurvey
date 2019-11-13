@@ -103,10 +103,7 @@ class questionedit extends Survey_Common_Action
                 'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ',
             ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
-            'connectorBaseUrl' => $this->getController()->createUrl(
-                'admin/questioneditor',
-                ['sid' => $iSurveyID, 'gid' => $gid, 'sa' => '']
-            ),
+            'connectorBaseUrl' => 'admin/questioneditor',
             'i10N' => [
                 'Create question' => gT('Create question'),
                 'General settings' => gT("General settings"),
