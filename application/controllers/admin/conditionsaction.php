@@ -1611,36 +1611,34 @@ class conditionsaction extends Survey_Common_Action
                         )->findAllByAttributes(array(
                             'qid' => $rows['qid'],
                             'scale_id' => 0,
-                        ), array('order' => 'sortorder, answer'
-                )
-            );
+                        ), array('order' => 'sortorder, answer'));
 
-                    foreach ($aresult as $arows) {
-                        $theanswer = $arows['answer'];
-                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
-                    }
-                    if ($rows['type'] == Question::QT_D_DATE) {
-                        // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                        foreach ($aresult as $arows) {
+                            $theanswer = $arows['answer'];
+                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                         }
-                    } elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
-                        $rows['type'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS &&
-                        $rows['type'] != Question::QT_I_LANGUAGE) {
-                        // For dropdown questions
-                        // optinnaly add the 'Other' answer
-                        if (($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
-                            $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
-                            $rows['other'] == "Y") {
-                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
-                        }
+                        if ($rows['type'] == Question::QT_D_DATE) {
+                            // Only Show No-Answer if question is not mandatory
+                            if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
+                                $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            }
+                        } elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
+                            $rows['type'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS &&
+                            $rows['type'] != Question::QT_I_LANGUAGE) {
+                            // For dropdown questions
+                            // optinnaly add the 'Other' answer
+                            if (($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
+                                $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
+                                $rows['other'] == "Y") {
+                                $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
+                            }
 
-                        // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
-                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            // Only Show No-Answer if question is not mandatory
+                            if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
+                                $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            }
                         }
-                    }
-                    break;
+                        break;
                 }//switch row type
             } //else
         } //foreach theserows
