@@ -3,7 +3,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 Denis Chenu <http://www.sondages.pro>
  * @license GPL version 3
- * @version 0.0.0-alpha
+ * @version 0.0.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,19 +31,18 @@ class statFunctions extends PluginBase
     public function newValidFunctions()
     {
         Yii::setPathOfAlias(get_class($this), dirname(__FILE__));
-        //~ Yii::import(get_class($this).".exampleFunctions");
         $newFunctions = array(
             'statCountIf' => array(
-                '\statFunctions\countFunctions::statCountIf', // PHP function, no need Class if function is directly added here
+                '\statFunctions\countFunctions::statCountIf',
                 null, // No javascript function : set as static function
                 $this->gT("Count the response done with value equal to a specific value"), // Description for admin
                 'integer statCountIf(QuestionCode.sgqa, value[, submitted = true])', // Extra description
                 'https://www.limesurvey.org', // Help url
                 2, // Number of argument unsure it work here … , minimum 2, allow 3
-                3,
+                3
             ),
             'statCount' => array(
-                '\statFunctions\countFunctions::statCount', // PHP function, no need Class if function is directly added here
+                '\statFunctions\countFunctions::statCount',
                 null, // No javascript function : set as static function
                 $this->gT("Count previous response done not empty"), // Description for admin
                 'integer statCount(QuestionCode.sgqa[, submitted = true])', // Extra description

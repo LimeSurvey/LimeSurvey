@@ -24,11 +24,11 @@ class countFunctions
     public static function statCountIf($qCode, $comparaison, $submitted = true)
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
-        $checkSurveyId = self::_checkSurveyId($surveyId);
-        if (!is_null($checkSurveyId)) {
-            return $checkSurveyId;
+        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+            return 0;
         }
-        $column = self::_getColumnByQCode($surveyId, $qCode);
+        $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
+        $column = $questionCodeHelper->getColumnByQCode($qCode);
         if (is_null($column)) {
             if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
                 return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
@@ -54,11 +54,11 @@ class countFunctions
     public static function statCount($qCode, $submitted = true)
     {
         $surveyId = LimeExpressionManager::getLEMsurveyId();
-        $checkSurveyId = self::_checkSurveyId($surveyId);
-        if (!is_null($checkSurveyId)) {
-            return $checkSurveyId;
+        if (!Survey::model()->findByPk($surveyId)->getIsActive()) {
+            return 0;
         }
-        $column = self::_getColumnByQCode($surveyId, $qCode);
+        $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
+        $column = $questionCodeHelper->getColumnByQCode($qCode);
         if (is_null($column)) {
             if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
                 return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
@@ -73,41 +73,5 @@ class countFunctions
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
-    }
-
-    /**
-     * Check the survey
-     * @param $surveyId
-     * @return integer|string|null : return 0 or string : value to be directly shown, null : final value must be evaluated
-     */
-    private static function _checkSurveyId($surveyId)
-    {
-        $oSurvey = Survey::model()->findByPk($surveyId);
-        if (!$oSurvey) {
-            return "Invalid survey"; // Can not happen … (hope)
-        }
-        if (!$oSurvey->getIsActive()) {
-            return 0;
-        }
-    }
-
-    /**
-     * Get the column name from a code.
-     * @param integer $surveyId
-     * @param string $qCode
-     * @return null|string : null mean an invalid column/code, string is the column in reponse database, null if not found
-     */
-    private static function _getColumnByQCode($surveyId, $qCode)
-    {
-        $availableColumns = SurveyDynamic::model($surveyId)->getAttributes();
-        /* Sample : Q01.sgqa Q01_SQ01.sgqa */
-        if (array_key_exists($qCode, $availableColumns)) {
-            return $qCode;
-        }
-        /* @todo : allow "Q0" and "Q0_SQ0" …
-         * But without using LimeExpressionManager::ProcessString or LimeExpressionManager::getLEMqcode2sgqa
-         * Because break logic file
-         */
-        return null;
     }
 }
