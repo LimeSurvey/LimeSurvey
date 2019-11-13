@@ -62,6 +62,8 @@ echo viewHelper::getViewTestTag('usersIndex');
                     $.fn.yiiGridView.update('usermanagement--identity-gridPanel',{ data:{ pageSize: $(this).val() }});
                 });
             });
+            //show tooltip for gridview icons
+            $('[data-toggle="tooltip"]').tooltip();
         </script>
 </div>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
