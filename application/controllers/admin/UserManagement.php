@@ -274,6 +274,69 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
+     * Deletes a user 
+     *
+     * @param int $uid
+     * @param bool $recursive
+     * @return boolean
+     */
+    public function deleteUser(int $uid , bool $recursive = true)
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        if ($uid == Yii::app()->user->id) {
+            return false;
+        }else{
+            $oUser = User::model()->findByPk($uid);
+            return $oUser->delete($recursive);
+        }
+    }
+
+    /**
+     * Delete multiple users selected by massive action
+     * @return void
+     */
+    public function deleteMultiple()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $aUsers = json_decode(App()->request->getPost('sItems'));
+        $aResults = [];
+
+        foreach($aUsers as $user) {
+            $aResults[$user]['title'] = '';
+            $model = $this->loadModel($user);
+            $aResults[$user]['title'] = $model->users_name;
+            $aResults[$user]['result'] = $this->deleteUser($user);
+            if(!$aResults[$user]['result'] && $user == Yii::app()->user->id )   {
+                $aResults[$user]['error'] = gT("You cannot delete yourself.");
+            }
+        }
+
+        $tableLabels = array(gT('User id'),gT('Username') ,gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Deleted'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
+    }
+
+
+    /**
      * Deletes a user after  confirmation
      *
      * @return void
@@ -573,8 +636,6 @@ class UserManagement extends Survey_Common_Action
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
-      
-
         foreach($aUsers as $user) {
             $aResults[$user]['title'] = '';
             $model = $this->loadModel($user);
@@ -836,7 +897,7 @@ class UserManagement extends Survey_Common_Action
      * Calls up a modal to import users via csv/json file
      *
      *@param string $importFormat - Importformat (csv/json) to render 
-     * @return string
+     *@return string
      */
     public function renderUserImport(string $importFormat = 'csv')
     {

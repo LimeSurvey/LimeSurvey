@@ -13,7 +13,7 @@ $aActionsArray = array(
         array(
             'type'        => 'action',
             'action'      => 'delete',
-            'url'         =>  App()->createUrl('/admin/usermanagement/sa/batchDelete'),
+            'url'         =>  App()->createUrl('/admin/usermanagement/sa/deleteMultiple'),
             'iconClasses' => 'text-danger fa fa-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
