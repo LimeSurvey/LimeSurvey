@@ -81,7 +81,7 @@ export default {
         );
     },
     changeCurrentTab(context, payload) {
-        context.commit("setCurrentTab", payload);
+        context.commit("changeCurrentTab", payload);
         context.dispatch('collectMenus');
         context.dispatch('getQuestions');
     }

@@ -665,7 +665,7 @@ class questionedit extends Survey_Common_Action
      */
     private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
     {
-        $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
+        $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $iQuestionGroupId = Yii::app()->request->getParam('gid');
         $type = SettingsUser::getUserSettingValue(
