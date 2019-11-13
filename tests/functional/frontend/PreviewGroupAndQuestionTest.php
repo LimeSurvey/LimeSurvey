@@ -49,7 +49,7 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
         );
         try {
             self::$webDriver->get($url);
-            sleep(1);
+            sleep(2);
             /* Did we have group 1 ? */
             $group = self::$webDriver->findElement(WebDriverBy::id('group-1'));
             $this->assertTrue($group->isDisplayed());
