@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-11-13 11:16:17+00:00\n"
+"POT-Creation-Date: 2019-11-13 16:38:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9394,7 +9394,7 @@ msgid "This question has at least {n} warning.|This question has at least {n} wa
 msgstr ""
 
 #: application/helpers/expressions/warnings/EMWarningInvalidComparison.php:23
-msgid "This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information."
+msgid "This expression uses a possibly invalid comparison. Are you sure you didn't mean to do a numerical comparison? See manual for more information."
 msgstr ""
 
 #: application/helpers/expressions/warnings/EMWarningPlusOperator.php:23
@@ -11687,7 +11687,7 @@ msgstr ""
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:111
 #: application/views/admin/survey/Question/question_view.php:170
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:77
-#: application/views/admin/survey/QuestionGroups/editGroup_view.php:60
+#: application/views/admin/survey/QuestionGroups/editGroup_view.php:61
 msgid "Relevance equation:"
 msgstr ""
 
@@ -17291,7 +17291,7 @@ msgstr ""
 msgid "Error: You have to enter a group title for each language."
 msgstr ""
 
-#: application/views/admin/survey/QuestionGroups/addGroup_view.php:87
+#: application/views/admin/survey/QuestionGroups/addGroup_view.php:89
 msgid "Save question group"
 msgstr ""
 
