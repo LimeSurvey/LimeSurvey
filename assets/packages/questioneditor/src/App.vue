@@ -161,8 +161,10 @@ export default {
                     (reject) => {
                         $('#in_survey_common').trigger('lsStopLoading');
                         this.loading = false;
-                        window.LS.notifyFader(reject.data.message, 'well-lg bg-danger text-center');
-                        this.$log.error(reject.data.error);
+                        this.$log.error(reject);
+                        if(reject.data != undefined) {
+                            window.LS.notifyFader(reject.data.message, 'well-lg bg-danger text-center');   
+                        }
                         setTimeout(()=>{window.location.reload();}, 2500);
                     }
                 )
