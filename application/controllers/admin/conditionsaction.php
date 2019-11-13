@@ -1409,39 +1409,39 @@ class conditionsaction extends Survey_Common_Action
             } elseif ($rows['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
                 // Multiflexi
                 // Get the Y-Axis
-                $fquery = "SELECT sq.*, q.other"
-                    ." FROM {{questions sq}}, {{questions q}}"
-                    ." WHERE sq.sid={$this->iSurveyID} AND sq.parent_qid=q.qid "
-                    . "AND q.language=:lang1"
-                    ." AND sq.language=:lang2"
-                    ." AND q.qid=:qid
+                $fquery = "SELECT sq.*, q.other, l10ns.question
+                    FROM {{questions sq}}, {{questions q}}, {{question_l10ns l10ns}}
+                    WHERE sq.sid={$this->iSurveyID}
+                    AND sq.parent_qid=q.qid
+                    AND sq.qid = l10ns.qid
+                    AND l10ns.language=:lang1
+                    AND q.qid=:qid
                     AND sq.scale_id=0
                     ORDER BY sq.question_order";
                 $sLanguage = $this->language;
                 $y_axis_db = Yii::app()->db->createCommand($fquery)
                     ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
-                    ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
                     ->query();
 
                 // Get the X-Axis
-                $aquery = "SELECT sq.*
-                    FROM {{questions q}}, {{questions sq}}
+                $aquery = "SELECT sq.*, l10ns.question
+                    FROM {{questions q}}, {{questions sq}}, {{question_l10ns l10ns}}
                     WHERE q.sid={$this->iSurveyID}
                     AND sq.parent_qid=q.qid
-                    AND q.language=:lang1
-                    AND sq.language=:lang2
+                    AND sq.qid = l10ns.qid
+                    AND l10ns.language=:lang1
                     AND q.qid=:qid
                     AND sq.scale_id=1
                     ORDER BY sq.question_order";
 
                 $x_axis_db = Yii::app()->db->createCommand($aquery)
                     ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
-                    ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
                     ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
                     ->query() or safeDie("Couldn't get answers to Array questions<br />$aquery<br />");
 
                 $x_axis = [];
+
                 foreach ($x_axis_db->readAll() as $frow) {
                     $x_axis[$frow['title']] = $frow['question'];
                 }
@@ -1497,13 +1497,12 @@ class conditionsaction extends Survey_Common_Action
                 } //foreach
             } elseif ($rows['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION || $rows['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
                 //Multi shorttext/numerical
-                $aresult = Question::model()->findAllByAttributes(array(
-                    "parent_qid" => $rows['qid'],
-                    "language" =>$this->language,
+                $aresult = Question::model()->with('questionL10ns')->findAllByAttributes(array(
+                    "parent_qid" => $rows['qid']
                 ), array('order' => 'question_order desc'));
 
                 foreach ($aresult as $arows) {
-                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."]";
+                    $shortanswer = "{$arows['title']}: [".strip_tags($arows->questionL10ns[$this->language]->question)."]";
                     $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
 
