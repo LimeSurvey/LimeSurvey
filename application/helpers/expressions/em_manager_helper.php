@@ -30,6 +30,7 @@
     Yii::import('application.helpers.expressions.warnings.EMWarningInvalidComparison', true);
     Yii::import('application.helpers.expressions.warnings.EMWarningPlusOperator', true);
     Yii::import('application.helpers.expressions.warnings.EMWarningAssignment', true);
+    Yii::import('application.helpers.expressions.warnings.EMWarningHTMLBaker', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
@@ -10170,25 +10171,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 /* Construct the warnings */
                 $sWarningsText = "";
                 if(count($aWarnings) > 0) {
-                    // TODO: Factor out in warning classes OOP
-                    $sWarningsText .= "<div class='alert alert-warning'>";
-                    $sWarningsText .= "<strong class=''>".$LEM->ngT("This question has at least {n} warning.|This question has at least {n} warnings.",count($aWarnings))."</strong>";
-                    $sWarningsText .= "<ul class='list-unstyled small text-warning'>";
-                    $warningsDone = array();
-                    foreach($aWarnings as $aWarning) {
-                        if(!in_array($aWarning->getMessage(),$warningsDone) ) {
-                            $sWarningsText .= "<li>";
-                            if($aWarning->hasHelpLink()) {
-                                $sWarningsText .= $aWarning->bakeHelpLink();
-                            } else {
-                                $sWarningsText .= $aWarning->getMessage();
-                            }
-                            $sWarningsText .= "</li>";
-                        }
-                        $warningsDone[] = $aWarning->getMessage();
-                    }
-                    $sWarningsText .= "</ul>";
-                    $sWarningsText .= "</div>";
+                    $warningBaker = new EMWarningHTMLBaker();
+                    $sWarningsText = $warningBaker->getWarningHTML($aWarnings);
                     $aQuestionWarnings[] = array([
                         'gid' => $gid,
                         'qid' => $qid,
