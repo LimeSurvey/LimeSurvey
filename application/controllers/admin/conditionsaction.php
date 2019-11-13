@@ -719,6 +719,7 @@ class conditionsaction extends Survey_Common_Action
 
         } else {
             $posted_condition_value = null;
+            $request = Yii::app()->request;
 
             // Other conditions like constant, other question or token field
             switch ($request->getPost('editTargetTab')) {
