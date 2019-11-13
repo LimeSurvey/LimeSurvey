@@ -25,8 +25,8 @@ class questionCodeHelper
 
     /**
      * Check the survey
-     * @param $surveyId
-     * @return integer|null : return interger : value to be directly shown, null : column not found
+     * @param string $qCode question SGQA
+     * @return integer|null : return integer : value to be directly shown, null : column not found
      */
     public function getColumnByQCode($qCode)
     {
