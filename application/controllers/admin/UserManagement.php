@@ -537,6 +537,66 @@ class UserManagement extends Survey_Common_Action
             ]
         ]);
     }
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     *
+     * @param integer $id the ID of the model to be loaded
+     *
+     * @return User|null  object
+     * @throws CHttpException
+     */
+    public function loadModel($id)
+    {
+      
+        $model = User::model()->findByPk($id);
+        
+        if ($model === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+
+        return $model;
+    }
+
+    /**
+     * render selected items for massive action modal
+     *
+     * @return void
+     * @throws CHttpException
+     * @throws CException
+     */
+
+    public function renderSelectedItems()
+    {
+        
+        $aUsers = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aResults = [];
+        $gridid = App()->request->getParam('$grididvalue');
+
+      
+
+        foreach($aUsers as $user) {
+            $aResults[$user]['title'] = '';
+            $model = $this->loadModel($user);
+            
+            if ($gridid == 'usermanagement--identity-gridPanel'){
+                $aResults[$user]['title'] = $model->users_name;
+            }
+
+            $aResults[$user]['result'] = gT('Selected');
+        }
+        //set Modal table labels
+        $tableLabels = array(gT('User id'),gT('Username') ,gT('Status'));
+
+        App()->getController()->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Seleted'),
+                'tableLabels'  => $tableLabels,
+            )
+        );      
+    }
 
     /**
      * Stores the permission settings run via MassEdit
@@ -564,6 +624,7 @@ class UserManagement extends Survey_Common_Action
         return $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results, "noButton" => true]);
 
     }
+
 
     /**
      * Method to resend a password to selected surveyadministrators (MassAction)
