@@ -20,7 +20,6 @@ $topbarextended = [
     ],
 ];
 
-$hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
 if ($hasReadPermission) {
     $permissions['read'] = ['read' => $hasReadPermission];
 
@@ -30,7 +29,6 @@ if ($hasReadPermission) {
     $surveypreview_buttons = [];
 
     if (safecount($languages) > 1) {
-
         foreach ($languages as $language) {
             $buttons_preview_survey[$language] = [
                 'url' => $this->createAbsoluteUrl(
@@ -132,7 +130,7 @@ if ($hasReadPermission) {
     } else {
         $questiongrouppreview_buttons = [
             'url' => $this->createAbsoluteUrl(
-                "survey/index/action/previewgroup", 
+                "survey/index/action/previewgroup",
                 array(
                     'gid' => $gid,
                     'sid' => $sid,
@@ -154,7 +152,6 @@ if ($hasReadPermission) {
     // Preview Question Button
     $questionpreview_buttons = [];
     if (count($languages) > 1) {
-
         $buttons_preview_question = [];
         foreach ($languages as $language) {
             $buttons_preview_question[$language] = [
@@ -278,7 +275,7 @@ if ($hasReadPermission) {
 }
 
 $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
-if ($hasDeletePermission) {
+if ($hasDeletePermission && $oSurvey->active === 'N') {
     $permissions['delete'] = ['delete' => $hasDeletePermission];
 
     // Delete Button
@@ -296,7 +293,6 @@ if ($hasDeletePermission) {
     array_push($topbar['alignment']['left']['buttons'], $buttons['delete']);
 }
 
-$hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
 if ($hasExportPermission) {
     $permissions['export'] = ['export' => $hasExportPermission];
 
@@ -312,21 +308,23 @@ if ($hasExportPermission) {
 }
 
 $hasCopyPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
-if ($hasCopyPermission) {
+if ($hasCopyPermission && $oSurvey->active === 'N') {
     $permissions['copy'] = ['copy' => $hasCopyPermission];
 
     // Copy Button
     $buttons['copy'] = [
-        'url' => $this->createUrl("admin/questions/sa/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+        //'url' => $this->createUrl("admin/questions/sa/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+        'data-url' => $this->createUrl("admin/questionedit/sa/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+        'triggerEvent' => 'copyQuestion',
         'name' => gT("Copy"),
         'icon' => 'icon-copy',
         'id' => 'copy_button',
         'class' => ' btn-default',
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['copy']);
+    array_push($topbarextended['alignment']['left']['buttons'], $buttons['copy']);
 }
 
-$hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
 if ($hasUpdatePermission) {
     $permissions['update'] = ['update' => $hasUpdatePermission];
 
@@ -351,13 +349,11 @@ if ($hasUpdatePermission) {
         array_push($topbar['alignment']['left']['buttons'], $buttons['default_values']);
     }
 }
+
 // Extended Topbar
-// Left Side
 
 // Right Side
-
 if ($qid == 0) {
-
     $paramArray = array();
     $paramArray["surveyid"] = $sid;
     $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" => $sid]);
@@ -397,7 +393,6 @@ if ($qid == 0) {
     array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_new_question);
 
 } else {
-
     // Save Button
     $buttons['save'] = [
         'url' => '#',
@@ -408,32 +403,18 @@ if ($qid == 0) {
         'isSaveButton' => true,
     ];
     array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
+}
 
-    // // Save and Close Button
-    // if ($ownsSaveAndCloseButton) {
-    //     $buttons['save_and_close'] = [
-    //         'url' => $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$sid}"),
-    //         'icon' => 'fa fa-check-square',
-    //         'name' => gT('Save and close'),
-    //         'id' => 'save_and_close',
-    //         'class' => 'btn-default',
-    //         'isSaveButton' => true,
-    //     ];
-    //     array_push($topbarextended['alignment']['right']['buttons'], $buttons['save_and_close']);
-    // }
-
-    // // Close Button
-    // if ($ownsCloseButton) {
-    //     $buttons['close'] = [
-    //         'url' => '/admin/survey/sa/listquestions/surveyid/' . $sid,
-    //         'name' => gT('Close'),
-    //         'icon' => 'fa fa-close',
-    //         'id' => 'close',
-    //         'class' => 'btn-danger pull-right margin-left',
-    //         'isCloseButton' => true,
-    //     ];
-    //     array_push($topbarextended['alignment']['right']['buttons'], $buttons['close']);
-    // }
+if ($ownsImportButton) {
+    $buttons['import'] = [
+        'url' => $this->createUrl("admin/questions/sa/importView/", ["surveyid" => $sid]),
+        'class' => 'btn-default',
+        'id' => 'import-button',
+        'icon' => 'icon-import',
+        'name' => gT('Import Question'),
+    ];
+    array_push($topbar['alignment']['left']['buttons'], $buttons['import']);
+    array_push($topbarextended['alignment']['left']['buttons'], $buttons['import']);
 }
 
 $finalJSON = [

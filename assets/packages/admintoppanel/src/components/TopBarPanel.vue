@@ -56,10 +56,18 @@ export default {
         },
         showSaveButton: {
             get() {
-                return this.$store.state.showSaveButton;
+                return !!this.$store.state.showSaveButton;
             },
             set(newValue) {
                 this.$store.commit("setShowSaveButton", newValue);
+            }
+        },
+        showCloseButton: {
+            get() {
+                return !!this.$store.state.showCloseButton;
+            },
+            set(newValue) {
+                this.$store.commit("setShowCloseButton", newValue);
             }
         },
         closeButtonUrl: {
@@ -93,7 +101,11 @@ export default {
             if (this.$store.state.topbar_right_buttons != null) {
                 return filter(
                     this.$store.state.topbar_right_buttons,
-                    button => !(!this.showSaveButton && !!button.isSaveButton)
+                    button => (
+                        (!button.isCloseButton && !button.isSaveButton)
+                        || (this.showSaveButton && button.isSaveButton) 
+                        || (this.showCloseButton && button.isCloseButton)
+                    )
                 );
             }
             return [];
@@ -112,7 +124,11 @@ export default {
             if (this.$store.state.topbarextended_right_buttons != null) {
                 return filter(
                     this.$store.state.topbarextended_right_buttons,
-                    button => !(!this.showSaveButton && (!!button.isSaveButton) )
+                    button => (
+                        (!button.isCloseButton && !button.isSaveButton)
+                        || (this.showSaveButton && button.isSaveButton) 
+                        || (this.showCloseButton && button.isCloseButton)
+                    )
                 );
             }
             return [];

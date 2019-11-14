@@ -160,6 +160,8 @@ class questions extends Survey_Common_Action
         $aData['surveybar']['savebutton']['text'] = gt('Import');
         $aData['surveyid'] = $iSurveyID;
         $aData['groupid'] = $groupid;
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['showCloseButton'] = true;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $this->_renderWrappedTemplate('survey/Question', 'importQuestion_view', $aData);
     }
@@ -172,11 +174,13 @@ class questions extends Survey_Common_Action
      */
     public function import()
     {
-        $action = returnGlobal('action');
-        $iSurveyID = (int) returnGlobal('sid');
+        $action = App()->request->getPost('action', null);
+        $iSurveyID = App()->request->getPost('sid', 0);
+        $gid = App()->request->getPost('gid', 0);
+        
+        $jumptoquestion = (bool) App()->request->getPost('jumptoquestion', 1);
+        
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-
-        $gid = returnGlobal('gid');
         $aViewUrls = array();
 
         $aData = [];
@@ -184,41 +188,48 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
         if ($action == 'importquestion') {
-            $sFullFilepath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(20);
+            $sFullFilepath = App()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(20);
             $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
             $fatalerror = '';
 
             if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                $fatalerror = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024).'<br>';
+                $errorMessage = sprintf(
+                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                    getMaximumFileUploadSize() / 1024 / 1024
+                ).'<br>';
+
             } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
-                $fatalerror = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.").'<br>';
+                $fatalerror = gT("An error occurred uploading your file."
+                ." This may be caused by incorrect permissions for the application /tmp folder.").'<br>';
             }
 
             // validate that we have a SID and GID
             if (!$iSurveyID) {
-                            $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
+                $fatalerror .= gT("No SID (Survey) has been provided. Cannot import question.");
             }
 
             if (!$gid) {
-                            $fatalerror .= gT("No GID (Group) has been provided. Cannot import question");
+                $fatalerror .= gT("No GID (Group) has been provided. Cannot import question");
             }
 
             if ($fatalerror != '') {
                 unlink($sFullFilepath);
-                $message = '<p>'.$fatalerror.'</p>
-                <a class="btn btn-default btn-lg"
-                href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$iSurveyID.'">'
-                .gT("Return to question list").'</a></p>';
-                $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
-                die();
+                App()->setFlashMessage($fatalerror, 'error');
+                $this->getController()->redirect('admin/questions/sa/importView/surveyid/'.$iSurveyID);
+                return;
             }
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-            Yii::app()->loadHelper('admin/import');
+           App()->loadHelper('admin/import');
 
             $aImportResults = array();
             if (strtolower($sExtension) == 'lsq') {
-                $aImportResults = XMLImportQuestion($sFullFilepath, $iSurveyID, $gid, array('autorename'=>Yii::app()->request->getPost('autorename') == '1' ?true:false));
+                $aImportResults = XMLImportQuestion(
+                    $sFullFilepath,
+                    $iSurveyID,
+                    $gid,
+                    ['autorename' =>App()->request->getPost('autorename') == '1']
+                );
             } else {
                 $this->getController()->error(gT('Unknown file extension'));
             }
@@ -226,14 +237,9 @@ class questions extends Survey_Common_Action
             fixLanguageConsistency($iSurveyID);
 
             if (isset($aImportResults['fatalerror'])) {
-                //echo htmlentities($aImportResults['fatalerror']); die();
-                $message = $aImportResults['fatalerror'];
-                $message .= '<p>
-                <a class="btn btn-default btn-lg"
-                href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$iSurveyID.'">'
-                .gT("Return to question list").'</a></p>';
-                $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
-                App()->end();
+                App()->setFlashMessage($aImportResults['fatalerror'], 'error');
+                $this->getController()->redirect('admin/questions/sa/importView/surveyid/'.$iSurveyID);
+                return;
             }
 
             unlink($sFullFilepath);
@@ -243,6 +249,21 @@ class questions extends Survey_Common_Action
             $aData['gid'] = $gid;
             $aData['sExtension'] = $sExtension;
             $aViewUrls[] = 'import_view';
+        }
+
+        if ($jumptoquestion) {
+            App()->setFlashMessage(gT("Question imported successfully"), 'success');
+            $this->getController()->redirect(
+                App()->createUrl(
+                    'admin/questioneditor/sa/view/',
+                    [
+                        'surveyid' => $iSurveyID,
+                        'gid' => $gid,
+                        'qid' =>$aImportResults['newqid']
+                    ]
+                )
+            );
+            return;
         }
 
         /////
@@ -298,16 +319,16 @@ class questions extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $defaultvalue = DefaultValue::model()
-                        ->with('defaultValueL10ns')                            
+                        ->with('defaultValueL10ns')
                         ->find(
                             'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
                             array(
-                            ':specialtype' => '',
-                            ':qid' => $qid,
-                            ':scale_id' => $scale_id,
-                            ':language' => $language,
-                            )
-                    );
+                                ':specialtype' => '',
+                                ':qid' => $qid,
+                                ':scale_id' => $scale_id,
+                                ':language' => $language,
+                                )
+                        );
                     $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
@@ -438,6 +459,11 @@ class questions extends Survey_Common_Action
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
         $aData['topBar']['showSaveButton'] = true;
+        $aData['topBar']['showCloseButton'] = true;
+        $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl(
+            'admin/questioneditor/sa/view/', 
+            ['sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
+        );
         $aData['hasUpdatePermission'] =
             Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') ?
             '' :
@@ -997,12 +1023,10 @@ class questions extends Survey_Common_Action
      */
     public function deleteMultiple()
     {
-        $aQidsAndLang = json_decode(Yii::app()->request->getPost('sItems'));
+        $aQids = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults     = array();
 
-        foreach ($aQidsAndLang as $sQidAndLang) {
-            $aQidAndLang = explode(',', $sQidAndLang);
-            $iQid        = $aQidAndLang[0];
+        foreach ($aQids as $iQid) {
             
             $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
             $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
@@ -1010,7 +1034,7 @@ class questions extends Survey_Common_Action
 
             if (is_object($oQuestion)) {
                 $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0);
-                $result = $this->delete($oQuestion->sid, $iQid, true);
+                $result = $this->delete($oQuestion->sid, $iQid, $oQuestion->gid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
         }
@@ -1026,7 +1050,7 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid=null, $qid=null, $gid = 0)
+    public function delete($surveyid=null, $qid=null, $gid = 0, $massAction = false)
     {
         if(is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
@@ -1069,10 +1093,18 @@ class questions extends Survey_Common_Action
             }
         } else {
             QuestionL10n::model()->deleteAllByAttributes(array('qid' => $qid));
-            $oQuestion->delete();
+            $result = $oQuestion->delete();
+        }
+        
+        $sMessage = gT("Question was successfully deleted.");
+        
+        if ($massAction) {
+            return [
+                'message' => $sMessage,
+                'status' => $result
+            ];
         }
 
-        $sMessage = gT("Question was successfully deleted.");
         $redirectUrl = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(

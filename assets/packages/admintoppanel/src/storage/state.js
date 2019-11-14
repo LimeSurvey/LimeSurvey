@@ -11,5 +11,6 @@ export default {
     sid: 0,
     type: '',
     showSaveButton: false,
+    showCloseButton: false,
     closeButtonUrl: ''
 };

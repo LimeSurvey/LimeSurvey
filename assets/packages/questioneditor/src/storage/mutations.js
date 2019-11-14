@@ -179,5 +179,11 @@ export default {
     },
     setStoredEvent: (state, newEvent) => {
         state.storedEvent = newEvent;
-    }
+    },
+    //Copy question states
+    setInitCopy(state, nV) { state.initCopy = nV; },
+    setCopySubquestions(state, nV) { state.copySubquestions = nV; },
+    setCopyAnswerOptions(state, nV) { state.copyAnswerOptions = nV; },
+    setCopyDefaultAnswers(state, nV) { state.copyDefaultAnswers = nV; },
+    setCopyAdvancedOptions(state, nV) { state.copyAdvancedOptions = nV; },
 };

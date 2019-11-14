@@ -73,6 +73,13 @@
                     {% endif %}
                 </p>
             </div>
+            {% if aError.trace is not empty %}
+                <pre>
+                    {{ aError.trace }}
+                </pre>
+            {% endif %}
+            <div>
+            </div>
         </article>
         {% block footer %}
             {{ include('./subviews/footer/footer.twig') }}

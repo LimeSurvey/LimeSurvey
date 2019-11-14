@@ -401,6 +401,16 @@ $buttons['save'] = [
 ];
 array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
 
+$buttons['close'] = [
+    'name' => gT('Close'),
+    'id' => 'close-button',
+    'class' => 'btn-danger',
+    'icon' => 'fa fa-times',
+    'url' => '#',
+    'isCloseButton' => true
+];
+array_push($topbar['alignment']['right']['buttons'], $buttons['close']);
+
 
 $finalJSON = [
     'debug' => [

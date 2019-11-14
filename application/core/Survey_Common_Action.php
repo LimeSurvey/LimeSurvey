@@ -703,6 +703,10 @@ class Survey_Common_Action extends CAction
         }
     }
 
+    /**
+     * @param $aData
+     * @throws CException
+     */
     private function _listquestions($aData)
     {
         if (isset($aData['display']['menu_bars']['listquestions'])) {
@@ -724,8 +728,10 @@ class Survey_Common_Action extends CAction
 
             // Set number of page
             if (isset($_GET['pageSize'])) {
-                Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+                App()->user->setState('pageSize', (int) $_GET['pageSize']);
             }
+            
+            $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
             // We filter the current survey id
             $model->sid = $iSurveyID;

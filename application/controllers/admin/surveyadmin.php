@@ -546,7 +546,10 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['hidden'] = isset($question->questionAttributes['hidden']) && !empty($question->questionAttributes['hidden']->value);
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->questionL10ns[$baselang]->question, true);
+                        $questionText = isset($question->questionL10ns[$baselang])
+                            ? $question->questionL10ns[$baselang]->question
+                            : '';
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
                         $curGroup['questions'][] = $curQuestion;
                     }
 
@@ -660,6 +663,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @access public
      * @param mixed $surveyid
      * @return string
+     * @todo php warning (Missing return statement)
      */
     public function listquestions($surveyid)
     {
@@ -670,6 +674,12 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
+        // Set number of page
+        $pageSize = App()->request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int) $pageSize);
+        }
+
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData   = array();
 
@@ -677,17 +687,19 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid']                              = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
-        $aData['surveybar']['returnbutton']['url']      = $this->getController()->createUrl("admin/survey/sa/listsurveys");
+        $aData['surveybar']['returnbutton']['url']      = $this->getController()->createUrl(
+            "admin/survey/sa/listsurveys"
+        );
         $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
         $aData['surveybar']['buttons']['newquestion']   = true;
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
-        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title.
+            " (".gT("ID").":".$iSurveyID.")";
 
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
-
 
     /**
      * Function responsible to deactivate a survey.

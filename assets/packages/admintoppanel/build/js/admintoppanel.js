@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "146c0f6d7942883c69a2";
+/******/ 	var hotCurrentHash = "b1b6984c207b9d4f6a2a";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1333,10 +1333,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     showSaveButton: {
       get: function get() {
-        return this.$store.state.showSaveButton;
+        return !!this.$store.state.showSaveButton;
       },
       set: function set(newValue) {
         this.$store.commit("setShowSaveButton", newValue);
+      }
+    },
+    showCloseButton: {
+      get: function get() {
+        return !!this.$store.state.showCloseButton;
+      },
+      set: function set(newValue) {
+        this.$store.commit("setShowCloseButton", newValue);
       }
     },
     closeButtonUrl: {
@@ -1370,7 +1378,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.$store.state.topbar_right_buttons != null) {
         return lodash_filter__WEBPACK_IMPORTED_MODULE_2___default()(this.$store.state.topbar_right_buttons, function (button) {
-          return !(!_this.showSaveButton && !!button.isSaveButton);
+          return !button.isCloseButton && !button.isSaveButton || _this.showSaveButton && button.isSaveButton || _this.showCloseButton && button.isCloseButton;
         });
       }
 
@@ -1390,7 +1398,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.$store.state.topbarextended_right_buttons != null) {
         return lodash_filter__WEBPACK_IMPORTED_MODULE_2___default()(this.$store.state.topbarextended_right_buttons, function (button) {
-          return !(!_this2.showSaveButton && !!button.isSaveButton);
+          return !button.isCloseButton && !button.isSaveButton || _this2.showSaveButton && button.isSaveButton || _this2.showCloseButton && button.isCloseButton;
         });
       }
 
@@ -1841,12 +1849,24 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
+      if (this.button.triggerEvent) {
+        LS.EventBus.$emit(this.button.triggerEvent, this.button);
+        return false;
+      }
+
       this.$log.log('Button clicked -> ', this.button);
 
       if (this.button.isSaveButton) {
         event.preventDefault();
         this.isLoading = true;
         LS.EventBus.$emit("saveButtonCalled", this.button);
+        return false;
+      }
+
+      if (this.button.isCloseButton) {
+        event.preventDefault();
+        this.isLoading = true;
+        window.location.href = this.$store.state.closeButtonUrl;
         return false;
       }
 
@@ -29965,7 +29985,7 @@ __webpack_require__.r(__webpack_exports__);
  //Ignore phpunits testing tags
 
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.ignoredElements = ["x-test"];
-vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.devtools = false;
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.devtools = true;
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(_mixins_logSystem_js__WEBPACK_IMPORTED_MODULE_8__["PluginLog"]);
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default.a, {
   dynamic: true
@@ -31188,6 +31208,9 @@ __webpack_require__.r(__webpack_exports__);
   setShowSaveButton: function setShowSaveButton(state, newState) {
     state.showSaveButton = newState;
   },
+  setShowCloseButton: function setShowCloseButton(state, newState) {
+    state.showCloseButton = newState;
+  },
   setCloseButtonUrl: function setCloseButtonUrl(state, newState) {
     state.closeButtonUrl = newState;
   },
@@ -31220,6 +31243,7 @@ __webpack_require__.r(__webpack_exports__);
   sid: 0,
   type: '',
   showSaveButton: false,
+  showCloseButton: false,
   closeButtonUrl: ''
 });
 

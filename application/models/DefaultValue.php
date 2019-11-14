@@ -61,7 +61,7 @@ class DefaultValue extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'question' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.qid = question.qid"),
+            'question' => array(self::HAS_ONE, 'Question', "qid"),
             'defaultValueL10ns' => array(self::HAS_MANY, 'DefaultValueL10n', 'dvid')
         );
     }

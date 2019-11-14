@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 ?>
 
-<?php if(!Permission::model()->hasGlobalPermission('users', 'read')) :?>
+<?php if (!Permission::model()->hasGlobalPermission('users', 'read')) :?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         </div>
     </div>
 </div>
-<?php Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/_menubar'); ?>
+<?php App()->getController()->renderPartial('/admin/usermanagement/partial/_menubar'); ?>
 <div class="pagetitle h3"><?php eT("User control");?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="container-fluid">
@@ -46,7 +46,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
+                            App()->params['pageSizeOptions'],
                             array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
                     )
                 ."</div></div>",
