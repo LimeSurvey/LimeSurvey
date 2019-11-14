@@ -259,7 +259,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
             $saveButton->click();
 
-            sleep(2);
+            sleep(5);
 
              // Change question template to default
             $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
