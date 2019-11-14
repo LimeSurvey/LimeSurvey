@@ -1054,7 +1054,7 @@ class InstallerController extends CController
             ."\t\t".""."\n"
 
             ."\t\t"." 'session' => array ("."\n"
-            ."\t\t\t"."'sessionName'=>'LS-".$this->_getRandomString(5)."'"."\n"
+            ."\t\t\t"."'sessionName'=>'LS-".$this->_getRandomString(16)."'"."\n"
             ."\t\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
             ."\t\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
             ."\t\t\t"."// 'class' => 'application.core.web.DbHttpSession',"."\n"
@@ -1122,7 +1122,9 @@ class InstallerController extends CController
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
-            $sResult .= chr(rand(33, 126));
+            // Range 65-90 means A-Z, uppercase. Lowercase is betweeen 97-122.
+            // @see http://www.asciitable.com/
+            $sResult .= chr(rand(65, 90));
         }
         return $sResult;
     }
