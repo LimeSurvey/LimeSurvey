@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h3>
-        <?php eT("ApplyRemove role from user");?>
+        <?php eT("Apply/Remove user ");?>
     </h3>
 </div>
 <div class="modal-body selector--edit-role-container">

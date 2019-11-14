@@ -19,11 +19,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
     $aBasePermissions = $aFilteredPermissions;
 }
 ?>
-<div class="modal-header">
-    <h3>
-        <?php eT("Edit permissions");?>
-    </h3>
-</div>
+
 <div class="modal-body selector--edit-permissions-container">
     <div class="container-center">        
         <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>

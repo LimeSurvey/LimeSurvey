@@ -11,12 +11,12 @@ $aActionsArray = array(
         
         // Delete
         array(
-            'type'        => 'action',
-            'action'      => 'delete',
-            'url'         =>  App()->createUrl('/admin/usermanagement/sa/deleteMultiple'),
-            'iconClasses' => 'text-danger fa fa-trash',
-            'text'        =>  gT('Delete'),
-            'grid-reload' => 'yes',
+            'type'          => 'action',
+            'action'        => 'delete',
+            'url'           =>  App()->createUrl('/admin/usermanagement/sa/deleteMultiple'),
+            'iconClasses'   => 'text-danger fa fa-trash',
+            'text'          =>  gT('Delete'),
+            'grid-reload'   => 'yes',
             'actionType'    => 'modal',
             'modalType'     => 'yes-no',
             'keepopen'      => 'yes',
@@ -27,12 +27,12 @@ $aActionsArray = array(
         ),
         // ResendLoginData
         array(
-            'type'        => 'action',
-            'action'      => 'resendlogindata',
-            'url'         =>  App()->createUrl('/admin/usermanagement/sa/batchSendAndResetLoginData'),
-            'iconClasses' => 'text-success fa fa-refresh',
-            'text'        =>  gT('Resend login data'),
-            'grid-reload' => 'yes',
+            'type'          => 'action',
+            'action'        => 'resendlogindata',
+            'url'           =>  App()->createUrl('/admin/usermanagement/sa/batchSendAndResetLoginData'),
+            'iconClasses'   => 'text-success fa fa-refresh',
+            'text'          =>  gT('Resend login data'),
+            'grid-reload'   => 'yes',
             'actionType'    => 'modal',
             'modalType'     => 'yes-no',
             'keepopen'      => 'yes',
@@ -43,19 +43,21 @@ $aActionsArray = array(
         ),
         // Mass Edit
         array(
-            'type' => 'action',
-            'action' => 'batchPermissions',
-            'url' => App()->createUrl('/admin/usermanagement/sa/batchPermissions'),
-            'iconClasses' => 'fa fa-unlock',
-            'text' => gT('Batch edit permissions'),
-            'grid-reload' => 'yes',
+            'type'              => 'action',
+            'action'            => 'batchPermissions',
+            'url'               => App()->createUrl('/admin/usermanagement/sa/batchPermissions'),
+            'iconClasses'       => 'fa fa-unlock',
+            'text'              => gT('Edit Permissions'),
+            'grid-reload'       => 'yes',
             //modal
-            'actionType' => 'modal',
-            'modalType'     => 'yes-no-lg',
-            'keepopen'      => 'yes',
-            'sModalTitle'   => gT('Batch change permissions'),
+            'actionType'        => 'modal',
+            'modalType'         => 'yes-no-lg',
+            'keepopen'          => 'yes',
+            'showSelected'      => 'yes',
+            'selectedUrl'       => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
+            'sModalTitle'       => gT('Edit permissions'),
             'htmlFooterButtons' => [],
-            'htmlModalBody' => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updatepermissions', [], true)
+            'htmlModalBody'     => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updatepermissions', [], true)
         ),
         
     )
@@ -72,7 +74,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
-        'modalType'     => 'yes-no',
+        'modalType'     => 'yes-no-lg',
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
@@ -84,19 +86,21 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
 if(Permission::model()->hasGlobalPermission('superadmin','read')) {
     // Mass Edit -> roles only for superadmins
     $aActionsArray['aActions'][] = array(
-        'type' => 'action',
-        'action' => 'batchaddrole',
-        'url' => App()->createUrl('/admin/usermanagement/sa/batchApplyRoles'),
-        'iconClasses' => 'fa fa-address-card-o',
-        'text' => gT('Batch add role'),
-        'grid-reload' => 'yes',
+        'type'              => 'action',
+        'action'            => 'batchaddrole',
+        'url'               => App()->createUrl('/admin/usermanagement/sa/batchApplyRoles'),
+        'iconClasses'       => 'fa fa-address-card-o',
+        'text'              => gT('Add role'),
+        'grid-reload'       => 'yes',
         //modal
-        'actionType' => 'modal',
-        'modalType'     => 'yes-no-lg',
-        'keepopen'      => 'yes',
-        'sModalTitle'   => gT('Batch change permissions'),
+        'actionType'        => 'modal',
+        'modalType'         => 'yes-no-lg',
+        'keepopen'          => 'yes',
+        'showSelected'      => 'yes',
+        'selectedUrl'       => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
+        'sModalTitle'       => gT('Add role'),
         'htmlFooterButtons' => [],
-        'htmlModalBody' => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updaterole', [], true)
+        'htmlModalBody'     => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updaterole', [], true)
     );
 }
 

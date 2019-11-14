@@ -785,7 +785,7 @@ class UserManagement extends Survey_Common_Action
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
         $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
         $aResults = [];
-        
+
         foreach ($aItems as $sItem) {
             $aResults[$sItem]['title'] = '';
             $model = $this->loadModel($sItem);
@@ -828,20 +828,38 @@ class UserManagement extends Survey_Common_Action
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $results = [];
+        $aResults = [];
+
         foreach ($aItems as $sItem) {
-            foreach ($aUserRoleIds as $iUserRoleId) {
-                $results[$sItem . '-' . $iUserRoleId] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+
+            //check if user is admin otherwhise change the role 
+            if (intval($sItem) == 1) {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
+            } else {
+
+                foreach ($aUserRoleIds as $iUserRoleId) {
+
+                    $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
+                }
             }
         }
 
-        $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success',
-            [
-                'sMessage' => gT('User roles successfully updated'),
-                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
+
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Role updated'),
+                'tableLabels' =>  $tableLabels
+            )
         );
+
     }
 
     /**
