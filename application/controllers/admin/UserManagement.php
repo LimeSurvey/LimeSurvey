@@ -348,10 +348,13 @@ class UserManagement extends Survey_Common_Action
         }
         $userId = Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
+
+            Yii::app()->setFlashMessage(gT("you cannot elete yourself."), 'error');
+            Yii::app()->getController()->redirect(
+                Yii::app()->createUrl('admin/usermanagement/sa/view')
             );
+            return;
+            
         }
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
