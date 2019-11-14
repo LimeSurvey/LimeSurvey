@@ -729,45 +729,6 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Mass edition delete user
-     *
-     *
-     * @return string
-     */
-    public function batchDelete()
-    {
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
-        $results = [];
-
-        if (array_search(Yii::app()->user->id, $aItems) !== false) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
-            );
-        }
-
-        foreach ($aItems as $sItem) {
-            $oUser = User::model()->findByPk($sItem);
-            $results[$oUser->uid] = $oUser->delete();
-        }
-
-        $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success',
-            [
-                'sMessage' => gT('Users successfully deleted'),
-                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
-        );
-    }
-
-    /**
      * Mass edition apply roles
      *
      *
