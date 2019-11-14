@@ -34,25 +34,25 @@ class EmCacheSurveyTest extends TestBaseClassWeb
         $lines = file($filename);
         self::$oldConfig = $lines;
         if (empty($lines)) {
-            echo 'EmCacheSurveyTest: Could not read config.php';
+            self::assertTrue(false, 'EmCacheSurveyTest: Could not read config.php');
             return;
         }
         $write = fopen($filename, 'w');
         if (!$write) {
-            echo 'EmCacheSurveyTest: Can not write to config.php';
+            self::assertTrue(false, 'EmCacheSurveyTest: Can not write to config.php');
             return;
         }
         // Write emcache setting to config.
         $couldWriteSetting = false;
         foreach ($lines as $line) {
             if (strpos($line, 'urlManager') !== false) {
-                fwrite($write, "\t\t'emcache'=>array( 'class' => 'CFileCache',),\n");
+                fwrite($write, "\t\t'emcache'=>array('class' => 'CFileCache'),\n");
                 $couldWriteSetting = true;
             }
             fwrite($write, $line);
         }
         if (!$couldWriteSetting) {
-            echo 'EmCacheSurveyTest: Could not write emcache setting to config.php';
+            self::assertTrue(false, 'EmCacheSurveyTest: Could not write emcache setting to config.php');
             return;
         }
     }
@@ -67,6 +67,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
         $filename = $configdir . '/config.php';
         if (!file_put_contents($filename, implode('', self::$oldConfig))) {
             echo 'EmCacheSurveyTest: Could not restore config file';
+            self::assertTrue(false, 'Could not restore config file');
         }
 
         parent::tearDownAfterClass();
@@ -129,7 +130,6 @@ class EmCacheSurveyTest extends TestBaseClassWeb
             $emcacheSpan = self::$webDriver->findElement(WebDriverBy::id('__emcache_debug'));
             $value = $emcacheSpan->getAttribute('value');
             $this->assertEquals('on', $value, json_encode($value));
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -164,7 +164,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
 
             /** @var string */
             // TODO: Fragile test, can differ with a second.
-            $now = date('i:s');
+            //$now = date('i:s');
 
             // Compare date with now. Should be the same below when comparing with second token.
             list(, , $sgqa) = self::$testHelper->getSgqa('datequestion', self::$surveyId);
@@ -212,7 +212,6 @@ class EmCacheSurveyTest extends TestBaseClassWeb
             $result = $dbo->createCommand($query)->queryAll();
             $this->assertCount(1, $result);
             $this->assertEquals('bla bla bla', $result[0][$sgqa]);
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
@@ -252,7 +251,6 @@ class EmCacheSurveyTest extends TestBaseClassWeb
             list(, , $sgqa) = self::$testHelper->getSgqa('firstname', self::$surveyId);
             $nameAnswer = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
             $this->assertEquals('Bolle', $nameAnswer->getAttribute('value'));
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
