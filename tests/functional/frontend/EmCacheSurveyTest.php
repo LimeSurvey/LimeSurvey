@@ -25,6 +25,10 @@ class EmCacheSurveyTest extends TestBaseClassWeb
      */
     public static function setupBeforeClass()
     {
+        if (YII_DEBUG) {
+            self::markTestSkipped("emcache can't be tested in debug mode (always off)");
+        }
+
         parent::setUpBeforeClass();
 
         $configdir = \Yii::app()->getConfig('configdir');
