@@ -165,7 +165,7 @@ class TestBaseClassWeb extends TestBaseClass
         /*
         try {
             sleep(1);
-            self::$webDriver->wait(2)->until(
+            self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('welcome-jumbotron')
                 )
