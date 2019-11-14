@@ -73,14 +73,8 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 "Javascript action in preview group broken"
             );
         } catch (NoSuchElementException $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
-            file_put_contents($filename, $screenshot);
-            $this->assertFalse(
-                true,
-                'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
-            );
+            self::$testHelper->takeScreenshot($web, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(true, self::$testHelper->javaTrace($exception));
         }
     }
     /* Preview group with G2Q01 and prefill Q02=Y*/
