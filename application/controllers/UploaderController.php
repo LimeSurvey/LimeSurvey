@@ -198,7 +198,7 @@ class UploaderController extends SurveyController
                 Yii::log("Unable to extension for mime type ".$realMimeType,\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
                 $return = array(
                     "success" => false,
-                    "msg" => gT("Sorry, unable to check extension of this file type %s.", $realMimeType),
+                    "msg" => sprintf(gT("Sorry, unable to check extension of this file type %s."), $realMimeType),
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
