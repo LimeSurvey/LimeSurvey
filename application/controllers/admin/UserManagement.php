@@ -354,7 +354,6 @@ class UserManagement extends Survey_Common_Action
                 Yii::app()->createUrl('admin/usermanagement/sa/view')
             );
             return;
-            
         }
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
@@ -785,20 +784,30 @@ class UserManagement extends Survey_Common_Action
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
         $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-        $results = [];
+        $aResults = [];
+        
         foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+
             if (!$oUserGroup->hasUser($sItem)) {
-                $results[$sItem] = $oUserGroup->addUser($sItem);
+                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+            } else {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('User is already a part of the group');
             }
         }
 
-        $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success',
-            [
-                'sMessage' => gT('User groups successfully updated'),
-                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Usergroup updated'),
+                'tableLabels' =>  $tableLabels
+            )
         );
     }
 
