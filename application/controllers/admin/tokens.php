@@ -601,20 +601,23 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-     * Add new token form
+     * Add new token form, also adding new participant.
+     *
      * @param int $iSurveyId
      * @return void
+     * @throws CException
      */
     public function addnew($iSurveyId)
     {
         $aData = array();
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()
+                ->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
 
         // Check permission
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
-            Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
+            App()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
 
@@ -622,17 +625,20 @@ class tokens extends Survey_Common_Action
             // If no tokens table exists
             $this->_newtokentable($iSurveyId);
         }
-        Yii::app()->loadHelper("surveytranslator");
+        App()->loadHelper("surveytranslator");
 
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $dateformatdetails = getDateFormatData(App()->session['dateformat']);
 
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." ("
+            .gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['buttons']['view'] = true;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
-        $request = Yii::app()->request;
-        if ($request->getPost('subaction') == 'inserttoken') {
-
+        App()->getClientScript()->registerScriptFile(App()
+                ->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
+        $request = App()->request;
+        $subAction = $request->getPost('subaction');
+        if ( $subAction == 'inserttoken') {
+            // TODO: This part could be refactored into function like "insertToken()"
             Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
@@ -646,7 +652,7 @@ class tokens extends Survey_Common_Action
                 $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            if (trim(Yii::app()->request->getPost('validuntil')) == '') {
+            if (trim(App()->request->getPost('validuntil')) == '') {
                 $validuntil = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(
@@ -675,18 +681,18 @@ class tokens extends Survey_Common_Action
 
             // Add attributes
             $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
-            $aTokenFieldNames = Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}", true);
+            $aTokenFieldNames = App()->db->getSchema()->getTable("{{tokens_$iSurveyId}}", true);
             $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
             foreach ($attrfieldnames as $attr_name => $desc) {
                 if (!in_array($attr_name, $aTokenFieldNames)) {
                     continue;
                 }
-                $value = Yii::app()->getRequest()->getPost($attr_name);
+                $value = App()->getRequest()->getPost($attr_name);
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                    Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                    App()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
                     $this->getController()->refresh();
                 }
-                $aData[$attr_name] = Yii::app()->getRequest()->getPost($attr_name);
+                $aData[$attr_name] = App()->getRequest()->getPost($attr_name);
             }
 
             $udresult = Token::model($iSurveyId)->findAll("token <> '' and token = '$sanitizedtoken'");
@@ -700,16 +706,21 @@ class tokens extends Survey_Common_Action
             } else {
                 $aData['success'] = false;
                 $aData['errors'] = array(
-                    'token' => array(gT("There is already an entry with that exact access code in the table. The same access code cannot be used in multiple entries."))
+                    'token' => array(gT("There is already an entry with that exact access code in the table.
+                     The same access code cannot be used in multiple entries."))
                 );
             }
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
+            $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength)
+                ? Token::model($iSurveyId)->survey->oOptions->tokenlength
+                : 15;
 
             $aData['topBar']['showSaveButton'] = true;
             $aData['sidemenu']['state'] = false;
+            $aData['title_bar']['sSubaction'] = $subAction;
+            $aData['title_bar']['active'] = true;
 
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
         } else {
@@ -2582,11 +2593,13 @@ class tokens extends Survey_Common_Action
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
+     * @param boolean $sRenderFile
      * @return void
+     * @throws CHttpException
      */
     protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
+        $aData['imageurl'] = App()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
         $aData['subaction'] = gT('Survey participants');
         $aData['topBar']['type'] = 'tokens';
