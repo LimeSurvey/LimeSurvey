@@ -387,18 +387,22 @@ class ExpressionManager
         }
         list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
         $isForcedString = false;
-        // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
-        $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
-        if ($bBothNumeric) {
-            if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
+        /* @var array argument as forced string, arg type is at 2.
+         * Question can return NUMBER or WORD : DQ and SQ is string entered by user, STRING is WORD with +""
+         */
+        $aForceStringArray = array('DQ_STRING', 'SQ_STRING', 'STRING'); // 
+        if (in_array($arg1[2], $aForceStringArray) || in_array($arg2[2], $aForceStringArray)) {
+            $isForcedString = true;
+            // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
+            if ($bBothNumeric) {
                 $bBothNumeric = false;
                 $bBothString = true;
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
-                $isForcedString = true;
             }
         }
+        
         switch (strtolower($token[0])) {
             case 'or':
             case '||':
@@ -410,12 +414,6 @@ class ExpressionManager
                 break;
             case '==':
             case 'eq':
-                if($bMismatchType) {
-                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
-                }
-                if($isForcedString) {
-                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
-                }
                 $result = array(($arg1[0] == $arg2[0]), $token[1], 'NUMBER');
                 break;
             case '!=':
@@ -425,7 +423,9 @@ class ExpressionManager
             case '<':
             case 'lt':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    }
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
                     if($isForcedString) {
@@ -439,7 +439,9 @@ class ExpressionManager
             case '<=';
             case 'le':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    }
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript
@@ -458,7 +460,9 @@ class ExpressionManager
             case '>':
             case 'gt':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    }
                     $result = array(false, $token[1], 'NUMBER');
                 } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
@@ -477,7 +481,9 @@ class ExpressionManager
             case '>=';
             case 'ge':
                 if ($bMismatchType) {
-                    $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    if($isForcedString) {
+                        $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
+                    }
                     $result = array(false, $token[1], 'NUMBER');
                 } elseif(!$bBothNumeric && $bBothString) {
                     if($isForcedString) {

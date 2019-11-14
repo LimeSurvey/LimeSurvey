@@ -1047,6 +1047,17 @@ Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 201
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
 
+Changes from 3.20.0 (build 191112) to 3.20.1 (build 191114) November 14, 2019
+-Fixed issue: Skipping on invitation/reminder sendout (Carsten Schmitz)
+-Fixed issue #15523: View saved but not submitted - filters do not work (LouisGac)
+-Fixed issue #15329: Missing indication for "{" and "}" at group relevance field (LouisGac)
+-Fixed issue #14766: Possible collision with PHPSESSID cookies on the same domain (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann
+#Updated translation: German (Informal) by c_schmitz, eddylackmann
+#Updated translation: French (France) by eddylackmann
 
 Changes from 3.19.3 (build 191023) to 3.20.0 (build 191112) November 12, 2019
 -New features #15532: Show warnings when implicit alphabetical compare (#1341) (Denis Chenu)
