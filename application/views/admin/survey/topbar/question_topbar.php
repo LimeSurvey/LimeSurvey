@@ -305,6 +305,7 @@ if ($hasExportPermission) {
         'class' => ' btn-default',
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['export']);
+    array_push($topbarextended['alignment']['left']['buttons'], $buttons['export']);
 }
 
 $hasCopyPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');

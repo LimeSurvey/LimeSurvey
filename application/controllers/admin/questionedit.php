@@ -40,8 +40,8 @@ class questionedit extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->getQuestionObject($qid, null, $gid);
-        Yii::app()->getClientScript()->registerPackage('questioneditor');
-        Yii::app()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('questioneditor');
+        App()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
 
@@ -49,23 +49,23 @@ class questionedit extends Survey_Common_Action
         $aData['questionbar']['buttons']['view'] = true;
 
         // Last question visited : By user (only one by user)
-        $setting_entry = 'last_question_' . Yii::app()->user->getId();
+        $setting_entry = 'last_question_' . App()->user->getId();
         SettingGlobal::setSetting($setting_entry, $oQuestion->qid);
 
         // we need to set the sid for this question
-        $setting_entry = 'last_question_sid_' . Yii::app()->user->getId();
+        $setting_entry = 'last_question_sid_' . App()->user->getId();
         SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         // we need to set the gid for this question
-        $setting_entry = 'last_question_gid_' . Yii::app()->user->getId();
+        $setting_entry = 'last_question_gid_' . App()->user->getId();
         SettingGlobal::setSetting($setting_entry, $gid);
 
         // Last question for this survey (only one by survey, many by user)
-        $setting_entry = 'last_question_' . Yii::app()->user->getId() . '_' . $iSurveyID;
+        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID;
         SettingGlobal::setSetting($setting_entry, $oQuestion->qid);
 
         // we need to set the gid for this question
-        $setting_entry = 'last_question_' . Yii::app()->user->getId() . '_' . $iSurveyID . '_gid';
+        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID . '_gid';
         SettingGlobal::setSetting($setting_entry, $gid);
 
         ///////////
@@ -82,8 +82,8 @@ class questionedit extends Survey_Common_Action
         $aData['qshowstyle'] = '';
         $aData['qrrow'] = $qrrow;
         $aData['baselang'] = $baselang;
-        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $aData['sImageURL'] = App()->getConfig('adminimageurl');
+        $aData['iIconSize'] = App()->getConfig('adminthemeiconsize');
         $aData['display']['menu_bars']['qid_action'] = 'editquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['action'] = 'editquestion';
@@ -280,7 +280,7 @@ class questionedit extends Survey_Common_Action
                 500,
                 gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage(),
                 0,
-                Yii::app()->createUrl(
+                App()->createUrl(
                     'admin/questioneditor/sa/view/',
                     ["surveyid"=> $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid'=> $oQuestion->qid]
                 )
@@ -336,7 +336,7 @@ class questionedit extends Survey_Common_Action
                 'transfer' => $questionData,
             ]
         );
-        Yii::app()->close();
+        App()->close();
     }
 
     /**
@@ -366,7 +366,7 @@ class questionedit extends Survey_Common_Action
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, $type, true, $question_template);
 
         $aLanguages = [];
-        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
         $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
 
         array_walk(
@@ -409,7 +409,7 @@ class questionedit extends Survey_Common_Action
         $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
 
         $aLanguages = [];
-        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
         $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
         array_walk(
             $aSurveyLanguages,
@@ -445,7 +445,7 @@ class questionedit extends Survey_Common_Action
         $aPermissions = [
             "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
             "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
-            "editorpreset" => Yii::app()->session['htmleditormode'],
+            "editorpreset" => App()->session['htmleditormode'],
             "script" =>
             SettingsUser::getUserSetting('showScriptEdit', App()->user->id)
             && Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
@@ -505,6 +505,7 @@ class questionedit extends Survey_Common_Action
      * @param int $gid
      * @param boolean $returnArray
      * @param string $question_template
+     *
      * @return void|array
      * @throws CException
      */
@@ -534,6 +535,7 @@ class questionedit extends Survey_Common_Action
      * @param string $sQuestionType
      * @param boolean $returnArray
      * @param string $question_template
+     *
      * @return void|array
      * @throws CException
      */
@@ -566,7 +568,12 @@ class questionedit extends Survey_Common_Action
      * @param boolean $root
      *
      * @return void
+     *
      * @throws CException
+     * @throws Throwable
+     * @throws Twig_Error_Loader
+     * @throws Twig_Error_Syntax
+     * @throws WrongTemplateVersionException
      */
     public function getRenderedPreview($iQuestionId, $sLanguage, $root = false)
     {
@@ -583,10 +590,10 @@ class questionedit extends Survey_Common_Action
         $changedType = $changedType == null ? $oQuestion->type : $changedType;
 
         if ($changedText !== []) {
-            Yii::app()->session['edit_' . $iQuestionId . '_changedText'] = $changedText;
+            App()->session['edit_' . $iQuestionId . '_changedText'] = $changedText;
         } else {
-            $changedText = isset(Yii::app()->session['edit_' . $iQuestionId . '_changedText'])
-            ? Yii::app()->session['edit_' . $iQuestionId . '_changedText']
+            $changedText = isset(App()->session['edit_' . $iQuestionId . '_changedText'])
+            ? App()->session['edit_' . $iQuestionId . '_changedText']
             : [];
         }
 
@@ -639,7 +646,7 @@ class questionedit extends Survey_Common_Action
         // This may be correct, but oftentimes it is not and to not leave it for luck and chance => Reset
         Template::resetInstance();
         Template::getInstance($oQuestion->survey->template);
-        Yii::app()->twigRenderer->renderTemplateForQuestionEditPreview(
+        App()->twigRenderer->renderTemplateForQuestionEditPreview(
             '/subviews/survey/question_container.twig',
             ['aSurveyInfo' => $aSurveyInfo, 'aQuestion' => $aQuestion, 'session' => $_SESSION],
             $root
@@ -647,7 +654,7 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
-     * Returns the JSON Data for Top Bar Panel (Vue Component).
+     * Renders the top bar definition for questions as JSON document
      *
      * @param int $qid
      * @return void
@@ -657,6 +664,8 @@ class questionedit extends Survey_Common_Action
     {
         $oQuestion = $this->getQuestionObject($qid);
         $sid = $oQuestion->sid;
+        $gid = $oQuestion->gid;
+        $qid = $oQuestion->qid;
         // TODO: Rename Variable for better readability.
         $qtypes = QuestionType::modelsAttributes();
         // TODO: Rename Variable for better readability.
@@ -675,14 +684,13 @@ class questionedit extends Survey_Common_Action
             array(
                 'oSurvey' => $oQuestion->survey,
                 'sid' => $sid,
-                'hasCopyPermission' => $hasCopyPermission,
+                'hasCopyPermission'   => $hasCopyPermission,
                 'hasUpdatePermission' => $hasUpdatePermission,
                 'hasExportPermission' => $hasExportPermission,
                 'hasDeletePermission' => $hasDeletePermission,
-                'hasReadPermission' => $hasReadPermission,
-                'sid' => $oQuestion->sid,
-                'gid' => $oQuestion->gid,
-                'qid' => $oQuestion->qid,
+                'hasReadPermission'   => $hasReadPermission,
+                'gid' => $gid,
+                'qid' => $qid,
                 'qrrow' => $qrrow,
                 'qtypes' => $qtypes,
                 'ownsSaveButton' => $ownsSaveButton,
@@ -706,7 +714,7 @@ class questionedit extends Survey_Common_Action
      */
     private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
-        $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
+        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if ($oQuestion == null) {
@@ -736,18 +744,18 @@ class questionedit extends Survey_Common_Action
     {
         $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $iQuestionGroupId = Yii::app()->request->getParam('gid');
+        $iQuestionGroupId = App()->request->getParam('gid');
         $type = SettingsUser::getUserSettingValue(
             'preselectquestiontype',
             null,
             null,
             null,
-            Yii::app()->getConfig('preselectquestiontype')
+            App()->getConfig('preselectquestiontype')
         );
 
         $aQuestionData = array_merge([
             'sid' => $iSurveyId,
-            'gid' => Yii::app()->request->getParam('gid'),
+            'gid' => App()->request->getParam('gid'),
             'type' => $type,
             'other' => 'N',
             'mandatory' => 'N',
@@ -979,13 +987,13 @@ class questionedit extends Survey_Common_Action
     {
         $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAllByAttributes(['qid' => $oldQid]);
         $setApplied['defaultValues'] = array_reduce(
-            $oOldDefaultValues, 
+            $oOldDefaultValues,
             function ($collector, $oDefaultValue) use ($oQuestion) {
                 $oNewDefaultValue = new DefaultValue();
                 $oNewDefaultValue->setAttributes($oDefaultValue->attributes, false);
                 $oNewDefaultValue->dvid = null;
                 $oNewDefaultValue->qid = $oQuestion->qid;
-                
+
                 if (!$oNewDefaultValue->save()) {
                     throw new CHttpException(
                         500,
@@ -1007,7 +1015,7 @@ class questionedit extends Survey_Common_Action
                         );
                     }
                 }
-            
+
                 return true;
             },
             true
@@ -1016,6 +1024,8 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
+     * @todo document me
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
@@ -1045,6 +1055,7 @@ class questionedit extends Survey_Common_Action
      * @param Answer $oAnswer
      * @param Question $oQuestion
      * @param array $dataSet
+     *
      * @return boolean
      * @throws CHttpException
      */
@@ -1169,7 +1180,7 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
-     * @todo document me.
+     * @todo document me
      *
      * @param Question $oQuestion
      * @param array $dataSet
@@ -1275,6 +1286,7 @@ class questionedit extends Survey_Common_Action
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
+     * @param bool $sRenderFile
      * @throws CHttpException
      */
     protected function _renderWrappedTemplate(
