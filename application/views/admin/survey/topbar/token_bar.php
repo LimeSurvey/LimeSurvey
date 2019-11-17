@@ -54,7 +54,7 @@ if (!$onlyclose) {
             'ariaexpanded' => 'false',
             'icon' => 'fa fa-plus-circle',
             'iconclass' => 'caret',
-            'name' => gT('Create...'),
+            'name' => gT('Add participant'),
         ],
         'dropdown' => [
             'class' => 'dropdown-menu',
@@ -67,7 +67,7 @@ if (!$onlyclose) {
         $buttons['add_participant'] = [
             'url' => $this->createUrl("admin/tokens/sa/addnew/surveyid/$sid"),
             'icon' => 'fa fa-plus',
-            'name' => gT('Add participant'),
+            'name' => gT('Create participant'),
             'class' => 'pjax',
         ];
 
