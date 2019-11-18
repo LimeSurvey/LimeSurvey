@@ -1986,9 +1986,9 @@ class remotecontrol_handle
     }
 
     /**
-     * Return the ids and propertries of survey participants (RPC function)
+     * Return the IDs and properties of survey participants (RPC function)
      *
-     * if $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
+     * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
      *
      * By default return each participant with basic information
