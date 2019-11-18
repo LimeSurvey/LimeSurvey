@@ -3079,15 +3079,11 @@ function enforceSSLMode()
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == "https"));
     if (Yii::app()->getConfig('ssl_emergency_override') !== true) {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
-    } else {
-        $force_ssl = 'off';
-    };
+    } 
     if ($force_ssl == 'on' && !$bSSLActive) {
         SSLRedirect('s');
     }
-    if ($force_ssl == 'off' && $bSSLActive) {
-        SSLRedirect('');
-    };
+
 };
 
 
