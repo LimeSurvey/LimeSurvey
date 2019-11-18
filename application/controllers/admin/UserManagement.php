@@ -343,7 +343,7 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return $this->getController()->renderPartial(
                 '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => false]
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
         $userId = Yii::app()->request->getPost('userid');
