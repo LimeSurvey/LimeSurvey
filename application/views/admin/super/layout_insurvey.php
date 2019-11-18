@@ -38,7 +38,7 @@ $this->_showHeaders($aData, false);
             echo '<div id="pjax-content" class="col-12">';
 
                 //Rendered through /admin/responses/browsemenubar_view
-                $this->_browsemenubar($aData);
+                //$this->_browsemenubar($aData);
                 //Rendered through /admin/survey/Question/questionbar_view
                 $this->_organizequestionbar($aData);
 
