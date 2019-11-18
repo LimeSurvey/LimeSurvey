@@ -34,6 +34,39 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC7 (build 191111) to 4.0.0-RC8 (build 191118) November 18, 2019
+-Fixed issue #15532: Show warnings when implicit alphabetical compare (#1341) (Denis Chenu)
+-Fixed issue: in 10point and 5point Array, the numbers are ot always shown (lacrioque)
+-Fixed issue: i10N of questions not stored (lacrioque)
+-Fixed issue: can't import theme in theme editor (LouisGac)
+-Fixed issue: User import (CSV / JSON) not working (Eddy Lackmann)
+-Fixed issue: Skipping on invitation/reminder sendout (Carsten Schmitz)
+-Fixed issue: Saving some questiontypes didn't work with debug mode disabled (lacrioque)
+-Fixed issue #15566: Potential PHP Notice with some theme (Denis Chenu)
+-Fixed issue #15565: Upload file : debug 2 : potential issue (Denis Chenu)
+-Fixed issue #15564: Warnings shown for valid comparaison (Denis Chenu)
+-Fixed issue #15535: Unable to use condition editor (Olle Haerstedt)
+-Fixed issue #15532: Show warnings when implicit alphabetical compare is used in expressions (Denis Chenu)
+-Fixed issue #15523: View saved but not submitted - filters do not work (LouisGac)
+-Fixed issue #15523: View saved but not submitted - filters do not work (LouisGac)
+-Fixed issue #15515: Delete button next to save when adding participants (LouisGac)
+-Fixed issue #15510: Missing tooltips for user management action buttons (Eddy Lackmann)
+-Fixed issue #15430: Bars at statistics are often hardly visible / Wrong bar colors (Patrick Teichmann)
+-Fixed issue #15426: Group relevance equations not imported (Olle Haerstedt)
+-Fixed issue #15329: Missing indication for "{" and "}" at group relevance field (LouisGac)
+-Fixed issue #15123: no "clear all" button (LouisGac)
+-Fixed issue #14766: Possible collision with PHPSESSID cookies on the same domain (Carsten Schmitz)
+-Fixed issue #15511: Error modal in user management looks different (Eddy Lackmann)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann
+#Updated translation: German (Informal) by c_schmitz, eddylackmann
+#Updated translation: French (France) by eddylackmann
+#Updated translation: French (Canada) by eddylackmann
+#Updated translation: Czech (Informal) by eddylackmann
+
+
 Changes from 4.0.0-RC6 (build 191022) to 4.0.0-RC7 (build 191111) November 11, 2019
 -New Feature: possibility to disable a Question Theme for the question selector (Patrick Teichmann)
 -Fixed issue: wildly rampaging loader in questionedit (lacrioque)
