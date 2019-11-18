@@ -343,7 +343,7 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return $this->getController()->renderPartial(
                 '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => false]
             );
         }
         $userId = Yii::app()->request->getPost('userid');
@@ -355,9 +355,12 @@ class UserManagement extends Survey_Common_Action
             );
             return;
         }
+
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
-        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
+        Yii::app()->setFlashMessage(gT("User successfully deleted."), 'success');
+        Yii::app()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
+        return;
     }
 
     /**
@@ -820,7 +823,6 @@ class UserManagement extends Survey_Common_Action
                 'tableLabels' =>  $tableLabels
             )
         );
-
     }
 
     /**

@@ -577,7 +577,7 @@ class User extends LSActiveRecord
                 data-userid='".$this->uid."' 
                 data-user='".$this->full_name."' 
                 data-action='deluser' 
-                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\"))()' 
+                data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\")' 
                 data-message='".gt('Do you want to delete this user?')."'>
                     <span data-toggle='tooltip' title='".gT("Delete User")."'>
                         <i class='fa fa-trash text-danger'></i>
