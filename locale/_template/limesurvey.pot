@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-11-14 13:18:37+00:00\n"
+"POT-Creation-Date: 2019-11-19 11:31:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1058,14 +1058,14 @@ msgstr ""
 #: application/controllers/admin/themeoptions.php:43
 #: application/controllers/admin/themeoptions.php:67
 #: application/controllers/admin/themeoptions.php:96
-#: application/controllers/admin/themeoptions.php:147
-#: application/controllers/admin/themeoptions.php:179
-#: application/controllers/admin/themeoptions.php:187
-#: application/controllers/admin/themeoptions.php:250
-#: application/controllers/admin/themeoptions.php:271
-#: application/controllers/admin/themeoptions.php:301
-#: application/controllers/admin/themeoptions.php:317
-#: application/controllers/admin/themeoptions.php:332
+#: application/controllers/admin/themeoptions.php:145
+#: application/controllers/admin/themeoptions.php:177
+#: application/controllers/admin/themeoptions.php:185
+#: application/controllers/admin/themeoptions.php:248
+#: application/controllers/admin/themeoptions.php:269
+#: application/controllers/admin/themeoptions.php:299
+#: application/controllers/admin/themeoptions.php:315
+#: application/controllers/admin/themeoptions.php:330
 #: application/controllers/admin/themes.php:35
 #: application/controllers/admin/themes.php:74
 #: application/controllers/admin/themes.php:123
@@ -2485,8 +2485,8 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:801
 #: application/helpers/common_helper.php:716
 #: application/helpers/common_helper.php:779
-#: application/helpers/common_helper.php:4522
-#: application/helpers/common_helper.php:4571
+#: application/helpers/common_helper.php:4519
+#: application/helpers/common_helper.php:4568
 #: application/helpers/questionHelper.php:1193
 #: application/views/admin/dataentry/content_view.php:253
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:201
@@ -4496,35 +4496,35 @@ msgid "Failed to update survey permissions!"
 msgstr ""
 
 #: application/controllers/admin/themeoptions.php:90
-#: application/controllers/admin/themeoptions.php:141
-#: application/controllers/admin/themeoptions.php:172
+#: application/controllers/admin/themeoptions.php:139
+#: application/controllers/admin/themeoptions.php:170
 msgid "Theme options saved."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:212
+#: application/controllers/admin/themeoptions.php:210
 msgid "The template upload directory doesn't exist or is not writable."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:216
+#: application/controllers/admin/themeoptions.php:214
 #: application/views/admin/themes/templateeditorbar_view.php:137
 msgid "Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:220
+#: application/controllers/admin/themeoptions.php:218
 #: application/views/admin/themes/templateeditorbar_view.php:80
 msgid "You do not have the required ZIP library installed in PHP."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:314
+#: application/controllers/admin/themeoptions.php:312
 msgid "You can't uninstall template '%s' because some templates inherit from it."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:329
+#: application/controllers/admin/themeoptions.php:327
 msgid "The theme '%s' has been reset."
 msgstr ""
 
-#: application/controllers/admin/themeoptions.php:388
-#: application/controllers/admin/themeoptions.php:389
+#: application/controllers/admin/themeoptions.php:386
+#: application/controllers/admin/themeoptions.php:387
 msgid "Survey template options"
 msgstr ""
 
@@ -5179,9 +5179,9 @@ msgstr ""
 #: application/helpers/common_helper.php:246
 #: application/helpers/common_helper.php:716
 #: application/helpers/common_helper.php:779
-#: application/helpers/common_helper.php:4282
-#: application/helpers/common_helper.php:4520
-#: application/helpers/common_helper.php:4569
+#: application/helpers/common_helper.php:4279
+#: application/helpers/common_helper.php:4517
+#: application/helpers/common_helper.php:4566
 #: application/helpers/qanda_helper.php:1256
 #: application/helpers/qanda_helper.php:1856
 #: application/helpers/qanda_helper.php:4298
@@ -6953,7 +6953,7 @@ msgstr ""
 #: application/views/admin/global_settings/_security.php:15
 #: application/views/admin/global_settings/_security.php:28
 #: application/views/admin/global_settings/_security.php:45
-#: application/views/admin/global_settings/_security.php:81
+#: application/views/admin/global_settings/_security.php:80
 #: application/views/admin/homepagesettings/index.php:36
 #: application/views/admin/homepagesettings/index.php:43
 #: application/views/admin/homepagesettings/index.php:53
@@ -7057,7 +7057,7 @@ msgstr ""
 #: application/views/admin/global_settings/_security.php:16
 #: application/views/admin/global_settings/_security.php:29
 #: application/views/admin/global_settings/_security.php:46
-#: application/views/admin/global_settings/_security.php:82
+#: application/views/admin/global_settings/_security.php:81
 #: application/views/admin/homepagesettings/index.php:36
 #: application/views/admin/homepagesettings/index.php:43
 #: application/views/admin/homepagesettings/index.php:53
@@ -8425,155 +8425,155 @@ msgstr ""
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4353
+#: application/helpers/common_helper.php:4350
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4654
+#: application/helpers/common_helper.php:4651
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4655
+#: application/helpers/common_helper.php:4652
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4656
+#: application/helpers/common_helper.php:4653
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4657
+#: application/helpers/common_helper.php:4654
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4658
+#: application/helpers/common_helper.php:4655
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4659
+#: application/helpers/common_helper.php:4656
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4660
+#: application/helpers/common_helper.php:4657
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4661
+#: application/helpers/common_helper.php:4658
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4662
+#: application/helpers/common_helper.php:4659
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4663
+#: application/helpers/common_helper.php:4660
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4664
+#: application/helpers/common_helper.php:4661
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4665
+#: application/helpers/common_helper.php:4662
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4666
+#: application/helpers/common_helper.php:4663
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4667
+#: application/helpers/common_helper.php:4664
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4668
+#: application/helpers/common_helper.php:4665
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4669
+#: application/helpers/common_helper.php:4666
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4670
+#: application/helpers/common_helper.php:4667
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4671
+#: application/helpers/common_helper.php:4668
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4672
+#: application/helpers/common_helper.php:4669
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4673
+#: application/helpers/common_helper.php:4670
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4674
+#: application/helpers/common_helper.php:4671
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4675
+#: application/helpers/common_helper.php:4672
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4676
+#: application/helpers/common_helper.php:4673
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4677
+#: application/helpers/common_helper.php:4674
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4678
+#: application/helpers/common_helper.php:4675
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4679
+#: application/helpers/common_helper.php:4676
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4680
+#: application/helpers/common_helper.php:4677
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4681
+#: application/helpers/common_helper.php:4678
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4682
+#: application/helpers/common_helper.php:4679
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4683
+#: application/helpers/common_helper.php:4680
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4684
+#: application/helpers/common_helper.php:4681
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4685
+#: application/helpers/common_helper.php:4682
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4686
+#: application/helpers/common_helper.php:4683
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4687
+#: application/helpers/common_helper.php:4684
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4688
+#: application/helpers/common_helper.php:4685
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4689
+#: application/helpers/common_helper.php:4686
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4693
+#: application/helpers/common_helper.php:4690
 msgid "(Automatic)"
 msgstr ""
 
@@ -8906,99 +8906,99 @@ msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:331
-#: application/helpers/expressions/em_core_helper.php:491
+#: application/helpers/expressions/em_core_helper.php:497
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:486
+#: application/helpers/expressions/em_core_helper.php:492
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:536
+#: application/helpers/expressions/em_core_helper.php:542
 msgid "Extra tokens found"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:547
+#: application/helpers/expressions/em_core_helper.php:553
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:551
+#: application/helpers/expressions/em_core_helper.php:557
 msgid "Not a valid expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:601
-#: application/helpers/expressions/em_core_helper.php:936
-#: application/helpers/expressions/em_core_helper.php:1003
+#: application/helpers/expressions/em_core_helper.php:607
+#: application/helpers/expressions/em_core_helper.php:942
+#: application/helpers/expressions/em_core_helper.php:1009
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:633
-#: application/helpers/expressions/em_core_helper.php:1642
+#: application/helpers/expressions/em_core_helper.php:639
+#: application/helpers/expressions/em_core_helper.php:1648
 msgid "Undefined variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:711
+#: application/helpers/expressions/em_core_helper.php:717
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:715
+#: application/helpers/expressions/em_core_helper.php:721
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:757
+#: application/helpers/expressions/em_core_helper.php:763
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:764
+#: application/helpers/expressions/em_core_helper.php:770
 msgid "Extra token found after expressions"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:779
-#: application/helpers/expressions/em_core_helper.php:1638
+#: application/helpers/expressions/em_core_helper.php:785
+#: application/helpers/expressions/em_core_helper.php:1644
 msgid "Undefined function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:784
+#: application/helpers/expressions/em_core_helper.php:790
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:801
+#: application/helpers/expressions/em_core_helper.php:807
 msgid "Extra comma found in function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:948
+#: application/helpers/expressions/em_core_helper.php:954
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1631
+#: application/helpers/expressions/em_core_helper.php:1637
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1647
+#: application/helpers/expressions/em_core_helper.php:1653
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1654
+#: application/helpers/expressions/em_core_helper.php:1660
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2046
+#: application/helpers/expressions/em_core_helper.php:2052
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2051
+#: application/helpers/expressions/em_core_helper.php:2057
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2052
+#: application/helpers/expressions/em_core_helper.php:2058
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2263
+#: application/helpers/expressions/em_core_helper.php:2269
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2957
+#: application/helpers/expressions/em_core_helper.php:2963
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -14520,7 +14520,7 @@ msgstr ""
 #: application/views/admin/global_settings/_interfaces.php:58
 #: application/views/admin/global_settings/_language.php:71
 #: application/views/admin/global_settings/_presentation.php:192
-#: application/views/admin/global_settings/_security.php:100
+#: application/views/admin/global_settings/_security.php:99
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
@@ -14893,19 +14893,15 @@ msgstr ""
 msgid "Force HTTPS:"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:80
-msgid "Don't force on/off"
-msgstr ""
-
-#: application/views/admin/global_settings/_security.php:88
+#: application/views/admin/global_settings/_security.php:87
 msgid "Warning: Before turning on HTTPS,%s check if this link works.%s"
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:88
+#: application/views/admin/global_settings/_security.php:87
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr ""
 
-#: application/views/admin/global_settings/_security.php:90
+#: application/views/admin/global_settings/_security.php:89
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
 msgstr ""
 
@@ -19671,7 +19667,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:118
 #: application/views/admin/token/dummytokenform.php:148
-#: tmp/runtime/twig_cache/de/de46d5cbd1c303315c4aa2fb7b42a3aa4f718f0257c4cc46a96aae06185dd8d6.php:88
+#: tmp/runtime/twig_cache/0f/0fe880cde2dc2e17fc0eb2b5c2c67235424d7635ba41a24abc7062b82eb54842.php:88
 #: tmp/runtime/twig_cache/e0/e05e15e1fb430f01e7563584718e5c9f29317d3cb398966ea3cfedcbcedeb710.php:92
 msgid "Format: %s"
 msgstr ""
@@ -21418,6 +21414,14 @@ msgstr ""
 msgid "Change the language"
 msgstr ""
 
+#: tmp/runtime/twig_cache/0f/0fe880cde2dc2e17fc0eb2b5c2c67235424d7635ba41a24abc7062b82eb54842.php:58
+msgid "Date format: %s"
+msgstr ""
+
+#: tmp/runtime/twig_cache/0f/0fe880cde2dc2e17fc0eb2b5c2c67235424d7635ba41a24abc7062b82eb54842.php:77
+msgid "Open date/time selector"
+msgstr ""
+
 #: tmp/runtime/twig_cache/1c/1c41f001467916d34542cd7353f3d4ea4402f8ab7c1952d3e6f9a103a608bf2a.php:118
 msgid "Total:"
 msgstr ""
@@ -21516,13 +21520,8 @@ msgstr ""
 msgid "Group 1: The first lot of questions"
 msgstr ""
 
-#: tmp/runtime/twig_cache/de/de46d5cbd1c303315c4aa2fb7b42a3aa4f718f0257c4cc46a96aae06185dd8d6.php:58
 #: tmp/runtime/twig_cache/e0/e05e15e1fb430f01e7563584718e5c9f29317d3cb398966ea3cfedcbcedeb710.php:72
 msgid "Date in the format: %s"
-msgstr ""
-
-#: tmp/runtime/twig_cache/de/de46d5cbd1c303315c4aa2fb7b42a3aa4f718f0257c4cc46a96aae06185dd8d6.php:77
-msgid "Open the date time chooser"
 msgstr ""
 
 #: tmp/runtime/twig_cache/e8/e80c728ce366034ec021eef4877d7cf0aed6c2e24c0016ae1810474bc6879b67.php:84
