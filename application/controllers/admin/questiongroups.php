@@ -284,6 +284,14 @@ class questiongroups extends Survey_Common_Action
         $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyId));
     }
 
+    /**
+     * View the current question list.
+     *
+     * @param integer $surveyid Survey ID
+     * @param integer $gid      Group ID
+     *
+     * @return void
+     */
     public function view($surveyid, $gid)
     {
         $aData = array();
@@ -291,7 +299,7 @@ class questiongroups extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData['gid'] = $gid;
         $baselang = $survey->language;
-        if($gid!==null) {
+        if ($gid!==null) {
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         }
         $aData['condarray'] = $condarray ?? [];
