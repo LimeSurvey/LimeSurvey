@@ -806,7 +806,7 @@ class LsDefaultDataSets
                 'title' => gT('Edit answer options'),
                 'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.").'<br/>'
                 .gT('Remember the plus button').'<i class="icon-add text-success"></i>?'.'<br/>'
-                .'<p class="alert bg-warning">'."Please add at least two answer options to proceed.".'</p>',
+                .'<p class="alert bg-warning">'.gT("Please add at least two answer options to proceed.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
                     'delayOnElement' => "{element: 'element'}",
