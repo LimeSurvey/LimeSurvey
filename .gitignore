@@ -70,13 +70,6 @@
 # if you want to add a new distributed plugin : add the directory here
 /plugins/*
 !/plugins/index.html
-!/plugins/Demo/
-!/plugins/AuditLog/
-!/plugins/mailSenderToFrom/
-!/plugins/customToken/
-!/plugins/expressionQuestionHelp/
-!/plugins/expressionFixedDbVar/
-!/plugins/expressionQuestionForAll/
 
 #ignore old styles
 /styles/

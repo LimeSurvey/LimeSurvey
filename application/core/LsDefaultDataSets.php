@@ -975,30 +975,45 @@ class LsDefaultDataSets
 
     /**
      * Get data for plugins installed by default.
-     * Note: Authdb is installed during first login.
+     * Also install all core plugins, but set to inactive.
+     *
      * @return array
      */
     public static function getDefaultPluginsData()
     {
+        /**
+         * @param string $name Name of plugin
+         * @param int $active
+         * @return array
+         */
+        $addRow = function ($name, $active = 0) {
+            return [
+                'id' => null,
+                'name'               => $name,
+                'plugin_type'        => 'core',
+                'active'             => $active,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ];
+        };
+
         return [
-            [
-                'id' => null,
-                'name'               => 'UpdateCheck',
-                'plugin_type'        => 'core',
-                'active'             => 1,
-                'version'            => '1.0.0',
-                'load_error'         => 0,
-                'load_error_message' => null
-            ],
-            [
-                'id' => null,
-                'name'               => 'PasswordRequirement',
-                'plugin_type'        => 'core',
-                'active'             => 1,
-                'version'            => '1.0.0',
-                'load_error'         => 0,
-                'load_error_message' => null
-            ]
+            $addRow('UpdateCheck', 1),
+            $addRow('PasswordRequirement', 1),
+            $addRow('Authdb', 1),
+            // Inactive plugins below.
+            $addRow('AuthLDAP'),
+            $addRow('AuditLog'),
+            $addRow('Authwebserver'),
+            $addRow('ExportR'),
+            $addRow('ExportSTATAxml'),
+            $addRow('oldUrlCompat'),
+            $addRow('expressionQuestionHelp'),
+            $addRow('expressionQuestionForAll'),
+            $addRow('expressionFixedDbVar'),
+            $addRow('customToken'),
+            $addRow('mailSenderToFrom'),
         ];
     }
 
