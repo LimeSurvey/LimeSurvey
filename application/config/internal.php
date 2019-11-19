@@ -86,16 +86,6 @@ $internalConfig = array(
         ),
         */
     ),
-
-
-
-
-
-
-
-
-
-
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
         'pageSizeOptions'=>array(5=>5, 10=>10, 20=>20, 50=>50, 100=>100), // Default page size options for most of the grids
@@ -315,7 +305,6 @@ $internalConfig = array(
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
                 'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
-                'getAllAnswers'           => 'LS_Twig_Extension::getAllAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -434,7 +423,6 @@ $internalConfig = array(
                     'darkencss',
                     'lightencss',
                     'getAllTokenAnswers',
-                    'getAllAnswers',
                 ),
             ),
         ),
