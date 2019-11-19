@@ -544,9 +544,7 @@ class UserManagement extends Survey_Common_Action
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
         $aPermissiontemplates = Permissiontemplates::model()->findAll();
-        $aPossibleRoles = [
-            '' => gT('No role')
-        ];
+        $aPossibleRoles = [];
         array_walk(
             $aPermissiontemplates,
             function ($oPermissionRole) use (&$aPossibleRoles) {
