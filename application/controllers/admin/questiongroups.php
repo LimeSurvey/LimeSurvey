@@ -354,7 +354,7 @@ class questiongroups extends Survey_Common_Action
                 'Page summary' => gT('Page summary'),
                 'Random Group' => gT('Random Group'),
                 'Title' => gT('Title'),
-                'Relevance' => gT('Relevance'),
+                'Condition' => gT('Condition'),
                 'Description' => gT('Description'),
                 'Quick actions' => gT('Quick actions'),
                 'Question list' => gT('Question list'),

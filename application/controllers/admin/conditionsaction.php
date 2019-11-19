@@ -1359,10 +1359,10 @@ class conditionsaction extends Survey_Common_Action
 
             if ($rows['type'] == "A" || $rows['type'] == "B" || $rows['type'] == "C" || $rows['type'] == "E" || $rows['type'] == "F" || $rows['type'] == "H") {
 
-                $aresult = Question::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => $this->language), array('order' => 'question_order ASC'));
+                $aresult = Question::model()->with('questionL10ns')->findAllByAttributes(array('parent_qid'=>$rows['qid']), array('order' => 'question_order ASC'));
 
                 foreach ($aresult as $arows) {
-                    $shortanswer = "{$arows['title']}: [".flattenText($arows['question'])."]";
+                    $shortanswer = "{$arows['title']}: [".flattenText($arows->questionL10ns[$this->language]->question)."]";
                     $shortquestion = $rows['title'].":$shortanswer ".flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'],
                         $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']
@@ -1389,14 +1389,17 @@ class conditionsaction extends Survey_Common_Action
                         case "F": 
                             //Array Flexible Column
                         case "H":
-                            $fresult = Answer::model()->findAllByAttributes(
+                            $fresult = Answer::model()->with(array(
+                            'answerL10ns' => array(
+                                'condition' => 'answerL10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(
                                 array(
                                     'qid' => $rows['qid'],
-                                    "language" => $this->language,
                                     'scale_id' => 0,
                                 ), array('order' => 'sortorder, code')
                             );
-                            foreach ($fresult as $frow) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']); }
+                            foreach ($fresult as $frow) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow->answerL10ns[$this->language]->answer); }
                             break;
                     }
                     // Only Show No-Answer if question is not mandatory
@@ -1457,32 +1460,43 @@ class conditionsaction extends Survey_Common_Action
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
                 //Multi Scale
-                $aresult = Question::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => $this->language), array('order' => 'question_order desc'));
+                $aresult = Question::model()->with(array(
+                            'questionL10ns' => array(
+                                'condition' => 'questionL10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(array('parent_qid' => $rows['qid']), array('order' => 'question_order desc'));
                 foreach ($aresult as $arows) {
                     $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage = $this->language;
                     // dualscale_header are allways set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
-                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."][$label1]";
-                    $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+                    $shortanswer = "{$arows['title']}: [".strip_tags($arows->questionL10ns[$this->language]->question)."][$label1]";
+                    $shortquestion = $rows['title'].":$shortanswer ".strip_tags($arows->questionL10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
 
-                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."][$label2]";
-                    $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+                    $shortanswer = "{$arows['title']}: [".strip_tags($arows->questionL10ns[$this->language]->question)."][$label2]";
+                    $shortquestion = $rows['title'].":$shortanswer ".strip_tags($arows->questionL10ns[$this->language]->question);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
                     // first label
-                    $lresult = Answer::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => $this->language), array('order' => 'sortorder, answer'));
+                    $lresult = Answer::model()->with(array(
+                            'answerL10ns' => array(
+                                'condition' => 'answerL10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0), array('order' => 'sortorder, answer'));
                     foreach ($lresult as $lrows) {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
                     }
 
                     // second label
-                    $lresult = Answer::model()->findAllByAttributes(array(
+                    $lresult = Answer::model()->with(array(
+                            'answerL10ns' => array(
+                                'condition' => 'answerL10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(array(
                         'qid' => $rows['qid'],
-                        'scale_id' => 1,
-                        'language' => $this->language,
+                        'scale_id' => 1
                     ), array('order' => 'sortorder, answer'));
 
                     foreach ($lresult as $lrows) {
@@ -1514,11 +1528,14 @@ class conditionsaction extends Survey_Common_Action
                 } //foreach
             } elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) {
                 //Answer Ranking
-                $aresult = Answer::model()->findAllByAttributes(
+                $aresult = Answer::model()->with(array(
+                            'answerL10ns' => array(
+                                'condition' => 'answerL10ns.language = :lang',
+                                'params' => array(':lang' => $this->language)
+                            )))->findAllByAttributes(
                     array(
                         "qid" => $rows['qid'],
                         "scale_id" => 0,
-                        "language" => $this->language,
                     ),
                     array('order' => 'sortorder, answer'));
 
@@ -1526,7 +1543,7 @@ class conditionsaction extends Survey_Common_Action
 
                 $quicky = [];
                 foreach ($aresult as $arow) {
-                    $theanswer = $arow['answer'];
+                    $theanswer = $arow->answerL10ns[$this->language]->answer;
                     $quicky[] = array($arow['code'], $theanswer);
                 }
 
@@ -1548,16 +1565,15 @@ class conditionsaction extends Survey_Common_Action
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 
-                $aresult = Question::model()->findAllByAttributes(array(
+                $aresult = Question::model()->with('questionL10ns')->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
-                    "language" => $this->language
                 ), array('order' => 'question_order desc'));
 
                 foreach ($aresult as $arows) {
-                    $theanswer = $arows['question'];
+                    $theanswer = $arows->questionL10ns[$this->language]->question;
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
 
-                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."]";
+                    $shortanswer = "{$arows['title']}: [".strip_tags($theanswer)."]";
                     $shortanswer .= "[".gT("Single checkbox")."]";
                     $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
@@ -1613,7 +1629,7 @@ class conditionsaction extends Survey_Common_Action
                         ), array('order' => 'sortorder, answer'));
 
                         foreach ($aresult as $arows) {
-                            $theanswer = $arows['answer'];
+                            $theanswer = $arows->answerL10ns[$this->language]->answer;
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                         }
                         if ($rows['type'] == Question::QT_D_DATE) {

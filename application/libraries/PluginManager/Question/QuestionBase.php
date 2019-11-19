@@ -120,7 +120,7 @@ namespace LimeSurvey\PluginManager;
                     'type' => 'relevance',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gT('Relevance equation:')
+                    'label' => gT('Condition:')
                 ),
                 'randomization' => array(
                     'type' => 'string',

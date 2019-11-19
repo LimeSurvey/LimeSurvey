@@ -332,7 +332,7 @@ if ($hasUpdatePermission) {
     // Conditions Button
     $buttons['conditions'] = [
         'url' => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
-        'name' => gT("Set conditions"),
+        'name' => gT("Condition designer"),
         'id' => 'conditions_button',
         'icon' => 'icon-conditions',
         'class' => ' btn-default',

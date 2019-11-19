@@ -108,7 +108,7 @@
                         </div>
 
                         <div  class="form-group">
-                            <label for='relevance'><?php eT("Relevance equation:"); ?></label>
+                            <label for='relevance'><?php eT("Condition:"); ?></label>
                             <textarea cols='1' class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
                         </div>
 

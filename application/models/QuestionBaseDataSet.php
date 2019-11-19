@@ -365,15 +365,15 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         if (count($this->oQuestion->conditions) > 0) {
             $inputtype = 'text';
-            $content = gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.");
+            $content = gT("Note: You can't edit the condition because there are currently conditions set for this question by the condition designer.");
         }
 
         return [
                 'name' => 'relevance',
-                'title' => gT('Relevance equation'),
+                'title' => gT('Condition'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,
-                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
+                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
                 'inputtype' => 'textarea',
                 'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [

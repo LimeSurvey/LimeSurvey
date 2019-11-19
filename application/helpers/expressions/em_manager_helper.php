@@ -9772,7 +9772,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $out .= "<tr>
             <th class=\"column-0\">#</th>
             <th class=\"column-1\">".$LEM->gT('Name [ID]')."</th>
-            <th class=\"column-2\">".$LEM->gT('Relevance [Validation] (Default value)')."</th>
+            <th class=\"column-2\">".$LEM->gT('Condition [Validation] (Default value)')."</th>
             <th class=\"column-3\">".$LEM->gT('Text [Help] (Tip)')."</th>
             </tr>\n";
 

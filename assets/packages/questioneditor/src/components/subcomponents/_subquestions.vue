@@ -178,7 +178,7 @@ export default {
                             {{'Subquestion'|translate}}
                         </div>
                         <div class="scoped-relevance-block">
-                            {{'Relevance'}}
+                            {{'Condition'}}
                         </div>
                         <div class="scoped-actions-block" v-show="!readonly">
                             <div>&nbsp;</div>

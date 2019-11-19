@@ -187,7 +187,7 @@
                 <!-- Relevance equation -->
                 <?php if (trim($qrrow['relevance']) != '' && trim($qrrow['relevance']) != '1'): ?>
                     <tr>
-                        <td><?php eT("Relevance equation:"); ?></td>
+                        <td><?php eT("Condition:"); ?></td>
                         <td>
                             <?php
                             LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
