@@ -827,8 +827,8 @@ class questionHelper
             'expression'=>1, // Must control if yes
             'i18n'=>true,
             'default'=>"",
-            "help"=>gT('In the printable version replace the relevance equation with this explanation text.'),
-            "caption"=>gT("Relevance help for printable survey")
+            "help"=>gT('In the printable version replace the condition with this explanation text.'),
+            "caption"=>gT("Condition replacement text for printable survey")
         );
 
         self::$attributes["public_statistics"] = array(
