@@ -1668,7 +1668,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $question->appendChild($response);
                         break;
                     case "D": //DATE
-                        $response->appendChild(QueXMLCreateFree("date", "10", ""));
+                        $response->appendChild(QueXMLCreateFree("date", "19", ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
