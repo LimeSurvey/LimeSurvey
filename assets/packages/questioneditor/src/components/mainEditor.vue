@@ -127,16 +127,17 @@ export default {
     },
     computed: {
         previewRootUrl() {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? '' : '/';
-            return window.QuestionEditData.qid != null 
-            ? [
-                subAction,
+            return window.QuestionEditData.qid != null
+            ? LS.createUrl(
                 window.QuestionEditData.connectorBaseUrl,
-                'getRenderedPreview&iQuestionId=',
-                window.QuestionEditData.qid,
-                (this.firstStart ? '&root=1' : ''),
-                '&sLanguage=',
-                this.$store.state.activeLanguage].join('')
+                {
+                    sa: 'getRenderedPreview',
+                    sid: this.$store.getters.surveyid,
+                    iQuestionId: window.QuestionEditData.qid,
+                    root: (this.firstStart ? '1' : ''),
+                    sLanguage: this.$store.state.activeLanguage
+                }
+            )
             : 'about:blank';
         },
         currentQuestionQuestion: { 

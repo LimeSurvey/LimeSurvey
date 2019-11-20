@@ -616,9 +616,8 @@ class questionedit extends Survey_Common_Action
         Yii::import('application.helpers.qanda_helper', true);
         setNoAnswerMode(['shownoanswer' => $oQuestion->survey->shownoanswer]);
 
-        if (!isset($_SESSION["survey_{$oQuestion->sid}"])) {
-            buildsurveysession($oQuestion->sid, true);
-        }
+        // Create the survey session required for rendering the preview
+        buildsurveysession($oQuestion->sid, true);
 
         $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray, $changedType);
         $aRendered = $oQuestionRenderer->render();
@@ -642,6 +641,7 @@ class questionedit extends Survey_Common_Action
             ]
         );
 
+//        unset($_SESSION['survey_' . $aSurveyInfo['sid']]);
         // If the template instance is not reset, it will load the last used one.
         // This may be correct, but oftentimes it is not and to not leave it for luck and chance => Reset
         Template::resetInstance();
