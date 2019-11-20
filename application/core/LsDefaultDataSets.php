@@ -167,7 +167,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -183,7 +183,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
             'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"on","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"themes/survey/fruity/files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top","notables":"1"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -199,7 +199,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"themes/survey/bootswatch/files/logo.png", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
@@ -806,7 +806,7 @@ class LsDefaultDataSets
                 'title' => gT('Edit answer options'),
                 'content' => gT("As you can see, editing answer options is quite similar to editing subquestions.").'<br/>'
                 .gT('Remember the plus button').'<i class="icon-add text-success"></i>?'.'<br/>'
-                .'<p class="alert bg-warning">'."Please add at least two answer options to proceed.".'</p>',
+                .'<p class="alert bg-warning">'.gT("Please add at least two answer options to proceed.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
                     'delayOnElement' => "{element: 'element'}",

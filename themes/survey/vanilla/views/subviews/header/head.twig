@@ -39,15 +39,6 @@
             window.basicThemeScripts = new ThemeScripts(); 
         } 
     </script>
-    {# Ajax mode #}
-    {% if(aSurveyInfo.options.ajaxmode == "on") %}
-        <script type="text/javascript">
-            var ajaxHandler = new AjaxSubmitObject();
-            $(document).on('ready', function () {
-                ajaxHandler.bindActions();
-            });
-        </script>
-    {% endif %}
     {# LSvar update with  #}
     {{ registerScript("LSvarTemplateInit","LSvar= LSvar || {};","POS_HEAD") }}
     {% if(aSurveyInfo.options.fixnumauto and aSurveyInfo.options.fixnumauto != "off") %}
