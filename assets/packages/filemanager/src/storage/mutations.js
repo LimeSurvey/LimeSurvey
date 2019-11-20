@@ -28,5 +28,15 @@ export default {
     cancelTransit: (state) => {
         state.fileInTransit = null;
         state.transitType = null;
+    },
+    toggleCollapseFolder: (state, folderShortName) => {
+        const tmp = LS.ld.merge([], state.uncollapsedFolders);
+        const pos = state.uncollapsedFolders.indexOf(folderShortName);
+        if( pos !== -1) {
+            tmp.splice(pos, 1);
+        } else {
+            tmp.push(folderShortName);
+        }
+        state.uncollapsedFolders = tmp;
     }
 };

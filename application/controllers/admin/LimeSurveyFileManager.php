@@ -78,9 +78,13 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'Move' => gT('Move'),
             'Copy' => gT('Copy'),
             'Upload a file' => gT('Upload a file'),
+            'File could not be uploaded' => gT('File could not be uploaded'),
             'Drag and drop here, or click once to start uploading' => gT('Drag and drop here, or click once to start uploading'),
             'File is uploaded to currently selected folder' => gT('File is uploaded to currently selected folder'),
             'An error has happened and no files could be located' => gT('An error has happened and no files could be located'),
+            'An error has occured and the file list could not be loaded:' => gT('An error has occured and the file list could not be loaded:'),
+            'An error has occured and the folders could not be loaded:' => gT('An error has occured and the folders could not be loaded:'),
+            'An error has occured and the file(s) could not be uploaded:' => gT('An error has occured and the folders could not be loaded:'),
             'File name' => gT('File name'),
             'Type' => gT('Type'),
             'Size' => gT('Size'),
@@ -137,7 +141,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $directory = $this->_checkFolder($folder, $iSurveyId);
 
         if ($directory === false) {
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
 
@@ -163,28 +167,34 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
         
         if ($checkDirectory === false) {
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
         
         $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
-        if ($this->checkTargetExists($realFilePath)) {
-            if (unlink($realFilePath)) {
-                $this->_printJsonResponse(
-                    [
-                        'success' => true,
-                        'message' => sprintf(gT("File successfully deleted"), $file['shortName']),
-                    ]
-                );
-            } else {
-                $this->_setError(
-                    'DELETE_FAILED',
-                    gT("Your file could not be deleted")
-                );
-                $this->_printJsonError();
-                return;
-            }
+        
+        //Throw exception if file does not exist
+        if (!$this->checkTargetExists($realFilePath)) {
+            $this->_setError(
+                "FILE_NOT_EXISTING",
+                gT("The file does not exist")
+            );
+            $this->throwError();
         }
+
+        if (!unlink($realFilePath)) {
+            $this->_setError(
+                "DELETE_FILE_ERROR",
+                gT("The file could not be deleted")
+            );
+            $this->throwError();
+        }
+        $this->_printJsonResponse(
+            [
+                'success' => true,
+                'message' => sprintf(gT("File successfully deleted"), $file['shortName']),
+            ]
+        );
     }
 
     public function transitFile()
@@ -195,11 +205,6 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $action = Yii::app()->request->getPost('action');
 
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
-
-        if ($checkDirectory === false) {
-            $this->_printJsonError();
-            return;
-        }
 
         $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
         $fileDestination = realpath($realTargetPath) . DIRECTORY_SEPARATOR . $file['shortName'];
@@ -219,7 +224,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     'COPY_FAILED',
                     gT("Your file could not be copied")
                 );
-                $this->_printJsonError();
+                $this->throwError();
                 return;
             }
 
@@ -235,7 +240,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     'MOVE_FAILED',
                     gT("Your file could not be moved")
                 );
-                $this->_printJsonError();
+                $this->throwError();
                 return;
             }
 
@@ -251,7 +256,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'ACTION_UNKNOWN',
             gT("The action you tried to apply is not known")
         );
-        $this->_printJsonError();
+        $this->throwError();
         return;
     }
 
@@ -274,7 +279,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $directory = $this->_checkFolder($folder, $iSurveyId);
 
         if ($directory === false) {
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
 
@@ -285,7 +290,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 'MAX_FILESIZE_REACHED',
                 sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024)
             );
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
 
@@ -299,7 +304,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 'FILETYPE_NOT_ALLOWED',
                 gT("Sorry, this file type is not allowed. Please contact your administrator for a list of allowed filetypes.")
             );
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
 
@@ -326,7 +331,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 'FILE_DESTINATION_UNWRITABLE',
                 sprintf(gT("An error occurred uploading your file. The folder (%s) is not writable for the webserver."), $folder)
             );
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
 
@@ -340,7 +345,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 'FILE_COULD NOT_BE_MOVED',
                 sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the target folder. (%s)"), $folder)
             );
-            $this->_printJsonError();
+            $this->throwError();
             return;
         }
 
@@ -666,18 +671,14 @@ class LimeSurveyFileManager extends Survey_Common_Action
      *
      * @return void Renders JSON document
      */
-    private function _printJsonError()
+    private function throwError()
     {
-        http_response_code(500);
-        $this->getController()->renderPartial(
-            '/admin/super/_renderJson', [
-                'success' => false,
-                'data' => [
-                    'success' => false,
-                    'message' => $this->oError->message,
-                    'debug' => $this->oError->debug,
-                ],
-        ]);
+        throw new LSJsonException(
+            500,
+            (Yii::app()->getConfig('debug') > 0 ? $this->oError->code.': ' : '')
+            .$this->oError->message,
+            0
+        );
     }
 }
 

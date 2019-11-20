@@ -27,8 +27,19 @@ export default {
                 formData.append('surveyid', surveyId);
             }
         },
-        onCompleteHandler(file, response) {
-            
+        onErrorHandler(error) {
+            this.$log.error('error => ', error);
+            let errorMessage = this.translate("File could not be uploaded");
+            try {
+                const jsonResponse = JSON.parse(error.xhr.response);
+                errorMessage = jsonResponse.message;
+            } catch(e) {}
+            window.LS.notifyFader(
+                errorMessage,
+                'well-lg bg-danger text-center'
+            );
+        },
+        onCompleteHandler(response) {
             this.$emit('close');
         }
     }
@@ -45,6 +56,7 @@ export default {
                 ref="fileUploaderDropzone" 
                 id="FileUploader--dropzone" 
                 v-on:vdropzone-sending="applyFolderAndData" 
+                v-on:vdropzone-error="onErrorHandler"
                 v-on:vdropzone-complete="onCompleteHandler"
                 :options="dropzoneOptions" 
                 :useCustomSlot="true"

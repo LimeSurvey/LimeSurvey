@@ -18,7 +18,13 @@ export default {
 
 <template>
   <div class="scoped-folder-list" :class="'col-xs-'+cols">
-    <treeview :folders="$store.state.folderList" @setLoading="setLoading" :loading="loading" :preset-folder="presetFolder"/>
+    <treeview 
+        key="root-folder"
+        :folders="$store.state.folderList" 
+        @setLoading="setLoading" 
+        :loading="loading" 
+        :preset-folder="presetFolder"
+    />
   </div>
 </template>
 

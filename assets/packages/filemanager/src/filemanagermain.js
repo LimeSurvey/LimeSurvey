@@ -11,7 +11,10 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 
-Vue.config.productionTip = false;
+//Ignore phpunits testing tags
+Vue.config.ignoredElements = ["x-test"];
+
+Vue.config.productionTip = true;
 
 Vue.use(VuejsDialog);
 Vue.use(VModal, { dynamic: true });
