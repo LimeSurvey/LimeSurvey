@@ -3031,8 +3031,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $insertPlugin('AuthLDAP');
             $insertPlugin('AuditLog');
             $insertPlugin('Authwebserver');
-            $insertPlugin('ExportR');
-            $insertPlugin('ExportSTATAxml');
+            $insertPlugin('ExportR', 1);
+            $insertPlugin('ExportSTATAxml', 1);
             $insertPlugin('oldUrlCompat');
             $insertPlugin('expressionQuestionHelp');
             $insertPlugin('expressionQuestionForAll');
