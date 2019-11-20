@@ -412,6 +412,10 @@ class InstallerConfigForm extends CFormModel
             if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
                 $this->db->emulatePrepare = true;
             }
+            if (in_array($this->dbtype, [ self::DB_TYPE_SQLSRV, self::DB_TYPE_DBLIB, self::DB_TYPE_MSSQL])) {
+                $this->db->initSQLs=['SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'];
+            }
+            
             $this->db->tablePrefix = $this->dbprefix;
             $this->setMySQLDefaultEngine($this->dbengine);
 
