@@ -1,3 +1,159 @@
+
+<template>
+    <div class="container-center scoped-new-questioneditor">
+        <div class="btn-group pull-right clear" v-if="allowSwitchEditing && !loading">
+            <transition-group name="fade">
+                <button
+                    id="questionOverviewButton"
+                    key="questionOverviewButton"
+                    @click.prevent="triggerEditQuestion(false)"
+                    :class="editQuestion ? 'btn-default' : 'btn-primary'"
+                    class="btn "
+                >
+                    {{'Question overview'| translate}}
+                </button>
+                <button
+                    id="questionEditorButton"
+                    key="questionEditorButton"
+                    @click.prevent="triggerEditQuestion(true)"
+                    :class="editQuestion ? 'btn-primary' : 'btn-default'"
+                    class="btn "
+                >
+                    {{'Question editor'| translate}}
+                </button>
+            </transition-group>
+        </div>
+        <div class="pagetitle h3 scoped-unset-pointer-events">
+            <template v-if="isCreateQuestion && !loading">
+                    <x-test id="action::addQuestion"></x-test>
+                    {{'Create question'|translate}}
+            </template>
+            <template v-if="!isCreateQuestion && !loading">
+                    {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
+            </template>
+        </div>
+        <transition-group name="fade">
+            <template v-if="!loading">
+                <div class="row" key="questioncode-block" v-if="initCopy">
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="ls-space margin right-5" for="copySubquestions">{{"Copy subquestions" | translate}}</label>
+                        <bootstrap-toggle
+                            id="copySubquestions"
+                            v-model="copySubquestions"
+                            :options="switcherOptions"
+                        />
+                    </div>
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="ls-space margin right-5" for="copyAnswerOptions">{{"Copy answer options" | translate}}</label>
+                        <bootstrap-toggle
+                            id="copyAnswerOptions"
+                            v-model="copyAnswerOptions"
+                            :options="switcherOptions"
+                        />
+                    </div>
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="ls-space margin right-5" for="copyDefaultAnswers">{{"Copy default answers" | translate}}</label>
+                        <bootstrap-toggle
+                            id="copyDefaultAnswers"
+                            v-model="copyDefaultAnswers"
+                            :options="switcherOptions"
+                        />
+                    </div>
+                    <div class="form-group col-lg-3 col-sm-6">
+                        <label class="ls-space margin right-5" for="copyAdvancedOptions">{{"Copy advanced options" | translate}}</label>
+                        <bootstrap-toggle
+                            id="copyAdvancedOptions"
+                            v-model="copyAdvancedOptions"
+                            :options="switcherOptions"
+                        />
+                    </div>
+                </div>
+                <div class="row" key="questioncode-block">
+                    <div class="form-group col-sm-6">
+                        <label for="questionCode">{{'Code' | translate }}</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="questionCode"
+                            :readonly="!(editQuestion || isCreateQuestion || initCopy)"
+                            required="required"
+                            v-model="currentQuestionCode"
+                            @dblclick="setEditQuestion"
+                        />
+                        <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
+                    </div>
+                    <div class="form-group col-sm-6 contains-question-selector">
+                        <label for="questionCode">{{'Question type' | translate }}</label>
+                        <div 
+                            v-if="$store.getters.surveyObject.active !='Y'" 
+                            v-show="(editQuestion || isCreateQuestion)"
+                            v-html="questionEditButton" 
+                        />
+                        <input 
+                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')" 
+                            type="text" 
+                            class="form-control" id="questionTypeVisual" 
+                            :readonly="true" 
+                            :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"
+                        />
+                        <input 
+                            v-if="$store.getters.surveyObject.active !='Y'" 
+                            type="hidden" 
+                            id="question_type" 
+                            name="type" 
+                            :value="$store.state.currentQuestion.type" 
+                            @change="questionTypeChangeTriggered" 
+                        />
+                    </div>
+                </div>
+                <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
+                    <languageselector
+                        :elId="'question-language-changer'"
+                        :aLanguages="$store.state.languages"
+                        :parentCurrentLanguage="$store.state.activeLanguage"
+                        @change="selectLanguage"
+                    />
+                </div>
+                <div key="editorcontent-block" class="col-12">
+                    <div class="ls-flex ls-flex-row scope-create-gutter">
+                        <transition name="slide-fade-left">
+                            <maineditor 
+                                v-show="(editQuestion || isCreateQuestion)" 
+                                :loading="loading" 
+                                :event="event" 
+                                @triggerEvent="triggerEvent" 
+                                @eventSet="eventSet"
+                            ></maineditor>
+                        </transition>
+                        <transition name="slide-fade-left">
+                            <questionoverview 
+                                v-show="!(editQuestion || isCreateQuestion)" 
+                                :loading="loading" 
+                                :event="event" 
+                                @triggerEvent="triggerEvent" 
+                                @eventSet="eventSet"
+                            ></questionoverview>
+                        </transition>
+                        <generalsettings 
+                            :event="event" 
+                            :readonly="!(editQuestion || isCreateQuestion)"
+                            @triggerEvent="triggerEvent" 
+                            @eventSet="eventSet" 
+                        ></generalsettings>
+                    </div>
+                    <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
+                        <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+                    </div>
+                </div>
+            </template>
+        </transition-group>
+        <transition name="fade">
+            <loader-widget id="mainViewLoader" v-if="loading"/>
+        </transition>
+        <modals-container @modalEvent="setModalEvent"/>
+    </div>
+</template>
+
 <script>
 import Mousetrap from 'mousetrap';
 import filter from 'lodash/filter';
@@ -297,151 +453,16 @@ export default {
 }
 </script>
 
-<template>
-    <div class="container-center scoped-new-questioneditor">
-        <div class="btn-group pull-right clear" v-if="allowSwitchEditing && !loading">
-            <transition-group name="fade">
-                <button
-                    id="questionOverviewButton"
-                    key="questionOverviewButton"
-                    @click.prevent="triggerEditQuestion(false)"
-                    :class="editQuestion ? 'btn-default' : 'btn-primary'"
-                    class="btn "
-                >
-                    {{'Question overview'| translate}}
-                </button>
-                <button
-                    id="questionEditorButton"
-                    key="questionEditorButton"
-                    @click.prevent="triggerEditQuestion(true)"
-                    :class="editQuestion ? 'btn-primary' : 'btn-default'"
-                    class="btn "
-                >
-                    {{'Question editor'| translate}}
-                </button>
-            </transition-group>
-        </div>
-        <div class="pagetitle h3 scoped-unset-pointer-events">
-            <template v-if="isCreateQuestion && !loading">
-                    <x-test id="action::addQuestion"></x-test>
-                    {{'Create question'|translate}}
-            </template>
-            <template v-if="!isCreateQuestion && !loading">
-                    {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
-            </template>
-        </div>
-        <transition-group name="fade">
-            <template v-if="!loading">
-                <div class="row" key="questioncode-block" v-if="initCopy">
-                    <div class="form-group col-lg-3 col-sm-6">
-                        <label class="ls-space margin right-5" for="copySubquestions">{{"Copy subquestions" | translate}}</label>
-                        <bootstrap-toggle
-                            id="copySubquestions"
-                            v-model="copySubquestions"
-                            :options="switcherOptions"
-                        />
-                    </div>
-                    <div class="form-group col-lg-3 col-sm-6">
-                        <label class="ls-space margin right-5" for="copyAnswerOptions">{{"Copy answer options" | translate}}</label>
-                        <bootstrap-toggle
-                            id="copyAnswerOptions"
-                            v-model="copyAnswerOptions"
-                            :options="switcherOptions"
-                        />
-                    </div>
-                    <div class="form-group col-lg-3 col-sm-6">
-                        <label class="ls-space margin right-5" for="copyDefaultAnswers">{{"Copy default answers" | translate}}</label>
-                        <bootstrap-toggle
-                            id="copyDefaultAnswers"
-                            v-model="copyDefaultAnswers"
-                            :options="switcherOptions"
-                        />
-                    </div>
-                    <div class="form-group col-lg-3 col-sm-6">
-                        <label class="ls-space margin right-5" for="copyAdvancedOptions">{{"Copy advanced options" | translate}}</label>
-                        <bootstrap-toggle
-                            id="copyAdvancedOptions"
-                            v-model="copyAdvancedOptions"
-                            :options="switcherOptions"
-                        />
-                    </div>
-                </div>
-                <div class="row" key="questioncode-block">
-                    <div class="form-group col-sm-6">
-                        <label for="questionCode">{{'Code' | translate }}</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="questionCode"
-                            :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-                            required="required"
-                            v-model="currentQuestionCode"
-                            @dblclick="setEditQuestion"
-                        />
-                        <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
-                    </div>
-                    <div class="form-group col-sm-6 contains-question-selector">
-                        <label for="questionCode">{{'Question type' | translate }}</label>
-                        <div 
-                            v-if="$store.getters.surveyObject.active !='Y'" 
-                            v-show="(editQuestion || isCreateQuestion)"
-                            v-html="questionEditButton" 
-                        />
-                        <input 
-                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')" 
-                            type="text" 
-                            class="form-control" id="questionTypeVisual" 
-                            :readonly="true" 
-                            :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"
-                        />
-                        <input 
-                            v-if="$store.getters.surveyObject.active !='Y'" 
-                            type="hidden" 
-                            id="question_type" 
-                            name="type" 
-                            :value="$store.state.currentQuestion.type" 
-                            @change="questionTypeChangeTriggered" 
-                        />
-                    </div>
-                </div>
-                <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
-                    <languageselector
-                        :elId="'question-language-changer'"
-                        :aLanguages="$store.state.languages"
-                        :parentCurrentLanguage="$store.state.activeLanguage"
-                        @change="selectLanguage"
-                    />
-                </div>
-                <div key="editorcontent-block">
-                    <div class="ls-flex ls-flex-row scope-create-gutter">
-                        <transition name="slide-fade-left">
-                            <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                        </transition>
-                        <transition name="slide-fade-left">
-                            <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
-                        </transition>
-                        <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
-                    </div>
-                    <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                        <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
-                    </div>
-                </div>
-            </template>
-        </transition-group>
-        <transition name="fade">
-            <loader-widget id="mainViewLoader" v-if="loading"/>
-        </transition>
-        <modals-container @modalEvent="setModalEvent"/>
-    </div>
-</template>
-
 <style scoped lang="scss">
 .scoped-unset-pointer-events {
     pointer-events: none;
 }
 
 .scope-create-gutter {
+    width: 100%;
+    overflow:hidden;
     &>div {
+        min-width: 33%;
         padding-left: 15px;
         padding-right: 15px;
     }
