@@ -34,7 +34,7 @@ LS.renderBootstrapSwitch();
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#storage'><?php eT("Storage"); ?></a></li>
 </ul>
 
-<?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>
+<?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'','id'=>'frmglobalsettings','name'=>'frmglobalsettings','autocomplete'=>'off'));?>
 <div class="tab-content">
     <div id="overview" class="tab-pane  in active col-md-6 col-md-offset-1">
             <?php $this->renderPartial("./globalsettings/_overview", array(

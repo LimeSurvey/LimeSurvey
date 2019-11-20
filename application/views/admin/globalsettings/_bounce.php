@@ -48,7 +48,7 @@
 <div class="form-group">
     <label class=" control-label"  for='bounceaccountpass'><?php eT("Password:"); ?></label>
     <div class="">
-        <input class="form-control" type='password' size='50' id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' />
+        <input class="form-control" type='password' size='50' autocomplete="off" id='bounceaccountpass' name='bounceaccountpass' value='enteredpassword' />
     </div>
 </div>
 
