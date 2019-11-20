@@ -184,6 +184,7 @@ class ExpressionManager
 'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
 'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
 'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
+'floatval' => array('floatval', 'LEMfloatval', gT('Get float value of a variable'), 'number floatval(number)', 'http://php.net/floatval', 1),
 'floor' => array('floor', 'Decimal.asNum.floor', gT('Round fractions down'), 'number floor(number)', 'http://php.net/floor', 1),
 'gmdate' => array('gmdate', 'gmdate', gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://php.net/gmdate', 1, 2),
 'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://php.net/html-entity-decode', 1),
