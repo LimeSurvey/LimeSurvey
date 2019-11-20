@@ -80,7 +80,7 @@ class themeoptions  extends Survey_Common_Action
     {
         $model = $this->loadModel($id);
         if (Permission::model()->hasTemplatePermission($model->template_name, 'update')) {
-            // Turn Ajax off as defualt save it after.
+            // Turn Ajax off as default save it after.
             $model = $this->turnAjaxmodeOffAsDefault($model);
             $model->save();
 
