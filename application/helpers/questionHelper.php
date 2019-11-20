@@ -95,8 +95,8 @@ class questionHelper
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
-            "help"=>gT('Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
-            "caption"=>gT('Repeat answer options')
+            "help"=>gT('Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
+            "caption"=>gT('Repeat headers')
         );
 
         self::$attributes["array_filter"] = array(
