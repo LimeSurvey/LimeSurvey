@@ -411,11 +411,9 @@ class InstallerConfigForm extends CFormModel
             $this->db = new DbConnection($sDsn, $this->dbuser, $this->dbpwd);
             if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
                 $this->db->emulatePrepare = true;
-            } else {
-                $this->db->emulatePrepare = null;
             }
-            $this->setMySQLDefaultEngine($this->dbengine);
             $this->db->tablePrefix = $this->dbprefix;
+            $this->setMySQLDefaultEngine($this->dbengine);
 
         } catch (\Exception $e) {
             $this->addError('dblocation', gT('Try again! Connection with database failed.'));
@@ -469,7 +467,7 @@ class InstallerConfigForm extends CFormModel
                 $sDSN = $this->getPgsqlDsn();
                 break;
             case self::DB_TYPE_DBLIB:
-                $sDSN = $this->getMssqlDsn();
+                $sDSN = $this->dbtype.":host={$this->dblocation};dbname={$this->dbname}";
                 break;
             case self::DB_TYPE_MSSQL:
             case self::DB_TYPE_SQLSRV:
@@ -530,9 +528,9 @@ class InstallerConfigForm extends CFormModel
         if ($port != '') {
             $sDatabaseLocation = $this->dblocation.','.$port;
         }
-        $sDSN = $this->dbtype.":host={$sDatabaseLocation};";
+        $sDSN = $this->dbtype.":Server={$sDatabaseLocation};";
         if ($this->useDbName) {
-            $sDSN .= "dbname={$this->dbname}";
+            $sDSN .= "Database={$this->dbname}";
         }
         return $sDSN;
     }
