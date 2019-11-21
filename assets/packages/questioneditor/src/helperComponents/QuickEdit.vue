@@ -1,7 +1,79 @@
+
+<template>
+    <div class="panel panel-default ls-flex-column fill">
+        <div class="panel-heading">
+            <div class="pagetitle h3">{{'Quick edit' | translate}}</div>
+            <div class="">
+                <div class="ls-flex-row align-content-space-between wrap">
+                    <div class="col-5">
+                        <div class="ls-flex-row">
+                            <label class="ls-flex col-6" :for="type+'--Select-Delimiter'">{{"Select delimiter" | translate}}</label> 
+                            <select class="form-control ls-flex" :id="type+'--Select-Delimiter'" v-model="delimiter">
+                                <option value=";">
+                                    {{'Semicolon' | translate}} (;)
+                                </option>
+                                <option value=",">
+                                    {{'Comma' | translate}} (,)
+                                </option>
+                                <option :value='"\t"'>
+                                    {{'Tab' | translate}} (\t)
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-5 text-right">
+                        <label :for="type+'--Toggle-Multilingual'">{{ 'Multilingual entry' | translate }} </label> 
+                        <input :id="type+'--Toggle-Multilingual'" type="checkbox" v-model="multilanguage" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body ls-flex-column grow-1 fill">
+            <div 
+                class="ls-flex-column ls-space margin top-5 bottom-5"
+                :class="'scoped-fix-height-1-' + scales.length"
+                v-for="scale in scales"
+                :key="scale"
+            >
+                <div class="ls-flex-row">
+                    <h3>{{'Scale'|translate}} {{scale}}</h3>
+                </div>
+                <div class="ls-flex-colum grow-1">
+                    <textarea 
+                        class="scoped-textarea-class" 
+                        :value="tabDecode(unparsed[scale])"
+                        @keydown.tab.exact="addTabAtCursor"
+                        @paste.prevent="onPaste($event, scale)" 
+                        @change="parseContent($event, scale)"
+                    />
+                </div>
+                <div class="ls-flex-row bg-info">
+                    <div class="text-left">
+                        {{'New rows' | translate }}: <span class="badge">{{parsed.length}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="ls-flex-row wrap">
+                <div class="ls-flex-item">
+                    <button class="btn btn-primary ls-space margin left-5" @click="replaceCurrent" type="button">{{'Replace' | translate}}</button>
+                    <button class="btn btn-primary ls-space margin left-5" @click="addToCurrent" type="button">{{'Add' | translate}}</button>
+                </div>
+                <div class="ls-flex-item text-right">
+                    <button class="btn btn-danger ls-space margin right-5" @click="resetContent" type="button">{{'Reset' | translate}}</button>
+                    <button class="btn btn-danger ls-space margin right-5" @click="close" type="button">{{'Cancel' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script>
 import keys from 'lodash/keys';
 import foreach from 'lodash/forEach';
 import slice from 'lodash/slice';
+import he from 'he';
 
 export default {
     name: 'quickedit',
@@ -15,7 +87,7 @@ export default {
         return {
             unparsed: [''],
             parsed: [{}],
-            delimiter: ';',
+            delimiter: ";",
             multilanguage: false
         }
     },
@@ -38,7 +110,12 @@ export default {
         }
     },
     methods: {
-        parseContent(scale) {
+        tabDecode(string) {
+            return string.replace(/\\t/, /\t/);
+        },
+        parseContent($event, scale) {
+            this.$log.log($event);
+            // this.unparsed[scale] = $event.target.value;
             scale = scale || 0;
             const rows = this.unparsed[scale].split(/\r?\n/);
             const newBlockObject = {};
@@ -74,14 +151,40 @@ export default {
             this.$set(this.parsed, scale, newBlockObject);
             this.$log.log({parsed: this.parsed});
         },
-        unparseContent() {
+        onPaste($event, scale) {
+            const field = $event.target;
+            const startPos = field.selectionStart;
+            const endPos = field.selectionEnd;
+            const paste = ($event.clipboardData || window.clipboardData)
+                .getData('text') //Get the text representation of the clipboard
+                .replace("\u00EF\u00BB\u00BF", "");  //Remove microsofts BOM s***
 
+            if(LS.ld.isEmpty(paste)) {return false;}
+            const oldValue = this.unparsed[scale];
+            const newValue = oldValue.substring(0,startPos) 
+                + LS.ld.trim(paste)
+                + oldValue.substring(endPos, oldValue.length);
+
+            this.$set(this.unparsed, scale, newValue);
+            this.delimiter = this.parseForMostProbablyDelimiter(this.unparsed[scale]);
+            this.parseContent(scale);
+        },
+        addTabAtCursor($event) {
+            const field = $event.target;
+            const startPos = field.selectionStart;
+            const endPos = field.selectionEnd;
+            $event.target.value = $event.target.value
+                + "\t" 
+                + $event.target.value.substring(endPos,$event.target.value.length);
+        },
+        unparseContent(delimiter=null) {
+            delimiter = delimiter || this.delimiter;
             foreach(this.parsed, (scaleArray, scale) => {
                 this.$set(this.unparsed, scale, '');
                 let rows = [];
                 foreach(scaleArray, (rowContent, key) => {
                     let row = key+''+this.delimiter;
-                    row+=LS.ld.values(rowContent).join(this.delimiter);
+                    row+=(LS.ld.values(rowContent).join(this.delimiter)).replace(/\\t/,/\t/);
                     rows.push(row);
                 });
                 this.$set(this.unparsed, scale, rows.join("\n"));
@@ -121,6 +224,22 @@ export default {
             this.$emit('modalEvent', {target: this.type, method: 'addToFromQuickAdd', content: this.parsed});
             this.$emit('close');
         },
+        parseForMostProbablyDelimiter(pasteText) {
+            const firstLine = pasteText.split(/\r?\n/);
+            if(firstLine.length < 2) {
+                return this.delimiter;
+            }
+            const delimiter = [
+                [';', firstLine.shift().split(';').length],
+                [',', firstLine.shift().split(',').length],
+                ['\t', firstLine.shift().split(/\t|\\t/).length]
+            ]
+            delimiter.sort((a,b) => {
+                return b[1]-a[1];
+            });
+            return (delimiter[0][0]);
+            
+        }
     },
     mounted(){
         this.resetContent();
@@ -130,70 +249,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <div class="panel panel-default ls-flex-column fill">
-        <div class="panel-heading">
-            <div class="pagetitle h3">{{'Quick edit' | translate}}</div>
-            <div class="">
-                <div class="ls-flex-row align-content-space-between wrap">
-                    <div class="col-5">
-                        <div class="ls-flex-row">
-                            <label class="ls-flex col-6" :for="type+'--Select-Delimiter'">{{"Select delimiter" | translate}}</label> 
-                            <select class="form-control ls-flex" :id="type+'--Select-Delimiter'" v-model="delimiter">
-                                <option value=";">
-                                    {{'Semicolon' | translate}} (;)
-                                </option>
-                                <option value=",">
-                                    {{'Comma' | translate}} (,)
-                                </option>
-                                <option value="\t">
-                                    {{'Tab' | translate}} (\t)
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-5 text-right">
-                        <label :for="type+'--Toggle-Multilingual'">{{ 'Multilingual entry' | translate }} </label> 
-                        <input :id="type+'--Toggle-Multilingual'" type="checkbox" v-model="multilanguage" >
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-body ls-flex-column grow-1 fill">
-            <div 
-                class="ls-flex-column ls-space margin top-5 bottom-5"
-                :class="'scoped-fix-height-1-' + scales.length"
-                v-for="scale in scales"
-                :key="scale"
-            >
-                <div class="ls-flex-row">
-                    <h3>{{'Scale'|translate}} {{scale}}</h3>
-                </div>
-                <div class="ls-flex-colum grow-1">
-                    <textarea class="scoped-textarea-class" v-model="unparsed[scale]" @change="parseContent(scale)"></textarea>
-                </div>
-                <div class="ls-flex-row bg-info">
-                    <div class="text-left">
-                        {{'New rows' | translate }}: <span class="badge">{{parsed.length}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-footer">
-            <div class="ls-flex-row wrap">
-                <div class="ls-flex-item">
-                    <button class="btn btn-primary ls-space margin left-5" @click="replaceCurrent" type="button">{{'Replace' | translate}}</button>
-                    <button class="btn btn-primary ls-space margin left-5" @click="addToCurrent" type="button">{{'Add' | translate}}</button>
-                </div>
-                <div class="ls-flex-item text-right">
-                    <button class="btn btn-danger ls-space margin right-5" @click="resetContent" type="button">{{'Reset' | translate}}</button>
-                    <button class="btn btn-danger ls-space margin right-5" @click="close" type="button">{{'Cancel' | translate}}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
 
 <style lang="scss" scoped>
 .scoped-textarea-class {
