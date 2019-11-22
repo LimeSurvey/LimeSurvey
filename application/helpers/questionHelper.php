@@ -739,7 +739,7 @@ class questionHelper
             'inputtype'=>'integer',
             'default'=>'',
             "help"=>gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."),
-            "caption"=>gT("Text input size")
+            "caption"=>gT("Text input box size")
         );
 
         self::$attributes["input_boxes"] = array(
