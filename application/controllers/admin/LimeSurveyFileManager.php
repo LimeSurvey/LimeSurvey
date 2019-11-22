@@ -587,7 +587,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @param string $folder
      * @return array
      */
-    private function _composeFolderArray($folder)
+    private function _composeFolderArray($folder, $level='0')
     {
 
         $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
@@ -607,7 +607,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
             if (!$childIsDirectoy) {continue;}
 
-            $childFolders[] = $this->_composeFolderArray($childRelativePath);
+            $childFolders[] = $this->_composeFolderArray($childRelativePath, ($level+1));
 
         }
 
@@ -615,6 +615,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $shortName = end($pathArray);
 
         $folderArray = [
+            'key' => $shortName.'_'.$level,
             'folder' => $folder,
             'realPath' => $realPath,
             'shortName' => $shortName,

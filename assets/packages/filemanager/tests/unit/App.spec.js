@@ -93,9 +93,15 @@ describe("FileManagerApp fulfilled promises on startup", () => {
 describe("FileManagerApp failing promises on startup", () => {
     let store;
     let fileManagerWrapper;
-    const  actions = FailingMockActions;
+    const actions = FailingMockActions;
+    const notifyFader = jest.fn();
+    
+    global.LS = {
+        notifyFader: notifyFader
+    };
 
     beforeAll(() => {
+
         store = new Vuex.Store({
             state: VueXState,
             mutations: VueXMutations,
@@ -121,6 +127,10 @@ describe("FileManagerApp failing promises on startup", () => {
     test('dispatches getFileList action', () => {
         expect(actions.getFolderList).toHaveBeenCalled()
         && expect(fileManagerWrapper.vm.hasError).toBe(true);
+    });
+    
+    test('dispatches error notification to be shown', () => {
+        expect(notifyFader).toHaveBeenCalled();
     });
 
     // Evaluate loading to be set to false after mount

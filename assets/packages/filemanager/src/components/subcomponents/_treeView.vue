@@ -3,7 +3,7 @@
     <div class="col-12">
         <ul class="scoped-root-list">
             <li v-for="(folder,cnt) in folders" :key="folder.key" :class="getHtmlClasses(folder)">
-                <div class="ls-flex ls-flex-row" @click.stop="selectFolder(folder)">
+                <div class="ls-flex ls-flex-row" :id="folder.key" @click.stop="selectFolder(folder)">
                     <div class="ls-flex-item grow-1 text-center">
                         <i
                             :class="$store.state.currentFolder == folder.folder ? 'fa fa-folder-open fa-lg' : 'fa fa-folder fa-lg'"
@@ -15,18 +15,18 @@
                     <div class="ls-flex-item grow-1 text-right">
                         <button
                             v-if="folder.children.length > 0"
-                            @click.stop="toggleCollapse(folder.shortName+'-'+cnt)"
-                            class="btn btn-xs btn-default"
+                            class="btn btn-xs btn-default toggle-collapse-children"
+                            @click.stop="toggleCollapse(folder.key)"
                         >
                             <i
-                                :class=" isCollapsed(folder.shortName+'-'+cnt) ? 'fa fa-caret-down fa-lg' : 'fa fa-caret-up fa-lg'"
+                                :class=" isCollapsed(folder.key) ? 'fa fa-caret-down fa-lg' : 'fa fa-caret-up fa-lg'"
                             ></i>
                         </button>
                     </div>
                 </div>
                 <treeview
                     :key="folder.folder+'-children'"
-                    v-show="folder.children.length > 0 && !isCollapsed(folder.shortName+'-'+cnt)"
+                    v-show="folder.children.length > 0 && !isCollapsed(folder.key)"
                     :folders="folder.children"
                     :loading="loading"
                     :preset-folder="presetFolder"

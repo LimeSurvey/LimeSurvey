@@ -4,6 +4,7 @@ import {
 } from '@vue/test-utils';
 
 import Vuex from 'vuex';
+import _ from 'lodash';
 
 import TreeViewComponent from '../../src/components/subcomponents/_treeView.vue';
 import VueXMutations from '../../src/storage/mutations.js';
@@ -73,6 +74,10 @@ describe("basic rendering", () => {
         actions
     });
 
+    global.LS = {
+        ld: _
+    };
+
     const treeViewMount = shallowMount(TreeViewComponent, {
         stubs: {
             ModalsContainer: '<div class="stubbed" />',
@@ -91,7 +96,14 @@ describe("basic rendering", () => {
     }); 
 
     it("Is collapsed on startup", () => {
-        expect(treeViewMount.vm.collapsed).toBe(true);
+        const testFolder = MockState.folderList[0];
+        expect(treeViewMount.vm.isCollapsed(testFolder.key)).toBe(true);
+    });
+
+    it("Is should uncollapse on a click", () => {
+        const testFolder = MockState.folderList[0];
+        treeViewMount.find('#' + testFolder.key).find('button.toggle-collapse-children').trigger('click')
+        expect(treeViewMount.vm.isCollapsed(testFolder.key)).toBe(false);
     });
 
     test("It should not mark any of the folder without a preselected one", () => {
