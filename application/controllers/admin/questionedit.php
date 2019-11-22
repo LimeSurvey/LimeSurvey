@@ -617,7 +617,8 @@ class questionedit extends Survey_Common_Action
         setNoAnswerMode(['shownoanswer' => $oQuestion->survey->shownoanswer]);
 
         // Create the survey session required for rendering the preview
-        buildsurveysession($oQuestion->sid, true);
+        // TODO: This breaks SaveDualScaleAnswerOptionsTest. Browser freezes after save.
+        //buildsurveysession($oQuestion->sid, true);
 
         $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray, $changedType);
         $aRendered = $oQuestionRenderer->render();
