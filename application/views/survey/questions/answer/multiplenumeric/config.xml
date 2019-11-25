@@ -922,7 +922,7 @@
                 </option>
             </options>
             <help>Relative width of the labels</help>
-            <caption>Label column width</caption>
+            <caption>Label wrapper width</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
