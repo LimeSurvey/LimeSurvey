@@ -34,6 +34,40 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC8 (build 191118) to 4.0.0-RC9 (build 191125) November 25, 2019
+-Fixed issue: Unable to install MS Sql server database (Carsten Schmitz)
+-Fixed issue: Unable to install LS4 on Sql Server database (Carsten Schmitz)
+-Fixed issue: Travis red because of failing JS-Tests (lacrioque)
+-Fixed issue: Renamed relevance to condition for better understanding - expand on 'Conditions designer' (Carsten Schmitz)
+-Fixed issue: Preactivate data export for R and Stata (Olle Haerstedt)
+-Fixed issue: No error message if you try to upload a weird file format in file manager OP#287 (lacrioque)
+-Fixed issue: Missing translation in tutorial (Martin Unkel)
+-Fixed issue: Conditions designer not working when survey used certain question types (Carsten Schmitz)
+-Fixed issue: Bug low resolution (check question editor) OP#248 (lacrioque)
+-Fixed issue #15599: Ajax mode being activated when importing an old survey which has it enabled (Carsten Schmitz)
+-Fixed issue #15594: Can assign "No role" to user - shouldn't be possible (Carsten Schmitz)
+-Fixed issue #15587: queXML PDF doesn't show minutes for date questions (Adam Zammit)
+-Fixed issue #15571: CPDB - cannot use the search boxes below associated to the additional attributes (Eddy Lackmann)
+-Fixed issue #15562: Delete user in confirmation dialog (Eddy Lackmann)
+-Fixed issue #15554: Core plugins should be pre-installed (Olle Haerstedt)
+-Fixed issue #15376: fixed url being called for the preview and added missing surveyID config for question rendering / survey session needs to be loaded (Patrick Teichmann)
+-Fixed issue #15176: 5 point star rating: Value set is lost when navigating back to previous page and having selected 5 stars (lacrioque)
+-Fixed issue #15133: Quick add answer : copy/paste from LibreOffice Calc don't work anymore (lacrioque)
+-Fixed issue #15111: admin start page: last visited question and last visited survey should be static (Patricia Stelling)
+-Fixed issue #15081: "Repeat answer options" attribute is badly named and can be irrating in what it actually does; changed it to "Repeat headers" (Patricia Stelling)
+-Fixed issue #14576: getAllAnswers has security problems (Olle Haerstedt)
+-Fixed issue #14043: Improvement in IP blocking after failed login attempts (Johannes Weberhofer)
+-Fixed issue #13589: Misleading question attribute name: Label column width, changed it to “Label wrapper width” (Patricia Stelling)
+-Fixed issue #13455: Text input size? -> misleading, changed it to "Text input box size" (Patricia Stelling)
+-Fixed issue #15352: which should be: register doesn't set header for bounce tracking (fkroener)
+#Updated translation: Spanish (Spain) by corzel
+#Updated translation: Luxembourgish by brainiact
+#Updated translation: Indonesian by ysulistya
+#Updated translation: German by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC7 (build 191111) to 4.0.0-RC8 (build 191118) November 18, 2019
 -Fixed issue #15532: Show warnings when implicit alphabetical compare (#1341) (Denis Chenu)
 -Fixed issue: in 10point and 5point Array, the numbers are ot always shown (lacrioque)
