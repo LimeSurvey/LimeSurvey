@@ -30997,7 +30997,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         orderedQuestionGroups() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.$store.state.questiongroups, a => {
-                return parseInt(a.group_order || 999999);
+                return parseInt(a.group_order >= 0 && a.group_order !== null ? a.group_order : 999999);
             }, ["asc"]);
         },
         createQuestionAllowed() {
@@ -31031,7 +31031,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         orderQuestions(questionList) {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(questionList, a => {
-                return parseInt(a.question_order || 999999);
+                return parseInt(a.question_order >= 0 && a.question_order !== null ? a.question_order : 999999);
             }, ["asc"]);
         },
         isActive(index) {
