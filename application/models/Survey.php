@@ -863,7 +863,7 @@ class Survey extends LSActiveRecord
         $criteria->addCondition('level=:level');
 
         if ($collapsed === true) {
-            $criteria->addCondition('showincollapse=1');
+            $criteria->addCondition('showincollapse=true');
         }
 
         $criteria->params = [
@@ -890,7 +890,7 @@ class Survey extends LSActiveRecord
         }
 
         if ($collapsed) {
-            $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
+            $criteria->condition .= ' AND (position=:position OR showincollapse=true )';
             $criteria->params = array(':position'=>$position);
             $collapsed = true;
         }
