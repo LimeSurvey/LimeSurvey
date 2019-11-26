@@ -43,7 +43,7 @@ if ($hasResponsesCreatePermission) {
     $buttons['data_entry'] = [
         'name' => gT('Data entry'),
         'class' => 'btn btn-default pjax',
-        'url' => $this->createUrl("admin/responses/sa/view/surveyid/$survey->sid"),
+        'url' => $this->createUrl("admin/dataentry/sa/view/surveyid/$survey->sid"),
         'icon' => 'fa fa-list-alt',
         'iconclass' => 'text-success',
     ];
