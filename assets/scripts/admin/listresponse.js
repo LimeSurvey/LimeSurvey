@@ -130,8 +130,13 @@ $(document).on('ready pjax:scriptcomplete',function(){
     reinstallResponsesFilterDatePicker();
 });
 
-// hide Modal on submit for pjax preventDefault
-$(document).on('click', '#responses-column-filter-modal :submit', function (e) {
-    $('#responses-column-filter-modal').modal('hide');
+$(function () {
+    // hide and submit Modal on click for pjax preventDefault submit
+    $('#responses-column-filter-modal-submit').on('click', function (e) {
+        e.preventDefault();
+        var form = $('#responses-column-filter-modal form');
+        form.submit();
+        form.modal('hide');
+    });
 });
 

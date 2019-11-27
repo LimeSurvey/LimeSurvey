@@ -20,7 +20,7 @@ $surveyColumns = isset($filterableColumns) ? $filterableColumns : null;
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="responses-column-filter-select"></label>
-                        <select multiple name="columns" id="responses-column-filter-select" class="form-control">
+                        <select multiple="multiple" name="columns[]" id="responses-column-filter-select" class="form-control">
                             <?php foreach ($surveyColumns as $surveyColumn): ?>
                                 <option <?php echo in_array($surveyColumn, $filteredColumns) ? 'selected' : '' ?>><?php echo $surveyColumn ?></option>
                             <?php endforeach; ?>
@@ -31,7 +31,7 @@ $surveyColumns = isset($filterableColumns) ? $filterableColumns : null;
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
-                    <button type="submit" class="btn btn-primary"><?php eT('Ok'); ?></button>
+                    <button id="responses-column-filter-modal-submit" class="btn btn-primary"><?php eT('Ok'); ?></button>
                 </div>
             </form>
         </div>
