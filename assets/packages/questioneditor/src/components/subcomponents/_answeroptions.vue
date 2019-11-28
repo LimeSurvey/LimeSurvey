@@ -1,3 +1,153 @@
+<template>
+    <div class="col-sm-12">
+        <div class="container-fluid scoped-main-answeroptions-container">
+            <div class="row" v-show="!readonly">
+                <div class="col-sm-8">
+                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button class="btn btn-danger col-5" @click.prevent="resetansweroptions(answeroptionscale)">{{ "Reset" | translate }}</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr />
+                </div>
+            </div>
+            <template v-for="answeroptionscale in answeroptionscales">
+                <div 
+                    :key="answeroptionscale+'answeroptions'"
+                    class="row list-group scoped-answeroption-row-container"
+                    @dragover.prevent="preventDisallowedCursor"
+                >
+                    <div class="list-group-item scoped-answeroption-block header-block">
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+                        <div class="scoped-code-block">
+                            <div>{{"Code" | translate}}</div>
+                        </div>
+                        <div class="scoped-assessments-block">
+                            <div>{{"Assessment value" | translate}}</div>
+                        </div>
+                        <div class="scoped-content-block">
+                            <div>{{"Answeroption" | translate}}</div>
+                        </div>
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+
+                    </div>
+                    <div 
+                        class="list-group-item scoped-answeroption-block"
+                        v-for="answeroption in currentDataSet[answeroptionscale]"
+                        :key="answeroption.aid"
+                        @dragenter.prevent="dragoverAnsweroption($event, answeroption, answeroptionscale)"
+                        :class="(answeroptionDragging ? 'movement-active'+ ((answeroption.aid == draggedAnsweroption.aid) ? ' in-movement' : '') : '')"
+                    >
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <i 
+                                class="fa fa-bars" 
+                                :class="surveyActive ? ' disabled' : ' '"
+                                :draggable="!surveyActive"
+                                @dragstart="startDraggingAnsweroption($event, answeroption, answeroptionscale)"
+                                @dragend="endDraggingAnsweroption($event, answeroption, answeroptionscale)" 
+                            ></i>
+                        </div>
+                        <div class="scoped-code-block">
+                            <input
+                                type='text'
+                                class="form-control"
+                                maxlength='20'
+                                size='5'
+                                :class="surveyActive ? ' disabled' : ' '"
+                                :name="'code_'+answeroption.sortorder+'_'+answeroptionscale" 
+                                :readonly="readonly"
+                                v-model="answeroption.code"
+                                @keyup.enter.prevent="switchinput('assessment_'+answeroption.sortorder+'_'+answeroptionscale)"
+                                @dblclick="toggleEditMode"
+                            />
+                        </div>
+                        <div class="scoped-assessments-block">
+                                <input
+                                    type='numeric'
+                                    class='assessment form-control input'
+                                    :id="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
+                                    :name="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
+                                    :readonly="readonly"
+                                    v-model="answeroption.assessment_value"
+                                    maxlength='5'
+                                    size='5'
+                                    @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale)'
+                                    @dblclick="toggleEditMode"
+                                />
+                        </div>
+                        <div class="scoped-content-block">
+                            <input
+                                type='text'
+                                size='20'
+                                class='answer form-control input'
+                                :id='"answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale'
+                                :name='"answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale'
+                                :placeholder='translate("Some example answer option")'
+                                :value="getAnswerForCurrentLanguage(answeroption)"
+                                :readonly="readonly"
+                                @change="setAnswerForCurrentLanguage(answeroption,$event)"
+                                @keyup.enter.prevent='switchinput(false, $event)'
+                                @dblclick="toggleEditMode"
+                            />
+                        </div>
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <button 
+                                v-if="!surveyActive" 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip" 
+                                :title='translate("Delete")'
+                                @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)"
+                            >
+                                <i class="fa fa-trash text-danger"></i>
+                                <span class="sr-only">{{ "Delete" | translate }}</span>
+                            </button>
+                            <button 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip" 
+                                :title='translate("Open editor")'
+                                @click.prevent="openPopUpEditor(answeroption, answeroptionscale)"
+                            >
+                                <i class="fa fa-edit"></i>
+                                <span class="sr-only">{{ "Open editor" | translate }}</span>
+                            </button>
+                            <button 
+                                v-if="!surveyActive" 
+                                class="btn btn-default btn-small" 
+                                data-toggle="tooltip" 
+                                :title='translate("Duplicate")'
+                                @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)"
+                            >
+                                <i class="fa fa-copy"></i>
+                                <span class="sr-only">{{ "Duplicate" | translate }}</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row custom custom-margin bottom-15" :key="answeroptionscale+'addRow'" v-show="!readonly">
+                    <div class="col-sm-6 text-left">
+                        <button v-if="!surveyActive" class="btn btn-default" @click.prevent="openLabelSets(answeroptionscale)">{{ "Predefined label sets" | translate }}</button>
+                        <button class="btn btn-default" @click.prevent="saveAsLabelSet(answeroptionscale)">{{ "Save as label set" | translate }}</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button v-if="!surveyActive" @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            {{ "Add answeroption" | translate}}
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
+
 <script>
 
 import map from 'lodash/map';
@@ -141,156 +291,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <div class="col-sm-12">
-        <div class="container-fluid scoped-main-answeroptions-container">
-            <div class="row" v-show="!readonly">
-                <div class="col-sm-8">
-                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
-                </div>
-                <div class="col-sm-4 text-right">
-                    <button class="btn btn-danger col-5" @click.prevent="resetansweroptions(answeroptionscale)">{{ "Reset" | translate }}</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <hr />
-                </div>
-            </div>
-            <template v-for="answeroptionscale in answeroptionscales">
-                <div 
-                    :key="answeroptionscale+'answeroptions'"
-                    class="row list-group scoped-answeroption-row-container"
-                    @dragover.prevent="preventDisallowedCursor"
-                >
-                    <div class="list-group-item scoped-answeroption-block header-block">
-                        <div class="scoped-move-block" v-show="!readonly">
-                            <div>&nbsp;</div>
-                        </div>
-                        <div class="scoped-code-block">
-                            <div>{{"Code" | translate}}</div>
-                        </div>
-                        <div class="scoped-assessments-block">
-                            <div>{{"Assessment value" | translate}}</div>
-                        </div>
-                        <div class="scoped-content-block">
-                            <div>{{"Answeroption" | translate}}</div>
-                        </div>
-                        <div class="scoped-actions-block" v-show="!readonly">
-                            <div>&nbsp;</div>
-                        </div>
-
-                    </div>
-                    <div 
-                        class="list-group-item scoped-answeroption-block"
-                        v-for="answeroption in currentDataSet[answeroptionscale]"
-                        :key="answeroption.aid"
-                        @dragenter.prevent="dragoverAnsweroption($event, answeroption, answeroptionscale)"
-                        :class="(answeroptionDragging ? 'movement-active'+ ((answeroption.aid == draggedAnsweroption.aid) ? ' in-movement' : '') : '')"
-                    >
-                        <div class="scoped-move-block" v-show="!readonly">
-                            <i 
-                                class="fa fa-bars" 
-                                :class="surveyActive ? ' disabled' : ' '"
-                                :draggable="!surveyActive"
-                                @dragstart="startDraggingAnsweroption($event, answeroption, answeroptionscale)"
-                                @dragend="endDraggingAnsweroption($event, answeroption, answeroptionscale)" 
-                            ></i>
-                        </div>
-                        <div class="scoped-code-block">
-                            <input
-                                type='text'
-                                class="form-control"
-                                maxlength='20'
-                                size='5'
-                                :class="surveyActive ? ' disabled' : ' '"
-                                :name="'code_'+answeroption.sortorder+'_'+answeroptionscale" 
-                                :readonly="readonly"
-                                v-model="answeroption.code"
-                                @keyup.enter.prevent="switchinput('assessment_'+answeroption.sortorder+'_'+answeroptionscale)"
-                                @dblclick="toggleEditMode"
-                            />
-                        </div>
-                        <div class="scoped-assessments-block">
-                                <input
-                                    type='numeric'
-                                    class='assessment form-control input'
-                                    :id="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
-                                    :name="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
-                                    :readonly="readonly"
-                                    v-model="answeroption.assessment_value"
-                                    maxlength='5'
-                                    size='5'
-                                    @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale)'
-                                    @dblclick="toggleEditMode"
-                                />
-                        </div>
-                        <div class="scoped-content-block">
-                            <input
-                                type='text'
-                                size='20'
-                                class='answer form-control input'
-                                :id='"answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale'
-                                :name='"answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale'
-                                :placeholder='translate("Some example answer option")'
-                                :value="getAnswerForCurrentLanguage(answeroption)"
-                                :readonly="readonly"
-                                @change="setAnswerForCurrentLanguage(answeroption,$event)"
-                                @keyup.enter.prevent='switchinput(false, $event)'
-                                @dblclick="toggleEditMode"
-                            />
-                        </div>
-                        <div class="scoped-actions-block" v-show="!readonly">
-                            <button 
-                                v-if="!surveyActive" 
-                                class="btn btn-default btn-small" 
-                                data-toggle="tooltip" 
-                                :title='translate("Delete")'
-                                @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)"
-                            >
-                                <i class="fa fa-trash text-danger"></i>
-                                <span class="sr-only">{{ "Delete" | translate }}</span>
-                            </button>
-                            <button 
-                                class="btn btn-default btn-small" 
-                                data-toggle="tooltip" 
-                                :title='translate("Open editor")'
-                                @click.prevent="openPopUpEditor(answeroption, answeroptionscale)"
-                            >
-                                <i class="fa fa-edit"></i>
-                                <span class="sr-only">{{ "Open editor" | translate }}</span>
-                            </button>
-                            <button 
-                                v-if="!surveyActive" 
-                                class="btn btn-default btn-small" 
-                                data-toggle="tooltip" 
-                                :title='translate("Duplicate")'
-                                @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)"
-                            >
-                                <i class="fa fa-copy"></i>
-                                <span class="sr-only">{{ "Duplicate" | translate }}</span>
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row" :key="answeroptionscale+'addRow'" v-show="!readonly">
-                    <div class="col-sm-6 text-left">
-                        <button v-if="!surveyActive" class="btn btn-default" @click.prevent="openLabelSets(answeroptionscale)">{{ "Predefined label sets" | translate }}</button>
-                        <button class="btn btn-default" @click.prevent="saveAsLabelSet(answeroptionscale)">{{ "Save as label set" | translate }}</button>
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <button v-if="!surveyActive" @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
-                            <i class="fa fa-plus"></i>
-                            {{ "Add answeroption" | translate}}
-                        </button>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </div>
-</template>
 
 <style lang="scss" scoped>
     .scoped-spacer{

@@ -41,10 +41,10 @@
                 <div class="ls-flex-colum grow-1">
                     <textarea 
                         class="scoped-textarea-class" 
-                        :value="tabDecode(unparsed[scale])"
+                        v-model="unparsed[scale]"
                         @keydown.tab.exact="addTabAtCursor"
                         @paste.prevent="onPaste($event, scale)" 
-                        @change="parseContent($event, scale)"
+                        @blur="parseContent(scale)"
                     />
                 </div>
                 <div class="ls-flex-row bg-info">
@@ -73,6 +73,7 @@
 import keys from 'lodash/keys';
 import foreach from 'lodash/forEach';
 import slice from 'lodash/slice';
+import debounce from 'lodash/debounce';
 import he from 'he';
 
 export default {
@@ -113,9 +114,7 @@ export default {
         tabDecode(string) {
             return string.replace(/\\t/, /\t/);
         },
-        parseContent($event, scale) {
-            this.$log.log($event);
-            // this.unparsed[scale] = $event.target.value;
+        parseContent(scale) {
             scale = scale || 0;
             const rows = this.unparsed[scale].split(/\r?\n/);
             const newBlockObject = {};
@@ -155,27 +154,22 @@ export default {
             const field = $event.target;
             const startPos = field.selectionStart;
             const endPos = field.selectionEnd;
-            const paste = ($event.clipboardData || window.clipboardData)
-                .getData('text') //Get the text representation of the clipboard
-                .replace("\u00EF\u00BB\u00BF", "");  //Remove microsofts BOM s***
-
-            if(LS.ld.isEmpty(paste)) {return false;}
-            const oldValue = this.unparsed[scale];
-            const newValue = oldValue.substring(0,startPos) 
-                + LS.ld.trim(paste)
-                + oldValue.substring(endPos, oldValue.length);
-
-            this.$set(this.unparsed, scale, newValue);
-            this.delimiter = this.parseForMostProbablyDelimiter(this.unparsed[scale]);
+            const oClipboardData = ($event.clipboardData || window.clipboardData);
+            let paste = oClipboardData.getData('text') //Get the text representation of the clipboard
+            
+            const oldValue =  $event.target.value;
+            const newValue = `${oldValue.substring(0,startPos)}${paste}${oldValue.substring(endPos, oldValue.length)}`;
+            $event.target.value = newValue;
+            this.$set(this.unparsed, scale, $event.target.value);
+            this.delimiter = this.parseForMostProbableDelimiter(newValue);
             this.parseContent(scale);
         },
         addTabAtCursor($event) {
             const field = $event.target;
-            const startPos = field.selectionStart;
-            const endPos = field.selectionEnd;
-            $event.target.value = $event.target.value
-                + "\t" 
-                + $event.target.value.substring(endPos,$event.target.value.length);
+            const start = String($event.target.value).substring(0,field.selectionStart);
+            const end = String($event.target.value).substring(field.selectionEnd,$event.target.value.length);
+            $event.target.value = start + "\t" + end;
+            this.$set(this.unparsed, scale, $event.target.value);
         },
         unparseContent(delimiter=null) {
             delimiter = delimiter || this.delimiter;
@@ -214,17 +208,14 @@ export default {
             this.$emit('close');
         },
         replaceCurrent() {
-            //this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
             this.$emit('modalEvent', {target: this.type, method: 'replaceFromQuickAdd', content: this.parsed});
             this.$emit('close');
         },
         addToCurrent() {
-            
-            //this.$store.dispatch('addToFromQuickAdd', {type: this.type, payload: toBeAdded});
             this.$emit('modalEvent', {target: this.type, method: 'addToFromQuickAdd', content: this.parsed});
             this.$emit('close');
         },
-        parseForMostProbablyDelimiter(pasteText) {
+        parseForMostProbableDelimiter(pasteText) {
             const firstLine = pasteText.split(/\r?\n/);
             if(firstLine.length < 2) {
                 return this.delimiter;
