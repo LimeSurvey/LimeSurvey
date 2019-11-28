@@ -149,6 +149,7 @@ export default {
         replaceFromQuickAdd(contents){
             this.$log.log('replaceFromQuickAdd triggered on: '+this.$options.name, contents);
             let tempObject = merge({}, this.currentDataSet);
+            let orderCount = 0;
             foreach(contents, (scaleObject, scale) => {
                 tempObject[scale] = [];
                 foreach(scaleObject, (lngSet, key) => {
@@ -157,28 +158,30 @@ export default {
                     foreach(lngSet, (dataSetValue, lngKey) => { 
                         newDataSetBlock[lngKey][this.typeDefininition] = dataSetValue; 
                     });
+                    newDataSetBlock[this.orderAttribute] = ++orderCount;
                     tempObject[scale].push(newDataSetBlock);
                 });
             });
+            this.reorder(tempObject);
             this.currentDataSet = tempObject;
         },
         addToFromQuickAdd(contents){
             this.$log.log('addToFromQuickAdd triggered on: '+this.$options.name, contents);
             let tempObject = merge({}, this.currentDataSet);
             foreach(contents, (scaleObject, scale) => {
+                let orderCount = scaleObject.length;
                 const currentKeys = uniqBy(tempObject[scale], this.typeDefininitionKey);
                 foreach(scaleObject, (lngSet, key) => {
                     const newDataSetBlock = this.getTemplate(scale);
-
                     if(currentKeys.indexOf(key) != -1) {
                         newDataSetBlock[this.typeDefininitionKey] = this.getNewTitleFromCurrent(scale, tempObject)
                     } else {
                         newDataSetBlock[this.typeDefininitionKey] = key;
                     }
-
                     foreach(lngSet, (dataSetValue, lngKey) => { 
                         newDataSetBlock[lngKey][this.typeDefininition] = dataSetValue; 
                     });
+                    newDataSetBlock[this.orderAttribute] = ++orderCount;
                     tempObject[scale].push(newDataSetBlock);
                 });
             });
