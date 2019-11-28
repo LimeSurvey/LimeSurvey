@@ -1,7 +1,5 @@
 //globals formId
 import Vue from "vue";
-Vue.config.devtools = false;
-
 import Sidebar from "./components/sidebar.vue";
 import getAppState from "./store/vuex-store.js";
 import {PluginLog} from "./mixins/logSystem.js";
@@ -9,6 +7,7 @@ import Loader from './helperComponents/loader.vue';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
+Vue.config.devtools = false;
 
 Vue.use(PluginLog);
 
@@ -174,14 +173,14 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
 
 $(document).ready(function(){
-    let surveyid = 'newSurvey'; 
+    let surveyid = 'newSurvey';
     if(window.LS != undefined) {
         surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;
     }
     if(window.SideMenuData) {
         surveyid = window.SideMenuData.surveyid;
     }
-    
+
     window.adminsidepanel =  window.adminsidepanel || Lsadminsidepanel(window.LS.globalUserId, surveyid);
 
     window.adminsidepanel();
