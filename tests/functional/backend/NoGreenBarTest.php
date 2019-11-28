@@ -16,6 +16,7 @@ class NoGreenBarTest extends TestBaseClassWeb
      */
     public function setup()
     {
+        $this->markTestSkipped();
         // Import suprvey.
         $surveyFile =  'tests/data/surveys/survey_archive_358746_no_green_bar.lsa';
         self::importSurvey($surveyFile);
