@@ -304,6 +304,25 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
 }
 
 /**
+ * return float value of mixedVar (near like PHP floatval)
+ * @param mixed mixedVar
+ * @return float
+ * @see: https://locutus.io/php/floatval/
+ * original by: Michael White (https://getsprink.com)
+ *      note 1: The native parseFloat() method of JavaScript returns NaN
+ *      note 1: when it encounters a string before an int or float value.
+ *   example 1: floatval('150.03_page-section')
+ *   returns 1: 150.03
+ *   example 2: floatval('page: 3')
+ *   returns 2: 0
+ *   example 3: floatval('-50 + 8')
+ *   returns 3: -50
+ */
+function LEMfloatval(mixedVar)
+{
+    return (parseFloat(mixedVar) || 0)
+}
+/**
  * If $test is true, return $iftrue, else return $iffalse
  * @param mixed testDone
  * @param mixed ifTrue
