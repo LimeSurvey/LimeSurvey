@@ -616,12 +616,31 @@ class questionedit extends Survey_Common_Action
         Yii::import('application.helpers.qanda_helper', true);
         setNoAnswerMode(['shownoanswer' => $oQuestion->survey->shownoanswer]);
 
-        // Create the survey session required for rendering the preview
-        // TODO: This breaks SaveDualScaleAnswerOptionsTest. Browser freezes after save.
-        //buildsurveysession($oQuestion->sid, true);
+        // Some session magic.
+        // TODO: Factor out $_SESSION from question rendering.
+        $sessionBackup = $_SESSION;
+        $survey = $oQuestion->survey;
+        $surveyid = $survey->sid;
+        $_SESSION['survey_'.$surveyid] = [];
+        $_SESSION['survey_'.$surveyid]['s_lang'] = 'en';
+        $fieldmap = createFieldMap($survey, 'full', true, false, $_SESSION['survey_'.$surveyid]['s_lang']);
+        foreach ($fieldmap as $info) {
+            // Needed to set empty values.
+            // TODO: Don't need to set all quesetions in survey, only ONE question.
+            $_SESSION['survey_' . $surveyid][$info['fieldname']] = null;
+        }
+        // TODO: Language should be changed.
+        $_SESSION['survey_'.$surveyid]['s_lang'] = $survey->language;
+        $_SESSION['survey_'.$surveyid]['step'] = 0;
+        $_SESSION['survey_'.$surveyid]['maxstep'] = 0;
+        $_SESSION['survey_'.$surveyid]['prevstep'] = 2;
 
         $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray, $changedType);
         $aRendered = $oQuestionRenderer->render();
+
+        // Restore session.
+        $_SESSION = $sessionBackup;
+
         $aSurveyInfo = $oQuestion->survey->attributes;
         $aQuestion = array_merge(
             $oQuestion->attributes,
