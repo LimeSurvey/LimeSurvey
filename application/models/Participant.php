@@ -511,22 +511,23 @@ class Participant extends LSActiveRecord
             $attributeId = (int) substr($attributeId, 3);
 
             /** @var string Param name to bind in prepared statement */
-            $bindKey = ':attribute_id' . $attributeId;
+
             $callParticipantAttributes = Yii::app()->db->createCommand()
                 ->selectDistinct('pa.participant_id')
                 ->from('{{participant_attribute}} AS pa');
             //->where('attribute_id='.$bindKey, array($bindKey => $attributeId));
             // NB: Binding in andWhere() is not enough since the subquery is converted to string.
             // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
-            $criteria->params[$bindKey] = $attributeId;
 
             // Use "LIKE" for text-box, equal for other types
             if ($attributeType == 'TB') {
-                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value LIKE '%" . $value . "%'");
+                $bindKey = ':attribute_id' . $attributeId;
+                $callParticipantAttributes->where("attribute_id =" . $bindKey . " AND value LIKE '%" . $value . "%'", array($bindKey => $attributeId));
+                $criteria->params[$bindKey] = $attributeId;
             } else {
                 /** @var string Param name to bind in prepared statement */
                 $bindKey = ':value' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value = '" . $value . "'");
+                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value =" . $bindKey , array($bindKey => $value));
                 $criteria->params[$bindKey] = $value;
             }
 
