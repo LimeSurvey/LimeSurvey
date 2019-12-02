@@ -66,7 +66,7 @@ export default {
             let newDataSet = merge({}, oDataSet);
             newDataSet[this.uniqueSelector] = this.getRandomId();
             newDataSet[this.typeDefininitionKey] = this.getNewTitleFromCurrent(scaleId);
-            newDataSet[this.orderAttribute]++;
+            //newDataSet[this.orderAttribute];
             tmpArray[scaleId].push(newDataSet);
             
             this.currentDataSet = this.reorder(tmpArray);
@@ -234,7 +234,13 @@ export default {
         },
         reorder(dataSet) {
             foreach(dataSet, (scaleArray, scaleId) => {
-                scaleArray.sort((a,b) => (a[this.orderAttribute] < b[this.orderAttribute] ? -1 : 1));
+                scaleArray.sort((a,b) => (
+                    a[this.orderAttribute] < b[this.orderAttribute] 
+                    ? -1 
+                    : (a[this.orderAttribute] > b[this.orderAttribute] 
+                        ? 1 
+                        : 0
+                    )));
                 let currentOrder = 1;
                 let maxOrder = scaleArray.length;
                 for(;currentOrder<=maxOrder ; currentOrder++) {
