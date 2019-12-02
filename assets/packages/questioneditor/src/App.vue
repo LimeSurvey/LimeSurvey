@@ -354,7 +354,7 @@ export default {
                     }
                 )
             } else {
-                LS.EventBus.$emit('loadingFinished');
+                window.setTimeout(() => { LS.EventBus.$emit('loadingFinished') }, 250);
             }
         },
         checkCanSubmit(){

@@ -258,7 +258,7 @@ export default {
                 window.QuestionEditData.connectorBaseUrl,
                 {
                     sa: 'saveQuestionData',
-                    gid: context.getters.gid,
+                    gid: context.state.currentQuestion.gid,
                     sid: context.getters.surveyid
                 }
             );
