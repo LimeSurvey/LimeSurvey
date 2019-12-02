@@ -84,25 +84,25 @@
                     </div>
                     <div class="form-group col-sm-6 contains-question-selector">
                         <label for="questionCode">{{'Question type' | translate }}</label>
-                        <div 
-                            v-if="$store.getters.surveyObject.active !='Y'" 
+                        <div
+                            v-if="$store.getters.surveyObject.active !='Y'"
                             v-show="(editQuestion || isCreateQuestion)"
-                            v-html="questionEditButton" 
+                            v-html="questionEditButton"
                         />
-                        <input 
-                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')" 
-                            type="text" 
-                            class="form-control" id="questionTypeVisual" 
-                            :readonly="true" 
+                        <input
+                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')"
+                            type="text"
+                            class="form-control" id="questionTypeVisual"
+                            :readonly="true"
                             :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"
                         />
-                        <input 
-                            v-if="$store.getters.surveyObject.active !='Y'" 
-                            type="hidden" 
-                            id="question_type" 
-                            name="type" 
-                            :value="$store.state.currentQuestion.type" 
-                            @change="questionTypeChangeTriggered" 
+                        <input
+                            v-if="$store.getters.surveyObject.active !='Y'"
+                            type="hidden"
+                            id="question_type"
+                            name="type"
+                            :value="$store.state.currentQuestion.type"
+                            @change="questionTypeChangeTriggered"
                         />
                     </div>
                 </div>
@@ -117,28 +117,28 @@
                 <div key="editorcontent-block" class="col-12">
                     <div class="ls-flex ls-flex-row scope-create-gutter">
                         <transition name="slide-fade-left">
-                            <maineditor 
-                                v-show="(editQuestion || isCreateQuestion)" 
-                                :loading="loading" 
-                                :event="event" 
-                                @triggerEvent="triggerEvent" 
+                            <maineditor
+                                v-show="(editQuestion || isCreateQuestion)"
+                                :loading="loading"
+                                :event="event"
+                                @triggerEvent="triggerEvent"
                                 @eventSet="eventSet"
                             ></maineditor>
                         </transition>
                         <transition name="slide-fade-left">
-                            <questionoverview 
-                                v-show="!(editQuestion || isCreateQuestion)" 
-                                :loading="loading" 
-                                :event="event" 
-                                @triggerEvent="triggerEvent" 
+                            <questionoverview
+                                v-show="!(editQuestion || isCreateQuestion)"
+                                :loading="loading"
+                                :event="event"
+                                @triggerEvent="triggerEvent"
                                 @eventSet="eventSet"
                             ></questionoverview>
                         </transition>
-                        <generalsettings 
-                            :event="event" 
+                        <generalsettings
+                            :event="event"
                             :readonly="!(editQuestion || isCreateQuestion)"
-                            @triggerEvent="triggerEvent" 
-                            @eventSet="eventSet" 
+                            @triggerEvent="triggerEvent"
+                            @eventSet="eventSet"
                         ></generalsettings>
                     </div>
                     <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
@@ -278,7 +278,7 @@ export default {
         toggleLoading(force=null){
             if(force===null) {
                 this.loading = !this.loading;
-                return;    
+                return;
             }
             this.loading = force;
         },
@@ -351,16 +351,6 @@ export default {
                         if(rejected.data != undefined) {
                             window.LS.notifyFader(rejected.data.message, 'well-lg bg-danger text-center');
                         }
-                        setTimeout(
-                            ()=>{
-                                if(!Boolean(rejected.data.noRedirect)) {
-                                    rejected.data.redirectTo != undefined
-                                    ? window.location.href = rejected.data.redirectTo
-                                    : window.location.reload();
-                                }
-                            },
-                            2500
-                        );
                     }
                 )
             } else {
