@@ -791,7 +791,7 @@ class questionedit extends Survey_Common_Action
             throw new LSJsonException(
                 500,
                 "Object creation failed, couldn't save.\n ERRORS:"
-                . implode(", ", $oQuestion->getErrors()['title']),
+                . implode(", ", $oQuestion->getErrors()),
                 0,
                 null,
                 true
@@ -1096,20 +1096,19 @@ class questionedit extends Survey_Common_Action
         $aSubquestions = $oQuestion->subquestions;
         array_walk(
             $aSubquestions,
-            function ($oSubquestion) use (&$dataSet) {
+            function ($oSubquestion) use (&$dataSet, $oQuestion) {
                 $exists = false;
                 foreach ($dataSet as $scaleId => $aSubquestions) {
                     foreach ($aSubquestions as $i => $aSubquestionDataSet) {
-                        if (((is_numeric($aSubquestionDataSet['qid'])
-                            && $oSubquestion->qid == $aSubquestionDataSet['qid'])
-                            || $oSubquestion->title == $aSubquestionDataSet['title'])
-                            && ($oSubquestion->scale_id == $scaleId)
+                        if ($oSubquestion->qid == $aSubquestionDataSet['qid']
+                            || (($oSubquestion->title == $aSubquestionDataSet['title'])
+                                && ($oSubquestion->scale_id == $scaleId))
                         ) {
                             $exists = true;
                             $dataSet[$scaleId][$i]['qid'] = $oSubquestion->qid;
                         }
 
-                        if (!$exists) {
+                        if (!$exists && !$oQuestion->survey->isActive) {
                             $oSubquestion->delete();
                         }
                     }
@@ -1135,7 +1134,7 @@ class questionedit extends Survey_Common_Action
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
-                } else {
+                } else if(!$oQuestion->survey->isActive) {
                     $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
                     $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
                 }
@@ -1191,7 +1190,6 @@ class questionedit extends Survey_Common_Action
      */
     private function storeAnswerOptions(&$oQuestion, $dataSet, $isCopyProcess = false)
     {
-        $this->cleanAnsweroptions($oQuestion, $dataSet);
         foreach ($dataSet as $aAnswerOptions) {
             foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
