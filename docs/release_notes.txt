@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.20.2 (build 191119) to 3.21.0 (build 191203) December 3, 2019
++New feature #15513: Missing function floatval() in EM (#1344) (Denis Chenu)
+-Fixed issue: Missing translation in tutorial (Martin Unkel)
+-Fixed issue: Compatibility issues with PostgreSQL 12 (#1346) (Mario Wehr)
+-Fixed issue #15610: RemoteControl cpd_importParticipants does not blacklist participants (Marko Bischof)
+-Fixed issue #15599: Ajax mode being activated when importing an old survey which has it enabled (Carsten Schmitz)
+-Fixed issue #15587: queXML PDF doesn't show minutes for date questions (Adam Zammit)
+-Fixed issue #15176: 5 point star rating: Value set is lost when navigating back to previous page and having selected 5 stars (lacrioque)
+-Fixed issue #14043: Improvement in IP blocking after failed login attempts (Johannes Weberhofer)
+-Fixed issue #15352: which should be: register doesn't set header for bounce tracking (fkroener)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by corzel
+#Updated translation: Spanish (Mexican) by corzel
+#Updated translation: Somali by Fedasil001
+#Updated translation: Portuguese (Portugal) by effgarces
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by brainiact
+#Updated translation: Kurdish (Kurmanji) by Fedasil001
+#Updated translation: Hungarian by kkd
+#Updated translation: French (France) by b00z00
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1, pcerny
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.20.1 (build 191114) to 3.20.2 (build 191119) November 19, 2019
 -Fixed issue #15566: Potential PHP Notice with some theme (Denis Chenu)
 -Fixed issue #15565: Upload file : debug 2 : potential issue (Denis Chenu)
