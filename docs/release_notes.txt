@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC9 (build 191125) to 4.0.0-RC10 (build 191202) December 2, 2019
+-Fixed issue: scrolling wrapper not properly displayed for response table (Patrick Teichmann)
+-Fixed issue: Compatibility issues with PostgreSQL 12 (#1346) (Mario Wehr)
+-Fixed issue #15589: "Data entry" menu broken - URL incorrect (Patricia Stelling)
+-Fixed issue #15570: Select columns to filter not working in response table (Patrick Teichmann)
+-Fixed issue #15523: partial filter not working for email in "View saved but not submitted Responses" (Patrick Teichmann)
+-Fixed issue #15469: Submit invalid part from question: loose all data (Jessica Höck)
+-Fixed Issue #15575: Create question tab moves to setting (Jessica Höck , Olle Haerstedt)
+-Fixed Issue #15573: Create page tab moves to settings (Jessica Höck,Olle Haerstedt)
+
 Changes from 4.0.0-RC8 (build 191118) to 4.0.0-RC9 (build 191125) November 25, 2019
 -Fixed issue: Unable to install MS Sql server database (Carsten Schmitz)
 -Fixed issue: Unable to install LS4 on Sql Server database (Carsten Schmitz)
