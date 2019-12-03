@@ -1,12 +1,157 @@
 
+import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+import eventChild from '../../mixins/eventChild.js';
+
+export default {
+    name: 'subquestions',
+    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
+    data(){
+        return {
+            uniqueSelector: 'qid',
+            type: 'subquestions',
+            orderAttribute: 'question_order',
+            typeDefininition: 'question',
+            typeDefininitionKey: 'title',
+            subQuestionDragging: false,
+            draggedSubQuestion: null
+        };
+    },
+    computed: {
+        baseNonNumericPart() { return window.QuestionEditData.baseSQACode.subquestions},
+        subquestionScales(){
+            if(this.$store.state.currentQuestion.typeInformation.subquestions == 1) {
+                return [0];
+            } 
+            if(this.$store.state.currentQuestion.typeInformation.subquestions == 2) {
+                return [0,1];
+            } 
+            return [];
+        },
+         isSurveyActive() {
+            if (this.$store.getters.surveyObject.active == "Y") {
+                return true; 
+            }
+            return false;
+        },
+        currentDataSet: {
+            get() {
+                return map(this.$store.state.currentQuestionSubquestions, subquestionscale => sortBy(subquestionscale, subquestion => subquestion.question_order));
+            },
+            set(newValue) {
+                this.$store.commit('setCurrentQuestionSubquestions', newValue);
+            }
+        },
+    },
+    methods: {
+        getTemplate(scaleId = 0){
+            let randomId = this.getRandomId();
+
+            let subQuestionTemplate = {
+                qid: randomId,
+                parent_qid: this.$store.state.currentQuestion.qid,
+                sid: this.$store.state.currentQuestion.sid,
+                gid: this.$store.state.currentQuestion.gid,
+                type: "F",
+                title: this.getNewTitleFromCurrent(scaleId),
+                preg: null,
+                other: "N",
+                mandatory: "N",
+                question_order: 0,
+                scale_id: ''+scaleId,
+                same_default: "0",
+                relevance: "1",
+                modulename: null,
+                };
+
+            foreach(this.$store.state.languages, (lng, lngKey) => {
+                subQuestionTemplate[lngKey] = {
+                     id: null,
+                     qid: randomId,
+                     question: "",
+                     help:"",
+                     language: lngKey
+                    }
+            });
+
+            return subQuestionTemplate;
+        },
+        resetSubquestions() {
+            this.currentDataSet = this.$store.state.questionSubquestionsImmutable;
+        },
+        getQuestionForCurrentLanguage(subquestionObject) {
+            try {
+                return subquestionObject[this.$store.state.activeLanguage].question;
+            } catch(e){
+                this.$log.error('PROBLEM GETTING LANGUAGE', subquestionObject);
+            }
+            return '';
+        },
+        setQuestionForCurrentLanguage(subquestionObject, $event) {
+            subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
+        },
+        triggerScale($event) {
+            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': 'initial'});
+        },
+        untriggerScale($event) {
+            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
+        },
+        //dragevents questions
+        startDraggingSubQuestion($event, subQuestionObject, scale) {
+            this.$log.log("Dragging started", {$event, subQuestionObject});
+            $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
+            $event.dataTransfer.setDragImage(document.createElement('span'), 0, 0)
+            this.subQuestionDragging = true;
+            this.draggedSubQuestion = subQuestionObject;
+        },
+        endDraggingSubQuestion($event, subQuestionObject, scale) {
+            if (this.subQuestionDragging) {
+                this.subQuestionDragging = false;
+                this.draggedSubQuestion = null;
+                this.reorderSubquestions(scale);
+            }
+        },
+        dragoverSubQuestion($event, subQuestionObject, scale) {
+            if (this.subQuestionDragging) {
+                let orderSwap = subQuestionObject.question_order;
+                subQuestionObject.question_order = this.draggedSubQuestion.question_order;
+                this.draggedSubQuestion.question_order = orderSwap;
+            }
+        },
+        reorderSubquestions(scale){
+            let subquestions = [];
+            let last = 0;
+            foreach(this.currentDataSet[scale], (subquestion, i) => {
+                subquestion.question_order = (i+1)
+                subquestions.push(subquestion);
+            });
+            this.$set(this.currentDataSet, scale, subquestions);
+        },
+        toggleEditMode(){
+            if(this.readonly) {
+                this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+            }
+        },
+        
+    },
+    mounted() {
+        if(isEmpty(this.$store.state.currentQuestionSubquestions)){
+            this.$store.state.currentQuestionSubquestions = {"0": [this.getTemplate()]};
+        };
+        foreach(this.subquestionScales, this.reorderSubquestions);
+    }
+}
+</script>
+
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-subquestions-container">
             <div class="row" v-show="!readonly">
-                <div class="col-sm-8">
+
+                <div class="col-sm-8" v-if="!isSurveyActive">
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd()">{{ "Quick add" | translate }}</button>
                 </div>
-                <div class="col-sm-4 text-right">
+
+                <div class="col-sm-4 text-right" v-if="!isSurveyActive">
                     <button class="btn btn-danger col-5" @click.prevent="resetSubquestions()">{{ "Reset" | translate }}</button>
                 </div>
             </div>
