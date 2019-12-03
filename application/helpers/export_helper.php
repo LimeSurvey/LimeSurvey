@@ -1955,6 +1955,7 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     questionGetXMLStructure($xml, $gid, $qid);
     $xml->endElement(); // close columns
     $xml->endDocument();
+    $xml->flush();
     exit;
 }
 
