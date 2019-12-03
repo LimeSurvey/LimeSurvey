@@ -492,6 +492,9 @@ class Participant extends LSActiveRecord
         $criteria->compare('t.language', $this->language, true);
         $criteria->compare('t.blacklisted', $this->blacklisted, true);
         $criteria->compare('t.owner_uid', $this->owner_uid);
+
+
+        //Todo - rewrite the search functionalities for the extra attributes !
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         $extraAttributeValues = array();
 

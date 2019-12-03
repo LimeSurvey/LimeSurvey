@@ -65,17 +65,6 @@ Changes from 4.0.0-RC8 (build 191118) to 4.0.0-RC9 (build 191125) November 25, 2
 -Fixed issue #15133: Quick add answer : copy/paste from LibreOffice Calc don't work anymore (lacrioque)
 -Fixed issue #15111: admin start page: last visited question and last visited survey should be static (Patricia Stelling)
 -Fixed issue #15081: "Repeat answer options" attribute is badly named and can be irrating in what it actually does; changed it to "Repeat headers" (Patricia Stelling)
--Fixed issue #14576: getAllAnswers has security problems (Olle Haerstedt)
--Fixed issue #14043: Improvement in IP blocking after failed login attempts (Johannes Weberhofer)
--Fixed issue #13589: Misleading question attribute name: Label column width, changed it to “Label wrapper width” (Patricia Stelling)
--Fixed issue #13455: Text input size? -> misleading, changed it to "Text input box size" (Patricia Stelling)
--Fixed issue #15352: which should be: register doesn't set header for bounce tracking (fkroener)
-#Updated translation: Spanish (Spain) by corzel
-#Updated translation: Luxembourgish by brainiact
-#Updated translation: Indonesian by ysulistya
-#Updated translation: German by c_schmitz
-#Updated translation: Czech by jelen1
-#Updated translation: Catalan by qualitatuvic
 
 
 Changes from 4.0.0-RC7 (build 191111) to 4.0.0-RC8 (build 191118) November 18, 2019
@@ -1123,6 +1112,51 @@ Changes from 4.0.0-beta (build 190509) to 4.0.0-RC1 (build 190509) May 09, 2019
 Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 2019
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
+
+
+Changes from 3.20.2 (build 191119) to 3.21.0 (build 191203) December 3, 2019
++New feature #15513: Missing function floatval() in EM (#1344) (Denis Chenu)
+-Fixed issue: Missing translation in tutorial (Martin Unkel)
+-Fixed issue: Compatibility issues with PostgreSQL 12 (#1346) (Mario Wehr)
+-Fixed issue #15610: RemoteControl cpd_importParticipants does not blacklist participants (Marko Bischof)
+-Fixed issue #15599: Ajax mode being activated when importing an old survey which has it enabled (Carsten Schmitz)
+-Fixed issue #15587: queXML PDF doesn't show minutes for date questions (Adam Zammit)
+-Fixed issue #15176: 5 point star rating: Value set is lost when navigating back to previous page and having selected 5 stars (lacrioque)
+-Fixed issue #14043: Improvement in IP blocking after failed login attempts (Johannes Weberhofer)
+-Fixed issue #15352: which should be: register doesn't set header for bounce tracking (fkroener)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by corzel
+#Updated translation: Spanish (Mexican) by corzel
+#Updated translation: Somali by Fedasil001
+#Updated translation: Portuguese (Portugal) by effgarces
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by brainiact
+#Updated translation: Kurdish (Kurmanji) by Fedasil001
+#Updated translation: Hungarian by kkd
+#Updated translation: French (France) by b00z00
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1, pcerny
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.20.1 (build 191114) to 3.20.2 (build 191119) November 19, 2019
+-Fixed issue #15566: Potential PHP Notice with some theme (Denis Chenu)
+-Fixed issue #15565: Upload file : debug 2 : potential issue (Denis Chenu)
+-Fixed issue #15564: Warnings shown for valid comparaison (Denis Chenu)
+-Fixed issue #14576: getAllAnswers has security problems (Olle Haerstedt)
+-Fixed issue #14043: Improvement in IP blocking after failed login attempts (Johannes Weberhofer)
+-Fixed issue #13589: Misleading question attribute name: Label column width, changed it to “Label wrapper width” (Patricia Stelling)
+-Fixed issue #13455: Text input size? -> misleading, changed it to "Text input box size" (Patricia Stelling)
+-Fixed issue #15352: which should be: register doesn't set header for bounce tracking (fkroener)
+#Updated translation: Spanish (Spain) by corzel
+#Updated translation: Luxembourgish by brainiact
+#Updated translation: Indonesian by ysulistya
+#Updated translation: German by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Catalan by qualitatuvic
+
 
 Changes from 3.20.0 (build 191112) to 3.20.1 (build 191114) November 14, 2019
 -Fixed issue: Skipping on invitation/reminder sendout (Carsten Schmitz)

@@ -307,7 +307,7 @@ class remotecontrol_handle
 
     /**
      * Get survey properties (RPC function)
-     * 
+     *
      * Get properties of a survey
      * All internal properties of a survey are available.
      * @see \Survey for the list of available properties
@@ -588,7 +588,7 @@ class remotecontrol_handle
 
     /**
      * Export submission timeline (RPC function)
-     * 
+     *
      * Returns an array of values (count and period)
      *
      * @access public
@@ -979,7 +979,7 @@ class remotecontrol_handle
 
     /**
      * Add empty page with minimum details (RPC function)
-     * 
+     *
      * Used as a placeholder for importing questions.
      * Returns the groupid of the created page.
      *
@@ -1025,7 +1025,7 @@ class remotecontrol_handle
 
     /**
      * Delete a page from a chosen survey (RPC function)
-     * 
+     *
      * Returns the id of the deleted group.
      *
      * @access public
@@ -1159,7 +1159,7 @@ class remotecontrol_handle
 
     /**
      * Find response IDs given a survey ID and a token (RPC function)
-     * 
+     *
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @param string $sToken
@@ -1304,7 +1304,7 @@ class remotecontrol_handle
 
     /**
      * Delete question from a survey (RPC function)
-     * 
+     *
      * Returns the id of the deleted question.
      *
      * @access public
@@ -1374,7 +1374,7 @@ class remotecontrol_handle
 
     /**
      * Import question (RPC function)
-     * 
+     *
      * Import a question from lsq file
      *
      * @access public
@@ -1806,7 +1806,7 @@ class remotecontrol_handle
 
     /**
      * Delete multiple participants from the survey participants table (RPC function)
-     * 
+     *
      * Returns the id of the deleted token
      *
      * @access public
@@ -1853,7 +1853,7 @@ class remotecontrol_handle
 
     /**
      * Get settings of a survey participant (RPC function)
-     * 
+     *
      * Allow to request for a specific participant. If more than one participant is returned with specified attribute(s) an error is returned.
      *
      * @access public
@@ -1984,7 +1984,7 @@ class remotecontrol_handle
 
     /**
      * Get survey pages (RPC function)
-     * 
+     *
      * Returns the ids and all attributes of all survey pages
      *
      * @access public
@@ -2108,7 +2108,7 @@ class remotecontrol_handle
 
     /**
      * Return the ids and info of (sub-)questions of a survey/group (RPC function)
-     * 
+     *
      * Returns array of ids and info.
      *
      * @access public
@@ -2181,7 +2181,7 @@ class remotecontrol_handle
 
     /**
      * Set quota attributes (RPC function)
-     * 
+     *
      * Retuns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2338,7 +2338,7 @@ class remotecontrol_handle
 
     /**
      * Activate survey participants (RPC function)
-     * 
+     *
      * Initialise the survey participant table of a survey where new participant tokens may be later added.
      *
      * @access public
@@ -2536,8 +2536,8 @@ class remotecontrol_handle
 
 
     /**
-     * Send a reminder to participants in a survey (RPC function) 
-     * 
+     * Send a reminder to participants in a survey (RPC function)
+     *
      * Returns array of results of sending
      *
      * @access public
@@ -2611,7 +2611,7 @@ class remotecontrol_handle
 
     /**
      * Add a response to the survey responses collection.
-     * 
+     *
      * Returns the id of the inserted survey response
      *
      * @access public
@@ -2705,7 +2705,7 @@ class remotecontrol_handle
 
     /**
      * Update a response in a given survey.
-     * 
+     *
      * Routine supports only single response updates.
      * Response to update will be identified either by the response id, or the token if response id is missing.
      * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
@@ -2786,7 +2786,7 @@ class remotecontrol_handle
 
     /**
      * Uploads one file to be used later.
-     * 
+     *
      * Returns the metadata on success.
      *
      * @access public
@@ -2953,7 +2953,7 @@ class remotecontrol_handle
 
     /**
      * Export token response in a survey.
-     * 
+     *
      * Returns the requested file as base64 encoded string
      *
      * @access public
@@ -3056,7 +3056,7 @@ class remotecontrol_handle
             if (!($oResponse instanceof Response)) {
                 return array('status' => 'Could not find response for given token');
             }
-            
+
             foreach ($oResponse->getFiles() as $aFile) {
                 $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
 
@@ -3160,8 +3160,8 @@ class remotecontrol_handle
 
 
     /**
-     * Import a participant into the LimeSurvey CPDB 
-     * 
+     * Import a participant into the LimeSurvey CPDB
+     *
      * It stores attributes as well, if they are registered before within ui
      *
      * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants);
@@ -3199,6 +3199,7 @@ class remotecontrol_handle
                 'lastname' => $aParticipantData['lastname'],
                 'email' => $aParticipantData['email'],
                 'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
+                'blacklisted' => (isset($aParticipantData['blacklisted']) && $aParticipantData['blacklisted'] === 'Y') ? 'Y' : 'N'
             );
 
             //Check for duplicate participants
