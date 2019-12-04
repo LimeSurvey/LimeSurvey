@@ -159,8 +159,7 @@ class questiongroups extends Survey_Common_Action
      */
     public function add($surveyid)
     {
-        $this->view($surveyid, null);
-        return;
+        return $this->view($surveyid, null, 'structure');
     }
 
     /**
