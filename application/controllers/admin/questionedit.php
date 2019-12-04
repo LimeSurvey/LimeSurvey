@@ -29,11 +29,11 @@ class questionedit extends Survey_Common_Action
      * @param integer $surveyid
      * @param integer $gid
      * @param integer $qid
-     * @param string $landOnSideMenuTab
+     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on structure tab.
      * @throws CException
      * @throws CHttpException
      */
-    public function view($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = '')
+    public function view($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
         $aData = array();
         $iSurveyID = (int) $surveyid;
