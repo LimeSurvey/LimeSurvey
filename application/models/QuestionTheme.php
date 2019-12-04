@@ -290,8 +290,14 @@ class QuestionTheme extends LSActiveRecord
         /** @var array */
         $aQuestionMetaData = $this->getQuestionMetaData($pathToXML);
 
+        if (empty($aQuestionMetaData)){
+            // todo detailed error handling
+            return null;
+        }
         /** @var array<string, mixed> */
-        $aMetaDataArray = $this->getMetaDataArray($aQuestionMetaData);
+        // todo proper error handling should be done before in getQuestionMetaData via validate() remove @ afterwards
+        $aMetaDataArray = @$this->getMetaDataArray($aQuestionMetaData);
+
         $this->setAttributes($aMetaDataArray, false);
         if ($this->save()) {
             return $aQuestionMetaData['title'];
@@ -667,7 +673,7 @@ class QuestionTheme extends LSActiveRecord
     {
         $questionMetaData = [
             'name'          => $questionMetaData['name'],
-            'visible'       => 'Y', //todo
+            'visible'       => 'Y',
             'xml_path'      => $questionMetaData['xml_path'],
             'image_path'    => $questionMetaData['image_path'] ?? '',
             'title'         => $questionMetaData['title'],

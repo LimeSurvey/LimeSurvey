@@ -323,8 +323,8 @@ class themes extends Survey_Common_Action
         // All OK if we're here.
         // TODO: Always check if successful.
         if ($themeType == 'question'){
-            $extractDir = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
-            mkdir($extractDir, 0777, true);
+            $extractDir = App()->getConfig('userquestionthemerootdir');
+            mkdir($destdir, 0777, true);
         } else {
             $extractDir = $destdir;
             mkdir($destdir);
@@ -377,9 +377,20 @@ class themes extends Survey_Common_Action
                 }
                 if ($themeType == 'question') {
                     $questionTheme = new QuestionTheme();
-                    $sThemeDirectory = scandir("$extractDir")[2];
-                    $sQuestionThemeTitle = $questionTheme->importManifest($extractDir . DIRECTORY_SEPARATOR . $sThemeDirectory);
-                    if (empty($sQuestionThemeTitle)){
+                    $sPathToThemeDirectory = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
+                    // check if the required path is right and existing
+                    if (!is_dir($sPathToThemeDirectory)) {
+                        rmdirr($destdir);
+                        App()->setFlashMessage(
+                            gT("The ZIP file contains wrong paths"),
+                            'error'
+                        );
+                        $this->getController()->redirect(array("admin/themeoptions/sa/index/#questionthemes"));
+                    }
+                    $sThemeDirectory = scandir($sPathToThemeDirectory)[2];
+                    // install the Question Theme
+                    $sQuestionThemeTitle = $questionTheme->importManifest($sPathToThemeDirectory . DIRECTORY_SEPARATOR . $sThemeDirectory);
+                    if (empty($sQuestionThemeTitle)) {
                         rmdirr($destdir);
                         App()->setFlashMessage(
                             gT("An error occured while generating the Question theme"),
