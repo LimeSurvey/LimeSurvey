@@ -409,7 +409,9 @@ export default {
             if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
                 this.triggerEditQuestion(true);
             }
-        })
+        }).catch((e) => {
+            this.$log.error(e);
+        });
         LS.EventBus.$on('questionTypeChanged', (payload) => {
             this.$log.log("questiontype changed to -> ", payload.content.value);
             this.$log.log("with data -> ", payload.content.options);
