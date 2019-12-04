@@ -64,7 +64,11 @@ echo viewHelper::getViewTestTag('index');
                                 </ol>
                             </div>
                             <div class="row"><hr/></div>
-                            <?php if(Permission::model()->hasGlobalPermission('surveys','create')) { ?>
+
+                            <?php 
+                            // Hide this until we have fixed the tutorial
+                            // @TODO FIX TUTORIAL
+                            if(Permission::model()->hasGlobalPermission('surveys','create') && 1==2) { ?>
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
