@@ -89,10 +89,10 @@
 
                         <!-- Add Question / group -->
                         <div class="row row-eq-height">
-                            <!-- Survey active, so it's impossible to add new page/question -->
+                            <!-- Survey active, so it's impossible to add new group/question -->
                             <?php if ($oSurvey->isActive): ?>
 
-                                    <!-- Can't add new page to survey  -->
+                                    <!-- Can't add new group to survey  -->
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary disabled" id="panel-1">
                                             <div class="panel-heading">
@@ -102,11 +102,11 @@
                                                 <div class="panel-body-ico">
                                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                                        <span class="sr-only"><?php eT('Add new page');?></span>
+                                                        <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="#"><?php eT('Add new page');?></a></p>
+                                                    <p><a href="#"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -149,11 +149,11 @@
                                                 <div class="panel-body-ico">
                                                     <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                                        <span class="sr-only"><?php eT('Add new page');?></span>
+                                                        <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new page');?></a></p>
+                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
