@@ -10227,7 +10227,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $message = $LEM->gT('No syntax errors detected in this survey.');
                         break;
                     case 'group':
-                        $message = $LEM->gT('This page, by itself, does not contain any syntax errors.');
+                        $message = $LEM->gT('This group, by itself, does not contain any syntax errors.');
                         break;
                     case 'question':
                         $message = $LEM->gT('This question, by itself, does not contain any syntax errors.');

@@ -5,7 +5,7 @@
  */
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <div class="pagetitle h3"><?php eT('Page summary'); ?></div>
+    <div class="pagetitle h3"><?php eT('Group summary'); ?></div>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -51,7 +51,7 @@
                 if (!is_null($condarray))
                 { ?>
                 <tr><td><strong>
-                            <?php eT("Questions with conditions to this page"); ?>:</strong></td>
+                            <?php eT("Questions with conditions to this group"); ?>:</strong></td>
                     <td>
                         <?php foreach ($condarray[$gid] as $depgid => $deprow)
                             {
@@ -72,16 +72,16 @@
         <div class="row welcome survey-action">
             <div class="col-lg-12 content-right">
 
-                <!-- create question in this page -->
+                <!-- create question in this group -->
                 <div class="col-lg-3">
                     <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                         <div class="panel-heading">
-                            <div class="panel-title h4"><?php eT("Add new question to page");?></div>
+                            <div class="panel-title h4"><?php eT("Add new question to group");?></div>
                         </div>
                         <div class="panel-body">
                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                             <p class='btn-link'>
-                                    <?php eT("Add new question to page");?>
+                                    <?php eT("Add new question to group");?>
                             </p>
                         </div>
                     </div>

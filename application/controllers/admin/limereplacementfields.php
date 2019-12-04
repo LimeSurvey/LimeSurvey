@@ -375,7 +375,7 @@ class limereplacementfields extends Survey_Common_Action
             $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
             $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
             $replFields['SID'] = gT("This question's survey ID number");
-            $replFields['GID'] = gT("This question's page ID number");
+            $replFields['GID'] = gT("This question's group ID number");
             $replFields['QID'] = gT("This question's question ID number");
             $replFields['SGQ'] = gT("This question's SGQA code");
             $attributes = getTokenFieldsAndNames($surveyid, true);
@@ -392,7 +392,7 @@ class limereplacementfields extends Survey_Common_Action
             $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
             $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
             $replFields['SID'] = gT("This question's survey ID number");
-            $replFields['GID'] = gT("This question's page ID number");
+            $replFields['GID'] = gT("This question's group ID number");
             $replFields['QID'] = gT("This question's question ID number");
             $replFields['SGQ'] = gT("This question's SGQA code");
             $attributes = getTokenFieldsAndNames($surveyid, true);

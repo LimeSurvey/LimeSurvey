@@ -14,7 +14,7 @@
 
 /**
 * fixes the numbering of questions
-* This can happen if question 1 have subquestion code 1 and have question 11 in same survey and page (then same SGQA)
+* This can happen if question 1 have subquestion code 1 and have question 11 in same survey and group (then same SGQA)
 * @param int $fixnumbering
 * @param integer $iSurveyID
 * @todo can call this function (no $_GET, but getParam) AND do it with Yii
@@ -77,7 +77,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
     LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 }
 /**
-* checks if any page exists
+* checks if any group exists
 * @param integer $postsid
 * @return <type>
 */
@@ -93,7 +93,7 @@ function checkHasGroup($postsid)
     }
 }
 /**
-* checks consistency of pages
+* checks consistency of groups
 * @param integer $postsid
 * @return <type>
 */
@@ -108,7 +108,7 @@ function checkGroup($postsid)
     foreach ($groupresult as $row) {
         //TIBO
         if ($row['count'] == 0) {
-            $failedgroupcheck[] = array($row['gid'], $row['group_name'], ": ".gT("This survey page does not contain any question(s)."));
+            $failedgroupcheck[] = array($row['gid'], $row['group_name'], ": ".gT("This group does not contain any question(s)."));
         }
     }
     if (isset($failedgroupcheck)) {
@@ -226,7 +226,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     foreach ($qorderresult as $qrow) {
         $qrows[] = $qrow;
     } // Get table output into array
-    usort($qrows, 'groupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on page name then question title of a multidimensional array
+    usort($qrows, 'groupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     $c = 0;
     foreach ($qrows as $qr) {
         $qidorder[] = array($c, $qrow['qid']);

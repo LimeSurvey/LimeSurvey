@@ -87,15 +87,15 @@ if ($bShowInherited){
 
         <!-- Show group name and/or group description -->
         <div class="form-group">
-            <label class=" control-label" for="showgroupinfo"><?php  eT('Show page name and/or page description:'); ?></label>
+            <label class=" control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
             <div class="">
                 <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
                     <?php if ($bShowInherited){ ?>
                         <option value="I"<?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->showgroupinfo . ']'; ?></option>
                     <?php } ?>
                     <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
-                    <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show page name only'); ?></option>
-                    <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show page description only'); ?></option>
+                    <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
+                    <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show group description only'); ?></option>
                     <option value="X"<?php echo $sel_showgri['X']; ?>><?php  eT('Hide both'); ?></option>
                 </select>
                 <?php unset($sel_showgri,$set_showgri); ?>

@@ -15,14 +15,9 @@ $baseLanguage = $oSurvey->language;
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3 class="ls-flex ls-flex-row">
-        <?php if (App()->request->getParam('group_name')!='') : ?>
-            <div class="ls-flex-item text-left">
-                <?php eT('Questions on survey page: '); ?>
-                <em>
-                    <?php echo App()->request->getParam('group_name'); ?>
-                </em>
-            </div>
-        <?php else : ?>
+        <?php if(App()->request->getParam('group_name')!=''):?>
+            <div class="ls-flex-item text-left"><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></div>
+        <?php else:?>
             <div class="ls-flex-item text-left"><?php eT('Questions in this survey'); ?></div>
         <?php endif;?>
     </h3>
@@ -69,18 +64,12 @@ $baseLanguage = $oSurvey->language;
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label(
-                                    $model,
-                                    'group',
-                                    array('label'=>gT('Page:'),'class'=>'control-label')
-                                ); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
                                     <select name="gid" class="form-control">
-                                        <option value=""><?php eT('(Any page)');?></option>
-                                        <?php foreach ($oSurvey->groups as $group) : ?>
+                                        <option value=""><?php eT('(Any group)');?></option>
+                                        <?php foreach($oSurvey->groups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText(
-                                                    $group->questionGroupL10ns[$oSurvey->language]->group_name
-                                                );?>
+                                                <?php echo flattenText($group->questionGroupL10ns[$oSurvey->language]->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>
