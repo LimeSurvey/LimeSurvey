@@ -296,11 +296,11 @@ class questiongroups extends Survey_Common_Action
      *
      * @param integer $surveyid           Survey ID
      * @param integer $gid                Group ID
-     * @param string  $landOnSideMenuTab  Name of side menu tab.
+     * @param string  $landOnSideMenuTab  Name of side menu tab. Default behavior is to land on the structure tab.
      * @return void
      * @throws CHttpException
      */
-    public function view($surveyid, $gid, $landOnSideMenuTab = '')
+    public function view($surveyid, $gid, $landOnSideMenuTab = 'structure')
     {
         $aData = array();
         $aData['surveyid'] = $iSurveyID = $surveyid;
