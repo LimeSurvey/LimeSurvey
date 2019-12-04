@@ -28,7 +28,7 @@
 
     $formatSelectOptions = array(
         'S' => gT('Question by Question','unescaped'),
-        'G' => gT('Page by Page','unescaped'),
+        'G' => gT('Group by Group','unescaped'),
         'A' => gT('All in one','unescaped')
     );
     if ($bShowInherited){
