@@ -1135,7 +1135,7 @@ class questions extends Survey_Common_Action
     /// TODO: refactore multiple function to call the model, and then push all the common stuff to a model function for a dry code
 
     /**
-     * Change the survey page/order position of multiple questions
+     * Change the question group/order position of multiple questions
      *
      */
     public function setMultipleQuestionGroup()
@@ -1162,7 +1162,7 @@ class questions extends Survey_Common_Action
 
                 }
 
-                // Now, we push each question to the new survey page
+                // Now, we push each question to the new question group
                 // And update positions
                 foreach ($aQidsAndLang as $sQidAndLang) {
                     // Question basic infos

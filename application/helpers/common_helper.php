@@ -344,7 +344,7 @@ function getGroupOrder($gid)
 }
 
 /**
-* Queries the database for the maximum sort order of questions inside survey page.
+* Queries the database for the maximum sort order of questions inside question group.
 *
 * @param integer $gid
 * @return integer

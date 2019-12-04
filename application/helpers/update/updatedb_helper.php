@@ -2432,7 +2432,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }        
 
         if ($iOldDBVersion < 400) {
-            // This update moves localization-dependant strings from survey page/question/answer tables to related localization tables
+            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
             
             // Question table 

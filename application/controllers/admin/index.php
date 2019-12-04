@@ -50,7 +50,7 @@ class Index extends Survey_Common_Action
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
         $lastquestion = getGlobalSetting($setting_entry);
 
-        // the survey page of this question
+        // the question group of this question
         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
         $lastquestiongroup = getGlobalSetting($setting_entry);
 

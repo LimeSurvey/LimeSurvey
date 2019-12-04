@@ -835,7 +835,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['questioncontainer'] = $aClassAndAttributes['attr']['questiontitlecontainer'] = $aClassAndAttributes['attr']['questionasterix'] = $aClassAndAttributes['attr']['questionasterixspan'] = $aClassAndAttributes['attr']['questionnumber'] = $aClassAndAttributes['attr']['questioncode'] = '';
         $aClassAndAttributes['attr']['questiontext'] = $aClassAndAttributes['attr']['lsquestiontext'] = $aClassAndAttributes['attr']['questionvalidcontainer'] = $aClassAndAttributes['attr']['answercontainer'] = $aClassAndAttributes['attr']['helpcontainer'] = '';
 
-        // Survey page
+        // Question group
         $aClassAndAttributes['class']['groupcontainer'] = ' group-container ';
         $aClassAndAttributes['class']['groupoutercontainer'] = ' group-outer-container ';
         $aClassAndAttributes['class']['grouptitle']     = ' group-title  ';

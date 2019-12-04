@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
                                 <?php } ?>
                         </div>
 
-                        <!-- Save survey page -->
+                        <!-- Save question group -->
                         <p>
                             <input type='submit' class="hidden" value='<?php eT("Save survey page"); ?>' />
                         </p>

@@ -501,7 +501,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => true,
                     'qid' => false,
-                    'description' => gT("Survey pages"),
+                    'description' => gT("Question groups"),
                     'HTMLeditorType' => "group",
                     'HTMLeditorDisplay' => "Popup",
                     'associated' => "group_desc"
@@ -516,7 +516,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => true,
                     'qid' => false,
-                    'description' => gT("Page description"),
+                    'description' => gT("Group description"),
                     'HTMLeditorType' => "group_desc",
                     'HTMLeditorDisplay' => "Popup",
                     'associated' => ""

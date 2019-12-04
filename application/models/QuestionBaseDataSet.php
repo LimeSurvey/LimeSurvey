@@ -44,7 +44,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         @todo Discussion:
         General options currently are
         - Question theme => this should have a seperate advanced tab in my opinion
-        - Question page
+        - Question group
         - Mandatory switch
         - Save as default switch
         - Clear default switch (if default value record exists)
@@ -184,7 +184,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         ];
     }
 
-    //Question page
+    //Question group
     protected function getQuestionGroupSelector()
     {
         $aGroupsToSelect = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->oQuestion->sid), array('order'=>'group_order'));
@@ -201,7 +201,7 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         return [
             'name' => 'gid',
-            'title' => gT('Question page'),
+            'title' => gT('Question group'),
             'formElementId' => 'gid',
             'formElementName' => false,
             'formElementHelp' => gT("If you want to change the survey page this question is in."),

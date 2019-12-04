@@ -314,7 +314,7 @@ class Survey extends LSActiveRecord
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
             Assessment::model()->deleteAllByAttributes(array('sid' => $this->sid));
 
-            // Survey pages
+            // question groups
             $oQuestionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->sid));
             foreach ($oQuestionGroups as $aQuestionGroup) {
                 QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$aQuestionGroup['gid']));

@@ -26,7 +26,7 @@
         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/importview/surveyid/$oSurvey->sid"); ?>" role="button">
 
             <span class="icon-import"></span>
-            <?php eT("Import page"); ?>
+            <?php eT("Import a group"); ?>
         </a>
     <?php endif; ?>
 <?php endif; ?>

@@ -225,7 +225,7 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Rewrites sort order for questions in a page
+     * Rewrites sort order for questions in a group
      *
      * @static
      * @access public
@@ -249,7 +249,7 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a page
+     * Fix sort order for questions in a group
      * @param int $gid
      * @param int $position
      */
@@ -814,7 +814,7 @@ class Question extends LSActiveRecord
                 'value'=>'$data->qid',
             ),
             array(
-                'header' => gT("Page / Question order"),
+                'header' => gT("Group / Question order"),
                 'name' => 'question_order',
                 'value'=>'$data->group->group_order ." / ". $data->question_order',
             ),
@@ -839,7 +839,7 @@ class Question extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Page'),
+                'header' => gT('Group'),
                 'name' => 'group',
                 'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
             ),
@@ -954,7 +954,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Make sure we don't save a new question page
+     * Make sure we don't save a new question group
      * while the survey is active.
      *
      * @return bool

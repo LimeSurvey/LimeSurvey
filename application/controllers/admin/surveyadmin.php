@@ -611,7 +611,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Load list survey pages view for a specified by $iSurveyID
+     * Load list question groups view for a specified by $iSurveyID
      *
      * @access public
      * @param mixed $surveyid The survey ID
@@ -636,7 +636,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
         $aData['title_bar']['title']                         = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['subaction']                                  = gT("Survey pages in this survey");
+        $aData['subaction']                                  = gT("Question groups in this survey");
 
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
@@ -1255,7 +1255,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * questiongroup::organize()
-     * Load ordering of survey page screen.
+     * Load ordering of question group screen.
      *
      * @param int $iSurveyID
      * @return void
@@ -1306,7 +1306,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Show the form for Organize survey pages/questions
+     * Show the form for Organize question groups/questions
      *
      * @todo Change function name to _showOrganizeGroupsAndQuestions?
      * @param int $iSurveyID

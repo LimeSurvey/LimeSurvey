@@ -12,7 +12,7 @@
 
                                 <?php echo flattenText($aGroup['name']); ?>
 
-                            (<?php echo gT("Survey page").$aGroup['gid']; ?>)
+                            (<?php echo gT("Question group").$aGroup['gid']; ?>)
                         </span>
                         <span class="fa fa-chevron-up group-question-chevron" data-grouptohide="grp_question_container_<?php echo $aGroup['gid']; ?>"></span>
                     </div>

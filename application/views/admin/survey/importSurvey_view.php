@@ -82,7 +82,7 @@
             <table class="table table-striped table-condensed ">
                 <tr><td><?php eT("Surveys");?>:</td><td><?php echo $aImportResults['surveys'];?></td></tr>
                 <tr><td><?php eT("Languages");?>:</td><td><?php echo $aImportResults['languages'];?></td></tr>
-                <tr><td><?php eT("Survey pages");?>:</td><td><?php echo $aImportResults['groups'];?></td></tr>
+                <tr><td><?php eT("Question groups");?>:</td><td><?php echo $aImportResults['groups'];?></td></tr>
                 <tr><td><?php eT("Questions");?>:</td><td><?php echo $aImportResults['questions'];?></td></tr>
                 <tr><td><?php eT("Question attributes");?>:</td><td><?php echo $aImportResults['question_attributes'];?></td></tr>
                 <tr><td><?php eT("Answers");?>:</td><td><?php echo $aImportResults['answers'];?></td></tr>
