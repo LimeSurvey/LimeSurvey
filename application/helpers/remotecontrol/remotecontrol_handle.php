@@ -978,10 +978,10 @@ class remotecontrol_handle
     /* Group specific functions */
 
     /**
-     * Add empty page with minimum details (RPC function)
+     * Add empty group with minimum details (RPC function)
      *
      * Used as a placeholder for importing questions.
-     * Returns the groupid of the created page.
+     * Returns the groupid of the created group.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1024,7 +1024,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete a page from a chosen survey (RPC function)
+     * Delete a group from a chosen survey (RPC function)
      *
      * Returns the id of the deleted group.
      *
@@ -1076,7 +1076,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Import a group and add to a chosen survey - imports lsg,csv
+     * Import a group and add to a survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1983,9 +1983,9 @@ class remotecontrol_handle
 
 
     /**
-     * Get survey pages (RPC function)
+     * Get survey groups (RPC function)
      *
-     * Returns the ids and all attributes of all survey pages
+     * Returns the ids and all attributes of all survey groups
      *
      * @access public
      * @param string $sSessionKey Auth credentials
