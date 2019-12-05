@@ -21,6 +21,13 @@ export default {
         },
         buttonUrl() {
             return this.button.isCloseButton ? this.$store.state.closeButtonUrl : this.button.url;
+        },
+        dataAttributes() {
+            const dataAttributes = {}; 
+            LS.ld.forEach(this.button.data,  (attributeValue, attributeKey) => {
+                dataAttributes[`data-${attributeKey}`] = attributeValue
+            });
+            return dataAttributes;
         }
     },
     methods: {
@@ -140,6 +147,7 @@ export default {
                     id={button.id}
                     data-placement={button.dataplacement || null }
                     data-toggle={button.datatoggle || null }
+                    {...{attrs: this.dataAttributes}}
                     title={button.title || null }
                     target={button.target || null }
                     access-key={button.accesskey || null }
