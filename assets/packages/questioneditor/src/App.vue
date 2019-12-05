@@ -87,8 +87,23 @@
                         <div
                             v-if="$store.getters.surveyObject.active !='Y'"
                             v-show="(editQuestion || isCreateQuestion)"
-                            v-html="questionEditButton"
-                        />
+                            class="btn-group" id="trigger_question_selector_button"
+                        >
+                            <button type="button" 
+                                class="btn btn-primary" 
+                                aria-haspopup="true" 
+                                aria-expanded="false"
+                                @click="toggleQuestionTypeSelector"
+                            >
+                                <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
+                                <span class="buttontext" id="selector__question_selector--buttonText">
+                                    {{ currentQuestionTypeDescription }}
+                                    <em class="small">
+                                        {{"Type:"|translate}} {{$store.state.currentQuestion.type}}
+                                    </em>
+                                </span>
+                            </button>
+                        </div>
                         <input
                             v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')"
                             type="text"
@@ -158,12 +173,13 @@
 import Mousetrap from 'mousetrap';
 import filter from 'lodash/filter';
 
+import BootstrapToggle from 'vue-bootstrap-toggle'
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
 import AdvancedSettings from './components/advancedSettings.vue';
+import QuestionTypeSelector from './helperComponents/QuestionTypeSelector.vue';
 import LanguageSelector from './helperComponents/LanguageSelector.vue';
-import BootstrapToggle from 'vue-bootstrap-toggle'
 
 import runAjax from './mixins/runAjax.js';
 import eventRoot from './mixins/eventRoot.js';
@@ -182,7 +198,6 @@ export default {
     data() {
         return {
             editQuestion: false,
-            questionEditButton: window.questionEditButton,
             loading: true,
             noCodeWarning: false,
             switcherOptions: {
@@ -254,6 +269,9 @@ export default {
             get() { return this.$store.state.copyAdvancedOptions; },
             set(nV) { this.$store.commit('setCopyAdvancedOptions', nV); }
         },
+        currentQuestionTypeDescription (){
+            return this.$store.state.questionTypes[this.$store.state.currentQuestion.type].description
+        }
     },
     watcher: {
         storedEvent(newValue) {
@@ -377,6 +395,19 @@ export default {
                 return false;
             }
             return true;
+        },
+        toggleQuestionTypeSelector() {
+            this.$modal.show(QuestionTypeSelector, {
+                id: "QuestionSelect-"+this.$store.state.currentQuestion.qid,
+                title: this.translate("Select question type"),
+                debug: true// window.debugState.backend
+            }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+                resizable: false
+              }
+            )
         },
         questionTypeChangeTriggered(newValueArray) {
             this.$log.log('CHANGE OF TYPE', newValueArray.value);
