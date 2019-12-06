@@ -1,3 +1,4 @@
+import merge from 'lodash/merge';
 import ajax from '../mixins/runAjax.js';
 import {LOG} from '../mixins/logSystem.js'
 
@@ -10,6 +11,8 @@ export default {
                     context.commit('setLanguages', result.data.languages);
                     context.commit('setActiveLanguage', result.data.mainLanguage);
                     context.commit('setLabels', result.data.labels);
+                    context.commit('unsetLabelsImmutable');
+                    context.commit('setLabelsImmutable', merge({}, result.data.labels));
                     resolve();
                 }
             )

@@ -26,16 +26,23 @@ export default {
             }
             return 0;
         },
-        getNewTitleFromCurrent() {
+        getNewTitleFromCurrent(relativeObject = null) {
             let nonNumericPart = this.baseNonNumericPart;
-            if(this.getLength(this.currentDataSet) > 0) {
-                nonNumericPart = (this.currentDataSet[0].title || this.currentDataSet[0].code).replace(/[0-9]/g,'');
+            relativeObject = relativeObject || this.currentDataSet;
+            if(this.getLength(relativeObject) > 0) {
+                nonNumericPart = (relativeObject[0][this.typeDefininitionKey]).replace(/[0-9]/g,'');
             }
-            let numericPart = reduce(this.currentDataSet,(prev, oDataSet) => {
-                return max([prev, parseInt((oDataSet.title || oDataSet.code  ).replace(/[^0-9]/g,''))]);
-            }, 0) + 1 ;
+
+            let numericPart = reduce(relativeObject, (prev, oDataSet) => {
+                return max([prev, parseInt((oDataSet[this.typeDefininitionKey]).replace(/[^0-9]/g,''))]);
+            }, 0);
+
+            numericPart = numericPart+1;
+
+            this.$log.log('relativeObject', relativeObject);
             this.$log.log('NewTitle', {nonNumericPart, numericPart});
-            return nonNumericPart+''+numericPart;
+
+            return nonNumericPart+String(numericPart).padStart(2,'0');
         },
         getRandomId(){
             return 'random'+Math.random().toString(36).substr(2, 7);
@@ -46,14 +53,21 @@ export default {
             this.currentDataSet = tmpArray;
         },
         duplicateThisDataSet(oDataSet) {
-
+            let tmpArray = merge([], this.currentDataSet);
+            let newDataSet = merge({}, oDataSet);
+            newDataSet[this.uniqueSelector] = this.getRandomId();
+            newDataSet[this.typeDefininitionKey] = this.getNewTitleFromCurrent();
+            //newDataSet[this.orderAttribute];
+            tmpArray.push(newDataSet);
+            
+            this.currentDataSet = this.reorder(tmpArray);
         },
         addDataSet() {
             let tmpArray = merge([], this.currentDataSet);
-            const newLabel = this.getTemplate()
-            newLabel.sortorder = this.currentDataSet.length;
+            const newLabel = this.getTemplate();
+            newLabel.sortorder = this.currentDataSet.length+1;
             tmpArray.push(newLabel);
-            this.currentDataSet = tmpArray;
+            this.currentDataSet = this.reorder(tmpArray);
         },
         openLabelSets() {},
         openQuickAdd() {
@@ -120,17 +134,24 @@ export default {
                 });
                 tempObject.push(newDataSetBlock);
             });
+            this.reorder(tempObject);
             this.currentDataSet = tempObject;
         },
         addToFromQuickAdd(contents){
             this.$log.log('addToFromQuickAdd triggered on: '+this.$options.name, contents);
             let tempObject = merge([], this.currentDataSet);
+            let orderCount = tempObject.length;
             foreach(contents, (lngSet, key) => {
                 const newDataSetBlock = this.getTemplate();
-                newDataSetBlock[this.typeDefininitionKey] = key;
+                if(currentKeys.indexOf(key) != -1) {
+                    newDataSetBlock[this.typeDefininitionKey] = this.getNewTitleFromCurrent(tempObject)
+                } else {
+                    newDataSetBlock[this.typeDefininitionKey] = key;
+                }
                 foreach(lngSet, (dataSetValue, lngKey) => { 
                     newDataSetBlock[lngKey][this.typeDefininition] = dataSetValue; 
                 });
+                newDataSetBlock[this.orderAttribute] = ++orderCount;
                 tempObject.push(newDataSetBlock);
             });
             this.currentDataSet = tempObject;
@@ -144,6 +165,26 @@ export default {
             tempFullObject[identifier] = contents;
             this.$log.log('Event editFromSimplePopupEditor result', {identifier, tempFullObject});
             this.currentDataSet = tempFullObject;
+        },
+        reorder(dataSet) {
+            dataSet.sort((a,b) => (
+                a[this.orderAttribute] < b[this.orderAttribute] 
+                ? -1 
+                : (a[this.orderAttribute] > b[this.orderAttribute] 
+                    ? 1 
+                    : 0
+                )));
+            let currentOrder = 1;
+            let maxOrder = dataSet.length;
+            for(;currentOrder<=maxOrder ; currentOrder++) {
+                dataSet[(currentOrder-1)].sortorder = currentOrder;
+            }
+
+            return dataSet;
+        },
+        preventDisallowedCursor($event) {
+            $event.dataTransfer.dropEffect = "move";
+            return;
         }
     }
 }

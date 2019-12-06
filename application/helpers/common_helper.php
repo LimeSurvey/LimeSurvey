@@ -1944,7 +1944,7 @@ function buildLabelSetCheckSumArray()
 {
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
 
-    $result = LabelSet::model()->getLID();
+    $result = LabelSet::model()->findAll();
     $csarray = array();
     foreach ($result as $row) {
         $thisset = "";

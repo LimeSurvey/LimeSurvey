@@ -21,7 +21,7 @@ export default {
             typeDefininition: 'title',
             typeDefininitionKey: 'code',
             labelDragging: false,
-            draggedLabel: null
+            draggedLabel: null,
         };
     },
     computed: {
@@ -57,6 +57,10 @@ export default {
 
             return labelTemplate;
         },
+        resetLabelSets() {
+            this.currentDataSet = this.$store.state.labelsImmutable;
+            this.reorderLabels();
+        },
         getLabelI10NForCurrentLanguage(labelObject) {
             try {
                 return labelObject[this.$store.state.activeLanguage].title;
@@ -91,13 +95,8 @@ export default {
             }
         },
         reorderLabels(){
-            let labels = [];
-            let last = 0;
-            foreach(this.currentDataSet, (label, i) => {
-                label.sortorder = (i+1)
-                labels.push(label);
-            });
-            this.$set(this.currentDataSet, labels);
+            let labels = this.reorder(this.currentDataSet);
+            this.currentDataSet = labels;
         },
     },
     mounted() {
@@ -117,7 +116,7 @@ export default {
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions">{{ "Reset" | translate }}</button>
+                    <button class="btn btn-danger col-5" @click.prevent="resetLabelSets">{{ "Reset" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -125,7 +124,27 @@ export default {
                     <hr />
                 </div>
             </div>
-            <div class="row list-group scoped-label-row-container">
+            <div 
+                class="row list-group scoped-label-row-container"
+                @dragover.prevent="preventDisallowedCursor"
+            >
+                <div class="list-group-item scoped-label-block header-block">
+                    <div class="scoped-move-block" v-show="!readonly">
+                        <div>&nbsp;</div>
+                    </div>
+                    <div class="scoped-code-block">
+                        <div>{{"Code" | translate}}</div>
+                    </div>
+                    <div class="scoped-assessments-block">
+                        <div>{{"Assessment value" | translate}}</div>
+                    </div>
+                    <div class="scoped-content-block">
+                        <div>{{"Title" | translate}}</div>
+                    </div>
+                    <div class="scoped-actions-block" v-show="!readonly">
+                        <div>&nbsp;</div>
+                    </div>
+                </div>
                 <div 
                     class="list-group-item scoped-label-block"
                     v-for="label in currentDataSet"
@@ -148,9 +167,22 @@ export default {
                             maxlength='5'
                             size='5'
                             :name="'code_'+label.sortorder" 
+                            :id="'code_'+label.sortorder" 
                             :readonly="readonly"
                             v-model="label.code"
+                            @keyup.enter.prevent='switchinput("assessment_value_"+label.sortorder)'
+                        />
+                    </div>
+                    <div class="scoped-assessments-block   ">
+                        <input
+                            type='text'
+                            size='5'
+                            class='form-control input'
+                            :name='"assessment_value_"+label.sortorder'
+                            :id="'assessment_value_'+label.sortorder" 
+                            v-model="label.assessment_value"
                             @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+label.id)'
+
                         />
                     </div>
                     <div class="scoped-content-block   ">
@@ -164,21 +196,33 @@ export default {
                             :value="getLabelI10NForCurrentLanguage(label)"
                             :readonly="readonly"
                             @change="setLabelI10NForCurrentLanguage(label,$event, arguments)"
-                            @keyup.enter.prevent='switchinput("relevance_"+label.id)'
+                            @keyup.enter.prevent='switchinput("code_"+(label.sortorder+1))'
                         />
                     </div>
                     <div class="scoped-actions-block" v-show="!readonly">
-                        <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(label)">
+                        <button 
+                            class="btn btn-default btn-small" 
+                            data-toggle="tooltip"
+                            :label="translate('Delete')"
+                            @click.prevent="deleteThisDataSet(label)"
+                        >
                             <i class="fa fa-trash text-danger"></i>
-                            {{ "Delete" | translate }}
                         </button>
-                        <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(label)">
+                        <button 
+                            class="btn btn-default btn-small" 
+                            data-toggle="tooltip"
+                            :label="translate('Open editor')"
+                            @click.prevent="openPopUpEditor(label)"
+                        >
                             <i class="fa fa-edit"></i>
-                            {{ "Open editor" | translate }}
                         </button>
-                        <button class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(label)">
+                        <button 
+                            class="btn btn-default btn-small" 
+                            data-toggle="tooltip"
+                            :label="translate('Duplicate')"
+                            @click.prevent="duplicateThisDataSet(label)"
+                        >
                             <i class="fa fa-copy"></i>
-                            {{ "Duplicate" | translate }}
                         </button>
                     </div>
                 </div>
@@ -200,6 +244,7 @@ export default {
         content: ' ';
         display: inline-block;
     }
+    
     .scoped-main-label-container {
         margin: 1rem 0.2rem;
         padding-top: 0.2rem;
@@ -216,6 +261,9 @@ export default {
             transition: all 1s ease-in-out;
             white-space: nowrap;
         }
+        &.header-block {
+            text-align: center;
+        }
     }
     
     .scoped-move-block {
@@ -231,6 +279,9 @@ export default {
             }
         }
     }
+    .scoped-assessments-block {
+        flex-grow: 2;
+    }
     .scoped-content-block {
         flex-grow: 8;
     }
@@ -239,7 +290,7 @@ export default {
         max-width: 10rem;
     }
     .scoped-actions-block {
-        flex-grow: 2;
+        flex-grow: 1;
     }
     
     .movement-active {
