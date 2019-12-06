@@ -208,7 +208,7 @@ class export extends Survey_Common_Action
             $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = gT("Export results");
-
+            $data['topBar']['type'] = 'responses';
             // Export plugins, leave out all entries that are not plugin
             $exports = array_filter($exports);
             $exportData = array();
@@ -404,6 +404,7 @@ class export extends Survey_Common_Action
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
             $data['sBaseLanguage'] = $oSurvey->language;
+            $data['topBar']['type'] = 'responses';
 
             $aLanguages = array();
             $aLanguagesCodes = $oSurvey->getAllLanguages();
@@ -607,6 +608,7 @@ class export extends Survey_Common_Action
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
             $aData['subaction'] = gt('Export a VV survey file');
+            $aData['topBar']['type'] = 'responses';
 
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
