@@ -7,9 +7,13 @@
         <last_update>2019-09-19</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
-        <version>0.0.0-alpha</version>
+        <version>0.1.0</version>
         <license>GNU General Public License version 2 or later</license>
-        <description><![CDATA[Demo: add a new function for expression manager]]></description>
+        <description><![CDATA[New function for expression manager to count some statictics data : <ul>
+            <li>statCountIf(QuestionCode.sgqa, value[, submitted = true])</li>
+            <li>statCount(QuestionCode.sgqa[, submitted = true])</li>
+            </ul>
+]]></description>
     </metadata>
 
     <compatibility>
