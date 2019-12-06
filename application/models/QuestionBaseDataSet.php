@@ -44,7 +44,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         @todo Discussion:
         General options currently are
         - Question theme => this should have a seperate advanced tab in my opinion
-        - Question page
+        - Question group
         - Mandatory switch
         - Save as default switch
         - Clear default switch (if default value record exists)
@@ -184,7 +184,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         ];
     }
 
-    //Question page
+    //Question group
     protected function getQuestionGroupSelector()
     {
         $aGroupsToSelect = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->oQuestion->sid), array('order'=>'group_order'));
@@ -201,7 +201,7 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         return [
             'name' => 'gid',
-            'title' => gT('Question page'),
+            'title' => gT('Question group'),
             'formElementId' => 'gid',
             'formElementName' => false,
             'formElementHelp' => gT("If you want to change the survey page this question is in."),
@@ -365,15 +365,15 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         if (count($this->oQuestion->conditions) > 0) {
             $inputtype = 'text';
-            $content = gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.");
+            $content = gT("Note: You can't edit the condition because there are currently conditions set for this question by the condition designer.");
         }
 
         return [
                 'name' => 'relevance',
-                'title' => gT('Relevance equation'),
+                'title' => gT('Condition'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,
-                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
+                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
                 'inputtype' => 'textarea',
                 'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [

@@ -74,15 +74,17 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 
                                 <!-- Relevance equation -->
                                 <div class="form-group">
-                                    <label class="control-label " for='grelevance'><?php eT("Relevance equation:"); ?></label>
-                                    <div class="">
+                                    <label class="control-label " for='grelevance'><?php eT("Condition:"); ?></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">{</div>
                                         <textarea cols='1' class="form-control" rows='1' id='grelevance' name='grelevance'></textarea>
-                                    </div>
+                                        <div class="input-group-addon">}</div>
+                                    </div>                                    
                                 </div>
                                 <?php } ?>
                         </div>
 
-                        <!-- Save survey page -->
+                        <!-- Save question group -->
                         <p>
                             <input type='submit' class="hidden" value='<?php eT("Save survey page"); ?>' />
                         </p>

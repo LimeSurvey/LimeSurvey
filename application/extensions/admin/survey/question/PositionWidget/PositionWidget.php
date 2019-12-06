@@ -22,12 +22,12 @@
      * - ajax mode (display = ajax_form_group): In ajax mode, the widget will first render an hidden input where is called.
      *    This hidden input contains the necessary datas to generate a static position selector.
      *    Then it will register some js, that will insert after this hidden input a static position selector based on the datas of the hidden input.
-     *    If the survey page selector change, it will update the datas of the hidden input, and regenerate a new position selector
+     *    If the question group selector change, it will update the datas of the hidden input, and regenerate a new position selector
      */
     class PositionWidget extends CWidget
     {
         public $display             = 'form_group';                                     // What kind of rendering to use. For now, only form_group, to display inside right menu
-        public $oQuestionGroup      = '';                                               // Which survey page the position is related to
+        public $oQuestionGroup      = '';                                               // Which question group the position is related to
         public $oSurvey             = '';
         public $reloadAction        = 'admin/questions/sa/ajaxReloadPositionWidget';    // In ajax mode, name of the controller/action to call to reload the widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module)
         public $dataGroupSelectorId = 'gid';                                            // In ajax mode, the id of the group selector the widget is listening to.
@@ -35,7 +35,7 @@
 
         public function run()
         {
-            // We first check if a survey page object has been provided
+            // We first check if a question group object has been provided
             if ( is_a($this->oQuestionGroup, 'QuestionGroup') || is_a($this->oSurvey, 'Survey') )
             {
                 // If oQuestionGroup is not defined, we take the first group in the survey

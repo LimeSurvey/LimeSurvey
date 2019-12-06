@@ -48,17 +48,19 @@ echo viewHelper::getViewTestTag('pluginManager');
                         <?php echo $menu->getLabel(); ?>
                     </a>
                 <?php endforeach; ?>
-                <a
-                    href=''
-                    class='btn btn-success '
-                    data-toggle='modal'
-                    data-target='#installPluginZipModal'
-                    data-tooltip='true'
-                    title='<?php eT('Install plugin by ZIP archive'); ?>'
-                >
-                    <i class='fa fa-file-zip-o'></i>&nbsp;
-                    <?php eT('Install ZIP'); ?>
-                </a>
+                <?php if (!Yii::app()->getConfig('demoMode')): ?>
+                    <a
+                        href=''
+                        class='btn btn-success '
+                        data-toggle='modal'
+                        data-target='#installPluginZipModal'
+                        data-tooltip='true'
+                        title='<?php eT('Install plugin by ZIP archive'); ?>'
+                    >
+                        <i class='fa fa-file-zip-o'></i>&nbsp;
+                        <?php eT('Install ZIP'); ?>
+                    </a>
+                <?php endif; ?>
                 <a 
                     href='<?php echo $scanFilesUrl; ?>'
                     class='btn btn-default'

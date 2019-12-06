@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>expressionFixedDbVar</name>
+        <type>plugin</type>
+        <creationDate>2019-07-14</creationDate>
+        <last_update>2019-07-14</last_update>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.sondages.pro</authorUrl>
+        <version>1.0.0</version>
+        <license>GPL</license>
+        <description><![CDATA[Add SEED and other DB var in Expression Manager.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

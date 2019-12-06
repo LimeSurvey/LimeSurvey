@@ -68,6 +68,11 @@ class LSFileHelper extends CFileHelper
         if(empty($magicFile) && Yii::app()->getConfig('magic_database')) {
             $magicFile = Yii::app()->getConfig('magic_database');
         }
-        return parent::getMimeType($file,$magicFile,$checkExtension);
+        // Some PHP version can throw Notice with some files, disable this notice issue #15565
+        $iErrorReportingState = error_reporting();
+        error_reporting(0);
+        $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
+        error_reporting($iErrorReportingState);
+        return $mimeType;
     }
 }

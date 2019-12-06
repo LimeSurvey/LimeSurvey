@@ -412,7 +412,7 @@
             <inputtype>integer</inputtype>
             <default></default>
             <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
-            <caption>Text input size</caption>
+            <caption>Text input box size</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -461,7 +461,7 @@
             <expression>1</expression>
             <i18n>true</i18n>
             <default></default>
-            <help>In the printable version replace the relevance equation with this explanation text.</help>
+            <help>In the printable version replace the condition with this explanation text.</help>
             <caption>Relevance help for printable survey</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -922,7 +922,7 @@
                 </option>
             </options>
             <help>Relative width of the labels</help>
-            <caption>Label column width</caption>
+            <caption>Label wrapper width</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

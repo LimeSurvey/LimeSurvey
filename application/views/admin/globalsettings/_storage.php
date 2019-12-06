@@ -18,7 +18,7 @@
                     <?php eT('Calculate storage');?>
                 </a>
                 <br/>
-                <span class='text-muted'>
+                <span class='hint'>
                     <?php eT('Depending on the number of uploaded files, this might take some time.');?>
                 </span>
             </div>

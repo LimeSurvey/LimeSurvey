@@ -59,7 +59,16 @@ export default {
                     this.$store.state.folderList[0].folder
                 );
             }
-            this.$store.dispatch("getFileList").finally(() => {
+            this.$store.dispatch("getFileList")
+            .catch(error => {
+                window.LS.notifyFader(
+                    `${this.translate("An error has occured and the file list could not be loaded:")}
+Error: 
+${error.data.message}`,
+                    'well-lg bg-danger text-center'
+                );
+            })
+            .finally(() => {
                 this.loading = false;
             });
         })
@@ -67,18 +76,17 @@ export default {
             this.$log.error(error);
             this.loading = false;
             this.hasError = true;
+            window.LS.notifyFader(
+                `${this.translate("An error has occured and the folders could not be loaded:")}
+Error: 
+${error.data.message}`,
+                'well-lg bg-danger text-center'
+            );
         });
     }
 };
 </script>
 
 <style>
-#app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
+
 </style>

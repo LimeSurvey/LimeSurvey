@@ -64,16 +64,24 @@ class SurveysController extends LSYii_Controller
      * System error : only 404 error are managed here (2016-11-29)
      * SurveysController is the default controller set in internal
      * @see http://www.yiiframework.com/doc/guide/1.1/en/topics.error#handling-errors-using-an-action
+     *
+     * @throws CException
+     * @throws CHttpException
+     * @throws Throwable
+     * @throws Twig_Error_Loader
+     * @throws Twig_Error_Syntax
+     * @throws WrongTemplateVersionException
      */
     public function actionError()
     {
         /** @var array */
         $error = Yii::app()->errorHandler->error;
+        $oException = Yii::app()->errorHandler->getException();
         $request = Yii::app()->getRequest();
         if ($error && $request->isAjaxRequest) {
-            $this->spitOutJsonError($error);
+            $this->spitOutJsonError($error, $oException);
         } elseif ($error) {
-            $this->spitOutHtmlError($error);
+            $this->spitOutHtmlError($error, $oException);
         } else {
             throw new CHttpException(404, 'Page not found.');
         }
@@ -83,17 +91,26 @@ class SurveysController extends LSYii_Controller
      * Echo $error as HTML and end execution.
      *
      * @param array $error
+     * @param CException|null $oException
+     *
      * @return void
+     *
+     * @throws CException
+     * @throws Throwable
+     * @throws Twig_Error_Loader
+     * @throws Twig_Error_Syntax
+     * @throws WrongTemplateVersionException
      */
-    public function spitOutHtmlError(array $error)
+    public function spitOutHtmlError(array $error, $oException = null)
     {
+        // TODO: getGlobalSetting is DEPRECATED.
         $oTemplate = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
         $this->sTemplate = $oTemplate->sTemplateName;
 
-        $admin = Yii::app()->getConfig('siteadminname');
+        $admin = App()->getConfig('siteadminname');
         if (App()->getConfig('showEmailInError')) {
             // Never show email by default
-            $admin = CHtml::mailto(Yii::app()->getConfig('siteadminname'), Yii::app()->getConfig('siteadminemail'));
+            $admin = CHtml::mailto(App()->getConfig('siteadminname'), App()->getConfig('siteadminemail'));
         }
         $contact = sprintf(gT('If you think this is a server error, please contact %s.'), $admin);
         switch ($error['code']) {
@@ -106,6 +123,7 @@ class SurveysController extends LSYii_Controller
             case '401':
                 $title = gT('401: Unauthorized');
                 $message = gT('You must be logged in to access to this page.');
+                // TODO: Remove comment code.
                 // $loginurl = $this->getController()->createUrl("/admin/login")
                 // header('WWW-Authenticate: MyAuthScheme  realm="'.$loginurl.'"');
                 break;
@@ -133,8 +151,13 @@ class SurveysController extends LSYii_Controller
         $aError['title'] = nl2br(CHtml::encode($error['message']));
         $aError['message'] = $message;
         $aError['contact'] = $contact;
+        
+        if (App()->getConfig('debug') != 0) {
+            $aError['trace'] = $error['trace'];
+        }
+
         $aSurveyInfo['aError'] = $aError;
-        Yii::app()->twigRenderer->renderTemplateFromFile(
+        App()->twigRenderer->renderTemplateFromFile(
             "layout_errors.twig",
             array('aSurveyInfo' => $aSurveyInfo),
             false
@@ -146,19 +169,34 @@ class SurveysController extends LSYii_Controller
      * Echo JSON $error and ends execution.
      *
      * @param array $error
+     * @param CException $oException
+     *
      * @return void
+     *
+     * @throws CException
      */
-    public function spitOutJsonError(array $error)
+    public function spitOutJsonError(array $error, $oException)
     {
-        echo Yii::app()->getController()->renderPartial(
+        $dataArray = [
+            'data' => [
+                'success' => false,
+                'message' => $error['message'],
+                'error'   => $error,
+            ]
+        ];
+
+        if ($oException instanceof LSJsonException) {
+            if ($oException->getRedirectUrl() != null) {
+                $dataArray['data']['redirectTo'] = $oException->getRedirectUrl();
+            }
+            if ($oException->getNoReload() != null) {
+                $dataArray['data']['noReload'] = $oException->getNoReload();
+            }
+        }
+
+        echo App()->getController()->renderPartial(
             '/admin/super/_renderJson',
-            [
-                'data' => [
-                    'success' => false,
-                    'message' => $error['message'],
-                    'error'   => $error
-                ]
-            ],
+            $dataArray,
             true,
             false
         );

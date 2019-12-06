@@ -94,7 +94,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div class="ls-flex-row wrap" :class="!!currentQuestionGroupRandomgroup ? 'col-6' : 'col-12'" v-show="(parsedRelevance!=1 && parsedRelevance!='')">
-                        <div class="col-12">{{'Relevance'|translate}}</div>
+                        <div class="col-12">{{'Condition'|translate}}</div>
                         <div class="col-12 scoped-small-border scoped-showrelevance"  v-html="parsedRelevance" />
                     </div>
                 </li>

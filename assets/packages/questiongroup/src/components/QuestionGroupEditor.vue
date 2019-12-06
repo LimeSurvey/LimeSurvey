@@ -122,7 +122,7 @@ ${scriptContent}
                     <input v-model="currentQuestionGroupRandomgroup" class="form-control" />
                 </div>
                 <div class="col-sm-6 col-xs-12 ls-space margin top-5 bottom-5">
-                    <div class="col-12">{{'Relevance'|translate}}</div>
+                    <div class="col-12">{{'Condition'|translate}}</div>
                     <div class="input-group">
                         <span class="input-group-addon">{</span>
                             <input v-model="currentRelevance" class="form-control" />

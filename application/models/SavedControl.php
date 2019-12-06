@@ -199,7 +199,7 @@ class SavedControl extends LSActiveRecord
 
         $criteria->compare('scid', $this->scid);
         $criteria->compare('identifier', $this->identifier, true);
-        $criteria->compare('email', $this->email);
+        $criteria->compare('email', $this->email, true);
         $criteria->compare('ip', $this->ip, true);
         $criteria->compare('saved_thisstep', $this->saved_thisstep, true);
         $criteria->compare('status', $this->status, true);

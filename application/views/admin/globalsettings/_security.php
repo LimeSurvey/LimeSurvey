@@ -77,11 +77,10 @@
             'name' => 'force_ssl',
             'value'=> getGlobalSetting('force_ssl'),
             'selectOptions'=>array(
-                "neither"=>gT("Don't force on/off",'unescaped'),
                 "on"=>gT("On",'unescaped'),
                 "off"=>gT("Off",'unescaped')
             )
-        ));?>
+        ));?>        
     </div>
 </div>
 <?php

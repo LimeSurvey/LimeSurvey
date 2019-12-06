@@ -327,8 +327,8 @@
                 <datasecurity_notice type="data" twig="on"><![CDATA[ {{ gT("Here your data security notice") }} ]]></datasecurity_notice>
               </survey>
               <group type="core">
-                <name type="data" twig="on"><![CDATA[ {{ gT("Page 1: The first lot of questions") }} ]]></name>
-                <description type="data" twig="on"><![CDATA[ {{ gT("This survey page description is fairly vacuous, but quite important.") }} ]]></description>
+                <name type="data" twig="on"><![CDATA[ {{ gT("Group 1: The first lot of questions") }} ]]></name>
+                <description type="data" twig="on"><![CDATA[ {{ gT("This group description is fairly vacuous, but quite important.") }} ]]></description>
               </group>
               <question_1 type="core">
                 <code type="data" >'Q1 '</code>

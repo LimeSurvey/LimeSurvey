@@ -91,7 +91,7 @@
                         </div>
 
                         <div  class="form-group">
-                            <label for='gid'><?php eT("Survey page:"); ?></label>
+                            <label for='gid'><?php eT("Question group:"); ?></label>
                             <select name='gid' id='gid' class="form-control">
                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                             </select>
@@ -108,7 +108,7 @@
                         </div>
 
                         <div  class="form-group">
-                            <label for='relevance'><?php eT("Relevance equation:"); ?></label>
+                            <label for='relevance'><?php eT("Condition:"); ?></label>
                             <textarea cols='1' class="form-control" rows='1' id='relevance' name='relevance' ></textarea>
                         </div>
 

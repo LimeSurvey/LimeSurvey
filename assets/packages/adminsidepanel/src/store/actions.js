@@ -79,5 +79,10 @@ export default {
                     context.commit("setAllowOrganizer", parseInt(result.data.result));
             }).catch((error) => {reject(error)});}
         );
+    },
+    changeCurrentTab(context, payload) {
+        context.commit("changeCurrentTab", payload);
+        context.dispatch('collectMenus');
+        context.dispatch('getQuestions');
     }
 }

@@ -109,8 +109,8 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit relevance equation') ?>" data-toggle="tooltip" data-placement="bottom">
-                <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit relevance equation')?></span>
+            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit condition')?></span>
             </button>
             <input class="relevance" type="hidden">
         </td>

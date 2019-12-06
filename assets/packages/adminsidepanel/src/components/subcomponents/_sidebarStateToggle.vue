@@ -44,7 +44,7 @@ export default {
         currentKey() { return this.$store.state.toggleKey; },
         currentTab: {
             get() { return this.$store.state.currentTab; },
-            set(newVal) { this.$store.commit("changeCurrentTab", newVal); }
+            set(newVal) { this.$store.dispatch("changeCurrentTab", newVal); }
         },
     }
 }

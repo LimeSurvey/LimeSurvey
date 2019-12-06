@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 ?>
 
-<?php if(!Permission::model()->hasGlobalPermission('users', 'read')) :?>
+<?php if (!Permission::model()->hasGlobalPermission('users', 'read')) :?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         </div>
     </div>
 </div>
-<?php Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/_menubar'); ?>
+<?php App()->getController()->renderPartial('/admin/usermanagement/partial/_menubar'); ?>
 <div class="pagetitle h3"><?php eT("User control");?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="container-fluid">
@@ -38,15 +38,15 @@ echo viewHelper::getViewTestTag('usersIndex');
                 'columns' => $columnDefinition,
                 'filter' => $model,
                 'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
-                'summaryText'   => "<div class='row'>"
-                ."<div class='col-xs-6'>".$massiveAction."</div>"
+                'summaryText'   => "<div class='row' style='text-align:left; color:#000'>"
+                ."<div class='col-xs-6 content-left'>".$massiveAction."</div>"
                 ."<div class='col-xs-6'>"
                 .gT('Displaying {start}-{end} of {count} result(s).').' '
                     . sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
+                            App()->params['pageSizeOptions'],
                             array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
                     )
                 ."</div></div>",
@@ -62,6 +62,8 @@ echo viewHelper::getViewTestTag('usersIndex');
                     $.fn.yiiGridView.update('usermanagement--identity-gridPanel',{ data:{ pageSize: $(this).val() }});
                 });
             });
+            //show tooltip for gridview icons
+            $('[data-toggle="tooltip"]').tooltip();
         </script>
 </div>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">

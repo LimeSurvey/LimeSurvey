@@ -111,7 +111,7 @@ namespace LimeSurvey\PluginManager;
                     'type' => 'select',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gT('Question page:'),
+                    'label' => gT('Question group:'),
                     'options' => function($that) {
                         return $that->api->getGroupList($that->get('sid'));
                     }
@@ -120,7 +120,7 @@ namespace LimeSurvey\PluginManager;
                     'type' => 'relevance',
                     'localized' => false,
                     'advanced' => false,
-                    'label' => gT('Relevance equation:')
+                    'label' => gT('Condition:')
                 ),
                 'randomization' => array(
                     'type' => 'string',

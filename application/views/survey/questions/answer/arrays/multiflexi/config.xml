@@ -65,8 +65,8 @@
             <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
-            <help>Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).</help>
-            <caption>Repeat answer options</caption>
+            <help>Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).</help>
+            <caption>Repeat headers</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -271,7 +271,7 @@
             <inputtype>integer</inputtype>
             <default></default>
             <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
-            <caption>Text input size</caption>
+            <caption>Text input box size</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

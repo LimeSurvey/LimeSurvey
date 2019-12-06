@@ -56,10 +56,18 @@ export default {
         },
         showSaveButton: {
             get() {
-                return this.$store.state.showSaveButton;
+                return !!this.$store.state.showSaveButton;
             },
             set(newValue) {
                 this.$store.commit("setShowSaveButton", newValue);
+            }
+        },
+        showCloseButton: {
+            get() {
+                return !!this.$store.state.showCloseButton;
+            },
+            set(newValue) {
+                this.$store.commit("setShowCloseButton", newValue);
             }
         },
         closeButtonUrl: {
@@ -93,7 +101,11 @@ export default {
             if (this.$store.state.topbar_right_buttons != null) {
                 return filter(
                     this.$store.state.topbar_right_buttons,
-                    button => !(!this.showSaveButton && !!button.isSaveButton)
+                    button => (
+                        (!button.isCloseButton && !button.isSaveButton)
+                        || (this.showSaveButton && button.isSaveButton) 
+                        || (this.showCloseButton && button.isCloseButton)
+                    )
                 );
             }
             return [];
@@ -112,7 +124,11 @@ export default {
             if (this.$store.state.topbarextended_right_buttons != null) {
                 return filter(
                     this.$store.state.topbarextended_right_buttons,
-                    button => !(!this.showSaveButton && (!!button.isSaveButton) )
+                    button => (
+                        (!button.isCloseButton && !button.isSaveButton)
+                        || (this.showSaveButton && button.isSaveButton) 
+                        || (this.showCloseButton && button.isCloseButton)
+                    )
                 );
             }
             return [];
@@ -124,43 +140,48 @@ export default {
             let dispatchAction = '';
             let errorHeader = "";
             switch(this.type) {
-                case "question":
-                    dispatchAction = "getTopBarButtonsQuestion";
-                    errorHeader = "ERROR QUESTION";
-                    break;
-                case "group":
-                    dispatchAction = "getTopBarButtonsGroup";
-                    errorHeader = "ERROR GROUP";
-                    break;
-                case "survey":
-                    dispatchAction = "getTopBarButtonsSurvey";
-                    errorHeader = "ERROR SURVEY";
-                    this.slide = false;
-                    break;
-                case "tokens":
-                    dispatchAction = "getTopBarButtonsTokens";
-                    errorHeader = "ERROR TOKEN";
-                    this.slide = false;
-                    break;
+            case "question":
+                dispatchAction = "getTopBarButtonsQuestion";
+                errorHeader = "ERROR QUESTION";
+                break;
+            case "group":
+                dispatchAction = "getTopBarButtonsGroup";
+                errorHeader = "ERROR GROUP";
+                break;
+            case "survey":
+                dispatchAction = "getTopBarButtonsSurvey";
+                errorHeader = "ERROR SURVEY";
+                this.slide = false;
+                break;
+            case "tokens":
+                dispatchAction = "getTopBarButtonsTokens";
+                errorHeader = "ERROR TOKEN";
+                this.slide = false;
+                break;
+            case "responses":
+                dispatchAction = "getTopBarButtonsResponses";
+                errorHeader = "ERROR RESPONSES";
+                this.slide = false;
+                break;
             }
             
             this.loading = true;
             this.$store.dispatch(dispatchAction)
-            .then((data) => {
+                .then((data) => {
                     return this.$store.dispatch('getCustomTopbarContent').then((data2)=> { return [data, data2] });
-            }).then(datas => {
-                this.$log.log("Promise resolved with datas", datas);
-                this.counter++;
+                }).then(datas => {
+                    this.$log.log("Promise resolved with datas", datas);
+                    this.counter++;
                 //LS.pageLoadActions.saveBindings();
-            }).catch(error => {
-                this.$log.error(errorHeader);
-                this.$log.error(error);
-            }).finally(() => {
-                this.$log.log("Trigger loading end");
-                this.loading = false;
-                this.$forceUpdate();
-                LS.pageLoadActions.saveBindings();
-            });
+                }).catch(error => {
+                    this.$log.error(errorHeader);
+                    this.$log.error(error);
+                }).finally(() => {
+                    this.$log.log("Trigger loading end");
+                    this.loading = false;
+                    this.$forceUpdate();
+                    LS.pageLoadActions.saveBindings();
+                });
         },
 
         onFade(slideable) {
@@ -202,13 +223,13 @@ export default {
             const currentType = this.type;
             this.readGlobalObject(data);
 
-            if(!this.hasRunOnce) {
+            if (!this.hasRunOnce) {
                 this.hasRunOnce = true;
                 this.setType();
                 return;
             }
 
-            if(currentType === this.type) {
+            if (currentType === this.type) {
                 this.loading = false;
             } 
             

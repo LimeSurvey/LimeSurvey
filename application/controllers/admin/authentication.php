@@ -91,13 +91,10 @@ class Authentication extends Survey_Common_Action
     {
         $aData = array();
 
-        // Plugins, include core plugins, can't be activated by default.
-        // So after a fresh installation, core plugins are not activated
-        // They need to be manually loaded.
-        // TODO: WHY can't they be active by default?
         if (!class_exists('Authdb', false)) {
             $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
             if (!$plugin) {
+                // TODO: Should not be possible to get here after LS4. See LsDefaultDataSets::getDefaultPluginsData().
                 $plugin = new Plugin();
                 $plugin->name = 'Authdb';
                 $plugin->active = 1;

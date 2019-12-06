@@ -109,7 +109,7 @@
 
         <!-- Reset conditions/relevance -->
         <div class="form-group">
-            <label class=" control-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions/relevance?"); ?> </label>
+            <label class=" control-label" for='copysurveyresetconditions'><?php echo  eT("Reset conditions?"); ?> </label>
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'copysurveyresetconditions',

@@ -1,4 +1,44 @@
 
+<template>
+    <div class="ls-flex grow-3" id="QuestionEditor--test--questionoverviewcontainer">
+        <transition name="slide-fade">
+            <div v-if="!loading"  class="panel panel-default col-12" @dblclick="toggleEditMode">
+                <div class="panel-heading">
+                    {{'Text elements'|translate}}
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Question'|translate}}</div>
+                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
+                        </div>
+                    </li>
+                    <li class="list-group-item" v-show="!!cleanCurrentQuestionHelp">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Help'|translate}}</div>
+                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
+                        </div>
+                    </li>
+                    <li class="list-group-item" v-show="!!currentQuestionScript">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Script'|translate}}</div>
+                            <div class="col-12 scoped-small-border">
+                                {{currentQuestionScript}}
+                            </div>
+                            <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </transition>
+        <transition name="slide-fade">
+            <div class="row" v-if="loading">
+                <loader-widget id="questionoverviewLoader" />
+            </div>
+        </transition>
+    </div>
+</template>
+
 <script>
 
 import foreach from 'lodash/forEach';
@@ -59,46 +99,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <div class="ls-flex grow-3" id="QuestionEditor--test--questionoverviewcontainer">
-        <transition name="slide-fade">
-            <div v-if="!loading"  class="panel panel-default col-12" @dblclick="toggleEditMode">
-                <div class="panel-heading">
-                    {{'Text elements'|translate}}
-                </div>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="ls-flex-row wrap col-12">
-                            <div class="col-12">{{'Question'|translate}}</div>
-                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
-                        </div>
-                    </li>
-                    <li class="list-group-item" v-show="!!cleanCurrentQuestionHelp">
-                        <div class="ls-flex-row wrap col-12">
-                            <div class="col-12">{{'Help'|translate}}</div>
-                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
-                        </div>
-                    </li>
-                    <li class="list-group-item" v-show="!!currentQuestionScript">
-                        <div class="ls-flex-row wrap col-12">
-                            <div class="col-12">{{'Script'|translate}}</div>
-                            <div class="col-12 scoped-small-border">
-                                {{currentQuestionScript}}
-                            </div>
-                            <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </transition>
-        <transition name="slide-fade">
-            <div class="row" v-if="loading">
-                <loader-widget id="questionoverviewLoader" />
-            </div>
-        </transition>
-    </div>
-</template>
 
 <style type="scss" scoped>
  .scoped-small-border{

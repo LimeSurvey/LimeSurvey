@@ -546,7 +546,10 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['hidden'] = isset($question->questionAttributes['hidden']) && !empty($question->questionAttributes['hidden']->value);
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->questionL10ns[$baselang]->question, true);
+                        $questionText = isset($question->questionL10ns[$baselang])
+                            ? $question->questionL10ns[$baselang]->question
+                            : '';
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
                         $curGroup['questions'][] = $curQuestion;
                     }
 
@@ -608,7 +611,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Load list survey pages view for a specified by $iSurveyID
+     * Load list question groups view for a specified by $iSurveyID
      *
      * @access public
      * @param mixed $surveyid The survey ID
@@ -633,7 +636,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
         $aData['title_bar']['title']                         = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['subaction']                                  = gT("Survey pages in this survey");
+        $aData['subaction']                                  = gT("Question groups in this survey");
 
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
@@ -660,6 +663,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @access public
      * @param mixed $surveyid
      * @return string
+     * @todo php warning (Missing return statement)
      */
     public function listquestions($surveyid)
     {
@@ -670,6 +674,12 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
+        // Set number of page
+        $pageSize = App()->request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int) $pageSize);
+        }
+
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData   = array();
 
@@ -677,17 +687,19 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid']                              = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
-        $aData['surveybar']['returnbutton']['url']      = $this->getController()->createUrl("admin/survey/sa/listsurveys");
+        $aData['surveybar']['returnbutton']['url']      = $this->getController()->createUrl(
+            "admin/survey/sa/listsurveys"
+        );
         $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
         $aData['surveybar']['buttons']['newquestion']   = true;
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
-        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title.
+            " (".gT("ID").":".$iSurveyID.")";
 
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
-
 
     /**
      * Function responsible to deactivate a survey.
@@ -778,7 +790,7 @@ class SurveyAdmin extends Survey_Common_Action
             $survey->autonumber_start = $new_autonumber_start;
             $survey->save();
             if (Yii::app()->db->getDriverName() == 'pgsql') {
-                $idDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
+                $idDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(pg_attrdef.adbin, pg_attrdef.adrelid) FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$sOldSurveyTableName' and pg_attribute.attname='id'")->queryScalar();
                 if (preg_match("/nextval\('(survey_\d+_id_seq\d*)'::regclass\)/", $idDefault, $matches)) {
                     $oldSeq = $matches[1];
                     Yii::app()->db->createCommand()->renameTable($oldSeq, $sNewSurveyTableName.'_id_seq');
@@ -1243,7 +1255,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * questiongroup::organize()
-     * Load ordering of survey page screen.
+     * Load ordering of question group screen.
      *
      * @param int $iSurveyID
      * @return void
@@ -1294,7 +1306,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Show the form for Organize survey pages/questions
+     * Show the form for Organize question groups/questions
      *
      * @todo Change function name to _showOrganizeGroupsAndQuestions?
      * @param int $iSurveyID

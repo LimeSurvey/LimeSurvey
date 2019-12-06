@@ -1,3 +1,50 @@
+
+<template>
+    <div class="ls-flex scope-set-min-height scoped-general-settings" :class="collapsedMenu ? 'collapsed' : 'non-collapsed'">
+        <transition name="slide-fade">
+            <div class="panel panel-default question-option-general-container col-12" v-if="!loading && !collapsedMenu">
+                <div class="panel-heading"> 
+                    {{"General Settings" | translate }}
+                    <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
+                        <i class="fa fa-chevron-right" />
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
+                            <component 
+                            v-bind:is="getComponentName(generalSetting.inputtype)" 
+                            :elId="generalSetting.formElementId"
+                            :elName="generalSetting.formElementName"
+                            :elLabel="generalSetting.title"
+                            :elHelp="generalSetting.formElementHelp"
+                            :currentValue="generalSetting.formElementValue"
+                            :elOptions="generalSetting.formElementOptions"
+                            :debug="generalSetting"
+                            :readonly="isReadonly(generalSetting)"
+                            @change="reactOnChange($event, generalSetting)"
+                            ></component>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+        <transition name="slide-fade">
+            <button v-if="!loading && collapsedMenu" class="btn btn-default scoped--special-collapse" @click="collapsedMenu=false">
+                <i class="fa fa-chevron-left" />
+                <div class="special-collapse-text">
+                    {{"General Settings" | translate }}
+                </div>
+            </button>
+        </transition>
+        <transition name="slide-fade">
+            <div class="row" v-if="loading">
+                <loader-widget id="generalSettingsLoader" />
+            </div>
+        </transition>
+    </div>
+</template>
+
 <script>
 import filter from 'lodash/filter';
 
@@ -78,52 +125,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <div class="ls-flex scope-set-min-height scoped-general-settings" :class="collapsedMenu ? 'collapsed' : ''">
-        <transition name="slide-fade">
-            <div class="panel panel-default question-option-general-container col-12" v-if="!loading && !collapsedMenu">
-                <div class="panel-heading"> 
-                    {{"General Settings" | translate }}
-                    <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
-                        <i class="fa fa-chevron-right" />
-                    </button>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
-                            <component 
-                            v-bind:is="getComponentName(generalSetting.inputtype)" 
-                            :elId="generalSetting.formElementId"
-                            :elName="generalSetting.formElementName"
-                            :elLabel="generalSetting.title"
-                            :elHelp="generalSetting.formElementHelp"
-                            :currentValue="generalSetting.formElementValue"
-                            :elOptions="generalSetting.formElementOptions"
-                            :debug="generalSetting"
-                            :readonly="isReadonly(generalSetting)"
-                            @change="reactOnChange($event, generalSetting)"
-                            ></component>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
-        <transition name="slide-fade">
-            <button v-if="!loading && collapsedMenu" class="btn btn-default scoped--special-collapse" @click="collapsedMenu=false">
-                <i class="fa fa-chevron-left" />
-                <div class="special-collapse-text">
-                    {{"General Settings" | translate }}
-                </div>
-            </button>
-        </transition>
-        <transition name="slide-fade">
-            <div class="row" v-if="loading">
-                <loader-widget id="generalSettingsLoader" />
-            </div>
-        </transition>
-    </div>
-</template>
 
 <style lang="scss" scoped>
 .scoped--special-collapse {

@@ -225,7 +225,7 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Rewrites sort order for questions in a page
+     * Rewrites sort order for questions in a group
      *
      * @static
      * @access public
@@ -249,7 +249,7 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a page
+     * Fix sort order for questions in a group
      * @param int $gid
      * @param int $position
      */
@@ -691,22 +691,29 @@ class Question extends LSActiveRecord
      */
     public function getOrderedSubQuestions($scale_id = null)
     {
+        
+
         //reset subquestions set prior to this call
         $aSubQuestions = [
             0 => []
         ];
-        $excludedSubquestion = null;
 
         $aOrderedSubquestions = $this->subquestions;
-        if($this->getQuestionAttribute('random_order') == 1) {
-            shuffle($aOrderedSubquestions);
+
+        if ($this->getQuestionAttribute('random_order') == 1) {
+            require_once(Yii::app()->basePath.'/libraries/MersenneTwister.php');
+            ls\mersenne\setSeed($this->sid);
+
+            $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
+        } else {
+            usort($aOrderedSubquestions, function ($oQuestionA, $oQuestionB) {
+                if ($oQuestionA->question_order == $oQuestionB->question_order) { return 0; }
+                return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
+            });
         }
 
-        usort($aOrderedSubquestions, function($oQuestionA, $oQuestionB){
-            if($oQuestionA->question_order == $oQuestionB->question_order) { return 0; }
-            return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
-        });
 
+        $excludedSubquestion = null;
         foreach ($aOrderedSubquestions as $i => $oSubquestion) {
             if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
                 continue;
@@ -717,14 +724,15 @@ class Question extends LSActiveRecord
                 ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
                 && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
             ) {
+                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id])-1);
                 $excludedSubquestion = $oSubquestion;
                 continue;
             }
             $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;
         }
 
-        if($excludedSubquestion !== null) {
-            array_splice($aSubQuestions[$excludedSubquestion->scale_id][], ($excludedSubquestion->question_order-1), 0, $excludedSubquestion);
+        if ($excludedSubquestion != null) {
+            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order-1), 0, [$excludedSubquestion]);
         }
 
         if($scale_id !== null) {
@@ -814,7 +822,7 @@ class Question extends LSActiveRecord
                 'value'=>'$data->qid',
             ),
             array(
-                'header' => gT("Page / Question order"),
+                'header' => gT("Group / Question order"),
                 'name' => 'question_order',
                 'value'=>'$data->group->group_order ." / ". $data->question_order',
             ),
@@ -839,7 +847,7 @@ class Question extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Page'),
+                'header' => gT('Group'),
                 'name' => 'group',
                 'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
             ),
@@ -954,7 +962,7 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Make sure we don't save a new question page
+     * Make sure we don't save a new question group
      * while the survey is active.
      *
      * @return bool

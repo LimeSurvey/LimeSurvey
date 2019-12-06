@@ -27,7 +27,7 @@
         <ul style="text-align:left;">
         <li><?php eT("Surveys"); ?>: <?php echo $aImportResults['surveys']; ?></li>
         <li><?php eT("Languages"); ?>: <?php echo $aImportResults['languages']; ?></li>
-        <li><?php eT("Survey pages"); ?>: <?php echo $aImportResults['groups']; ?></li>
+        <li><?php eT("Question groups"); ?>: <?php echo $aImportResults['groups']; ?></li>
         <li><?php eT("Questions"); ?>: <?php echo $aImportResults['questions']; ?></li>
         <li><?php eT("Answers"); ?>: <?php echo $aImportResults['answers']; ?></li>
         <?php if (isset($aImportResults['subquestions']))

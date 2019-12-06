@@ -11,12 +11,12 @@
 echo viewHelper::getViewTestTag('surveyListQuestions');
 $baseLanguage = $oSurvey->language;
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = App()->user->getState('pageSize', App()->params['defaultPageSize']);?>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3 class="ls-flex ls-flex-row">
         <?php if(App()->request->getParam('group_name')!=''):?>
-            <div class="ls-flex-item text-left"><?php eT('Questions on survey page: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></div>
+            <div class="ls-flex-item text-left"><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></div>
         <?php else:?>
             <div class="ls-flex-item text-left"><?php eT('Questions in this survey'); ?></div>
         <?php endif;?>
@@ -42,7 +42,10 @@ $baseLanguage = $oSurvey->language;
                     <div class="ls-flex-item form  text-right">
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
-                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions',['surveyid'=>$oSurvey->primaryKey]),
+                            'action' => App()->createUrl(
+                                'admin/survey/sa/listquestions',
+                                ['surveyid'=>$oSurvey->primaryKey]
+                            ),
                             'method' => 'get',
                                 'htmlOptions'=>array(
                                     'class'=>'form-inline',
@@ -51,15 +54,19 @@ $baseLanguage = $oSurvey->language;
 
                             <!-- search input -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'search', array('label'=>gT('Search:'),'class'=>'control-label' )); ?>
+                                <?php echo $form->label(
+                                    $model,
+                                    'search',
+                                    array('label'=>gT('Search:'),'class'=>'control-label' )
+                                ); ?>
                                 <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'group', array('label'=>gT('Page:'),'class'=>'control-label')); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
                                     <select name="gid" class="form-control">
-                                        <option value=""><?php eT('(Any page)');?></option>
+                                        <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($oSurvey->groups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
                                                 <?php echo flattenText($group->questionGroupL10ns[$oSurvey->language]->group_name);?>
@@ -68,8 +75,14 @@ $baseLanguage = $oSurvey->language;
                                     </select>
                             </div>
 
-                            <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions',['surveyid'=>$oSurvey->primaryKey]);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                            <?php echo CHtml::submitButton(
+                                gT('Search', 'unescaped'),
+                                array('class'=>'btn btn-success')
+                            ); ?>
+                            <a href="<?php echo App()->createUrl(
+                                'admin/survey/sa/listquestions',
+                                ['surveyid'=>$oSurvey->primaryKey]
+                            );?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
                         <?php $this->endWidget(); ?>
                     </div><!-- form -->
@@ -80,32 +93,53 @@ $baseLanguage = $oSurvey->language;
             <div class="row ls-space margin top-10">
                 <div class="col-lg-12">
                     <?php
-                    $massiveAction = App()->getController()->renderPartial('/admin/survey/Question/massive_actions/_selector', array('model'=>$model, 'oSurvey'=>$oSurvey), true, false);
-                    $this->widget('ext.LimeGridView.LimeGridView', array(
-                        'dataProvider' => $model->search(),
-                        // Number of row per page selection
-                        'id' => 'question-grid',
-                        'type'=>'striped',
-                        'emptyText'=>gT('No questions found.'),
-                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+                        $massiveAction = App()->getController()->renderPartial(
+                            '/admin/survey/Question/massive_actions/_selector',
+                            array('model'=>$model, 'oSurvey'=>$oSurvey),
+                            true,
+                            false
+                        );
+                        $this->widget(
+                            'bootstrap.widgets.TbGridView',
+                            array(
+                                'dataProvider' => $model->search(),
+                                'id' => 'question-grid',
+                                'type' => 'striped',
+                                'emptyText' => gT('No questions found.'),
+                                'summaryText' => "<div class='row'>"
+                                    ."<div class='col-xs-6'>".$massiveAction."</div>"
+                                    ."<div class='col-xs-6'>"
+                                    .gT('Displaying {start}-{end} of {count} result(s).').' '
+                                        . sprintf(
+                                            gT('%s rows per page'),
+                                            CHtml::dropDownList(
+                                                'pageSize',
+                                                $pageSize,
+                                                App()->params['pageSizeOptions'],
+                                                array(
+                                                    'class'=>'changePageSize form-control',
+                                                    'style'=>'display: inline; width: auto'
+                                                )
+                                            )
+                                        )
+                                    ."</div></div>",
                                 'columns' => $model->questionListColumns,
                                 'ajaxUpdate' => 'question-grid',
                                 'afterAjaxUpdate' => "bindPageSizeChange"
-                            ));
-                            ?>
+                            )
+                        );
+                    ?>
                         </div>
                     </div>
         </div>
     </div>
 </div>
 
-
+<script>
+    jQuery(document).on("change", '#pageSize', function() {
+        $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
+    });
+</script>
 
 <div class="modal fade" id="question-preview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -135,4 +169,8 @@ $baseLanguage = $oSurvey->language;
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
 
-<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange();", LSYii_ClientScript::POS_POSTSCRIPT); ?>
+<?php App()->getClientScript()->registerScript(
+    "ListQuestions-run-pagination",
+    "bindPageSizeChange();",
+    LSYii_ClientScript::POS_POSTSCRIPT
+); ?>

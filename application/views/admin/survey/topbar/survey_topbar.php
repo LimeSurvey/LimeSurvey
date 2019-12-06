@@ -293,7 +293,7 @@ if (!$isActive && $hasSurveyContentPermission) {
     ];
     array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['straight']);
 
-    // By Survey Page
+    // By Question Group
     $buttons['by_question_group'] = [
         'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
         'name' => gT('By survey page'),
@@ -400,6 +400,16 @@ $buttons['save'] = [
     'isSaveButton' => true
 ];
 array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
+
+$buttons['close'] = [
+    'name' => gT('Close'),
+    'id' => 'close-button',
+    'class' => 'btn-danger',
+    'icon' => 'fa fa-times',
+    'url' => '#',
+    'isCloseButton' => true
+];
+array_push($topbar['alignment']['right']['buttons'], $buttons['close']);
 
 
 $finalJSON = [

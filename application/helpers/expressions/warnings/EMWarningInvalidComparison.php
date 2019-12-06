@@ -20,7 +20,7 @@ class EMWarningInvalidComparison extends EMWarningBase
     public function __construct(array $token)
     {
         $this->token = $token;
-        $this->msg = gT("This expression uses invalid comparaison. Are you sure you didn't mean numerical compare? See manual for more information.", 'unescaped');
+        $this->msg = gT("This expression uses a possibly invalid comparison. Are you sure you didn't mean to do a numerical comparison? See manual for more information.", 'unescaped');
         $this->helpLink = "https://manual.limesurvey.org/Expression_Manager#Warning_with_mismatch_between_number_and_string_and_alphabetic_comparison";
     }
 }

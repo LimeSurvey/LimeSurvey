@@ -1,3 +1,42 @@
+
+<template>
+    <div class="col-12">
+        <ul class="scoped-root-list">
+            <li v-for="(folder,cnt) in folders" :key="folder.key" :class="getHtmlClasses(folder)">
+                <div class="ls-flex ls-flex-row" :id="folder.key" @click.stop="selectFolder(folder)">
+                    <div class="ls-flex-item grow-1 text-center">
+                        <i
+                            :class="$store.state.currentFolder == folder.folder ? 'fa fa-folder-open fa-lg' : 'fa fa-folder fa-lg'"
+                        ></i>
+                    </div>
+                    <div class="ls-flex-item grow-6">
+                        <span class="scope-apply-hover">{{folder.shortName}}</span>
+                    </div>
+                    <div class="ls-flex-item grow-1 text-right">
+                        <button
+                            v-if="folder.children.length > 0"
+                            class="btn btn-xs btn-default toggle-collapse-children"
+                            @click.stop="toggleCollapse(folder.key)"
+                        >
+                            <i
+                                :class=" isCollapsed(folder.key) ? 'fa fa-caret-down fa-lg' : 'fa fa-caret-up fa-lg'"
+                            ></i>
+                        </button>
+                    </div>
+                </div>
+                <treeview
+                    :key="folder.folder+'-children'"
+                    v-show="folder.children.length > 0 && !isCollapsed(folder.key)"
+                    :folders="folder.children"
+                    :loading="loading"
+                    :preset-folder="presetFolder"
+                    @setLoading="setLoading"
+                />
+            </li>
+        </ul>
+    </div>
+</template>
+
 <script>
 import applyLoader from '../../mixins/applyLoader';
 
@@ -12,14 +51,14 @@ export default {
             }
         },
         presetFolder: {type: String|null, default: null},
-        initiallyCollapsed: { type: Boolean, default: false },
-    },
-    data() {
-        return {
-            collapsed: this.initiallyCollapsed
-        };
     },
     methods: {
+        toggleCollapse(folderKey) {
+            this.$store.commit('toggleCollapseFolder', folderKey);
+        },
+        isCollapsed(folderKey) {
+            return this.$store.state.uncollapsedFolders.indexOf(folderKey) == -1
+        },
         selectFolder(folderObject) {
             this.loadingState = true;
             this.$store
@@ -46,44 +85,6 @@ export default {
     }
 };
 </script>
-
-<template>
-    <div class="col-12">
-        <ul class="scoped-root-list">
-            <li v-for="folder in folders" :key="folder.key" :class="getHtmlClasses(folder)">
-                <div class="ls-flex ls-flex-row" @click.stop="selectFolder(folder)">
-                    <div class="ls-flex-item grow-1 text-center">
-                        <i
-                            :class="$store.state.currentFolder == folder.folder ? 'fa fa-folder-open fa-lg' : 'fa fa-folder fa-lg'"
-                        ></i>
-                    </div>
-                    <div class="ls-flex-item grow-6">
-                        <span class="scope-apply-hover">{{folder.shortName}}</span>
-                    </div>
-                    <div class="ls-flex-item grow-1 text-right">
-                        <button
-                            v-if="folder.children.length > 0"
-                            @click.stop="collapsed=!collapsed"
-                            class="btn btn-xs btn-default"
-                        >
-                            <i
-                                :class=" collapsed ? 'fa fa-caret-down fa-lg' : 'fa fa-caret-up fa-lg'"
-                            ></i>
-                        </button>
-                    </div>
-                </div>
-                <treeview
-                    v-show="folder.children.length > 0 && !collapsed"
-                    :collapsed="collapsed"
-                    :folders="folder.children"
-                    :loading="loading"
-                    :preset-folder="presetFolder"
-                    @setLoading="setLoading"
-                />
-            </li>
-        </ul>
-    </div>
-</template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>

@@ -62,9 +62,9 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </div>
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <div class="col-sm-12 control-label ">
-                    <p class="text-info text-left">
+                    <span class="hint">
                     <?php eT("You can add your custom themes in upload/admintheme");?>
-                    </p>
+                    </span>
                 </div>
                 <?php endif;?>
             </div>
@@ -338,9 +338,9 @@ Full lock - none of participants are allowed to take survey, even if they alread
                         ?>
                     </div>
                     <div class="col-sm-12 control-label ">
-                        <p class="text-info text-left">
+                        <span class="hint">
                             <?php eT("Enabling unstable updates will allow you to try alpha and beta versions of extensions. Talk to the extension author for more information.");?>
-                        </p>
+                        </span>
                     </div>
                 </div>
             </div>

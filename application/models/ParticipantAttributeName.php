@@ -138,7 +138,9 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // don't show checkbox for core attributes
         if ($this->core_attribute == 'Y'){
-            return '';
+            // BugFix: 317(op), whithout this hidden inputfields, massive action 'delete' is not working correctly
+            // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
+            return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='".$this->attribute_id."' >";
         }
         return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='".$this->attribute_id."' >";
     }
@@ -585,10 +587,16 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function delAttribute($attid)
     {
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid);
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid);
-        Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = '.$attid);
+        // never delete core-attributes !!!
+        // first check if $attid is core attribute
+        // if not attribute could be deleted
+        $participantAttributeName = ParticipantAttributeName::model()->findByPk((int) $attid);
+        if($participantAttributeName->core_attribute !== 'Y') {
+            Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = ' . $attid);
+            Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = ' . $attid);
+            Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = ' . $attid);
+            Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = ' . $attid);
+        }
     }
 
     /**

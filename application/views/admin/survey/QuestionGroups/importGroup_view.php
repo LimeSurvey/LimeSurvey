@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
             <!-- form -->
             <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30 ', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!','js').'");')); ?>
 
-                <!-- Select survey page file -->
+                <!-- Select question group file -->
                 <div class="form-group">
                     <label for='the_file' class=" control-label"><?php eT("Select survey page file (*.lsg):");
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);

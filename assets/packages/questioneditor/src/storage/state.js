@@ -29,5 +29,10 @@ export default {
     activeLanguage: '',
     inTransfer: false,
     alerts: [],
-    storedEvent: null
+    storedEvent: null,
+    initCopy: false,
+    copySubquestions: true,
+    copyAnswerOptions: true,
+    copyDefaultAnswers: true,
+    copyAdvancedOptions: true,
 };

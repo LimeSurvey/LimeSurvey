@@ -42,7 +42,7 @@
             <label class="  control-label"  for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
                 <input class="form-control"  type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />
-                <p class="help-block"><?php printf(gT("Enter your hostname and port, e.g.: %s"),"smtp.example.org:25"); ?></p>
+                <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"),"smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="form-group">

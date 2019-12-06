@@ -148,7 +148,7 @@
                 </a>
             </li>
 
-            <!-- By survey page -->
+            <!-- By question group -->
             <li>
             <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$oSurvey->sid}/subaction/bygroup"); ?>">
                 <span class="icon-resetsurveylogic" ></span>

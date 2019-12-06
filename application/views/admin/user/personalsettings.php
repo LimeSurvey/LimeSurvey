@@ -306,7 +306,7 @@ echo $oQuestionSelector->getModal();
                             <!-- Basic non numerical part of answer options -->
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
-                                    <?php echo TbHtml::label( gT("Non-Numerical answeroption prefix:"), 'answeroptionprefix', array('class'=>" control-label")); ?>
+                                    <?php echo TbHtml::label( gT("Non-Numerical answer option prefix:"), 'answeroptionprefix', array('class'=>" control-label")); ?>
                                     <?php
                                         echo TbHtml::textField(
                                             'answeroptionprefix',

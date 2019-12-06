@@ -2432,7 +2432,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }        
 
         if ($iOldDBVersion < 400) {
-            // This update moves localization-dependant strings from survey page/question/answer tables to related localization tables
+            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
             
             // Question table 
@@ -3009,6 +3009,39 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 424) {
+            $oTransaction = $oDB->beginTransaction();
+            $installedPlugins = $oDB->createCommand('SELECT name FROM {{plugins}}')->queryAll();
+            /**
+             * @param string $name Name of plugin
+             * @param int $active
+             */
+            $insertPlugin = function ($name, $active = 0) use ($installedPlugins, $oDB) {
+                if (!in_array($name, $installedPlugins)) {
+                    $oDB->createCommand()->insert("{{plugins}}", [
+                        'name'               => $name,
+                        'plugin_type'        => 'core',
+                        'active'             => $active,
+                        'version'            => '1.0.0',
+                        'load_error'         => 0,
+                        'load_error_message' => null
+                    ]);
+                }
+            };
+            $insertPlugin('AuthLDAP');
+            $insertPlugin('AuditLog');
+            $insertPlugin('Authwebserver');
+            $insertPlugin('ExportR', 1);
+            $insertPlugin('ExportSTATAxml', 1);
+            $insertPlugin('oldUrlCompat');
+            $insertPlugin('expressionQuestionHelp');
+            $insertPlugin('expressionQuestionForAll');
+            $insertPlugin('expressionFixedDbVar');
+            $insertPlugin('customToken');
+            $insertPlugin('mailSenderToFrom');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>424), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

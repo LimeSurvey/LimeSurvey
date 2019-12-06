@@ -34,9 +34,16 @@ export default {
     loadQuestion: (context) => {
         return Promise.all([
             (new Promise((resolve, reject) => {
-                const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
+                const postUrl = LS.createUrl(
+                    window.QuestionEditData.connectorBaseUrl,
+                    {
+                        sa: 'getQuestionData',
+                        sid: context.getters.surveyid
+                    }
+                );
+
                 ajax.methods.$_get(
-                    window.QuestionEditData.connectorBaseUrl+subAction, 
+                    postUrl,
                     {
                         'iQuestionId' : window.QuestionEditData.qid, 
                         'gid' : window.QuestionEditData.gid || null, 
@@ -71,9 +78,15 @@ export default {
                 });
             })),
             (new Promise((resolve, reject) => {
-                const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionPermissions' : '/getQuestionPermissions';
+                const postUrl = LS.createUrl(
+                    window.QuestionEditData.connectorBaseUrl,
+                    {
+                        sa: 'getQuestionPermissions',
+                        sid: context.getters.surveyid
+                    }
+                );
                 ajax.methods.$_get(
-                    window.QuestionEditData.connectorBaseUrl+subAction, 
+                    postUrl,
                     {
                         'gid' : window.QuestionEditData.gid || null, 
                         'iQuestionId' : window.QuestionEditData.qid 
@@ -91,7 +104,14 @@ export default {
     },
     getQuestionGeneralSettings: (context, questionTheme='core') => {
         return new Promise((resolve, reject) => {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getGeneralOptions' : '/getGeneralOptions';
+            const postUrl = LS.createUrl(
+                window.QuestionEditData.connectorBaseUrl,
+                {
+                    sa: 'getGeneralOptions',
+                    sid: context.getters.surveyid
+                }
+            );
+
             const parameters = {
                 'gid' : window.QuestionEditData.gid || null, 
                 sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
@@ -106,7 +126,7 @@ export default {
                 parameters.iQuestionId = window.QuestionEditData.qid
             }
             ajax.methods.$_get(
-                window.QuestionEditData.connectorBaseUrl+subAction, 
+                postUrl,
                 parameters
             ).then((result) => {
                 context.commit('setCurrentQuestionGeneralSettings', result.data);
@@ -122,7 +142,13 @@ export default {
     },
     getQuestionAdvancedSettings: (context) => {
         return new Promise((resolve, reject) => {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getAdvancedOptions' : '/getAdvancedOptions';
+            const postUrl = LS.createUrl(
+                window.QuestionEditData.connectorBaseUrl,
+                {
+                    sa: 'getAdvancedOptions',
+                    sid: context.getters.surveyid
+                }
+            );
             const parameters = {
                 sQuestionType: context.state.currentQuestion.type || window.QuestionEditData.startType,
             };
@@ -136,7 +162,7 @@ export default {
             }
 
             ajax.methods.$_get(
-                window.QuestionEditData.connectorBaseUrl+subAction, 
+                postUrl,
                 parameters
             ).then((result) => {
                 context.commit('setCurrentQuestionAdvancedSettings', result.data.advancedSettings);
@@ -152,9 +178,16 @@ export default {
         });
     },
     getQuestionTypes: (context) => {
-        const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionTypeList' : '/getQuestionTypeList';
+        const postUrl = LS.createUrl(
+            window.QuestionEditData.connectorBaseUrl,
+            {
+                sa: 'getQuestionTypeList',
+                sid: context.getters.surveyid
+            }
+        );
+
         ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+subAction
+            postUrl
         )
         .then((result) => {
             context.commit('setQuestionTypeList', result.data);
@@ -166,7 +199,14 @@ export default {
     },
     reloadQuestion: (context) => {
         return new Promise((resolve,reject) => {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'reloadQuestionData' : '/reloadQuestionData';
+            const postUrl = LS.createUrl(
+                window.QuestionEditData.connectorBaseUrl,
+                {
+                    sa: 'reloadQuestionData',
+                    sid: context.getters.surveyid
+                }
+            );
+
             const parameters = {
                 'gid' : window.QuestionEditData.gid || null, 
                 type: context.state.currentQuestion.type || window.QuestionEditData.startType,
@@ -178,7 +218,7 @@ export default {
             }
 
             ajax.methods.$_get(
-                window.QuestionEditData.connectorBaseUrl+subAction, 
+                postUrl,
                 parameters
             ).then((result) => {
                 context.commit('updateCurrentQuestion', result.data.question);
@@ -200,21 +240,31 @@ export default {
             return Promise.reject({data: { message: "Transfer in progress", error: "Transfer in progress"}});
         }
 
-        let transferObject = merge({
-            'questionData': {
-            question: context.state.currentQuestion,
-            scaledSubquestions: context.state.currentQuestionSubquestions,
-            scaledAnswerOptions: context.state.currentQuestionAnswerOptions,
-            questionI10N: context.state.currentQuestionI10N,
-            generalSettings: context.state.currentQuestionGeneralSettings,
-            advancedSettings: context.state.currentQuestionAdvancedSettings,
-        }}, window.LS.data.csrfTokenData);
-
-        LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
         return new Promise((resolve, reject) => {
-            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveQuestionData' : '/saveQuestionData';
+
+            let transferObject = merge({
+                'questionData': {
+                question: context.state.currentQuestion,
+                scaledSubquestions: context.state.currentQuestionSubquestions || [],
+                scaledAnswerOptions: context.state.currentQuestionAnswerOptions || [],
+                questionI10N: context.state.currentQuestionI10N,
+                generalSettings: context.state.currentQuestionGeneralSettings,
+                advancedSettings: context.state.currentQuestionAdvancedSettings,
+            }}, window.LS.data.csrfTokenData);
+
+            LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
+
+            const postUrl = LS.createUrl(
+                window.QuestionEditData.connectorBaseUrl,
+                {
+                    sa: 'saveQuestionData',
+                    gid: context.state.currentQuestion.gid,
+                    sid: context.getters.surveyid
+                }
+            );
             context.commit('setInTransfer', true);
-            ajax.methods.$_post(window.QuestionEditData.connectorBaseUrl+subAction, transferObject)
+
+            ajax.methods.$_post(postUrl, transferObject)
                 .then(
                     (result) => {
                         context.commit('setInTransfer', false);

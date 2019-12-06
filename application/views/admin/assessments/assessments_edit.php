@@ -33,10 +33,10 @@
                   </div>
                 </div>
               </div>
-              <!-- Survey page -->
+              <!-- Question group -->
               <div class='form-group col-md-12'>
                 <label class='control-label col-sm-2' for='gid'>
-                  <?php eT("Survey page:");?>
+                  <?php eT("Question group:");?>
                 </label>
                 <div class='col-sm-10'>
                   <?php if (isset($groups)) { ?>

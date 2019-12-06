@@ -50,7 +50,7 @@
 
                     <?php endif; ?>
 
-                    <?php //If we are in a questiongroup view render the breadcrumb with survey page ?>
+                    <?php //If we are in a questiongroup view render the breadcrumb with question group ?>
                     <?php if (isset($oQuestionGroup) ): ?>
                         <?php //If the questiongroup view is active right now, don't link it?>
                         <?php if(!$sSubaction && !isset($oQuestion)): ?>

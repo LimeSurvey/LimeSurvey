@@ -98,7 +98,7 @@
                     <div>
                         <br />
                         <font color='orange'><?php eT("Some questions have been disabled");?></font>
-                        <br /><?php echo sprintf(gT("Survey display mode is set to %s:"), gT("Page by Page"));?>
+                        <br /><?php echo sprintf(gT("Survey display mode is set to %s:"), gT("Group by Group"));?>
                         <br/><i><?php eT("Only previous pages answers are available");?>
                         </i><br />
                     </div>

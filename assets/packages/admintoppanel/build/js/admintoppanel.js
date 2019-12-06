@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "146c0f6d7942883c69a2";
+/******/ 	var hotCurrentHash = "eca4b10596e759d7d63d";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1333,10 +1333,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     showSaveButton: {
       get: function get() {
-        return this.$store.state.showSaveButton;
+        return !!this.$store.state.showSaveButton;
       },
       set: function set(newValue) {
         this.$store.commit("setShowSaveButton", newValue);
+      }
+    },
+    showCloseButton: {
+      get: function get() {
+        return !!this.$store.state.showCloseButton;
+      },
+      set: function set(newValue) {
+        this.$store.commit("setShowCloseButton", newValue);
       }
     },
     closeButtonUrl: {
@@ -1370,7 +1378,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.$store.state.topbar_right_buttons != null) {
         return lodash_filter__WEBPACK_IMPORTED_MODULE_2___default()(this.$store.state.topbar_right_buttons, function (button) {
-          return !(!_this.showSaveButton && !!button.isSaveButton);
+          return !button.isCloseButton && !button.isSaveButton || _this.showSaveButton && button.isSaveButton || _this.showCloseButton && button.isCloseButton;
         });
       }
 
@@ -1390,7 +1398,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.$store.state.topbarextended_right_buttons != null) {
         return lodash_filter__WEBPACK_IMPORTED_MODULE_2___default()(this.$store.state.topbarextended_right_buttons, function (button) {
-          return !(!_this2.showSaveButton && !!button.isSaveButton);
+          return !button.isCloseButton && !button.isSaveButton || _this2.showSaveButton && button.isSaveButton || _this2.showCloseButton && button.isCloseButton;
         });
       }
 
@@ -1425,6 +1433,12 @@ __webpack_require__.r(__webpack_exports__);
         case "tokens":
           dispatchAction = "getTopBarButtonsTokens";
           errorHeader = "ERROR TOKEN";
+          this.slide = false;
+          break;
+
+        case "responses":
+          dispatchAction = "getTopBarButtonsResponses";
+          errorHeader = "ERROR RESPONSES";
           this.slide = false;
           break;
       }
@@ -1841,12 +1855,24 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
+      if (this.button.triggerEvent) {
+        LS.EventBus.$emit(this.button.triggerEvent, this.button);
+        return false;
+      }
+
       this.$log.log('Button clicked -> ', this.button);
 
       if (this.button.isSaveButton) {
         event.preventDefault();
         this.isLoading = true;
         LS.EventBus.$emit("saveButtonCalled", this.button);
+        return false;
+      }
+
+      if (this.button.isCloseButton) {
+        event.preventDefault();
+        this.isLoading = true;
+        window.location.href = this.$store.state.closeButtonUrl;
         return false;
       }
 
@@ -31113,6 +31139,23 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
+  getTopBarButtonsResponses: function getTopBarButtonsResponses(context) {
+    return new Promise(function (resolve, reject) {
+      _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/responses/sa/getResponsesTopBarData', {
+        sid: context.state.sid || LS.reparsedParameters().combined.sid
+      })).then(function (data) {
+        context.commit('clean');
+        context.commit('setTopBarRight', data.data.topbar.alignment.right.buttons);
+        context.commit('setTopBarLeft', data.data.topbar.alignment.left.buttons);
+        context.commit('setTopBarExtendedRight', []);
+        context.commit('setTopBarExtendedLeft', []);
+        context.commit('setPermissions', data.data.permissions);
+        resolve(data.data.topbar);
+      }).catch(function (error) {
+        reject(error);
+      });
+    });
+  },
   getCustomTopbarContent: function getCustomTopbarContent(context) {
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
@@ -31188,6 +31231,9 @@ __webpack_require__.r(__webpack_exports__);
   setShowSaveButton: function setShowSaveButton(state, newState) {
     state.showSaveButton = newState;
   },
+  setShowCloseButton: function setShowCloseButton(state, newState) {
+    state.showCloseButton = newState;
+  },
   setCloseButtonUrl: function setCloseButtonUrl(state, newState) {
     state.closeButtonUrl = newState;
   },
@@ -31220,6 +31266,7 @@ __webpack_require__.r(__webpack_exports__);
   sid: 0,
   type: '',
   showSaveButton: false,
+  showCloseButton: false,
   closeButtonUrl: ''
 });
 

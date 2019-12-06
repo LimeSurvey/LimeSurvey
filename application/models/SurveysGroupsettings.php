@@ -380,11 +380,11 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->oOptions->ownerLabel = $oUser->users_name.($oUser->full_name ? " - ".$oUser->full_name : "");
             }
         } elseif ($attribute == 'format' && $value != -1){
-            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Page by Page"), gT("All in one")), $value);
+            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), $value);
         } elseif ($attribute == 'questionindex' && $value != -1){
             return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), $value);
         } elseif ($attribute == 'showgroupinfo'){
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show page description only"), gT("Show page name only"), gT("Hide both")), $value);
+            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), $value);
         } elseif ($attribute == 'showqnumcode'){
             return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), $value);
         } else {

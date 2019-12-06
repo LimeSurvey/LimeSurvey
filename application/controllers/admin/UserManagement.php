@@ -137,8 +137,8 @@ class UserManagement extends Survey_Common_Action
                 ]]);
             }
         }
-        
-        if(isset($aUser['uid']) && $aUser['uid'] ) {
+
+        if (isset($aUser['uid']) && $aUser['uid']) {
 
             $oUser = $this->updateAdminUser($aUser);
             if ($oUser->hasErrors()) {
@@ -155,10 +155,9 @@ class UserManagement extends Survey_Common_Action
                     'message' => gT('User successfully updated')
                 ]
             ]);
-
-        }else{
+        } else {
             $this->createAdminUser($aUser);
-        }   
+        }
     }
 
     /**
@@ -166,42 +165,41 @@ class UserManagement extends Survey_Common_Action
      * @param array a$user
      * @return string
      */
-    private function createAdminUser($aUser) 
+    private function createAdminUser($aUser)
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
-            $sendMail = (bool)Yii::app()->request->getPost('preset_password', false);
+            $sendMail = (bool) Yii::app()->request->getPost('preset_password', false);
             $newUser = $this->_createNewUser($aUser);
             $sReturnMessage = gT('User successfully created');
             $success = true;
-        
+
             if ($sendMail) {
                 $mailer = $this->_sendAdminMail('registration', $aUser);
-               
+
                 if ($mailer->getError()) {
-                    $sReturnMessage = CHtml::tag("h4", array(), gT("Error")); 
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Error"));
                     $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $newUser['users_name'] . "</strong>", $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), $mailer->getError());
                     $success = false;
                 } else {
                     // has to be sent again or no other way
-                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));  ;
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));;
                     $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
             }
 
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $aUser['password']. '</b>') : '';
-    
+            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $aUser['password'] . '</b>') : '';
+
             $data = array();
 
-            if($success) {
+            if ($success) {
                 $data = [
                     'success' => $success,
                     'message' => $sReturnMessage
                 ];
-
-            }else{
+            } else {
                 $data = [
                     'success' => $success,
                     'errors' => $sReturnMessage
@@ -212,7 +210,6 @@ class UserManagement extends Survey_Common_Action
                 "data" => $data
             ]);
         }
-
     }
     /**
      * @param array $errors
@@ -274,6 +271,69 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
+     * Deletes a user 
+     *
+     * @param int $uid
+     * @param bool $recursive
+     * @return boolean
+     */
+    public function deleteUser(int $uid, bool $recursive = true)
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        if ($uid == Yii::app()->user->id) {
+            return false;
+        } else {
+            $oUser = User::model()->findByPk($uid);
+            return $oUser->delete($recursive);
+        }
+    }
+
+    /**
+     * Delete multiple users selected by massive action
+     * @return void
+     */
+    public function deleteMultiple()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $aUsers = json_decode(App()->request->getPost('sItems'));
+        $aResults = [];
+
+        foreach ($aUsers as $user) {
+            $aResults[$user]['title'] = '';
+            $model = $this->loadModel($user);
+            $aResults[$user]['title'] = $model->users_name;
+            $aResults[$user]['result'] = $this->deleteUser($user);
+            if (!$aResults[$user]['result'] && $user == Yii::app()->user->id) {
+                $aResults[$user]['error'] = gT("You cannot delete yourself.");
+            }
+        }
+
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Deleted'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
+    }
+
+
+    /**
      * Deletes a user after  confirmation
      *
      * @return void
@@ -288,16 +348,21 @@ class UserManagement extends Survey_Common_Action
         }
         $userId = Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
-            );  
+
+            Yii::app()->setFlashMessage(gT("you cannot elete yourself."), 'error');
+            Yii::app()->getController()->redirect(
+                Yii::app()->createUrl('admin/usermanagement/sa/view')
+            );
+            return;
         }
+
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
-        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));    
+        Yii::app()->setFlashMessage(gT("User successfully deleted."), 'success');
+        Yii::app()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
+        return;
     }
-	
+
     /**
      * Opens a modal to edit user template permissions
      *
@@ -479,9 +544,7 @@ class UserManagement extends Survey_Common_Action
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
         $aPermissiontemplates = Permissiontemplates::model()->findAll();
-        $aPossibleRoles = [
-            '' => gT('No role')
-        ];
+        $aPossibleRoles = [];
         array_walk(
             $aPermissiontemplates,
             function ($oPermissionRole) use (&$aPossibleRoles) {
@@ -537,6 +600,64 @@ class UserManagement extends Survey_Common_Action
             ]
         ]);
     }
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     *
+     * @param integer $id the ID of the model to be loaded
+     *
+     * @return User|null  object
+     * @throws CHttpException
+     */
+    public function loadModel($id)
+    {
+
+        $model = User::model()->findByPk($id);
+
+        if ($model === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+
+        return $model;
+    }
+
+    /**
+     * render selected items for massive action modal
+     *
+     * @return void
+     * @throws CHttpException
+     * @throws CException
+     */
+
+    public function renderSelectedItems()
+    {
+
+        $aUsers = json_decode(App()->request->getPost('$oCheckedItems'));
+        $aResults = [];
+        $gridid = App()->request->getParam('$grididvalue');
+
+        foreach ($aUsers as $user) {
+            $aResults[$user]['title'] = '';
+            $model = $this->loadModel($user);
+
+            if ($gridid == 'usermanagement--identity-gridPanel') {
+                $aResults[$user]['title'] = $model->users_name;
+            }
+
+            $aResults[$user]['result'] = gT('Selected');
+        }
+        //set Modal table labels
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        App()->getController()->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Seleted'),
+                'tableLabels'  => $tableLabels,
+            )
+        );
+    }
 
     /**
      * Stores the permission settings run via MassEdit
@@ -562,8 +683,8 @@ class UserManagement extends Survey_Common_Action
         }
 
         return $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results, "noButton" => true]);
-
     }
+
 
     /**
      * Method to resend a password to selected surveyadministrators (MassAction)
@@ -577,7 +698,6 @@ class UserManagement extends Survey_Common_Action
                 '/admin/usermanagement/partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
-
         }
 
         $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
@@ -597,9 +717,7 @@ class UserManagement extends Survey_Common_Action
             return $coll = $coll && $arr['saved'];
         }, true);
 
-        if (!$success) {
-
-        }
+        if (!$success) { }
 
         return $this->getController()->renderPartial(
             '/admin/usermanagement/partial/success',
@@ -607,45 +725,6 @@ class UserManagement extends Survey_Common_Action
                 'sMessage' => gT('Emails successfully sent'),
                 'sDebug' => json_encode($results, JSON_PRETTY_PRINT),
                 'noButton' => true,
-            ]
-        );
-    }
-
-    /**
-     * Mass edition delete user
-     *
-     *
-     * @return string
-     */
-    public function batchDelete()
-    {
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
-            );
-        }
-        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
-        $results = [];
-        
-        if (array_search(Yii::app()->user->id, $aItems) !== false) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
-                ['errors' => [gT("You cannot delete yourself.")], 'noButton' => true]
-            );
-        }
-
-        foreach ($aItems as $sItem) {
-            $oUser = User::model()->findByPk($sItem);          
-            $results[$oUser->uid] = $oUser->delete();
-        }
-
-        $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success',
-            [
-                'sMessage' => gT('Users successfully deleted'),
-                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
-                'noButton' => true
             ]
         );
     }
@@ -667,20 +746,30 @@ class UserManagement extends Survey_Common_Action
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
         $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-        $results = [];
+        $aResults = [];
+
         foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+
             if (!$oUserGroup->hasUser($sItem)) {
-                $results[$sItem] = $oUserGroup->addUser($sItem);
+                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+            } else {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('User is already a part of the group');
             }
         }
 
-        $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success',
-            [
-                'sMessage' => gT('User groups successfully updated'),
-                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Usergroup updated'),
+                'tableLabels' =>  $tableLabels
+            )
         );
     }
 
@@ -701,19 +790,36 @@ class UserManagement extends Survey_Common_Action
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $aUserRoleIds = Yii::app()->request->getPost('roleselector');
         $results = [];
+        $aResults = [];
+
         foreach ($aItems as $sItem) {
-            foreach ($aUserRoleIds as $iUserRoleId) {
-                $results[$sItem . '-' . $iUserRoleId] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+
+            //check if user is admin otherwhise change the role 
+            if (intval($sItem) == 1) {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
+            } else {
+
+                foreach ($aUserRoleIds as $iUserRoleId) {
+
+                    $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
+                }
             }
         }
 
-        $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success',
-            [
-                'sMessage' => gT('User roles successfully updated'),
-                'sDebug'   => json_encode($results, JSON_PRETTY_PRINT),
-                'noButton' => true
-            ]
+
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Role updated'),
+                'tableLabels' =>  $tableLabels
+            )
         );
     }
 
@@ -742,7 +848,7 @@ class UserManagement extends Survey_Common_Action
             );
         }
         $times = App()->request->getParam('times', 5);
-        $passwordsize = (int)App()->request->getParam('passwordsize', 5);
+        $passwordsize = (int) App()->request->getParam('passwordsize', 5);
         $passwordsize = $passwordsize < 8 || is_nan($passwordsize) ? 8 : $passwordsize;
         $prefix = App()->request->getParam('prefix', 'randuser_');
         $email = App()->request->getParam('email', User::model()->findByPk(App()->user->id)->email);
@@ -775,7 +881,7 @@ class UserManagement extends Survey_Common_Action
      * Calls up a modal to import users via csv/json file
      *
      *@param string $importFormat - Importformat (csv/json) to render 
-     * @return string
+     *@return string
      */
     public function renderUserImport(string $importFormat = 'csv')
     {
@@ -786,14 +892,14 @@ class UserManagement extends Survey_Common_Action
             );
         }
 
-        $importNote = sprintf(gT("Please make sure that your CSV contains the columns '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
-        $allowFileType = ".csv";  
+        $importNote = sprintf(gT("Please make sure that your CSV contains the columns '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+        $allowFileType = ".csv";
 
-        if($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
-            $allowFileType = ".json,application/json"; 
+        if ($importFormat == 'json') {
+            $importNote = sprintf(gT("Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+            $allowFileType = ".json,application/json";
         }
-        
+
         return $this->getController()->renderPartial('/admin/usermanagement/partial/importuser', [
             "note"         => $importNote,
             "importFormat" => $importFormat,
@@ -816,9 +922,9 @@ class UserManagement extends Survey_Common_Action
             );
         }
 
-        $overwriteUsers = false; 
+        $overwriteUsers = false;
 
-        if(isset($_POST['overwrite'])) {
+        if (isset($_POST['overwrite'])) {
             $overwriteUsers = true;
         }
 
@@ -828,46 +934,44 @@ class UserManagement extends Survey_Common_Action
                 break;
             case "json":
                 $aNewUsers = UserParser::getDataFromJSON($_FILES);
-                break; 
+                break;
         }
-       
+
         $created = [];
         $updated = [];
 
         foreach ($aNewUsers as $aNewUser) {
-            
+
             $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
-        
-            if($oUser  !== null) {
-                if($overwriteUsers) {
-                
+
+            if ($oUser  !== null) {
+                if ($overwriteUsers) {
+
                     $oUser->full_name = $aNewUser['full_name'];
                     $oUser->email = $aNewUser['email'];
                     $oUser->parent_id = App()->user->id;
                     $oUser->modified = date('Y-m-d H:i:s');
-                    if($aNewUser['password'] != ' ') {
+                    if ($aNewUser['password'] != ' ') {
                         $oUser->password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
                     }
-                    
+
                     $save = $oUser->save();
-                    if($save){
+                    if ($save) {
                         $updated[] = [
                             'username' => $aNewUser['users_name'],
                             'full_name' => $aNewUser['full_name'],
                             'email' => $aNewUser['email'],
                         ];
                     }
-                  
                 }
-               
-            }else{
-                
+            } else {
+
                 $password = $this->getRandomPassword(8);
                 $passwordText = $password;
-                if($aNewUser['password'] != ' ') {
+                if ($aNewUser['password'] != ' ') {
                     $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
                 }
-                
+
                 $save = $this->_createNewUser([
                     'users_name' => $aNewUser['users_name'],
                     'full_name' => $aNewUser['full_name'],
@@ -884,7 +988,7 @@ class UserManagement extends Survey_Common_Action
                         'password' => $passwordText,
                     ];
                 }
-            }            
+            }
         }
 
         Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
@@ -901,7 +1005,7 @@ class UserManagement extends Survey_Common_Action
      * @param int $uid userId
      * @return mixed
      */
-    public function exportUser(string $outputFormat,int $uid = 0) 
+    public function exportUser(string $outputFormat, int $uid = 0)
     {
         //Check if user has permissions to export users 
         if (!Permission::model()->hasGlobalPermission('users', 'export')) {
@@ -910,16 +1014,16 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        
-        if($uid > 0) {
+
+        if ($uid > 0) {
             $oUsers = User::model()->findByPk($uid);
-        }else{
+        } else {
             $oUsers = User::model()->findAll();
         }
 
         $aUsers = array();
         $sTempDir = Yii::app()->getConfig("tempdir");
-        $exportFile = $sTempDir.DIRECTORY_SEPARATOR.'users_export.'.$outputFormat;
+        $exportFile = $sTempDir . DIRECTORY_SEPARATOR . 'users_export.' . $outputFormat;
 
         foreach ($oUsers as $user) {
             $exportUser['uid'] = $user->attributes['uid'];
@@ -928,30 +1032,30 @@ class UserManagement extends Survey_Common_Action
             $exportUser['email'] = $user->attributes['email'];
             $exportUser['lang'] = $user->attributes['lang'];
             $exportUser['password'] = '';
-            array_push($aUsers,$exportUser);
+            array_push($aUsers, $exportUser);
         }
 
         switch ($outputFormat) {
             case "json":
-                $json = json_encode($aUsers,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+                $json = json_encode($aUsers, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
                 $fp = fopen($exportFile, 'w');
                 fwrite($fp, $json);
                 fclose($fp);
                 header('Content-Encoding: UTF-8');
-                header("Content-Type:application/json; charset=UTF-8"); 
+                header("Content-Type:application/json; charset=UTF-8");
                 break;
 
             case "csv":
                 $fp = fopen($exportFile, 'w');
-                
+
                 //Add utf-8 encoding
-                fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
-                $header = array('uid','users_name','full_name','email','lang','password');
+                fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
+                $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
                 //Add csv header
-                fputcsv($fp,$header, ';');
-                
+                fputcsv($fp, $header, ';');
+
                 //add csv row datas
-                foreach ($aUsers as $fields) { 
+                foreach ($aUsers as $fields) {
                     fputcsv($fp, $fields, ';');
                 }
                 fclose($fp);
@@ -960,7 +1064,7 @@ class UserManagement extends Survey_Common_Action
                 break;
         }
         //end file to download
-        header("Content-Disposition: attachment; filename=userExport.".$outputFormat);
+        header("Content-Disposition: attachment; filename=userExport." . $outputFormat);
         header("Pragma: no-cache");
         header("Expires: 0");
         @readfile($exportFile);
@@ -1052,7 +1156,7 @@ class UserManagement extends Survey_Common_Action
 
         return User::model()->findByPk($iNewUID)->attributes;
     }
-    
+
     /**
      * Update admin-user
      *
@@ -1065,15 +1169,16 @@ class UserManagement extends Survey_Common_Action
         //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
         //Therefore we need to make sure no non-superadmin can modify superadmin accounts
         //Since this should NEVER be the case without hacking the software, this will silently just do nothing.
-        if( !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id) 
+        if (
+            !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
             && Permission::model()->hasGlobalPermission('superadmin', 'read', $oUser->uid)
         ) {
             throw new CException("This action is not allowed, and should never happen", 500);
         }
-       
+
         $oUser->setAttributes($aUser);
 
-        if(isset($aUser['password']) && $aUser['password']) {
+        if (isset($aUser['password']) && $aUser['password']) {
             $oUser->password = password_hash($aUser['password'], PASSWORD_DEFAULT);
         }
         $oUser->modified = date('Y-m-d H:i:s');
@@ -1142,10 +1247,9 @@ class UserManagement extends Survey_Common_Action
         $mailer->emailType = $emailType;
         $mailer->sendMessage();
         return $mailer;
-
     }
-    
- ##### protected METHODS #####
+
+    ##### protected METHODS #####
 
     /**
      * Filters special characters to simple ones

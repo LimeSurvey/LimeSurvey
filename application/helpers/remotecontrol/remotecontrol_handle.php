@@ -123,7 +123,7 @@ class remotecontrol_handle
      * @param int $iSurveyID The desired ID of the Survey to add
      * @param string $sSurveyTitle Title of the new Survey
      * @param string $sSurveyLanguage Default language of the Survey
-     * @param string $sformat (optional) Question appearance format (A, G or S) for "All on one page", "Page by Page", "Single questions", default to page by page (G)
+     * @param string $sformat (optional) Question appearance format (A, G or S) for "All on one page", "Group by Group", "Single questions", default to group by group (G)
      * @return int|array The survey id in case of success
      */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
@@ -307,7 +307,7 @@ class remotecontrol_handle
 
     /**
      * Get survey properties (RPC function)
-     * 
+     *
      * Get properties of a survey
      * All internal properties of a survey are available.
      * @see \Survey for the list of available properties
@@ -457,7 +457,7 @@ class remotecontrol_handle
             if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
             }
-            // Check consistency for pages and questions
+            // Check consistency for groups and questions
             Yii::app()->loadHelper('admin/activate');
             $checkHasGroup = checkHasGroup($iSurveyID);
             $checkGroup = checkGroup($iSurveyID);
@@ -544,7 +544,7 @@ class remotecontrol_handle
                 $groupIDs = array_intersect($groupIDs, $validGroups);
 
                 if (empty($groupIDs)) {
-                                    return array('status' => 'Error: Invalid page ID');
+                                    return array('status' => 'Error: Invalid group ID');
                 }
 
                 foreach ($oAllQuestions as $key => $aQuestion) {
@@ -553,7 +553,7 @@ class remotecontrol_handle
                     }
                 }
             } else {
-                            return array('status' => 'Error: Invalid page ID');
+                            return array('status' => 'Error: Invalid group ID');
             }
         }
 
@@ -588,7 +588,7 @@ class remotecontrol_handle
 
     /**
      * Export submission timeline (RPC function)
-     * 
+     *
      * Returns an array of values (count and period)
      *
      * @access public
@@ -978,10 +978,10 @@ class remotecontrol_handle
     /* Group specific functions */
 
     /**
-     * Add empty page with minimum details (RPC function)
-     * 
+     * Add empty group with minimum details (RPC function)
+     *
      * Used as a placeholder for importing questions.
-     * Returns the groupid of the created page.
+     * Returns the groupid of the created group.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1024,8 +1024,8 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete a page from a chosen survey (RPC function)
-     * 
+     * Delete a group from a chosen survey (RPC function)
+     *
      * Returns the id of the deleted group.
      *
      * @access public
@@ -1056,7 +1056,7 @@ class remotecontrol_handle
 
                 $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
                 if (isset($depented_on)) {
-                                    return array('status' => 'Page with depencdencies - deletion not allowed');
+                                    return array('status' => 'Group with depencdencies - deletion not allowed');
                 }
 
                 $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
@@ -1065,7 +1065,7 @@ class remotecontrol_handle
                     QuestionGroup::model()->updateGroupOrder($iSurveyID);
                     return (int) $iGroupID;
                 } else {
-                                    return array('status' => 'Page deletion failed');
+                                    return array('status' => 'Group deletion failed');
                 }
             } else {
                             return array('status' => 'No permission');
@@ -1080,12 +1080,12 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param int $iSurveyID The ID of the Survey that the page will belong
+     * @param int $iSurveyID The ID of the Survey that the group will belong
      * @param string $sImportData String containing the BASE 64 encoded data of a lsg,csv
      * @param string $sImportDataType  lsg,csv
-     * @param string $sNewGroupName  Optional new name for the page
-     * @param string $sNewGroupDescription  Optional new description for the page
-     * @return array|integer iGroupID  - ID of the new page or status
+     * @param string $sNewGroupName  Optional new name for the group
+     * @param string $sNewGroupDescription  Optional new description for the group
+     * @return array|integer iGroupID  - ID of the new group or status
      */
     public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = null, $sNewGroupDescription = null)
     {
@@ -1118,7 +1118,7 @@ class remotecontrol_handle
                     if (!$xml) {
                         unlink($sFullFilePath);
                         libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                        return array('status' => 'Error: Invalid LimeSurvey page structure XML ');
+                        return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
                     }
                     $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID);
                 } else {
@@ -1159,7 +1159,7 @@ class remotecontrol_handle
 
     /**
      * Find response IDs given a survey ID and a token (RPC function)
-     * 
+     *
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @param string $sToken
@@ -1182,14 +1182,14 @@ class remotecontrol_handle
     }
 
     /**
-     * Get the properties of a survey page (RPC function)
+     * Get the properties of a group of a survey .
      *
      * Returns array of properties needed or all properties
      * @see \QuestionGroup for available properties
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param int $iGroupID Id of the page to get properties of
+     * @param int $iGroupID Id of the group to get properties of
      * @param array  $aGroupSettings The properties to get
      * @return array in case of success the requested values in array
      */
@@ -1199,7 +1199,7 @@ class remotecontrol_handle
             $iGroupID = (int) $iGroupID;
             $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
-                            return array('status' => 'Error: Invalid page ID');
+                            return array('status' => 'Error: Invalid group ID');
             }
 
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read')) {
@@ -1248,7 +1248,7 @@ class remotecontrol_handle
             $iGroupID = (int) $iGroupID;
             $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup)) {
-                return array('status' => 'Error: Invalid page ID');
+                return array('status' => 'Error: Invalid group ID');
             }
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'update')) {
                 $aResult = array();
@@ -1260,7 +1260,7 @@ class remotecontrol_handle
                 $aGroupData = array_intersect_key($aGroupData, $aDestinationFields);
                 $aGroupAttributes = $oGroup->getAttributes();
                 if (empty($aGroupData)) {
-                    return array('status' => 'No valid Data');
+                                    return array('status' => 'No valid Data');
                 }
 
                 foreach ($aGroupData as $sFieldName=>$sValue) {
@@ -1271,7 +1271,7 @@ class remotecontrol_handle
                     //We do not allow groups with dependencies to change order - that would lead to broken dependencies
 
                     if ((isset($has_dependencies) || isset($depented_on)) && $sFieldName == 'group_order') {
-                        $aResult[$sFieldName] = 'Page with dependencies - Order cannot be changed';
+                        $aResult[$sFieldName] = 'Group with dependencies - Order cannot be changed';
                         continue;
                     }
                     $oGroup->setAttribute($sFieldName, $sValue);
@@ -1283,7 +1283,7 @@ class remotecontrol_handle
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset failed values
                         if (!$bSaveResult) {
-                            $oGroup->$sFieldName = $aGroupAttributes[$sFieldName];
+                                                $oGroup->$sFieldName = $aGroupAttributes[$sFieldName];
                         }
                     } catch (Exception $e) {
                         //unset values that cause exception
@@ -1304,7 +1304,7 @@ class remotecontrol_handle
 
     /**
      * Delete question from a survey (RPC function)
-     * 
+     *
      * Returns the id of the deleted question.
      *
      * @access public
@@ -1374,7 +1374,7 @@ class remotecontrol_handle
 
     /**
      * Import question (RPC function)
-     * 
+     *
      * Import a question from lsq file
      *
      * @access public
@@ -1397,7 +1397,7 @@ class remotecontrol_handle
             $iGroupID = (int) $iGroupID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                return array('status' => 'Error: Invalid survey ID');
+                            return array('status' => 'Error: Invalid survey ID');
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
@@ -1407,7 +1407,7 @@ class remotecontrol_handle
 
                 $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
                 if (!isset($oGroup)) {
-                    return array('status' => 'Error: Invalid page ID');
+                                    return array('status' => 'Error: Invalid group ID');
                 }
 
                 $sGroupSurveyID = $oGroup['sid'];
@@ -1677,7 +1677,7 @@ class remotecontrol_handle
             $iQuestionID = (int) $iQuestionID;
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion)) {
-                return array('status' => 'Error: Invalid question ID');
+                            return array('status' => 'Error: Invalid group ID');
             }
 
             $iSurveyID = $oQuestion->sid;
@@ -1806,7 +1806,7 @@ class remotecontrol_handle
 
     /**
      * Delete multiple participants from the survey participants table (RPC function)
-     * 
+     *
      * Returns the id of the deleted token
      *
      * @access public
@@ -1853,7 +1853,7 @@ class remotecontrol_handle
 
     /**
      * Get settings of a survey participant (RPC function)
-     * 
+     *
      * Allow to request for a specific participant. If more than one participant is returned with specified attribute(s) an error is returned.
      *
      * @access public
@@ -1983,9 +1983,9 @@ class remotecontrol_handle
 
 
     /**
-     * Get survey pages (RPC function)
-     * 
-     * Returns the ids and all attributes of all survey pages
+     * Get survey groups (RPC function)
+     *
+     * Returns the ids and all attributes of all survey groups
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2020,9 +2020,9 @@ class remotecontrol_handle
     }
 
     /**
-     * Return the ids and propertries of survey participants (RPC function)
+     * Return the IDs and properties of survey participants (RPC function)
      *
-     * if $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
+     * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
      *
      * By default return each participant with basic information
@@ -2108,7 +2108,7 @@ class remotecontrol_handle
 
     /**
      * Return the ids and info of (sub-)questions of a survey/group (RPC function)
-     * 
+     *
      * Returns array of ids and info.
      *
      * @access public
@@ -2181,7 +2181,7 @@ class remotecontrol_handle
 
     /**
      * Set quota attributes (RPC function)
-     * 
+     *
      * Retuns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2338,7 +2338,7 @@ class remotecontrol_handle
 
     /**
      * Activate survey participants (RPC function)
-     * 
+     *
      * Initialise the survey participant table of a survey where new participant tokens may be later added.
      *
      * @access public
@@ -2536,8 +2536,8 @@ class remotecontrol_handle
 
 
     /**
-     * Send a reminder to participants in a survey (RPC function) 
-     * 
+     * Send a reminder to participants in a survey (RPC function)
+     *
      * Returns array of results of sending
      *
      * @access public
@@ -2611,7 +2611,7 @@ class remotecontrol_handle
 
     /**
      * Add a response to the survey responses collection.
-     * 
+     *
      * Returns the id of the inserted survey response
      *
      * @access public
@@ -2705,7 +2705,7 @@ class remotecontrol_handle
 
     /**
      * Update a response in a given survey.
-     * 
+     *
      * Routine supports only single response updates.
      * Response to update will be identified either by the response id, or the token if response id is missing.
      * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
@@ -2786,7 +2786,7 @@ class remotecontrol_handle
 
     /**
      * Uploads one file to be used later.
-     * 
+     *
      * Returns the metadata on success.
      *
      * @access public
@@ -2953,7 +2953,7 @@ class remotecontrol_handle
 
     /**
      * Export token response in a survey.
-     * 
+     *
      * Returns the requested file as base64 encoded string
      *
      * @access public
@@ -3056,7 +3056,7 @@ class remotecontrol_handle
             if (!($oResponse instanceof Response)) {
                 return array('status' => 'Could not find response for given token');
             }
-            
+
             foreach ($oResponse->getFiles() as $aFile) {
                 $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
 
@@ -3160,8 +3160,8 @@ class remotecontrol_handle
 
 
     /**
-     * Import a participant into the LimeSurvey CPDB 
-     * 
+     * Import a participant into the LimeSurvey CPDB
+     *
      * It stores attributes as well, if they are registered before within ui
      *
      * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants);
@@ -3199,6 +3199,7 @@ class remotecontrol_handle
                 'lastname' => $aParticipantData['lastname'],
                 'email' => $aParticipantData['email'],
                 'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
+                'blacklisted' => (isset($aParticipantData['blacklisted']) && $aParticipantData['blacklisted'] === 'Y') ? 'Y' : 'N'
             );
 
             //Check for duplicate participants

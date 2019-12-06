@@ -15,10 +15,11 @@ export default {
     },
     surveyid: () => (window.QuestionEditData.surveyObject.sid),
     gid: () => {
+        let gid = null;
         if(LS) {
-            return LS.reparsedParameters().combined.gid;
+            gid = LS.reparsedParameters().combined.gid;
         }
-        return window.QuestionEditData.gid;
+        return gid = gid || window.QuestionEditData.gid;
     },
     surveyObject: () => window.QuestionEditData.surveyObject,
 

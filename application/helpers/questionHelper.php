@@ -95,8 +95,8 @@ class questionHelper
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
-            "help"=>gT('Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
-            "caption"=>gT('Repeat answer options')
+            "help"=>gT('Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
+            "caption"=>gT('Repeat headers')
         );
 
         self::$attributes["array_filter"] = array(
@@ -739,7 +739,7 @@ class questionHelper
             'inputtype'=>'integer',
             'default'=>'',
             "help"=>gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."),
-            "caption"=>gT("Text input size")
+            "caption"=>gT("Text input box size")
         );
 
         self::$attributes["input_boxes"] = array(
@@ -827,8 +827,8 @@ class questionHelper
             'expression'=>1, // Must control if yes
             'i18n'=>true,
             'default'=>"",
-            "help"=>gT('In the printable version replace the relevance equation with this explanation text.'),
-            "caption"=>gT("Relevance help for printable survey")
+            "help"=>gT('In the printable version replace the condition with this explanation text.'),
+            "caption"=>gT("Condition replacement text for printable survey")
         );
 
         self::$attributes["public_statistics"] = array(
@@ -1150,7 +1150,7 @@ class questionHelper
             12=>'100%'
         ),
         "help"=>gT('Relative width of the labels'),
-        "caption"=>gT('Label column width'));
+        "caption"=>gT('Label wrapper width'));
 
         /* Same than label_input_columns for multiple choice*/
         self::$attributes["choice_input_columns"] = array(

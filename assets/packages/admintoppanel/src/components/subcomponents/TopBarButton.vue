@@ -68,11 +68,25 @@ export default {
             if(this.button.isSaveButton && this.isLoading === true) {
                 return false;
             }
+            
+
+            if(this.button.triggerEvent) {
+                LS.EventBus.$emit(this.button.triggerEvent, this.button);
+                return false;
+            }
+
             this.$log.log('Button clicked -> ', this.button);
             if (this.button.isSaveButton) {
                 event.preventDefault();
                 this.isLoading = true;
                 LS.EventBus.$emit("saveButtonCalled", this.button);
+                return false;
+            }
+
+            if (this.button.isCloseButton) {
+                event.preventDefault();
+                this.isLoading = true;
+                window.location.href = this.$store.state.closeButtonUrl;
                 return false;
             }
             return true;

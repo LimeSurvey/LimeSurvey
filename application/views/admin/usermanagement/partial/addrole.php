@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h3>
-        <?php eT("ApplyRemove role from user");?>
+        <?php eT("Edit user roles");?>
     </h3>
 </div>
 <div class="modal-body selector--edit-role-container">
@@ -14,11 +14,11 @@
         <input type="hidden" name="userid" value="<?=$oUser->uid?>" />
         <div class="row">
             <div class="col-xs-12 alert alert-info">
-                <?=gT("Careful: Applying a role to the user will overwrite any individual permissions given to the user!")?>
+                <?=gT("Note: Adding role(s) to a user will overwrite any individual user permissions!")?>
             </div>
         </div>
         <div class="form-group">
-            <label for="roleselector"><?=gT("Select role to apply to users")?></label>
+            <label for="roleselector"><?=gT("Select role(s):")?></label>
             <select name="roleselector[]" id="roleselector" class="form-control select" multiple>
                 <?php foreach($aPossibleRoles as $key => $name) {
                     echo sprintf(

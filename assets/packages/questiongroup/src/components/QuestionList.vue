@@ -57,7 +57,7 @@ export default {
             this.sortReverse = false;
         },
         getQuestionActions(row) {
-            return `<a href="${window.QuestionGroupEditData.openQuestionUrl}/${row.qid}" class="btn btn-default btn-xs">
+            return `<a href="${window.QuestionGroupEditData.openQuestionUrl}${row.qid}" class="btn btn-default btn-xs">
                 <i class="fa fa-external-link"> </i>
             </a>`;
         }

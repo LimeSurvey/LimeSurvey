@@ -193,7 +193,7 @@
             <inputtype>integer</inputtype>
             <default></default>
             <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
-            <caption>Text input size</caption>
+            <caption>Text input box size</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

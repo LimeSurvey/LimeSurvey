@@ -3091,7 +3091,7 @@ function do_array_5point($ia)
     for ($xc = 1; $xc <= 5; $xc++) {
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text',
-            'content'=>$xc,
+            'content'=>" ".$xc,
             ), true);
     }
 
@@ -3257,7 +3257,7 @@ function do_array_10point($ia)
     for ($xc = 1; $xc <= 10; $xc++) {
         $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text',
-            'content'=>$xc,
+            'content'=>" ".$xc,
             ), true);
     }
 
