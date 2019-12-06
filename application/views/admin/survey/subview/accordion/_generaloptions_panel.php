@@ -215,7 +215,7 @@
                     </div>
                 </div>
             </div>
-                
+
             <?php if ($bShowAllOptions === true){ ?>
                 <!-- Fax to -->
                 <div class="form-group">
@@ -325,7 +325,7 @@
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('/admin/themeoptions/sa/getpreviewtag') ?>'>
+                <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('/admin/themeoptions/sa/getpreviewtag') ?>' data-inherit-template-name='<?php echo $oSurveyOptions->template?>'>
                     <?php if ($bShowInherited){ ?>
                         <option value="inherit" <?php echo ($oSurvey->template == 'inherit')?'selected="selected"':''; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->template . ']'; ?></option>
                     <?php } ?>
@@ -339,14 +339,14 @@
                                 <?php   } elseif (!$oSurvey->template && $templateName == getGlobalSetting('defaulttheme') && $oSurvey->template != 'inherit') { ?>
                                 selected='selected'
                                 <?php } ?>
-                                ><?php echo $templateName; ?></option>                               
+                                ><?php echo $templateName; ?></option>
                             <?php } ?>
 
                     <?php } ?>
                 </select>
             </div>
             <div class="col-sm-6 col-md-offset-3 template-img" style="margin-top: 13px;" id="preview-image-container">
-                <?php echo TemplateConfiguration::getInstanceFromTemplateName($oSurvey->template)->getPreview() ?>
+                <?php echo TemplateConfiguration::getInstanceFromTemplateName(($oSurvey->template == 'inherit') ? $oSurveyOptions->template : $oSurvey->template)->getPreview() ?>
             </div>
         </div>
 <?php
