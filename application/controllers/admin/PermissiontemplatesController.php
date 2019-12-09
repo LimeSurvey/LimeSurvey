@@ -8,12 +8,13 @@ class PermissiontemplatesController extends Survey_Common_Action
      */
     public function index()
     {
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            App()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
 
-        Yii::app()->getClientScript()->registerPackage('permissionroles');
+        App()->getClientScript()->registerPackage('permissionroles');
+        $request = App()->request;
 
         $massiveAction = App()->getController()->renderPartial(
             '/admin/permissiontemplates/massiveAction/_selector',
@@ -22,12 +23,22 @@ class PermissiontemplatesController extends Survey_Common_Action
             false
         );
 
+        // Set page size
+        $pageSize = $request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int)$pageSize);
+        }
+
         $model = Permissiontemplates::model();
+        $aPermissiontemplatesParam = $request->getParam('Permissiontemplates');
+        if ($aPermissiontemplatesParam) {
+            $model->setAttributes($aPermissiontemplatesParam, false);
+        }
         $this->_renderWrappedTemplate(
-            null, 
-            'permissiontemplates/index', 
+            null,
+            'permissiontemplates/index',
             array(
-                'model' => $model,
+                'model'         => $model,
                 'massiveAction' => $massiveAction
             )
         );
