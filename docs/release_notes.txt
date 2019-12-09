@@ -34,6 +34,41 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC10 (build 191202) to 4.0.0-RC11 (build 191209) December 9, 2019
+-New feature #15513: Missing function floatval() in EM (#1344) (Denis Chenu)
+-Fixed issue: quickedit working again (lacrioque)
+-Fixed issue: question with exclusive all breaks question editor (lacrioque)
+-Fixed issue: ordering broken after quick add (lacrioque)
+-Fixed issue: duplicating a row triggers insert after the next row +1 (lacrioque)
+-Fixed issue #15628: refresh page, create survey page - tab moves to settings (Jessica Höck)
+-Fixed issue #15636: Invalid page thrown on create question (lacrioque)
+-Fixed issue #15627: refresh page when you access a survey page - tab moves to settings and does not stay on structure. (Jessica Höck)
+-Fixed issue #15626: refresh page when you access a question - tab moves to settings (Jessica Höck)
+-Fixed issue #15625: refresh page when you add a new question - tab moves to settings (Jessica Höck)
+-Fixed issue #15623: gridview pagination not working for saved partial responses (Patrick Teichmann)
+-Fixed issue #15610: RemoteControl cpd_importParticipants does not blacklist participants (Marko Bischof)
+-Fixed issue #15606: Managed to delete core attributes from CPDB (Patricia Stelling)
+-Fixed issue #15524: Multiple choice displayed as Bootstrap buttons in question editor (lacrioque)
+-Fixed issue #15487: Try to edit multiple text answer questions (lacrioque)
+-Fixed issue #15376: Preview question not working (session fix) (Olle Haerstedt)
+-Fixed issue #15571: CPDB - cannot use the search boxes below associated to the additional attributes (Patricia Stelling)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by corzel
+#Updated translation: Spanish (Mexican) by corzel
+#Updated translation: Somali by Fedasil001
+#Updated translation: Portuguese (Portugal) by effgarces
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Luxembourgish by brainiact
+#Updated translation: Kurdish (Kurmanji) by Fedasil001
+#Updated translation: Hungarian by kkd
+#Updated translation: French (France) by b00z00
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1, pcerny
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC9 (build 191125) to 4.0.0-RC10 (build 191202) December 2, 2019
 -Fixed issue: scrolling wrapper not properly displayed for response table (Patrick Teichmann)
 -Fixed issue: Compatibility issues with PostgreSQL 12 (#1346) (Mario Wehr)
