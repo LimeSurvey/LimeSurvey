@@ -45,12 +45,6 @@ class questionedit extends Survey_Common_Action
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
 
-        if (App()->session['questionselectormode'] !== 'default') {
-            $questionSelectorType = App()->session['questionselectormode'];
-        } else {
-            $questionSelectorType = App()->getConfig('defaultquestionselectormode');
-        }
-
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['questionbar']['buttons']['view'] = true;
 
@@ -111,7 +105,6 @@ class questionedit extends Survey_Common_Action
             ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => 'admin/questioneditor',
-            'questionSelectorType' => $questionSelectorType,
             'i10N' => [
                 'Create question' => gT('Create question'),
                 'General settings' => gT("General settings"),
