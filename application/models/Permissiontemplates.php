@@ -303,23 +303,24 @@ class Permissiontemplates extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+    public function search()
+    {
+        $criteria = new CDbCriteria;
 
-		$criteria=new CDbCriteria;
+        $criteria->compare('ptid', $this->ptid);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('renewed_last', $this->renewed_last, true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('created_by', $this->created_by);
 
-		$criteria->compare('ptid',$this->ptid);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('renewed_last',$this->renewed_last,true);
-		$criteria->compare('created_at',$this->created_at,true);
-		$criteria->compare('created_by',$this->created_by);
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'   => $criteria,
+            'pagination' => array(
+                'pageSize' => App()->user->getState('pageSize', App()->params['defaultPageSize']),
+            )
+        ));
+    }
 
 	/**
 	 * Returns the static model of the specified AR class.

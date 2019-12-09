@@ -191,8 +191,12 @@ var RoleControl = function () {
             var curVal = $(this).prop('checked');
             $('.RoleControl--selector-roleCheckbox').each(function(){
                 $(this).prop('checked', curVal);
-            })
-        })
+            });
+        });
+        $('#pageSize').on('change', function(){
+            $('#RoleControl--identity-gridPanel').yiiGridView('update',{ data:{ pageSize: $(this).val() }});
+        });
+        $(document).trigger('actions-updated');
     };
 
     var bindModals = function () {
