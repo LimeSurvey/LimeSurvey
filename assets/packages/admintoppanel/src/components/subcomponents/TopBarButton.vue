@@ -49,7 +49,7 @@ export default {
                 (result) => {
                     this.$log.log(result);
                     window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
-                    setTimeout(() => {window.location.href = result.data.redirectUrl}, 1500);
+                    setTimeout(() => {window.location.href = result.data.redirect}, 1500);
                 }, 
                 (reject) => {
                     this.$log.error(reject);
@@ -59,7 +59,7 @@ export default {
         clicked(event) {
             if(this.button.type == 'confirm') {
                 $.bsconfirm(
-                    this.button.message, 
+                    this.button.message,
                     LS.lang.confirm, 
                     ()=>{
                         this.runConfirmPost();
