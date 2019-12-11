@@ -145,13 +145,25 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
 
         array_push($topbar['alignment']['left']['buttons'], $buttons[$title]);
     }
-    $import_group_button = [
-        'id'    => 'import',
-        'url'   => $this->createUrl("admin/questiongroups/sa/importview/surveyid/$sid"),
-        'icon'  => 'icon-import',
-        'name'  => gT("Import page"),
-        'class' => ' btn-default ',
-    ];
+    if ($activated != "Y") {
+        // survey inactive
+        $import_group_button = [
+            'id'    => 'import',
+            'url'   => $this->createUrl("admin/questiongroups/sa/importview/surveyid/$sid"),
+            'icon'  => 'icon-import',
+            'name'  => gT("Import page"),
+            'class' => 'btn-default',
+        ];
+    } else {
+        // survey active
+        $import_group_button = [
+            'id'    => 'import',
+            'title' => gT("You can not import pages because the survey is currently active."),
+            'icon'  => 'icon-import',
+            'name'  => gT("Import page"),
+            'class' => 'btn-default',
+        ];
+    }
     array_push($topbar['alignment']['left']['buttons'], $import_group_button);
 }
 
@@ -173,7 +185,7 @@ $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycon
 if ($hasDeletePermission) {
     $permissions['delete'] = ['delete' => $hasDeletePermission];
 
-    if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") {
+    if ($activated != "Y") {
         // has question
         if (empty($condarray)) {
             // can delete group and question
@@ -186,7 +198,7 @@ if ($hasDeletePermission) {
                 'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
                 'icon' => 'fa fa-trash',
                 'name' => gT("Delete current page"),
-                'class' => ' btn-danger ',
+                'class' => 'btn-danger',
             ];
         } else {
             // there is at least one question having a condition on its content
@@ -196,17 +208,17 @@ if ($hasDeletePermission) {
                 'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
                 'icon' => 'fa fa-trash',
                 'name' => gT("Delete current page"),
-                'class' => ' btn-danger disabled',
+                'class' => 'btn-danger',
             ];
         }
     } else {
         // Activated
         $buttons['delete_current_question_group'] = [
             'id' => 'delete_current_question_group',
-            'title' => gT("You can't delete this survey page because the survey is currently active."),
+            'title' => gT("You can not delete this survey page because the survey is currently active."),
             'icon' => 'fa fa-trash',
             'name' => gT("Delete current page"),
-            'class' => ' btn-danger ',
+            'class' => 'btn-danger',
         ];
     }
 }
@@ -221,7 +233,7 @@ if ($hasExportPermission) {
         'url' => $this->createUrl("admin/export/sa/group/surveyid/$sid/gid/$gid"),
         'icon' => 'icon-export',
         'name' => gT("Export current page"),
-        'class' => ' btn-default ',
+        'class' => 'btn-default',
     ];
 
     array_push($topbar['alignment']['right']['buttons'], $buttons['export']);
