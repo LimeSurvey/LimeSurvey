@@ -80,6 +80,7 @@ class dataentry extends Survey_Common_Action
         $aData['menu']['edition'] = true;
         $aData['menu']['import'] = true;
         $aData['menu']['close'] = true;
+        $aData['topBar']['type'] = 'responses';
         //
 
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
