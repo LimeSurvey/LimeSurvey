@@ -63,7 +63,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                 });
             });
             //show tooltip for gridview icons
-            $('[data-toggle="tooltip"]').tooltip();
+            $('body').tooltip({selector: '[data-toggle="tooltip"]'});
         </script>
 </div>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
