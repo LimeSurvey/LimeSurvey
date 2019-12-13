@@ -73,7 +73,9 @@ class LabelSet extends LSActiveRecord
      * Recursively deletes a label set including labels and localizations
      *
      * @param integer $id The label set ID
+     *
      * @return bool
+     * @throws CException
      */
     public function deleteLabelSet($id)
     {
@@ -81,14 +83,18 @@ class LabelSet extends LSActiveRecord
         if (empty($arLabelSet)) {
             return false;
         }
-        foreach ($arLabelSet->labels as $arLabel) {
-            foreach ($arLabel->labelL10ns as $arLabelL10n) {
-                $arLabelL10n->delete();
-            }
-            $arLabel->delete();
+        $oDB = App()->db;
+        $oTransaction = $oDB->beginTransaction();
+        try {
+            $this->deleteLabelsForLabelSet();
+
+            $bLabelSetDeleted = $arLabelSet->delete();
+            $oTransaction->commit();
+            return $bLabelSetDeleted;
+        } catch (Exception $e) {
+            $oTransaction->rollback();
+            return false;
         }
-        rmdirr(Yii::app()->getConfig('uploaddir').'/labels/'.$id);
-        return $arLabelSet->delete();
     }
 
     /**
@@ -119,7 +125,7 @@ class LabelSet extends LSActiveRecord
     {
 
             // View labelset
-            $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
+            $url = Yii::app()->createUrl("admin/labels/sa/multieditor/lid/$this->lid");
             $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
             // Edit labelset
@@ -177,17 +183,16 @@ class LabelSet extends LSActiveRecord
         return $dataProvider;
     }
 
-    /** @inheritdoc
-     * But delete related label sets and directory
-     * @return boolean
+    /**
+     * Delete all childs(Label and LabelL10n) for a LabelSet
      */
-    public function delete()
+    public function deleteLabelsForLabelSet()
     {
-        if(parent::delete()) {
-            Label::model()->findAll("lid = :lid",array(":lid"=>$this->getPrimaryKey()));
-            rmdirr(Yii::app()->getConfig('uploaddir').'/labels/'.$this->getPrimaryKey());
-            return true;
+        // delete old labels and translations before inserting the new values
+        foreach ($this->labels as $oLabel) {
+            LabelL10n::model()->deleteAllByAttributes([], 'id = :id', [':id' => $oLabel->id]);
+            $oLabel->delete();
         }
-        return false;
+        rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);
     }
 }

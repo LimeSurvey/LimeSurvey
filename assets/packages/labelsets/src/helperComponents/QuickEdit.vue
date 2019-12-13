@@ -1,114 +1,3 @@
-<script>
-import keys from 'lodash/keys';
-import foreach from 'lodash/forEach';
-import slice from 'lodash/slice';
-
-export default {
-    name: 'quickedit',
-    props: {
-        current: {type: [Array,Object], required: true},
-        type: {type: String, required: true},
-        typedef: {type: String, required: true},
-        typekey: {type: String, required: true},
-    },
-    data() {
-        return {
-            unparsed: '',
-            parsed: {},
-            delimiter: ';',
-            multilanguage: false
-        }
-    },
-    watch: {
-        delimiter(newDelimiter, oldDelimiter) {
-            this.unparseContent(newDelimiter);
-        }
-    },
-    methods: {
-        parseContent() {
-            const rows = this.unparsed.split(/\r?\n/);
-            const newBlockObject = {};
-            this.$log.log({rows});
-
-            rows.forEach((element,rowCount) => {
-                const blocks = element.split(this.delimiter);
-                let newBlock = {};
-                this.$log.log({blocks});
-                
-                if(blocks.length == 1) {               
-                    newBlock[this.$store.state.activeLanguage] = blocks[0];     
-                    newBlockObject['L'+rowCount] = newBlock;
-                    return;
-                } 
-
-                if(this.multilanguage === true) {
-                    keys(this.$store.state.languages).forEach((lng,i) => {
-                        if(blocks[i+1] != undefined) {
-                            newBlock[lng] = blocks[i+1];
-                            return;
-                        }
-                        newBlock[lng] = blocks[1];
-                    });
-
-                } else {
-                    newBlock[this.$store.state.activeLanguage] = blocks[1];
-                }
-                blocks[0] = blocks[0].length > 5 ? blocks[0].substring(0,5) : blocks[0];
-                newBlockObject[blocks[0]] = newBlock;
-            });
-
-            this.parsed = newBlockObject;
-            this.$log.log({parsed: this.parsed});
-        },
-        unparseContent(delimiter = null ) {
-            delimiter = delimiter || this.delimiter;
-            this.unparsed =  '';
-            let rows = [];
-            foreach(this.parsed,(rowContent, key) => {
-                let row = key+''+delimiter;
-                row+=rowContent.join(delimiter);
-                rows.push(row);
-            });
-            this.unparsed = rows.join("\n");
-        },
-        resetContent() {
-            let rows = [];
-            this.unparsed =  '';
-            foreach(this.current, (rowObject) => {
-                let row = rowObject[this.typekey]+''+this.delimiter;
-                if(this.multilanguage === true) {
-                    keys(this.$stores.state.languages).forEach((lng,i) => {
-                        row += rowObject[lng][this.typedef]+''+this.delimiter;
-                    });
-                    row = row.substring(0,row.length-1);
-                } else {
-                    row += rowObject[this.$store.state.activeLanguage][this.typedef];
-                }
-                rows.push(row);
-            });
-            this.unparsed = rows.join("\n");
-            this.parseContent();
-        },
-        close() {
-            this.$emit('close');
-        },
-        replaceCurrent() {
-            this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
-            this.$emit('modalEvent', {target: this.type, method: 'replaceFromQuickAdd', content: this.parsed});
-            this.$emit('close');
-        },
-        addToCurrent() {
-            this.$store.dispatch('addToCurrentFromQuickEdit', {type: this.type, payload: this.parsed});
-            this.$emit('modalEvent', {target: this.type, method: 'addToFromQuickAdd', content: this.parsed});
-            this.$emit('close');
-        },
-    },
-    mounted(){
-        this.resetContent();
-        this.parseContent(current);
-    }
-}
-</script>
 
 <template>
     <div class="panel panel-default ls-flex-column fill">
@@ -126,7 +15,7 @@ export default {
                                 <option value=",">
                                     {{'Comma' | translate}} (,)
                                 </option>
-                                <option value="\t">
+                                <option :value='"\t"'>
                                     {{'Tab' | translate}} (\t)
                                 </option>
                             </select>
@@ -140,9 +29,18 @@ export default {
             </div>
         </div>
         <div class="panel-body ls-flex-column grow-1 fill">
-            <div class="ls-flex-column fill ls-space margin top-5 bottom-5">
+            <div 
+                class="ls-flex-column ls-space margin top-5 bottom-5"
+                :class="'scoped-fix-height-1-1'"
+            >
                 <div class="ls-flex-colum grow-1">
-                    <textarea class="scoped-textarea-class" v-model="unparsed" @change="parseContent()"></textarea>
+                    <textarea 
+                        class="scoped-textarea-class" 
+                        v-model="unparsed"
+                        @keydown.tab.exact="addTabAtCursor"
+                        @paste.prevent="onPaste($event)" 
+                        @blur="parseContent()"
+                    />
                 </div>
                 <div class="ls-flex-row bg-info">
                     <div class="text-left">
@@ -166,9 +64,193 @@ export default {
     </div>
 </template>
 
+<script>
+import keys from 'lodash/keys';
+import foreach from 'lodash/forEach';
+import slice from 'lodash/slice';
+import debounce from 'lodash/debounce';
+import he from 'he';
+
+export default {
+    name: 'quickedit',
+    props: {
+        current: {type: [Array,Object], required: true},
+        type: {type: String, required: true},
+        typedef: {type: String, required: true},
+        typekey: {type: String, required: true},
+    },
+    data() {
+        return {
+            unparsed: '',
+            parsed: {},
+            delimiter: ";",
+            multilanguage: false
+        }
+    },
+    computed: {
+        baseNonNumericPart() {
+            return this.type == 'answeroptions' 
+                ? window.QuestionEditData.baseSQACode.subquestions 
+                : window.QuestionEditData.baseSQACode.answeroptions
+        },
+    },
+    watch: {
+        delimiter(newDelimiter, oldDelimiter) {
+            this.unparseContent();
+        }
+    },
+    methods: {
+        tabDecode(string) {
+            return string.replace(/\\t/, /\t/);
+        },
+        parseContent() {
+            const rows = this.unparsed.split(/\r?\n/);
+            const newBlockObject = {};
+            this.$log.log({rows});
+
+            rows.forEach((element,rowCount) => {
+                const blocks = element.split(this.delimiter);
+                let newBlock = {};
+                this.$log.log({blocks});
+                
+                if(blocks.length == 1) {               
+                    newBlock[this.$store.state.activeLanguage] = blocks[0];     
+                    newBlockObject[this.baseNonNumericPart+String((rowCount)).padStart(2,'0')] = newBlock;
+                    return;
+                } 
+
+                if(this.multilanguage === true) {
+                    keys(this.$store.state.languages).forEach((lng,i) => {
+                        if(blocks[i+1] != undefined) {
+                            newBlock[lng] = blocks[i+1];
+                            return;
+                        }
+                        newBlock[lng] = blocks[1];
+                    });
+
+                } else {
+                    newBlock[this.$store.state.activeLanguage] = blocks[1];
+                }
+
+                newBlockObject[blocks[0]] = newBlock;
+            });
+
+            this.parsed = newBlockObject
+            this.$log.log({parsed: this.parsed});
+        },
+        onPaste($event) {
+            const field = $event.target;
+            const startPos = field.selectionStart;
+            const endPos = field.selectionEnd;
+            const oClipboardData = ($event.clipboardData || window.clipboardData);
+            let paste = oClipboardData.getData('text') //Get the text representation of the clipboard
+            
+            const oldValue =  $event.target.value;
+            const newValue = `${oldValue.substring(0,startPos)}${paste}${oldValue.substring(endPos, oldValue.length)}`;
+            $event.target.value = newValue;
+            this.unparsed = $event.target.value;
+            this.delimiter = this.parseForMostProbableDelimiter(newValue);
+            this.parseContent();
+        },
+        addTabAtCursor($event) {
+            const field = $event.target;
+            const start = String($event.target.value).substring(0,field.selectionStart);
+            const end = String($event.target.value).substring(field.selectionEnd,$event.target.value.length);
+            $event.target.value = start + "\t" + end;
+            this.unparsed = $event.target.value;
+        },
+        unparseContent(delimiter=null) {
+            delimiter = delimiter || this.delimiter;
+            this.unparsed = '';
+            let rows = [];
+            foreach(this.parsed, (rowContent, key) => {
+                let row = key+''+this.delimiter;
+                    row+=(LS.ld.values(rowContent).join(this.delimiter)).replace(/\\t/,/\t/);
+                    rows.push(row);
+            });
+            this.unparsed = rows.join("\n");
+        },
+        resetContent() {
+            this.unparsed = '';
+            let rows = [];
+            this.current.forEach(rowObject => {
+                let row = rowObject[this.typekey]+''+this.delimiter;
+                if(this.multilanguage === true) {
+                    keys(this.$store.state.languages).forEach((lng,i) => {
+                        row += rowObject[lng][this.typedef]+''+this.delimiter;
+                    });
+                    row = row.substring(0,row.length-1);
+                } else {
+                    row += rowObject[this.$store.state.activeLanguage][this.typedef];
+                }
+                rows.push(row);
+            });
+            this.unparsed = rows.join("\n");
+            this.parseContent();
+        },
+        close() {
+            this.$emit('close');
+        },
+        filterForUnparse(rowContent) {
+            const returnArray = [
+                rowContent.code,
+                rowContent.asessment_value || '0',
+            ];
+            if(this.multilanguage === true) {
+                keys(this.$store.state.languages).forEach((lng) => {
+                    returnArray.push(rowContent[lng].answer);
+                })
+            } else {
+                returnArray.push(
+                    rowContent[this.$store.state.activeLanguage].answer
+                );
+            }
+            this.$log.log({rowContent, returnArray});
+            return returnArray;
+        },
+        replaceCurrent() {
+            this.$emit('modalEvent', {target: this.type, method: 'replaceFromQuickAdd', content: this.parsed});
+            this.$emit('close');
+        },
+        addToCurrent() {
+            this.$emit('modalEvent', {target: this.type, method: 'addToFromQuickAdd', content: this.parsed});
+            this.$emit('close');
+        },
+        parseForMostProbableDelimiter(pasteText) {
+            const firstLine = pasteText.split(/\r?\n/);
+            if(firstLine.length < 2) {
+                return this.delimiter;
+            }
+            const delimiter = [
+                [';', firstLine.shift().split(';').length],
+                [',', firstLine.shift().split(',').length],
+                ['\t', firstLine.shift().split(/\t|\\t/).length]
+            ]
+            delimiter.sort((a,b) => {
+                return b[1]-a[1];
+            });
+            return (delimiter[0][0]);
+            
+        }
+    },
+    mounted(){
+        this.resetContent();
+        this.parseContent();
+    }
+}
+</script>
+
 <style lang="scss" scoped>
 .scoped-textarea-class {
     height: 100%;
     width: 100%;
+}
+.scoped-fix-height-1-1 {
+    margin-top: 1%;
+    height: 99%;
+}
+.scoped-fix-height-1-2 {
+    height: 48%;
+    margin-top: 1%;
 }
 </style>

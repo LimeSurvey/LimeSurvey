@@ -399,7 +399,7 @@ class labels extends Survey_Common_Action
         if(empty($oLabelsSet)) {
             throw new CHttpException(404, gT("Invalid label set."));
         }
-        if($oLabelsSet->delete()) {
+        if($oLabelsSet->deleteLabelSet($lid)) {
             Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."),CHtml::encode($oLabelsSet->label_name)));
         } else {
             Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."),$lid));
@@ -519,35 +519,58 @@ class labels extends Survey_Common_Action
         Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
     }
 
-    public function ajxSetLabelSet($lid) {
+    /**
+     * @param $lid
+     *
+     * @throws CException
+     */
+    public function ajxSetLabelSet($lid)
+    {
         $oLabelSetObject = LabelSet::model()->findByPk($lid);
-        $aLabelSetData = Yii::app()->request->getPost('labelSetData', []);
+        $aLabelSetData = App()->request->getPost('labelSetData', []);
         $aLanguages = $oLabelSetObject->languageArray;
         $aLabels = $aLabelSetData['labels'];
         $result = true;
-        
-        foreach ($aLabels as $aLabel) {
-            $oLabel = $this->_getLabelObject($aLabel['id']);
-            $oLabel->lid = $aLabel['lid'];
-            $oLabel->code = $aLabel['code'];
-            $oLabel->sortorder = $aLabel['sortorder'];
-            $oLabel->assessment_value = $aLabel['assessment_value'];
-            $result = $result && $oLabel->save();
-            
-            foreach ($aLanguages as $sLanguage) {
-                $oLabelI10N = $this->_getLabelI10NObject($oLabel->id, $sLanguage);
-                $oLabelI10N->title = $aLabel[$sLanguage]['title'] == '' ? $aLabel[$aLanguages[0]]['title'] : $aLabel[$sLanguage]['title'];
-                $result = $result && $oLabelI10N->save();
+        $oDB = App()->db;
+        $oTransaction = $oDB->beginTransaction();
+        try {
+            $oLabelSetObject->deleteLabelsForLabelSet();
+
+            foreach ($aLabels as $aLabel) {
+                $oLabel = $this->_getLabelObject($aLabel['id']);
+                $oLabel->lid = $aLabel['lid'];
+                $oLabel->code = $aLabel['code'];
+                $oLabel->sortorder = $aLabel['sortorder'];
+                $oLabel->assessment_value = $aLabel['assessment_value'];
+                $result = $result && $oLabel->save();
+                foreach ($aLanguages as $sLanguage) {
+                    $oLabelI10N = $this->_getLabelI10NObject($oLabel->id, $sLanguage);
+                    $oLabelI10N->title = $aLabel[$sLanguage]['title'] == '' ? $aLabel[$aLanguages[0]]['title'] : $aLabel[$sLanguage]['title'];
+                    $result = $result && $oLabelI10N->save();
+                }
             }
+
+            $oTransaction->commit();
+
+            App()->getController()->renderPartial(
+                '/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => $result,
+                        'message' => $result ? gT('Successfully stored labelset') : gT("Labelset couldn't be stored")
+                    ]
+                ]
+            );
+        } catch (Exception $e) {
+            $oTransaction->rollback();
+            App()->getController()->renderPartial(
+                '/admin/super/_renderJson', [
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("Labelset couldn't be stored")
+                    ]
+                ]
+            );
         }
-        
-        Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson', ['data' => [
-                'success' => $result ,
-                'message' => $result ? gT('Successfully stored labelset') : gT("Labelset couldn't be stored")
-            ]]
-        );
-            
     }
     
     public function multieditor($lid = null) {
