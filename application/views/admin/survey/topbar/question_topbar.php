@@ -407,24 +407,13 @@ if ($qid == 0) {
 }
 
 if ($ownsImportButton) {
-    if ($Activated) {
-        // survey inactive
-        $buttons['import'] = [
-            'url' => $this->createUrl("admin/questions/sa/importView/", ["surveyid" => $sid]),
-            'class' => 'btn-default',
-            'id' => 'import-button',
-            'icon' => 'icon-import',
-            'name' => gT('Import Question'),
-        ];
-    } else {
-        $buttons['import'] = [
-            'title' => gT("You can not import questions because the survey is currently active."),
-            'class' => 'btn-default',
-            'id' => 'import-button',
-            'icon' => 'icon-import',
-            'name' => gT('Import Question'),
-        ];
-    }
+    $buttons['import'] = [
+        'url' => $this->createUrl("admin/questions/sa/importView/", ["surveyid" => $sid]),
+        'class' => 'btn-default',
+        'id' => 'import-button',
+        'icon' => 'icon-import',
+        'name' => gT('Import Question'),
+    ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['import']);
     array_push($topbarextended['alignment']['left']['buttons'], $buttons['import']);
 }
