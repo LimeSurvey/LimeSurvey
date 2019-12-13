@@ -148,7 +148,7 @@ export default {
                     data-placement={button.dataplacement || null }
                     data-toggle={button.datatoggle || null }
                     {...{attrs: this.dataAttributes}}
-                    title={he.decode(button.title)  || null }
+                    title={button.title || null }
                     target={button.target || null }
                     access-key={button.accesskey || null }
                     data-btntype="1"

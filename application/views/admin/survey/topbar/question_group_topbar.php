@@ -158,10 +158,10 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
         // survey active
         $import_group_button = [
             'id'    => 'import',
-            'title' => gT("You can't import pages because the survey is currently active."),
+            'title' => gT("You can not import pages because the survey is currently active."),
             'icon'  => 'icon-import',
             'name'  => gT("Import page"),
-            'class' => 'btn-default readonly',
+            'class' => 'btn-default',
         ];
     }
     array_push($topbar['alignment']['left']['buttons'], $import_group_button);
@@ -208,17 +208,17 @@ if ($hasDeletePermission) {
                 'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
                 'icon' => 'fa fa-trash',
                 'name' => gT("Delete current page"),
-                'class' => 'btn-danger readonly',
+                'class' => 'btn-danger',
             ];
         }
     } else {
         // Activated
         $buttons['delete_current_question_group'] = [
             'id' => 'delete_current_question_group',
-            'title' => gT("You can't delete this survey page because the survey is currently active."),
+            'title' => gT("You can not delete this survey page because the survey is currently active."),
             'icon' => 'fa fa-trash',
             'name' => gT("Delete current page"),
-            'class' => 'btn-danger readonly',
+            'class' => 'btn-danger',
         ];
     }
 }

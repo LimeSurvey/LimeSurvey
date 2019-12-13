@@ -418,8 +418,8 @@ if ($ownsImportButton) {
         ];
     } else {
         $buttons['import'] = [
-            'title' => gT("You can't import questions because the survey is currently active."),
-            'class' => 'btn-default readonly',
+            'title' => gT("You can not import questions because the survey is currently active."),
+            'class' => 'btn-default',
             'id' => 'import-button',
             'icon' => 'icon-import',
             'name' => gT('Import Question'),
