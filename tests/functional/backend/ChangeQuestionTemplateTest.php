@@ -3,6 +3,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\StaleElementReferenceException;
@@ -73,14 +74,18 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $web->dismissModal();
             sleep(1);
 
-            $editButton = $web->findById('questionEditorButton');
-            $editButton->click();
+            // Old way, by useing the html elements
+            // $editButton = $web->findById('trigger_question_selector_button');
+            // $editButton->click();
 
-            sleep(1);
+            // sleep(1);
 
-            // Select bootstrap_buttons on Question theme dropdown
-            $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
-            $option->click();
+            // // Select bootstrap_buttons on Question theme dropdown
+            // $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
+            // $option->click();
+
+            //new way by triggering a vuejs function
+            $web->executeScript('LS.EventBus.$emit("questionTypeChange", {type: "L", name: "bootstrap_buttons"})');
 
             sleep(1);
 
