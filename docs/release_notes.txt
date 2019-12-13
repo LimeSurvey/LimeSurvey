@@ -1144,9 +1144,23 @@ Changes from 4.0.0-beta (build 190509) to 4.0.0-RC1 (build 190509) May 09, 2019
 #Updated translation: Vietnamese by c_schmitz, namphuong, tuannm, dnvservices
 #Updated translation: Vietnamese by dnvservices
 
+
 Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 2019
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
+
+
+Changes from 3.21.0 (build 191203) to 3.21.1 (build 191210) December 10, 2019
+-Fixed issue #15623: gridview pagination not working for saved partial responses (Patrick Teichmann)
+-Fixed issue #15571: CPDB - cannot use the search boxes below associated to the additional attributes (Patricia Stelling)
+#Updated translation: Spanish (Mexican) by corzel
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: Danish by Mikkel
+#Updated translation: Catalan by qualitatuvic
 
 
 Changes from 3.20.2 (build 191119) to 3.21.0 (build 191203) December 3, 2019

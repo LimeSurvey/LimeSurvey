@@ -26,17 +26,17 @@
                     'template'     => "{items}\n<div class='row'><div class='col-sm-4 col-md-offset-4'>{pager}</div><div class='col-sm-4'>{summary}</div></div>",
                     'emptyText'    => gT('No customizable entries found.'),
                     'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'savedResponsesPageSize',
-                                $savedResponsesPageSize,
-                                App()->params['pageSizeOptions'],
-                                array(
-                                    'class'    => 'changePageSize form-control',
-                                    'style'    => 'display: inline; width: auto',
-                                    'onchange' => "$.fn.yiiGridView.update('saved-grid',{ data:{ savedResponsesPageSize: $(this).val() }});"
-                                )
+                        CHtml::dropDownList(
+                            'savedResponsesPageSize',
+                            $savedResponsesPageSize,
+                            App()->params['pageSizeOptions'],
+                            array(
+                                'class'    => 'changePageSize form-control',
+                                'style'    => 'display: inline; width: auto',
+                                'onchange' => "$.fn.yiiGridView.update('saved-grid',{ data:{ savedResponsesPageSize: $(this).val() }});"
                             )
-                        ),
+                        )
+                    ),
                 )
             );
             ?>
