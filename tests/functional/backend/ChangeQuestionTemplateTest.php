@@ -87,7 +87,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             //new way by triggering a vuejs function
             $web->executeScript('LS.EventBus.$emit("questionTypeChange", {type: "L", name: "bootstrap_buttons"})');
 
-            sleep(1);
+            sleep(2);
 
             // Select "Display theme options" tab
             $displayLink = $web->findElement(WebDriverBy::linkText('Display theme options'));
