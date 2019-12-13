@@ -26,7 +26,7 @@
                     <div 
                         :id="'collapsible_'+groupTitle" 
                         class="panel-collapse" 
-                        :class="groupStructureArray.uncollapsed ? 'collapsed' : ''" 
+                        :class="groupStructureArray.collapsed ? 'collapse' : ''" 
                         role="tabpanel" 
                         :aria-labelledby="groupTitle"
                     >
@@ -34,10 +34,10 @@
                         <div class="list-group ls-space margin all-0">
                             <a
                                 v-for="questionType in groupStructureArray.questionTypes"
-                                :key="questionType.type"
+                                :key="questionType.type+questionType.name"
                                 href="#"
                                 class="list-group-item"
-                                :class="currentlySelectedType.type === questionType.type ? 'selected' : ''"
+                                :class="isSelected(questionType)"
                                 :data-selector="questionType.class || questionType.type"
                                 :data-key="questionType.type"
                                 v-bind="questionType.extraAttributes"
@@ -124,7 +124,15 @@ export default {
             
         },
         beforeClose() {
-            this.$store.dispatch('questionTypeChange', this.currentlySelectedTypeObject);
+            if(this.currentlySelectedTypeObject != null) {
+                this.$store.dispatch('questionTypeChange', this.currentlySelectedTypeObject);
+            }
+        },
+        isSelected(questionType) {
+            return this.currentlySelectedType.type == questionType.type 
+                && this.currentlySelectedType.name == questionType.name 
+                    ? 'selected' 
+                    : '';
         },
         closeButton() {
             this.$emit('close');
@@ -138,7 +146,6 @@ export default {
         let currentTypeObject = null;
             
         foreach(this.structureArray, (groupArray, key) => {
-            this.structureArray[key].uncollapsed = false;
             
             let objectInThisGroup = find(groupArray.questionTypes, (questionType) => {
                 return (questionType.type === this.currentQuestionType)
@@ -146,11 +153,10 @@ export default {
             });
             this.$log.log("Found in group ",groupArray.questionGroupName, "->", objectInThisGroup);
             
-            if(objectInThisGroup !== undefined ) {
-                this.structureArray[key].uncollapsed = true;
+            this.structureArray[key].collapsed = (objectInThisGroup == undefined);
+            if(objectInThisGroup != undefined) {
                 currentTypeObject = objectInThisGroup;
             }
-
         });
         this.currentlySelectedTypeObject = currentTypeObject;
     }
@@ -158,6 +164,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .selected {
+        background-color: var(--LS-admintheme-hintedbasecolor);
+        &:after {
+            position: absolute;
+            right: 10px;
+            content: "\F054";
+            font: normal normal normal 18px/1 FontAwesome;
+            text-rendering: auto;
+        }
+    }
     .scope-attack-padding {
         padding: 1%;
         margin: 2px;
