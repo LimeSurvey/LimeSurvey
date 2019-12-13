@@ -113,7 +113,7 @@ export default {
             return this.$store.state.currentQuestion.type;
         },
         currentQuestionTemplate() {
-            return this.$store.state.currentQuestionGeneralSettings.question_template.formElementValue;
+            return this.$store.state.currentQuestionGeneralSettings.question_template.formElementValue || 'core';
         }
     },
     methods: {
