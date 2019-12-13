@@ -61,7 +61,7 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'name'); ?>
-				<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
+				<?php echo $form->textField($model,'name',array('title'=>gT('Kleinbuchstaben und Zahlen, beginnend mit einem Buchstaben - min 6 Zeichen, max 60 Zeichen'), 'required'=>true, 'size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
 				<?php echo $form->error($model,'name'); ?>
 			</div>
 			
