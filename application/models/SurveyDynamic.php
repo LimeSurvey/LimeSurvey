@@ -300,6 +300,7 @@ class SurveyDynamic extends LSActiveRecord
             ),
         );
         /* edit button */
+        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update'));
         $gridButtons['edit'] = array(
             'label'=>'<span class="sr-only">'.gT("Edit this response").'</span><span class="fa fa-pencil text-success" aria-hidden="true"></span>',
             'imageUrl'=>false,
@@ -310,7 +311,7 @@ class SurveyDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Edit this response")
             ),
-            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update').')',
+            'visible'=> 'boolval('.$baseVisible.')',
         );
         /* downloadfile button */
         $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid));
