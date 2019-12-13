@@ -101,8 +101,8 @@ export default {
     },
     mounted() {
         if(isEmpty(this.$store.state.labels)){
-            this.$store.state.labels = {"0": [this.getTemplate()]};
-        };
+            this.$store.state.labels = [this.getTemplate()];
+        }
         this.reorderLabels();
     }
 }

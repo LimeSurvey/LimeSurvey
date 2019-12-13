@@ -143,8 +143,8 @@ export default {
             let orderCount = tempObject.length;
             foreach(contents, (lngSet, key) => {
                 const newDataSetBlock = this.getTemplate();
-                if(currentKeys.indexOf(key) != -1) {
-                    newDataSetBlock[this.typeDefininitionKey] = this.getNewTitleFromCurrent(tempObject)
+                if(tempObject.indexOf(key) !== -1) {
+                    newDataSetBlock[this.typeDefininitionKey] = this.getNewTitleFromCurrent(tempObject);
                 } else {
                     newDataSetBlock[this.typeDefininitionKey] = key;
                 }

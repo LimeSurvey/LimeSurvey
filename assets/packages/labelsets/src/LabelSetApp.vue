@@ -45,6 +45,7 @@ export default {
                       return;
                   }
                   this.loading = false;
+                  window.LS.notifyFader(result.data.message, 'well-lg text-center ' + (result.data.success ? 'bg-primary' : 'bg-danger'));
                   if(redirect == true) {
                       window.location.href = result.data.redirect || window.location.href;
                   }
