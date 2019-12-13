@@ -87,11 +87,12 @@
                         <div
                             v-if="$store.getters.surveyObject.active !='Y'"
                             v-show="(editQuestion || isCreateQuestion)"
-                            class="btn-group" id="trigger_question_selector_button"
+                            class="btn-group" 
                         >
 
                             <button 
                                 v-if="useModalSelector"
+                                id="trigger_question_selector_button"
                                 type="button" 
                                 class="btn btn-primary" 
                                 aria-haspopup="true" 
@@ -99,7 +100,7 @@
                                 @click="toggleQuestionTypeSelector"
                             >
                                 <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
-                                <span class="buttontext" id="selector__question_selector--buttonText">
+                                <span class="buttontext" id="selector__questionType_selector--buttonText">
                                     {{ currentQuestionTypeDescription }}
                                     <em class="small">
                                         {{"Type:"|translate}} {{$store.state.currentQuestion.type}}
@@ -458,6 +459,11 @@ export default {
 
         $('#frmeditquestion').on('submit', (e)=>{
             e.preventDefault();
+        });
+
+        LS.EventBus.$off('questionTypeChange');
+        LS.EventBus.$on('questionTypeChange', (payload) => {
+            this.$store.dispatch('questionTypeChange', payload);
         });
 
         LS.EventBus.$off('componentFormSubmit');
