@@ -182,7 +182,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
             // Select Question Editor View
             try {
-                $questionEditorButton = $web->wait(1)->until(
+                $questionEditorButton = $web->wait(5)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#questionEditorButton')
                     )
@@ -234,7 +234,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
             // Select Question Editor View
             try {
-                $questionEditorButton = $web->wait(1)->until(
+                $questionEditorButton = $web->wait(5)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#questionEditorButton')
                     )
