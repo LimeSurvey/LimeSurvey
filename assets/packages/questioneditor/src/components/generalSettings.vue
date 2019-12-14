@@ -2,7 +2,7 @@
 <template>
     <div class="ls-flex scope-set-min-height scoped-general-settings" :class="collapsedMenu ? 'collapsed' : 'non-collapsed'">
         <transition name="slide-fade">
-            <div class="panel panel-default question-option-general-container col-12" v-if="!loading && !collapsedMenu">
+            <div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
                 <div class="panel-heading"> 
                     {{"General Settings" | translate }}
                     <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
@@ -30,7 +30,7 @@
             </div>
         </transition>
         <transition name="slide-fade">
-            <button v-if="!loading && collapsedMenu" class="btn btn-default scoped--special-collapse" @click="collapsedMenu=false">
+            <button v-if="!loading && collapsedMenu" class="btn btn-default scoped--special-collapse"  id="collapsed-general-settings" @click="collapsedMenu=false">
                 <i class="fa fa-chevron-left" />
                 <div class="special-collapse-text">
                     {{"General Settings" | translate }}

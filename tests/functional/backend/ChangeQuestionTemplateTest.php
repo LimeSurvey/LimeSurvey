@@ -74,20 +74,23 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $web->dismissModal();
             sleep(1);
 
-            // Old way, by useing the html elements
-            // $editButton = $web->findById('trigger_question_selector_button');
-            // $editButton->click();
+            $web->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('questionEditorButton')));
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
 
+            $editButton = $web->findById('questionEditorButton');
+            $editButton->click();
+            
+            
+            //// Old way, by useing the html elements
             // sleep(1);
-
             // // Select bootstrap_buttons on Question theme dropdown
             // $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
             // $option->click();
 
-            //new way by triggering a vuejs function
+            //// New way by triggering a vuejs function
             $web->executeScript('LS.EventBus.$emit("questionTypeChange", {type: "L", name: "bootstrap_buttons"})');
-
-            sleep(2);
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
+            sleep(5);
 
             // Select "Display theme options" tab
             $displayLink = $web->findElement(WebDriverBy::linkText('Display theme options'));
@@ -103,13 +106,12 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $displayLink = $web->findElement(WebDriverBy::linkText('Display'));
             $displayLink->click();
 
-            sleep(1);
-
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('uncollapsed-general-settings')));
             // Change question template to default
             $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
             $option->click();
 
-            sleep(1);
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
 
             // Switch to Display tab
             // Try to find "button_size" - should throw exception NoSuchElementException
@@ -240,6 +242,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 $questionEditorButton->click();
 
                 // Check if General Settings Container is there
+                $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated( WebDriverBy::id('uncollapsed-general-settings') ));
                 $generalSettingsContainer = $web->findElement(
                     WebDriverBy::className('question-option-general-container')
                 );
@@ -250,7 +253,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
-            sleep(1);
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('uncollapsed-general-settings')));
 
             // Select new Question Theme for Question
 
@@ -264,7 +267,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
             $saveButton->click();
 
-            sleep(5);
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('uncollapsed-general-settings')));
 
              // Change question template to default
             $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
@@ -276,7 +279,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
             $saveButton->click();
             
-            sleep(1);
+            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated( WebDriverBy::id('advanced-options-container') ));
 
             // Check if Scope-apply-base-style exists
             $scopeApplyBaseStyleContainer = $web->findElement(
