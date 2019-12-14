@@ -73,12 +73,13 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
 
         $web->dismissModal();
 
-        $button = $web->wait(5)->until(
+        $button = $web->wait(10)->until(
             WebDriverExpectedCondition::elementToBeClickable(
                 WebDriverBy::id('questionEditorButton')
             )
         );
         $button->click();
+        sleep(1);
 
         $button = $web->findElement(WebDriverBy::linkText('Answer options'));
         $button->click();
@@ -96,7 +97,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $savebutton = $web->findElement(WebDriverBy::id('save-button'));
         $savebutton->click();
 
-        sleep(1);
+        $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
 
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);
