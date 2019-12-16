@@ -648,6 +648,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sr-Latn']['dateformat'] = 4;
     $supportedLanguages['sr-Latn']['radixpoint'] = 1;
 
+    // Somali
+    $supportedLanguages['so']['description'] = gT('Somali');
+    $supportedLanguages['so']['nativedescription'] = 'Af-Soomaali';
+    $supportedLanguages['so']['rtl'] = false;
+    $supportedLanguages['so']['dateformat'] = 9;
+    $supportedLanguages['so']['radixpoint'] = 1;
+
     // Spanish
     $supportedLanguages['es']['description'] = gT('Spanish');
     $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
