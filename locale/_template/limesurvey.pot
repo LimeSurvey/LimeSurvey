@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-12-02 11:08:37+00:00\n"
+"POT-Creation-Date: 2019-12-16 10:56:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2185,8 +2185,8 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1443
 #: application/helpers/userstatistics_helper.php:1548
 #: application/helpers/userstatistics_helper.php:1656
-#: application/models/SurveyDynamic.php:828
-#: application/models/SurveyDynamic.php:884
+#: application/models/SurveyDynamic.php:829
+#: application/models/SurveyDynamic.php:885
 #: application/views/admin/dataentry/content_view.php:178
 #: application/views/admin/dataentry/content_view.php:182
 #: application/views/admin/dataentry/content_view.php:202
@@ -12473,32 +12473,32 @@ msgstr ""
 msgid "View response details as queXML PDF"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:304
-#: application/models/SurveyDynamic.php:311
+#: application/models/SurveyDynamic.php:305
+#: application/models/SurveyDynamic.php:312
 #: application/models/SurveyTimingDynamic.php:195
 #: application/views/admin/responses/browseallrow_view.php:16
 msgid "Edit this response"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:318
-#: application/models/SurveyDynamic.php:326
+#: application/models/SurveyDynamic.php:319
+#: application/models/SurveyDynamic.php:327
 #: application/views/admin/responses/browseallrow_view.php:21
 msgid "Download all files in this response as a zip file"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:331
-#: application/models/SurveyDynamic.php:338
+#: application/models/SurveyDynamic.php:332
+#: application/models/SurveyDynamic.php:339
 msgid "Delete all files of this response"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:345
-#: application/models/SurveyDynamic.php:352
+#: application/models/SurveyDynamic.php:346
+#: application/models/SurveyDynamic.php:353
 #: application/models/SurveyTimingDynamic.php:201
 #: application/views/admin/responses/browseallrow_view.php:28
 msgid "Delete this response"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:596
+#: application/models/SurveyDynamic.php:597
 #: application/models/TokenDynamic.php:903
 #: application/models/TokenDynamic.php:909
 msgid "Edit this survey participant"
@@ -18898,6 +18898,10 @@ msgstr ""
 #: application/views/admin/tutorialEntry/_form.php:18
 #: application/views/admin/tutorials/_form.php:18
 msgid "Fields with %s are required."
+msgstr ""
+
+#: application/views/admin/surveymenu/_form.php:64
+msgid "Kleinbuchstaben und Zahlen, beginnend mit einem Buchstaben - min 6 Zeichen, max 60 Zeichen"
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:24
