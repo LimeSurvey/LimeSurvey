@@ -214,7 +214,7 @@ class surveypermission extends Survey_Common_Action
                 <select id='ugidselect' name='ugid'  class='form-control'>\n"
             . getSurveyUserGroupList('htmloptions', $iSurveyID)
             . "</select></div>\n"
-            . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='".gT("Add user group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('".gT("Please select a user group first", "js")."'); return false;}\" />"
+            . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='".gT("Add group users")."' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('".gT("Please select a user group first", "js")."'); return false;}\" />"
             . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
             . "</li></ul></form>";
         }
