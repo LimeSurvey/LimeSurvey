@@ -3,10 +3,10 @@
   "license": "GPL-3.0",
   "author": "LimeSurvey DevTeam",
   "scripts": {
-    "dev": "env-cmd -e dev rollup -c",
-    "prod": "env-cmd -e prod rollup -c",
+    "dev": "node_modules/.bin/env-cmd -e dev rollup -c",
+    "prod": "node_modules/.bin/env-cmd -e prod rollup -c",
     "build": "yarn run dev && yarn run prod",
-    "test": "env-cmd -e test jest"
+    "test": "node_modules/.bin/env-cmd -e test node_modules/.bin/jest"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
