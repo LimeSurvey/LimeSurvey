@@ -34,6 +34,53 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC11 (build 191209) to 4.0.0-RC12 (build 191217) December 17, 2019
++New translation: Somali (Carsten Schmitz)
++New feature: Allow videos if XSS is enabled (Carsten Schmitz)
+-Fixed issue: permission roles filter/pagination/ajax not working (Patrick Teichmann)
+-Fixed issue: Top Bar missing for 'export responses to SPSS' (Eddy Lackmann)
+-Fixed issue: Top Bar / Button missing for 'Export responses' View (Eddy Lackmann)
+-Fixed issue: Missing Export Button for 'Export as vv survey file' (Eddy Lackmann)
+-Fixed issue: Labelsets not completely done in LS4 style (lacrioque)
+-Fixed issue: Label Set save not replacing old values in the db resulting in duplicates when reading (Patrick Teichmann)
+-Fixed issue: Label Set added missing flash messages (Patrick Teichmann)
+-Fixed issue: Import responses from a deactivated survey top bar (Eddy Lackmann)
+-Fixed issue: Import VV survey View missing top bar (Eddy Lackmann)
+-Fixed issue: Hidden tutorial until we can fix it correctly (lacrioque)
+-Fixed issue: Disable import page/question buttons on active survey (Marc Leonhardt)
+-Fixed issue: Add group in surveypermissions ambiguous (lacrioque)
+-Fixed issue #15657: Admin user with only Read response acces can not see response listing (debug at 2) (Denis Chenu)
+-Fixed issue #15630: Label Set Quick add is broken (Patrick Teichmann)
+-Fixed issue #15623: gridview pagination not working for saved partial responses (Patrick Teichmann)
+-Fixed issue #15609: Cannot add new survey menu (Marc Leonhardt)
+-Fixed issue #15602: Question Group redirects with undefined on deletion (Patrick Teichmann)
+-Fixed issue #15593: Tooltips doesn't work after adding user (Eddy Lackmann)
+-Fixed issue #15590: "Batch deletion" broken in a number of ways (Eddy Lackmann)
+-Fixed issue #15585: Wrong extraction path for Question Themes and error handling (Patrick Teichmann)
+-Fixed issue #15571: CPDB - cannot use the search boxes below associated to the additional attributes (Patricia Stelling)
+-Fixed issue #15569: Preview of inherited template is always the default (fruity) (Patrick Teichmann)
+-Fixed issue #15552: Missing setting: Show survey title in export PDFs (Marc Leonhardt)
+-Fixed issue #14552: Backward navigation broken if navigation delay is enabled (lacrioque)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Mexican) by corzel
+#Updated translation: Russian by kmaksat
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Kazakh by KlickERR
+#Updated translation: Kazakh by KlickERR
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: Estonian by TonisOrmisson
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Danish by Mikkel
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC10 (build 191202) to 4.0.0-RC11 (build 191209) December 9, 2019
 -New feature #15513: Missing function floatval() in EM (#1344) (Denis Chenu)
 -Fixed issue: quickedit working again (lacrioque)
