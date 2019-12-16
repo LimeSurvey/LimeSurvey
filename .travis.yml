@@ -108,3 +108,4 @@ script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit
     - yarn --cwd ./assets/packages/filemanager run test
+    - yarn --cwd ./assets/packages/adminbasics run test
