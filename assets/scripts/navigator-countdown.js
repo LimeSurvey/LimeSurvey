@@ -24,7 +24,7 @@ function navigator_countdown(n)
 
 function navigator_countdown_btn()
 {
-	return $('.action--ls-button-submit');
+	return $('.ls-move-btn');
 }
 
 function navigator_countdown_end()
