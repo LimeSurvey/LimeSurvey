@@ -290,5 +290,16 @@ export default {
                 reject(error);
             });
         });
+    },
+    questionTypeChange: (context, payload) => {
+        context.commit('updateCurrentQuestionType', payload.type);
+        context.commit('setQuestionGeneralSetting', {settingName: 'question_template', newValue: payload.name });
+        context.commit('setStoredEvent', { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' });
+        Promise.all([
+            context.dispatch('getQuestionGeneralSettings', payload.name),
+            context.dispatch('getQuestionAdvancedSettings')
+        ]).finally(()=>{
+            context.commit('setStoredEvent', { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' });
+        });
     }
 };

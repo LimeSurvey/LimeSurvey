@@ -87,8 +87,33 @@
                         <div
                             v-if="$store.getters.surveyObject.active !='Y'"
                             v-show="(editQuestion || isCreateQuestion)"
-                            v-html="questionEditButton"
-                        />
+                            class="btn-group" 
+                        >
+
+                            <button 
+                                v-if="useModalSelector"
+                                id="trigger_question_selector_button"
+                                type="button" 
+                                class="btn btn-primary" 
+                                aria-haspopup="true" 
+                                aria-expanded="false"
+                                @click="toggleQuestionTypeSelector"
+                            >
+                                <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
+                                <span class="buttontext" id="selector__questionType_selector--buttonText">
+                                    {{ currentQuestionTypeDescription }}
+                                    <em class="small">
+                                        {{"Type:"|translate}} {{$store.state.currentQuestion.type}}
+                                    </em>
+                                </span>
+                            </button>
+                            <SimpleQuestionTypeSelector
+                                id="simplequestionselector"
+                                :debug ="true"
+                                v-if="!useModalSelector"
+                                @triggerEvent="triggerEvent"
+                            />
+                        </div>
                         <input
                             v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')"
                             type="text"
@@ -102,7 +127,6 @@
                             id="question_type"
                             name="type"
                             :value="$store.state.currentQuestion.type"
-                            @change="questionTypeChangeTriggered"
                         />
                     </div>
                 </div>
@@ -158,12 +182,14 @@
 import Mousetrap from 'mousetrap';
 import filter from 'lodash/filter';
 
+import BootstrapToggle from 'vue-bootstrap-toggle'
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
 import AdvancedSettings from './components/advancedSettings.vue';
+import SimpleQuestionTypeSelector from './components/SimpleQuestionTypeSelector.vue';
+import QuestionTypeSelector from './helperComponents/QuestionTypeSelector.vue';
 import LanguageSelector from './helperComponents/LanguageSelector.vue';
-import BootstrapToggle from 'vue-bootstrap-toggle'
 
 import runAjax from './mixins/runAjax.js';
 import eventRoot from './mixins/eventRoot.js';
@@ -177,12 +203,12 @@ export default {
         'generalsettings' : GeneralSettings,
         'advancedsettings' : AdvancedSettings,
         'languageselector' : LanguageSelector,
-        BootstrapToggle
+        BootstrapToggle,
+        SimpleQuestionTypeSelector
     },
     data() {
         return {
             editQuestion: false,
-            questionEditButton: window.questionEditButton,
             loading: true,
             noCodeWarning: false,
             switcherOptions: {
@@ -254,8 +280,15 @@ export default {
             get() { return this.$store.state.copyAdvancedOptions; },
             set(nV) { this.$store.commit('setCopyAdvancedOptions', nV); }
         },
+        currentQuestionTypeDescription (){
+            return this.$store.state.questionTypes[this.$store.state.currentQuestion.type].description
+        },
+        useModalSelector() {
+            return window.QuestionEditData.questionSelectorType == 'full' 
+                    || window.QuestionEditData.questionSelectorType == 'default';
+        }
     },
-    watcher: {
+    watch: {
         storedEvent(newValue) {
             if(newValue !== null) {
                 this.event = newValue;
@@ -378,20 +411,21 @@ export default {
             }
             return true;
         },
-        questionTypeChangeTriggered(newValueArray) {
-            this.$log.log('CHANGE OF TYPE', newValueArray.value);
-            this.currentQuestionType = newValueArray.value;
-            let tempQuestionObject = this.$store.state.currentQuestion;
-            tempQuestionObject.type = newValueArray.value;
-            this.$store.commit('setCurrentQuestion', tempQuestionObject);
-            this.$store.commit('setQuestionGeneralSetting', {settingName: 'question_template', newValue: newValueArray.options.name });
-            this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' };
-            Promise.all([
-                this.$store.dispatch('getQuestionGeneralSettings', newValueArray.options.name),
-                this.$store.dispatch('getQuestionAdvancedSettings')
-            ]).finally(()=>{
-                this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' };
-            });
+        toggleQuestionTypeSelector() {
+            this.$modal.show(QuestionTypeSelector, {
+                id: "QuestionSelect-"+this.$store.state.currentQuestion.qid,
+                title: this.translate("Select question type"),
+                debug: true// window.debugState.backend
+            }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+                resizable: false
+              },
+              {
+                'trigger-event': this.triggerEvent
+              }
+            )
         },
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
@@ -415,7 +449,6 @@ export default {
         LS.EventBus.$on('questionTypeChanged', (payload) => {
             this.$log.log("questiontype changed to -> ", payload.content.value);
             this.$log.log("with data -> ", payload.content.options);
-            this.questionTypeChangeTriggered(payload.content);
         });
     },
 
@@ -426,6 +459,11 @@ export default {
 
         $('#frmeditquestion').on('submit', (e)=>{
             e.preventDefault();
+        });
+
+        LS.EventBus.$off('questionTypeChange');
+        LS.EventBus.$on('questionTypeChange', (payload) => {
+            this.$store.dispatch('questionTypeChange', payload);
         });
 
         LS.EventBus.$off('componentFormSubmit');

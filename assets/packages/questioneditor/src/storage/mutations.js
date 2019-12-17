@@ -112,6 +112,9 @@ export default {
     },
 
     //special and single settings
+    updateCurrentQuestionType(state, newValue) {
+        Vue.set(state.currentQuestion, 'type', newValue);
+    },
     setQuestionGeneralSetting : (state, payload) => {
         //const newCurrentQuestionGeneralSettings = state.currentQuestionGeneralSettings;
         //newCurrentQuestionGeneralSettings[payload.settingName]['formElementValue'] = payload.newValue;

@@ -96,7 +96,7 @@ export default {
 <template>
     <div class="col-12 scope-apply-base-style scope-min-height">
         <transition name="slide-fade">
-            <div class="container-fluid" v-if="!loading">
+            <div class="container-fluid" v-if="!loading" id="advanced-options-container">
                 <div class="row scoped-tablist-container">
                     <template v-if="showSubquestionEdit || showAnswerOptionEdit">
                         <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
