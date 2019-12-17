@@ -32,13 +32,13 @@ describe("Creating a save state", () => {
         global.LS = {localStorageInterface: new LocalStorageInterface()};
         saveState = global.LS.localStorageInterface.createSaveState('TESTSTATE');
         saveState('TESTSTATE', { valueStored: 'TESTVALUE' }, global.localStorage);
-        creationTime = new Date().getTime();
+        creationTime = Math.floor(new Date().getTime()/10);
     });
     
     test("A safe state has been created", () => {
         expect( 
-            global.LS.localStorageInterface.archive['TESTSTATE']
-        ).toStrictEqual({"created": creationTime});
+            Math.floor(global.LS.localStorageInterface.archive['TESTSTATE'].created/10)
+        ).toBe( creationTime);
     });
 
     test("The stored archive has been updated", () => {
