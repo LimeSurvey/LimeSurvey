@@ -564,7 +564,7 @@ function submitfailed($errormsg = '', $query = null)
 {
     global $debug;
     global $thissurvey;
-    global $subquery, $surveyid;
+    global $surveyid;
 
     $completed = "<p><span class='fa fa-exclamation-triangle'></span>&nbsp;<strong>"
     . gT("Did Not Save")."</strong></p>"
@@ -575,7 +575,7 @@ function submitfailed($errormsg = '', $query = null)
         $completed .= "<p>";
         $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
         $completed .= "</p>";
-        if ($debug > 0) {
+        if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: '.htmlspecialchars($errormsg).'<br />';
         }
         $email = gT("An error occurred saving a response to survey id", "unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
@@ -587,11 +587,15 @@ function submitfailed($errormsg = '', $query = null)
                 $email .= "$value: N/A\n";
             }
         }
-        $email .= "\n".gT("SQL CODE THAT FAILED", "unescaped").":\n"
-        . "$subquery\n\n"
-        . ($query ? $query : '')."\n\n"  // In case we have no global subquery, but an argument to the function
-        . gT("ERROR MESSAGE", "unescaped").":\n"
-        . $errormsg."\n\n";
+        if (!empty($query)) {
+            $email .= "\n".gT("SQL CODE THAT FAILED", "unescaped").":\n"
+            . $query ."\n\n";
+        }
+        if(!empty($errormsg)) {
+            $email .= gT("ERROR MESSAGE", "unescaped").":\n"
+               . $errormsg."\n\n";
+        }
+
         $mailer = new \LimeMailer;
         $mailer->emailType = "errorsavingresults";
         $mailer->Subject = gT("Error saving results","unescaped");

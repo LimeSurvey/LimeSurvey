@@ -1196,6 +1196,20 @@ Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 201
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
 
+Changes from 3.21.1 (build 191210) to 3.21.2 (build 191216) December 16, 2019
++New translation: Somali (Carsten Schmitz)
+-Fixed issue #15657: Admin user with only Read response acces can not see response listing (debug at 2) (Denis Chenu)
+-Fixed issue #15609: Cannot add new survey menu (Marc Leonhardt)
+#Updated translation: Turkish by bulent
+#Updated translation: Russian by kmaksat
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Kazakh by KlickERR
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Estonian by TonisOrmisson
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
 
 Changes from 3.21.0 (build 191203) to 3.21.1 (build 191210) December 10, 2019
 -Fixed issue #15623: gridview pagination not working for saved partial responses (Patrick Teichmann)

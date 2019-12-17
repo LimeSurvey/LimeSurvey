@@ -5539,7 +5539,7 @@
                 {
                     $srid = null;
                     $message .= $this->gT("Unable to insert record into survey table"); // TODO - add SQL error?
-                    echo submitfailed('');  // TODO - report SQL error?
+                    submitfailed($this->gT("Unable to insert record into survey table"));
                 }
                 //Insert Row for Timings, if needed
                 if ($this->surveyOptions['savetimings']) {
@@ -5554,7 +5554,7 @@
                 }
             }
             if (count($updatedValues) > 0 || $finished)
-            {                          
+            {
                 $aResponseAttributes = array();
                 switch ($this->surveyMode)
                 {
@@ -5575,8 +5575,8 @@
                 $aResponseAttributes['lastpage'] = $thisstep;
 
                 if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
-                    $_SESSION[$this->sessid]['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-                    $aResponseAttributes['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                    $_SESSION[$this->sessid]['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                    $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 }
                 if ($this->surveyOptions['ipaddr']) {
                     $aResponseAttributes['ipaddr'] = getIPAddress();
@@ -5621,29 +5621,26 @@
 
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
-                    $response = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
-                    if ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-	                    $response->setAttributes($aResponseAttributes, false);
-	                    if (!$response->encryptSave())
-	                    {
-	                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
-	                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
+                    $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                    if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
+                        $oResponse->setAttributes($aResponseAttributes, false);
+                        if (!$oResponse->encryptSave())
+                        {
+                            $message = submitfailed('', print_r($oResponse->getErrors())); // $response->getErrors() is array[string[]], then can not join
+                            if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
+                                $message .= CHTml::errorSummary($oResponse,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
+                            }
+                            LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
 
-	                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-	                            $message .= $this->gT('Error on response update');  // @todo Add  SQL error?
-	                        }
-
-	                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-
-	                    }
-	                    // Save Timings if needed
-	                    elseif ($this->surveyOptions['savetimings']) {
-	                        Yii::import("application.libraries.Save");
-	                        $cSave = new Save();
-	                        $cSave->set_answer_time();
-	                    }
-	                }
-
+                        } else { // Actions to do when save is OK
+                            // Save Timings if needed
+                            if ($this->surveyOptions['savetimings']) {
+                                Yii::import("application.libraries.Save");
+                                $cSave = new Save();
+                                $cSave->set_answer_time();
+                            }
+                        }
+                    }
                     if ($finished) {
                         // Delete the save control record if successfully finalize the submission
                         $criteria = new CDbCriteria;
@@ -5655,13 +5652,8 @@
                         if($savedControl){
                             $savedControl->delete();
                         }
-
-                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                            $message .= ';<br />'.$query;
-                        }
-
                     }
-                    else if ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
+                    elseif ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
                     {
                         SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
                     }
@@ -5673,7 +5665,7 @@
                     }
                     else
                     {
-                        if ($finished && ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                        if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
@@ -5681,15 +5673,11 @@
                             }  else {
                                 $submitdate  = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid'])->decrypt();
-                            $aResponse->submitdate = $submitdate;
-                            $aResponse->encryptSave();
+                            $oResponse->submitdate = $submitdate;
+                            $oResponse->encryptSave();
                         }
                     }
 
-                }
-                if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                    $message .= $query;
                 }
             }
             $this->knownVars["SAVEDID"] = array(
