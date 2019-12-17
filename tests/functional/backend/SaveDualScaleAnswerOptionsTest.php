@@ -70,10 +70,13 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $web->get($url);
 
         sleep(2);
-
+        
         $web->dismissModal();
-
-        $button = $web->wait(10)->until(
+        $web->dismissModal();
+        
+        sleep(1);
+        
+        $button = $web->wait(20)->until(
             WebDriverExpectedCondition::elementToBeClickable(
                 WebDriverBy::cssSelector('#questionEditorButton')
             )

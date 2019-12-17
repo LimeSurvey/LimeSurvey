@@ -72,11 +72,11 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
             $web->dismissModal();
             $web->dismissModal();
+            sleep(2);
+
+            $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::id('questionEditorButton')));
+            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
             sleep(1);
-
-            $web->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('questionEditorButton')));
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
-
             $editButton = $web->findById('questionEditorButton');
             $editButton->click();
             
@@ -89,8 +89,8 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
 
             //// New way by triggering a vuejs function
             $web->executeScript('LS.EventBus.$emit("questionTypeChange", {type: "L", name: "bootstrap_buttons"})');
-            $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
-            sleep(5);
+            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
+            sleep(1);
 
             // Select "Display theme options" tab
             $displayLink = $web->findElement(WebDriverBy::linkText('Display theme options'));
