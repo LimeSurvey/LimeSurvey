@@ -5578,12 +5578,10 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $response = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
-
-                    //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
-                    $oSurveyResponse = SurveyDynamic::model($this->sid)->findByAttributes(['id' => $_SESSION[$this->sessid]['srid']]);
-                    $result = true;
                     if ($oSurveyResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $response->setAttributes($aResponseAttributes, false);
+                    } else {
+                        LimeExpressionManager::addFrontendFlashMessage('error', gT("This response is already completed.", $this->sid);
                     }
 
                     if (!$response->save())
@@ -5595,7 +5593,6 @@
                             $message = CHtml::errorSummary($response,$this->gT('Error in SQL update'));
                         }
                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-
                     }
                     // Save Timings if needed
                     elseif ($this->surveyOptions['savetimings']) {
@@ -5645,7 +5642,6 @@
                                 $aResponse->submitdate =date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
                             $aResponse->save();
-                            //dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
 
