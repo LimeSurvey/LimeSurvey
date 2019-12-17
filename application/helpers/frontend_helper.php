@@ -605,7 +605,6 @@ function submitfailed($errormsg = '', $query = null)
         $mailer->sendMessage();
     } else {
         $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
-        $completed .= $subquery;
     }
     return $completed;
 }
