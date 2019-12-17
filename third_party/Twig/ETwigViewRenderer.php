@@ -221,8 +221,8 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     public function addUserExtensions($extensions)
     {
         foreach ($extensions as $extName) {
-            Yii::setPathOfAlias('extName', Yii::app()->getConfig('usertwigextensionrootdir') .'/'. $extName .'/');
-            Yii::import( "extName.*" );
+            Yii::setPathOfAlias('extName_'.$extName, Yii::app()->getConfig('usertwigextensionrootdir') .'/'. $extName .'/');
+            Yii::import( "extName_".$extName.".*" );
             $this->_twig->addExtension(new $extName());
         }
     }
