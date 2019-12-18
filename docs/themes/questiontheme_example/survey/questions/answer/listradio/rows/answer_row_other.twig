@@ -1,0 +1,52 @@
+{#
+/**
+ * List radio Html : item 'other' row
+ *
+ * @var $name
+ * @var $answer_other
+ * @var $sDisplayStyle
+ * @var $sDisable
+ * @var $myfname
+ * @var $othertext
+ * @var $checkedState
+ * @var $kpclass
+ * @var $sValue
+ * @var $checkconditionFunction
+ */
+#}
+
+<!-- answer_row_other -->
+<li id='javatbd{{ myfname }}' class='answer-item radio-text-item form-inline' role='group' {{ sDisplayStyle }} >
+    <!-- Checkbox + label -->
+    <div class="form-group othertext-label-checkox-container radio-item">
+        <input
+        type="radio"
+        value="-oth-"
+        name="{{ name }}"
+        id="SOTH{{ name }}"
+        {{ checkedState }}
+        />
+
+        <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
+    </div>
+
+    <!-- comment -->
+    <div class="form-group text-item other-text-item">
+        <input
+        type="text"
+        class="form-control {{ kpclass }} input-sm"
+        id="answer{{ name }}othertext"
+        name="{{ name }}other"
+        title="{{ flatString(processString(othertext,1),1) }}"
+        {{ answer_other }}
+        aria-labelledby="label-id-{{ name }}"
+        {% if numbers_only %} data-number="1" {% endif %}
+        />
+    </div>
+    <script>
+        $("#answer{{ name }}othertext").on("keyup",function(){
+            if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };
+        });
+    </script>
+</li>
+<!-- end of answer_row_other -->
