@@ -775,6 +775,7 @@ class statistics extends Survey_Common_Action
         $aData['summary'] = $summary;
         $aData['oStatisticsHelper'] = $helper;
         $aData['menu']['expertstats'] = true;
+        
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
