@@ -814,6 +814,7 @@ class statistics extends Survey_Common_Action
         $aData['menu']['edition'] = true;
         $aData['menu']['stats'] = true;
         $aData['menu']['close'] = true;
+        $aData['topBar']['type'] = 'responses';
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
         $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
