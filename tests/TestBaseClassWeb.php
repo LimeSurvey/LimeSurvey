@@ -203,7 +203,7 @@ class TestBaseClassWeb extends TestBaseClass
                 $element = WebDriverBy::cssSelector($elementSelector);
             } catch(NoSuchElementException $exception) {
                 $timeoutCounter++;
-                sleep(1)
+                sleep(1);
             }
         } while($element === false && $timeoutCounter < $timeout);
 
