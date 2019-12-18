@@ -75,17 +75,13 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $web->dismissModal();
         
         sleep(1);
-        
-        $button = $web->wait(20)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('#questionEditorButton')
-            )
-        );
-        $button->click();
+        $oElementQuestionEditorButton = $this->waitForElementShim('#questionEditorButton');
+        $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable($oElementQuestionEditorButton));
+        $oElementQuestionEditorButton->click();
         sleep(1);
 
-        $button = $web->findElement(WebDriverBy::linkText('Answer options'));
-        $button->click();
+        $oElementAnswerOptionsButton = $web->findElement(WebDriverBy::linkText('Answer options'));
+        $oElementAnswerOptionsButton->click();
 
         $name1 = sprintf('input[name=answer_en_%d_0]', $answers[0]->aid);
         $answer1 = $web->findElement(WebDriverBy::cssSelector($name1));
@@ -100,7 +96,8 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $savebutton = $web->findElement(WebDriverBy::id('save-button'));
         $savebutton->click();
 
-        $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
+        $oElementAdvancedOptionsPanel = $this->waitForElementShim('#advanced-options-container');
+        $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated($oElementAdvancedOptionsPanel));
 
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);

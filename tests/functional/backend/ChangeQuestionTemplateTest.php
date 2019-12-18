@@ -74,11 +74,14 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $web->dismissModal();
             sleep(2);
 
-            $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::id('questionEditorButton')));
-            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
+
+            $oElementQuestionEditorButton = $this->waitForElementShim('#questionEditorButton');
+            $oElementAdvancedOptionsPanel = $this->waitForElementShim('#advanced-options-container');
+            $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable($oElementQuestionEditorButton));
+            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated($oElementAdvancedOptionsPanel));
+            
             sleep(1);
-            $editButton = $web->findById('questionEditorButton');
-            $editButton->click();
+            $oElementQuestionEditorButton->click();
             
             
             //// Old way, by useing the html elements

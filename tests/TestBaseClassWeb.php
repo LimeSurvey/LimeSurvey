@@ -194,4 +194,23 @@ class TestBaseClassWeb extends TestBaseClass
             ->createCommand('DELETE FROM {{failed_login_attempts}}')
             ->execute();
     }
+
+    protected function waitForElementShim($elementSelector, $timeout = 10) {
+        $element = false;
+        $timeoutCounter = 0;
+        do {
+            try{
+                $element = WebDriverBy::cssSelector($elementSelector);
+            } catch(NoSuchElementException $exception) {
+                $timeoutCounter++;
+                sleep(1)
+            }
+        } while($element === false && $timeoutCounter < $timeout);
+
+        if($element === false) {
+            throw new NoSuchElementException("Element not in scope after ".$timeout." seconds");
+        }
+
+        return $element;
+    }
 }
