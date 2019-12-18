@@ -62,10 +62,10 @@ class QuestionType extends StaticModel
     /** @var integer $subquestions whether has subquestions //TODO make it boolean instead */
     public $subquestions;
 
-    /** @var integer $assessable whether has subquestions //TODO make it boolean instead */
+    /** @var integer $assessable whether it can be used inside Assessments / Quizmode */
     public $assessable;
 
-    /** @var integer $ahasdefaultvalues whether has subquestions //TODO make it boolean instead */
+    /** @var integer $ahasdefaultvalues whether has default values */
     public $hasdefaultvalues;
 
     /** @var integer $answerscales number of answer scales*/
