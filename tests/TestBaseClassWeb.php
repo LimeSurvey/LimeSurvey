@@ -18,6 +18,7 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * Class TestBaseClassWeb
