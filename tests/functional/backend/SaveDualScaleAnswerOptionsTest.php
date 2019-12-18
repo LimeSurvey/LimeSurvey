@@ -74,7 +74,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $web->dismissModal();
         $web->dismissModal();
         
-        sleep(1);
+        sleep(5);
         $oElementQuestionEditorButton = $this->waitForElementShim($web, '#questionEditorButton');
         $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#questionEditorButton')));
         $oElementQuestionEditorButton->click();
