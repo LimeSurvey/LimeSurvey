@@ -75,10 +75,10 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             sleep(2);
 
 
-            $oElementQuestionEditorButton = $this->waitForElementShim('#questionEditorButton');
-            $oElementAdvancedOptionsPanel = $this->waitForElementShim('#advanced-options-container');
-            $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable($oElementQuestionEditorButton));
-            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated($oElementAdvancedOptionsPanel));
+            $oElementQuestionEditorButton = $this->waitForElementShim($web, '#questionEditorButton');
+            $web->wait(20)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#questionEditorButton')));
+            $oElementAdvancedOptionsPanel = $this->waitForElementShim($web, '#advanced-options-container');
+            $web->wait(20)->until(WebDriverExpectedCondition::visibilityOf($oElementAdvancedOptionsPanel));
             
             sleep(1);
             $oElementQuestionEditorButton->click();

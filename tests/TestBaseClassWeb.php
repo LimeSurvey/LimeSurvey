@@ -15,6 +15,7 @@ namespace ls\tests;
 
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
 
@@ -195,12 +196,12 @@ class TestBaseClassWeb extends TestBaseClass
             ->execute();
     }
 
-    protected function waitForElementShim($elementSelector, $timeout = 10) {
+    protected function waitForElementShim(&$driver, $CSSelementSelectorString, $timeout = 10) {
         $element = false;
         $timeoutCounter = 0;
         do {
             try{
-                $element = WebDriverBy::cssSelector($elementSelector);
+                $element = $driver->findElement(WebDriverBy::cssSelector($CSSelementSelectorString));
             } catch(NoSuchElementException $exception) {
                 $timeoutCounter++;
                 sleep(1);
