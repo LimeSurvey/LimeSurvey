@@ -59,7 +59,11 @@
                 foreach($model->getAttributesValues($model->attribute_id) as $attribute_value){
                     echo "<div class='control-group'>";
                     echo "<div class='dropDownContainer col-xs-8 col-offset-xs-2'>";
-                    echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
+                    echo TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], [
+                        'class' => 'form-control',
+                        'id' => ''
+                    ]);
+                    // echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
                     echo '<div class="col-xs-1">
                             <button class="btn btn-default form-group action_delDropdownField">
