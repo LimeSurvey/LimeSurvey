@@ -972,4 +972,57 @@ class LsDefaultDataSets
 
         return $returnArray;
     }
+
+    /**
+     * All translations that are used in files that can or should not be searched by the translation script.
+     * This function has no functionality except for being searchable by the translation script.
+     */
+    public static function mockTranslateArrayContainer()
+    {
+        $translationArray = [
+            gT("Survey container"),
+            gT("Hide privacy info"),
+            gT("Show popups"),
+            gT("Popup"),
+            gT("On page"),
+            gT("Fix automatically numeric value"),
+            gT("For expression"),
+            gT("Brandlogo"),
+            gT("Brandlogo file"),
+            gT('Preview image'),
+            gT("Bootstrap theme"),
+            gT("Bootswatch theme"),
+            gT("Question borders"),
+            gT("Question shadow"),
+            gT("Zebra-striped questions"),
+            gT("Sticky array headers"),
+            gT("Dim answered array rows"),
+            gT("Hide privacy info"),
+            gT("Cross-hover in matrix questions"),
+            gT("Background color"),
+            gT("Font color"),
+            gT("Question background color"),
+            gT("Check icon"),
+            gT("Background image"),
+            gT("Background image file"),
+            gT("Logo"),
+            gT("Logo file"),
+            gT("Animate body"),
+            gT("Body animation"),
+            gT("Duration"),
+            gT("Animate question"),
+            gT("Question animation"),
+            gT("Animate alert"),
+            gT("Alert animation"),
+            gT("Animate checkbox"),
+            gT("Alert animation"),
+            gT("Animate radio buttons"),
+            gT("Radio button animation"),
+            gT("Select font:"),
+            gT("Select variation:"),
+            gT("Fruity fonts"),
+            gT("Fruity variations")
+
+        ];
+    }
 }

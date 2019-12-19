@@ -237,7 +237,7 @@
                 <div class='col-sm-12 col-md-4'>
                     {# Brandlogo #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_brandlogo' class='control-label'>Brandlogo</label>
+                        <label for='simple_edit_options_brandlogo' class='control-label'>{{ gT("Brandlogo") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
@@ -262,7 +262,7 @@
                 <div class='col-sm-8 col-md-6'>
                     {#  Brandlogo file selector #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_brandlogofile' class='control-label'>Brandlogo file</label>
+                        <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Brandlogo file")}}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
@@ -297,11 +297,11 @@
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>Bootstrap theme</div>
+                        <div class='panel-heading'>{{ gT("Bootstrap theme") }}</div>
                         <div class='panel-body'>
                             {# Bootstrap Bootswatch theme #}
                             <div class='form-group row'>
-                                <label for='simple_edit_cssframework' class='control-label'>Bootswatch theme</label>
+                                <label for='simple_edit_cssframework' class='control-label'>{{ gT("Bootswatch theme") }}</label>
                                 <div class='col-sm-12'>
                                     <select class='form-control selector_cssframework_value_field' id='simple_edit_cssframework' name='cssframework'>
                                         {{bootswatchOption}}
