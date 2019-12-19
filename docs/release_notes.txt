@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.21.2 (build 191216) to 3.21.3 (build 191219) December 19, 2019
++New translation: Kurdish (Kurmanji) (Carsten Schmitz)
+-Fixed issue [security] #15681: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue [security] #15680: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue [security] #15672: LimeSurvey 3.21.1 Cross Site Scripting (lacrioque)
+-Fixed issue #15662: Some UTF-88 characters saved as ????? in DB when using MSSQL and IIS (#1353) (Denis Chenu)
+-Fixed issue #15644: Unable to translate theme options (Patrick Teichmann)
+-Fixed issue #15622: Theme Options are not available for translation (Patrick Teichmann)
+-Fixed issue #15446: Custom Twig extensions do not work (Marc Leonhardt)
+-Fixed issue #14552: Backward navigation broken if navigation delay is enabled (lacrioque)
+#Updated translation: Turkish by bulent
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Korean by zist21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.21.1 (build 191210) to 3.21.2 (build 191216) December 16, 2019
 +New translation: Somali (Carsten Schmitz)
 -Fixed issue #15657: Admin user with only Read response acces can not see response listing (debug at 2) (Denis Chenu)
