@@ -146,17 +146,17 @@ class TemplateConfiguration extends TemplateConfig
     {
         return array(
             'id' => 'ID',
-            'template_name' => 'Templates Name',
+            'template_name' => gT('Templates Name'),
             'sid' => 'Sid',
             'gsid' => 'Gsid',
-            'files_css' => 'Files Css',
-            'files_js' => 'Files Js',
-            'files_print_css' => 'Files Print Css',
-            'options' => 'Options',
-            'cssframework_name' => 'Cssframework Name',
-            'cssframework_css' => 'Cssframework Css',
-            'cssframework_js' => 'Cssframework Js',
-            'packages_to_load' => 'Packages To Load',
+            'files_css' => gT('Files Css'),
+            'files_js' => gT('Files Js'),
+            'files_print_css' => gT('Files Print Css'),
+            'options' => gT('Options'),
+            'cssframework_name' => gT('Cssframework Name'),
+            'cssframework_css' => gT('Cssframework Css'),
+            'cssframework_js' => gT('Cssframework Js'),
+            'packages_to_load' => gT('Packages To Load'),
         );
     }
 
