@@ -85,6 +85,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'An error has occured and the file list could not be loaded:' => gT('An error has occured and the file list could not be loaded:'),
             'An error has occured and the folders could not be loaded:' => gT('An error has occured and the folders could not be loaded:'),
             'An error has occured and the file(s) could not be uploaded:' => gT('An error has occured and the folders could not be loaded:'),
+            'An error has occured and the selected files ycould not be downloaded.' => gT('An error has occured and the selected files ycould not be downloaded.'),
             'File name' => gT('File name'),
             'Type' => gT('Type'),
             'Size' => gT('Size'),
@@ -200,67 +201,55 @@ class LimeSurveyFileManager extends Survey_Common_Action
         );
     }
 
-    public function transitFile()
+    public function transitFiles()
     {
         $folder = Yii::app()->request->getPost('targetFolder');
         $iSurveyId = Yii::app()->request->getPost('surveyid');
-        $file = Yii::app()->request->getPost('file');
+        $files = Yii::app()->request->getPost('files');
         $action = Yii::app()->request->getPost('action');
 
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
+        
+        foreach($files as $file) {
+            $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
+            $fileDestination = realpath($realTargetPath) . DIRECTORY_SEPARATOR . $file['shortName'];
 
-        $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
-        $fileDestination = realpath($realTargetPath) . DIRECTORY_SEPARATOR . $file['shortName'];
+            $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
+            $fileSource = realpath($realFilePath);
 
-        $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
-        $fileSource = realpath($realFilePath);
-
-        if ($this->checkTargetExists($fileDestination) && Yii::app()->getConfig('overwritefiles') == 0) {
-            $ext = pathinfo($fileDestination, PATHINFO_EXTENSION);
-            $shorthash = hash('adler32', microtime());
-            $fileDestination = preg_replace("/\." . $ext . "/", "-" . $shorthash . "." . $ext, $fileDestination);
-        }
-
-        if ($action == 'copy') {
-            if (!copy($fileSource, $fileDestination)) {
-                $this->_setError(
-                    'COPY_FAILED',
-                    gT("Your file could not be copied")
-                );
-                $this->throwError();
-                return;
+            if ($this->checkTargetExists($fileDestination) && Yii::app()->getConfig('overwritefiles') == 0) {
+                $ext = pathinfo($fileDestination, PATHINFO_EXTENSION);
+                $shorthash = hash('adler32', microtime());
+                $fileDestination = preg_replace("/\." . $ext . "/", "-" . $shorthash . "." . $ext, $fileDestination);
             }
 
-            $this->_printJsonResponse([
-                'success' => true,
-                'message' => sprintf(gT("File successfully copied"), $file['shortName']),
-            ]);
-            return;
-
-        } else if ($action == 'move') {
-            if (!@rename($fileSource, $fileDestination)) {
-                $this->_setError(
-                    'MOVE_FAILED',
-                    gT("Your file could not be moved")
-                );
-                $this->throwError();
-                return;
+            if ($action == 'copy') {
+                if (!copy($fileSource, $fileDestination)) {
+                    $this->_setError(
+                        'COPY_FAILED',
+                        gT("Your file could not be copied")
+                    );
+                    $this->throwError();
+                    return;
+                }
+            } else if ($action == 'move') {
+                if (!@rename($fileSource, $fileDestination)) {
+                    $this->_setError(
+                        'MOVE_FAILED',
+                        gT("Your file could not be moved")
+                    );
+                    return;
+                }
             }
-
-            $this->_printJsonResponse([
-                'success' => true,
-                'message' => sprintf(gT("File successfully moved"), $file['shortName']),
-            ]);
-            return;
-
         }
 
-        $this->_setError(
-            'ACTION_UNKNOWN',
-            gT("The action you tried to apply is not known")
-        );
-        $this->throwError();
+        $successMessage = $action == 'copy' ? gT("Files successfully copied") : gT("Files successfully moved");
+        $this->_printJsonResponse([
+            'success' => true,
+            'message' => $successMessage,
+        ]);
         return;
+
     }
 
     /**
@@ -363,6 +352,46 @@ class LimeSurveyFileManager extends Survey_Common_Action
             ]
         );
 
+    }
+
+    public function downloadFiles() {
+        App()->loadLibrary('admin.pclzip');
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $randomName = substring(md5(time()),3,13);
+        $zipfile = $tempdir.$randomName.".zip";
+        $files = Yii::app()->request->getPost('files');
+        $arrayOfFiles = array_map( function($file){ return $file['path']; }, $files);
+        $archive = new PclZip($zipfile);
+        $archive->create($arrayOfFiles, PCLZIP_OPT_REMOVE_PATH);
+
+        $this->_printJsonResponse(
+            [
+                'success' => true,
+                'message' => sprintf(gT("Files ready for download"), $filename),
+                'downloadLink' => Yii::app()->createUrl(
+                    'admin/filemanager/sa/getZipFile',
+                    ['path' => $zipfile]
+                ),
+                'debug' => $debug,
+            ]
+        );
+    }
+
+    public function getZipFile($path) {
+        if (is_file($path)) {
+            $filename = basename($path);
+            // Send the file for download!
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate");
+            header("Content-Type: application/force-download");
+            header("Content-Disposition: attachment; filename=$filename.zip");
+            header("Content-Description: File Transfer");
+
+            @readfile($zipfile);
+
+            // Delete the temporary file
+            unlink($zipfile);
+        }
     }
 
     ############################ PRIVATE METHODS ############################

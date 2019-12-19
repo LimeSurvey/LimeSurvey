@@ -57,6 +57,11 @@ describe("NavBar basic behaviour", () => {
         const hasUploadButton = navBarMount.find('#FileManager--button-upload').exists();
         expect(hasUploadButton).toBe(true);
     });
+    
+    test('should contain download buttons', () => {
+        const hasUploadButton = navBarMount.find('#FileManager--button-download').exists();
+        expect(hasUploadButton).toBe(true);
+    });
 
     test('should NOT contain transit cancel button', () => {
         const transitCancelButton = navBarMount.find('#FileManager--button-fileInTransit--cancel');

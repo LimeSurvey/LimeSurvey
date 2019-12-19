@@ -3,12 +3,12 @@
 <head>
     <title>Code coverage report for src/components/NavBar.vue</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="..\..\prettify.css" />
-    <link rel="stylesheet" href="..\..\base.css" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(..\..\sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\index.html">All files</a> / <a href="index.html">src/components</a> NavBar.vue
+      <a href="../../index.html">All files</a> / <a href="index.html">src/components</a> NavBar.vue
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">76.47% </span>
+        <span class="strong">61.9% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>13/17</span>
+        <span class='fraction'>13/21</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">33.33% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>2/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">76.47% </span>
+        <span class="strong">61.9% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>13/17</span>
+        <span class='fraction'>13/21</span>
       </div>
     </div>
   </div>
@@ -139,7 +139,24 @@
 94
 95
 96
-97</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,6 +198,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,6 +229,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -276,7 +310,23 @@ export default {
         }
       );
     },
-    cancelTransit(){
+    downloadFiles() {
+<span class="cstat-no" title="statement not covered" >      this.loadingState = true;</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      this.dispatch('downloadFiles').catch( (e) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        this.$log.error(e);</span>
+        window.LS.notifyFader(
+                    `${this.translate("An error has occured and the selected files ycould not be downloaded.")}
+Error: 
+${error.data.message}`,
+                    'well-lg bg-danger text-center'
+        );
+<span class="fstat-no" title="function not covered" >      }).finally(</span>
+        () =&gt; {
+<span class="cstat-no" title="statement not covered" >          this.loadingState = false;</span>
+        }
+      )
+    },
+    cancelTransit() {
       this.$store.commit('cancelTransit');
     },
     runTransit() {
@@ -306,6 +356,7 @@ export default {
       &lt;ul class="nav navbar-nav navbar-right"&gt;
         &lt;li id="FileManager--button-fileInTransit--cancel" v-if="fileInTransit"&gt;&lt;a href="#" @click.prevent="cancelTransit"&gt;{{'Cancel '+transitType | translate}}&lt;/a&gt;&lt;/li&gt;
         &lt;li id="FileManager--button-fileInTransit--submit" v-if="fileInTransit"&gt;&lt;a href="#" @click.prevent="runTransit"&gt;{{ transitType | translate }}&lt;/a&gt;&lt;/li&gt;
+        &lt;li id="FileManager--button-download"&gt;&lt;a href="#" @click.prevent="downloadFiles"&gt;{{ 'Download' | translate }}&lt;/a&gt;&lt;/li&gt;
         &lt;li&gt;&lt;a id="FileManager--button-upload" href="#" @click.prevent="openUploadModal"&gt;{{'Upload'|translate}}&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/div&gt;
@@ -337,10 +388,10 @@ export default {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Nov 22 2019 11:29:41 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 19 2019 12:49:38 GMT+0100 (Central European Standard Time)
 </div>
 </div>
-<script src="..\..\prettify.js"></script>
+<script src="../../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -348,6 +399,6 @@ window.onload = function () {
         }
 };
 </script>
-<script src="..\..\sorter.js"></script>
+<script src="../../sorter.js"></script>
 </body>
 </html>

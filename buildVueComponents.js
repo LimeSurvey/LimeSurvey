@@ -52,6 +52,7 @@ const all = args.includes('-a');
 const single = args.includes('-s');
 const verbose = args.includes('-v');
 const prepareOnly = args.includes('-p');
+const runTests = args.includes('-t');
 const noReleaseBuild = args.includes('-d');
 
 if(!all && !single) {
@@ -82,6 +83,7 @@ if(!all && !single) {
 ||     -v -> Verbose mode, show all build processes                                        ||
 ||     -p -> Only prepare (install dependencies)                                           ||
 ||     -d -> build only the development part                                               ||
+||     -t -> run the tests instead of building                                             ||
 ||                                                                                         ||
 =============================================================================================
 `);
@@ -130,6 +132,24 @@ const runBuildFolder = function (folder) {
 
         command.on('close', (code) => {
             console.log("|| === Successfully built.\n"+"".repeat(32));
+            resolve();
+        });
+    });
+};
+
+const runTestFolder = function (folder) {
+    return new Promise((resolve, reject) => {
+        console.log(`|| === Descending into ${folder} and running 'yarn run test'`);
+        const fullPath = folder; //path.normalize(folder);
+        const command = spawn('yarn', ['run test'], {cwd:fullPath, shell:true, stdio: [ 'pipe', process.stdout , process.stderr ]});
+
+        command.on('error', (err) => {
+            console.log(err);
+            reject();
+        })
+
+        command.on('close', (code) => {
+            console.log("|| === Test and coverage ran.\n"+"".repeat(32));
             resolve();
         });
     });
@@ -195,7 +215,7 @@ if(!single) {
             if(prepareOnly) {
                 return runGetDependenciesInFolder(item[1]);
             } else {
-                return runGetDependenciesInFolder(item[1]).then(runBuildFolder);
+                return runGetDependenciesInFolder(item[1]).then(runTests ? runTestFolder : runBuildFolder);
             }
         },
         Promise.all([
@@ -250,7 +270,7 @@ if(!single) {
             if(prepareOnly) {
                 return runGetDependenciesInFolder(item[1]);
             } else {
-                return runGetDependenciesInFolder(item[1]).then(runBuildFolder);
+                return runGetDependenciesInFolder(item[1]).then(runTests ? runTestFolder : runBuildFolder);
             }
         },
         Promise.all([

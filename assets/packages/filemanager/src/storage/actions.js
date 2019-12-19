@@ -1,4 +1,5 @@
 import ajax from '../mixins/runAjax';
+import { LOG } from '../mixins/logSystem';
 
 export default {
     getFolderList: (ctx) => {
@@ -25,6 +26,7 @@ export default {
                 }
             )
             .catch((error) => {
+                LOG.error(error);
                 reject(error);
             });
         });
@@ -57,14 +59,38 @@ export default {
             });
         });
     },
+    deleteFiles: (ctx) => {
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_post(
+                window.FileManager.baseUrl+'deleteFiles', 
+                {
+                    surveyid: ctx.state.currentSurveyId, 
+                    files: context.getters.filesSelected, 
+                }
+            ).then(
+                (deleteResult) => {
+                    ctx.dispatch('getFileList').then(
+                        (result)=>{
+                            ctx.commit('setFileList', result.data);
+                            resolve(result);
+                        }, 
+                        (error) =>{ reject(error); }
+                    )
+                }
+            )
+            .catch((error) => {
+                reject(error);
+            });
+        });
+    },
     applyTransition: (ctx) => {
         return new Promise((resolve, reject) => {
             ajax.methods.$_post(
-                window.FileManager.baseUrl+'transitFile', 
+                window.FileManager.baseUrl+'transitFiles', 
                 {
                     targetFolder: ctx.state.currentFolder, 
-                    surveyid: ctx.state.currentSurveyId, 
-                    file: ctx.state.fileInTransit, 
+                    surveyid: ctx.state.currentSurveyId,
+                    files: context.getters.filesInTransit,
                     action: ctx.state.transitType
                 }).then(
                 (transitResult) => {
@@ -75,6 +101,24 @@ export default {
                         }, 
                         (error) =>{ reject(error); }
                     )
+                }
+            )
+            .catch((error) => {
+                reject(error);
+            });
+        });
+    },
+    downloadFiles: (context) => {
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_post(
+                window.FileManager.baseUrl+'downloadFiles', 
+                {
+                    files: context.getters.filesSelected
+                }).then(
+                (result) => {
+                    const downloadIframe = document.getElementById("fileManager-DownloadFrame");
+                    downloadIframe.src = result.data.downloadLink;
+                    resolve(result.data.message);
                 }
             )
             .catch((error) => {

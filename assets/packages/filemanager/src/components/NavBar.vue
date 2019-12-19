@@ -11,7 +11,7 @@ export default {
   },
   computed: {
     fileInTransit() {
-      return this.$store.state.fileInTransit != null;
+      return this.$store.state.transitType != null;
     },
     transitType() {
         return this.$store.state.transitType == 'copy' ? 'Copy' : 'Move';
@@ -39,8 +39,25 @@ export default {
         }
       );
     },
-    cancelTransit(){
+    downloadFiles() {
+      this.loadingState = true;
+      this.dispatch('downloadFiles').catch( (e) => {
+        this.$log.error(e);
+        window.LS.notifyFader(
+                    `${this.translate("An error has occured and the selected files ycould not be downloaded.")}
+Error: 
+${error.data.message}`,
+                    'well-lg bg-danger text-center'
+        );
+      }).finally(
+        () => {
+          this.loadingState = false;
+        }
+      )
+    },
+    cancelTransit() {
       this.$store.commit('cancelTransit');
+      this.$emit('forceRedraw');
     },
     runTransit() {
       this.loadingState = true;
@@ -69,6 +86,7 @@ export default {
       <ul class="nav navbar-nav navbar-right">
         <li id="FileManager--button-fileInTransit--cancel" v-if="fileInTransit"><a href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
         <li id="FileManager--button-fileInTransit--submit" v-if="fileInTransit"><a href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
+        <li id="FileManager--button-download"><a href="#" @click.prevent="downloadFiles">{{ 'Download' | translate }}</a></li>
         <li><a id="FileManager--button-upload" href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
       </ul>
     </div>

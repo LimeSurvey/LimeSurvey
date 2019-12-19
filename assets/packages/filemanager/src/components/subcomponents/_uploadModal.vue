@@ -33,7 +33,9 @@ export default {
             try {
                 const jsonResponse = JSON.parse(error.xhr.response);
                 errorMessage = jsonResponse.message;
-            } catch(e) {}
+            } catch(e) {
+                this.$log.error(error);
+            }
             window.LS.notifyFader(
                 errorMessage,
                 'well-lg bg-danger text-center'

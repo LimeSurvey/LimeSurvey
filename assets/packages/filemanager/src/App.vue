@@ -2,7 +2,7 @@
     <div id="filemanager-app" class="row">
         <x-test id="action::surveyResources"></x-test>
         <div class="container-fluid">
-            <nav-bar :loading="loading" @setLoading="setLoading" />
+            <nav-bar :loading="loading" @setLoading="setLoading" @forceRedraw="triggerForceRedraw"/>
             <div class="row" v-if="!hasError">
                 <folder-list :loading="loading" @setLoading="setLoading" :cols="4" :preset-folder="presetFolder" />
                 <file-list :loading="loading" @setLoading="setLoading" :cols="8" />
@@ -41,6 +41,11 @@ export default {
         setLoading(nV) {
             this.$log.log("Loading set on base component");
             this.loading = nV;
+        },
+        triggerForceRedraw() {
+            // this.loading=true;
+            this.$forceUpdate();
+            // window.setTimeout(()=>{this.loading=false}, 250);
         }
     },
     mounted() {
