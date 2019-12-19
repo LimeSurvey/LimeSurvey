@@ -416,6 +416,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ckb']['dateformat'] = 1;
     $supportedLanguages['ckb']['radixpoint'] = 1;
     $supportedLanguages['ckb']['cldr'] = 'ku';
+    
+    // Kurdish (Kurmanji)
+    $supportedLanguages['kmr']['description'] = gT('Kurdish (Kurmanji)');
+    $supportedLanguages['kmr']['nativedescription'] = 'Kurmanc&#xEE;';
+    $supportedLanguages['kmr']['rtl'] = true;
+    $supportedLanguages['kmr']['dateformat'] = 1;
+    $supportedLanguages['kmr']['radixpoint'] = 1;
+    $supportedLanguages['kmr']['cldr'] = 'ku';    
 
     // Kyrgyz
     $supportedLanguages['ky']['description'] = gT('Kyrgyz');
