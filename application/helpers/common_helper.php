@@ -4867,3 +4867,16 @@ function switchMSSQLIdentityInsert($table, $state)
         }
     }
 }
+
+/**
+ * Helper to filter the contents of a .zip file uploaded into the file manager
+ */
+function resourceExtractFilter($p_event, &$p_header) {
+    $aAllowExtensions = Yii::app()->getConfig('allowedfileuploads');
+    $info = pathinfo($p_header['filename']);
+    if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}

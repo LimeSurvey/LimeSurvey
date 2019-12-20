@@ -43,22 +43,9 @@ class LimeSurveyFileManager extends Survey_Common_Action
         'upload' . DIRECTORY_SEPARATOR . 'global',
     ];
 
-    /**
-     * The extension that are allowed to be shown and uploaded
-     * @TODO make this a configuration in global config
-     *
-     * @var array
-     */
-    private $allowedFileExtensions = [
-        //Documents
-        'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
-        //Images
-        'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif', 'svg',
-        //soundfiles
-        'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
-        //videos
-        'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
-    ];
+    public function getAllowedFileExtensions() {
+        return Yii::app()->getConfig('allowedfileuploads');
+    }
 
     /**
      * Basic index function to call the view
@@ -327,26 +314,48 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return;
         }
 
-        if (
-            !move_uploaded_file(
-                $_FILES['file']['tmp_name'], 
-                $fullfilepath 
-            )
-        ) {
-            $this->_setError(
-                'FILE_COULD NOT_BE_MOVED',
-                sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the target folder. (%s)"), $folder)
-            );
-            $this->throwError();
-            return;
+        
+        if($ext == 'zip') {
+            App()->loadLibrary('admin.pclzip');
+            $zip = new PclZip($_FILES['file']['tmp_name']);
+            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'resourceExtractFilter');
+            
+            if ($aExtractResult === 0) {
+                $this->_setError(
+                    'FILE_NOT_A_VALID_ARCHIVE',
+                    gT("This file is not a valid ZIP file archive. Import failed.")
+                );
+                $this->throwError();
+                return;
+            };
+
+            $linkToImage = 'about:blank';
+            $message = sprintf(gT("File %s uploaded and %s files unpacked"), $filename, safecount($aExtractResult));
+        } else {
+            if (
+                !move_uploaded_file(
+                    $_FILES['file']['tmp_name'], 
+                    $fullfilepath 
+                )
+            ) {
+                $this->_setError(
+                    'FILE_COULD NOT_BE_MOVED',
+                    sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the target folder. (%s)"), $folder)
+                );
+                $this->throwError();
+                return;
+            }
+            $message = sprintf(gT("File %s uploaded"), $filename);
+            $linkToImage = Yii::app()->baseUrl . '/' . $folder . '/' . $filename;
         }
 
-        $linkToImage = Yii::app()->baseUrl . '/' . $folder . '/' . $filename;
+        
+
 
         $this->_printJsonResponse(
             [
                 'success' => true,
-                'message' => sprintf(gT("File %s uploaded"), $filename),
+                'message' => $message,
                 'src' => $linkToImage,
                 'debug' => $debug,
             ]
@@ -356,41 +365,49 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
     public function downloadFiles() {
         App()->loadLibrary('admin.pclzip');
-        $tempdir = Yii::app()->getConfig('tempdir');
-        $randomName = substring(md5(time()),3,13);
-        $zipfile = $tempdir.$randomName.".zip";
+        
+        $folder = basename(Yii::app()->request->getPost('folder', 'global'));
         $files = Yii::app()->request->getPost('files');
+
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $randomizedFileName = $folder.'_'.substr(md5(time()),3,13).'.zip';
+        $zipfile = $tempdir.DIRECTORY_SEPARATOR.$randomizedFileName;
         $arrayOfFiles = array_map( function($file){ return $file['path']; }, $files);
         $archive = new PclZip($zipfile);
-        $archive->create($arrayOfFiles, PCLZIP_OPT_REMOVE_PATH);
+        $checkFileCreate = $archive->create($arrayOfFiles, PCLZIP_OPT_REMOVE_ALL_PATH);
 
         $this->_printJsonResponse(
             [
                 'success' => true,
-                'message' => sprintf(gT("Files ready for download"), $filename),
+                'message' => sprintf(gT("Files ready for download in archive %s."), $randomizedFileName),
                 'downloadLink' => Yii::app()->createUrl(
                     'admin/filemanager/sa/getZipFile',
                     ['path' => $zipfile]
                 ),
-                'debug' => $debug,
             ]
         );
     }
 
     public function getZipFile($path) {
-        if (is_file($path)) {
-            $filename = basename($path);
+        $filename = basename($path);
+
+        // echo "<pre>";
+        // echo $path."\n";
+        // echo $filename."\n";
+        // echo "isFile => ".is_file($path) ? 'isFile' : 'isNoFile'."\n";
+        // echo "</pre>";
+        if (is_file($path) || true) {
             // Send the file for download!
             header("Expires: 0");
             header("Cache-Control: must-revalidate");
             header("Content-Type: application/force-download");
-            header("Content-Disposition: attachment; filename=$filename.zip");
+            header("Content-Disposition: attachment; filename=$filename");
             header("Content-Description: File Transfer");
 
-            @readfile($zipfile);
+            @readfile($path);
 
             // Delete the temporary file
-            unlink($zipfile);
+            unlink($path);
         }
     }
 
@@ -405,7 +422,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
      */
     private function _extensionAllowed($fileExtension, $purpose = 'show')
     {
-        if ($purpose == 'show' || 1 == 1) {
+        if($purpose == 'upload') {
+            return in_array($fileExtension, $this->allowedFileExtensions) || $fileExtension == 'zip';
+        }
+
+        if ($purpose == 'show') {
             return in_array($fileExtension, $this->allowedFileExtensions);
         }
     }

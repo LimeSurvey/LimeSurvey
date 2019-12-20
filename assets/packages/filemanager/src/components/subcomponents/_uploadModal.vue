@@ -19,6 +19,9 @@ export default {
         };
     },
     methods: {
+        fileAdded(file) {
+            
+        },
         applyFolderAndData(file, xhr, formData){
             formData.append(LS.data.csrfTokenName, LS.data.csrfToken);
             formData.append('folder', this.$store.state.currentFolder);
@@ -64,11 +67,13 @@ export default {
                 v-on:vdropzone-complete="onCompleteHandler"
                 :options="dropzoneOptions" 
                 :useCustomSlot="true"
+                :uploadMultiple="true"
                 class="FileUpload--dropzone"
             >
                 <div class="dropzone-custom-content">
                     <h3>{{"Drag and drop here, or click once to start uploading" | translate}}</h3>
                     <p>{{"File is uploaded to currently selected folder" | translate}}</p>
+                    <p>{{"A .zip archive will be automatically unpacked on the server" | translate}}</p>
                 </div>
             </vue-dropzone>
         </div>

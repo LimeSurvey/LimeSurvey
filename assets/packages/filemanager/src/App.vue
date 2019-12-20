@@ -13,6 +13,7 @@
                 </div>
             </div>
         </div>
+        <iframe id="fileManager-DownloadFrame" src="about:blank" frameborder="0" height="0" width="0" />
     </div>
 </template>
 

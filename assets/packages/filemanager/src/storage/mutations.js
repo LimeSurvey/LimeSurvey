@@ -1,7 +1,6 @@
-import Vue from 'vue';
-import {LOG} from '../mixins/logSystem';
 import map from 'lodash/map';
 import merge from 'lodash/merge';
+import filter from 'lodash/filter';
 
 export default {
     setCurrentFolder: (state, newValue) => {
@@ -14,12 +13,14 @@ export default {
         state.folderList = newValue;
     },
     setFileList: (state, newValue) => {
-        LOG.log(newValue);
-        state.fileList = map(newValue, (file) => {
+        const currentlyInTransit = filter(state.fileList, (file) => file.inTransit );
+        const newFileList = map(newValue, (file, i) => {
+            file.key = i;
             file.selected = false;
             file.inTransit = false;
             return file;
         });
+        state.fileList = merge(newFileList, currentlyInTransit);
     },
     setDebug: (state, newValue) => {
         state.debug = newValue;
@@ -34,14 +35,15 @@ export default {
         state.transitType = "move";
     },
     cancelTransit: state => {
+        state.renewIterator = state.renewIterator+1;
         state.transitType = null;
-        const tmpFileList = merge([], state.filesList);
-        state.filesList = [];
-        state.filesList = tmpFileList.map(file => {
+        const tmpList = merge([], state.fileList);
+
+        state.fileList = map(tmpList, (file) => {
+            file.key = file.key+''+state.renewIterator;
             file.inTransit = false;
             return file;
         });
-        LOG.log(map(state.filesList, (f) => f.inTransit));
     },
     toggleCollapseFolder: (state, folderShortName) => {
         const tmp = LS.ld.merge([], state.uncollapsedFolders);
@@ -53,10 +55,4 @@ export default {
         }
         state.uncollapsedFolders = tmp;
     },
-    markAllFilesSelected(state) {
-        state.filesList = state.filesList.map(file => {
-            file.selected = true;
-            return file;
-        });
-    }
 };

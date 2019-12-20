@@ -2,7 +2,7 @@
   <div class="container-fluid scoped-table-aloud">
     <div class="ls-flex ls-flex-row row bg-info head-row">
       <div class="ls-flex ls-flex-column cell checkbox">
-        <input type="checkbox" @click="selectAllFiles()" />
+        &nbsp;
       </div>
       <div class="ls-flex ls-flex-column col-4 cell">{{"File name" | translate }}</div>
       <div class="ls-flex ls-flex-column col-1 cell">{{"Type" | translate }}</div>
@@ -13,12 +13,12 @@
     <div
       class="ls-flex ls-flex-row row"
       v-for="file in $store.state.fileList"
-      :key="file.hash+(file.selected || file.inTransit ? 'action':'')"
+      :key="file.key"
       :id="'file-row-'+file.hash"
       :class="fileClass(file)"
     >
       <div class="ls-flex ls-flex-column text-center cell checkbox">
-        <input type="checkbox" @click="file.selected = !file.selected" />
+        <input type="checkbox" v-model="file.selected" />
       </div>
       <div class="ls-flex ls-flex-column col-4 cell">{{file.shortName}}</div>
       <div class="ls-flex ls-flex-column col-1 cell">
@@ -27,7 +27,7 @@
       <div class="ls-flex ls-flex-column col-2 cell">{{file.size | bytes}}</div>
       <div class="ls-flex ls-flex-column col-3 cell">{{file.mod_time}}</div>
       <div class="ls-flex ls-flex-row col-2 cell">
-        <template v-if="!inTransit(file)">
+        <template v-if="!file.inTransit">
           <button
             class="FileManager--file-action-delete btn btn-default"
             @click="deleteFile(file)"
@@ -55,7 +55,7 @@
             <i class="fa fa-files-o"></i>
           </button>
         </template>
-        <template v-if="inTransit(file)">
+        <template v-if="file.inTransit">
           <button
             class="FileManager--file-action-cancelTransit btn btn-default"
             @click="cancelTransit(file)"

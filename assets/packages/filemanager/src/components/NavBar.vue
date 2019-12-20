@@ -41,7 +41,7 @@ export default {
     },
     downloadFiles() {
       this.loadingState = true;
-      this.dispatch('downloadFiles').catch( (e) => {
+      this.$store.dispatch('downloadFiles').catch( (e) => {
         this.$log.error(e);
         window.LS.notifyFader(
                     `${this.translate("An error has occured and the selected files ycould not be downloaded.")}
@@ -63,11 +63,7 @@ ${error.data.message}`,
       this.loadingState = true;
       let transitType = this.$store.state.transitType+'';
       this.$store.dispatch('applyTransition').then(
-        (result) => {
-            if(transitType == 'move') {
-                this.$store.commit('cancelTransit');
-            }
-        },
+        (result) => {},
         (error) => {
           this.$log.error(error);
         }

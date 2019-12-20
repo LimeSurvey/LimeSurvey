@@ -3,7 +3,7 @@ export default {
   data() {},
   methods: {
     inTransit(file) {
-        return file.inTransit;
+      return file.inTransit;
     },
     selectAllFiles() {
       this.$store.commit("markAllFilesSelected");
@@ -13,7 +13,7 @@ export default {
       if (this.inDeletion(file)) {
         htmlClasses += "file-in-deletion ";
       }
-      if (file.inTransit) {
+      if (this.inTransit(file) === true ) {
         htmlClasses += "file-in-transit ";
         if (this.$store.state.transitType == "move") {
           htmlClasses += "move ";
@@ -29,12 +29,6 @@ export default {
     },
     inDeletion(file) {
       return this.fileInDeletion == file.path;
-    },
-    inTransit(file) {
-      return (
-        this.$store.state.fileInTransit != null &&
-        file.path == this.$store.state.fileInTransit.path
-      );
     },
     deleteFile(file) {
       this.$dialog
@@ -64,14 +58,16 @@ export default {
     },
     copyFile(file) {
       this.$store.commit("copyFiles");
-      file.inTransit = true;
+      this.$set(file, 'inTransit', true);
+      //file.inTransit = true;
     },
     moveFile(file) {
       this.$store.commit("moveFiles");
-      file.inTransit = true;
+      this.$set(file, 'inTransit', true);
+      //file.inTransit = true;
     },
-    cancelTransit() {
-      this.$store.commit("cancelTransit");
+    cancelTransit(file) {
+      this.$set(file, 'inTransit', false);
     }
   }
 };

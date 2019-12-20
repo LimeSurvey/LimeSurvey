@@ -3,8 +3,11 @@ export default {
     currentSurveyId: null,
     folderList: [],
     fileList: {},
+    selectedFiles: [],
+    inTransitFiles: [],
     debug: false,
     transitType: null,
     fileRepresentation: 'tablerep',
-    uncollapsedFolders: []
+    uncollapsedFolders: [],
+    renewIterator: 0
 }

@@ -5,7 +5,7 @@
         class="ls-flex ls-flex-column scoped-file-tile"
         v-for="file in $store.state.fileList"
         :id="'iconRep-' + file.hash"
-        :key="file.shortName"
+        :key="file.key"
         :class="fileClass(file)"
       >
         <div class="ls-flex ls-flex-row align-content-center align-items-center">
@@ -28,45 +28,50 @@
             <small>{{file.mod_time}}</small>
           </div>
         </div>
-        <div class="ls-flex ls-flex-row ls-space margin top-5">
-          <template v-if="!inTransit(file)">
-            <button
-              class="FileManager--file-action-delete btn btn-default"
-              @click="deleteFile(file)"
-              :title="translate('Delete file')"
-              data-toggle="tooltip"
-            >
-              <i class="fa fa-trash-o text-danger"></i>
-            </button>
-            <button
-              v-show="$store.state.transitType == 'copy' || $store.state.transitType == null"
-              class="FileManager--file-action-startTransit-copy btn btn-default"
-              data-toggle="tooltip"
-              :title="translate('Copy file')"
-              @click="copyFile(file)"
-            >
-              <i class="fa fa-clone"></i>
-            </button>
-            <button
-              v-show="$store.state.transitType == 'move' || $store.state.transitType == null"
-              class="FileManager--file-action-startTransit-move btn btn-default"
-              data-toggle="tooltip"
-              :title="translate('Move file')"
-              @click="moveFile(file)"
-            >
-              <i class="fa fa-files-o"></i>
-            </button>
-          </template>
-          <template v-if="inTransit(file)">
-            <button
-              class="FileManager--file-action-cancelTransit btn btn-default"
-              @click="cancelTransit(file)"
-              :title="translate('Cancel transit of file')"
-              data-toggle="tooltip"
-            >
-              <i class="fa fa-times text-warning"></i>
-            </button>
-          </template>
+        <div class="ls-flex ls-flex-row ls-space align-content-space-between margin top-5">
+          <div>
+            <template v-if="!file.inTransit">
+              <button
+                class="FileManager--file-action-delete btn btn-default"
+                @click="deleteFile(file)"
+                :title="translate('Delete file')"
+                data-toggle="tooltip"
+              >
+                <i class="fa fa-trash-o text-danger"></i>
+              </button>
+              <button
+                v-show="$store.state.transitType == 'copy' || $store.state.transitType == null"
+                class="FileManager--file-action-startTransit-copy btn btn-default"
+                data-toggle="tooltip"
+                :title="translate('Copy file')"
+                @click="copyFile(file)"
+              >
+                <i class="fa fa-clone"></i>
+              </button>
+              <button
+                v-show="$store.state.transitType == 'move' || $store.state.transitType == null"
+                class="FileManager--file-action-startTransit-move btn btn-default"
+                data-toggle="tooltip"
+                :title="translate('Move file')"
+                @click="moveFile(file)"
+              >
+                <i class="fa fa-files-o"></i>
+              </button>
+            </template>
+            <template v-if="file.inTransit">
+              <button
+                class="FileManager--file-action-cancelTransit btn btn-default"
+                @click="cancelTransit(file)"
+                :title="translate('Cancel transit of file')"
+                data-toggle="tooltip"
+              >
+                <i class="fa fa-times text-warning"></i>
+              </button>
+            </template>
+          </div>
+          <div class="text-right">
+            <input type="checkbox" v-model="file.selected" />
+          </div>
         </div>
       </div>
     </div>
@@ -120,10 +125,6 @@ export default {
   }
 }
 
-.selected {
-  box-shadow: 2px 3px 4px var(--LS-admintheme-hovercolor);
-}
-
 .file-in-deletion {
   background-color: #999999;
   opacity: 0.5;
@@ -146,5 +147,8 @@ export default {
     margin-top: 0;
   }
   padding: 0.5rem;
+  &.selected,&.file-in-transit {
+    box-shadow: 3px 5px 6px var(--LS-admintheme-hovercolor);
+  }
 }
 </style>

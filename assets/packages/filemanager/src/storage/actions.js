@@ -65,7 +65,7 @@ export default {
                 window.FileManager.baseUrl+'deleteFiles', 
                 {
                     surveyid: ctx.state.currentSurveyId, 
-                    files: context.getters.filesSelected, 
+                    files: ctx.getters.filesSelected, 
                 }
             ).then(
                 (deleteResult) => {
@@ -90,13 +90,14 @@ export default {
                 {
                     targetFolder: ctx.state.currentFolder, 
                     surveyid: ctx.state.currentSurveyId,
-                    files: context.getters.filesInTransit,
+                    files: ctx.getters.filesInTransit,
                     action: ctx.state.transitType
                 }).then(
                 (transitResult) => {
                     ctx.dispatch('getFileList').then(
                         (result)=>{
                             ctx.commit('setFileList', result.data);
+                            ctx.commit('cancelTransit');
                             resolve(result);
                         }, 
                         (error) =>{ reject(error); }
@@ -108,12 +109,13 @@ export default {
             });
         });
     },
-    downloadFiles: (context) => {
+    downloadFiles: (ctx) => {
         return new Promise((resolve, reject) => {
             ajax.methods.$_post(
                 window.FileManager.baseUrl+'downloadFiles', 
                 {
-                    files: context.getters.filesSelected
+                    files: ctx.getters.filesSelected,
+                    folder: ctx.state.currentFolder
                 }).then(
                 (result) => {
                     const downloadIframe = document.getElementById("fileManager-DownloadFrame");
