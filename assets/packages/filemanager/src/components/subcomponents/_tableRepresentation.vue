@@ -11,6 +11,7 @@
       <div class="ls-flex ls-flex-row col-2 cell">{{"Action" | translate }}</div>
     </div>
     <div
+      v-if="!loading"
       class="ls-flex ls-flex-row row"
       v-for="file in $store.state.fileList"
       :key="file.key"
@@ -65,6 +66,11 @@
             <i class="fa fa-times text-warning"></i>
           </button>
         </template>
+      </div>
+    </div>
+    <div class="ls-flex-row ls-space padding top-15" v-if="loading"> 
+      <div class="display-relative">
+        <loader-widget id="filemanager-loader-widget"/>
       </div>
     </div>
   </div>

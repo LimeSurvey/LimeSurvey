@@ -7,12 +7,7 @@
       </div>
     </div>
     <div class="container-fluid">
-        <transition name="slide-fade">
-            <div class="scoped-loadingOverlay" v-if="loading">
-                <loader-widget id="filemanager-loader-widget" />  
-            </div>
-        </transition>
-        <component :is="fileviz" @setLoading="setLoading" ></component>
+        <component :is="fileviz" @setLoading="setLoading" :loading="loading"></component>
     </div>
     <modals-container />
   </div>

@@ -2,6 +2,7 @@
   <div class="container-fluid scoped-table-aloud">
     <div class="masonry-container">
       <div
+        v-if="!loading"
         class="ls-flex ls-flex-column scoped-file-tile"
         v-for="file in $store.state.fileList"
         :id="'iconRep-' + file.hash"
@@ -72,6 +73,11 @@
           <div class="text-right">
             <input type="checkbox" v-model="file.selected" />
           </div>
+        </div>
+      </div>
+      <div class="ls-flex-row ls-space padding top-15" v-if="loading">
+        <div class="display-relative">
+          <loader-widget id="filemanager-loader-widget"/>
         </div>
       </div>
     </div>
