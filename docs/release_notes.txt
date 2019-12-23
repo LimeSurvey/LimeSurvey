@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC12 (build 191217) to 4.0.0-RC13 (build 191223) December 23, 2019
+-Fixed issue: Tests for the question theme selector are working again (Markus Flür)
+-Fixed issue: Statistic buttons misssing (Simple mode, View statistics) (Eddy Lackmann)
+-Fixed issue: Disable import page/question buttons on active survey (Marc Leonhardt)
+-Fixed issue #15662: Some UTF-88 characters saved as ????? in DB when using MSSQL and IIS (#1353) (Denis Chenu)
+-Fixed issue #15446: Custom Twig extensions do not work (Marc Leonhardt)
+-Fixed issue #14552: Backward navigation broken if navigation delay is enabled (lacrioque)
+
+
 Changes from 4.0.0-RC11 (build 191209) to 4.0.0-RC12 (build 191217) December 17, 2019
 +New translation: Somali (Carsten Schmitz)
 +New feature: Allow videos if XSS is enabled (Carsten Schmitz)
