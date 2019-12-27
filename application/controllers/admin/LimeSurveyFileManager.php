@@ -93,6 +93,8 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'Delete file' => gT('Delete file'),
             'Copy file' => gT('Copy file'),
             'Move file' => gT('Move file'),
+            'Allowed file formats' => gT('Allowed file formats'),
+            'File formats' => '.'.gT(implode(", .", $this->allowedFileExtensions)) 
         ];
 
         Yii::app()->getClientScript()->registerPackage('filemanager');
@@ -100,6 +102,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'surveyid' => $surveyid,
             'possibleFolders' => $possibleFolders,
             'i10N' => $aTranslate,
+            'allowedFileTypes' => $this->allowedFileExtensions,
             'baseUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => '']),
         ];
         $renderView = $surveyid == null ? 'view' : 'surveyview';
