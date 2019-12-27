@@ -445,26 +445,42 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns an array with all participant attributes which are not core attributes.
+     *
+     *
+     * @return array   will have the following structure
+     *                  result['attribute_id']
+     *                  result['attribute_type']
+     *                  result['attribute_display'] --> visible
+     *                  result['attribute_name']
+     *                  result['lang']
      */
     function getCPDBAttributes()
     {
-        $findCriteria = new CDbCriteria();
-        $findCriteria->addCondition("t.core_attribute <> 'Y'");
-        $findCriteria->offset = -1;
-        $findCriteria->limit = -1;
+        /**  @var $models ParticipantAttributeName[] */
+        $models = ParticipantAttributeName::model()->findAll('core_attribute=:core_attribute', array(
+            'core_attribute' => 'N'
+        ));
+
         $output = array();
-        $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
-        foreach ($records as $row) {
-//Iterate through each attribute
-            $thisname = "";
-            $thislang = "";
+        //Iterate through each attribute to get language and language value
+        foreach ($models as $row) {
+            $thisname = '';
+            $thislang ='';
             foreach ($row->participant_attribute_names_lang as $names) {
 //Iterate through each language version of this attribute
-                if ($thisname == "") {$thisname = $names->attribute_name; $thislang = $names->lang; } //Choose the first item by default
-                if ($names->lang == Yii::app()->session['adminlang']) {$thisname = $names->attribute_name; $thislang = $names->lang; } //Override the default with the admin language version if found
+                if ($thisname == "") {
+                    $thisname = $names->attribute_name;
+                    $thislang = $names->lang;
+                } //Choose the first item by default
+                if ($names->lang == Yii::app()->session['adminlang']) {
+                    $thisname = $names->attribute_name;
+                    $thislang = $names->lang;
+                } //Override the default with the admin language version if found
             }
-            $output[] = array('attribute_id'=>$row->attribute_id,
+
+            $output[] = array(
+                'attribute_id'=>$row->attribute_id,
                 'attribute_type'=>$row->attribute_type,
                 'attribute_display'=>$row->visible,
                 'attribute_name'=>$thisname,
@@ -763,9 +779,11 @@ class ParticipantAttributeName extends LSActiveRecord
         $oParticipantAttributeName->attribute_type = $data['attribute_type'];
         $oParticipantAttributeName->defaultname = $data['defaultname'];
         $oParticipantAttributeName->visible = $data['visible'];
-        $oParticipantAttributeName->encrypted = $data['encrypted'];
+        $oParticipantAttributeName->encrypted = 'N';
+        $oParticipantAttributeName->core_attribute = 'N';
         $oParticipantAttributeName->save();
-        $iAttributeID = $oParticipantAttributeName->attribute_id;
+
+        $iAttributeID = $oParticipantAttributeName->getPrimaryKey();
 
         $oParticipantAttributeNameLang = new ParticipantAttributeNameLang;
         $oParticipantAttributeNameLang->attribute_id = $iAttributeID;
