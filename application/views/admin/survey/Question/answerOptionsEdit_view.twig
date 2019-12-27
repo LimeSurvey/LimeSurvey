@@ -201,7 +201,9 @@
                     {% endfor %}
 
                     <!--   Modals   -->
-                    {% include 'admin/survey/Question/question_subviews/_modals.twig' %}
+                    {% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+                        {% include '/admin/survey/Question/question_subviews/_modals.twig' %}
+                    {% endif %}
 
                     <p>
                         <input type='submit' class="hidden" id='saveallbtn_{{ anslang }}' name='method' value='{{ gT("Save changes") }}' />
