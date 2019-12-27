@@ -40212,7 +40212,9 @@
 	      initNotification: notificationSystem.initNotification
 	    };
 
-	    var LsNameSpace = lodash.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {
+	    var LsNameSpace = lodash.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, {
+	      AjaxHelper: AjaxHelper
+	    }, {
 	      notifyFader: notifyFader
 	    }, {
 	      createUrl: createUrl

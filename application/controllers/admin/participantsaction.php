@@ -2559,6 +2559,7 @@ class participantsaction extends Survey_Common_Action
 
         Yii::app()->loadHelper('common');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMap.js');
+        App()->getClientScript()->registerPackage('jqueryui');
 
         $redirect = Yii::app()->request->getPost('redirect');
         $count = Yii::app()->request->getPost('count');
@@ -2580,6 +2581,7 @@ class participantsaction extends Survey_Common_Action
                 array_push($alreadymappedattid, substr($attributeId, 15));
             }
         }
+
         foreach ($CPDBAttributes as $row) {
             if (!in_array($row['attribute_id'], $alreadymappedattid)) {
                 $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
@@ -2624,10 +2626,17 @@ class participantsaction extends Survey_Common_Action
         $oAdminTheme = AdminTheme::getInstance();
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapToken.js');
         App()->getClientScript()->registerCssFile($oAdminTheme->sTemplateUrl . '/css/attributeMapToken.css');
-
+        App()->getClientScript()->registerPackage('jqueryui'); // jqueryui
         $iSurveyID = (int) Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, true);
+
+        //string of participant IDs which should be added to CPDB, if not set to sessionvar those will not be added!!
+        $participants = Yii::app()->request->getPost('itemsid');
+        if(isset($participants) && $participants!==null && $participants!==''){
+            unset(Yii::app()->session['participantid']);
+            Yii::app()->session['participantid'] = $participants;
+        }
 
         $selectedattribute = array();
         $selectedcentralattribute = array();

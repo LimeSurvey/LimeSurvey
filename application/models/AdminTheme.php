@@ -143,7 +143,6 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerScript('coreuser', '
            window.LS = window.LS || {}; window.LS.globalUserId = "'.Yii::app()->user->id.'";', CClientScript::POS_HEAD);
             App()->getClientScript()->registerPackage('jquery'); // jquery
-            //App()->getClientScript()->registerPackage('jqueryui'); // jqueryui
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
             App()->getClientScript()->registerPackage('fontawesome'); // fontawesome
             App()->getClientScript()->registerPackage('bootstrap-switch');
