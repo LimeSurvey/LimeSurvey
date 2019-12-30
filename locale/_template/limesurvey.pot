@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-12-19 16:10:27+00:00\n"
+"POT-Creation-Date: 2019-12-30 16:46:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1265,6 +1265,8 @@ msgstr ""
 #: application/controllers/admin/assessments.php:119
 #: application/views/admin/global_settings/_language.php:47
 #: application/views/admin/labels/_labelviewquickadd_view.php:13
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:72
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:128
 msgid "Add"
 msgstr ""
 
@@ -2556,6 +2558,7 @@ msgstr ""
 #: application/views/admin/user/editusers.php:132
 #: application/views/admin/user/modifyuser.php:62
 #: application/views/admin/user/setuserpermissions.php:82
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:174
 #: tmp/runtime/twig_cache/ef/ef6b040c993906b16d25127336cebd3eaa8bcabfe643c66268038b8d3b8e26d5.php:44
 msgid "Save"
 msgstr ""
@@ -2986,6 +2989,7 @@ msgid "Uploaded label set file needs to have an .lsl extension."
 msgstr ""
 
 #: application/controllers/admin/labels.php:198
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:159
 msgid "New label set"
 msgstr ""
 
@@ -3000,6 +3004,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:2392
 #: application/views/admin/labels/_labelviewtabcontent_view.php:86
 #: application/views/admin/themes/templatesummary_view.php:112
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:594
 msgid "Save changes"
 msgstr ""
 
@@ -3190,6 +3195,7 @@ msgstr ""
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:208
 msgid "OK"
 msgstr ""
 
@@ -4096,6 +4102,7 @@ msgstr ""
 #: application/views/admin/pluginmanager/index.php:84
 #: application/views/admin/quotas/viewquotas_view.php:101
 #: application/views/admin/usergroup/viewUserGroup_view.php:41
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:298
 msgid "Action"
 msgstr ""
 
@@ -4198,6 +4205,10 @@ msgstr ""
 #: application/views/admin/update/updater/welcome/_updater_update.php:25
 #: application/views/admin/update/updater/welcome/_welcome.php:80
 #: application/views/admin/usergroup/usergroups_view.php:141
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:76
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:132
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:178
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:212
 msgid "Cancel"
 msgstr ""
 
@@ -5261,6 +5272,7 @@ msgid "Subquestions"
 msgstr ""
 
 #: application/controllers/admin/translate.php:548
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:332
 msgid "Answer options"
 msgstr ""
 
@@ -10067,6 +10079,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:131
 #: application/views/admin/labels/_labelviewtabcontent_view.php:19
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:49
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:316
 msgid "Assessment value"
 msgstr ""
 
@@ -12257,6 +12270,7 @@ msgstr ""
 #: application/views/admin/survey/QuestionGroups/import_view.php:30
 #: application/views/admin/survey/copySurvey_view.php:47
 #: application/views/admin/survey/importSurvey_view.php:103
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:108
 msgid "Label sets"
 msgstr ""
 
@@ -12735,6 +12749,7 @@ msgstr ""
 #: application/models/Surveymenu.php:190
 #: application/views/admin/homepagesettings/index.php:107
 #: application/views/admin/labels/_labelviewtabcontent_view.php:16
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:253
 msgid "Position"
 msgstr ""
 
@@ -12879,6 +12894,7 @@ msgstr ""
 
 #: application/models/SurveysGroups.php:150
 #: application/views/admin/responses/browseallheader_view.php:77
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:342
 msgid "Actions"
 msgstr ""
 
@@ -13923,6 +13939,7 @@ msgstr ""
 
 #: application/views/admin/dataentry/insert.php:22
 #: application/views/admin/dataentry/insert.php:52
+#: tmp/runtime/twig_cache/89/896ada5e1fadf2dc5611616939dcd901a768d2d20763bc18766943c4234e3681.php:297
 msgid "Add another record"
 msgstr ""
 
@@ -14012,6 +14029,7 @@ msgid "Renumber the new record."
 msgstr ""
 
 #: application/views/admin/dataentry/vvimport.php:54
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:166
 msgid "Replace the existing record."
 msgstr ""
 
@@ -14097,6 +14115,7 @@ msgid "Choose file"
 msgstr ""
 
 #: application/views/admin/emailtemplates/emailtemplates_view.php:93
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:289
 msgid "Relevance equation"
 msgstr ""
 
@@ -15264,14 +15283,18 @@ msgid "Close editor"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:6
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:52
 msgid "Enter your labels:"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:9
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:60
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab."
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:12
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:68
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:124
 msgid "Replace"
 msgstr ""
 
@@ -15318,6 +15341,7 @@ msgstr ""
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:26
 #: application/views/admin/survey/Question/listquestions.php:81
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:265
 msgid "Code"
 msgstr ""
 
@@ -15326,6 +15350,7 @@ msgid "Label:"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewtabcontent_view.php:83
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:516
 msgid "Quick add..."
 msgstr ""
 
@@ -15472,6 +15497,7 @@ msgid "File"
 msgstr ""
 
 #: application/views/admin/labels/labelsets_view.php:16
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:101
 msgid "Label sets list"
 msgstr ""
 
@@ -16616,6 +16642,7 @@ msgid "Simple mode"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:229
+#: tmp/runtime/twig_cache/89/896ada5e1fadf2dc5611616939dcd901a768d2d20763bc18766943c4234e3681.php:301
 msgid "Delete this entry"
 msgstr ""
 
@@ -16779,6 +16806,7 @@ msgid "Advanced"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:152
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:91
 msgid "Manage label sets"
 msgstr ""
 
@@ -17059,6 +17087,8 @@ msgid "Label set browser"
 msgstr ""
 
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:22
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:530
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:148
 msgid "Save as label set"
 msgstr ""
 
@@ -17090,6 +17120,7 @@ msgid "Error: You are trying to use duplicate subquestion codes."
 msgstr ""
 
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:37
+#: tmp/runtime/twig_cache/f2/f29b1981d779c38407a034eafa2800f2ed1ec3769f25c795d416ca45752bad18.php:241
 msgid "Click to expand"
 msgstr ""
 
@@ -21666,6 +21697,26 @@ msgstr ""
 msgid "There is 1 question in this survey."
 msgstr ""
 
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:193
+msgid "Y-Scale"
+msgstr ""
+
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:202
+msgid "X-Scale"
+msgstr ""
+
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:226
+msgid "Answer scale %s"
+msgstr ""
+
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:276
+msgid "Subquestion"
+msgstr ""
+
+#: tmp/runtime/twig_cache/68/682f365ab9aa944ee9d148efe2fb8ac1d9ae8a94cd2cbaeafdbf4d220d46e6e6.php:498
+msgid "Predefined label sets..."
+msgstr ""
+
 #: tmp/runtime/twig_cache/6e/6ee49d4261c9aac3c266c9a74d0f872c4a4215e6abdc71167186aa9bdef49b46.php:258
 #: tmp/runtime/twig_cache/77/7786ad2aa8ed25b729416034a8bfbcbafe7d286bb3ac5b88c30c5b8cd6792f9b.php:208
 #: tmp/runtime/twig_cache/84/84a4893993a28ebfaf3e51161ec0d375bb928c567e3caac8c8cfc5398323f2d7.php:225
@@ -21700,6 +21751,15 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+#: tmp/runtime/twig_cache/89/896ada5e1fadf2dc5611616939dcd901a768d2d20763bc18766943c4234e3681.php:262
+msgid "Some example answer option"
+msgstr ""
+
+#: tmp/runtime/twig_cache/89/896ada5e1fadf2dc5611616939dcd901a768d2d20763bc18766943c4234e3681.php:273
+#: tmp/runtime/twig_cache/f2/f29b1981d779c38407a034eafa2800f2ed1ec3769f25c795d416ca45752bad18.php:227
+msgid "Subquestion:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/99/99e0fcd8f923c8c0ff68491fc4bf0832371de2cc5148840dfd291382b4ec5438.php:44
 msgid "Here your data security notice"
 msgstr ""
@@ -21718,6 +21778,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/b7/b7f89667439eba9197059192319f01681d493b0ffdcf595bec995afd30d9993e.php:44
 msgid "Quotas exceeded"
+msgstr ""
+
+#: tmp/runtime/twig_cache/c8/c82045c58ea38ffda9066b96a6440e82c9a542a9e1ee44faaece0b11c202af5e.php:194
+msgid "Replace label set?"
 msgstr ""
 
 #: tmp/runtime/twig_cache/d2/d28ffa31f5b28a0819831205c838b3f026efbffc3e9b4981e5722274ba36273b.php:44
@@ -21758,4 +21822,16 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/e9/e912a9806f579a05a6ad19465f4cad654e2cb878334cafa5f974366bb2089342.php:83
 msgid "Accept"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f2/f29b1981d779c38407a034eafa2800f2ed1ec3769f25c795d416ca45752bad18.php:216
+msgid "Some example subquestion"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f2/f29b1981d779c38407a034eafa2800f2ed1ec3769f25c795d416ca45752bad18.php:285
+msgid "Insert a new subquestion after this one"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f2/f29b1981d779c38407a034eafa2800f2ed1ec3769f25c795d416ca45752bad18.php:289
+msgid "Delete this subquestion"
 msgstr ""
