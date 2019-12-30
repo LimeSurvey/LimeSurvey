@@ -49,7 +49,7 @@ class TwigCommand extends CConsoleCommand  {
      * Generate twig cache files for each core Survey Theme and core questions views.
      *
      */
-    public function actionGenerateTwigTmpFiles( $sThemeDir=null, $bGenerateSurveyCache=true, $bGenerateQuestionsCache=true, $bShowLogs=false )
+    public function actionGenerateTwigTmpFiles( $sThemeDir=null, $bGenerateSurveyCache=true, $bGenerateQuestionsCache=true, $bGenerateAdminCache=true, $bShowLogs=false )
     {
       $this->aLogs = array();
       $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bShowLogs";
@@ -59,6 +59,10 @@ class TwigCommand extends CConsoleCommand  {
 
       if ($bGenerateQuestionsCache){
         $this->actionGenerateQuestionsCache(null);
+      }
+
+      if ($bGenerateAdminCache){
+        $this->actionGenerateAdminCache(null);
       }
 
       // TODO: here add something more complex to create a file log on the server, something that can be return to the CU server at release creation, etc
