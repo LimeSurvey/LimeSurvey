@@ -1890,7 +1890,6 @@ class SurveyAdmin extends Survey_Common_Action
                 'expires' => $sExpiryDate,
                 'startdate' => $sStartDate,
                 'template' => App()->request->getPost('template'),
-                'owner_id' => App()->request->getPost('owner_id'),
                 'admin' => App()->request->getPost('admin'),
                 'active' => 'N',
                 'anonymized' => App()->request->getPost('anonymized'),

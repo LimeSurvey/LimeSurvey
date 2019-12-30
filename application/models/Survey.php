@@ -871,6 +871,10 @@ class Survey extends LSActiveRecord
             $aData['sid'] = intval(randomChars(6, '123456789'));
         }
         $survey = new self;
+        /* Remove NULL value (default for not submitted data ) : insert must leave default if not set in POST */
+        $aData = array_filter($aData, function($value) {
+                return !is_null($value);
+        });
         foreach ($aData as $k => $v) {
             $survey->$k = $v;
         }
