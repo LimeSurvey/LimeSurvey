@@ -1,5 +1,5 @@
 <template>
-  <div :class="'col-xs-'+cols">
+  <div :class="'col-md-'+cols">
     <div class="ls-flex ls-flex-row align-items-flex-end align-content-flex-end ls-space margin bottom-10">
       <div class="btn-group" role="group">
         <button type="button" id="FileManager--change-filewiz-to-tablerep" class="btn" @click="fileviz='tablerep'" :class="fileviz=='tablerep' ? 'btn-info active' : 'btn-default'">Table</button>

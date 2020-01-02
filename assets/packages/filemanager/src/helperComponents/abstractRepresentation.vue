@@ -68,6 +68,9 @@ export default {
     },
     cancelTransit(file) {
       this.$set(file, 'inTransit', false);
+      if( this.$store.getters.filesInTransit.length == 0 ) {
+        this.$store.commit('noTransit');
+      }
     }
   }
 };

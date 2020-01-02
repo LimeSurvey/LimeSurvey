@@ -17,7 +17,7 @@ export default {
 </script>
 
 <template>
-  <div class="scoped-folder-list" :class="'col-xs-'+cols">
+  <div class="scoped-folder-list" :class="'col-md-'+cols">
     <treeview 
         key="root-folder"
         :folders="$store.state.folderList" 

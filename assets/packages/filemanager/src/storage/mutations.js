@@ -34,6 +34,9 @@ export default {
     moveFiles: (state, file) => {
         state.transitType = "move";
     },
+    noTransit: (state) => {
+        state.transitType = null;
+    },
     cancelTransit: state => {
         state.renewIterator = state.renewIterator+1;
         state.transitType = null;
