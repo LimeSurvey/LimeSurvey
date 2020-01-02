@@ -5,13 +5,13 @@
 */
 ?>
 <?php
-$thisdefaulttheme=getGlobalSetting('defaulttheme');
+$thisdefaulttheme=Yii::app()->getConfig('defaulttheme');
 $templatenames=array_keys(Template::getTemplateList());
-$thisadmintheme=getGlobalSetting('admintheme');
-$thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
-$thismaintenancemode=!empty(getGlobalSetting('maintenancemode')) ? getGlobalSetting('maintenancemode') : 'off';
-$thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
-$thisdefaultthemeteeditormode=getGlobalSetting('defaultthemeteeditormode');
+$thisadmintheme=Yii::app()->getConfig('admintheme');
+$thisdefaulthtmleditormode=Yii::app()->getConfig('defaulthtmleditormode');
+$thismaintenancemode=!empty(Yii::app()->getConfig('maintenancemode')) ? Yii::app()->getConfig('maintenancemode') : 'off';
+$thisdefaultquestionselectormode=Yii::app()->getConfig('defaultquestionselectormode');
+$thisdefaultthemeteeditormode=Yii::app()->getConfig('defaultthemeteeditormode');
 $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
 ?>
 
@@ -24,7 +24,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <?php eT("Site name:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12 text-left">
-                    <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename')); ?>" />
+                    <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(Yii::app()->getConfig('sitename')); ?>" />
                 </div>
             </div>
         </div>
@@ -76,14 +76,14 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </label>
                 <div class="col-sm-4">
                     <span>
-                        <input class="form-control"  type='text' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
+                        <input class="form-control"  type='text' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),Yii::app()->getConfig('timeadjust'))/60); ?>" />
                     </span>
                 </div>
                 <div class="col-sm-8">
                     <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')
                         ."<br>"
                         . gT("Corrected time:").' '
-                        .convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
+                        .convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', Yii::app()->getConfig('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                 </div>
             </div>
         </div>
@@ -94,7 +94,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <?php eT("Session lifetime for surveys (seconds):"); ?>
                 </label>
                 <div class="col-sm-12">
-                    <input class="form-control" type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime' value="<?php echo htmlspecialchars(getGlobalSetting('iSessionExpirationTime')); ?>" />
+                    <input class="form-control" type='text' size='10' id='iSessionExpirationTime' name='iSessionExpirationTime' value="<?php echo htmlspecialchars(Yii::app()->getConfig('iSessionExpirationTime')); ?>" />
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php eT("IP Info DB API Key:"); ?>
                 </label>
                 <div class="col-sm-12">
-                <input class="form-control" type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey')); ?>" />
+                <input class="form-control" type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(Yii::app()->getConfig('ipInfoDbAPIKey')); ?>" />
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php eT("Google Maps API key:"); ?>
                 </label>
                 <div class="col-sm-12">
-                    <input class="form-control" type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('googleMapsAPIKey')); ?>" />
+                    <input class="form-control" type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars(Yii::app()->getConfig('googleMapsAPIKey')); ?>" />
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php eT("Google Analytics Tracking ID:"); ?>
                 </label>
                 <div class="col-sm-12">
-                    <input class="form-control" type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googleanalyticsapikey')); ?>" />
+                    <input class="form-control" type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value="<?php echo htmlspecialchars(Yii::app()->getConfig('googleanalyticsapikey')); ?>" />
                 </div>
             </div>
         </div>
@@ -136,7 +136,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php eT("Google Translate API key:"); ?>
                 </label>
                 <div class="col-sm-12">
-                    <input class="form-control" type='text' size='35' id='googletranslateapikey' name='googletranslateapikey' value="<?php echo htmlspecialchars(getGlobalSetting('googletranslateapikey')); ?>" />
+                    <input class="form-control" type='text' size='35' id='googletranslateapikey' name='googletranslateapikey' value="<?php echo htmlspecialchars(Yii::app()->getConfig('googletranslateapikey')); ?>" />
                 </div>
             </div>
         </div>
@@ -193,7 +193,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for='refreshassets'>
-                <?php eT("Clear assets cache:"); ?> <small>(<?php echo  getGlobalSetting('customassetversionnumber');?>)</small>
+                <?php eT("Clear assets cache:"); ?> <small>(<?php echo  Yii::app()->getConfig('customassetversionnumber');?>)</small>
                 </label>
                 <div class="col-sm-12">
                     <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"refreshAssets")); ?>" class="btn btn-success btn-large"><?php eT("Clear now");?></a>
@@ -293,7 +293,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'javascriptdebugbcknd',
                     'id'=>'javascriptdebugbcknd',
-                    'value' => getGlobalSetting('javascriptdebugbcknd'),
+                    'value' => Yii::app()->getConfig('javascriptdebugbcknd'),
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')
                     ));
@@ -311,7 +311,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'javascriptdebugfrntnd',
                     'id'=>'javascriptdebugfrntnd',
-                    'value' => getGlobalSetting('javascriptdebugfrntnd'),
+                    'value' => Yii::app()->getConfig('javascriptdebugfrntnd'),
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')
                     ));
@@ -331,7 +331,7 @@ Full lock - none of participants are allowed to take survey, even if they alread
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'allow_unstable_extension_update',
                             'id'=>'allow_unstable_extension_update',
-                            'value' => getGlobalSetting('allow_unstable_extension_update'),
+                            'value' => Yii::app()->getConfig('allow_unstable_extension_update'),
                             'onLabel'=>gT('On'),
                             'offLabel' => gT('Off')
                             ));

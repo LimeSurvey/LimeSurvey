@@ -18,7 +18,7 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceaccounttype',
-                'value'=> getGlobalSetting('bounceaccounttype') ,
+                'value'=> Yii::app()->getConfig('bounceaccounttype') ,
                 'selectOptions'=>array(
                 "off"=>gT("Off",'unescaped'),
                 "IMAP"=>gT("IMAP",'unescaped'),
@@ -32,7 +32,7 @@
 <div class="form-group">
     <label class=" control-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /> <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
+        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(Yii::app()->getConfig('bounceaccounthost'))?>" /> <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
     </div>
 
 </div>
@@ -41,7 +41,7 @@
     <label class=" control-label"  for='bounceaccountuser'><?php eT("User name:"); ?></label>
     <div class="">
         <input class="form-control" type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
-            value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccountuser'))?>" />
+            value="<?php echo htmlspecialchars(Yii::app()->getConfig('bounceaccountuser'))?>" />
     </div>
 </div>
 
@@ -57,7 +57,7 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceencryption',
-                'value'=> getGlobalSetting('bounceencryption') ,
+                'value'=> Yii::app()->getConfig('bounceencryption') ,
                 'selectOptions'=>array(
                 "off"=>gT("Off",'unescaped'),
                 "SSL"=>"SSL",

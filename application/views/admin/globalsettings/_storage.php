@@ -29,7 +29,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'overwritefiles',
                     'id' => 'overwritefiles',
-                    'value' => getGlobalSetting('overwritefiles') == 'Y' ? '1' : 0,
+                    'value' => Yii::app()->getConfig('overwritefiles') == 'Y' ? '1' : 0,
                     'onLabel' => gT('On'),
                     'offLabel' => gT('Off')));
                 ?>

@@ -10,14 +10,14 @@
         <div class="form-group">
             <label class=" control-label"  for='repeatheadings'><?php eT("Repeating headings in array questions every X subquestions:"); ?></label>
             <div class="">
-                <input class="form-control"  id='repeatheadings' name='repeatheadings' value='<?php echo getGlobalSetting('repeatheadings'); ?>' size='4' maxlength='4' />
+                <input class="form-control"  id='repeatheadings' name='repeatheadings' value='<?php echo Yii::app()->getConfig('repeatheadings'); ?>' size='4' maxlength='4' />
             </div>
         </div>
 
         <div class="form-group">
             <label class=" control-label"  for='pdffontsize'><?php eT("Font size of PDFs:"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' id='pdffontsize' name='pdffontsize' value="<?php echo htmlspecialchars(getGlobalSetting('pdffontsize')); ?>" />
+                <input class="form-control"  type='text' id='pdffontsize' name='pdffontsize' value="<?php echo htmlspecialchars(Yii::app()->getConfig('pdffontsize')); ?>" />
             </div>
         </div>
 
@@ -25,7 +25,7 @@
         <div class="form-group">
             <label class=" control-label"  for='pdflogowidth'><?php eT("Width of PDF header logo:"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' size='5' id='pdflogowidth' name='pdflogowidth' value="<?php echo htmlspecialchars(getGlobalSetting('pdflogowidth')); ?>" />
+                <input class="form-control"  type='text' size='5' id='pdflogowidth' name='pdflogowidth' value="<?php echo htmlspecialchars(Yii::app()->getConfig('pdflogowidth')); ?>" />
 
             </div>
         </div>
@@ -33,7 +33,7 @@
         <div class="form-group">
             <label class=" control-label"  for='pdfheadertitle'><?php eT("PDF header title (if empty, site name will be used):"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' id='pdfheadertitle' size='50' maxlength='256' name='pdfheadertitle' value="<?php echo htmlspecialchars(getGlobalSetting('pdfheadertitle')); ?>" />
+                <input class="form-control"  type='text' id='pdfheadertitle' size='50' maxlength='256' name='pdfheadertitle' value="<?php echo htmlspecialchars(Yii::app()->getConfig('pdfheadertitle')); ?>" />
 
             </div>
         </div>
@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class=" control-label"  for='pdfheaderstring'><?php eT("PDF header string (if empty, survey name will be used):"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' id='pdfheaderstring' size='50' maxlength='256' name='pdfheaderstring' value="<?php echo htmlspecialchars(getGlobalSetting('pdfheaderstring')); ?>" />
+                <input class="form-control"  type='text' id='pdfheaderstring' size='50' maxlength='256' name='pdfheaderstring' value="<?php echo htmlspecialchars(Yii::app()->getConfig('pdfheaderstring')); ?>" />
 
             </div>
         </div>
@@ -54,7 +54,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'pdfshowsurveytitle',
                     'id'=>'pdfshowsurveytitle',
-                    'value' => getGlobalSetting('pdfshowsurveytitle')=='Y'?'1':0,
+                    'value' => Yii::app()->getConfig('pdfshowsurveytitle')=='Y'?'1':0,
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>
@@ -67,7 +67,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'pdfshowheader',
                     'id'=>'pdfshowheader',
-                    'value' => getGlobalSetting('pdfshowheader')=='Y'?'1':0,
+                    'value' => Yii::app()->getConfig('pdfshowheader')=='Y'?'1':0,
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>
@@ -80,7 +80,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'bPdfQuestionFill',
                     'id'=>'bPdfQuestionFill',
-                    'value' => getGlobalSetting('bPdfQuestionFill'),
+                    'value' => Yii::app()->getConfig('bPdfQuestionFill'),
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>
@@ -93,7 +93,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'bPdfQuestionBold',
                     'id'=>'bPdfQuestionBold',
-                    'value' => getGlobalSetting('bPdfQuestionBold'),
+                    'value' => Yii::app()->getConfig('bPdfQuestionBold'),
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>
@@ -106,7 +106,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'bPdfQuestionBorder',
                     'id'=>'bPdfQuestionBorder',
-                    'value' => getGlobalSetting('bPdfQuestionBorder'),
+                    'value' => Yii::app()->getConfig('bPdfQuestionBorder'),
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>
@@ -119,7 +119,7 @@
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'bPdfResponseBorder',
                     'id'=>'bPdfResponseBorder',
-                    'value' => getGlobalSetting('bPdfResponseBorder'),
+                    'value' => Yii::app()->getConfig('bPdfResponseBorder'),
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>

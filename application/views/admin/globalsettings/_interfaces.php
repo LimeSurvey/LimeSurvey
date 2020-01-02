@@ -5,7 +5,7 @@
 */
 ?>
 
-<?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
+<?php $RPCInterface=Yii::app()->getConfig('RPCInterface'); ?>
 <div class="form-group">
     <label class=" control-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
     <div class="">
@@ -34,7 +34,7 @@
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'rpc_publish_api',
             'id'=>'rpc_publish_api',
-            'value' => getGlobalSetting('rpc_publish_api'),
+            'value' => Yii::app()->getConfig('rpc_publish_api'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')));
         ?>
@@ -47,7 +47,7 @@
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'add_access_control_header',
             'id'=>'add_access_control_header',
-            'value' => getGlobalSetting('add_access_control_header'),
+            'value' => Yii::app()->getConfig('add_access_control_header'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')));
         ?>

@@ -11,14 +11,14 @@
         <div class="form-group col-sm-12">
             <label class=" control-label"  for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
-                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>" />
+                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(Yii::app()->getConfig('siteadminemail')); ?>" />
             </div>
         </div>
 
         <div class="form-group col-sm-12">
             <label class="  control-label"  for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>" /><br /><br />
+                <input class="form-control"  type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(Yii::app()->getConfig('siteadminname')); ?>" /><br /><br />
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'emailmethod',
-                    'value'=> getGlobalSetting('emailmethod') ,
+                    'value'=> Yii::app()->getConfig('emailmethod') ,
                     'selectOptions'=>array(
                         "mail"=>"PHP",
                         "smtp"=>"SMTP",
@@ -41,14 +41,14 @@
         <div class="form-group">
             <label class="  control-label"  for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />
+                <input class="form-control"  type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(Yii::app()->getConfig('emailsmtphost')); ?>" />
                 <span class="hint"><?php printf(gT("Enter your hostname and port, e.g.: %s"),"smtp.example.org:25"); ?></span>
             </div>
         </div>
         <div class="form-group">
             <label class="  control-label"  for='emailsmtpuser'><?php eT("SMTP username:"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtpuser')); ?>" />
+                <input class="form-control"  type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars(Yii::app()->getConfig('emailsmtpuser')); ?>" />
             </div>
         </div>
         <div class="form-group">
@@ -62,7 +62,7 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'emailsmtpssl',
-                    'value'=> getGlobalSetting('emailsmtpssl') ,
+                    'value'=> Yii::app()->getConfig('emailsmtpssl') ,
                     'selectOptions'=>array(
                         ""=>gT("Off",'unescaped'),
                         "ssl"=>gT("SSL",'unescaped'),
@@ -76,7 +76,7 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'emailsmtpdebug',
-                    'value'=> getGlobalSetting('emailsmtpdebug') ,
+                    'value'=> Yii::app()->getConfig('emailsmtpdebug') ,
                     'selectOptions'=>array(
                         "0"=>gT("Off",'unescaped'),
                         "1"=>gT("On errors",'unescaped'),
@@ -90,7 +90,7 @@
         <div class="form-group">
             <label class="  control-label"  for='maxemails'><?php eT("Email batch size:"); ?></label>
             <div class="">
-                <input class="form-control"  type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails')); ?>" />
+                <input class="form-control"  type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(Yii::app()->getConfig('maxemails')); ?>" />
             </div>
         </div>
     </div>
