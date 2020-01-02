@@ -19,7 +19,7 @@
 <ul class='{{coreClass}} list-unstyled form-horizontal' role="group" aria-labelledby="ls-question-text-{{basename}}">
     {% block rows %}
         {% if aRows is empty %}
-            {% include 'survey/questions/answer/multiplenumeric/empty.twig' %}
+            {% include '/survey/questions/answer/multiplenumeric/empty.twig' %}
         {% else %}
             {% for aRow in aRows %}
                 {% include rowTemplate with aRow only %}
