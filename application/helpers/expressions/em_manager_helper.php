@@ -5583,12 +5583,12 @@
                         $oResponse->setAttributes($aResponseAttributes, false);
                         if (!$oResponse->save()) {
                             $message = submitfailed('', print_r($response->getErrors())); // $response->getErrors() is array[string[]], then can not join
-
                             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                                 $message .= CHTml::errorSummary($response,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
                             }
                             LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                        } else { // Action in case its saved with success : to be move in Response::aferSave ?
+                        } else {
+                            // Action in case its saved with success : to be move in Response::aferSave ?
                             // Save Timings if needed
                             if ($this->surveyOptions['savetimings']) {
                                 Yii::import("application.libraries.Save");
@@ -5623,15 +5623,17 @@
                     else
                     {
                         if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                            /* Reload current response : see https://github.com/LimeSurvey/LimeSurvey/commit/27957d68e9ae3226515524c1774493d86706233a?email_source=notifications&email_token=AAK7NRDQU4OF7RIIJOOMJG3Q3SZEDA5CNFSM4J36GC5KYY3PNVWWK3TUL52HS4DFVVBW63LNNF2EG33NNVSW45FKMNXW23LFNZ2F62LEZYBC53FN#commitcomment-36629677 */
+                            $oResponseFinished = Response::model($this->sid)->findByPk($oResponse->id);
                             if($this->surveyOptions['datestamp'])
                             {
-                                $oResponse->submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                                $oResponseFinished->submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                             }
                             else
                             {
-                                $oResponse->submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                                $oResponseFinished->submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            $oResponse->save();
+                            $oResponseFinished->save();
                         }
                     }
 
