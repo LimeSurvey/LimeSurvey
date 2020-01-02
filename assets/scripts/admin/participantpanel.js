@@ -377,6 +377,10 @@ LS.CPDB = (function() {
             })
         });
 
+        $('#pageSizeAttributes').on("change", function(){
+            $.fn.yiiGridView.update('list_attributes',{ data:{ pageSizeAttributes: $(this).val() }});
+        });
+
         if(!$('#export').hasClass('hidden')){
             $('#export').addClass('hidden');
         }

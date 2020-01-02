@@ -293,9 +293,14 @@ class ParticipantAttributeName extends LSActiveRecord
         $sort = new CSort();
         $sort->defaultOrder = array('core_attribute' => CSort::SORT_DESC, 'defaultname' => CSort::SORT_ASC);
 
+        $pageSize = Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']);
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
-            'sort' => $sort
+            'sort' => $sort,
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
         ));
     }
 

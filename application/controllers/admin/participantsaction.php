@@ -1366,7 +1366,6 @@ class participantsaction extends Survey_Common_Action
         } else {
             Yii::app()->user->setState('pageSizeAttributes', (int) Yii::app()->params['defaultPageSize']);
         }
-        $aData['pageSizeAttributes'] = Yii::app()->user->getState('pageSize');
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
         // loads the participant panel view and display participant view
