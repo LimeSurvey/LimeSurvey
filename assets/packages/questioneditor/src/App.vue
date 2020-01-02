@@ -388,7 +388,7 @@ export default {
                         this.loading = false;
                         this.$log.error(rejected);
                         if(rejected.data != undefined) {
-                            window.LS.notifyFader(rejected.data.message, 'well-lg bg-danger text-center');
+                            window.LS.notifyFader(rejected.data.message, 'well-lg bg-danger text-center', {timeout: 5500});
                         }
                     }
                 )
