@@ -5596,6 +5596,8 @@
                                 $cSave->set_answer_time();
                             }
                         }
+                    } else {
+                        LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('This response was already submitted.'), $this->sid);
                     }
 
                     if ($finished) {
