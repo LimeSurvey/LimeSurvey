@@ -488,6 +488,8 @@ LS.CPDB = (function() {
      * @return
      */
     bindButtons = function() {
+
+        $(document).trigger("actions-updated");
         basics();
         switch($('#locator').data('location')){
             case 'participants' : participantPanel(); break;
