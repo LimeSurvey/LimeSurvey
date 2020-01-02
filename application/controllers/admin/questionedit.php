@@ -155,7 +155,7 @@ class questionedit extends Survey_Common_Action
                     . " so that the script is correctly executed after the question is on the screen."
                     . " If you do not have the correct permissions, this will be ignored"),
                 "noCodeWarning" =>
-                gT("Please put in a valid code. Only letters and numbers are allowed and it has to start with a letter. For example [Question1]"),
+                gT("Please put in a code. Only letters and numbers are allowed. For example [Question1]"),
                 "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes." =>
                 gT("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
                 "Question cannot be stored. Please check the answer option for duplicates or empty titles." =>
@@ -864,7 +864,7 @@ class questionedit extends Survey_Common_Action
         if ($saved == false) {
             throw new LSJsonException(
                 500,
-                "Update failed, could not save. ERRORS:<br/>"
+                "Object update failed, couldn't save. ERRORS:"
                 .implode(", ", $oQuestion->getErrors()['title']),
                 0,
                 null,

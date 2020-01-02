@@ -24,9 +24,7 @@ export default {
     surveyObject: () => window.QuestionEditData.surveyObject,
 
     hasTitleSet: (state) => {
-        const isNotEmpty = !isEmpty(state.currentQuestion.title);
-        const startingWithALetter =  /[a-zA-Z]/.test(state.currentQuestion.title.substring(0,1));
-        return isNotEmpty && startingWithALetter;
+        return !isEmpty(state.currentQuestion.title);
     },
     hasIndividualSubquestionTitles: (state) => {
         return reduce(
