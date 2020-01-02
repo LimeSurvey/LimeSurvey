@@ -194,3 +194,9 @@
             </div>
         <?php } ?>
 </nav>
+<script type="text/javascript">
+    //show tooltips 
+    $('body').tooltip({
+        selector: '[data-toggle="tooltip"]'
+    });
+</script>
