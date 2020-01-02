@@ -229,9 +229,9 @@ $config['filterxsshtml'] = true;
 
 // disablescriptwithxss
 // Allow update of script in question
-// 1 : Default : follow XSS rules
-// 0 : allowed for all
-$config['disablescriptwithxss'] = 1;
+// true : Default : follow XSS rules
+// false : allowed for all
+$config['disablescriptwithxss'] = true;
 
 // superadminfilterxsshtml
 // Enables filtering of suspicious html tags in survey, group, questions
@@ -240,10 +240,11 @@ $config['disablescriptwithxss'] = 1;
 // This settings can not be updated by GUI interface
 $config['superadminfilterxsshtml'] = false;
 
-// superadmindisablescript
+// superadminenablescript
 // Totally disable question script update
 // Remove the script part in question edition
-$config['superadmindisablescript'] = false;
+// Used only if superadminfilterxsshtml and disablescriptwithxss are true
+$config['superadminenablescript'] = false;
 
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
