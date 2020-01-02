@@ -227,6 +227,24 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 // allow these users to be able to use Javascript etc. .
 $config['filterxsshtml'] = true;
 
+// disablescriptwithxss
+// Allow update of script in question
+// 1 : Default : follow XSS rules
+// 0 : allowed for all
+$config['disablescriptwithxss'] = 1;
+
+// superadminfilterxsshtml
+// Enables filtering of suspicious html tags in survey, group, questions
+// and answer texts in the administration interface
+// Even super-administrator have this restriction.
+// This settings can not be updated by GUI interface
+$config['superadminfilterxsshtml'] = false;
+
+// superadmindisablescript
+// Totally disable question script update
+// Remove the script part in question edition
+$config['superadmindisablescript'] = false;
+
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
 // users that belong to at least one of their groups
