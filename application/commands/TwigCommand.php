@@ -52,7 +52,7 @@ class TwigCommand extends CConsoleCommand  {
     public function actionGenerateTwigTmpFiles( $sThemeDir=null, $bGenerateSurveyCache=true, $bGenerateQuestionsCache=true, $bGenerateAdminCache=true, $bShowLogs=false )
     {
       $this->aLogs = array();
-      $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bShowLogs";
+      $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache $bShowLogs";
       if ($bGenerateSurveyCache){
         $this->actionGenerateSurveyThemesCache($sThemeDir );
       }
