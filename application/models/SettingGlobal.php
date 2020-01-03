@@ -39,6 +39,8 @@ class SettingGlobal extends LSActiveRecord
         'demoMode', // No demoMode update via model
         'ssl_emergency_override', // security related
         'ssl_disable_alert', // security related
+        'forcedfilterxss', // security related
+        'superadminenablescript', // security related
     );
 
     /**
