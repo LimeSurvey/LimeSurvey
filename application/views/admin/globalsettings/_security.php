@@ -30,8 +30,12 @@
             ));
         ?>
     </div>
-    <div class="">
-        <span class='hint'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
+    <div class="help-block">
+        <?php if (Yii::app()->getConfig('forcedfilterxss')) { ?>
+            <span class='text-danger'><?php eT("XSS filtering is disable in your system by config.php, even for superadministrator."); ?></span>
+        <?php } else { ?>
+            <span class='text-success'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
+        <?php } ?>
     </div>
 </div>
 
@@ -48,7 +52,11 @@
         ?>
     </div>
     <div class="help-block">
-        <span class='text-danger'><?php eT("If you disable this option : user with XSS restriction still can add script. This allow user to add cross-site scripting javascript system."); ?></span>
+        <?php if (Yii::app()->getConfig('forcedfilterxss') && !Yii::app()->getConfig('superadminenablescript')) { ?>
+            <span class='text-danger'><?php eT("Script edition is disable in your system by config.php."); ?></span>
+        <?php } else { ?>
+            <span class='text-warning'><?php eT("If you disable this option : user with XSS restriction still can add script. This allow user to add cross-site scripting javascript system."); ?></span>
+        <?php } ?>
     </div>
 </div>
 
@@ -97,7 +105,7 @@
                 "on"=>gT("On",'unescaped'),
                 "off"=>gT("Off",'unescaped')
             )
-        ));?>        
+        ));?>
     </div>
 </div>
 <?php
