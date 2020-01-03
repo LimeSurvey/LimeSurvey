@@ -1,4 +1,3 @@
-
 <template>
     <div class="container-center scoped-new-questioneditor">
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing && !loading">
@@ -8,8 +7,7 @@
                     key="questionOverviewButton"
                     @click.prevent="triggerEditQuestion(false)"
                     :class="editQuestion ? 'btn-default' : 'btn-primary'"
-                    class="btn "
-                >
+                    class="btn ">
                     {{'Question overview'| translate}}
                 </button>
                 <button
@@ -71,34 +69,37 @@
                 <div class="row" key="questioncode-block">
                     <div class="form-group col-sm-6">
                         <label for="questionCode">{{'Code' | translate }}</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="questionCode"
-                            :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-                            required="required"
-                            v-model="currentQuestionCode"
-                            @dblclick="setEditQuestion"
+                        <input v-if="$store.getters.surveyObject.active === 'Y'"
+                               text="text"
+                               class="form-control"
+                               id="questionCode"
+                               :required="required"
+                               readonly="(editQuestion && useModalSelector && $store.getters.surveyObject.active === 'Y')"
+                               v-model="currentQuestionCode" />
+                        <input v-else
+                               type="text"
+                               class="form-control"
+                               id="questionCode"
+                               :readonly="!(editQuestion || isCreateQuestion || initCopy)"
+                               required="required"
+                               v-model="currentQuestionCode"
+                               @dblclick="setEditQuestion"
                         />
                         <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
                     </div>
                     <div class="form-group col-sm-6 contains-question-selector">
                         <label for="questionCode">{{'Question type' | translate }}</label>
-                        <div
-                            v-if="$store.getters.surveyObject.active !='Y'"
-                            v-show="(editQuestion || isCreateQuestion)"
-                            class="btn-group" 
-                        >
+                        <div v-if="$store.getters.surveyObject.active !=='Y'"
+                             v-show="(editQuestion || isCreateQuestion)"
+                             class="btn-group">
 
-                            <button 
-                                v-if="useModalSelector"
-                                id="trigger_question_selector_button"
-                                type="button" 
-                                class="btn btn-primary" 
-                                aria-haspopup="true" 
-                                aria-expanded="false"
-                                @click="toggleQuestionTypeSelector"
-                            >
+                            <button v-if="useModalSelector"
+                                    id="trigger_question_selector_button"
+                                    type="button"
+                                    class="btn btn-primary"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    @click="toggleQuestionTypeSelector">
                                 <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
                                 <span class="buttontext" id="selector__questionType_selector--buttonText">
                                     {{ currentQuestionTypeDescription }}
@@ -115,14 +116,14 @@
                             />
                         </div>
                         <input
-                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y')"
+                            v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !=='Y')"
                             type="text"
                             class="form-control" id="questionTypeVisual"
                             :readonly="true"
                             :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"
                         />
                         <input
-                            v-if="$store.getters.surveyObject.active !='Y'"
+                            v-if="$store.getters.surveyObject.active !=='Y'"
                             type="hidden"
                             id="question_type"
                             name="type"
@@ -289,7 +290,7 @@ export default {
             }
         },
         useModalSelector() {
-            return window.QuestionEditData.questionSelectorType == 'full' 
+            return window.QuestionEditData.questionSelectorType == 'full'
                     || window.QuestionEditData.questionSelectorType == 'default';
         }
     },
