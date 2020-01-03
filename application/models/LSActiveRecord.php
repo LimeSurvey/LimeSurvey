@@ -216,7 +216,7 @@ class LSActiveRecord extends CActiveRecord
 	 * An attribute value can be an array which will be used to generate an IN condition.
      * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
-     * @return static[] the records found. An empty array is returned if none is found.
+     * @return static|null the record found. Null if none is found.
 	 */
     public function findByAttributes($attributes, $condition='',$params=array())
 	{
