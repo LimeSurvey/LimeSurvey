@@ -115,4 +115,24 @@ class LSWebUser extends CWebUser
             return false;
         }
     }
+
+    /**
+     * Check if user are allowed to add script inside text (XSS)
+     * @return boolean
+     */
+    public function xssFiltered()
+    {
+        if (Yii::app()->getConfig('DBVersion') < 172) {
+            // Permission::model exist only after 172 DB version
+            return Yii::app()->getConfig('filterxsshtml');
+        }
+        if(Yii::app()->getConfig('superadminfilterxsshtml')) {
+            return true;
+        }
+        if(Yii::app()->getConfig('filterxsshtml')) {
+            return !Permission::model()->hasGlobalPermission('superadmin', 'read');
+        }
+        return false;
+    }
+
 }
