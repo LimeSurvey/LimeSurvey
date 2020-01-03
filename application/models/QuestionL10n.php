@@ -27,6 +27,15 @@
 class QuestionL10n extends LSActiveRecord
 {
 
+    /**
+     * @inheritdoc
+     * Add a handler to before save for script
+     */
+    public function init()
+    {
+        $this->attachEventHandler("onBeforeSave", array($this, 'fixScript'));
+    }
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -73,13 +82,28 @@ class QuestionL10n extends LSActiveRecord
     /** @inheritdoc */
     public function rules()
     {
-        return array(
+        $rules = array(
             ['qid,language', 'required'],
             ['qid', 'numerical', 'integerOnly'=>true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
-            array('script', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
         );
+        return $rules;
+    }
+
+    public function fixScript()
+    {
+        if (Yii::app()->user->scriptAllowUpdate()) {
+            return;
+        }
+        if ($this->isNewRecord) {
+            /* New record : always empty */
+            $this->script ="";
+            return;
+        }
+        /* Old record : leave current */
+        $originalQuestioni10n = self::model()->findByPk($this->id);
+        $this->script = $originalQuestioni10n->script;
     }
 }

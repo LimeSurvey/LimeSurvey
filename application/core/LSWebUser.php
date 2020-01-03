@@ -117,6 +117,26 @@ class LSWebUser extends CWebUser
     }
 
     /**
+     * Check if user are allowed to edit script
+     * @return boolean
+     */
+    public function scriptAllowUpdate()
+    {
+        if (Yii::app()->getConfig('forcedfilterxss') && !Yii::app()->getConfig('superadminenablescript')) {
+            /* TODO : review to empty when save ? */
+            /* here , fixed when import and create, but no fix when save existing. */
+            return false;
+        }
+        if (!Yii::app()->getConfig('disablescriptwithxss')) {
+            return true;
+        }
+        if (!Yii::app()->getConfig('filterxsshtml')) {
+            return true;
+        }
+        return !\Permission::model()->hasGlobalPermission('superadmin', 'read');
+    }
+
+    /**
      * Check if user are allowed to add script inside text (XSS)
      * @return boolean
      */
@@ -126,13 +146,12 @@ class LSWebUser extends CWebUser
             // Permission::model exist only after 172 DB version
             return Yii::app()->getConfig('filterxsshtml');
         }
-        if(Yii::app()->getConfig('superadminfilterxsshtml')) {
+        if (Yii::app()->getConfig('forcedfilterxss')) {
             return true;
         }
-        if(Yii::app()->getConfig('filterxsshtml')) {
-            return !Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (Yii::app()->getConfig('filterxsshtml')) {
+            return !\Permission::model()->hasGlobalPermission('superadmin', 'read');
         }
         return false;
     }
-
 }

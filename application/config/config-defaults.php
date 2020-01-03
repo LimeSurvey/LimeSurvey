@@ -233,17 +233,17 @@ $config['filterxsshtml'] = true;
 // false : allowed for all
 $config['disablescriptwithxss'] = true;
 
-// superadminfilterxsshtml
+// forcedfilterxss
 // Enables filtering of suspicious html tags in survey, group, questions
 // and answer texts in the administration interface
 // Even super-administrator have this restriction.
 // This settings can not be updated by GUI interface
-$config['superadminfilterxsshtml'] = false;
+$config['forcedfilterxss'] = false;
 
 // superadminenablescript
 // Totally disable question script update
 // Remove the script part in question edition
-// Used only if superadminfilterxsshtml and disablescriptwithxss are true
+// Used only if forcedfilterxss and disablescriptwithxss are true
 $config['superadminenablescript'] = false;
 
 // usercontrolSameGroupPolicy
