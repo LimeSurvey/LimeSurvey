@@ -1602,7 +1602,7 @@ class Participant extends LSActiveRecord
             //Check first for the default survey language
             if (isset($languages[$defaultsurveylang])) {
                 $newname = $languages[$defaultsurveylang];
-            } elseif (isset($language[Yii::app()->session['adminlang']])) {
+            } elseif (isset($languages[Yii::app()->session['adminlang']])) {
                 $newname = $languages[Yii::app()->session['adminlang']];
             } else {
                 $newname = $attributename[0]['attribute_name']; //Choose the first item in the list
