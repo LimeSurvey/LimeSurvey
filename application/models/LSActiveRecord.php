@@ -436,13 +436,10 @@ class LSActiveRecord extends CActiveRecord
      */
     public function setEncryptedAttributeLabel(int $surveyId = 0, string $className, string $attributeName)
     {
-        $encryptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
+        $encrptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
-        if(isset($encryptedAttributes)){
-            if (in_array($attributeName, $encryptedAttributes)) {
-                return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
-            }
+        if (in_array($attributeName, $encrptedAttributes)) {
+            return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success" style="font-size:12px"></span>';
         }
-        
     }
 }
