@@ -412,18 +412,34 @@ class LSActiveRecord extends CActiveRecord
         $sodium = Yii::app()->sodium;
 
         $class = get_class($this);
-        if ($class === 'ParticipantAttribute'){
-            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(array("select"=>"attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'")), 'attribute_id', '');
+        if ($class === 'ParticipantAttribute') {
+            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(array("select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'")), 'attribute_id', '');
             foreach ($aParticipantAttributes as $attribute => $value) {
-                if (array_key_exists($this->attribute_id, $aParticipantAttributes)){
+                if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
                     $this->value = $sodium->$action($this->value);
                 }
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
-        foreach ($attributes as $key => $attribute) {
+            foreach ($attributes as $key => $attribute) {
                 $this->$key = $sodium->$action($attribute);
+            }
         }
     }
-}
+    /**
+     * Function to show encryption symbol in gridview attribute header if value ois encrypted
+     * @param int $surveyId 
+     * @param string $className 
+     * @param string $attributeName 
+     * @return string 
+     * @throws CException 
+     */
+    public function setEncryptedAttributeLabel(int $surveyId = 0, string $className, string $attributeName)
+    {
+        $encrptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
+        $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
+        if (in_array($attributeName, $encrptedAttributes)) {
+            return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success" style="font-size:12px"></span>';
+        }
+    }
 }

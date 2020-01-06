@@ -237,15 +237,15 @@ class Participant extends LSActiveRecord
     public function attributeLabels()
     {
         $returnArray = array(
-            'participant_id' => gT('Participant'),
-            'firstname' => gT('First name'),
-            'lastname' => gT('Last name'),
-            'email' => gT('Email address'),
-            'language' => gT('Language'),
-            'blacklisted' => gT('Blacklisted'),
-            'owner_uid' => gT('Owner ID'),
-            'surveyid' => gT('Active survey ID'),
-            'created' => gT('Created on')
+            'participant_id' => gT('Participant'). $this->setEncryptedAttributeLabel(0 ,'Participant','participant_id'),
+            'firstname' => gT('First name'). $this->setEncryptedAttributeLabel(0 ,'Participant','firstname'),
+            'lastname' => gT('Last name').$this->setEncryptedAttributeLabel(0 ,'Participant','lastname'),
+            'email' => gT('Email address').$this->setEncryptedAttributeLabel(0 ,'Participant','email'),
+            'language' => gT('Language').$this->setEncryptedAttributeLabel(0 ,'Participant','language'),
+            'blacklisted' => gT('Blacklisted').$this->setEncryptedAttributeLabel(0 ,'Participant','blacklisted'),
+            'owner_uid' => gT('Owner ID').$this->setEncryptedAttributeLabel(0 ,'Participant','owner_uid'),
+            'surveyid' => gT('Active survey ID').$this->setEncryptedAttributeLabel(0 ,'Participant','surveyid'),
+            'created' => gT('Created on').$this->setEncryptedAttributeLabel(0 ,'Participant', 'created')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
             $returnArray[$name] = $attribute['defaultname'];
@@ -413,7 +413,7 @@ class Participant extends LSActiveRecord
             $col_array = array(
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
-                "header" => $attribute['defaultname'],
+                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type" => "html",
             );
             //textbox
@@ -2255,7 +2255,7 @@ class Participant extends LSActiveRecord
      */
     public static function getParticipantsEncryptionOptions()
     {
-        $aOptions = ParticipantAttributeName::model()->findAll(array("condition" => "core_attribute = 'Y'"));
+        $aOptions = ParticipantAttributeName::model()->findAll();
         if (empty($aOptions)) {
             $aOptions = Participant::getDefaultEncryptionOptions();
             return $aOptions;
