@@ -281,7 +281,12 @@ export default {
             set(nV) { this.$store.commit('setCopyAdvancedOptions', nV); }
         },
         currentQuestionTypeDescription (){
-            return this.$store.state.questionTypes[this.$store.state.currentQuestion.type].description
+            if (this.$store.state.questionTypes[this.$store.state.currentQuestion.type]) {
+                return this.$store.state.questionTypes[this.$store.state.currentQuestion.type].description
+            } else {
+                // TODO: This happens in the SaveDualScaleAnswerOptionsTest, for some reason.
+                return 'Error: questionTypes not initialised';
+            }
         },
         useModalSelector() {
             return window.QuestionEditData.questionSelectorType == 'full' 
