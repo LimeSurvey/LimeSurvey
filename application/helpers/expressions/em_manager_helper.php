@@ -5625,17 +5625,15 @@
                     else
                     {
                         if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
-                            /* Reload current response : see https://github.com/LimeSurvey/LimeSurvey/commit/27957d68e9ae3226515524c1774493d86706233a?email_source=notifications&email_token=AAK7NRDQU4OF7RIIJOOMJG3Q3SZEDA5CNFSM4J36GC5KYY3PNVWWK3TUL52HS4DFVVBW63LNNF2EG33NNVSW45FKMNXW23LFNZ2F62LEZYBC53FN#commitcomment-36629677 */
-                            $oResponseFinished = Response::model($this->sid)->findByPk($oResponse->id);
-                            if($this->surveyOptions['datestamp'])
-                            {
-                                $oResponseFinished->submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            /* Less update : just do what you need to to */
+                            if($this->surveyOptions['datestamp']) {
+                                $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            } else {
+                                $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            else
-                            {
-                                $oResponseFinished->submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                            if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
+                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happen when try to submit your response.'), $this->sid);
                             }
-                            $oResponseFinished->save();
                         }
                     }
 
