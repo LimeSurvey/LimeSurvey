@@ -5623,15 +5623,17 @@
                     else
                     {
                         if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
+                            /* 2 different save must be done : 2 different event */
+                            $oResponseSubmit = Response::model($this->sid)->findByPk($oResponse->id);
                             if($this->surveyOptions['datestamp'])
                             {
-                                $oResponse->submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                                $oResponseSubmit->submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
                             }
                             else
                             {
-                                $oResponse->submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                                $oResponseSubmit->submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            $oResponse->save();
+                            $oResponseSubmit->save();
                         }
                     }
 
