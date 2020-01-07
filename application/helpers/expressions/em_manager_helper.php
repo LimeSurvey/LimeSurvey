@@ -5580,8 +5580,8 @@
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                     //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                        $oResponse->setAttributes($aResponseAttributes, false);
-                        if (!$oResponse->save()) {
+                        $iCountUpdated = Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
+                        if (!$iCountUpdated) {
                             $message = submitfailed('', print_r($response->getErrors())); // $response->getErrors() is array[string[]], then can not join
                             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                                 $message .= CHTml::errorSummary($response,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
