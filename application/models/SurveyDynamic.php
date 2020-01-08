@@ -967,9 +967,6 @@ class SurveyDynamic extends LSActiveRecord
         }
         
         if ($oQuestion->type=='N' || ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "K")) {
-            if($aQuestionAttributes['answervalue'] !=="" && $aQuestionAttributes['answervalue'][0] === ".") { // issue #15685 mssql
-                $aQuestionAttributes['answervalue'] = "0".$aQuestionAttributes['answervalue'];
-            }
             if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
             }

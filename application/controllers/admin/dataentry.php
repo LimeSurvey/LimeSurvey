@@ -594,9 +594,6 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= $fname['subquestion'].'&nbsp;';
                             /* Fix DB DECIMAL type */
                             $value = $idrow[$fname['fieldname']];
-                            if($value[0] === ".") {
-                                $value = "0".$value;
-                            }
                             if (strpos($value, ".")) {
                                 $value = rtrim(rtrim($value, "0"), ".");
                             }
@@ -956,9 +953,6 @@ class dataentry extends Survey_Common_Action
                         case Question::QT_N_NUMERICAL: //NUMERICAL TEXT
                             /* Fix DB DECIMAL type */
                             $value = $idrow[$fname['fieldname']];
-                            if($value[0] === ".") {
-                                $value = "0".$value;
-                            }
                             if (strpos($value, ".")) {
                                 $value = rtrim(rtrim($value, "0"), ".");
                             }
