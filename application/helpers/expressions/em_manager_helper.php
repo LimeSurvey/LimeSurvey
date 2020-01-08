@@ -5640,7 +5640,10 @@
                                 $cSave->set_answer_time();
                             }
                         }
+                    } else {
+                        LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('This response was already submitted.'), $this->sid);
                     }
+
                     if ($finished) {
                         // Delete the save control record if successfully finalize the submission
                         $criteria = new CDbCriteria;
@@ -5666,15 +5669,15 @@
                     else
                     {
                         if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
-                            if($this->surveyOptions['datestamp'])
-                            {
-                                // Replace with date("Y-m-d H:i:s") ? See timeadjust
-                                $submitdate = date("Y-m-d H:i:s");
-                            }  else {
-                                $submitdate  = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                            /* Less update : just do what you need to to */
+                            if($this->surveyOptions['datestamp']) {
+                                $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            } else {
+                                $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            $oResponse->submitdate = $submitdate;
-                            $oResponse->encryptSave();
+                            if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
+                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happen when try to submit your response.'), $this->sid);
+                            }
                         }
                     }
 
