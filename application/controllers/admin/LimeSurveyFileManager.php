@@ -375,15 +375,19 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $arrayOfFiles = array_map( function($file){ return $file['path']; }, $files);
         $archive = new PclZip($zipfile);
         $checkFileCreate = $archive->create($arrayOfFiles, PCLZIP_OPT_REMOVE_ALL_PATH);
+        $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
+        $getFileLink = Yii::app()->createUrl('admin/filemanager/sa/getZipFile');
+        if($urlFormat == 'path') {
+            $getFileLink .= '?path='.$zipfile;
+        } else {
+            $getFileLink .= '&path='.$zipfile;
+        }
 
         $this->_printJsonResponse(
             [
                 'success' => true,
                 'message' => sprintf(gT("Files ready for download in archive %s."), $randomizedFileName),
-                'downloadLink' => Yii::app()->createUrl(
-                    'admin/filemanager/sa/getZipFile',
-                    ['path' => $zipfile]
-                ),
+                'downloadLink' => $getFileLink ,
             ]
         );
     }
