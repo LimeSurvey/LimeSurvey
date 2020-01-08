@@ -118,7 +118,7 @@ class viewHelper
 
         $sQuestionText = ""; // Allways return a string
         if (isset($aField['fieldname'])) {
-            $sQuestionText = self::flatEllipsizeText($aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
+            $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
             if($bHaveSubQuestion) {

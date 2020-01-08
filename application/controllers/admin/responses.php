@@ -563,15 +563,8 @@ class responses extends Survey_Common_Action
                 }
             }
 
-            // Checks if Columns have been filtered
-            $filterableColumnsExist = !empty(isset($_SESSION['survey_' . $iSurveyId]['filteredColumns'])
-                ? $_SESSION['survey_' . $iSurveyId]['filteredColumns']
-                : null);
-            $filteredColumns = [];
-            if ($filterableColumnsExist) {
-                $filteredColumns = $_SESSION['survey_' . $iSurveyId]['filteredColumns'];
-            }
-            $aData['filterableColumnsExist'] = $filteredColumns;
+            // Sets which columns to filter
+            $filteredColumns = !empty(isset($_SESSION['survey_' . $iSurveyId]['filteredColumns'])) ? $_SESSION['survey_' . $iSurveyId]['filteredColumns'] : null;
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -636,7 +629,7 @@ class responses extends Survey_Common_Action
             if (isset($aColumns)) {
                 if (!empty($aColumns)) {
                     foreach ($aColumns as $sColumn) {
-                        if (!empty($sColumn)) {
+                        if (isset($sColumn)) {
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
