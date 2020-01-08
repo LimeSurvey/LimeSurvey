@@ -2739,12 +2739,8 @@ function do_multiplenumeric($ia)
                 $sValue                = null;
             }
 
-            // Fix the display value : Value is stored as decimal in SQL
-            if($sValue[0] == ".") {
-                // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-                $sValue = "0" . $sValue;
-            }
             $sUnformatedValue = $sValue ? $sValue : '';
+
             if (strpos($sValue, ".")) {
                 $sValue = rtrim(rtrim($sValue, "0"), ".");
                 $sValue = str_replace('.', $sSeparator, $sValue);
@@ -2932,11 +2928,7 @@ function do_numerical($ia)
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
-    // Fix the display value : Value is stored as decimal in SQL
-    if($fValue[0] == ".") {
-        // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-        $fValue = "0" . $fValue;
-    }
+    // Fix the display value : Value is stored as decimal in SQL then return dot and 0 after dot. Seems only for numerical question type
     if (strpos($fValue, ".")) {
         $fValue = rtrim(rtrim($fValue, "0"), ".");
     }
