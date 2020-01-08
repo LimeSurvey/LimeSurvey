@@ -1096,7 +1096,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
     if (strpos($sFieldCode, "{$iSurveyID}X") === 0) {
-//Only check if it looks like a real fieldcode
+        //Only check if it looks like a real fieldcode
         $fieldmap = createFieldMap($survey, 'short', false, false, $sLanguage);
         if (isset($fieldmap[$sFieldCode])) {
             $fields = $fieldmap[$sFieldCode];
@@ -1121,6 +1121,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                 break;
             case 'K':
             case 'N':
+                // Fix the value : Value is stored as decimal in SQL
+                if($sValue[0] === ".") {
+                    // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+                    $sValue = "0".$sValue;
+                }
                 if (trim($sValue) != '') {
                     if (strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");
