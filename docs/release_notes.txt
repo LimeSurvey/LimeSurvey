@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC13 (build 191223) to 4.0.0-RC14 (build 200109) January 9, 2020
+-Fixed issue: Tooltips are not showing in admin top bar (Eddy Lackmann)
+-Fixed issue: CPDB attributes gridview pagination/ajax not working (Patricia Stelling)
+-Fixed issue #15641: Participants do not get stored when shared from the survey participants table (Patricia Stelling)
+-Fixed issue #14129: Translation missing in subquestion panel (Marc Leonhardt)
+-Fixed Issue: Display allowed file formats in file Uploader (Eddy Lackmann)
+
+
 Changes from 4.0.0-RC12 (build 191217) to 4.0.0-RC13 (build 191223) December 23, 2019
 -Fixed issue: Tests for the question theme selector are working again (Markus Flür)
 -Fixed issue: Statistic buttons misssing (Simple mode, View statistics) (Eddy Lackmann)
