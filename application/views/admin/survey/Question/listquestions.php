@@ -99,47 +99,38 @@ $baseLanguage = $oSurvey->language;
                             true,
                             false
                         );
-                        $this->widget(
-                            'bootstrap.widgets.TbGridView',
-                            array(
-                                'dataProvider' => $model->search(),
-                                'id' => 'question-grid',
-                                'type' => 'striped',
-                                'emptyText' => gT('No questions found.'),
-                                'summaryText' => "<div class='row'>"
-                                    ."<div class='col-xs-6'>".$massiveAction."</div>"
-                                    ."<div class='col-xs-6'>"
-                                    .gT('Displaying {start}-{end} of {count} result(s).').' '
-                                        . sprintf(
-                                            gT('%s rows per page'),
-                                            CHtml::dropDownList(
-                                                'pageSize',
-                                                $pageSize,
-                                                App()->params['pageSizeOptions'],
-                                                array(
-                                                    'class'=>'changePageSize form-control',
-                                                    'style'=>'display: inline; width: auto'
-                                                )
+                        $this->widget('ext.LimeGridView.LimeGridView', array(
+                            'dataProvider' => $model->search(),
+                            'id' => 'question-grid',
+                            'type' => 'striped',
+                            'emptyText' => gT('No questions found.'),
+                            'summaryText' => "<div class='row'>"
+                                ."<div class='col-xs-6'>".$massiveAction."</div>"
+                                ."<div class='col-xs-6'>"
+                                .gT('Displaying {start}-{end} of {count} result(s).').' '
+                                    . sprintf(
+                                        gT('%s rows per page'),
+                                        CHtml::dropDownList(
+                                            'pageSize',
+                                            $pageSize,
+                                            App()->params['pageSizeOptions'],
+                                            array(
+                                                'class'=>'changePageSize form-control',
+                                                'style'=>'display: inline; width: auto'
                                             )
                                         )
-                                    ."</div></div>",
-                                'columns' => $model->questionListColumns,
-                                'ajaxUpdate' => 'question-grid',
-                                'afterAjaxUpdate' => "bindPageSizeChange"
-                            )
-                        );
+                                    )
+                                ."</div></div>",
+                            'columns' => $model->questionListColumns,
+                            'ajaxUpdate' => 'question-grid',
+                            'afterAjaxUpdate' => "bindPageSizeChange"
+                        ));
                     ?>
-                        </div>
-                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<script>
-    jQuery(document).on("change", '#pageSize', function() {
-        $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
-    });
-</script>
 
 <div class="modal fade" id="question-preview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -158,19 +149,14 @@ $baseLanguage = $oSurvey->language;
   </div>
 </div>
 
-
 <!-- To update rows per page via ajax -->
 <?php App()->getClientScript()->registerScript("ListQuestions-pagination", "
-        function bindPageSizeChange(){
+        var bindPageSizeChange = function(){
             $('#pageSize').on('change', function(){
-                $('#question-grid').yiiGridView('update',{ data:{ pageSize: $(this).val() }});
+                $.fn.yiiGridView.update('question-grid',{ data:{ pageSize: $(this).val() }});
             });
-            $(document).trigger('actions-updated');            
+            $(document).trigger('actions-updated');
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
-
-<?php App()->getClientScript()->registerScript(
-    "ListQuestions-run-pagination",
-    "bindPageSizeChange();",
-    LSYii_ClientScript::POS_POSTSCRIPT
-); ?>
+    
+<?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange(); ", LSYii_ClientScript::POS_POSTSCRIPT); ?>
