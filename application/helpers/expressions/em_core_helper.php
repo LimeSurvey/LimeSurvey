@@ -352,9 +352,25 @@ class ExpressionManager
     {
         /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
         /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
-        $arg1[0] = ($arg1[2] == "NUMBER" && strpos($arg1[0], ".")) ? rtrim(rtrim($arg1[0], "0"), ".") : $arg1[0];
-        $arg2[0] = ($arg2[2] == "NUMBER" && strpos($arg2[0], ".")) ? rtrim(rtrim($arg2[0], "0"), ".") : $arg2[0];
-        
+        $arg1[0] = $arg1[0];
+        if($arg1[2] == "NUMBER" && $arg1[0]!== "") {
+            if($arg1[0] === ".") {
+                $arg1 = "0".$arg1;
+            }
+            if (strpos($arg1, ".") !== false) {
+                $arg1 = rtrim(rtrim($arg1, "0"), ".");
+            }
+        }
+        $arg2[0] = $arg2[0];
+        if($arg2[2] == "NUMBER" && $arg2[0]!== "") {
+            if($arg2[0] === ".") {
+                $arg2 = "0".$arg2;
+            }
+            if (strpos($arg2, ".") !== false) {
+                $arg2 = rtrim(rtrim($arg2, "0"), ".");
+            }
+        }
+
         $bNumericArg1 = $arg1[0]!== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
         $bNumericArg2 = $arg2[0]!== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
