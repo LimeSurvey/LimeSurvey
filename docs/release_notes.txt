@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.21.3 (build 191219) to 3.21.4 (build 200108) January 8, 2020
+-Fixed issue: Tooltips are not showing in hosting top bar (Eddy Lackmann)
+-Fixed issue: Potential lost responses on first page (Denis Chenu)
+-Fixed issue #15651: delete_participant fails to delete and gives no error back (Adam Zammit)
+-Fixed issue #14129: Translation missing in subquestion panel (Marc Leonhardt)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by eddylackmann
+#Updated translation: Russian by kmaksat
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Korean by zist21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann
+#Updated translation: French (France) by riqcles
+#Updated translation: Danish by Mikkel
+#Updated translation: Croatian by dominikvitt, rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.21.2 (build 191216) to 3.21.3 (build 191219) December 19, 2019
 +New translation: Kurdish (Kurmanji) (Carsten Schmitz)
 -Fixed issue [security] #15681: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
