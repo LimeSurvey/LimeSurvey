@@ -11,8 +11,8 @@ abstract class BaseTest extends TestCase
     /* @var remotecontrol_handle*/
     public $handler;
 
-    const REMOTECONTROL_USERNAME = 'remotecontroladmin';
-    const REMOTECONTROL_PASSWORD = 'remotecontroladmin';
+    const REMOTECONTROL_USERNAME = 'admin';
+    const REMOTECONTROL_PASSWORD = 'password';
     const REMOTECONTROL_EMAIL    = 'admin@test.de';
 
     public static function setUpBeforeClass()
@@ -33,6 +33,8 @@ abstract class BaseTest extends TestCase
 
     protected function setUp()
     {
+
+        /*
         Yii::app()->db->createCommand()->truncateTable('{{users}}');
         Yii::app()->db->createCommand()->truncateTable('{{permissions}}');
 
@@ -49,7 +51,14 @@ abstract class BaseTest extends TestCase
 
         $this->user = $user;
         Permission::model()->setGlobalPermission($this->getUserId(), 'auth_db');
+        */
 
+        $user = User::model()->findByPk(1);
+        if (!$user) {
+            $this->fail('Admin User missing');
+        }
+
+        $this->user = $user;
         $this->handler  = new remotecontrol_handle(new AdminController('dummyid'));
     }
 
