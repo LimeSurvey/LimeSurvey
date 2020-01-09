@@ -1,8 +1,4 @@
 @charset "UTF-8";
-#cpdbatt {
-  min-height: 100px;
-}
-
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -118,70 +114,6 @@
 
 .item.inactive {
   display: none;
-}
-
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-.ui-icon.exporticon {
-  background-image: url("images/export.gif");
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1 em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
 }
 
 #responses-column-filter-modal .checkbox label {
@@ -408,6 +340,74 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+#cpdbatt {
+  min-height: 100px;
+}
+
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
 }
 
 /**
@@ -2716,6 +2716,7 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
 /** For survey participants table */
 .scrolling-wrapper {
   overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 /** Search criteria pop-up for survey participants table */
@@ -3031,10 +3032,6 @@ h3,
 
 #token-grid .name {
   min-width: 150px;
-}
-
-.scrolling-wrapper {
-  overflow-x: scroll;
 }
 
 #tokenListPager {
