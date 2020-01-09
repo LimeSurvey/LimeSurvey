@@ -3121,7 +3121,7 @@ class remotecontrol_handle
     public function cpd_importParticipants($sSessionKey, $participants, $update = false)
     {
         if (!$this->_checkSessionKey($sSessionKey)) {
-            return 'Invalid session key';
+            return array('status' => 'Invalid session key');
         }
 
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
