@@ -426,7 +426,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         /* unsubscribe from beforeHasPermission, else updating event */
         $this->unsubscribe('beforeHasPermission');
         // Here we do the actual authentication
-        $username = $this->getUsername();
+        $username = strtolower($this->getUsername());
         $password = $this->getPassword();
 
         $ldapmode = $this->get('ldapmode');
