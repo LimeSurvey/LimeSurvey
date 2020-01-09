@@ -454,9 +454,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
                 isset($_SESSION['survey_' . $surveyid]['srid'])
-                && $aDatas['aSurveyInfo']['active'] == 'Y'
-                && $aDatas['aSurveyInfo']['include_content'] !== 'submit'
-                && $aDatas['aSurveyInfo']['include_content'] !== 'submit_preview'
+                && isset($aDatas['aSurveyInfo']['active']) && $aDatas['aSurveyInfo']['active'] == 'Y'
+                && isset($aDatas['aSurveyInfo']['include_content']) && $aDatas['aSurveyInfo']['include_content'] !== 'submit'
+                && isset($aDatas['aSurveyInfo']['include_content']) && $aDatas['aSurveyInfo']['include_content'] !== 'submit_preview'
             ) {
                 $aDatas['aSurveyInfo']['bShowClearAll'] = true;
             }

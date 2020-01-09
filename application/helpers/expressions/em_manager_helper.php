@@ -5580,15 +5580,15 @@
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                     //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                        $oResponse->setAttributes($aResponseAttributes, false);
-                        if (!$oResponse->save()) {
+                        $iCountUpdated = Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
+                        if (!$iCountUpdated) {
                             $message = submitfailed('', print_r($response->getErrors())); // $response->getErrors() is array[string[]], then can not join
-
                             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                                 $message .= CHTml::errorSummary($response,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
                             }
                             LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                        } else { // Action in case its saved with success : to be move in Response::aferSave ?
+                        } else {
+                            // Action in case its saved with success : to be move in Response::aferSave ?
                             // Save Timings if needed
                             if ($this->surveyOptions['savetimings']) {
                                 Yii::import("application.libraries.Save");
@@ -5596,6 +5596,8 @@
                                 $cSave->set_answer_time();
                             }
                         }
+                    } else {
+                        LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('This response was already submitted.'), $this->sid);
                     }
 
                     if ($finished) {
@@ -5623,15 +5625,15 @@
                     else
                     {
                         if ($finished && ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
-                            if($this->surveyOptions['datestamp'])
-                            {
-                                $oResponse->submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            /* Less update : just do what you need to to */
+                            if($this->surveyOptions['datestamp']) {
+                                $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+                            } else {
+                                $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            else
-                            {
-                                $oResponse->submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                            if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
+                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happen when try to submit your response.'), $this->sid);
                             }
-                            $oResponse->save();
                         }
                     }
 

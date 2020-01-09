@@ -1805,10 +1805,13 @@ class remotecontrol_handle
                     $token = Token::model($iSurveyID)->findByPk($iTokenID);
                     if (!isset($token)) {
                                             $aResult[$iTokenID] = 'Invalid token ID';
-                    } elseif ($token->delete()) {
-                                            $aResult[$iTokenID] = 'Deleted';
                     } else {
-                                            $aResult[$iTokenID] = 'Deletion went wrong';
+                                            $iDel = Token::model($iSurveyID)->deleteByPk($iTokenID);
+                                            if ($iDel > 0) {
+                                                $aResult[$iTokenID] = 'Deleted';
+                                            } else {
+                                                $aResult[$iTokenID] = 'Deletion went wrong';
+                                            }
                     }
                 }
                 return $aResult;
