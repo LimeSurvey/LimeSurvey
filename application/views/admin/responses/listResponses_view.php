@@ -97,7 +97,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             )
                         );
 
-                        if (!$filterableColumnsExist || in_array('lastpage', $filterableColumnsExist ? $filteredColumns : [])) {
+                        if (!isset($filteredColumns) || in_array('lastpage', $filteredColumns)) {
                             $aColumns[] = array(
                                 'header' => 'lastpage',
                                 'name' => 'lastpage',
@@ -107,9 +107,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                     $model->lastpage)
                             );
                         }
-                        $filterableColumns[] = 'lastpage';
+                        $filterableColumns['lastpage'] = 'lastpage';
 
-                        if (!$filterableColumnsExist || in_array(gT("completed"), $filterableColumnsExist ? $filteredColumns : [])) {
+                        if (!isset($filteredColumns) || in_array('completed', $filteredColumns)) {
                             $aColumns[] = array(
                                 'header' => gT("completed"),
                                 'name' => 'completed_filter',
@@ -121,11 +121,11 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                     array('' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')))
                             );
                         }
-                        $filterableColumns[] = gT("completed");
+                        $filterableColumns['completed'] = gT("completed");
 
                         //add token to top of list if survey is not private
                         if ($bHaveToken) {
-                            if (!$filterableColumnsExist || in_array('token', $filterableColumnsExist ? $filteredColumns : [])) {
+                            if (!isset($filteredColumns) || in_array('token', $filteredColumns)) {
                                 $aColumns[] = array(
                                     'header' => 'token',
                                     'name' => 'token',
@@ -134,9 +134,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
                                 );
                             }
-                            $filterableColumns[] = 'token';
+                            $filterableColumns['token'] = 'token';
 
-                            if (!$filterableColumnsExist || in_array(gT("First name"), $filterableColumnsExist ? $filteredColumns : [])) {
+                            if (!isset($filteredColumns) || in_array('firstname', $filteredColumns)) {
                                 $aColumns[] = array(
                                     'header' => gT("First name"),
                                     'name' => 'tokens.firstname',
@@ -148,9 +148,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                         $model->firstname_filter)
                                 );
                             }
-                            $filterableColumns[] = gT("First name");
+                            $filterableColumns['firstname'] = gT("First name");
 
-                            if (!$filterableColumnsExist || in_array(gT("Last name"), $filterableColumnsExist ? $filteredColumns : [])) {
+                            if (!isset($filteredColumns) || in_array('lastname', $filteredColumns)) {
                                 $aColumns[] = array(
                                     'header' => gT("Last name"),
                                     'name' => 'tokens.lastname',
@@ -162,9 +162,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                         $model->lastname_filter)
                                 );
                             }
-                            $filterableColumns[] = gT("Last name");
+                            $filterableColumns['lastname'] = gT("Last name");
 
-                            if (!$filterableColumnsExist || in_array(gT("Email"), $filterableColumnsExist ? $filteredColumns : [])) {
+                            if (!isset($filteredColumns) || in_array('email', $filteredColumns)) {
                                 $aColumns[] = array(
                                     'header' => gT("Email"),
                                     'name' => 'tokens.email',
@@ -174,16 +174,16 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                         $model->email_filter)
                                 );
                             }
-                            $filterableColumns[] = gT("Email");
+                            $filterableColumns['email'] = gT("Email");
                         }
 
-                        if (!$filterableColumnsExist || in_array('startlanguage', $filterableColumnsExist ? $filteredColumns : [])) {
+                        if (!isset($filteredColumns) || in_array('startlanguage', $filteredColumns)) {
                             $aColumns[] = array(
                                 'header' => 'startlanguage',
                                 'name' => 'startlanguage',
                             );
                         }
-                        $filterableColumns[] = 'startlanguage';
+                        $filterableColumns['startlanguage'] = 'startlanguage';
 
                     // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
                     // All other columns are based on the questions.
@@ -199,7 +199,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                 /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
                                 $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>",'separator'=>array('','<br>')));
 
-                                if (!$filterableColumnsExist || in_array($colName . ': ' . $colDetails, $filterableColumnsExist ? $filteredColumns : [])) {
+                                if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
                                     $aColumns[] = array(
                                         'header' => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="' . $colName . '" data-content="' . CHtml::encode($colTitle) . '" data-html="1" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . '</div>',
                                         'headerHtmlOptions' => array('style' => 'min-width: 350px;'),
@@ -208,7 +208,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                         'value' => '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")',
                                     );
                                 }
-                                $filterableColumns[] = $colName . ': ' . $colDetails;
+                                $filterableColumns[$column->name] = $colName . ': ' . viewHelper::getFieldText($fieldmap[$column->name]);
                             }
                         }
 

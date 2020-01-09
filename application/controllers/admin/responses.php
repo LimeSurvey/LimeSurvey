@@ -464,13 +464,8 @@ class responses extends Survey_Common_Action
                 }
             }
 
-            // Checks if Columns have been filtered
-            $filterableColumnsExist = !empty(isset($_SESSION['survey_' . $iSurveyId]['filteredColumns']) ? $_SESSION['survey_' . $iSurveyId]['filteredColumns'] : null);
-            $filteredColumns = [];
-            if ($filterableColumnsExist) {
-                $filteredColumns = $_SESSION['survey_' . $iSurveyId]['filteredColumns'];
-            }
-            $aData['filterableColumnsExist'] = $filteredColumns;
+            // Sets which columns to filter
+            $filteredColumns = !empty(isset($_SESSION['survey_' . $iSurveyId]['filteredColumns'])) ? $_SESSION['survey_' . $iSurveyId]['filteredColumns'] : null;
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -498,17 +493,22 @@ class responses extends Survey_Common_Action
     public function setFilteredColumns($surveyid)
     {
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')) {
-            $filteredColumns = [];
-            $columns = explode(',', Yii::app()->request->getPost('columns'));
-            foreach ($columns as $column){
-                if (!empty($column)){
-                    $filteredColumns[] = $column;
+            $aFilteredColumns = [];
+            $aColumns = (array)App()->request->getPost('columns');
+            if (isset($aColumns)) {
+                if (!empty($aColumns)) {
+                    foreach ($aColumns as $sColumn) {
+                        if (isset($sColumn)) {
+                            $aFilteredColumns[] = $sColumn;
+                        }
+                    }
+                    $_SESSION['survey_' . $surveyid]['filteredColumns'] = $aFilteredColumns;
+                } else {
+                    $_SESSION['survey_' . $surveyid]['filteredColumns'] = [];
                 }
             }
-            $_SESSION['survey_'.$surveyid]['filteredColumns'] = $filteredColumns;
         }
-        $this->getController()->redirect(["admin/responses", "sa"=>"browse", "surveyid"=>$surveyid]);
-
+        $this->getController()->redirect(["admin/responses", "sa" => "browse", "surveyid" => $surveyid]);
     }
 
 
