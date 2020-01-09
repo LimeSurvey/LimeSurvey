@@ -955,6 +955,10 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
             case Question::QT_N_NUMERICAL:
                 // Fix the value : Value is stored as decimal in SQL
+                if($sValue[0] === ".") {
+                    // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+                    $sValue = "0".$sValue;
+                }
                 if (trim($sValue) != '') {
                     if (strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");

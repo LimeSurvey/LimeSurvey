@@ -100,7 +100,11 @@ class SurveyObj
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
             case Question::QT_N_NUMERICAL:
                 $fullAnswer = $answerCode;
-                if (trim($fullAnswer) != '') {
+                if (trim($fullAnswer) !== '') {
+                    // SQL DECIMAL
+                    if($fullAnswer[0] === ".") {
+                        $fullAnswer = "0".$fullAnswer;
+                    }
                     if (strpos($fullAnswer, ".") !== false) {
                         $fullAnswer = rtrim(rtrim($fullAnswer, "0"), ".");
                     }
