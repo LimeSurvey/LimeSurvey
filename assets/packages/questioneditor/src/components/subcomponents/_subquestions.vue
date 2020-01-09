@@ -140,7 +140,7 @@
                 </div>
                 <div class="row custom custom-margin bottom-15" :key="subquestionscale+'metaSettings'" v-show="!readonly">
                     <div class="col-sm-6 text-left">
-                        <button class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
+                        <button v-if="!isSurveyActive" class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
                         <button class="btn btn-default" @click.prevent="saveAsLabelSet(subquestionscale)">{{ "Save as label set" | translate }}</button>
                     </div>
                     <div class="col-sm-6 text-right">
