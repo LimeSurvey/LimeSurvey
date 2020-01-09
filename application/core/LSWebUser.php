@@ -50,7 +50,7 @@ class LSWebUser extends CWebUser
     }
 
     /**
-     * Replace default system to return only one flash … 
+     * Replace default system to return only one flash …
      */
     public function getFlashes($delete = true)
     {
@@ -121,5 +121,30 @@ class LSWebUser extends CWebUser
         } else {
             return false;
         }
+    }
+
+    /**
+     * Check if user have xss allowed
+     * @return boolean
+     */
+    public function isXssFiltered()
+    {
+        if (Yii::app()->getConfig('DBVersion') < 172) {
+            // Permission::model exist only after 172 DB version
+            return Yii::app()->getConfig('filterxsshtml');
+        }
+        if (Yii::app()->getConfig('filterxsshtml')) {
+            return !\Permission::model()->hasGlobalPermission('superadmin', 'read');
+        }
+        return false;
+    }
+
+    /**
+     * Check if user is allowed to edit script
+     * @return boolean
+     */
+    public function isScriptUpdateAllowed()
+    {
+        return !$this->isXssFiltered();
     }
 }
