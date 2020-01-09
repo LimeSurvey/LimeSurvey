@@ -1,147 +1,3 @@
-
-import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
-import eventChild from '../../mixins/eventChild.js';
-
-export default {
-    name: 'subquestions',
-    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
-    data(){
-        return {
-            uniqueSelector: 'qid',
-            type: 'subquestions',
-            orderAttribute: 'question_order',
-            typeDefininition: 'question',
-            typeDefininitionKey: 'title',
-            subQuestionDragging: false,
-            draggedSubQuestion: null
-        };
-    },
-    computed: {
-        baseNonNumericPart() { return window.QuestionEditData.baseSQACode.subquestions},
-        subquestionScales(){
-            if(this.$store.state.currentQuestion.typeInformation.subquestions == 1) {
-                return [0];
-            } 
-            if(this.$store.state.currentQuestion.typeInformation.subquestions == 2) {
-                return [0,1];
-            } 
-            return [];
-        },
-         isSurveyActive() {
-            if (this.$store.getters.surveyObject.active == "Y") {
-                return true; 
-            }
-            return false;
-        },
-        currentDataSet: {
-            get() {
-                return map(this.$store.state.currentQuestionSubquestions, subquestionscale => sortBy(subquestionscale, subquestion => subquestion.question_order));
-            },
-            set(newValue) {
-                this.$store.commit('setCurrentQuestionSubquestions', newValue);
-            }
-        },
-    },
-    methods: {
-        getTemplate(scaleId = 0){
-            let randomId = this.getRandomId();
-
-            let subQuestionTemplate = {
-                qid: randomId,
-                parent_qid: this.$store.state.currentQuestion.qid,
-                sid: this.$store.state.currentQuestion.sid,
-                gid: this.$store.state.currentQuestion.gid,
-                type: "F",
-                title: this.getNewTitleFromCurrent(scaleId),
-                preg: null,
-                other: "N",
-                mandatory: "N",
-                question_order: 0,
-                scale_id: ''+scaleId,
-                same_default: "0",
-                relevance: "1",
-                modulename: null,
-                };
-
-            foreach(this.$store.state.languages, (lng, lngKey) => {
-                subQuestionTemplate[lngKey] = {
-                     id: null,
-                     qid: randomId,
-                     question: "",
-                     help:"",
-                     language: lngKey
-                    }
-            });
-
-            return subQuestionTemplate;
-        },
-        resetSubquestions() {
-            this.currentDataSet = this.$store.state.questionSubquestionsImmutable;
-        },
-        getQuestionForCurrentLanguage(subquestionObject) {
-            try {
-                return subquestionObject[this.$store.state.activeLanguage].question;
-            } catch(e){
-                this.$log.error('PROBLEM GETTING LANGUAGE', subquestionObject);
-            }
-            return '';
-        },
-        setQuestionForCurrentLanguage(subquestionObject, $event) {
-            subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
-        },
-        triggerScale($event) {
-            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': 'initial'});
-        },
-        untriggerScale($event) {
-            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
-        },
-        //dragevents questions
-        startDraggingSubQuestion($event, subQuestionObject, scale) {
-            this.$log.log("Dragging started", {$event, subQuestionObject});
-            $event.dataTransfer.setData('application/node', $event.target.parentNode.parentNode);
-            $event.dataTransfer.setDragImage(document.createElement('span'), 0, 0)
-            this.subQuestionDragging = true;
-            this.draggedSubQuestion = subQuestionObject;
-        },
-        endDraggingSubQuestion($event, subQuestionObject, scale) {
-            if (this.subQuestionDragging) {
-                this.subQuestionDragging = false;
-                this.draggedSubQuestion = null;
-                this.reorderSubquestions(scale);
-            }
-        },
-        dragoverSubQuestion($event, subQuestionObject, scale) {
-            if (this.subQuestionDragging) {
-                let orderSwap = subQuestionObject.question_order;
-                subQuestionObject.question_order = this.draggedSubQuestion.question_order;
-                this.draggedSubQuestion.question_order = orderSwap;
-            }
-        },
-        reorderSubquestions(scale){
-            let subquestions = [];
-            let last = 0;
-            foreach(this.currentDataSet[scale], (subquestion, i) => {
-                subquestion.question_order = (i+1)
-                subquestions.push(subquestion);
-            });
-            this.$set(this.currentDataSet, scale, subquestions);
-        },
-        toggleEditMode(){
-            if(this.readonly) {
-                this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
-            }
-        },
-        
-    },
-    mounted() {
-        if(isEmpty(this.$store.state.currentQuestionSubquestions)){
-            this.$store.state.currentQuestionSubquestions = {"0": [this.getTemplate()]};
-        };
-        foreach(this.subquestionScales, this.reorderSubquestions);
-    }
-}
-</script>
-
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-subquestions-container">
@@ -163,9 +19,9 @@ export default {
             <template
                 v-for="subquestionscale in subquestionScales"
             >
-                <div 
+                <div
                     :key="subquestionscale+'subquestions'"
-                    class="row list-group scoped-subquestion-row-container" 
+                    class="row list-group scoped-subquestion-row-container"
                     @dragover.prevent="preventDisallowedCursor"
                 >
                     <div class="list-group-item scoped-subquestion-block header-block">
@@ -185,7 +41,7 @@ export default {
                             <div>&nbsp;</div>
                         </div>
                     </div>
-                    <div 
+                    <div
                         class="list-group-item scoped-subquestion-block"
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
@@ -193,12 +49,12 @@ export default {
                         :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
                     >
                         <div class="scoped-move-block" v-show="!readonly">
-                            <i 
-                                class="fa fa-bars" 
+                            <i
+                                class="fa fa-bars"
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :draggable="!surveyActive"
                                 @dragstart="startDraggingSubQuestion($event, subquestion, subquestionscale)"
-                                @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)" 
+                                @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)"
                             ></i>
                         </div>
                         <div class="scoped-code-block   ">
@@ -209,7 +65,7 @@ export default {
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :disabled="surveyActive"
-                                :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
+                                :name="'code_'+subquestion.question_order+'_'+subquestionscale"
                                 :readonly="readonly"
                                 v-model="subquestion.title"
                                 @dblclick="toggleEditMode"
@@ -234,8 +90,8 @@ export default {
                         <div class="scoped-relevance-block   ">
                             <div class="input-group">
                                 <div class="input-group-addon">{</div>
-                                <input 
-                                    type='text' 
+                                <input
+                                    type='text'
                                     class='relevance_input_field form-control input'
                                     :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
                                     :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
@@ -250,9 +106,9 @@ export default {
                             </div>
                         </div>
                         <div class="scoped-actions-block" v-show="!readonly">
-                            <button 
-                                v-if="!surveyActive" 
-                                class="btn btn-default btn-small" 
+                            <button
+                                v-if="!surveyActive"
+                                class="btn btn-default btn-small"
                                 data-toggle="tooltip"
                                 :title='translate("Delete")'
                                 @click.prevent="deleteThisDataSet(subquestion, subquestionscale)"
@@ -260,8 +116,8 @@ export default {
                                 <i class="fa fa-trash text-danger"></i>
                                 <span class="sr-only">{{ "Delete" | translate }}</span>
                             </button>
-                                <button 
-                                class="btn btn-default btn-small" 
+                                <button
+                                class="btn btn-default btn-small"
                                 data-toggle="tooltip"
                                 :title='translate("Open editor")'
                                 @click.prevent="openPopUpEditor(subquestion, subquestionscale)"
@@ -269,9 +125,9 @@ export default {
                                 <i class="fa fa-edit"></i>
                                 <span class="sr-only">{{ "Open editor" | translate }}</span>
                             </button>
-                            <button 
-                                v-if="!surveyActive" 
-                                class="btn btn-default btn-small" 
+                            <button
+                                v-if="!surveyActive"
+                                class="btn btn-default btn-small"
                                 data-toggle="tooltip"
                                 :title='translate("Duplicate")'
                                 @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)"
@@ -327,13 +183,19 @@ export default {
     },
     computed: {
         baseNonNumericPart() { return window.QuestionEditData.baseSQACode.subquestions},
+        isSurveyActive() {
+            if (this.$store.getters.surveyObject.active == "Y") {
+                return true;
+            }
+            return false;
+        },
         subquestionScales(){
             if(this.$store.state.currentQuestion.typeInformation.subquestions == 1) {
                 return [0];
-            } 
+            }
             if(this.$store.state.currentQuestion.typeInformation.subquestions == 2) {
                 return [0,1];
-            } 
+            }
             return [];
         },
         currentDataSet: {
@@ -471,7 +333,7 @@ export default {
             text-align: center;
         }
     }
-    
+
     .scoped-move-block {
         text-align: center;
         width: 5%;
@@ -518,7 +380,7 @@ export default {
         width:15%;
         padding-left: 1rem;
     }
-    
+
     .movement-active {
         background-color: hsla(0,0,90,0.8);
         &.in-movement {
