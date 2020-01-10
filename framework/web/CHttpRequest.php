@@ -127,19 +127,16 @@ class CHttpRequest extends CApplicationComponent
 	protected function normalizeRequest()
 	{
 		// normalize request
-		if(version_compare(PHP_VERSION,'7.4.0','<'))
+		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
 		{
-			if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
-			{
-				if(isset($_GET))
-					$_GET=$this->stripSlashes($_GET);
-				if(isset($_POST))
-					$_POST=$this->stripSlashes($_POST);
-				if(isset($_REQUEST))
-					$_REQUEST=$this->stripSlashes($_REQUEST);
-				if(isset($_COOKIE))
-					$_COOKIE=$this->stripSlashes($_COOKIE);
-			}
+			if(isset($_GET))
+				$_GET=$this->stripSlashes($_GET);
+			if(isset($_POST))
+				$_POST=$this->stripSlashes($_POST);
+			if(isset($_REQUEST))
+				$_REQUEST=$this->stripSlashes($_REQUEST);
+			if(isset($_COOKIE))
+				$_COOKIE=$this->stripSlashes($_COOKIE);
 		}
 
 		if($this->enableCsrfValidation)
@@ -1526,9 +1523,7 @@ class CCookieCollection extends CMap
 		$value=$cookie->value;
 		if($this->_request->enableCookieValidation)
 			$value=Yii::app()->getSecurityManager()->hashData(serialize($value));
-		if(version_compare(PHP_VERSION,'7.3.0','>='))
-			setcookie($cookie->name,$value,$this->getCookieOptions($cookie));
-		elseif(version_compare(PHP_VERSION,'5.2.0','>='))
+		if(version_compare(PHP_VERSION,'5.2.0','>='))
 			setcookie($cookie->name,$value,$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else
 			setcookie($cookie->name,$value,$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure);
@@ -1540,29 +1535,9 @@ class CCookieCollection extends CMap
 	 */
 	protected function removeCookie($cookie)
 	{
-		$cookie->expire=0;
-		if(version_compare(PHP_VERSION,'7.3.0','>='))
-			setcookie($cookie->name,'',$this->getCookieOptions($cookie));
-		elseif(version_compare(PHP_VERSION,'5.2.0','>='))
-			setcookie($cookie->name,'',$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
+		if(version_compare(PHP_VERSION,'5.2.0','>='))
+			setcookie($cookie->name,'',0,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else
-			setcookie($cookie->name,'',$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure);
-	}
-
-	/**
-	 * Builds the setcookie $options parameter.
-	 * @param CHttpCookie $cookie
-	 * @return array
-	 */
-	protected function getCookieOptions($cookie)
-	{
-		return array(
-			'expires'=>$cookie->expire,
-			'path'=>$cookie->path,
-			'domain'=>$cookie->domain,
-			'secure'=>$cookie->secure,
-			'httpOnly'=>$cookie->httpOnly,
-			'sameSite'=>$cookie->sameSite
-		);
+			setcookie($cookie->name,'',0,$cookie->path,$cookie->domain,$cookie->secure);
 	}
 }
