@@ -7,7 +7,7 @@
  * primary concern and you are using an opcode cache. PLEASE DO NOT EDIT THIS
  * FILE, changes will be overwritten the next time the script is run.
  *
- * @version 4.10.0
+ * @version 4.9.3
  *
  * @warning
  *      You must *not* include any other HTML Purifier files before this file,
@@ -39,7 +39,7 @@
  */
 
 /*
-    HTML Purifier 4.10.0 - Standards Compliant HTML Filtering
+    HTML Purifier 4.9.3 - Standards Compliant HTML Filtering
     Copyright (C) 2006-2008 Edward Z. Yang
 
     This library is free software; you can redistribute it and/or
@@ -78,12 +78,12 @@ class HTMLPurifier
      * Version of HTML Purifier.
      * @type string
      */
-    public $version = '4.10.0';
+    public $version = '4.9.3';
 
     /**
      * Constant with version of HTML Purifier.
      */
-    const VERSION = '4.10.0';
+    const VERSION = '4.9.3';
 
     /**
      * Global configuration object.
@@ -1764,7 +1764,7 @@ class HTMLPurifier_Config
      * HTML Purifier's version
      * @type string
      */
-    public $version = '4.10.0';
+    public $version = '4.9.3';
 
     /**
      * Whether or not to automatically finalize
@@ -3938,7 +3938,7 @@ class HTMLPurifier_Encoder
 
         $len = strlen($str);
         for ($i = 0; $i < $len; $i++) {
-            $in = ord($str[$i]);
+            $in = ord($str{$i});
             $char .= $str[$i]; // append byte to char
             if (0 == $mState) {
                 // When mState is zero we expect either a US-ASCII character
@@ -6871,14 +6871,12 @@ abstract class HTMLPurifier_Injector
             return false;
         }
         // check for exclusion
-        if (!empty($this->currentNesting)) {
         for ($i = count($this->currentNesting) - 2; $i >= 0; $i--) {
             $node = $this->currentNesting[$i];
             $def  = $this->htmlDefinition->info[$node->name];
             if (isset($def->excludes[$name])) {
                 return false;
             }
-        }
         }
         return true;
     }
@@ -7439,14 +7437,12 @@ class HTMLPurifier_Length
     protected $isValid;
 
     /**
-     * Array Lookup array of units recognized by CSS 3
+     * Array Lookup array of units recognized by CSS 2.1
      * @type array
      */
     protected static $allowedUnits = array(
         'em' => true, 'ex' => true, 'px' => true, 'in' => true,
-        'cm' => true, 'mm' => true, 'pt' => true, 'pc' => true,
-        'ch' => true, 'rem' => true, 'vw' => true, 'vh' => true,
-        'vmin' => true, 'vmax' => true
+        'cm' => true, 'mm' => true, 'pt' => true, 'pc' => true
     );
 
     /**
@@ -13347,11 +13343,7 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
 
         // PHP 5.3 and later support this functionality natively
         if (function_exists('idn_to_ascii')) {
-            if (defined('IDNA_NONTRANSITIONAL_TO_ASCII') && defined('INTL_IDNA_VARIANT_UTS46')) {
-                $string = idn_to_ascii($string, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
-            } else {
-                $string = idn_to_ascii($string);
-            }
+            $string = idn_to_ascii($string);
 
             // If we have Net_IDNA2 support, we can support IRIs by
             // punycoding them. (This is the most portable thing to do,
@@ -14585,7 +14577,7 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
     protected function _compileRegex()
     {
         $raw = str_replace(' ', '', $this->dtd_regex);
-        if ($raw[0] != '(') {
+        if ($raw{0} != '(') {
             $raw = "($raw)";
         }
         $el = '[#a-zA-Z0-9_.-]+';
@@ -15683,14 +15675,9 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
         $directory = $this->generateDirectoryPath($config);
         $chmod = $config->get('Cache.SerializerPermissions');
         if ($chmod === null) {
-            if (!@mkdir($directory) && !is_dir($directory)) {
-                trigger_error(
-                    'Could not create directory ' . $directory . '',
-                    E_USER_WARNING
-                );
-                return false;
-            }
-            return true;
+            // TODO: This races
+            if (is_dir($directory)) return true;
+            return mkdir($directory);
         }
         if (!is_dir($directory)) {
             $base = $this->generateBaseDirectoryPath($config);
@@ -15704,7 +15691,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
             } elseif (!$this->_testPermissions($base, $chmod)) {
                 return false;
             }
-            if (!@mkdir($directory, $chmod) && !is_dir($directory)) {
+            if (!mkdir($directory, $chmod)) {
                 trigger_error(
                     'Could not create directory ' . $directory . '',
                     E_USER_WARNING
@@ -18996,41 +18983,6 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
     }
 
     /**
-     * Portably retrieve the tag name of a node; deals with older versions
-     * of libxml like 2.7.6
-     * @param DOMNode $node
-     */
-    protected function getTagName($node)
-    {
-        if (property_exists($node, 'tagName')) {
-            return $node->tagName;
-        } else if (property_exists($node, 'nodeName')) {
-            return $node->nodeName;
-        } else if (property_exists($node, 'localName')) {
-            return $node->localName;
-        }
-        return null;
-    }
-
-    /**
-     * Portably retrieve the data of a node; deals with older versions
-     * of libxml like 2.7.6
-     * @param DOMNode $node
-     */
-    protected function getData($node)
-    {
-        if (property_exists($node, 'data')) {
-            return $node->data;
-        } else if (property_exists($node, 'nodeValue')) {
-            return $node->nodeValue;
-        } else if (property_exists($node, 'textContent')) {
-            return $node->textContent;
-        }
-        return null;
-    }
-
-
-    /**
      * @param DOMNode $node DOMNode to be tokenized.
      * @param HTMLPurifier_Token[] $tokens   Array-list of already tokenized tokens.
      * @param bool $collect  Says whether or start and close are collected, set to
@@ -19045,10 +18997,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         // but we're not getting the character reference nodes because
         // those should have been preprocessed
         if ($node->nodeType === XML_TEXT_NODE) {
-            $data = $this->getData($node); // Handle variable data property
-            if ($data !== null) {
-              $tokens[] = $this->factory->createText($data);
-            }
+            $tokens[] = $this->factory->createText($node->data);
             return false;
         } elseif ($node->nodeType === XML_CDATA_SECTION_NODE) {
             // undo libxml's special treatment of <script> and <style> tags
@@ -19078,20 +19027,21 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             // not-well tested: there may be other nodes we have to grab
             return false;
         }
+
         $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : array();
-        $tag_name = $this->getTagName($node); // Handle variable tagName property
-        if (empty($tag_name)) {
-            return (bool) $node->childNodes->length;
-        }
+
         // We still have to make sure that the element actually IS empty
         if (!$node->childNodes->length) {
             if ($collect) {
-                $tokens[] = $this->factory->createEmpty($tag_name, $attr);
+                $tokens[] = $this->factory->createEmpty($node->tagName, $attr);
             }
             return false;
         } else {
             if ($collect) {
-                $tokens[] = $this->factory->createStart($tag_name, $attr);
+                $tokens[] = $this->factory->createStart(
+                    $tag_name = $node->tagName, // somehow, it get's dropped
+                    $attr
+                );
             }
             return true;
         }
@@ -19103,9 +19053,9 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
      */
     protected function createEndNode($node, &$tokens)
     {
-        $tag_name = $this->getTagName($node); // Handle variable tagName property
-        $tokens[] = $this->factory->createEnd($tag_name);
+        $tokens[] = $this->factory->createEnd($node->tagName);
     }
+
 
     /**
      * Converts a DOMNamedNodeMap of DOMAttr objects into an assoc array.
@@ -21110,7 +21060,7 @@ class HTMLPurifier_TagTransform_Font extends HTMLPurifier_TagTransform
         if (isset($attr['size'])) {
             // normalize large numbers
             if ($attr['size'] !== '') {
-                if ($attr['size'][0] == '+' || $attr['size'][0] == '-') {
+                if ($attr['size']{0} == '+' || $attr['size']{0} == '-') {
                     $size = (int)$attr['size'];
                     if ($size < -2) {
                         $attr['size'] = '-2';
