@@ -236,7 +236,7 @@ ${scriptContent}
                     <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" v-model="currentSurveyTitle">
                 </div>
                 <div class="form-group col-md-4 col-md-6" v-if="isNewSurvey">
-                    <label for="createsample" class="control-label">{{'Create example survey page and question?' | translate}}</label>
+                    <label for="createsample" class="control-label">{{'Create example question group and question?' | translate}}</label>
                     <div>
                         <input type="checkbox" name="createsample" />
                     </div>

@@ -860,7 +860,6 @@ class Survey_Common_Action extends CAction
     }
 
     /**
->>>>>>> parent of 00109dd9e5... Dev: Rename question group to survey page
      * Show side menu for survey view
      * @param array $aData all the needed data
      */
@@ -1130,7 +1129,7 @@ class Survey_Common_Action extends CAction
         if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add survey pages")."]</span>";
+                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";

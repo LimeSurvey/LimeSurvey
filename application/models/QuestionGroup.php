@@ -162,7 +162,7 @@ class QuestionGroup extends LSActiveRecord
         // Abort if the survey is active
         $surveyIsActive = Survey::model()->findByPk($surveyId)->active !== 'N';
         if ($surveyIsActive) {
-            Yii::app()->user->setFlash('error', gt("Can't delete survey page when the survey is active"));
+            Yii::app()->user->setFlash('error', gt("Can't delete question group when the survey is active"));
             return null;
         }
 

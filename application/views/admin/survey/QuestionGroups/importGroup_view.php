@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
     </a>
 </div>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Import survey page"); ?></h3>
+    <h3><?php eT("Import question group"); ?></h3>
     <div class="row">
         <div class="col-lg-12">
             <!-- form -->
@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
 
                 <!-- Select question group file -->
                 <div class="form-group">
-                    <label for='the_file' class=" control-label"><?php eT("Select survey page file (*.lsg):");
+                    <label for='the_file' class=" control-label"><?php eT("Select question group file (*.lsg):");
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);
                     ?></label>
                         <div class="">
@@ -43,7 +43,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                     </div>
                 </div>
 
-                <input type='submit' class="hidden" value='<?php eT("Import survey page"); ?>' />
+                <input type='submit' class="hidden" value='<?php eT("Import question group"); ?>' />
                 <input type='hidden' name='action' value='importgroup' />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             </form>

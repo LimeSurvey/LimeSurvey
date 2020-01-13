@@ -57,7 +57,7 @@
                             <li class="marks_as_active">
                                 <?= (
                                     $oQuestionGroup->isNewRecord
-                                    ? gT('New survey page')
+                                    ? gT('New question group')
                                     : viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1)
                                 ); ?>
                             </li>

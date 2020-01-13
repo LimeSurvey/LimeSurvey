@@ -5,7 +5,7 @@
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(true); ?>'>
-        <h3><?php eT('Organize survey pages/questions');?></h3>
+        <h3><?php eT('Organize question group/questions');?></h3>
         <div class='row'>
             <div class='col-sm-8'>
                 <p class='alert alert-info'>

@@ -195,10 +195,10 @@ class questiongroups extends Survey_Common_Action
                 $oGroupLS->language = $sLanguage;
                 $oGroupLS->save();
             }
-            App()->setFlashMessage(gT("New survey page was saved."));
+            App()->setFlashMessage(gT("New question group was saved."));
             App()->setFlashMessage(
                 sprintf(
-                    gT('You can now %sadd a question%s in this page.'),
+                    gT('You can now %sadd a question%s in this group.'),
                     '<a href="'
                     .App()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID")
                     .'">',
@@ -248,7 +248,7 @@ class questiongroups extends Survey_Common_Action
         }
         $oQuestionGroup = QuestionGroup::model()->find("gid = :gid", array(":gid"=>$iGroupId));
         if (empty($oQuestionGroup)) {
-            throw new CHttpException(401, gT("Invalid survey page id"));
+            throw new CHttpException(401, gT("Invalid question group id"));
         }
         /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
@@ -270,7 +270,7 @@ class questiongroups extends Survey_Common_Action
                 [
                     'success' => $success,
                     'deletedGroups' => $iGroupsDeleted,
-                    'message' => ($success ?gT('The survey page was deleted.') : gT('Page could not be deleted')),
+                    'message' => ($success ?gT('The question group was deleted.') : gT('Group could not be deleted')),
                     'redirect' => $this->getController()->createUrl(
                         'admin/survey/sa/listquestiongroups/',
                         ['surveyid' => $iSurveyId]
@@ -282,9 +282,9 @@ class questiongroups extends Survey_Common_Action
 
         if ($iGroupsDeleted > 0) {
             QuestionGroup::model()->updateGroupOrder($iSurveyId);
-            App()->setFlashMessage(gT('The survey page was deleted.'));
+            App()->setFlashMessage(gT('The question group was deleted.'));
         } else {
-            App()->setFlashMessage(gT('Page could not be deleted'), 'error');
+            App()->setFlashMessage(gT('Group could not be deleted'), 'error');
         }
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
@@ -364,14 +364,14 @@ class questiongroups extends Survey_Common_Action
                 ["surveyid" =>  $surveyid, 'gid' => $gid]
             ),
             'i10N' => [
-                'Survey page' => gT('Survey page'),
-                'Page overview' => gT('Page overview'),
+                'Question group' => gT('Question group'),
+                'Group overview' => gT('Group overview'),
                 'Question list' => gT('Question list'),
                 'Create new question group' => gT('Create new question group'),
                 'Question group overview' => gT('Question group overview'),
                 'Question group editor' => gT('Question group editor'),
                 'General Settings' => gT("General Settings"),
-                'Page summary' => gT('Page summary'),
+                'Group summary' => gT('Group summary'),
                 'Random Group' => gT('Random Group'),
                 'Title' => gT('Title'),
                 'Condition' => gT('Condition'),

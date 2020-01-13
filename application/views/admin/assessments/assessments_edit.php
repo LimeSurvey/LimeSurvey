@@ -45,7 +45,7 @@
                         <option value="<?=$groupId?>" ><?=flattenText($groupName)?></option>
                         <?php } ?>
                     </select>
-                    <?php } else { echo eT("No survey page found."); } ?>
+                    <?php } else { echo eT("No question group found."); } ?>
                 </div>
                 <div class='col-sm-2 hide-xs'></div>
               </div>

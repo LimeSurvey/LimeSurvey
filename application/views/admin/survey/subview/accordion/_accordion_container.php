@@ -1,6 +1,6 @@
 <?php
 /**
- * Right accordion in the edit survey page
+ * Right accordion in the edit question group
  *
  * @var $data
  */

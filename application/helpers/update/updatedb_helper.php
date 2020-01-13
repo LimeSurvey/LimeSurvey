@@ -2911,10 +2911,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 "{{surveymenu_entries}}",
                 [
-                    'name' =>  "listSurveyPages",
-                    'title' =>  gT('Page list','unescaped'),
-                    'menu_title' =>  gT('Page list','unescaped'),
-                    'menu_description' =>  gT('List survey pages','unescaped'),
+                    'name' =>  "listSurveyGroups",
+                    'title' =>  gT('Group list','unescaped'),
+                    'menu_title' =>  gT('Group list','unescaped'),
+                    'menu_description' =>  gT('List question group','unescaped'),
                 ],
                 'name=\'listQuestionGroups\''
             );

@@ -296,7 +296,7 @@ if (!$isActive && $hasSurveyContentPermission) {
     // By Question Group
     $buttons['by_question_group'] = [
         'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
-        'name' => gT('By survey page'),
+        'name' => gT('By question group'),
         'icon' => 'icon-resetsurveylogic',
         'id' => 'by_question_group'
     ];

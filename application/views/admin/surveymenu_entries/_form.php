@@ -112,7 +112,7 @@
 				</label>
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["questiongroup", "gid"]' class="checkbox selector__dataOptionModel" data-priority="2" data-option='["render","link","data","gid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add survey page ID to link")?></div>
+					<div class="col-sm-10 text-left"><?=gT("Add question group ID to link")?></div>
 				</label>
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["question", "qid"]' class="checkbox selector__dataOptionModel" data-priority="1" data-option='["render","link","data","qid"]' /></div>

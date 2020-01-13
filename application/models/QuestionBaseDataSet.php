@@ -204,7 +204,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             'title' => gT('Question group'),
             'formElementId' => 'gid',
             'formElementName' => false,
-            'formElementHelp' => gT("If you want to change the survey page this question is in."),
+            'formElementHelp' => gT("If you want to change the question group this question is in."),
             'inputtype' => 'questiongroup',
             'formElementValue' => $this->oQuestion->gid,
             'formElementOptions' => [
