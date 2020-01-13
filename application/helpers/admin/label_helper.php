@@ -132,7 +132,7 @@ function modlabelsetanswers($lid)
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
     $sPostData = str_replace("\t", '', $sPostData);
-    if (get_magic_quotes_gpc()) {
+    if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
         $data = json_decode(stripslashes($sPostData));
     } else {
         $data = json_decode($sPostData);

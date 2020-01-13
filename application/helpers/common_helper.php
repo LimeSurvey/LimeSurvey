@@ -2310,7 +2310,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         }
     }
     $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.org)");
-    if (get_magic_quotes_gpc() != "0") {$body = stripcslashes($body); }
+    if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+        $body = stripcslashes($body); 
+    }
     if ($ishtml) {
         $mail->IsHTML(true);
         if (strpos($body, "<html>") === false) {
@@ -4617,7 +4619,7 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    if (is_string($content) && get_magic_quotes_gpc()) {
+    if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() && is_string($content)) {
         $content = stripslashes($content);
     }
     $ans = json_encode($content);
