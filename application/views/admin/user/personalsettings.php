@@ -295,7 +295,7 @@ echo $oQuestionSelector->getModal();
                                     ?>
                                     <?php
                                         if (!Yii::app()->user->isScriptUpdateAllowed()) {
-                                            echo CHtml::tag("p",array("class"=>"help-block"),gT("You are not allowed to edit script, then this settings are unused."));
+                                            echo CHtml::tag("p",array("class"=>"help-block"),gT("You are not allowed to edit script, then this setting are unused."));
                                         }
                                     ?>
                                 </div>
