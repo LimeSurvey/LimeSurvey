@@ -24,7 +24,7 @@
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'filterxsshtml',
             'id'=>'filterxsshtml',
-            'value' => getGlobalSetting('filterxsshtml'),
+            'value' => Yii::app()->getConfig('filterxsshtml'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')
             ));
@@ -32,6 +32,23 @@
     </div>
     <div class="">
         <span class='hint'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class=" control-label"  for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
+    <div class="">
+        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'filterxsshtml',
+            'id'=>'filterxsshtml',
+            'value' => Yii::app()->getConfig('disablescriptwithxss'),
+            'onLabel'=>gT('On'),
+            'offLabel' => gT('Off')
+            ));
+        ?>
+    </div>
+    <div class="help-block">
+        <span class='text-warning'><?php eT("If you disable this option : user with XSS restriction still can add script. This allow user to add cross-site javascript system."); ?></span>
     </div>
 </div>
 

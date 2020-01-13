@@ -242,6 +242,8 @@ echo $oQuestionSelector->getModal();
                                     <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-12 col-md-6">
                                 <!-- Template editor mode -->
                                 <div class="form-group">
@@ -279,6 +281,8 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <!-- Show script field in question editor -->
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
@@ -288,6 +292,11 @@ echo $oQuestionSelector->getModal();
                                             '0' => gT("No",'unescaped'),
                                             '1' => gT("Yes",'unescaped'),
                                         ), array('class'=>"form-control"));
+                                    ?>
+                                    <?php
+                                        if (!Yii::app()->user->isScriptUpdateAllowed()) {
+                                            echo CHtml::tag("p",array("class"=>"help-block"),gT("You are not allowed to edit script, then this settings are unused."));
+                                        }
                                     ?>
                                 </div>
                             </div>
@@ -303,6 +312,8 @@ echo $oQuestionSelector->getModal();
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <!-- Basic non numerical part of answer options -->
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
@@ -335,6 +346,8 @@ echo $oQuestionSelector->getModal();
                                     ?>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <!-- Lock questionorganizer in sidebar -->
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">

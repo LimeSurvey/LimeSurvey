@@ -145,6 +145,10 @@ class LSWebUser extends CWebUser
      */
     public function isScriptUpdateAllowed()
     {
+        if (!Yii::app()->getConfig('disablescriptwithxss')) {
+            // No XSS control
+            return true;
+        }
         return !$this->isXssFiltered();
     }
 }
