@@ -9145,7 +9145,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     || ($this->surveyMode=='group' && $gseq != -1 && isset($var['gseq']) && $gseq == $var['gseq'])
                     || ($this->surveyMode=='question' && $qseq != -1 && isset($var['qseq']) && $qseq == $var['qseq']))
                     {
-                        return isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName']) ? $var['jsName'] : $default);
+                        // TODO: jsName_on will never be returned?
+                        return (isset($var['jsName_on']) ? $var['jsName_on'] : isset($var['jsName'])) ? $var['jsName'] : $default;
                     }
                     else {
                         return (isset($var['jsName']) ? $var['jsName'] : $default);
