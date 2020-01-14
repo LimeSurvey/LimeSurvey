@@ -172,7 +172,11 @@ foreach ($tokendata as $Key => $Value) {
                 <?php eT("Token:"); ?>
                 </label>
                 <div class="">
-                <input class='form-control' type='text' maxlength="<?php echo $iTokenLength; ?>" size='20' name='token' id='token' value="<?php if (isset($token)) {echo $token; } ?>" />
+                <?=TbHtml::textField('token',(isset($token) ? $token : ""), [
+                    'class' => 'form-control',
+                    'size' => '20',
+                    'maxlength' => $iTokenLength
+                ]);?>
                 <?php if ($token_subaction == "addnew"): ?>
                     <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
                 <?php endif; ?>
@@ -195,10 +199,10 @@ foreach ($tokendata as $Key => $Value) {
                 <?php eT("Email:"); ?>
             </label>
             <div class="">
-                <?=TbHtml::emailField('email', $email, [
+                <?=TbHtml::textField('email', $email, [
                         'class' => 'form-control',
                         'size' => '50',
-                        'maxlength' => '320' 
+                        'maxlength' => '320',
                 ]);?>
             </div>
             </div>
