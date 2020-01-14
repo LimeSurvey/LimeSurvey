@@ -9,9 +9,7 @@ services:
 php:
     - 7.2
     - 7.3
-env:
-  - DBENGINE=MYISAM
-  - DBENGINE=INNODB
+    - 7.4
 services:
     - mysql
 notifications:
