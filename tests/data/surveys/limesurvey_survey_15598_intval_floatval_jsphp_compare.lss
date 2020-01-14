@@ -300,7 +300,7 @@
     <id><![CDATA[5594]]></id>
     <qid><![CDATA[2768]]></qid>
     <question><![CDATA[<dl>
-    <dt>intval float</dt>And here
+    <dt>intval float</dt>
     <dd id='intval-float'>{intval(MULTI_float)}</dd>
     <dt>floatval float</dt>
     <dd id='floatval-float'>{floatval(MULTI_float)}</dd>
@@ -351,7 +351,44 @@
    <row>
     <id><![CDATA[5602]]></id>
     <qid><![CDATA[2776]]></qid>
-    <question><![CDATA[<p>intval float</p><p>{intval(MULTI_float)}</p><p>floatval float</p><p>{floatval(MULTI_float)}</p><p>intval text</p><p>{intval(MULTI_text)}</p><p>floatval text</p><p>{floatval(MULTI_text)}</p><p>intval floattext</p><p>{intval(MULTI_floattext)}</p><p>floatval floattext</p><p>{floatval(MULTI_floattext)}</p><p>intval floatoperation</p><p>{intval(MULTI_floatoperation)}</p><p>floatval floatoperation</p><p>{floatval(MULTI_floatoperation)}</p><p>intval floatnegative</p><p>{intval(MULTI_floatnegative)}</p><p>floatval floatnegative</p><p>{floatval(MULTI_floatnegative)}</p><p>intval floatnegativeoperati</p><p>{intval(MULTI_floatnegativeoperati)}</p><p>floatval floatnegativeoperati</p><p>{floatval(MULTI_floatnegativeoperati)}</p><p>intval hidden</p><p>{intval(MULTI_hidden.NAOK)}</p><p>floatval hidden</p><p>{floatval(MULTI_hidden.NAOK)}</p><p>intval true</p><p>{intval(!is_empty(MULTI_float))}</p><p>floatval true</p><p>{floatval(!is_empty(MULTI_float))}</p><p>intval false</p><p>{intval(is_empty(MULTI_float))}</p><p>WANT TO ADD HERE</p><p>floatval false</p><p>{floatval(is_empty(MULTI_float))}</p>]]></question>
+    <question><![CDATA[<dl>
+    <dt>intval float</dt>
+    <dd id='intval-float'>{intval(MULTI_float)}</dd>
+    <dt>floatval float</dt>
+    <dd id='floatval-float'>{floatval(MULTI_float)}</dd>
+    <dt>intval text</dt>
+    <dd id='intval-text'>{intval(MULTI_text)}</dd>
+    <dt>floatval text</dt>
+    <dd id='floatval-text'>{floatval(MULTI_text)}</dd>
+    <dt>intval floattext</dt>
+    <dd id='intval-floattext'>{intval(MULTI_floattext)}</dd>
+    <dt>floatval floattext</dt>
+    <dd id='floatval-floattext'>{floatval(MULTI_floattext)}</dd>
+    <dt>intval floatoperation</dt>
+    <dd id='intval-floatoperation'>{intval(MULTI_floatoperation)}</dd>
+    <dt>floatval floatoperation</dt>
+    <dd id='floatval-floatoperation'>{floatval(MULTI_floatoperation)}</dd>
+    <dt>intval floatnegative</dt>
+    <dd id='intval-floatnegative'>{intval(MULTI_floatnegative)}</dd>
+    <dt>floatval floatnegative</dt>
+    <dd id='floatval-floatnegative'>{floatval(MULTI_floatnegative)}</dd>
+    <dt>intval floatnegativeoperati</dt>
+    <dd id='intval-floatnegativeoperati'>{intval(MULTI_floatnegativeoperati)}</dd>
+    <dt>floatval floatnegativeoperati</dt>
+    <dd id='floatval-floatnegativeoperati'>{floatval(MULTI_floatnegativeoperati)}</dd>
+    <dt>intval hidden</dt>
+    <dd id='intval-hidden'>{intval(MULTI_hidden.NAOK)}</dd>
+    <dt>floatval hidden</dt>
+    <dd id='floatval-hidden'>{floatval(MULTI_hidden.NAOK)}</dd>
+    <dt>intval true</dt>
+    <dd id='intval-true'>{intval(!is_empty(MULTI_float))}</dd>
+    <dt>floatval true</dt>
+    <dd id='floatval-true'>{floatval(!is_empty(MULTI_float))}</dd>
+    <dt>intval false</dt>
+    <dd id='intval-false'>{intval(is_empty(MULTI_float))}</dd>
+    <dt>floatval false</dt>
+    <dd id='floatval-false'>{floatval(is_empty(MULTI_float))}</dd>
+</dl>]]></question>
     <help/>
     <language><![CDATA[en]]></language>
     <script/>
