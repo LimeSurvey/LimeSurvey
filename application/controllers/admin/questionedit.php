@@ -1226,7 +1226,9 @@ class questionedit extends Survey_Common_Action
                     unset($aAnswerOptionDataSet['aid']);
                     unset($aAnswerOptionDataSet['qid']);
                 }
-                if (empty($aAnswerOptionDataSet['code'])) {
+        
+                $codeIsEmpty = (!isset($aAnswerOptionDataSet['code']));
+                if ($codeIsEmpty) {
                     throw new CHttpException(
                         500,
                         "Answer option code cannot be empty"
