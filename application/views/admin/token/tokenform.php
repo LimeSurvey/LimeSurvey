@@ -194,47 +194,32 @@ foreach ($tokendata as $Key => $Value) {
             <label class=" control-label" for='email'>
                 <?php eT("Email:"); ?>
             </label>
-            <div class="input-group">
-                <?php 
-                    // Official IETF email pattern
-                    $emailPattern = "[a-zA-Z0-9!#\\&$%'*+=?^`{}|~_-](\.?[a-zA-Z0-9\\!#$&%'*+=?^`{}|~_-]){0,}@[a-zA-Z0-9]+\.(?!-)([a-zA-Z0-9]?((-?[a-zA-Z0-9]+)+\.(?!-))){0,}[a-zA-Z0-9]{2,8}";
-                    echo  TbHtml::textField('email', $email, [
+            <div class="">
+                <?=TbHtml::emailField('email', $email, [
                         'class' => 'form-control',
                         'size' => '50',
-                        'maxlength' => '320',
-                        'pattern' => "^".$emailPattern."(;".$emailPattern.")*$"
+                        'maxlength' => '320' 
                 ]);?>
-                  <span class="input-group-addon" id="selector--emailValidationIcon">
-                        <i class="fa fa-check hidden"></i>
-                  </span>
             </div>
-        </div>
+            </div>
 
-        <!-- Email Status -->
-        <div class="form-group">
+            <!-- Email Status -->
+            <div class="form-group">
             <label class=" control-label" for='emailstatus'>
                 <?php eT("Email status:"); ?>
             </label>
-            <div class="input-group">
+            <div class="">
                 <?=TbHtml::textField('emailstatus', $emailstatus, [
                         'class' => 'form-control',
                         'size' => '50',
                         'maxlength' => '320',
-                        'placeholder' => 'OK',
-                        'readonly' => true,
-                        'data-toggle' => "tooltip",
-                        "title" => gT("This field is to record the delivery state. Normally the system will handle this automatically")
+                        'placeholder' => 'OK'
                 ]);?>
-                <span class="input-group-addon">
-                    <button id="selector--emailStatusIconButton" class="btn btn-xs">
-                        <i class="fa fa-lock"></i>
-                    </button>
-                </span>
             </div>
-        </div>
+            </div>
 
-        <!-- Invitation sent, Reminder sent -->
-        <div class="form-group">
+            <!-- Invitation sent, Reminder sent -->
+            <div class="form-group">
             <!-- Invitation sent -->
             <label class=" control-label" for='sent'>
                 <?php eT("Invitation sent?"); ?>
@@ -303,11 +288,11 @@ foreach ($tokendata as $Key => $Value) {
                         </div>
                     </div>
                 </div>
+                </div>
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo " N "; }?>" />
             </div>
-            <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo " N "; }?>" />
-        </div>
-    </div>
-    <div class="form-group">
+            </div>
+            <div class="form-group">
             <!-- Reminder sent -->
             <label class=" control-label" for='remindersent'>
                 <?php eT("Reminder sent?"); ?>
@@ -471,35 +456,5 @@ foreach ($tokendata as $Key => $Value) {
 <?php
 App()->getClientScript()->registerScript('TokenformViewBSSwitcher', "
 LS.renderBootstrapSwitch();
-", LSYii_ClientScript::POS_POSTSCRIPT);
-
-App()->getClientScript()->registerScript('TokenformViewEmailValidate', "
-var validateEmailField = function(){
-    if($('#email').val().length > 0) {
-        $('#selector--emailValidationIcon').find('i.fa').removeClass('hidden');
-        if(/^(".$emailPattern.")(;".$emailPattern.")*$/.test($('#email').val())) {
-            $('#email').parent('div').removeClass('has-error');
-            $('#selector--emailValidationIcon').find('i.fa').removeClass('fa-times').addClass('fa-check');
-        } else {
-            $('#email').parent('div').addClass('has-error');
-            $('#selector--emailValidationIcon').find('i.fa').removeClass('fa-check').addClass('fa-times');
-        }
-    } else {
-        $('#selector--emailValidationIcon').find('i.fa').addClass('hidden');
-    }
-};
-validateEmailField();
-$('#email').on('keyup', validateEmailField);
-$('#email').on('blur', validateEmailField);
-$('#selector--emailStatusIconButton').on('click', function(e){
-    e.preventDefault();
-    if($(this).find('i.fa').hasClass('fa-lock')) {
-        $(this).find('i.fa').removeClass('fa-lock').addClass('fa-unlock');
-        $('#emailstatus').prop('readonly', false);
-    } else {
-        $(this).find('i.fa').removeClass('fa-unlock').addClass('fa-lock');
-        $('#emailstatus').prop('readonly', true);
-    }
-});
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
