@@ -3,20 +3,18 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2015 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Twig\Profiler;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @final
  */
-class Profile implements \IteratorAggregate, \Serializable
+class Twig_Profiler_Profile implements IteratorAggregate, Serializable
 {
     const ROOT = 'ROOT';
     const BLOCK = 'block';
@@ -26,9 +24,9 @@ class Profile implements \IteratorAggregate, \Serializable
     private $template;
     private $name;
     private $type;
-    private $starts = [];
-    private $ends = [];
-    private $profiles = [];
+    private $starts = array();
+    private $ends = array();
+    private $profiles = array();
 
     public function __construct($template = 'main', $type = self::ROOT, $name = 'main')
     {
@@ -78,7 +76,7 @@ class Profile implements \IteratorAggregate, \Serializable
         return $this->profiles;
     }
 
-    public function addProfile(self $profile)
+    public function addProfile(Twig_Profiler_Profile $profile)
     {
         $this->profiles[] = $profile;
     }
@@ -86,7 +84,7 @@ class Profile implements \IteratorAggregate, \Serializable
     /**
      * Returns the duration in microseconds.
      *
-     * @return float
+     * @return int
      */
     public function getDuration()
     {
@@ -128,11 +126,11 @@ class Profile implements \IteratorAggregate, \Serializable
      */
     public function enter()
     {
-        $this->starts = [
+        $this->starts = array(
             'wt' => microtime(true),
             'mu' => memory_get_usage(),
             'pmu' => memory_get_peak_usage(),
-        ];
+        );
     }
 
     /**
@@ -140,49 +138,25 @@ class Profile implements \IteratorAggregate, \Serializable
      */
     public function leave()
     {
-        $this->ends = [
+        $this->ends = array(
             'wt' => microtime(true),
             'mu' => memory_get_usage(),
             'pmu' => memory_get_peak_usage(),
-        ];
-    }
-
-    public function reset()
-    {
-        $this->starts = $this->ends = $this->profiles = [];
-        $this->enter();
+        );
     }
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->profiles);
+        return new ArrayIterator($this->profiles);
     }
 
     public function serialize()
     {
-        return serialize($this->__serialize());
+        return serialize(array($this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles));
     }
 
     public function unserialize($data)
     {
-        $this->__unserialize(unserialize($data));
-    }
-
-    /**
-     * @internal
-     */
-    public function __serialize()
-    {
-        return [$this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles];
-    }
-
-    /**
-     * @internal
-     */
-    public function __unserialize(array $data)
-    {
-        list($this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles) = $data;
+        list($this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles) = unserialize($data);
     }
 }
-
-class_alias('Twig\Profiler\Profile', 'Twig_Profiler_Profile');

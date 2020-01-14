@@ -3,14 +3,12 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
- * (c) Armin Ronacher
+ * (c) 2009 Fabien Potencier
+ * (c) 2009 Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Twig;
 
 /**
  * Represents a Token.
@@ -19,7 +17,7 @@ namespace Twig;
  *
  * @final
  */
-class Token
+class Twig_Token
 {
     protected $value;
     protected $type;
@@ -38,7 +36,6 @@ class Token
     const PUNCTUATION_TYPE = 9;
     const INTERPOLATION_START_TYPE = 10;
     const INTERPOLATION_END_TYPE = 11;
-    const ARROW_TYPE = 12;
 
     /**
      * @param int    $type   The type of the token
@@ -65,21 +62,21 @@ class Token
      *  * type and value (or array of possible values)
      *  * just value (or array of possible values) (NAME_TYPE is used as type)
      *
-     * @param array|string|int  $type   The type to test
+     * @param array|int         $type   The type to test
      * @param array|string|null $values The token value
      *
      * @return bool
      */
     public function test($type, $values = null)
     {
-        if (null === $values && !\is_int($type)) {
+        if (null === $values && !is_int($type)) {
             $values = $type;
             $type = self::NAME_TYPE;
         }
 
         return ($this->type === $type) && (
             null === $values ||
-            (\is_array($values) && \in_array($this->value, $values)) ||
+            (is_array($values) && in_array($this->value, $values)) ||
             $this->value == $values
         );
     }
@@ -158,14 +155,11 @@ class Token
             case self::INTERPOLATION_END_TYPE:
                 $name = 'INTERPOLATION_END_TYPE';
                 break;
-            case self::ARROW_TYPE:
-                $name = 'ARROW_TYPE';
-                break;
             default:
-                throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
+                throw new LogicException(sprintf('Token of type "%s" does not exist.', $type));
         }
 
-        return $short ? $name : 'Twig\Token::'.$name;
+        return $short ? $name : 'Twig_Token::'.$name;
     }
 
     /**
@@ -204,12 +198,8 @@ class Token
                 return 'begin of string interpolation';
             case self::INTERPOLATION_END_TYPE:
                 return 'end of string interpolation';
-            case self::ARROW_TYPE:
-                return 'arrow function';
             default:
-                throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
+                throw new LogicException(sprintf('Token of type "%s" does not exist.', $type));
         }
     }
 }
-
-class_alias('Twig\Token', 'Twig_Token');

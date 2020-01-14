@@ -3,35 +3,30 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
- * (c) Armin Ronacher
+ * (c) 2009 Fabien Potencier
+ * (c) 2009 Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Twig;
-
-use Twig\Node\ModuleNode;
 
 /**
  * Compiles a node to PHP code.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Compiler implements \Twig_CompilerInterface
+class Twig_Compiler implements Twig_CompilerInterface
 {
     protected $lastLine;
     protected $source;
     protected $indentation;
     protected $env;
-    protected $debugInfo = [];
+    protected $debugInfo = array();
     protected $sourceOffset;
     protected $sourceLine;
     protected $filename;
-    private $varNameSalt = 0;
 
-    public function __construct(Environment $env)
+    public function __construct(Twig_Environment $env)
     {
         $this->env = $env;
     }
@@ -49,7 +44,7 @@ class Compiler implements \Twig_CompilerInterface
     /**
      * Returns the environment instance related to this compiler.
      *
-     * @return Environment
+     * @return Twig_Environment
      */
     public function getEnvironment()
     {
@@ -69,22 +64,22 @@ class Compiler implements \Twig_CompilerInterface
     /**
      * Compiles a node.
      *
-     * @param int $indentation The current indentation
+     * @param Twig_NodeInterface $node        The node to compile
+     * @param int                $indentation The current indentation
      *
      * @return $this
      */
-    public function compile(\Twig_NodeInterface $node, $indentation = 0)
+    public function compile(Twig_NodeInterface $node, $indentation = 0)
     {
         $this->lastLine = null;
         $this->source = '';
-        $this->debugInfo = [];
+        $this->debugInfo = array();
         $this->sourceOffset = 0;
         // source code starts at 1 (as we then increment it when we encounter new lines)
         $this->sourceLine = 1;
         $this->indentation = $indentation;
-        $this->varNameSalt = 0;
 
-        if ($node instanceof ModuleNode) {
+        if ($node instanceof Twig_Node_Module) {
             // to be removed in 2.0
             $this->filename = $node->getTemplateName();
         }
@@ -94,7 +89,7 @@ class Compiler implements \Twig_CompilerInterface
         return $this;
     }
 
-    public function subcompile(\Twig_NodeInterface $node, $raw = true)
+    public function subcompile(Twig_NodeInterface $node, $raw = true)
     {
         if (false === $raw) {
             $this->source .= str_repeat(' ', $this->indentation * 4);
@@ -126,7 +121,7 @@ class Compiler implements \Twig_CompilerInterface
      */
     public function write()
     {
-        $strings = \func_get_args();
+        $strings = func_get_args();
         foreach ($strings as $string) {
             $this->source .= str_repeat(' ', $this->indentation * 4).$string;
         }
@@ -173,22 +168,22 @@ class Compiler implements \Twig_CompilerInterface
      */
     public function repr($value)
     {
-        if (\is_int($value) || \is_float($value)) {
-            if (false !== $locale = setlocale(LC_NUMERIC, '0')) {
+        if (is_int($value) || is_float($value)) {
+            if (false !== $locale = setlocale(LC_NUMERIC, 0)) {
                 setlocale(LC_NUMERIC, 'C');
             }
 
-            $this->raw(var_export($value, true));
+            $this->raw($value);
 
             if (false !== $locale) {
                 setlocale(LC_NUMERIC, $locale);
             }
         } elseif (null === $value) {
             $this->raw('null');
-        } elseif (\is_bool($value)) {
+        } elseif (is_bool($value)) {
             $this->raw($value ? 'true' : 'false');
-        } elseif (\is_array($value)) {
-            $this->raw('[');
+        } elseif (is_array($value)) {
+            $this->raw('array(');
             $first = true;
             foreach ($value as $key => $v) {
                 if (!$first) {
@@ -199,7 +194,7 @@ class Compiler implements \Twig_CompilerInterface
                 $this->raw(' => ');
                 $this->repr($v);
             }
-            $this->raw(']');
+            $this->raw(')');
         } else {
             $this->string($value);
         }
@@ -212,7 +207,7 @@ class Compiler implements \Twig_CompilerInterface
      *
      * @return $this
      */
-    public function addDebugInfo(\Twig_NodeInterface $node)
+    public function addDebugInfo(Twig_NodeInterface $node)
     {
         if ($node->getTemplateLine() != $this->lastLine) {
             $this->write(sprintf("// line %d\n", $node->getTemplateLine()));
@@ -228,7 +223,7 @@ class Compiler implements \Twig_CompilerInterface
             } else {
                 $this->sourceLine += substr_count($this->source, "\n", $this->sourceOffset);
             }
-            $this->sourceOffset = \strlen($this->source);
+            $this->sourceOffset = strlen($this->source);
             $this->debugInfo[$this->sourceLine] = $node->getTemplateLine();
 
             $this->lastLine = $node->getTemplateLine();
@@ -265,13 +260,13 @@ class Compiler implements \Twig_CompilerInterface
      *
      * @return $this
      *
-     * @throws \LogicException When trying to outdent too much so the indentation would become negative
+     * @throws LogicException When trying to outdent too much so the indentation would become negative
      */
     public function outdent($step = 1)
     {
         // can't outdent by more steps than the current indentation level
         if ($this->indentation < $step) {
-            throw new \LogicException('Unable to call outdent() as the indentation would become negative.');
+            throw new LogicException('Unable to call outdent() as the indentation would become negative.');
         }
 
         $this->indentation -= $step;
@@ -281,8 +276,6 @@ class Compiler implements \Twig_CompilerInterface
 
     public function getVarName()
     {
-        return sprintf('__internal_%s', hash('sha256', __METHOD__.$this->varNameSalt++));
+        return sprintf('__internal_%s', hash('sha256', uniqid(mt_rand(), true), false));
     }
 }
-
-class_alias('Twig\Compiler', 'Twig_Compiler');

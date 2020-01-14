@@ -9,23 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Util;
-
-use Twig\Environment;
-use Twig\Error\SyntaxError;
-use Twig\Source;
-
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @final
  */
-class DeprecationCollector
+class Twig_Util_DeprecationCollector
 {
     private $twig;
     private $deprecations;
 
-    public function __construct(Environment $twig)
+    public function __construct(Twig_Environment $twig)
     {
         $this->twig = $twig;
     }
@@ -40,32 +34,32 @@ class DeprecationCollector
      */
     public function collectDir($dir, $ext = '.twig')
     {
-        $iterator = new \RegexIterator(
-            new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::LEAVES_ONLY
+        $iterator = new RegexIterator(
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::LEAVES_ONLY
             ), '{'.preg_quote($ext).'$}'
         );
 
-        return $this->collect(new TemplateDirIterator($iterator));
+        return $this->collect(new Twig_Util_TemplateDirIterator($iterator));
     }
 
     /**
      * Returns deprecations for passed templates.
      *
-     * @param \Traversable $iterator An iterator of templates (where keys are template names and values the contents of the template)
+     * @param Iterator $iterator An iterator of templates (where keys are template names and values the contents of the template)
      *
      * @return array An array of deprecations
      */
-    public function collect(\Traversable $iterator)
+    public function collect(Iterator $iterator)
     {
-        $this->deprecations = [];
+        $this->deprecations = array();
 
-        set_error_handler([$this, 'errorHandler']);
+        set_error_handler(array($this, 'errorHandler'));
 
         foreach ($iterator as $name => $contents) {
             try {
-                $this->twig->parse($this->twig->tokenize(new Source($contents, $name)));
-            } catch (SyntaxError $e) {
+                $this->twig->parse($this->twig->tokenize($contents, $name));
+            } catch (Twig_Error_Syntax $e) {
                 // ignore templates containing syntax errors
             }
         }
@@ -73,7 +67,7 @@ class DeprecationCollector
         restore_error_handler();
 
         $deprecations = $this->deprecations;
-        $this->deprecations = [];
+        $this->deprecations = array();
 
         return $deprecations;
     }
@@ -88,5 +82,3 @@ class DeprecationCollector
         }
     }
 }
-
-class_alias('Twig\Util\DeprecationCollector', 'Twig_Util_DeprecationCollector');

@@ -9,18 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extension;
-
 /**
- * Enables usage of the deprecated Twig\Extension\AbstractExtension::initRuntime() method.
+ * Enables usage of the deprecated Twig_Extension::initRuntime() method.
  *
  * Explicitly implement this interface if you really need to implement the
  * deprecated initRuntime() method in your extensions.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface InitRuntimeInterface
+interface Twig_Extension_InitRuntimeInterface
 {
 }
-
-class_alias('Twig\Extension\InitRuntimeInterface', 'Twig_Extension_InitRuntimeInterface');

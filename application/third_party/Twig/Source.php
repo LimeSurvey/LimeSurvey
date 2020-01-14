@@ -3,13 +3,11 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2016 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Twig;
 
 /**
  * Holds information about a non-compiled Twig template.
@@ -18,7 +16,7 @@ namespace Twig;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Source
+class Twig_Source
 {
     private $code;
     private $name;
@@ -51,5 +49,3 @@ class Source
         return $this->path;
     }
 }
-
-class_alias('Twig\Source', 'Twig_Source');

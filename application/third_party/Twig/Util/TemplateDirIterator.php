@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Util;
-
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TemplateDirIterator extends \IteratorIterator
+class Twig_Util_TemplateDirIterator extends IteratorIterator
 {
     public function current()
     {
@@ -26,5 +24,3 @@ class TemplateDirIterator extends \IteratorIterator
         return (string) parent::key();
     }
 }
-
-class_alias('Twig\Util\TemplateDirIterator', 'Twig_Util_TemplateDirIterator');

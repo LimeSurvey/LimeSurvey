@@ -3,25 +3,11 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2010 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Twig\Test;
-
-use PHPUnit\Framework\TestCase;
-use Twig\Environment;
-use Twig\Error\Error;
-use Twig\Extension\ExtensionInterface;
-use Twig\Loader\ArrayLoader;
-use Twig\Loader\SourceContextLoaderInterface;
-use Twig\RuntimeLoader\RuntimeLoaderInterface;
-use Twig\Source;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
-use Twig\TwigTest;
 
 /**
  * Integration test helper.
@@ -29,7 +15,7 @@ use Twig\TwigTest;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Karma Dordrak <drak@zikula.org>
  */
-abstract class IntegrationTestCase extends TestCase
+abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @return string
@@ -37,43 +23,35 @@ abstract class IntegrationTestCase extends TestCase
     abstract protected function getFixturesDir();
 
     /**
-     * @return RuntimeLoaderInterface[]
-     */
-    protected function getRuntimeLoaders()
-    {
-        return [];
-    }
-
-    /**
-     * @return ExtensionInterface[]
+     * @return Twig_ExtensionInterface[]
      */
     protected function getExtensions()
     {
-        return [];
+        return array();
     }
 
     /**
-     * @return TwigFilter[]
+     * @return Twig_SimpleFilter[]
      */
     protected function getTwigFilters()
     {
-        return [];
+        return array();
     }
 
     /**
-     * @return TwigFunction[]
+     * @return Twig_SimpleFunction[]
      */
     protected function getTwigFunctions()
     {
-        return [];
+        return array();
     }
 
     /**
-     * @return TwigTest[]
+     * @return Twig_SimpleTest[]
      */
     protected function getTwigTests()
     {
-        return [];
+        return array();
     }
 
     /**
@@ -96,9 +74,9 @@ abstract class IntegrationTestCase extends TestCase
     public function getTests($name, $legacyTests = false)
     {
         $fixturesDir = realpath($this->getFixturesDir());
-        $tests = [];
+        $tests = array();
 
-        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($fixturesDir), \RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($fixturesDir), RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
             if (!preg_match('/\.test$/', $file)) {
                 continue;
             }
@@ -114,7 +92,7 @@ abstract class IntegrationTestCase extends TestCase
                 $condition = $match[2];
                 $templates = self::parseTemplates($match[3]);
                 $exception = $match[5];
-                $outputs = [[null, $match[4], null, '']];
+                $outputs = array(array(null, $match[4], null, ''));
             } elseif (preg_match('/--TEST--\s*(.*?)\s*(?:--CONDITION--\s*(.*))?\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*?))+)--DATA--.*?--EXPECT--.*/s', $test, $match)) {
                 $message = $match[1];
                 $condition = $match[2];
@@ -122,15 +100,15 @@ abstract class IntegrationTestCase extends TestCase
                 $exception = false;
                 preg_match_all('/--DATA--(.*?)(?:--CONFIG--(.*?))?--EXPECT--(.*?)(?=\-\-DATA\-\-|$)/s', $test, $outputs, PREG_SET_ORDER);
             } else {
-                throw new \InvalidArgumentException(sprintf('Test "%s" is not valid.', str_replace($fixturesDir.'/', '', $file)));
+                throw new InvalidArgumentException(sprintf('Test "%s" is not valid.', str_replace($fixturesDir.'/', '', $file)));
             }
 
-            $tests[] = [str_replace($fixturesDir.'/', '', $file), $message, $condition, $templates, $exception, $outputs];
+            $tests[] = array(str_replace($fixturesDir.'/', '', $file), $message, $condition, $templates, $exception, $outputs);
         }
 
         if ($legacyTests && empty($tests)) {
             // add a dummy test to avoid a PHPUnit message
-            return [['not', '-', '', [], '', []]];
+            return array(array('not', '-', '', array(), '', array()));
         }
 
         return $tests;
@@ -143,10 +121,6 @@ abstract class IntegrationTestCase extends TestCase
 
     protected function doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs)
     {
-        if (!$outputs) {
-            $this->markTestSkipped('no tests to run');
-        }
-
         if ($condition) {
             eval('$ret = '.$condition.';');
             if (!$ret) {
@@ -154,19 +128,15 @@ abstract class IntegrationTestCase extends TestCase
             }
         }
 
-        $loader = new ArrayLoader($templates);
+        $loader = new Twig_Loader_Array($templates);
 
         foreach ($outputs as $i => $match) {
-            $config = array_merge([
+            $config = array_merge(array(
                 'cache' => false,
                 'strict_variables' => true,
-            ], $match[2] ? eval($match[2].';') : []);
-            $twig = new Environment($loader, $config);
+            ), $match[2] ? eval($match[2].';') : array());
+            $twig = new Twig_Environment($loader, $config);
             $twig->addGlobal('global', 'global');
-            foreach ($this->getRuntimeLoaders() as $runtimeLoader) {
-                $twig->addRuntimeLoader($runtimeLoader);
-            }
-
             foreach ($this->getExtensions() as $extension) {
                 $twig->addExtension($extension);
             }
@@ -183,43 +153,46 @@ abstract class IntegrationTestCase extends TestCase
                 $twig->addFunction($function);
             }
 
-            $p = new \ReflectionProperty($twig, 'templateClassPrefix');
-            $p->setAccessible(true);
-            $p->setValue($twig, '__TwigTemplate_'.hash('sha256', uniqid(mt_rand(), true), false).'_');
+            // avoid using the same PHP class name for different cases
+            // only for PHP 5.2+
+            if (PHP_VERSION_ID >= 50300) {
+                $p = new ReflectionProperty($twig, 'templateClassPrefix');
+                $p->setAccessible(true);
+                $p->setValue($twig, '__TwigTemplate_'.hash('sha256', uniqid(mt_rand(), true), false).'_');
+            }
 
             try {
-                $template = $twig->load('index.twig');
-            } catch (\Exception $e) {
+                $template = $twig->loadTemplate('index.twig');
+            } catch (Exception $e) {
                 if (false !== $exception) {
                     $message = $e->getMessage();
-                    $this->assertSame(trim($exception), trim(sprintf('%s: %s', \get_class($e), $message)));
-                    $last = substr($message, \strlen($message) - 1);
-                    $this->assertTrue('.' === $last || '?' === $last, 'Exception message must end with a dot or a question mark.');
+                    $this->assertSame(trim($exception), trim(sprintf('%s: %s', get_class($e), $message)));
+                    $last = substr($message, strlen($message) - 1);
+                    $this->assertTrue('.' === $last || '?' === $last, $message, 'Exception message must end with a dot or a question mark.');
 
                     return;
                 }
 
-                throw new Error(sprintf('%s: %s', \get_class($e), $e->getMessage()), -1, null, $e);
+                throw new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
             }
 
             try {
                 $output = trim($template->render(eval($match[1].';')), "\n ");
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 if (false !== $exception) {
-                    $this->assertSame(trim($exception), trim(sprintf('%s: %s', \get_class($e), $e->getMessage())));
+                    $this->assertSame(trim($exception), trim(sprintf('%s: %s', get_class($e), $e->getMessage())));
 
                     return;
                 }
 
-                $e = new Error(sprintf('%s: %s', \get_class($e), $e->getMessage()), -1, null, $e);
+                $e = new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
 
-                $output = trim(sprintf('%s: %s', \get_class($e), $e->getMessage()));
+                $output = trim(sprintf('%s: %s', get_class($e), $e->getMessage()));
             }
 
             if (false !== $exception) {
                 list($class) = explode(':', $exception);
-                $constraintClass = class_exists('PHPUnit\Framework\Constraint\Exception') ? 'PHPUnit\Framework\Constraint\Exception' : 'PHPUnit_Framework_Constraint_Exception';
-                $this->assertThat(null, new $constraintClass($class));
+                $this->assertThat(null, new PHPUnit_Framework_Constraint_Exception($class));
             }
 
             $expected = trim($match[3], "\n ");
@@ -230,8 +203,8 @@ abstract class IntegrationTestCase extends TestCase
                 foreach (array_keys($templates) as $name) {
                     echo "Template: $name\n";
                     $loader = $twig->getLoader();
-                    if (!$loader instanceof SourceContextLoaderInterface) {
-                        $source = new Source($loader->getSource($name), $name);
+                    if (!$loader instanceof Twig_SourceContextLoaderInterface) {
+                        $source = new Twig_Source($loader->getSource($name), $name);
                     } else {
                         $source = $loader->getSourceContext($name);
                     }
@@ -244,7 +217,7 @@ abstract class IntegrationTestCase extends TestCase
 
     protected static function parseTemplates($test)
     {
-        $templates = [];
+        $templates = array();
         preg_match_all('/--TEMPLATE(?:\((.*?)\))?--(.*?)(?=\-\-TEMPLATE|$)/s', $test, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             $templates[($match[1] ? $match[1] : 'index.twig')] = $match[2];
@@ -253,5 +226,3 @@ abstract class IntegrationTestCase extends TestCase
         return $templates;
     }
 }
-
-class_alias('Twig\Test\IntegrationTestCase', 'Twig_Test_IntegrationTestCase');

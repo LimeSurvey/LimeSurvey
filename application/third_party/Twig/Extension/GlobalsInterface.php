@@ -9,18 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extension;
-
 /**
- * Enables usage of the deprecated Twig\Extension\AbstractExtension::getGlobals() method.
+ * Enables usage of the deprecated Twig_Extension::getGlobals() method.
  *
  * Explicitly implement this interface if you really need to implement the
  * deprecated getGlobals() method in your extensions.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface GlobalsInterface
+interface Twig_Extension_GlobalsInterface
 {
 }
-
-class_alias('Twig\Extension\GlobalsInterface', 'Twig_Extension_GlobalsInterface');

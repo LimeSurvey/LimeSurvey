@@ -3,18 +3,14 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2009 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Twig;
-
-use Twig\NodeVisitor\NodeVisitorInterface;
-
 /**
- * A node traverser.
+ * Twig_NodeTraverser is a node traverser.
  *
  * It visits all nodes and their children and calls the given visitor for each.
  *
@@ -22,15 +18,16 @@ use Twig\NodeVisitor\NodeVisitorInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class NodeTraverser
+class Twig_NodeTraverser
 {
     protected $env;
-    protected $visitors = [];
+    protected $visitors = array();
 
     /**
-     * @param NodeVisitorInterface[] $visitors
+     * @param Twig_Environment            $env
+     * @param Twig_NodeVisitorInterface[] $visitors
      */
-    public function __construct(Environment $env, array $visitors = [])
+    public function __construct(Twig_Environment $env, array $visitors = array())
     {
         $this->env = $env;
         foreach ($visitors as $visitor) {
@@ -38,17 +35,21 @@ class NodeTraverser
         }
     }
 
-    public function addVisitor(NodeVisitorInterface $visitor)
+    public function addVisitor(Twig_NodeVisitorInterface $visitor)
     {
+        if (!isset($this->visitors[$visitor->getPriority()])) {
+            $this->visitors[$visitor->getPriority()] = array();
+        }
+
         $this->visitors[$visitor->getPriority()][] = $visitor;
     }
 
     /**
      * Traverses a node and calls the registered visitors.
      *
-     * @return \Twig_NodeInterface
+     * @return Twig_NodeInterface
      */
-    public function traverse(\Twig_NodeInterface $node)
+    public function traverse(Twig_NodeInterface $node)
     {
         ksort($this->visitors);
         foreach ($this->visitors as $visitors) {
@@ -60,7 +61,7 @@ class NodeTraverser
         return $node;
     }
 
-    protected function traverseForVisitor(NodeVisitorInterface $visitor, \Twig_NodeInterface $node = null)
+    protected function traverseForVisitor(Twig_NodeVisitorInterface $visitor, Twig_NodeInterface $node = null)
     {
         if (null === $node) {
             return;
@@ -69,14 +70,8 @@ class NodeTraverser
         $node = $visitor->enterNode($node, $this->env);
 
         foreach ($node as $k => $n) {
-            if (null === $n) {
-                continue;
-            }
-
-            if (false !== ($m = $this->traverseForVisitor($visitor, $n)) && null !== $m) {
-                if ($m !== $n) {
-                    $node->setNode($k, $m);
-                }
+            if (false !== $n = $this->traverseForVisitor($visitor, $n)) {
+                $node->setNode($k, $n);
             } else {
                 $node->removeNode($k);
             }
@@ -85,5 +80,3 @@ class NodeTraverser
         return $visitor->leaveNode($node, $this->env);
     }
 }
-
-class_alias('Twig\NodeTraverser', 'Twig_NodeTraverser');

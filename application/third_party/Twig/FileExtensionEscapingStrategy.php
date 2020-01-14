@@ -3,13 +3,11 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2015 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Twig;
 
 /**
  * Default autoescaping strategy based on file names.
@@ -22,7 +20,7 @@ namespace Twig;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FileExtensionEscapingStrategy
+class Twig_FileExtensionEscapingStrategy
 {
     /**
      * Guesses the best autoescaping strategy based on the file name.
@@ -33,7 +31,7 @@ class FileExtensionEscapingStrategy
      */
     public static function guess($name)
     {
-        if (\in_array(substr($name, -1), ['/', '\\'])) {
+        if (in_array(substr($name, -1), array('/', '\\'))) {
             return 'html'; // return html for directories
         }
 
@@ -58,5 +56,3 @@ class FileExtensionEscapingStrategy
         }
     }
 }
-
-class_alias('Twig\FileExtensionEscapingStrategy', 'Twig_FileExtensionEscapingStrategy');
