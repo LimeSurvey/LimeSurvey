@@ -3055,8 +3055,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
                     };
                 }
-                $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 425), "stg_name='DBVersion'");
             }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 425), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
