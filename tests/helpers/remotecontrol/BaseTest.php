@@ -4,16 +4,15 @@ use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
-    /* @var Survey */
-    public $survey;
     /* @var User */
     public $user;
     /* @var remotecontrol_handle*/
     public $handler;
 
+    /* @var string see .travis.yml */
     const REMOTECONTROL_USERNAME = 'admin';
+    /* @var string see .travis.yml */
     const REMOTECONTROL_PASSWORD = 'password';
-    const REMOTECONTROL_EMAIL    = 'admin@test.de';
 
     public static function setUpBeforeClass()
     {
@@ -30,29 +29,9 @@ abstract class BaseTest extends TestCase
         Yii::app()->loadHelper('admin/activate');
         Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
     }
-
+    
     protected function setUp()
     {
-
-        /*
-        Yii::app()->db->createCommand()->truncateTable('{{users}}');
-        Yii::app()->db->createCommand()->truncateTable('{{permissions}}');
-
-        $user = new User();
-        $user->users_name = self::REMOTECONTROL_USERNAME;
-        $user->setPassword(self::REMOTECONTROL_PASSWORD);
-        $user->full_name = 'REMOTECONROLUSER';
-        $user->parent_id = 0;
-        $user->lang = 'de';
-        $user->email = self::REMOTECONTROL_EMAIL;
-        if (!$user->save()) {
-            $this->fail('Unable to create user');
-        }
-
-        $this->user = $user;
-        Permission::model()->setGlobalPermission($this->getUserId(), 'auth_db');
-        */
-
         $user = User::model()->findByPk(1);
         if (!$user) {
             $this->fail('Admin User missing');
@@ -62,41 +41,27 @@ abstract class BaseTest extends TestCase
         $this->handler  = new remotecontrol_handle(new AdminController('dummyid'));
     }
 
+    /**
+     * @return int
+     */
     public function getUserId()
     {
         return $this->user->uid;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return self::REMOTECONTROL_USERNAME;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword()
     {
         return self::REMOTECONTROL_PASSWORD;
     }
-
-    protected function deleteSurvey()
-    {
-        $this->survey->delete();
-    }
-
-    protected function importSurvey($fileName)
-    {
-        Yii::app()->session['loginID'] = $this->getUserId();
-        $fileName = implode(DIRECTORY_SEPARATOR, array(ROOT, 'data', 'surveys', $fileName));
-        if (!file_exists($fileName)) {
-            $this->fail('Found no survey file ' . $fileName);
-        }
-
-        $newSurveyName = null;
-        $result = importSurveyFile($fileName, false, null,null);
-        if ($result) {
-            $this->survey = Survey::model()->findByPk($result['newsid']);
-        } else {
-            $this->fail('Could not import survey file ' . $fileName);
-        }
-    }
-
 }
