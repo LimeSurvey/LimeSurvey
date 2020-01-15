@@ -6,6 +6,8 @@
 */
 require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 
+use LimeSurvey\PluginManager\LimesurveyApi;
+
 class ConsoleApplication extends CConsoleApplication
 {
     protected $config = array();
@@ -50,6 +52,16 @@ class ConsoleApplication extends CConsoleApplication
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
         $lsConfig = array_merge($coreConfig, $consoleConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+
+        /* Custom config file */
+        $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/security.php')) {
+            $securityConfig = require(  $configdir .'/security.php');
+            if (is_array($securityConfig)) {
+                $lsConfig = array_merge($lsConfig, $securityConfig);
+            }
+        }
+
         if (file_exists(__DIR__.'/../config/config.php')) {
             $userConfigs = require(__DIR__.'/../config/config.php');
             if (is_array($userConfigs['config'])) {
@@ -57,6 +69,10 @@ class ConsoleApplication extends CConsoleApplication
             }
         }
         $this->config = array_merge($this->config, $lsConfig);
+        
+        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
+           it would be decrypted in LimeMailer when needed */
+           $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Right accordion in the edit survey page
+ * Right accordion in the edit question group
  *
  * @var $data
  */
@@ -97,7 +97,7 @@
         </div>
     </div>
 
-    <!-- Tokens -->
+    <!-- Participants (tokens) -->
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-tokensoptions">
             <div class="panel-title h4">
@@ -106,7 +106,7 @@
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#tokensoptions" aria-expanded="false" aria-controls="tokensoptions">
-                    <?php  eT("Tokens"); ?>
+                    <?php  eT("Participants"); ?>
                 </a>
             </div>
         </div>

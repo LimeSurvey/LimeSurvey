@@ -39,7 +39,7 @@
                 <div id='neweditlblset0' class="tab-pane fade in active">
 
                     <!-- Form -->
-                    <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form form30 ','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
+                    <?php echo CHtml::form(array("admin/labels/sa/saveNewLabelSet"), 'post',array('class'=>'form form30 ','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
 
 
                             <!-- Set name -->

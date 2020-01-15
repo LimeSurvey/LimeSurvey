@@ -17,6 +17,7 @@
     //Security Checked: POST/GET/SESSION/DB/returnGlobal
     function initKcfinder()
     {
+        return;
         Yii::app()->session['KCFINDER'] = array();
 
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
@@ -112,6 +113,11 @@
      */
     function PrepareEditorScript($load = false, $controller = null)
     {
+        return;
+                
+        App()->getClientScript()->registerPackage('ckeditor'); //
+        App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global sope
+        
         if ($controller == null) {
             $controller = Yii::app()->getController();
         }
@@ -126,7 +132,7 @@
     function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
 
-
+        return;
         if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
             $surveyID = 'uniq';
         }
@@ -161,7 +167,7 @@
 
     function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-
+        return;
         if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
             $surveyID = 'uniq';
         }
@@ -188,6 +194,7 @@
 
     function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
+        return;
         if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
             $surveyID = 'uniq';
         }

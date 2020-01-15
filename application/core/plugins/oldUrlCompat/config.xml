@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>oldUrlCompat</name>
+        <type>plugin</type>
+        <creationDate>2016-01-27</creationDate>
+        <lastUpdate>2017-11-23</lastUpdate>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Old url (pre-2.0) compatible system]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>3.0</version>
+        <version>2.73</version>
+    </compatibility>
+</config>

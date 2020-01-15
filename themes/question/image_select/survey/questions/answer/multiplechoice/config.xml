@@ -7,6 +7,8 @@
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadata>
         <name>image_select-multiplechoice</name>
+        <type>question_theme</type>
+        <title>Image Select Multiple choice</title>
         <creationDate>23/12/2016</creationDate>
         <author>Markus Flür</author>
         <authorEmail>mfluer@limesurvey.org</authorEmail>
@@ -16,7 +18,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Multiplechoice with images.</description>
+        <questionType>M</questionType>
+        <group>Multiple choice questions</group>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>multiple-opt</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to load.
@@ -31,7 +44,7 @@
         </js>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>horizontal_scroll</name>
             <category>Display</category>
@@ -94,7 +107,7 @@
             <help>Fix height of the images to this value. Leave empty to not change them.</help>
             <caption>Fix height</caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

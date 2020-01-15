@@ -13,7 +13,9 @@
 <!-- answer -->
 <input type='hidden' name='{{ name }}' value='{{ value }}' />
 <ul class="{{ coreClass }} list-unstyled form-horizontal" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-        {# rows/answer_row.php #}
-         {{ sRows }}
+        {% for aRow in aRows %}
+                {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice_with_comments/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice_with_comments/rows/answer_row.twig' %}
+                {% include rowTemplate with aRow only %}
+        {% endfor %}
 </ul>
 <!-- end of answer -->

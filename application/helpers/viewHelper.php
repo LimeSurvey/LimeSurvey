@@ -118,7 +118,7 @@ class viewHelper
 
         $sQuestionText = ""; // Allways return a string
         if (isset($aField['fieldname'])) {
-            $sQuestionText = self::flatEllipsizeText($aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
+            $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
             if($bHaveSubQuestion) {
@@ -187,7 +187,8 @@ class viewHelper
      * Return a string with the good separator before and after
      *
      * @param $sString :the string
-     * @param : string/array : the string to put before of the array (before,after)
+     * @param string|array : the string to put before of the array (before,after)
+     * @return string
      */
     public static function putSeparator($sString, $separator)
     {

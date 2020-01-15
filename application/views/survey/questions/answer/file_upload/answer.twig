@@ -1,11 +1,11 @@
-{#
+{#<?php
 /**
  * File upload question Html
  * @var $fileid
  * @var $value
  * @var $filecountvalue
  */
-#}
+?>#}
 
 <!-- File Upload  -->
 
@@ -15,16 +15,121 @@
         <a
             id='upload_{{ fileid }}'
             class='btn btn-primary upload'
-            href='#'
-            onclick='javascript:upload_{{ fileid }}();'
+            href='{{uploadurl}}'
+            data-toggle="modal"
+            data-target="file-upload-modal-{{fileid}}"
+            data-showtitle="{{show_title}}"
+            data-showcomment="{{show_comment}}"
+            data-fieldname="{{basename}}"
         >
-            <span class='fa fa-upload'></span>&nbsp;{{ gT('Upload files') }}
+            <span class='fa fa-upload'></span>&nbsp;{{ uploadButtonLabel }}
         </a>
     </div>
     <input type='hidden' id='{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
     <input type='hidden' id='{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
-    <div id='{{ fileid }}_uploadedfiles'>
+    <div id='{{ fileid }}_uploadedfiles' class="hidden">
+        <table width="100%" class="question uploadedfiles">
+            <thead>
+                <tr>
+                    <th width="20%">&nbsp;</th>
+                    <th>{{ "Title" | gT }}</th>
+                    <th>{{ "Comment" | gT }}</th>
+                    <th>{{ "File name" | gT }}</th>
+                    <th class="edit"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- modal -->
+<div id="file-upload-modal-{{fileid}}" class="modal fade file-upload-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header file-upload-modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="h4 modal-title"> {{ ngT("Upload file|Upload files", maxFiles) }}</div>
+            </div>
+            <div class="modal-body file-upload-modal-body">
+                <div id="uploader{{fileid}}" name="uploader{{fileid}}" class="uploader-frame" data-src="{{uploadurl}}" title="{{gT("Upload")}}"></div>
+            </div>
+            <div class="modal-footer file-upload-modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">{{ gT("Save changes") }}</button>
+            </div>
+        </div>
 
     </div>
 </div>
+    
+
 <!-- end of answer -->
+
+<script type='text/javascript'>
+    var surveyid = '{{surveyId}}',
+        uploadLang = {
+             title: '{{ "Upload your files" | gT }}',
+             returnTxt: '{{ "Return to survey" | gT }}',
+             headTitle: '{{ "Title" | gT }}',
+             headComment: '{{ "Comment" | gT }}',
+             headFileName: '{{ "File name" | gT }}',
+             deleteFile : '{{ "Delete" | gT }}',
+             editFile : '{{ "Edit" | gT }}',
+        },
+        imageurl =  '{{imageurl}}',
+        uploadurl =  '{{scriptloc}}';
+        
+    window.uploadQuestionController_{{ fileid }} = new UploadQuestionController('{{ fileid }}');
+    window.uploadQuestionController_{{ fileid }}.prepareOpenUploadModalDialog();
+    
+    $(document).on("ready pjax:scriptcomplete", function(){
+        var fieldname = "{{fileid}}",
+            filecount = $("#"+fieldname+"_filecount").val(),
+            show_title = "{{showTitle}}",
+            show_comment = "{{showComment}}";
+        window.uploadQuestionController_{{ fileid }}.displayUploadedFiles( filecount, fieldname, show_title, show_comment);
+    });
+
+    $(".basic_{{fileid}}").change(function() {
+        var i = 1,
+            filecount = 0,
+            jsonArray = [];
+
+        for (; i <= LEMval("{{maxFiles}}"); i++) {
+            //Break if the file input is empty
+            if ($("#{{fileid}}_"+i).val() == "") { continue; }
+
+            filecount++;
+
+            var fileObject = {
+                title : {{showTitle ? '$("#{{fileid}}_title_"+i).val()' : '""' }},
+                comment: {{showComment ? '$("#{{fileid}}_comment_"+i).val()' : '""'}},
+                size: '',
+                name: '',
+                ext: ''
+            };
+
+            jsonArray.push(fileObject);
+        }
+
+        $("#{{fileid}}").val(JSON.stringify(jsonArray));
+        $("#{{fileid}}_filecount").val(filecount);
+    });
+</script>
+
+<script type="text/x-template" id="filerowtemplate_{{fileid}}">
+    <tr>
+        <td class="upload {imageOrPlaceholder}">{imageOrPlaceholderHtml}</td>
+        <td class="upload title">{title}</td>
+        <td class="upload comment">{comment}</td>
+        <td class="upload edit">{name}</td>
+        <td>
+            <a class="btn btn-primary trigger_edit_upload_{{fileid}}" data-file="{filepointer}">
+                <i class="fa fa-pencil"></i> &nbsp; {{ "Edit" | gT }}
+            </a>
+        </td>
+    </tr>
+</script>

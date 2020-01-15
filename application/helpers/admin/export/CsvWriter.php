@@ -51,9 +51,9 @@ class CsvWriter extends Writer
             if ($oOptions->output == 'display') {
                 header("Content-Disposition: attachment; filename=".$this->csvFilename);
                 header("Content-type: text/comma-separated-values; charset=UTF-8");
-                echo chr(239) . chr(187) . chr(191);
+                echo chr(239).chr(187).chr(191);
             } else {
-                fwrite($this->file, chr(239) . chr(187) . chr(191)); // Write UTF-8 Byte Order Mark (BOM)
+                fwrite($this->file, chr(239).chr(187).chr(191)); // Write UTF-8 Byte Order Mark (BOM)
             }
             
             // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init

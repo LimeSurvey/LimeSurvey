@@ -25,7 +25,6 @@ class UniqueNotification extends Notification
     /**
      * As parent constructor but with markAsUndread
      * @inheritdoc
-     * @return UniqueNotification
      */
     public function __construct($options = null)
     {

@@ -15,11 +15,17 @@
 #}
 
 {# It must not be shown once survey is completed #}
-{% if aSurveyInfo.bShowClearAll == true  %}
+{# aSurveyInfo.options.bShowClearAll is a user option to decide if the "exit and clear" button should be shown #}
+{# aSurveyInfo.bShowClearAll is define in core, so if option is on, it's not shown in welcome and submit page.  #}
+
+
+{% if aSurveyInfo.bShowClearAll == true or aSurveyInfo.bShowClearAll == null %}
+  {%  if aSurveyInfo.options.showclearall == 'on'  %}
     <!-- Exit and clear survey -->
     <li class="{{ aSurveyInfo.class.clearalllinks }}" {{ aSurveyInfo.attr.clearalllinks }}>
         <a href="#" data-limesurvey-submit='{ "clearall":"clearall" }'  data-confirmedby='{ "confirm-clearall":"confirm" }' data-confirmlabel='{{gT("Please confirm you want to clear your response?" )}}' class='{{ aSurveyInfo.class.clearalllink }} animate' {{ aSurveyInfo.attr.clearalllink }}>
             {{gT("Exit and clear survey" )}}
         </a>
     </li>
+  {% endif %}
 {% endif %}

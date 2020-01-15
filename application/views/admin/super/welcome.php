@@ -64,7 +64,11 @@ echo viewHelper::getViewTestTag('index');
                                 </ol>
                             </div>
                             <div class="row"><hr/></div>
-                            <?php if(Permission::model()->hasGlobalPermission('surveys','create')) { ?>
+
+                            <?php 
+                            // Hide this until we have fixed the tutorial
+                            // @TODO FIX TUTORIAL
+                            if(Permission::model()->hasGlobalPermission('surveys','create') && 1==2) { ?>
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
@@ -117,14 +121,14 @@ echo viewHelper::getViewTestTag('index');
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
                 <?php if($showLastSurvey):?>
-                    <span id="last_survey" class="rotateShown">
+                    <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:");?>
                     <a href="<?php echo $surveyUrl;?>" class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60);?></a>
                     </span>
                 <?php endif; ?>
 
                 <?php if($showLastQuestion):?>
-                    <span id="last_question" class="rotateHidden">
+                    <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:");?>
                     <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                     </span>

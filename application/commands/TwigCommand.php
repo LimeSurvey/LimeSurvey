@@ -87,7 +87,6 @@ class TwigCommand extends CConsoleCommand  {
 
       foreach ($oThemeDir as $fileinfo) {
         if ($fileinfo->getFilename() != ".." && $fileinfo->getFilename() != "." && $fileinfo->getFilename() != "index.html"){
-
           $templatename = $fileinfo->getFilename();
           $oTemplateForPreview = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 

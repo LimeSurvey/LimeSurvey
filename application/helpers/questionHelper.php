@@ -11,9 +11,13 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
 namespace LimeSurvey\Helpers;
 use QuestionAttribute;
+use QuestionTheme;
 use Yii;
+use Question;
+
 /**
  * General helper class for question + question setting system
  */
@@ -27,8 +31,12 @@ class questionHelper
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
+     *
+     * DEPRECATED, used only as fall back method
+     * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
+
     {
         if (self::$attributes) {
             return self::$attributes;
@@ -47,7 +55,7 @@ class questionHelper
         // If you need to create a new attribute selector rendering for question advanced attribute
         // Just add it to application/views/admin/survey/Question/advanced_settings_view
         self::$attributes["alphasort"] = array(
-        "types"=>"!LOWZ",
+        "types"=>Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_L_LIST_DROPDOWN.Question::QT_O_LIST_WITH_COMMENT.Question::QT_Z_LIST_RADIO_FLEXIBLE,
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'switch',
@@ -60,7 +68,7 @@ class questionHelper
         "caption"=>gT('Sort answers alphabetically'));
 
         self::$attributes["answer_width"] = array(
-            "types"=>"ABCEF1:;",
+        "types"=>Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_1_ARRAY_MULTISCALE.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
@@ -82,17 +90,17 @@ class questionHelper
         );
 
         self::$attributes["repeat_headings"] = array(
-            "types"=>"F:1;",
+            "types"=>Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_1_ARRAY_MULTISCALE.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
-            "help"=>gT('Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
-            "caption"=>gT('Repeat answer options')
+            "help"=>gT('Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
+            "caption"=>gT('Repeat headers')
         );
 
         self::$attributes["array_filter"] = array(
-            "types"=>"1ABCEF:;MPLKQR",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_L_LIST_DROPDOWN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -101,7 +109,7 @@ class questionHelper
         );
 
         self::$attributes["array_filter_exclude"] = array(
-            "types"=>"1ABCEF:;MPLKQR",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_L_LIST_DROPDOWN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -110,7 +118,7 @@ class questionHelper
         );
 
         self::$attributes["array_filter_style"] = array(
-            "types"=>"1ABCEF:;MPLKQR",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_L_LIST_DROPDOWN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'buttongroup',
@@ -122,7 +130,7 @@ class questionHelper
         );
 
         self::$attributes["assessment_value"] = array(
-            "types"=>"MP",
+        "types"=>Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'default'=>'1',
@@ -132,7 +140,7 @@ class questionHelper
         );
 
         self::$attributes["category_separator"] = array(
-            "types"=>"!",
+        "types"=>Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -141,7 +149,7 @@ class questionHelper
         );
 
         self::$attributes["code_filter"] = array(
-            "types"=>"WZ",
+        "types"=> Question::QT_Z_LIST_RADIO_FLEXIBLE,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -150,7 +158,7 @@ class questionHelper
         );
 
         self::$attributes["commented_checkbox"] = array(
-            "types"=>"P",
+        "types"=>Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             'category'=>gT('Logic'),
             'sortorder'=>110,
             'inputtype'=>'singleselect',
@@ -165,7 +173,7 @@ class questionHelper
         );
 
         self::$attributes["commented_checkbox_auto"] = array(
-            "types"=>"P",
+        "types"=>Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             'category'=>gT('Logic'),
             'sortorder'=>111,
             'inputtype'=>'switch',
@@ -179,17 +187,17 @@ class questionHelper
         );
 
         self::$attributes["display_columns"] = array(
-            "types"=>"LM",
+        "types"=>Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'columns',
-            'default'=>'',
+            'default'=>'1',
             "help"=>gT('The answer options will be distributed across the number of columns set here'),
             "caption"=>gT('Display columns')
         );
 
         self::$attributes["display_rows"] = array(
-            "types"=>"QSTU",
+        "types"=>Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
@@ -198,7 +206,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_dates"] = array(
-            "types"=>"D",
+        "types"=>Question::QT_D_DATE,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -210,7 +218,7 @@ class questionHelper
         );
 
         self::$attributes["date_min"] = array(
-            "types"=>"D",
+        "types"=>Question::QT_D_DATE,
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'text',
@@ -230,7 +238,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_prepostfix"] = array(
-            "types"=>"1",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE,
             'category'=>gT('Display'),
             'sortorder'=>112,
             'inputtype'=>'text',
@@ -240,7 +248,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_separators"] = array(
-            "types"=>"1",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE,
             'category'=>gT('Display'),
             'sortorder'=>120,
             'inputtype'=>'text',
@@ -249,7 +257,7 @@ class questionHelper
         );
 
         self::$attributes["dualscale_headerA"] = array(
-            "types"=>"1",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE,
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'text',
@@ -260,7 +268,7 @@ class questionHelper
         );
 
         self::$attributes["dualscale_headerB"] = array(
-            "types"=>"1",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE,
             'category'=>gT('Display'),
             'sortorder'=>111,
             'inputtype'=>'text',
@@ -271,7 +279,7 @@ class questionHelper
         );
 
         self::$attributes["equation"] = array(
-            "types"=>"*",
+        "types"=>Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'textarea',
@@ -282,7 +290,7 @@ class questionHelper
         );
 
         self::$attributes["equals_num_value"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -292,7 +300,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with REAL subqs (in EM) and with FALSE subsq (where subqs are answer â€¦)
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_L_LIST_DROPDOWN.Question::QT_5_POINT_CHOICE.Question::QT_G_GENDER_DROPDOWN.Question::QT_I_LANGUAGE.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Logic'),
             'sortorder'=>200,
             'inputtype'=>'textarea',
@@ -300,9 +308,8 @@ class questionHelper
             "help"=>gT('Enter a boolean equation to validate the whole question.'),
             "caption"=>gT('Question validation equation')
         );
-
         self::$attributes["em_validation_q_tip"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with subqs (in EM) and without
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_L_LIST_DROPDOWN.Question::QT_5_POINT_CHOICE.Question::QT_G_GENDER_DROPDOWN.Question::QT_I_LANGUAGE.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Logic'),
             'sortorder'=>210,
             'inputtype'=>'textarea',
@@ -313,7 +320,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_sq"] = array(
-            "types"=>";:KQSTUN",
+        "types"=>Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
             'category'=>gT('Logic'),
             'sortorder'=>220,
             'inputtype'=>'textarea',
@@ -323,7 +330,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_sq_tip"] = array(
-            "types"=>";:KQSTUN",
+        "types"=>Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
             'category'=>gT('Logic'),
             'sortorder'=>230,
             'inputtype'=>'textarea',
@@ -343,7 +350,7 @@ class questionHelper
         );
 
         self::$attributes["exclude_all_others_auto"] = array(
-            "types"=>"MP",
+        "types"=>Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             'category'=>gT('Logic'),
             'sortorder'=>131,
             'inputtype'=>'switch',
@@ -356,7 +363,7 @@ class questionHelper
         // Map Options
 
         self::$attributes["location_city"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
             'sortorder'=>100,
@@ -368,7 +375,7 @@ class questionHelper
         );
 
         self::$attributes["location_state"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
             'sortorder'=>100,
@@ -380,7 +387,7 @@ class questionHelper
         );
 
         self::$attributes["location_postal"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'readonly_when_active'=>true,
             'category'=>gT('Location'),
             'sortorder'=>100,
@@ -444,7 +451,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapservice"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Location'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
@@ -459,7 +466,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapwidth"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Location'),
             'sortorder'=>102,
             'inputtype'=>'text',
@@ -469,7 +476,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapheight"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Location'),
             'sortorder'=>103,
             'inputtype'=>'text',
@@ -479,7 +486,7 @@ class questionHelper
         );
 
         self::$attributes["location_nodefaultfromip"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Location'),
             'sortorder'=>91,
             'inputtype'=>'singleselect',
@@ -490,7 +497,7 @@ class questionHelper
         );
 
         self::$attributes["location_defaultcoordinates"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Location'),
             'sortorder'=>101,
             'inputtype'=>'text',
@@ -500,7 +507,7 @@ class questionHelper
         );
 
         self::$attributes["location_mapzoom"] = array(
-            "types"=>"S",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Location'),
             'sortorder'=>101,
             'inputtype'=>'text',
@@ -523,7 +530,7 @@ class questionHelper
         );
 
         self::$attributes['hidden'] = array(
-            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+        'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Display'),
             'sortorder'=>101,
             'inputtype'=>'switch',
@@ -534,7 +541,7 @@ class questionHelper
         );
 
         self::$attributes['cssclass'] = array(
-            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Display'),
             'sortorder'=>102,
             'inputtype'=>'text',
@@ -544,7 +551,7 @@ class questionHelper
         );
 
         self::$attributes["max_answers"] = array(
-            "types"=>"MPR1:;ABCEFKQ",
+        "types"=>Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_R_RANKING_STYLE.Question::QT_1_ARRAY_MULTISCALE.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT,
             'category'=>gT('Logic'),
             'sortorder'=>11,
             'inputtype'=>'text',
@@ -554,7 +561,7 @@ class questionHelper
         );
 
         self::$attributes["max_num_value"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -564,7 +571,7 @@ class questionHelper
         );
 
         self::$attributes["max_num_value_n"] = array(
-            "types"=>"NK",
+        "types"=>Question::QT_N_NUMERICAL.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>110,
             'inputtype'=>'text',
@@ -575,7 +582,7 @@ class questionHelper
 
         /* Ranking specific : max DB answer */
         self::$attributes["max_subquestions"] = array(
-            "types"=>"R",
+        "types"=>Question::QT_R_RANKING_STYLE,
             'readonly_when_active'=>true,
             'category'=>gT('Logic'),
             'sortorder'=>12,
@@ -586,7 +593,7 @@ class questionHelper
         );
 
         self::$attributes["maximum_chars"] = array(
-            "types"=>"STUNQK:;",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'integer',
@@ -596,7 +603,7 @@ class questionHelper
         );
 
         self::$attributes["min_answers"] = array(
-            "types"=>"MPR1:;ABCEFKQ",
+        "types"=>Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_R_RANKING_STYLE.Question::QT_1_ARRAY_MULTISCALE.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_Q_MULTIPLE_SHORT_TEXT,
             'category'=>gT('Logic'),
             'sortorder'=>10,
             'inputtype'=>'text',
@@ -606,7 +613,7 @@ class questionHelper
         );
 
         self::$attributes["min_num_value"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -616,7 +623,7 @@ class questionHelper
         );
 
         self::$attributes["min_num_value_n"] = array(
-            "types"=>"NK",
+        "types"=>Question::QT_N_NUMERICAL.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -626,7 +633,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_max"] = array(
-            "types"=>":",
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>112,
             'inputtype'=>'text',
@@ -636,7 +643,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_min"] = array(
-            "types"=>":",
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'text',
@@ -646,7 +653,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_step"] = array(
-            "types"=>":",
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>111,
             'inputtype'=>'float',
@@ -656,7 +663,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_checkbox"] = array(
-            "types"=>":",
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -667,7 +674,7 @@ class questionHelper
         );
 
         self::$attributes["reverse"] = array(
-            "types"=>"D:",
+        "types"=>Question::QT_D_DATE.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -678,7 +685,7 @@ class questionHelper
         );
 
         self::$attributes["num_value_int_only"] = array(
-            "types"=>"NK",
+        "types"=>Question::QT_N_NUMERICAL.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -689,7 +696,7 @@ class questionHelper
         );
 
         self::$attributes["numbers_only"] = array(
-            "types"=>"Q;S*",
+        "types"=>Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Other'),
             'sortorder'=>150,
             'inputtype'=>'switch',
@@ -700,7 +707,7 @@ class questionHelper
         );
 
         self::$attributes['show_totals'] = array(
-            'types' =>    ';',
+        'types' =>    Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category' =>    gT('Other'),
             'sortorder' =>    151,
             'inputtype'    => 'buttongroup',
@@ -716,7 +723,7 @@ class questionHelper
         );
 
         self::$attributes['show_grand_total'] = array(
-            'types' =>    ';',
+        'types' =>    Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category' =>    gT('Other'),
             'sortorder' =>    152,
             'inputtype' =>    'switch',
@@ -725,15 +732,14 @@ class questionHelper
             'help' =>    gT('Show grand total for either columns or rows'),
             'caption' =>    gT('Show grand total')
         );
-
         self::$attributes["input_size"] = array(
-            "types"=>"STUQNMK:;",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
             "help"=>gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."),
-            "caption"=>gT("Text input size")
+            "caption"=>gT("Text input box size")
         );
 
         self::$attributes["input_boxes"] = array(
@@ -748,7 +754,7 @@ class questionHelper
         );
 
         self::$attributes["other_comment_mandatory"] = array(
-            "types"=>"PLW!Z",
+        "types"=>Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_Z_LIST_RADIO_FLEXIBLE,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -759,7 +765,7 @@ class questionHelper
         );
 
         self::$attributes["other_numbers_only"] = array(
-            "types"=>"LMP",
+        "types"=>Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             'category'=>gT('Logic'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -770,7 +776,7 @@ class questionHelper
         );
 
         self::$attributes["other_replace_text"] = array(
-            "types"=>"LMPWZ!",
+        "types"=>Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -781,7 +787,7 @@ class questionHelper
         );
 
         self::$attributes["page_break"] = array(
-            "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Other'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -791,8 +797,19 @@ class questionHelper
             "caption"=>gT('Insert page break in printable view')
         );
 
+        self::$attributes["placeholder"] = array(
+            "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
+            'category'=>gT('Display'),
+            'sortorder'=>12,
+            'inputtype'=>'text',
+            'expression'=>1,
+            'i18n'=>true,
+            "help"=>gT('A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.'),
+            "caption"=>gT('Placeholder answer')
+        );
+
         self::$attributes["prefix"] = array(
-            "types"=>"KNQS",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_N_NUMERICAL.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>10,
             'inputtype'=>'text',
@@ -803,19 +820,19 @@ class questionHelper
         );
 
         self::$attributes["printable_help"] = array(
-            "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_R_RANKING_STYLE.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Display'),
             'sortorder'=>201,
             "inputtype"=>"text",
             'expression'=>1, // Must control if yes
             'i18n'=>true,
             'default'=>"",
-            "help"=>gT('In the printable version replace the relevance equation with this explanation text.'),
-            "caption"=>gT("Relevance help for printable survey")
+            "help"=>gT('In the printable version replace the condition with this explanation text.'),
+            "caption"=>gT("Condition replacement text for printable survey")
         );
 
         self::$attributes["public_statistics"] = array(
-            "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_R_RANKING_STYLE.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Statistics'),
             'sortorder'=>80,
             'inputtype'=>'switch',
@@ -826,7 +843,7 @@ class questionHelper
         );
 
         self::$attributes["random_order"] = array(
-            "types"=>"!ABCEFHKLMOPQRWZ1:;",
+        "types"=>Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_1_ARRAY_MULTISCALE.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'singleselect',
@@ -839,7 +856,7 @@ class questionHelper
         );
 
         self::$attributes["showpopups"] = array(
-            "types"=>"R",
+        "types"=>Question::QT_R_RANKING_STYLE,
             'category'=>gT('Display'),
             'sortorder'=>110,
             'inputtype'=>'switch',
@@ -850,7 +867,7 @@ class questionHelper
         );
 
         self::$attributes["samechoiceheight"] = array(
-            "types"=>"R",
+        "types"=>Question::QT_R_RANKING_STYLE,
             'category'=>gT('Display'),
             'sortorder'=>120,
             'inputtype'=>'switch',
@@ -861,7 +878,7 @@ class questionHelper
         );
 
         self::$attributes["samelistheight"] = array(
-            "types"=>"R",
+        "types"=>Question::QT_R_RANKING_STYLE,
             'category'=>gT('Display'),
             'sortorder'=>121,
             'inputtype'=>'switch',
@@ -872,7 +889,7 @@ class questionHelper
         );
 
         self::$attributes["parent_order"] = array(
-            "types"=>":",
+        "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'text',
@@ -881,7 +898,7 @@ class questionHelper
         );
 
         self::$attributes["slider_layout"] = array(
-        "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>100,
             'inputtype'=>'switch',
@@ -892,7 +909,7 @@ class questionHelper
         );
 
         self::$attributes["slider_min"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>110,
             'inputtype'=>'text',
@@ -902,7 +919,7 @@ class questionHelper
         );
 
         self::$attributes["slider_max"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>120,
             'inputtype'=>'text',
@@ -912,7 +929,7 @@ class questionHelper
         );
 
         self::$attributes["slider_accuracy"] = array(
-            "types"=>"K",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>130,
             'inputtype'=>'text',
@@ -921,30 +938,17 @@ class questionHelper
             "caption"=>gT('Slider accuracy')
         );
 
-        self::$attributes["slider_middlestart"] = array(
-            "types"=>"K",
-            'category'=>gT('Slider'),
-            'sortorder'=>200,
-            'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
-            'default'=>0,
-            "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
-            "caption"=>gT('Slider starts at the middle position')
-        );
-
         self::$attributes["slider_default"] = array(
-            "types"=>"K",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>210,
             'inputtype'=>'text',
             'expression'=>2, // must be controlled : unsure
-            'default'=>"",
             "help"=>gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
             "caption"=>gT('Slider initial value')
         );
-
         self::$attributes["slider_default_set"] = array(
-            "types"=>"K",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>220,
             'inputtype'=>'switch',
@@ -954,8 +958,19 @@ class questionHelper
             "caption"=>gT('Slider initial value set at start')
         );
 
+        self::$attributes["slider_middlestart"] = array(
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+            'category'=>gT('Slider'),
+            'sortorder'=>200,
+            'inputtype'=>'switch',
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
+            'default'=>0,
+            "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
+            "caption"=>gT('Slider starts at the middle position')
+        );
+
         self::$attributes["slider_orientation"] = array(
-            "types"=>"K",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>300,
             'inputtype'=>'buttongroup',
@@ -969,7 +984,7 @@ class questionHelper
         );
 
         self::$attributes["slider_handle"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>320,
             'inputtype'=>'singleselect',
@@ -985,7 +1000,7 @@ class questionHelper
         );
 
         self::$attributes["slider_custom_handle"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>321,
             'inputtype'=>'text',
@@ -995,7 +1010,7 @@ class questionHelper
         );
 
         self::$attributes["slider_rating"] = array(
-            "types"=>"5",
+        "types"=>Question::QT_5_POINT_CHOICE,
             'category'=>gT('Display'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
@@ -1010,7 +1025,7 @@ class questionHelper
         );
 
         self::$attributes["slider_reversed"] = array(
-            "types"=>"K",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>310,
             'inputtype'=>'switch',
@@ -1021,7 +1036,7 @@ class questionHelper
         );
 
         self::$attributes["slider_reset"] = array(
-            "types"=>"K",
+            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>230,
             'inputtype'=>'switch',
@@ -1032,7 +1047,7 @@ class questionHelper
         );
 
         self::$attributes["slider_showminmax"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>150,
             'inputtype'=>'switch',
@@ -1043,7 +1058,7 @@ class questionHelper
         );
 
         self::$attributes["slider_separator"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
             'sortorder'=>160,
             'inputtype'=>'text',
@@ -1053,7 +1068,7 @@ class questionHelper
         );
 
         self::$attributes["suffix"] = array(
-            "types"=>"KNQS",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_N_NUMERICAL.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Display'),
             'sortorder'=>11,
             'inputtype'=>'text',
@@ -1064,7 +1079,7 @@ class questionHelper
         );
 
         self::$attributes["text_input_width"] = array(
-        "types"=>"KNSTU",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_N_NUMERICAL.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
         'category'=>gT('Display'),
         'sortorder'=>100,
         'inputtype'=>'singleselect',
@@ -1089,7 +1104,7 @@ class questionHelper
 
         /* Do EXACTLY the same than text_input_width for K(multinum): must move K here and rename in a DB update and remove it + fix when import*/
         self::$attributes["text_input_columns"] = array(
-        "types"=>"QP",
+        "types"=>Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
         'category'=>gT('Display'),
         'sortorder'=>90,
         'inputtype'=>'singleselect',
@@ -1113,7 +1128,7 @@ class questionHelper
         "caption"=>gT('Text input box width'));
 
         self::$attributes["label_input_columns"] = array(
-        "types"=>"KQ",
+        "types"=>Question::QT_Q_MULTIPLE_SHORT_TEXT,
         'category'=>gT('Display'),
         'sortorder'=>91,
         'inputtype'=>'singleselect',
@@ -1135,7 +1150,7 @@ class questionHelper
             12=>'100%'
         ),
         "help"=>gT('Relative width of the labels'),
-        "caption"=>gT('Label column width'));
+        "caption"=>gT('Label wrapper width'));
 
         /* Same than label_input_columns for multiple choice*/
         self::$attributes["choice_input_columns"] = array(
@@ -1163,7 +1178,7 @@ class questionHelper
         "caption"=>gT('Choice column width'));
 
         self::$attributes["use_dropdown"] = array(
-            "types"=>"1FO",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_O_LIST_WITH_COMMENT,
             'category'=>gT('Display'),
             'sortorder'=>112,
             'inputtype'=>'switch',
@@ -1175,7 +1190,7 @@ class questionHelper
 
 
         self::$attributes["dropdown_size"] = array(
-            "types"=>"!", // TODO add these later?  "1F",
+        "types"=>Question::QT_EXCLAMATION_LIST_DROPDOWN, // TODO add these later?  "1F",
             'category'=>gT('Display'),
             'sortorder'=>200,
             'inputtype'=>'text',
@@ -1185,7 +1200,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_prefix"] = array(
-            "types"=>"!", // TODO add these later?  "1F",
+        "types"=>Question::QT_EXCLAMATION_LIST_DROPDOWN, // TODO add these later?  "1F",
             'category'=>gT('Display'),
             'sortorder'=>201,
             'inputtype'=>'buttongroup',
@@ -1200,7 +1215,7 @@ class questionHelper
         );
 
         self::$attributes["scale_export"] = array(
-            "types"=>"CEFGHLMOPWYZ1!:*",
+        "types"=>Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_1_ARRAY_MULTISCALE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_ASTERISK_EQUATION,
             'category'=>gT('Other'),
             'sortorder'=>100,
             'inputtype'=>'singleselect',
@@ -1214,7 +1229,7 @@ class questionHelper
         );
 
         self::$attributes["choice_title"] = array(
-            "types"=>"R",
+        "types"=>Question::QT_R_RANKING_STYLE,
             'category'=>gT('Other'),
             'sortorder'=>200,
             "inputtype"=>"text",
@@ -1226,7 +1241,7 @@ class questionHelper
         );
 
         self::$attributes["rank_title"] = array(
-            "types"=>"R",
+        "types"=>Question::QT_R_RANKING_STYLE,
             'category'=>gT('Other'),
             'sortorder'=>201,
             "inputtype"=>"text",
@@ -1239,7 +1254,7 @@ class questionHelper
 
         //Timer attributes
         self::$attributes["time_limit"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>90,
             "inputtype"=>"integer",
@@ -1248,7 +1263,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_action"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>92,
             'inputtype'=>'singleselect',
@@ -1263,7 +1278,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_disable_next"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>94,
             "inputtype"=>"switch",
@@ -1274,7 +1289,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_disable_prev"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>96,
             "inputtype"=>"switch",
@@ -1285,7 +1300,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_countdown_message"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>98,
             "inputtype"=>"textarea",
@@ -1296,7 +1311,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_timer_style"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>100,
             "inputtype"=>"textarea",
@@ -1305,7 +1320,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_message_delay"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>102,
             "inputtype"=>"integer",
@@ -1314,7 +1329,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_message"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>104,
             "inputtype"=>"textarea",
@@ -1325,7 +1340,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_message_style"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>106,
             "inputtype"=>"textarea",
@@ -1334,7 +1349,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>108,
             "inputtype"=>"integer",
@@ -1343,7 +1358,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_display_time"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>110,
             "inputtype"=>"integer",
@@ -1352,7 +1367,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_message"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>112,
             "inputtype"=>"textarea",
@@ -1363,7 +1378,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_style"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>114,
             "inputtype"=>"textarea",
@@ -1372,7 +1387,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_2"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>116,
             "inputtype"=>"integer",
@@ -1381,7 +1396,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_2_display_time"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>118,
             "inputtype"=>"integer",
@@ -1390,7 +1405,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_2_message"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>120,
             "inputtype"=>"textarea",
@@ -1401,7 +1416,7 @@ class questionHelper
         );
 
         self::$attributes["time_limit_warning_2_style"] = array(
-            "types"=>"STUXL!",
+        "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_EXCLAMATION_LIST_DROPDOWN,
             'category'=>gT('Timer'),
             'sortorder'=>122,
             "inputtype"=>"textarea",
@@ -1410,7 +1425,7 @@ class questionHelper
         );
 
         self::$attributes["date_format"] = array(
-            "types"=>"D",
+        "types"=>Question::QT_D_DATE,
             'category'=>gT('Input'),
             'sortorder'=>100,
             "inputtype"=>"text",
@@ -1419,7 +1434,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_dates_minute_step"] = array(
-            "types"=>"D",
+        "types"=>Question::QT_D_DATE,
             'category'=>gT('Input'),
             'sortorder'=>100,
             "inputtype"=>"integer",
@@ -1429,7 +1444,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_dates_month_style"] = array(
-            "types"=>"D",
+        "types"=>Question::QT_D_DATE,
             'category'=>gT('Display'),
             'sortorder'=>100,
             "inputtype"=>"buttongroup",
@@ -1444,7 +1459,7 @@ class questionHelper
         );
 
         self::$attributes["show_title"] = array(
-            "types"=>"|",
+        "types"=>Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('File metadata'),
             'sortorder'=>124,
             "inputtype"=>"switch",
@@ -1455,7 +1470,7 @@ class questionHelper
         );
 
         self::$attributes["show_comment"] = array(
-            "types"=>"|",
+        "types"=>Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('File metadata'),
             'sortorder'=>126,
             "inputtype"=>"switch",
@@ -1467,7 +1482,7 @@ class questionHelper
 
 
         self::$attributes["max_filesize"] = array(
-            "types"=>"|",
+        "types"=>Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Other'),
             'sortorder'=>128,
             "inputtype"=>"integer",
@@ -1477,7 +1492,7 @@ class questionHelper
         );
 
         self::$attributes["max_num_of_files"] = array(
-            "types"=>"|",
+        "types"=>Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Other'),
             'sortorder'=>130,
             "inputtype"=>"integer",
@@ -1488,7 +1503,7 @@ class questionHelper
         );
 
         self::$attributes["min_num_of_files"] = array(
-            "types"=>"|",
+        "types"=>Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Other'),
             'sortorder'=>132,
             "inputtype"=>"integer",
@@ -1499,7 +1514,7 @@ class questionHelper
         );
 
         self::$attributes["allowed_filetypes"] = array(
-            "types"=>"|",
+        "types"=>Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Other'),
             'sortorder'=>134,
             "inputtype"=>"text",
@@ -1509,7 +1524,7 @@ class questionHelper
         );
 
         self::$attributes["random_group"] = array(
-            "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+        "types"=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Logic'),
             'sortorder'=>180,
             'inputtype'=>'text',
@@ -1522,7 +1537,7 @@ class questionHelper
         // This attribute lets authors control whether missing values should be allowed in those cases without needing to set min_answers
         // Existing surveys will use the old behavior, but if the author edits the question, the default will be the new behavior.
         self::$attributes["value_range_allows_missing"] = array(
-            "types"=>"K",
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Input'),
             'sortorder'=>100,
             "inputtype"=>"switch",
@@ -1549,7 +1564,7 @@ class questionHelper
         */
 
         self::$attributes["display_type"] = array(
-            "types"=>"YG",
+        "types"=>Question::QT_Y_YES_NO_RADIO.Question::QT_G_GENDER_DROPDOWN,
             'category'=>gT('Display'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
@@ -1562,16 +1577,72 @@ class questionHelper
             "caption"=>gT('Display type')
         );
 
-        self::$attributes["question_template"] = array(
-            "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
-            'category'=>gT('Display'),
-            'sortorder'=>100,
-            'inputtype'=>'question_template',
-            'options'=>array(),
-            'default' => "core",
-            "help"=>gT('Use a customized question theme for this question'),
-            "caption"=>gT('Question theme')
-        );
+        // self::$attributes["question_template"] = array(
+        //     "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+        //     'category'=>gT('Display'),
+        //     'sortorder'=>100,
+        //     'inputtype'=>'question_template',
+        //     'options'=>array(),
+        //     'default' => "core",
+        //     "help"=>gT('Use a customized question theme for this question'),
+        //     "caption"=>gT('Question theme')
+        // );
+
+        return self::$attributes;
+    }
+
+
+    /**
+     * Return the question Theme custom attributes values
+     *
+     * @param      $type
+     * @param      $sQuestionThemeName : question theme name
+     *
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionThemeAttributeValues($type, $sQuestionThemeName = null)
+    {
+        $aQuestionAttributes = array();
+        $additionalAttributes = array();
+
+        $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
+
+        $xmlConfigPath = App()->getConfig('rootdir') .'/'. $sCoreTypeXmlPath['xml_path'] . '/config.xml';
+        libxml_disable_entity_loader(false);
+        $oCoreConfig = simplexml_load_file($xmlConfigPath);
+        $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
+        if ($sQuestionThemeName !== null) {
+            $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
+            if (!empty($questionTheme)) {
+                $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
+                $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+            } else {
+                $attributes = json_decode(json_encode((array)$oCoreConfig->attributes), true);
+            }
+        }
+        libxml_disable_entity_loader(true);
+
+        if (!empty($attributes)) {
+            if (!empty($attributes['attribute']['name'])) {
+                // Only one attribute set in config : need an array of attributes
+                $attributes['attribute'] = array($attributes['attribute']);
+            }
+            // Create array of attribute with name as key
+            $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+            foreach ($attributes['attribute'] as $attribute) {
+                if (!empty($attribute['name'])) {
+                    // inputtype is text by default
+                    $additionalAttributes[$attribute['name']] = array_merge($defaultQuestionAttributeValues, $attribute);
+                }
+            }
+        }
+        if (!isset($aCoreAttributes['attributes']['attribute'])) {
+            throw new Exception("Question type attributes not available!");
+        }
+
+        foreach ($aCoreAttributes['attributes']['attribute'] as $aCoreAttribute) {
+            $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
+        }
 
         /**
          * New event to allow plugin to add own question attribute (settings)
@@ -1592,74 +1663,16 @@ class questionHelper
         $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
         /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
-        $questionAttributes = (array) $result->get('questionAttributes');
-        self::$attributes = array_merge(self::$attributes, $questionAttributes);
+        $eventAttributes = (array) $result->get('questionAttributes');
 
-        return self::$attributes;
-    }
-
-    /**
-     * Return the question attributes definition by question type
-     * @param $sType: type pof question
-     * @return array : the attribute settings for this question type
-     */
-    public static function getQuestionAttributesSettings($sType)
-    {
-        if (!isset(self::$questionAttributesSettings[$sType])) {
-            self::$questionAttributesSettings[$sType] = array();
-            self::getAttributesDefinitions(); /* we need to have self::$attributes */
-            /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter(self::$attributes, function($attribute) use ($sType) {
-                return stripos($attribute['types'], $sType) !== false;
-            });
-            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
-                      $settings,
-                      array("name"=>$attribute)
-                  );
-            }
-        }
-        return self::$questionAttributesSettings[$sType];
-    }
-
-    /**
-     * Return the question Theme custom attributes values
-     * @param $sQuestionThemeName: question theme name
-     * @return array : the attribute settings for this question type
-     */
-    public static function getQuestionThemeAttributeValues($sQuestionThemeName = null, $question_template = null)
-    {
-        libxml_disable_entity_loader(false);
-
-        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
-
-        $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
-        $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
-        libxml_disable_entity_loader(true);
-
-        if(!empty($custom_attributes['attribute']['name'])) {
-            // Only one attribute set in config : need an array of attributes
-            $custom_attributes['attribute'] = array($custom_attributes['attribute']);
-        }
-
-        $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
-        $additionalAttributes = array();
-        // Create array of attribute with name as key
-        foreach($custom_attributes['attribute'] as $customAttribute) {
-            if(!empty($customAttribute['name'])) {
-                $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
-            }
-        }
-        return $additionalAttributes;
+        return array_merge($aQuestionAttributes, $additionalAttributes, $eventAttributes);
     }
 
     /**
      * Return the question Theme preview URL
      * @param $sType: type pof question
      * @return string : question theme preview URL
+     * @deprecated use QuestionTheme::getQuestionThemePreviewUrl
      */
     public static function getQuestionThemePreviewUrl($sType = null)
     {
@@ -1675,7 +1688,7 @@ class questionHelper
             $preview_filename = '.png';
         }
 
-        return Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+        return App()->getConfig("imageurl").'/screenshots/'.$preview_filename;
     }
 
 }

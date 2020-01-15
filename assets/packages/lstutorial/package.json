@@ -35,8 +35,6 @@
     "uglifycss": "^0.0.29"
   },
   "dependencies": {
-    "bootstrap-tour": "^0.12.0",
-    "gulp": "^3.9.1",
     "lodash": "^4.17.4",
     "popper.js": "^1.15.0"
   },

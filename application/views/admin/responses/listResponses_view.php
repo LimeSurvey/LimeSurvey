@@ -184,24 +184,29 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             );
                         }
                         $filterableColumns['startlanguage'] = 'startlanguage';
+                        $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
 
-                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
-                    // All other columns are based on the questions.
-                    // An array to control unicity of $code (EM code)
-                        foreach($model->metaData->columns as $column)
-                        {
-                            if(!in_array($column->name, $aDefaultColumns))
-                            {
-                                $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
+                        // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
+                        // All other columns are based on the questions.
+                        // An array to control unicity of $code (EM code)
+                        foreach ($model->metaData->columns as $column) {
+                            if (!in_array($column->name, $aDefaultColumns)) {
+                                /* Add encryption symbole to question title for table header (if question is encrypted) */
+                                $encryptionSymbol = '';
+                                if (isset($fieldmap[$column->name]['encrypted']) && $fieldmap[$column->name]['encrypted'] == 'Y') {
+                                    $encryptionSymbol = ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                                }
+
+                                $colName = viewHelper::getFieldCode($fieldmap[$column->name], array('LEMcompat' => true)); // This must be unique ......
                                 $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
                                 /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
-                                $colDetails = viewHelper::getFieldText($fieldmap[$column->name],array('abbreviated'=>$model->ellipsize_header_value,'separator'=>array('<br>','')));
+                                $colDetails = viewHelper::getFieldText($fieldmap[$column->name], array('abbreviated' => $model->ellipsize_header_value, 'separator' => array('<br>', '')));
                                 /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
-                                $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>",'separator'=>array('','<br>')));
+                                $colTitle = viewHelper::getFieldText($fieldmap[$column->name], array('afterquestion' => "<hr>", 'separator' => array('', '<br>')));
 
                                 if (!isset($filteredColumns) || in_array($column->name, $filteredColumns)) {
                                     $aColumns[] = array(
-                                        'header' => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="' . $colName . '" data-content="' . CHtml::encode($colTitle) . '" data-html="1" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . '</div>',
+                                        'header' => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="' . $colName . '" data-content="' . CHtml::encode($colTitle) . '" data-html="1" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . $encryptionSymbol . '</div>',
                                         'headerHtmlOptions' => array('style' => 'min-width: 350px;'),
                                         'name' => $column->name,
                                         'type' => 'raw',

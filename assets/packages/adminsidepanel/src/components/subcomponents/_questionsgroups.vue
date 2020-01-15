@@ -15,9 +15,14 @@ export default {
         };
     },
     computed: {
+        allowOrganizer() {return this.$store.state.allowOrganizer===1},
         surveyIsActive() {return window.SideMenuData.isActive; },
-        createQuestionGroupLink() { return window.SideMenuData.createQuestionGroupLink },
-        createQuestionLink() { return window.SideMenuData.createQuestionLink },
+        createQuestionGroupLink() { 
+            return window.SideMenuData.createQuestionGroupLink
+        },
+        createQuestionLink() { 
+            return window.SideMenuData.createQuestionLink 
+        },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
             return containerHeight - 100;
@@ -52,6 +57,18 @@ export default {
         }
     },
     methods: {
+        toggleOrganizer(){
+            this.$store.dispatch('unlockLockOrganizer');
+        },
+        collapseAll() {
+            this.active = [];
+        },
+        createFullQuestionLink() { 
+            if(LS.reparsedParameters().combined.gid) {
+                return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid}); 
+            }
+            return LS.createUrl(this.createQuestionLink, {}); 
+        },
         questionHasCondition(question) {
             return question.relevance !== '1';
         },
@@ -59,7 +76,7 @@ export default {
             let classes = "";
             classes +=
                 this.$store.state.lastQuestionOpen === question.qid
-                    ? "selected"
+                    ? "selected activated"
                     : " ";
 
             if (this.draggedQuestion !== null)
@@ -72,7 +89,8 @@ export default {
         },
         questionGroupItemClasses(questionGroup) {
             let classes = "";
-            classes += this.isActive(questionGroup.gid) ? "selected" : " ";
+            classes += this.isOpen(questionGroup.gid) ? " selected " : " ";
+            classes += this.isActive(questionGroup.gid) ? " activated " : " ";
 
             if (this.draggedQuestionGroup !== null)
                 classes +=
@@ -91,7 +109,10 @@ export default {
                 ["asc"]
             );
         },
-        isActive(index) {
+        isActive(gid) {
+            return gid == this.$store.state.lastQuestionGroupOpen;
+        },
+        isOpen(index) {
             const result = LS.ld.indexOf(this.active, index) != -1;
 
             if (this.questiongroupDragging === true) return false;
@@ -99,7 +120,7 @@ export default {
             return result;
         },
         toggleActivation(index) {
-            if (this.isActive(index)) {
+            if (this.isOpen(index)) {
                 let removed = LS.ld.remove(this.active, idx => {
                     return idx === index;
                 });
@@ -110,7 +131,7 @@ export default {
             this.updatePjaxLinks();
         },
         addActive(questionGroupId) {
-            if (!this.isActive(questionGroupId)) {
+            if (!this.isOpen(questionGroupId)) {
                 this.active.push(questionGroupId);
             }
             this.$store.commit("questionGroupOpenArray", this.active);
@@ -231,32 +252,50 @@ export default {
 };
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
         <div 
-            class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar" 
+            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar" 
             v-if="createAllowance != ''"
         >
-            <a 
-                id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
-                v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
-                :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
-            >
-                <i class="fa fa-plus"></i>&nbsp;
-                {{"createQuestionGroup"|translate}}
-            </a>
-            <a 
-                id="adminsidepanel__sidebar--selectorCreateQuestion" 
-                v-if="createQuestionAllowed" 
-                :href="createQuestionLink" 
-                class="btn btn-small btn-default ls-space margin right-10 pjax"
-            >
-                <i class="fa fa-plus-circle"></i>&nbsp;
-                {{"createQuestion"|translate}}
-            </a>
+            <div class="scoped-toolbuttons-left">
+                <a 
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
+                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
+                    :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
+                >
+                    <i class="fa fa-plus"></i>&nbsp;
+                    {{"createPage"|translate}}
+                </a>
+                <a 
+                    id="adminsidepanel__sidebar--selectorCreateQuestion" 
+                    v-if="createQuestionAllowed" 
+                    :href="createFullQuestionLink()" 
+                    class="btn btn-small btn-default ls-space margin right-10 pjax"
+                >
+                    <i class="fa fa-plus-circle"></i>&nbsp;
+                    {{"createQuestion"|translate}}
+                </a>
+            </div>
+            <div class="scoped-toolbuttons-right">
+                <button
+                    class="btn btn-default"
+                    @click="toggleOrganizer"
+                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
+                >
+                    <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
+                </button>
+                <button
+                    class="btn btn-default"
+                    @click="collapseAll"
+                    :title="translate('collapseAll')"
+                >
+                    <i class="fa fa-compress" />
+                </button>
+            </div>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
             <ul 
-                class="list-group col-12"  
+                class="list-group col-12 questiongroup-list-group"  
                 @drop="dropQuestionGroup($event, questiongroup)"
             >
                 <li 
@@ -270,7 +309,8 @@ export default {
                         <i 
                             v-if="!surveyIsActive"
                             class="fa fa-bars bigIcons dragPointer" 
-                            draggable="true"
+                            :class=" allowOrganizer ? '' : 'disabled' "
+                            :draggable="allowOrganizer"
                             @dragend="endDraggingGroup($event, questiongroup)" 
                             @dragstart="startDraggingGroup($event, questiongroup)"
                             @click.stop.prevent="()=>false"
@@ -294,12 +334,12 @@ export default {
                                 {{questiongroup.questions.length}}
                             </span>
                         </a>
-                        <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
+                        <i class="fa bigIcons" v-bind:class="isOpen(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                     </div>
                     <transition name="slide-fade-down">
                         <ul 
                             class="list-group background-muted padding-left question-question-list" 
-                            v-if="isActive(questiongroup.gid)" 
+                            v-if="isOpen(questiongroup.gid)" 
                             @drop="dropQuestion($event, question)"
                         >
                             <li 
@@ -317,7 +357,8 @@ export default {
                                     <i 
                                         v-if="!$store.state.surveyActiveState"
                                         class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag" 
-                                        draggable="true"
+                                        :class=" allowOrganizer ? '' : 'disabled' "
+                                        :draggable="allowOrganizer"
                                         @dragend="endDraggingQuestion($event, question)" 
                                         @dragstart="startDraggingQuestion($event, question, questiongroup)"
                                         @click.stop.prevent="()=>false"
@@ -347,6 +388,24 @@ export default {
 </template>
 
 <style lang="scss">
+.scoped-bottom-bar {
+    align-self: flex-end;
+}
+.scoped-toolbuttons-left {
+    flex: 3 0 auto;
+    align-self: flex-start;
+    .btn {
+        flex: 1;
+    }
+}
+.scoped-toolbuttons-right {
+    flex: 2 1 auto;
+    align-self: flex-end;
+    white-space: nowrap;
+    .btn {
+        float: right;
+    }
+}
 .list-group-item.question-question-list-item .editIcon {
     margin: 10px 10px 10px 5px;
 }

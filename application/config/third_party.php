@@ -1,6 +1,7 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+/** @var array $userConfig */
 
 /**
  * This file contains package definition for third party libraries.
@@ -269,6 +270,7 @@ return array(
     'ace' => array(
         'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             $minFolder.'/ace.js'
         ),
@@ -389,10 +391,11 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
-        )
-    ),
+            )
+        ),
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
+        'devBaseUrl' => 'third_party/jquery-actual',
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
             'jquery.actual'.$minVersion.'.js'

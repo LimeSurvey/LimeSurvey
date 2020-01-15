@@ -7,6 +7,10 @@
 */
 
 $templateData['oSurvey'] = $oSurvey;
+$templateData['oSurveyOptions'] = $oSurvey->oOptionLabels;
+$templateData['bShowInherited'] = $oSurvey->showInherited;
+$templateData['bShowAllOptions'] = true;
+$templateData['optionsOnOff'] = $optionsOnOff;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyGeneralSettings');
@@ -89,5 +93,21 @@ $('#".$entryData['name']."').on('submit.editLocalsettings', function(e){
     });
     return false;
 });
+
+$('.text-option-inherit').on('change', function(e){
+    var newValue = $(this).find('.btn.active input').val();
+    var parent = $(this).parent().parent();
+    var inheritValue = parent.find('.inherit-edit').data('inherit-value');
+    var savedValue = parent.find('.inherit-edit').data('saved-value');
+    if (newValue == 'Y'){
+        parent.find('.inherit-edit').addClass('hide').removeClass('show').val(inheritValue);
+        parent.find('.inherit-readonly').addClass('show').removeClass('hide');
+    } else {
+        var inputValue = (savedValue === inheritValue) ? \"\" : savedValue;
+        parent.find('.inherit-edit').addClass('show').removeClass('hide').val(inputValue);
+        parent.find('.inherit-readonly').addClass('hide').removeClass('show');
+    }
+});
 ", LSYii_ClientScript::POS_POSTSCRIPT);
+
 ?>

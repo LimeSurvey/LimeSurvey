@@ -51,7 +51,9 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
                 <?php foreach($aQuotaItems[$oQuota->id] as $aQuotaItem){
                     $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array(
                         'oQuotaMember'=>$aQuotaItem['oQuotaMember'],
-                        'data'=>$aQuotaItem));
+                        'data'=>$aQuotaItem,
+                        'sBaseLang'=>$oSurvey->language)
+                    );
                 }?>
             <?php } else {?>
                 <tr><td class="text-danger" colspan="3"><?php eT("No answers have been set for this quota.");?></td></tr>

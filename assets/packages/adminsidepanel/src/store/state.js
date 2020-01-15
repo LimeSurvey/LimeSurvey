@@ -24,6 +24,7 @@ export default  function(userid) {
         topmenus: null,
         bottommenus: null,
         surveyActiveState: false,
-        toggleKey: Math.floor(Math.random()*10000)+'--key'
+        toggleKey: Math.floor(Math.random()*10000)+'--key',
+        allowOrganizer: true
     };
 };

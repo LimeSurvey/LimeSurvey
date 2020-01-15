@@ -164,12 +164,17 @@ function templatechange($element) {
     $('#preview-image-container').html(
         '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>'
     );
+    let templateName = $element.val();
+    if (templateName === 'inherit')
+    {
+        templateName = $element.data('inherit-template-name');
+    }
     $.ajax({
         url: $element.data('updateurl'),
-        data: {templatename : $element.val()},
+        data: {templatename: templateName},
         method: 'POST',
         dataType: 'json',
-        success: function(data){
+        success: function (data) {
             $('#preview-image-container').html(data.image);
         },
         error: console.ls.error

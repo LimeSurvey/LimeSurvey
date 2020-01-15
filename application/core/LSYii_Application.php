@@ -37,14 +37,14 @@ class LSYii_Application extends CWebApplication
     protected $config = array();
 
     /**
-     * @var LimesurveyApi
+     * @var \LimeSurvey\PluginManager\LimesurveyApi
      */
     protected $api;
 
     /**
      * If a plugin action is accessed through the PluginHelper,
      * store it here.
-     * @var iPlugin
+     * @var \LimeSurvey\PluginManager\iPlugin
      */
     protected $plugin;
 
@@ -145,12 +145,16 @@ class LSYii_Application extends CWebApplication
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/security.php')) {
+            $securityConfig = require(  $configdir .'/security.php');
+            if (is_array($securityConfig)) {
+                $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
         if (file_exists( $configdir .  '/config.php')) {
             $userConfigs = require(  $configdir .'/config.php');
             if (is_array($userConfigs['config'])) {
-
                 $this->config = array_merge($this->config, $userConfigs['config']);
-
             }
         }
 
@@ -161,8 +165,13 @@ class LSYii_Application extends CWebApplication
         /* User file config */
         $userConfigs = require(__DIR__.'/../config/config.php');
         if (is_array($userConfigs['config'])) {
-             $this->config = array_merge($this->config, $userConfigs['config']);
+            $this->config = array_merge($this->config, $userConfigs['config']);
         }
+
+        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
+           it would be decrypted in LimeMailer when needed */
+        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+
         /* Check DB : let throw error if DB is broken issue #14875 */
         $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
         /* No table settings_global : not installable or updatable */
@@ -185,7 +194,8 @@ class LSYii_Application extends CWebApplication
             $this->getConfig('dbversionnumber',0).
             $this->getConfig('customassetversionnumber',1)
         );
-    }
+
+}
     /**
      * Loads a helper
      *
@@ -391,6 +401,7 @@ class LSYii_Application extends CWebApplication
         }
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
+            /* Can restrict to admin ? */
             /* debug ro 2 : always send Yii debug even 404 */
             return;
         }
@@ -452,39 +463,39 @@ class LSYii_Application extends CWebApplication
         $files = array();
 
         foreach ($iterator as $info) {
-          $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
-          if ($ext=='xml') {
-            $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
-          }
+            $ext = pathinfo($info->getPathname(), PATHINFO_EXTENSION);
+            if ($ext == 'xml') {
+                $CustomTwigExtensionsManifestFiles[] = $info->getPathname();
+            }
         }
 
         // Then we read each manifest and add their functions to Twig Component
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
 
-        foreach ($CustomTwigExtensionsManifestFiles as $ctemFile){
-          $sXMLConfigFile        = file_get_contents( realpath ($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-          $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+        foreach ($CustomTwigExtensionsManifestFiles as $ctemFile) {
+            $sXMLConfigFile = file_get_contents(realpath($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $oXMLConfig = simplexml_load_string($sXMLConfigFile);
 
-          // Get the functions.
-          // TODO: get the tags, filters, etc
-          $aFunctions = (array) $oXMLConfig->xpath("//function");
-          $extensionClass =  (string) $oXMLConfig->metadata->name;
+            // Get the functions.
+            // TODO: get the tags, filters, etc
+            $aFunctions = (array)$oXMLConfig->xpath("//function");
+            $extensionClass = (string)$oXMLConfig->metadata->name;
 
-          if (!empty($aFunctions) && !empty($extensionClass) ){
+            if (!empty($aFunctions) && !empty($extensionClass)) {
 
-            // We add the extension to twig user extensions to load
-            // See: https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/third_party/Twig/ETwigViewRenderer.php#L125-L133
-            $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
+                // We add the extension to twig user extensions to load
+                // See: https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/third_party/Twig/ETwigViewRenderer.php#L125-L133
+                $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;
 
-            // Then we add the functions to the Twig Component and its sandbox
-            // See:  https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/application/config/internal.php#L233-#L398
-            foreach($aFunctions as $function){
-              $functionNameInTwig = (string) $function['twig-name'];
-              $functionNameInExt  = (string) $function['extension-name'];
-              $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] =  $functionNameInExt;
-              $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
+                // Then we add the functions to the Twig Component and its sandbox
+                // See:  https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/application/config/internal.php#L233-#L398
+                foreach ($aFunctions as $function) {
+                    $functionNameInTwig = (string)$function['twig-name'];
+                    $functionNameInExt = (string)$function['extension-name'];
+                    $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] = $functionNameInExt;
+                    $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
+                }
             }
-          }
         }
 
         libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server

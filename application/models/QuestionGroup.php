@@ -20,19 +20,21 @@
  *
  * @property integer $gid ID
  * @property integer $sid Survey ID
- * @property string $group_name Question group display name
  * @property integer $group_order Group order number (max 100 chars)
- * @property string $description Group display description
- * @property string $language Language code (eg: 'en')
  * @property string $randomization_group  Randomization group
  * @property string $grelevance Group's relevane equation
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
+ * @property QuestionL10n[] $questionGroupL10ns
  */
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+    public $group_name;
+    public $language;
+    public $description;
+
     /**
      * @inheritdoc
      * @return QuestionGroup
@@ -53,34 +55,18 @@ class QuestionGroup extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('gid', 'language');
+        return 'gid';
     }
 
 
     /** @inheritdoc */
     public function rules()
     {
-        return array(
-            array('gid', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                'condition'=>'language=:language',
-                'params'=>array(':language'=>$this->language)
-                ),
-                'message'=>'{attribute} "{value}" is already in use.'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
-            array('group_name,description', 'LSYii_Validators'),
-            array('group_name', 'length', 'min' => 0, 'max'=>100),
-            array('group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-        );
-    }
-
-
-    /** @inheritdoc */
-    public function attributeLabels()
-    {
-        return array(
-            'language' => gt('Language'),
-            'group_name' => gt('Group name')
-        );
+        return [
+            ['group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true],
+            ['grelevance', 'safe'],
+            ['randomization_group', 'safe']
+        ];
     }
 
     /** @inheritdoc */
@@ -88,39 +74,28 @@ class QuestionGroup extends LSActiveRecord
     {
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'questions' => array(self::HAS_MANY, 'Question', 'gid, language', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC')
+            'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
+            'questionGroupL10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
-    }
-
-
-    public function getAllRecords($condition = false, $order = false, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
-
-        if ($condition != false) {
-            $query->where($condition);
-        }
-
-        if ($order != false) {
-            $query->order($order);
-        }
-
-        return ($return_query) ? $query->queryAll() : $query;
-    }
+    }    
+ 
 
     /**
-     * @param integer $sid
-     * @param string $lang
+     * @param integer $iSurveyId
      * @param int $position
      */
-    public function updateGroupOrder($sid, $lang, $position = 0)
+    public function updateGroupOrder($iSurveyId, $position = 0)
     {
-        $data = Yii::app()->db->createCommand()->select('gid')
-            ->where(array('and', 'sid=:sid', 'language=:language'))
+        $iSurveyId = (int) $iSurveyId;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $language = $oSurvey->language;
+        $data = Yii::app()->db->createCommand()->select('g.gid')
+            ->where('g.sid=:sid AND gl.language = :language')
             ->order('group_order, group_name ASC')
-            ->from('{{groups}}')
-            ->bindParam(':sid', $sid, PDO::PARAM_INT)
-            ->bindParam(':language', $lang, PDO::PARAM_STR)
+            ->from('{{groups}} g')
+            ->join('{{group_l10ns}} gl', 'g.gid=gl.gid')
+            ->bindParam(':sid', $iSurveyId, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
             ->query();
 
         $position = intval($position);
@@ -139,7 +114,6 @@ class QuestionGroup extends LSActiveRecord
         foreach ($aSurveyLanguages as $sSurveyLanguage) {
             $oCriteria=new CDbCriteria;
             $oCriteria->compare('sid',$iSurveyId);
-            $oCriteria->compare('language',$sSurveyLanguage);
             $oCriteria->order = 'group_order ASC';
 
             $aQuestiongroups = QuestionGroup::model()->findAll($oCriteria);
@@ -163,6 +137,7 @@ class QuestionGroup extends LSActiveRecord
      *
      * @param array $data
      * @return bool|int
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
@@ -175,55 +150,6 @@ class QuestionGroup extends LSActiveRecord
         } else {
             return $group->gid;
         }
-    }
-
-
-    /**
-     * This functions insert question group data in the form of array('<grouplanguage>'=>array( <array of fieldnames => values >))
-     * It will take care of maintaining the group ID
-     *
-     * @param mixed $aQuestionGroupData
-     * @return bool|int
-     */
-    public function insertNewGroup($aQuestionGroupData)
-    {
-        $aFirstRecord = reset($aQuestionGroupData);
-        $iSurveyID = $aFirstRecord['sid'];
-        $sBaseLangauge = Survey::model()->findByPk($iSurveyID)->language;
-        $aAdditionalLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $aSurveyLanguages = array($sBaseLangauge) + $aAdditionalLanguages;
-        $bFirst = true;
-        $iGroupID = null;
-        foreach ($aSurveyLanguages as $sLanguage) {
-            if ($bFirst) {
-                $iGroupID = $this->insertRecords($aQuestionGroupData[$sLanguage]);
-                $bFirst = false;
-            } else {
-                $aQuestionGroupData[$sLanguage]['gid'] = $iGroupID;
-                switchMSSQLIdentityInsert('groups', true);
-                $this->insertRecords($aQuestionGroupData[$sLanguage]);
-                switchMSSQLIdentityInsert('groups', false);
-            }
-        }
-        return $iGroupID;
-    }
-
-
-    /**
-     * @param int $surveyid
-     * @return array
-     */
-    public function getGroups($surveyid)
-    {
-        $language = Survey::model()->findByPk($surveyid)->language;
-        return Yii::app()->db->createCommand()
-            ->select(array('gid', 'group_name'))
-            ->from($this->tableName())
-            ->where(array('and', 'sid=:surveyid', 'language=:language'))
-            ->order('group_order asc')
-            ->bindParam(":language", $language, PDO::PARAM_STR)
-            ->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
-            ->query()->readAll();
     }
 
     /**
@@ -243,6 +169,7 @@ class QuestionGroup extends LSActiveRecord
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$groupId));
         return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
     }
 
@@ -256,6 +183,32 @@ class QuestionGroup extends LSActiveRecord
     public function getGroupDescription($iGroupId, $sLanguage)
     {
         return $this->findByPk(array('gid' => $iGroupId, 'language' => $sLanguage))->description;
+    }
+
+    /**
+     * Get the internationalized group name from the L10N Table
+     *
+     * @param string $sLanguage
+     * @return string
+     */
+    public function getGroupNameI10N($sLanguage) {
+        if (isset($this->questionGroupL10ns[$sLanguage])) {
+            return $this->questionGroupL10ns[$sLanguage]->group_name;
+        }
+        return '';
+    }
+
+    /**
+     * Get the internationalized group description from the L10N Table
+     *
+     * @param string $sLanguage
+     * @return string
+     */
+    public function getGroupDescriptionI10N($sLanguage) {
+        if (isset($this->questionGroupL10ns[$sLanguage])) {
+            return $this->questionGroupL10ns[$sLanguage]->description;
+        }
+        return '';
     }
 
     /**
@@ -388,6 +341,8 @@ class QuestionGroup extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
+        $criteria->with = array('questionGroupL10ns'=>array("select"=>"group_name, description"));
+        $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';
         $criteria->params = (array(':surveyid'=>$this->sid, ':language'=>$this->language));
         $criteria->compare('group_name', $this->group_name, true);
@@ -404,6 +359,28 @@ class QuestionGroup extends LSActiveRecord
         return $dataProvider;
     }
 
+    /*
+     * Get primary Question group title
+     */
+    public function getPrimaryTitle()
+    {
+        $survey = Survey::model()->findByPk($this->sid);
+        $baselang = $survey->language;
+        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questionGroupL10ns[$baselang]->group_name;
+    }
+
+    /*
+     * Get primary Question group description
+     */
+    public function getPrimaryDescription()
+    {
+        $survey = Survey::model()->findByPk($this->sid);
+        $baselang = $survey->language;
+        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questionGroupL10ns[$baselang]->description;
+    }
+
     /**
      * Make sure we don't save a new question group
      * while the survey is active.
@@ -413,9 +390,9 @@ class QuestionGroup extends LSActiveRecord
     protected function beforeSave()
     {
         if (parent::beforeSave()) {
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-            if ($surveyIsActive && $this->getIsNewRecord()) {
-/* And for multi lingual, when add a new language ? */
+            $survey = Survey::model()->findByPk($this->sid);
+            if (!empty($survey) && $survey->isActive && $this->getIsNewRecord()) {
+                /* And for multi lingual, when add a new language ? */
                 $this->addError('gid', gT("You can not add a group if survey is active."));
                 return false;
             }
@@ -447,10 +424,20 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithoutQuestions($surveyid)
     {
+        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         $sQuery = "select count(*) from {{groups}}
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is null";
-        return Yii::app()->db->createCommand($sQuery)->queryScalar();
+        $result =  Yii::app()->db->createCommand($sQuery)->queryScalar();
+
+        EmCacheHelper::set($cacheKey, $result);
+
+        return $result;
     }
 
     /**
@@ -460,10 +447,19 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
+        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         $sQuery = "select count(DISTINCT {{groups}}.gid) from {{groups}}
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is not null";
-        return Yii::app()->db->createCommand($sQuery)->queryScalar();
-    }
+        $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
+        EmCacheHelper::set($cacheKey, $result);
+
+        return $result;
+    }
 }

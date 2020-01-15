@@ -43,7 +43,7 @@
             <ul id="sortable-choice-{{qId}}" class="sortable-choice sortable-list list-group">
                 {% for ansrow in  answers %}
                     <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item grabable sortable-enable" data-value="{{ansrow.code}}">
-                        {{ansrow.answer}}
+                        {{ processString(ansrow.answer) }}
                     </li>
                 {% endfor %}
                 <li class="hidden ls-remove"></li>
@@ -61,8 +61,8 @@
 {% set script %}
 try{
  var ranking{{qId}} = new RankingQuestion({
-        max_answers      : "{{max_answers}}",
-        min_answers      : "{{min_answers}}",
+        max_answers      : "{{ processString("{" ~ max_answers ~ "}", 1) }}",
+        min_answers      : "{{ processString("{" ~ min_answers ~ "}", 1) }}",
         showpopups       : "{{showpopups}}",
         samechoiceheight : "{{samechoiceheight}}",
         samelistheight   : "{{samelistheight}}",
@@ -73,6 +73,10 @@ try{
 } catch(e){}
 {% endset %}
 {{ registerPackage('question-ranking') }}
+{{ registerScript( 
+    'RankingQuestionTranslate'~qId, 
+    'LSvar.lang.rankhelp="' ~ gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.") ~ '";', 'POS_BEGIN') 
+}}
 {{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
 
 

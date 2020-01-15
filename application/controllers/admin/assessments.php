@@ -35,14 +35,14 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
-            $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $languages = $oSurvey->allLanguages;
+            $surveyLanguage = $oSurvey->language;
 
             Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyID}";
 
-            array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
             Yii::app()->setConfig("baselang", $surveyLanguage);
             Yii::app()->setConfig("assessmentlangs", $languages);
@@ -195,7 +195,6 @@ class Assessments extends Survey_Common_Action
             }
             $action = 'assessmentedit';
             $aData['action'] = $action;
-
             Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
         }
     }
@@ -220,12 +219,12 @@ class Assessments extends Survey_Common_Action
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {
             $aData['asessementNotActivated'] = array(
-                'title' => gT("Assessments mode not activated"), 
+                'title' => gT("Assessments mode not activated"),
                 'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
                     . gt("If you want to activate it click here:").'<br/>'
                     . '<a type="submit" class="btn btn-primary" href="'
                     . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate', 'surveyid'=> $iSurveyID])
-                    .'">'.gT('Activate assessements').'</a>', 
+                    .'">'.gT('Activate assessements').'</a>',
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
         $urls = [];
@@ -252,14 +251,14 @@ class Assessments extends Survey_Common_Action
      */
     private function _collectGroupData($iSurveyID, &$aData = array())
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData['groups'] = [];
         $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
-            $groupId = $group->attributes['gid'];
-            $groupName = $group->attributes['group_name'];
+            $groupId = $group->gid;
+            $groupName = $group->questionGroupL10ns[$oSurvey->language]->group_name;
             $aData['groups'][$groupId] = $groupName;
         }
-        return $aData;
     }
 
     /**
@@ -317,7 +316,6 @@ class Assessments extends Survey_Common_Action
     private function _update($iSurveyID)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && App()->request->getPost('id', null) != null) {
-
             $aid = App()->request->getPost('id', null);
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language) {

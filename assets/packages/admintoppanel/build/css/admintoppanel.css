@@ -1,0 +1,200 @@
+.topbarbutton[data-v-786a35ce] {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+.topbarbutton > a[data-v-786a35ce] {
+    margin: 1px;
+}
+.topbarbutton .navbar-btn[data-v-786a35ce] {
+    margin-top: 0;
+}
+.icon[data-v-786a35ce] {
+  margin-right: 2px;
+}
+.white[data-v-786a35ce] {
+  color: white;
+}
+.btn-danger[data-v-786a35ce] {
+  color: white;
+}
+
+.topbarlink a[data-v-b4cedcbe] {
+  white-space: nowrap;
+}
+.icon[data-v-b4cedcbe] {
+  margin-right: 2px;
+}
+a[data-v-b4cedcbe] {
+  display: block;
+  padding: 0.55em 1em;
+  text-decoration: none;
+  color: #212529;
+}
+a[data-v-b4cedcbe]:hover {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: var(--LS-admintheme-hovercolor);
+}
+a.active[data-v-b4cedcbe] {
+    background-color: var(--LS-admintheme-infocolor);
+}
+
+ul[data-v-849ab616] {
+  list-style-type: none;
+}
+ul li[data-v-849ab616] {
+    position: relative;
+    margin: 0.2em;
+    text-align: left;
+}
+*[data-v-849ab616] {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.dropdown-box[data-v-849ab616] {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: block;
+  float: left;
+  padding-left: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-color: #fff;
+  width: auto;
+  max-width: 80vw;
+  border-radius: 4px;
+}
+
+ul[data-v-74ef06d8] {
+  list-style-type: none;
+}
+ul li[data-v-74ef06d8] {
+    position: relative;
+    margin: 0.2em;
+    text-align: left;
+}
+*[data-v-74ef06d8] {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.dropdown-box[data-v-74ef06d8] {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: block;
+  float: left;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-color: #ffffff;
+  width: auto;
+  max-width: 80vw;
+}
+
+.scoped-topbar-nav[data-v-09de9822] {
+  float: none;
+  width: initial;
+  max-width: 100%;
+  min-width: 30%;
+  padding-top: 4px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.topbarpanel[data-v-4066ed26] {
+  position: relative;
+  padding-right: 6px;
+  min-height: 50px;
+}
+.scoped-topbar-nav .navbar[data-v-4066ed26] {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+.scoped-topbar-nav .navbar-btn[data-v-4066ed26] {
+  margin-top: 0;
+}
+.navbar[data-v-4066ed26],
+.navbar-default[data-v-4066ed26] {
+  padding-left: 1px;
+  border: none;
+}
+@media (max-width: 1280px) {
+.navbar[data-v-4066ed26],
+    .navbar-default[data-v-4066ed26] {
+      padding-left: 16px;
+      padding-right: 16px;
+}
+}
+.scoped-switch-floats .navbar-nav li[data-v-4066ed26] {
+  float: right;
+}
+.nav > li[data-v-4066ed26] {
+  margin-left: 2px;
+}
+.padding-left[data-v-4066ed26] {
+  padding-left: 5px;
+}
+.right[data-v-4066ed26] {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+
+.loader--loaderWidget[data-v-1bc94e55] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3em;
+}
+
+.topbarbutton {
+  margin-left: 1px;
+  margin-right: 1px; }
+
+.slotbutton-content .btn {
+  margin-top: 0; }
+
+.slide-left-leave-active,
+.slide-left-enter-active {
+  -webkit-transition: 650ms;
+  transition: 650ms;
+  position: absolute; }
+
+.slide-left-enter {
+  -webkit-transform: translate(100%, 0);
+          transform: translate(100%, 0); }
+
+.slide-left-leave-to {
+  -webkit-transform: translate(-100%, 0);
+          transform: translate(-100%, 0); }
+
+.slide-down-leave-active {
+  -webkit-transition: 350ms;
+  transition: 350ms;
+  position: absolute; }
+
+.slide-down-enter-active {
+  -webkit-transition: 450ms;
+  transition: 450ms;
+  -webkit-transition-delay: 100ms;
+          transition-delay: 100ms; }
+
+.slide-down-enter {
+  -webkit-transform: translate(0, 50%);
+          transform: translate(0, 50%);
+  opacity: 0; }
+
+.slide-down-enter-to {
+  opacity: 1; }
+
+.slide-down-leave-to {
+  -webkit-transform: translate(0%, -100%);
+          transform: translate(0%, -100%);
+  opacity: 0; }
+
+
+/*# sourceMappingURL=admintoppanel.css.map*/

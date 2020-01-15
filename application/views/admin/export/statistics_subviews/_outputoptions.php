@@ -1,4 +1,4 @@
-    <div class="panel panel-primary" id="panel-1">
+    <div class="panel panel-primary" id="panel-output-options">
         <div class="panel-heading">
             <div class="panel-title h4"><?php eT("Output options"); ?></div>
         </div>
@@ -26,8 +26,8 @@
 
             <div class="row">
                 <div class='form-group'>
-                    <label for='stats_columns' class="col-lg-5 control-label" ><?php eT("Number of columns:") ?></label>
-                    <div class="btn-group " data-toggle="buttons">
+                    <label for='stats_columns' class="col-lg-6 control-label" ><?php eT("Number of columns:") ?></label>
+                    <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default">
                             <input name="stats_columns" value="1" type="radio" class="selected" >
                             <?php eT('One');?>
@@ -67,7 +67,7 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-lg-offset-1 alert alert-info alert-dismissible" role="alert">
-                        <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
+                        <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>X</span></button>
                         <?php eT("Each question has its own graph type defined in its advanced settings.");?>
                         <br/>
                         <?php eT("Using the chart type selector you can force the graph type for all selected questions.");?>

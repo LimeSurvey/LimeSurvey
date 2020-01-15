@@ -177,7 +177,7 @@ class update extends Survey_Common_Action
 
     /**
      * This function return the update buttons for stable branch
-     * @return html the button code
+     * @return string html the button code
      */
     public function getstablebutton()
     {
@@ -186,7 +186,7 @@ class update extends Survey_Common_Action
 
     /**
      * This function return the update buttons for all versions
-     * @return html the buttons code
+     * @return string the buttons code
      */
     public function getbothbuttons()
     {
@@ -217,7 +217,7 @@ class update extends Survey_Common_Action
 
     /**
      * returns the "Checking basic requirements" step
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function checkLocalErrors()
     {
@@ -242,7 +242,7 @@ class update extends Survey_Common_Action
 
     /**
      * Display change log
-     * @return HTML
+     * @return string
      */
     public function changeLog()
     {
@@ -275,7 +275,7 @@ class update extends Survey_Common_Action
     /**
      * diaplay the result of the changed files check
      *
-     * @return html  HTML
+     * @return string  HTML
      */
     public function fileSystem()
     {
@@ -308,7 +308,7 @@ class update extends Survey_Common_Action
 
     /**
      * backup files
-     * @return html
+     * @return string
      */
     public function backup()
     {
@@ -350,7 +350,7 @@ class update extends Survey_Common_Action
 
     /**
      * Display step4
-     * @return html
+     * @return string
      */
     function step4()
     {
@@ -407,7 +407,7 @@ class update extends Survey_Common_Action
      * This function update the updater
      * It is called from the view _updater_update.
      * The view _updater_update is called by the ComfortUpdate server during the getWelcome step if the updater version is not the minimal required one.
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function updateUpdater()
     {
@@ -449,7 +449,7 @@ class update extends Survey_Common_Action
 
     /**
      * This return the subscribe message
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function getnewkey()
     {
@@ -465,7 +465,7 @@ class update extends Survey_Common_Action
 
     /**
      * This function create or update the LS update key
-     * @return html
+     * @return string
      */
     public function submitkey()
     {
@@ -586,7 +586,7 @@ class update extends Survey_Common_Action
     /**
      * This method renders the error view
      * @param object $errorObject
-     * @return html
+     * @return string
      */
     private function _renderError($errorObject)
     {
@@ -596,7 +596,7 @@ class update extends Survey_Common_Action
     /**
      * This method convert a string to an error object, and then render the error view
      * @param string $error the error message
-     * @return html
+     * @return string
      */
     private function _renderErrorString($error)
     {

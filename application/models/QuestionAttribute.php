@@ -12,7 +12,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
+   * Files Purpose: lots of common functions
 */
 
 /**
@@ -27,9 +27,13 @@
  * @property Question $question
  * @property Survey $survey
  *
+ * @todo Should probably change question_attributes table to question_attribute_values
+ * @see participant_attributes and participant_attribute_values
  */
 class QuestionAttribute extends LSActiveRecord
 {
+    protected static $questionAttributesSettings = array();
+
     /**
      * @inheritdoc
      * @return QuestionAttribute
@@ -62,6 +66,17 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
 
+    /**
+     * This defaultScope indexes the ActiveRecords given back by attribute name
+     * Important: This does not work if you want to retrieve records for more than one question at a time.
+     * In that case disable the defaultScope by using MyModel::model()->resetScope()->findAll();
+     * @return array Scope that indexes the records by their attribute bane
+     */
+    public function defaultScope()
+    {
+        return array('index'=>'attribute');
+    }
+    
     /** @inheritdoc */
     public function rules()
     {
@@ -71,6 +86,34 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
 
+
+    /**
+     * @param integer $iQuestionID
+     * @param string $sAttributeName
+     * @param string $sValue
+     * @return CDbDataReader
+     */
+    public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
+    {
+        $oModel = new self;
+        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        if (!empty($aResult)) {
+            $oModel->updateAll(array('value'=>$sValue), 'attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        } else {
+            $oModel = new self;
+            $oModel->attribute = $sAttributeName;
+            $oModel->value = $sValue;
+            $oModel->qid = $iQuestionID;
+            $oModel->language = $sLanguage;
+            $oModel->save();
+        }
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from($this->tableName())
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
+            ->order('qaid asc')
+            ->query();
+    }
 
     /**
      * @param integer $iQuestionID
@@ -89,7 +132,7 @@ class QuestionAttribute extends LSActiveRecord
             $oModel->attribute = $sAttributeName;
             $oModel->value = $sValue;
             $oModel->qid = $iQuestionID;
-            $oModel->save();
+            return $oModel->save();
         }
         return Yii::app()->db->createCommand()
             ->select()
@@ -163,13 +206,17 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
-
         $iQuestionID = (int) $iQuestionID;
-        static $aQuestionAttributesStatic = array(); // TODO : replace by Yii::app()->cache
-        // Limit the size of the attribute cache due to memory usage
-        if (isset($aQuestionAttributesStatic[$iQuestionID])) {
-            return $aQuestionAttributesStatic[$iQuestionID];
+
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
+        if (EmCacheHelper::useCache()) {
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
         }
+
+        // Limit the size of the attribute cache due to memory usage
         $aQuestionAttributes = array();
         $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
 
@@ -177,7 +224,7 @@ class QuestionAttribute extends LSActiveRecord
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);
             } else {
-                $aLanguages = array_merge(array(Survey::model()->findByPk($oQuestion->sid)->language), Survey::model()->findByPk($oQuestion->sid)->additionalLanguages);
+                $aLanguages = $oQuestion->survey->allLanguages;
             }
             // Get all atribute set for this question
             $sType = $oQuestion->type;
@@ -187,10 +234,10 @@ class QuestionAttribute extends LSActiveRecord
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
 
-            $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sType);
+            $aAttributeNames = self::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
-            $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
+            $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
 
             foreach ($oAttributeValues as $oAttributeValue) {
                 if ($oAttributeValue->attribute == 'question_template') {
@@ -217,6 +264,11 @@ class QuestionAttribute extends LSActiveRecord
             foreach ($aAttributeNames as $aAttribute) {
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
+                // convert empty array to empty string
+                if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+                    $aAttribute['default'] = '';
+                }
+
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
@@ -241,10 +293,19 @@ class QuestionAttribute extends LSActiveRecord
         } else {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
-        $aQuestionAttributesStatic[$iQuestionID] = $aQuestionAttributes;
+
+        if (EmCacheHelper::useCache()) {
+            EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+        }
+
         return $aQuestionAttributes;
     }
 
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
+     */
     public static function insertRecords($data)
     {
         $attrib = new self;
@@ -319,4 +380,135 @@ class QuestionAttribute extends LSActiveRecord
             "expression"=> null,
         );
     }
+
+
+    /**
+     * Return the question attributes definition by question type
+     * @param $sType: type pof question
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionAttributesSettings($sType)
+    {
+        $sXmlFilePath = QuestionTheme::getQuestionXMLPathForBaseType($sType);
+        // get attributes from config.xml
+        $generalAttributes = self::getGeneralAttibutesFromXml($sXmlFilePath);
+        $advancedAttributes = self::getAdvancedAttributesFromXml($sXmlFilePath);
+        self::$questionAttributesSettings[$sType] = array_merge($generalAttributes, $advancedAttributes);
+
+        // if empty, fall back to getting attributes from questionHelper
+        if (empty(self::$questionAttributesSettings[$sType])) {
+            self::$questionAttributesSettings[$sType] = array();
+            $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
+            /* Filter to get this question type setting */
+            $aQuestionTypeAttributes = array_filter($attributes, function($attribute) use ($sType) {
+                return stripos($attribute['types'], $sType) !== false;
+            });
+            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
+                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
+                      QuestionAttribute::getDefaultSettings(),
+                      array("category"=>gT("Plugins")),
+                      $settings,
+                      array("name"=>$attribute)
+                  );
+            }
+        }
+        return self::$questionAttributesSettings[$sType];
+    }
+
+    /**
+     * Read question attributes from XML file and convert it to array
+     *
+     * @param string $sXmlFilePath Path to XML
+     *
+     * @return array The advanced attribute settings for this question type
+     */
+    protected static function getAdvancedAttributesFromXml($sXmlFilePath){
+        $aXmlAttributes = array();
+        $aAttributes = array();
+
+        if(file_exists($sXmlFilePath)){
+            // load xml file
+            libxml_disable_entity_loader(false);
+            $xml_config = simplexml_load_file($sXmlFilePath);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), TRUE);
+            // if only one attribute, then it doesn't return numeric index
+            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))){
+                $aTemp = $aXmlAttributes['attribute'];
+                unset($aXmlAttributes);
+                $aXmlAttributes['attribute'][0] = $aTemp;
+
+            }
+            libxml_disable_entity_loader(true);
+        } else {
+            return null;
+        }
+
+        // set $aAttributes array with attribute data
+        if (!empty($aXmlAttributes['attribute'])){
+            foreach ($aXmlAttributes['attribute'] as $key => $value) {
+                if(empty($value['name'])) {
+                    /* Allow comments in attributes */
+                    continue;
+                }
+                /* settings the default value */
+                $aAttributes[$value['name']] =self::getDefaultSettings();
+                /* settings the xml value */
+                foreach ($value as $key2 => $value2) {
+                    if ($key2 === 'options' && !empty($value2)){
+                        foreach ($value2['option'] as $key3 => $value3) {
+                            if (isset($value3['value'])){
+                                $value4 = is_array($value3['value'])?'':$value3['value'];
+                                $aAttributes[$value['name']]['options'][$value4] = $value3['text'];
+                            }
+                        }
+                    } else {
+                        $aAttributes[$value['name']][$key2] = $value2;
+                    }
+                }
+            }
+        }
+        return $aAttributes;
+    }
+
+    /**
+     * Read question attributes from XML file and convert it to array
+     *
+     * @param string $sXmlFilePath Path to XML
+     *
+     * @return array The general attribute settings for this question type
+     */
+    protected static function getGeneralAttibutesFromXml($sXmlFilePath)
+    {
+        $aXmlAttributes = array();
+        $aAttributes = array();
+
+        if (file_exists($sXmlFilePath)) {
+            // load xml file
+            libxml_disable_entity_loader(false);
+            $xml_config = simplexml_load_file($sXmlFilePath);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
+            // if only one attribute, then it doesn't return numeric index
+            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
+                $aTemp = $aXmlAttributes['attribute'];
+                unset($aXmlAttributes);
+                $aXmlAttributes['attribute'][0] = $aTemp;
+
+            }
+            libxml_disable_entity_loader(true);
+        } else {
+            return null;
+        }
+
+        // set $aAttributes array with attribute data
+        if (!empty($aXmlAttributes['attribute'])) {
+            foreach ($aXmlAttributes['attribute'] as $key => $xmlAttribute) {
+                /* settings the default value */
+                $aAttributes[$xmlAttribute] = self::getDefaultSettings();
+                /* settings the xml value */
+                $aAttributes[$xmlAttribute]['name'] = $xmlAttribute;
+            }
+        }
+        return $aAttributes;
+    }
+
 }

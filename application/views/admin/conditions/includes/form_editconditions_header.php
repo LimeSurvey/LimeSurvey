@@ -126,7 +126,7 @@
                                 <a href='#PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-toggle='tab'><?php eT('Questions'); ?></a>
                             </li>
                             <li role='presentation' class='target-tab'>
-                                <a href='#TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Token fields'); ?></a>
+                                <a href='#TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Participant fields'); ?></a>
                             </li>
                             <li role='presentation' class='target-tab disabled'>
                                 <a href='#REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
@@ -167,7 +167,7 @@
                             <div class=''>
                                 <select class='form-control' name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>
                                     <?php foreach ($cquestions as $cqn): ?>
-                                        <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
+                                    <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
                                             <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                             <option
                                                 value='<?php echo '@' . $cqn[3] . '@'; ?>'

@@ -75,6 +75,13 @@
     {% endblock %}
     <body style="padding-top: 90px;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
 
+        {# Notice if emcache is on or off, used by tests. #}
+        {% if aSurveyInfo.emcache %}
+            <span style="display: none;" id="__emcache_debug" value="on"></span>
+        {% else %}
+            <span style="display: none;" id="__emcache_debug" value="off"></span>
+        {% endif %}
+
         {# This used for the pjax system #}
         {% block pjaxbegin %}
             <div id="beginScripts" class="script-container">

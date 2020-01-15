@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $aTabTitles
  * @var $aTabContents
@@ -6,41 +7,40 @@
  * @var $surveyid
  * @var $surveyls_language
  */
-if(isset($data)){
+
+if (isset($data)) {
     extract($data);
 }
- $count=0;
- if(isset($scripts))
+
+if (isset($scripts)) {
     echo $scripts;
+}
 
+ $cs = Yii::app()->getClientScript();
+ $cs->registerPackage('bootstrap-select2');
 
-    $iSurveyID = Yii::app()->request->getParam('surveyid');
-    Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
-    initKcfinder();
+$adminlang = Yii::app()->session['adminlang'];
 
-PrepareEditorScript(false, $this);
 ?>
-<ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
-    <?php foreach ($aTabTitles as $i=>$eachtitle):?>
-        <li role="presentation" class="<?php if($count==0) {echo "active"; }?>">
-            <a data-toggle="tab" href="#edittxtele-<?php echo $count; $count++; ?>">
-                <?php echo $eachtitle;?>
-            </a>
-        </li>
-    <?php endforeach;?>
-</ul>
 
-<br/>
-
-<div class="tab-content">
-<?php foreach ($aTabContents as $i=>$sTabContent):?>
-    <?php
-        echo $sTabContent;
-    ?>
-<?php endforeach; ?>
+<div class="container-center">
+    <div id="advancedTextEditor">
+        <lsnexttexteditor
+            :languagelist="'<?= htmlentities(json_encode(array_merge(["" => ""], getLanguageDataRestricted(false, 'short')))); ?>'"
+            :languagename="'<?= getLanguageNameFromCode($oSurvey->language, false); ?>'"
+            :defaultlanguage="'<?= $adminlang; ?>'"
+        />
+    </div>
+    <div id="textEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center">
+        <div class="ls-flex align-content-center align-items-center">
+            <div class="loader-advancedquestionsettings text-center">
+                <div class="contain-pulse animate-pulse">
+                    <div class="square"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                    <div class="square"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<?php App()->getClientScript()->registerScript("EditSurveyTextTabs", "
-$('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
-    try{ $(e.relatedTarget).find('textarea').ckeditor(); } catch(e){ }
-})", LSYii_ClientScript::POS_POSTSCRIPT); ?>

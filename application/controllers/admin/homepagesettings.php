@@ -52,13 +52,13 @@ class homepagesettings extends Survey_Common_Action
             $this->getController()->redirect($this->createUrl("/admin/homepagesettings"));
         }
 
-        $model = new Boxes;
-        if (isset($_POST['Boxes'])) {
+        $model = new Box;
+        if (isset($_POST['Box'])) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'), 'error');
                 $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
             }
-            $model->attributes = $_POST['Boxes'];
+            $model->attributes = $_POST['Box'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', gT('New box created'));
                 if (isset($_POST['saveandclose'])) {
@@ -98,8 +98,8 @@ class homepagesettings extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Boxes'])) {
-            $model->attributes = $_POST['Boxes'];
+        if (isset($_POST['Box'])) {
+            $model->attributes = $_POST['Box'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', gT('Box updated'));
 
@@ -154,7 +154,7 @@ class homepagesettings extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
 
-        $dataProvider = new CActiveDataProvider('Boxes');
+        $dataProvider = new CActiveDataProvider('Box');
         $aData = array(
             'dataProvider'=>$dataProvider,
             'bShowLogo'=>(getGlobalSetting('show_logo') == "show"),
@@ -173,10 +173,10 @@ class homepagesettings extends Survey_Common_Action
      */
     public function admin()
     {
-        $model = new Boxes('search');
+        $model = new Box('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Boxes'])) {
-                    $model->attributes = $_GET['Boxes'];
+        if (isset($_GET['Box'])) {
+                    $model->attributes = $_GET['Box'];
         }
 
         $this->_renderWrappedTemplate('homepagesettings', 'admin', array(
@@ -188,12 +188,12 @@ class homepagesettings extends Survey_Common_Action
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Boxes the loaded model
+     * @return Box the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = Boxes::model()->findByPk($id);
+        $model = Box::model()->findByPk($id);
         if ($model === null) {
                     throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -303,14 +303,16 @@ class homepagesettings extends Survey_Common_Action
     public function resetall()
     {
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Boxes::model()->restoreDefaults();
+            // We delete all the old boxes, and reinsert new ones
+            Box::model()->deleteAll();
+            Box::model()->restoreDefaults();
         }
         $this->getController()->redirect(array('admin/homepagesettings'));
     }
 
     /**
      * Performs the AJAX validation.
-     * @param Boxes $model the model to be validated
+     * @param Box $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {

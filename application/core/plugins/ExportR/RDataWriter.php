@@ -39,7 +39,7 @@ class RDataWriter extends CsvWriter
     protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null)
     {
         switch ($fieldType) {
-            case 'C':       // Yes/no/uncertain
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:       // Yes/no/uncertain
                 if ($value == 'Y') {
                     return 1;
                 } elseif ($value == 'N') {
@@ -49,7 +49,7 @@ class RDataWriter extends CsvWriter
                 }
                 break;
 
-            case 'E':       // Increase/same/decrease
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:       // Increase/same/decrease
                 if ($value == 'I') {
                     return 1;
                 } elseif ($value == 'S') {
@@ -59,7 +59,7 @@ class RDataWriter extends CsvWriter
                 }
                 break;
 
-            case 'G':       // Gender question
+            case Question::QT_G_GENDER_DROPDOWN:       // Gender question
                 if ($value == 'F') {
                     return 1;
                 } elseif ($value == 'M') {
@@ -67,8 +67,8 @@ class RDataWriter extends CsvWriter
                 }
                 break;
 
-            case 'M':       // Multiple choice
-            case 'P':
+            case Question::QT_M_MULTIPLE_CHOICE:       // Multiple choice
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 if (!empty($column) && isset($this->fieldmap[$column])) {
                     $aid = $this->fieldmap[$column]['aid'];
                     if (substr($aid, -7) == 'comment' || substr($aid, -5) == 'other') {
@@ -87,7 +87,7 @@ class RDataWriter extends CsvWriter
                 // Not shown
                 return $this->na;
 
-            case 'Y':       // Yes no question
+            case Question::QT_Y_YES_NO_RADIO:       // Yes no question
                 if ($value == 'Y') {
                     return 1;
                 } elseif ($value == 'N') {

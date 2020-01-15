@@ -2,6 +2,9 @@
 /**
  * Set subquestion/answer order
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
 ?>
 <form class="custom-modal-datas form-horizontal">
 

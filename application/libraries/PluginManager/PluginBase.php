@@ -8,37 +8,57 @@ namespace LimeSurvey\PluginManager;
 abstract class PluginBase implements iPlugin
 {
     /**
-     *
      * @var LimesurveyApi
      */
     protected $api = null;
 
     /**
-     *
      * @var PluginEvent
      */
     protected $event = null;
 
+    /**
+     * @var int
+     */
     protected $id = null;
+
+    /**
+     * @var string
+     */
     protected $storage = 'DummyStorage';
 
+    /**
+     * @var string
+     */
     static protected $description = 'Base plugin object';
+
+    /**
+     * @var string
+     */
     static protected $name = 'PluginBase';
+
+    /**
+     * @var ?
+     */
     private $store = null;
-    protected $settings = array();
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
 
     /**
      * This holds the pluginmanager that instantiated the plugin
-     *
      * @var PluginManager
      */
     protected $pluginManager;
 
     /**
-     * If plugin has a config.json file, it will be parsed into this variable.
-     * @var StdObject
+     * config.xml
+     * @todo Use ExtensionConfig
+     * @var \SimpleXMLElement|null
      */
-    protected $config = null;
+    public $config = null;
 
     /**
      * Constructor for the plugin
@@ -63,7 +83,12 @@ abstract class PluginBase implements iPlugin
      */
     protected function setLocaleComponent()
     {
-        $basePath = $this->getDir().DIRECTORY_SEPARATOR.'locale';
+        $dir = $this->getDir();
+        if ($dir) {
+            $basePath = $dir . DIRECTORY_SEPARATOR . 'locale';
+        } else {
+            throw new \Exception('Found no dir for locale component');
+        }
 
         // No need to load a component if there is no locale files
         if (!file_exists($basePath)) {
@@ -71,13 +96,16 @@ abstract class PluginBase implements iPlugin
         }
 
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
-        \Yii::app()->setComponent('pluginMessages'.$this->id, array(
-            'class' => 'LSCGettextMessageSource',
-            'cachingDuration' => 3600,
-            'forceTranslation' => true,
-            'useMoFile' => true,
-            'basePath' => $basePath
-        ));
+        \Yii::app()->setComponent(
+            get_class($this).'Messages',
+            [
+                'class'            => 'LSCGettextMessageSource',
+                'cachingDuration'  => 3600,
+                'forceTranslation' => true,
+                'useMoFile'        => true,
+                'basePath'         => $basePath
+            ]
+        );
     }
 
     /**
@@ -178,7 +206,7 @@ abstract class PluginBase implements iPlugin
                 $url = \Yii::getPathOfAlias('webroot').$fileName;
 
             } else {
-// This is a plugin relative path. 
+                // This is a plugin relative path.
                 $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.
@@ -214,7 +242,8 @@ abstract class PluginBase implements iPlugin
 
     /**
      *
-     * @param type $settings
+     * @param array<string, mixed> $settings
+     * @return void
      */
     public function saveSettings($settings)
     {
@@ -280,13 +309,17 @@ abstract class PluginBase implements iPlugin
      * To find the plugin locale file, we need late runtime result of __DIR__.
      * Solution copied from http://stackoverflow.com/questions/18100689/php-dir-evaluated-runtime-late-binding
      *
-     * @return string
+     * @return string|null
      */
     protected function getDir()
     {
         $reflObj = new \ReflectionObject($this);
         $fileName = $reflObj->getFileName();
-        return dirname($fileName);
+        if ($fileName) {
+            return dirname($fileName);
+        } else {
+            null;
+        }
     }
 
     /**
@@ -329,7 +362,7 @@ abstract class PluginBase implements iPlugin
                 '',
                 $sToTranslate,
                 array(),
-                'pluginMessages'.$this->id,
+                get_class($this).'Messages',
                 $sLanguage
             ),
             $sEscapeMode
@@ -370,21 +403,24 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     * Read JSON config file and store it in $this->config
-     * Assumes config file is config.json and in plugin root folder.
-     * @return void
+     * Read XML config file and store it in $this->config
+     * Assumes config file is config.xml and in plugin root folder.
+     * @todo Could this be moved to plugin model?
+     * @return boolean
      */
     public function readConfigFile()
     {
-        $file = $this->getDir().DIRECTORY_SEPARATOR.'config.json';
+        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
-            $json = file_get_contents($file);
-            $this->config = json_decode($json);
+            libxml_disable_entity_loader(false);
+            $this->config = simplexml_load_file(realpath($file));
+            libxml_disable_entity_loader(true);
 
             if ($this->config === null) {
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
-            } else if ($this->configIsNewVersion()) {
+                return false;
+            } elseif ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
                 $pluginModel = \Plugin::model()->findByPk($this->id);
@@ -397,8 +433,10 @@ abstract class PluginBase implements iPlugin
                 $this->checkActive($pluginModel);
                 $this->saveNewVersion($pluginModel);
             }
+            return true;
         } else {
-            /* No need action since system update in 4.0, where need a config.xml */
+            $this->log('Found no config file');
+            return false;
         }
     }
 
@@ -410,6 +448,9 @@ abstract class PluginBase implements iPlugin
      */
     protected function checkActive($pluginModel)
     {
+        // TODO: Do we want to support automatically installed plugins?
+        return;
+
         if ($this->config->active == 1) {
             // Activate plugin
             $result = App()->getPluginManager()->dispatchEvent(
@@ -422,15 +463,17 @@ abstract class PluginBase implements iPlugin
                 $pluginModel->update();
             } else {
                 // Failed. Popup error message.
-                $not = new \Notification(array(
-                    'user_id' => App()->user->id,
-                    'title' => gT('Plugin error'),
-                    'message' =>
-                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
-                        gT('Could not activate plugin '.$this->getName()).'. '.
-                        gT('Reason:').' '.$result->get('message'),
-                    'importance' => \Notification::HIGH_IMPORTANCE
-                ));
+                $not = new \Notification(
+                    [
+                        'user_id' => App()->user->id,
+                        'title'   => gT('Plugin error'),
+                        'message' =>
+                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                            gT('Could not activate plugin '.$this->getName()).'. '.
+                            gT('Reason:').' '.$result->get('message'),
+                        'importance' => \Notification::HIGH_IMPORTANCE
+                    ]
+                );
                 $not->save();
             }
         }
@@ -442,15 +485,17 @@ abstract class PluginBase implements iPlugin
      */
     protected function showConfigErrorNotification()
     {
-        $not = new \Notification(array(
+        $not = new \Notification(
+            [
             'user_id' => App()->user->id,
-            'title' => gT('Plugin error'),
+            'title'   => gT('Plugin error'),
             'message' =>
                 '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
                 gT('Could not read config file for plugin '.$this->getName()).'. '.
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE
-        ));
+            ]
+        );
         $not->save();
     }
 
@@ -468,35 +513,40 @@ abstract class PluginBase implements iPlugin
         $pluginModel = \Plugin::model()->findByPk($this->id);
 
         return empty($pluginModel->version) ||
-            version_compare($pluginModel->version, $this->config->version) === -1;
+            version_compare($pluginModel->version, (string) $this->config->metadata->version) === -1;
     }
 
     /**
      * Saves the new version from config into database
-     * @return void
+     * @return boolean
      */
     protected function saveNewVersion()
     {
         $pluginModel = \Plugin::model()->findByPk($this->id);
-        $pluginModel->version = $this->config->version;
-        $pluginModel->update();
+        $pluginModel->version = (string) $this->config->metadata->version;
+        return $pluginModel->update();
     }
 
-
-    protected function registerScript($relativePathToScript, $parentPlugin=null){
+    /**
+     * @param string $relativePathToScript
+     * @param string $parentPlugin
+     * @return void
+     */
+    protected function registerScript($relativePathToScript, $parentPlugin = null)
+    {
         
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;
-        if(file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
                 YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
-        } else if (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+        } elseif (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
                 Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
-        } else if (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
                 Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
@@ -504,25 +554,29 @@ abstract class PluginBase implements iPlugin
         Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
     }
 
-    protected function registerCss($relativePathToCss, $parentPlugin=null){
-        
+    /**
+     * @param string $relativePathToCss
+     * @param string $parentPlugin
+     * @return void
+     */
+    protected function registerCss($relativePathToCss, $parentPlugin = null)
+    {
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $cssToRegister = null;
-        if(file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
                 YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
-        } else if (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+        } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
                 YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
-        } else if (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
                 Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         }
         Yii::app()->getClientScript()->registerCssFile($cssToRegister);
     }
-
 }

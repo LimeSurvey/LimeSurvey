@@ -12,6 +12,11 @@
  */
 class SettingsUser extends LSActiveRecord
 {
+    const ENTITY_SURVEY = 100;
+    const ENTITY_SURVEYGROUP = 90;
+    const ENTITY_THEME = 80;
+    const ENTITY_EDITOR = 70;
+    const ENTITY_PLUGIN = 50;
     /**
      * @return string the associated database table name
      */
@@ -99,6 +104,31 @@ class SettingsUser extends LSActiveRecord
     }
 
     /**
+     * Deletes user setting
+     *
+     * @param string $stg_name
+     * @param integer $stg_value
+     * @param integer $uid | Can be omitted to just take the currently logged in users id
+     * @param string $entity | optional defaults to 'null'
+     * @param integer $entity_id | optional defaults to 'null'
+     * @return boolean Deleting success/failure
+     */
+
+    public static function deleteUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null)
+    {
+        if ($uid === null) { $uid = Yii::app()->user->getId(); }
+
+        $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
+
+        if ($setting !== null) {
+            return $setting->delete();
+        }
+
+        return false;
+
+    }
+
+    /**
      * Gets a user setting depending on the given parameters
      *
      * @param string $stg_name
@@ -134,7 +164,7 @@ class SettingsUser extends LSActiveRecord
 
         $setting = self::model()->find($searchCriteria);
 
-        return $setting;
+        return $setting !== null ? $setting : null;
     }
 
     /**
@@ -147,10 +177,18 @@ class SettingsUser extends LSActiveRecord
      * @param integer|null $entity_id | optional defaults to 'null'
      * @return mixed|null  The current settings value or null id there is no setting
      */
-    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null)
+    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null, $default=null)
     {
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
-        return $setting != null ? $setting->getAttribute('stg_value') : null;
+        return $setting != null ? $setting->getAttribute('stg_value') : $default;
+    }
+
+    public static function applyBaseSettings($iUid) 
+    {
+        $defaults = LsDefaultDataSets::getDefaultUserSettings();
+        foreach($defaults as $default) {
+            self::setUserSetting($default['stg_name'], $default['stg_value'], $iUid);
+        }
     }
 
     /**

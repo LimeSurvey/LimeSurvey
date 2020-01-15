@@ -29,9 +29,30 @@
 
 class ExpressionManager
 {
-    // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    public static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
-
+    // These are the allowable variable suffixes for variables - each represents an attribute of a variable that can be updated on same page
+    private $aRDP_regexpVariableAttribute = array(
+        'code',
+        'NAOK',
+        'relevanceStatus',
+        'shown',
+        'valueNAOK',
+        'value',
+    );
+    // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+    private $aRDP_regexpStaticAttribute = array(
+        'qid',
+        'grelevance',
+        'gseq',
+        'jsName',
+        'mandatory',
+        'qid',
+        'qseq',
+        'question',
+        'relevance',
+        'rowdivid',
+        'sgqa',
+        'type',
+    );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
     private $RDP_TokenType;
@@ -98,8 +119,8 @@ class ExpressionManager
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $RDP_regex_assign = '='; // '=|\+=|-=|\*=|/=';
-        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:'.ExpressionManager::$RDP_regex_var_attr.'))?';
-        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:'.ExpressionManager::$RDP_regex_var_attr.'))?';
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:[a-zA-Z0-9_]*))?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:[a-zA-Z0-9_]*))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
         $RDP_regex_lcb = '{';
@@ -169,92 +190,125 @@ class ExpressionManager
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
-'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
-'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
-'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
-'atan' => array('atan', 'Decimal.asNum.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
-'atan2' => array('atan2', 'Decimal.asNum.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
-'ceil' => array('ceil', 'Decimal.asNum.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
-'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
-'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
-'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
-'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
-'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
-'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
-'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
-'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
-'floatval' => array('floatval', 'LEMfloatval', gT('Get float value of a variable'), 'number floatval(number)', 'http://php.net/floatval', 1),
-'floor' => array('floor', 'Decimal.asNum.floor', gT('Round fractions down'), 'number floor(number)', 'http://php.net/floor', 1),
-'gmdate' => array('gmdate', 'gmdate', gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://php.net/gmdate', 1, 2),
-'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://php.net/html-entity-decode', 1),
-'htmlentities' => array('htmlentities', 'htmlentities', gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://php.net/htmlentities', 1),
-'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://php.net/htmlspecialchars', 1),
-'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://php.net/htmlspecialchars-decode', 1),
-'idate' => array('idate', 'idate', gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://php.net/idate', 1, 2),
-'if' => array('exprmgr_if', 'LEMif', gT('Conditional processing'), 'if(test,result_if_true[,result_if_false = \'\'])', '', 2, 3),
-'implode' => array('exprmgr_implode', 'LEMimplode', gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://php.net/implode', -2),
-'intval' => array('intval', 'LEMintval', gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://php.net/intval', 1, 2),
-'is_empty' => array('exprmgr_empty', 'LEMempty', gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://php.net/empty', 1),
-'is_float' => array('is_float', 'LEMis_float', gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://php.net/is-float', 1),
-'is_int' => array('exprmgr_int', 'LEMis_int', gT('Check if the content of a variable is a valid integer value'), 'bool is_int(var)', 'http://php.net/is-int', 1),
-'is_nan' => array('is_nan', 'isNaN', gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://php.net/is-nan', 1),
-'is_null' => array('is_null', 'LEMis_null', gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://php.net/is-null', 1),
-'is_numeric' => array('is_numeric', 'LEMis_numeric', gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://php.net/is-numeric', 1),
-'is_string' => array('is_string', 'LEMis_string', gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://php.net/is-string', 1),
-'join' => array('exprmgr_join', 'LEMjoin', gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
-'list' => array('exprmgr_list', 'LEMlist', gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
-'listifop' => array('exprmgr_listifop', 'LEMlistifop', gT('Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)'), 'string listifop(cmpAttr, op, value, retAttr, glue, sgqa1, sgqa2,...,sgqaN)', '', -6),
-'log' => array('exprmgr_log', 'LEMlog', gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://php.net/log', -2),
-'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1, 2),
-'max' => array('max', 'LEMmax', gT('Find highest value'), 'number|string max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
-'min' => array('min', 'LEMmin', gT('Find lowest value'), 'number|string min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
-'mktime' => array('exprmgr_mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0, 1, 2, 3, 4, 5, 6),
-'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://php.net/nl2br', 1, 1),
-'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://php.net/number-format', 1),
-'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
-'pow' => array('pow', 'Decimal.asNum.pow', gT('Exponential expression'), 'number pow(base, exp)', 'http://php.net/pow', 2),
-'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://php.net/quoted-printable-decode', 1),
-'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://php.net/quoted-printable-encode', 1),
-'quotemeta' => array('quotemeta', 'quotemeta', gT('Quote meta characters'), 'string quotemeta(string)', 'http://php.net/quotemeta', 1),
-'rand' => array('rand', 'rand', gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://php.net/rand', 0, 2),
-'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
-'round' => array('round', 'round', gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://php.net/round', 1, 2),
-'rtrim' => array('rtrim', 'rtrim', gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://php.net/rtrim', 1, 2),
-'sin' => array('sin', 'Decimal.asNum.sin', gT('Sine'), 'number sin(arg)', 'http://php.net/sin', 1),
-'sprintf' => array('sprintf', 'sprintf', gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://php.net/sprintf', -2),
-'sqrt' => array('sqrt', 'Decimal.asNum.sqrt', gT('Square root'), 'number sqrt(arg)', 'http://php.net/sqrt', 1),
-'stddev' => array('exprmgr_stddev', 'LEMstddev', gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
-'str_pad' => array('str_pad', 'str_pad', gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://php.net/str-pad', 2, 3),
-'str_repeat' => array('str_repeat', 'str_repeat', gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://php.net/str-repeat', 2),
-'str_replace' => array('str_replace', 'LEMstr_replace', gT('Replace all occurrences of the search string with the replacement string'), 'string str_replace(search,  replace, subject)', 'http://php.net/str-replace', 3),
-'strcasecmp' => array('strcasecmp', 'strcasecmp', gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://php.net/strcasecmp', 2),
-'strcmp' => array('strcmp', 'strcmp', gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://php.net/strcmp', 2),
-'strip_tags' => array('strip_tags', 'strip_tags', gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://php.net/strip-tags', 1, 2),
-'stripos' => array('exprmgr_stripos', 'stripos', gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://php.net/stripos', 2, 3),
-'stripslashes' => array('stripslashes', 'stripslashes', gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://php.net/stripslashes', 1),
-'stristr' => array('exprmgr_stristr', 'stristr', gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://php.net/stristr', 2, 3),
-'strlen' => array('exprmgr_strlen', 'LEMstrlen', gT('Get string length'), 'int strlen(string)', 'http://php.net/strlen', 1),
-'strpos' => array('exprmgr_strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://php.net/strpos', 2, 3),
-'strrev' => array('strrev', 'strrev', gT('Reverse a string'), 'string strrev(string)', 'http://php.net/strrev', 1),
-'strstr' => array('exprmgr_strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle [, before_needle=false])', 'http://php.net/strstr', 2, 3),
-'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://php.net/strtolower', 1),
-'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://php.net/manual/de/function.strtotime', 1),
-'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
-'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
-'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
-'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
-'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
-'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://php.net/time', 0),
-'trim' => array('trim', 'trim', gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://php.net/trim', 1, 2),
-'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://php.net/ucwords', 1),
-'unique' => array('exprmgr_unique', 'LEMunique', gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
+            'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
+            'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
+            'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
+            'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
+            'atan' => array('atan', 'Decimal.asNum.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
+            'atan2' => array('atan2', 'Decimal.asNum.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
+            'ceil' => array('ceil', 'Decimal.asNum.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
+            'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
+            'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
+            'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
+            'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
+            'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
+            'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
+            'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
+            'floatval' => array('floatval', 'LEMfloatval', gT('Get float value of a variable'), 'number floatval(number)', 'http://php.net/floatval', 1),
+            'floor' => array('floor', 'Decimal.asNum.floor', gT('Round fractions down'), 'number floor(number)', 'http://php.net/floor', 1),
+            'gmdate' => array('gmdate', 'gmdate', gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://php.net/gmdate', 1, 2),
+            'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://php.net/html-entity-decode', 1),
+            'htmlentities' => array('htmlentities', 'htmlentities', gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://php.net/htmlentities', 1),
+            'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://php.net/htmlspecialchars', 1),
+            'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://php.net/htmlspecialchars-decode', 1),
+            'idate' => array('idate', 'idate', gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://php.net/idate', 1, 2),
+            'if' => array('exprmgr_if', 'LEMif', gT('Conditional processing'), 'if(test,result_if_true[,result_if_false = \'\'])', '', 2, 3),
+            'implode' => array('exprmgr_implode', 'LEMimplode', gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://php.net/implode', -2),
+            'intval' => array('intval', 'LEMintval', gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://php.net/intval', 1, 2),
+            'is_empty' => array('exprmgr_empty', 'LEMempty', gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://php.net/empty', 1),
+            'is_float' => array('is_float', 'LEMis_float', gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://php.net/is-float', 1),
+            'is_int' => array('exprmgr_int', 'LEMis_int', gT('Check if the content of a variable is a valid integer value'), 'bool is_int(var)', 'http://php.net/is-int', 1),
+            'is_nan' => array('is_nan', 'isNaN', gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://php.net/is-nan', 1),
+            'is_null' => array('is_null', 'LEMis_null', gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://php.net/is-null', 1),
+            'is_numeric' => array('is_numeric', 'LEMis_numeric', gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://php.net/is-numeric', 1),
+            'is_string' => array('is_string', 'LEMis_string', gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://php.net/is-string', 1),
+            'join' => array('exprmgr_join', 'LEMjoin', gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
+            'list' => array('exprmgr_list', 'LEMlist', gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
+            'listifop' => array('exprmgr_listifop', 'LEMlistifop', gT('Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)'), 'string listifop(cmpAttr, op, value, retAttr, glue, sgqa1, sgqa2,...,sgqaN)', '', -6),
+            'log' => array('exprmgr_log', 'LEMlog', gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://php.net/log', -2),
+            'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1, 2),
+            'max' => array('max', 'LEMmax', gT('Find highest value'), 'number|string max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
+            'min' => array('min', 'LEMmin', gT('Find lowest value'), 'number|string min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
+            'mktime' => array('exprmgr_mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0, 1, 2, 3, 4, 5, 6),
+            'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://php.net/nl2br', 1, 1),
+            'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://php.net/number-format', 1),
+            'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
+            'pow' => array('pow', 'Decimal.asNum.pow', gT('Exponential expression'), 'number pow(base, exp)', 'http://php.net/pow', 2),
+            'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://php.net/quoted-printable-decode', 1),
+            'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://php.net/quoted-printable-encode', 1),
+            'quotemeta' => array('quotemeta', 'quotemeta', gT('Quote meta characters'), 'string quotemeta(string)', 'http://php.net/quotemeta', 1),
+            'rand' => array('rand', 'rand', gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://php.net/rand', 0, 2),
+            'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
+            'round' => array('round', 'round', gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://php.net/round', 1, 2),
+            'rtrim' => array('rtrim', 'rtrim', gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://php.net/rtrim', 1, 2),
+            'sin' => array('sin', 'Decimal.asNum.sin', gT('Sine'), 'number sin(arg)', 'http://php.net/sin', 1),
+            'sprintf' => array('sprintf', 'sprintf', gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://php.net/sprintf', -2),
+            'sqrt' => array('sqrt', 'Decimal.asNum.sqrt', gT('Square root'), 'number sqrt(arg)', 'http://php.net/sqrt', 1),
+            'stddev' => array('exprmgr_stddev', 'LEMstddev', gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
+            'str_pad' => array('str_pad', 'str_pad', gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://php.net/str-pad', 2, 3),
+            'str_repeat' => array('str_repeat', 'str_repeat', gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://php.net/str-repeat', 2),
+            'str_replace' => array('str_replace', 'LEMstr_replace', gT('Replace all occurrences of the search string with the replacement string'), 'string str_replace(search,  replace, subject)', 'http://php.net/str-replace', 3),
+            'strcasecmp' => array('strcasecmp', 'strcasecmp', gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://php.net/strcasecmp', 2),
+            'strcmp' => array('strcmp', 'strcmp', gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://php.net/strcmp', 2),
+            'strip_tags' => array('strip_tags', 'strip_tags', gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://php.net/strip-tags', 1, 2),
+            'stripos' => array('exprmgr_stripos', 'stripos', gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://php.net/stripos', 2, 3),
+            'stripslashes' => array('stripslashes', 'stripslashes', gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://php.net/stripslashes', 1),
+            'stristr' => array('exprmgr_stristr', 'stristr', gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://php.net/stristr', 2, 3),
+            'strlen' => array('exprmgr_strlen', 'LEMstrlen', gT('Get string length'), 'int strlen(string)', 'http://php.net/strlen', 1),
+            'strpos' => array('exprmgr_strpos', 'LEMstrpos', gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://php.net/strpos', 2, 3),
+            'strrev' => array('strrev', 'strrev', gT('Reverse a string'), 'string strrev(string)', 'http://php.net/strrev', 1),
+            'strstr' => array('exprmgr_strstr', 'strstr', gT('Find first occurrence of a string'), 'string strstr(haystack, needle [, before_needle=false])', 'http://php.net/strstr', 2, 3),
+            'strtolower' => array('exprmgr_strtolower', 'LEMstrtolower', gT('Make a string lowercase'), 'string strtolower(string)', 'http://php.net/strtolower', 1),
+            'strtotime' => array('strtotime', 'strtotime', gT('Convert a date/time string to unix timestamp'), 'int strtotime(string)', 'http://php.net/manual/de/function.strtotime', 1),
+            'strtoupper' => array('exprmgr_strtoupper', 'LEMstrtoupper', gT('Make a string uppercase'), 'string strtoupper(string)', 'http://php.net/strtoupper', 1),
+            'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
+            'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
+            'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
+            'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
+            'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
+            'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://php.net/time', 0),
+            'trim' => array('trim', 'trim', gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://php.net/trim', 1, 2),
+            'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://php.net/ucwords', 1),
+            'unique' => array('exprmgr_unique', 'LEMunique', gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
         );
         /* Reset the language */
         if ($baseLang) {
             Yii::app()->setLanguage($baseLang);
         }
+    }
+
+    /**
+     * Since this class can be get by session, need to add a call the «start» event manually
+     * @return void
+     */
+    public function ExpressionManagerStartEvent()
+    {
+        if (Yii::app() instanceof CConsoleApplication) {
+            return;
+        }
+
+        $event = new \LimeSurvey\PluginManager\PluginEvent('ExpressionManagerStart');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $newValidFunctions = (array) $result->get('functions');
+        $newPackages = (array) $result->get('packages'); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
+
+        $this->RegisterFunctions($newValidFunctions); // No validation : plugin dev can break all easily
+        foreach($newPackages as $name => $definition) {
+            $this->addPackageForExpressionManager($name,$definition);
+        }
+        App()->getClientScript()->registerPackage('expression-extend');
+    }
+
+    /**
+     * Add a package for expression
+     * @param string $name of package
+     * @param array $definition @see https://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+     * @return void
+     */
+    public function addPackageForExpressionManager($name,$definition) {
+        Yii::app()->clientScript->addPackage($name,$definition);
+        array_push(Yii::app()->clientScript->packages['expression-extend']['depends'],$name);
     }
 
     /**
@@ -623,7 +677,7 @@ class ExpressionManager
                 } else {
                     if ($this->RDP_isValidVariable($token[0])) {
                         $this->varsUsed[] = $token[0]; // add this variable to list of those used in this equation
-                        if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $token[0])) {
+                        if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $token[0])) {
                             $relStatus = 1; // static, so always relevant
                         } else {
                             $relStatus = $this->GetVarAttribute($token[0], 'relevanceStatus', 1);
@@ -743,7 +797,6 @@ class ExpressionManager
         if (!$evalStatus) {
             return false;
         }
-
         while (++$this->RDP_pos < $this->RDP_count) {
             $token = $this->RDP_tokens[$this->RDP_pos];
             if ($token[2] == 'RP') {
@@ -1046,7 +1099,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $name)) {
+            if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1076,7 +1129,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $name)) {
+            if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1115,7 +1168,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $name)) {
+            if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1256,7 +1309,7 @@ class ExpressionManager
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
         foreach ($this->GetVarsUsed() as $var) {
-// this function wants to see the NAOK suffix
+            // this function wants to see the NAOK suffix
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '') {
                     $nonNAvarsUsed[] = $var;
@@ -1548,7 +1601,7 @@ class ExpressionManager
                 ++$errIndex;
             }
         }
-        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
+        if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update') && method_exists(App(), 'getClientScript')) {
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."expressions.css");
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts')."expression.js");
         }
@@ -1675,13 +1728,40 @@ class ExpressionManager
     }
 
     /**
+     * Add extra attributes for var
+     * @param string[] $extraAttributes
+     * @param boolean $static is a static attribute , unused currently since there are no way to create the EM js system
+     * @return void
+     */
+    public function addRegexpExtraAttributes($extraAttributes,$static=true)
+    {
+        if(!$static) {
+            $this->aRDP_regexpVariableAttribute = array_merge($this->aRDP_regexpVariableAttribute,$extraAttributes);
+        } else {
+            $this->aRDP_regexpStaticAttribute = array_merge($this->aRDP_regexpStaticAttribute,$extraAttributes);
+        }
+    }
+
+    public function getRegexpValidAttributes()
+    {
+        /* Static var or cache it ? Must control when updated */
+        return implode("|",array_merge($this->aRDP_regexpVariableAttribute,$this->aRDP_regexpStaticAttribute));
+    }
+
+    public function getRegexpStaticValidAttributes()
+    {
+        /* Static var or cache it ? Must control when updated */
+        return implode("|",$this->aRDP_regexpStaticAttribute);
+    }
+
+    /**
      * Return true if the variable name is registered
      * @param string $name
      * @return boolean
      */
     private function RDP_isValidVariable($name)
     {
-        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:".ExpressionManager::$RDP_regex_var_attr."))?$/", "$1", $name);
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:".$this->getRegexpValidAttributes()."))?$/", "$1", $name);
         return LimeExpressionManager::isValidVariable($varName);
     }
 
@@ -1716,14 +1796,14 @@ class ExpressionManager
         if (is_null($result)) {
             return false; // if there are errors in the expression, hide it?
         }
-//        if ($result == 'false') {
-//            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
-//        }
-//        return !empty($result);
+        //~ if ($result == 'false') {
+            //~ return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
+        //~ }
+        //~ return !empty($result);
 
         // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var) {
-// this function wants to see the NAOK suffix
+            // this function wants to see the NAOK suffix
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
                 if (!LimeExpressionManager::GetVarAttribute($var, 'relevanceStatus', false, $groupSeq, $questionSeq)) {
                     return false;
@@ -1835,7 +1915,6 @@ class ExpressionManager
 
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
                     $idName = "LEMtailor_Q_".$questionNum."_".$this->substitutionNum;
-//                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
                     $resolvedParts[] = "<span id='".$idName."'>".$resolvedPart."</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
@@ -1955,10 +2034,11 @@ class ExpressionManager
         if (!$this->RDP_isValidFunction($name)) {
             return false;
         }
+        
         $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
         $result = 1; // default value for $this->RDP_onlyparse
-        if (function_exists($funcName)) {
+        if (is_callable($funcName)) {
             $numArgsAllowed = array_slice($func, 5); // get array of allowable argument counts from end of $func
             $argsPassed = is_array($params) ? count($params) : 0;
 
@@ -1973,11 +2053,12 @@ class ExpressionManager
                     if (!$this->RDP_onlyparse) {
                         switch ($funcName) {
                             case 'sprintf':
-                                // PHP doesn't let you pass array of parameters to function, so must use call_user_func_array
+                                /* function with any number of params */
                                 $result = call_user_func_array('sprintf', $params);
                                 break;
                             default:
-                                $result = $funcName($params);
+                                /* function with array as param*/
+                                $result = call_user_func($funcName, $params);
                                 break;
                         }
                     }
@@ -1986,7 +2067,7 @@ class ExpressionManager
                     switch ($argsPassed) {
                         case 0:
                             if (!$this->RDP_onlyparse) {
-                                $result = $funcName();
+                                $result = call_user_func($funcName);
                             }
                             break;
                         case 1:
@@ -2008,10 +2089,10 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = $funcName($params[0]);
+                                        $result = call_user_func($funcName,$params[0]);
                                         break;
                                 }
-                        }
+                            }
                         break;
                         case 2:
                             if (!$this->RDP_onlyparse) {
@@ -2024,34 +2105,26 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = @$funcName($params[0], $params[1]);
+                                        $result = call_user_func($funcName,$params[0], $params[1]);
                                         $result = $result ? $result : false;
+                                        break;
+                                }
                             }
-                        }
                         break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2]);
+                                $result = call_user_func($funcName,$params[0], $params[1], $params[2]);
                             }
                             break;
                         case 4:
-                            if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2], $params[3]);
-                            }
-                            break;
                         case 5:
-                            if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4]);
-                            }
-                            break;
                         case 6:
+                        default:
+                            /* We can accept any fixed numbers of params with call_user_func_array */
                             if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+                                $result = call_user_func_array($funcName,$params);
                             }
                             break;
-                        default:
-                            $this->RDP_AddError(sprintf(self::gT("Unsupported number of arguments: %s"), $argsPassed), $funcNameToken);
-                            return false;
                     }
 
                 } else {
@@ -2060,6 +2133,7 @@ class ExpressionManager
                     return false;
                 }
                 if (function_exists("geterrors_".$funcName)) {
+                    /* @todo allow adding it for plugin , if it work …*/
                     if ($sError = call_user_func_array("geterrors_".$funcName, $params)) {
                         $this->RDP_AddError($sError, $funcNameToken);
                         return false;
@@ -2316,13 +2390,10 @@ class ExpressionManager
      */
     private function RDP_Tokenize($sSource, $bOnEdit = false)
     {
-        /** @var array Memoize result in local cache variable. */
-        static $cache = [];
-
-        /** @var string */
-        $cacheKey = $sSource . json_encode($bOnEdit);
-        if (isset($cache[$cacheKey])) {
-            return $cache[$cacheKey];
+        $cacheKey = 'RDP_Tokenize_' . $sSource . json_encode($bOnEdit);
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
         }
 
         // $aInitTokens = array of tokens from equation, showing value and offset position.  Will include SPACE.
@@ -2331,11 +2402,11 @@ class ExpressionManager
         } else {
                     $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
         }
-
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
         $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j = 0; $j < count($aInitTokens); ++$j) {
+        $countInitTokens = count($aInitTokens);
+        for ($j = 0; $j < $countInitTokens; ++$j) {
             for ($i = 0; $i < count($this->RDP_CategorizeTokensRegex); ++$i) {
                 $sToken = $aInitTokens[$j][0];
                 if (preg_match($this->RDP_CategorizeTokensRegex[$i], $sToken)) {
@@ -2353,7 +2424,7 @@ class ExpressionManager
             }
         }
 
-        $cache[$cacheKey] = $aTokens;
+        EmCacheHelper::set($cacheKey, $aTokens);
         return $aTokens;
     }
 
@@ -2765,7 +2836,7 @@ function exprmgr_listifop( $args )
     $retAttr = array_shift($args);
     $glue = array_shift($args);
     
-    $validAttributes = "/" . ExpressionManager::$RDP_regex_var_attr . "/";
+    $validAttributes = "/" . LimeExpressionManager::getRegexpValidAttributes() . "/";
     if ( ! preg_match( $validAttributes, $cmpAttr ) ) {
         return $cmpAttr . " not recognized ?!";
     }

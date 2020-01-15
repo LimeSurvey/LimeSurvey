@@ -63,6 +63,7 @@ class TemplateConfig extends CActiveRecord
 
     /** @var array $oOptions The template options */
     public $oOptions;
+    public $oOptionAttributes;
 
 
     /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
@@ -71,7 +72,9 @@ class TemplateConfig extends CActiveRecord
     /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
     protected $apiVersion;
 
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
+    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive
+     * the current template of a given survey
+     */
     protected $iSurveyId = '';
 
     /** @var string $hasConfigFile Does it has a config.xml file? */
@@ -89,6 +92,8 @@ class TemplateConfig extends CActiveRecord
     public $allDbTemplateFolders = null;
 
     public static $aTemplatesWithoutDB = null;
+
+    public $options_page = 'core';
 
     /**
      * get the template API version
@@ -116,38 +121,38 @@ class TemplateConfig extends CActiveRecord
     /**
      * Prepare all the needed datas to render the temple
      * If any problem (like template doesn't exist), it will load the default theme configuration
-     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
-     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
+     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the
+     *         same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it
+     *         only before rendering anything related to the template.
      *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
+     * @param  string $sTemplateName the name of the template to load.
+     *                               The string comes from the template selector in survey settings
      * @param  string $iSurveyId the id of the survey. If
      * @param bool $bUseMagicInherit
      * @return $this
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
-
-
-        if (!empty ($sTemplateName) && !empty ($iSurveyId)  ){
+        if (!empty($sTemplateName) && !empty($iSurveyId)) {
             if (!empty(self::$aPreparedToRender[$sTemplateName])) {
                 if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
                     if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-                       return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-                   }else{
-                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
-                   }
-                }else{
+                        return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+                    } else {
+                        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                    }
+                } else {
                     self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
                     self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
                 }
 
-            }else{
+            } else {
                 self::$aPreparedToRender = array();
                 self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
                 self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
             }
         }
-
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
         $this->setMotherTemplates(); // Recursive mother templates configuration
@@ -156,7 +161,7 @@ class TemplateConfig extends CActiveRecord
         $this->removeFiles();
         $this->getshowpopups();
 
-        if (!empty ($sTemplateName) && !empty ($iSurveyId)  ){
+        if (!empty($sTemplateName) && !empty($iSurveyId)) {
             self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
         }
         return $this;
@@ -164,20 +169,22 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * Remove the css/js files defined in theme config, from any package (even the core ones)
-     * The file should have the exact same name as in the package (see: application/config/packages.php and application/config/third_party.php)
-     * eg: to remove awesome-bootstrap-checkbox.css, in the theme config file add <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</remove>
+     * The file should have the exact same name as in the package
+     * (see: application/config/packages.php and application/config/third_party.php)
+     * eg: to remove awesome-bootstrap-checkbox.css, in the theme config
+     * file add <remove>awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css</remove>
      */
     public function removeFiles()
     {
         $aCssFilesToRemove = $this->getFilesTo($this, "css", 'remove');
         $aJsFilesToRemove  = $this->getFilesTo($this, "js", 'remove');
 
-        if ( ! (  empty($aCssFilesToRemove) && empty($aJsFilesToRemove )) ) {
-            $aPackages = Yii::app()->clientScript->packages;
+        if (!(empty($aCssFilesToRemove) && empty($aJsFilesToRemove))) {
+            $aPackages = App()->clientScript->packages;
 
             foreach ($aPackages as $sPackageName => $aPackage) {
-                $this->removeFilesFromPackage($sPackageName, $aPackage, 'css', $aCssFilesToRemove );
-                $this->removeFilesFromPackage($sPackageName, $aPackage, 'js',  $aJsFilesToRemove );
+                $this->removeFilesFromPackage($sPackageName, $aPackage, 'css', $aCssFilesToRemove);
+                $this->removeFilesFromPackage($sPackageName, $aPackage, 'js', $aJsFilesToRemove);
             }
         }
     }
@@ -189,13 +196,13 @@ class TemplateConfig extends CActiveRecord
      * @param string $sType          the type of file (css or js)
      * @param array $aFilesToRemove  an array containing the files to chech and remove
      */
-    protected function removeFilesFromPackage($sPackageName, $aPackage, $sType, $aFilesToRemove  )
+    protected function removeFilesFromPackage($sPackageName, $aPackage, $sType, $aFilesToRemove)
     {
-        if (!empty($aPackage[$sType])){
-            if (!empty($aFilesToRemove)){
-                foreach ($aFilesToRemove as $sFileToRemove){
+        if (!empty($aPackage[$sType])) {
+            if (!empty($aFilesToRemove)) {
+                foreach ($aFilesToRemove as $sFileToRemove) {
                     if (($key = array_search($sFileToRemove, $aPackage[$sType])) !== false) {
-                        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFileToRemove);
+                        App()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFileToRemove);
                     }
                 }
             }
@@ -203,7 +210,8 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+     * Get the template for a given file. It checks if a file exist in the current
+     * template or in one of its mother templates
      * Can return a 302 redirect (this is not really a throw …
      *
      * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
@@ -213,10 +221,12 @@ class TemplateConfig extends CActiveRecord
      */
     public function getTemplateForFile($sFile, $oRTemplate, $force = false)
     {
-        while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
+        while (!file_exists($oRTemplate->path.$sFile) &&
+            !file_exists($oRTemplate->viewPath.$sFile) &&
+            !file_exists($oRTemplate->filesPath.$sFile)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
-                if(!$force && Yii::app()->twigRenderer->getPathOfFile($sFile)) {
+                if (!$force && App()->twigRenderer->getPathOfFile($sFile)) {
                     // return dummy template , new self broke (No DB : TODO : must fix init of self)
                     $templateConfig = new stdClass();
                     $templateConfig->sTemplateName = null;
@@ -224,8 +234,15 @@ class TemplateConfig extends CActiveRecord
                 }
                 /* @todo : same for css and js (in registered package ? ) */
                 TemplateConfiguration::uninstall($this->sTemplateName);
-                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
-                Yii::app()->getController()->redirect(array("admin/themeoptions"));
+                App()->setFlashMessage(
+                    sprintf(
+                        gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey 
+                        version. Can't find file: $sFile "),
+                        $this->sTemplateName
+                    ),
+                    'error'
+                );
+                App()->getController()->redirect(array("admin/themeoptions"));
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -233,7 +250,6 @@ class TemplateConfig extends CActiveRecord
 
         return $oRTemplate;
     }
-
 
     /**
      * Create a package for the asset manager.
@@ -256,7 +272,8 @@ class TemplateConfig extends CActiveRecord
         $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
         $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
 
-        // This variable will be used to add the variation name to the body class via $aClassAndAttributes['class']['body']
+        // This variable will be used to add the variation name to the body class
+        // via $aClassAndAttributes['class']['body']
         $this->aCssFrameworkReplacement = $aCssFiles;
 
         // Then we add the template config files
@@ -267,9 +284,11 @@ class TemplateConfig extends CActiveRecord
         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
         // Remove/Replace mother template files
-        if ( Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') || ( $this->template instanceof Template &&  $this->template->extends) || !empty($this->config->metadata->extends)   ){
-          $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-          $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+        if (App()->getConfig('force_xmlsettings_for_survey_rendering') ||
+            ($this->template instanceof Template &&  $this->template->extends) ||
+            !empty($this->config->metadata->extends)) {
+              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
         // Then we add the direction files if they exist
@@ -280,11 +299,10 @@ class TemplateConfig extends CActiveRecord
 
         $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
 
-
         // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
         // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
         // Depending on settings, it will create the asset directory, and publish the css and js files
-        Yii::app()->clientScript->addPackage($this->sPackageName, array(
+        App()->clientScript->addPackage($this->sPackageName, array(
             'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
             'basePath'    => $sPathName, // Used when asset manager is on
             'css'         => $aCssFiles,
@@ -309,7 +327,7 @@ class TemplateConfig extends CActiveRecord
         $sFile = trim($sFile, '/');
 
         // Retreive the correct template for this file (can be a mother template)
-        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate,false);
+        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate, false);
 
         if ($oTemplate instanceof TemplateConfiguration) {
             if (file_exists($oTemplate->path.$sFile)) {
@@ -319,8 +337,8 @@ class TemplateConfig extends CActiveRecord
             }
         }
         $sExtension = substr(strrchr($sFile, '.'), 1);
-        if($sExtension === 'twig') {
-            return Yii::app()->twigRenderer->getPathOfFile($sFile);
+        if ($sExtension === 'twig') {
+            return App()->twigRenderer->getPathOfFile($sFile);
         }
         return false;
     }
@@ -342,7 +360,6 @@ class TemplateConfig extends CActiveRecord
 
         /* bootstrap */
         if (!empty($this->cssFramework)) {
-
             // Basic bootstrap package
             if ((string) $this->cssFramework->name == "bootstrap") {
                 $packages[] = 'bootstrap';
@@ -355,11 +372,11 @@ class TemplateConfig extends CActiveRecord
 
             // Remove unwanted bootstrap stuff
             foreach ($this->getFrameworkAssetsToReplace('css', true) as $toReplace) {
-                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace);
+                App()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace);
             }
 
             foreach ($this->getFrameworkAssetsToReplace('js', true) as $toReplace) {
-                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace);
+                App()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace);
             }
         }
 
@@ -370,6 +387,11 @@ class TemplateConfig extends CActiveRecord
     }
 
     // For list, so no "setConfiguration" before
+
+    /**
+     * @todo document me
+     * @return array|mixed|string|null
+     */
     public function getPreview()
     {
         if (empty($this->sPreviewImgTag)) {
@@ -379,7 +401,9 @@ class TemplateConfig extends CActiveRecord
 
                 if ($previewPath && file_exists($previewPath.'/preview.png')) {
                     $previewUrl = Template::getTemplateURL($this->template->name).$sTemplateFileFolder;
-                    $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
+                    $this->sPreviewImgTag = '<img src="'.
+                        $previewUrl.
+                        '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
@@ -390,6 +414,11 @@ class TemplateConfig extends CActiveRecord
         return $this->sPreviewImgTag;
     }
 
+    /**
+     * @param null $sCustomMessage
+     * @throws CException
+     * @todo document me
+     */
     public function throwConsoleError($sCustomMessage=null)
     {
         $sMessage = "\\n";
@@ -397,17 +426,19 @@ class TemplateConfig extends CActiveRecord
         $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
         $sMessage .= "\\n";
 
-        if ($sCustomMessage==null){
+        if ($sCustomMessage==null) {
             $sMessage .= "\\n unknown error";
-        }else{
+        } else {
             $sMessage .= $sCustomMessage;
         }
 
-        Yii::app()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
+        App()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
     }
 
 
     /**
+     * @todo document me
+     * @todo missing return value (php warning)
      * @return boolean|null
      */
     protected function setIsStandard()
@@ -424,12 +455,13 @@ class TemplateConfig extends CActiveRecord
      *
      * NB 1: Some of the classes should be bring back to templates
      *
-     * NB 2: This is a temporary function. Before releasing to master, it will be replaced by a XML file inside the template itself
-     * So third party providers will also be able to use this mechanics to provides bug fixes/enhancement to their templates
+     * NB 2: This is a temporary function. Before releasing to master, it will be replaced by a XML file inside the
+     * template itself
+     * So third party providers will also be able to use this mechanics to provides bug fixes/enhancement to their
+     * templates
      */
     public function getClassAndAttributes()
     {
-
         $aClassAndAttributes = array();
 
         // Welcome
@@ -453,9 +485,9 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['body']  = $this->getTemplateAndMotherNames();
 
-
         if (!empty($this->aCssFrameworkReplacement)) {
-            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]); $aVariationFile = explode('.', end($aVariationFile));
+            $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]);
+            $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
             $aClassAndAttributes['class']['body']  .= ' '.$sVariationName;
         }
@@ -515,7 +547,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['maincolformlabelspan'] = $aClassAndAttributes['attr']['maincolformdiva'] = $aClassAndAttributes['attr']['maincolformdivb'] = $aClassAndAttributes['attr']['maincolformdivbdiv'] = $aClassAndAttributes['class']['maincolformdivbdivdivdiv'] = $aClassAndAttributes['attr']['maincolformdivcdiv'] = ' ';
         $aClassAndAttributes['attr']['maincolformdivd'] = $aClassAndAttributes['attr']['maincolformdivddiv'] = $aClassAndAttributes['attr']['maincolformdivddivcol'] = $aClassAndAttributes['attr']['maincolformdivddivcoldiv'] = $aClassAndAttributes['attr']['maincolformdivddivb'] = '';
 
-
         // Clear all
         $aClassAndAttributes['class']['clearall']    = 'return-to-survey';
         $aClassAndAttributes['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
@@ -570,14 +601,12 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['captcharowcoldivinput']  = '  type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['loadrowcolbutton']       = '  type="submit" id="loadbutton" name="loadall"  value="reload" ';
 
-
-
         $aClassAndAttributes['attr']['savemessage'] = $aClassAndAttributes['attr']['savemessagetext'] = $aClassAndAttributes['attr']['savemessagetitle'] = $aClassAndAttributes['attr']['loadform'] = $aClassAndAttributes['attr']['savemessagetextp'] = $aClassAndAttributes['attr']['savemessagetextpb'] = '';
         $aClassAndAttributes['attr']['loadformulli'] = $aClassAndAttributes['attr']['saveform'] = $aClassAndAttributes['attr']['saveformrow'] = $aClassAndAttributes['attr']['saveformrowlabelspan'] = $aClassAndAttributes['attr']['saveformrowcol'] = $aClassAndAttributes['attr']['passwordrow'] = '';
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow'] = $aClassAndAttributes['attr']['captcharowlabel'] = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva'] = '';
 
-        //Â Save
+        //Ã‚Â Save
         $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
         $aClassAndAttributes['class']['savecontainertitle']            = '  ';
         $aClassAndAttributes['class']['savecontainertext']             = '  ';
@@ -617,8 +646,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['saveformsurveydivhdiv']         = ' url-wrapper url-wrapper-survey-return ';
         $aClassAndAttributes['class']['saveformsurveydivhdiva']        = ' ls-return ';
 
-
-
         $aClassAndAttributes['attr']['saveformcontainerul']            = ' role="alert" ';
         $aClassAndAttributes['attr']['saveformsurveydivalabel']        = ' for="savename" ';
         $aClassAndAttributes['attr']['saveformsurveydivalabelsmall']   = ' aria-hidden="true" ';
@@ -631,7 +658,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="captcha" ';
         $aClassAndAttributes['attr']['saveformsurveydivfdivdivinput']  = ' type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['saveformsurveydivgdivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
-
 
         $aClassAndAttributes['attr']['savecontainer'] = $aClassAndAttributes['attr']['savecontainertitle'] = $aClassAndAttributes['attr']['savecontainertext'] = $aClassAndAttributes['attr']['savecontainerwarning'] = $aClassAndAttributes['attr']['saveformcontainer'] = $aClassAndAttributes['attr']['saveformcontainerli'] = '';
         $aClassAndAttributes['attr']['savecontainertextpa'] = $aClassAndAttributes['attr']['savecontainertextpb'] = $aClassAndAttributes['attr']['savecontainertextpc'] = $aClassAndAttributes['attr']['savecontainertextpd'] = $aClassAndAttributes['attr']['saveformsurveydiva'] = $aClassAndAttributes['attr']['saveformsurveydivalabelspan'] = '';
@@ -655,11 +681,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
-
         $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
         $aClassAndAttributes['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" ';
         $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
-
 
         // Register
         $aClassAndAttributes['class']['register']                 = '  ';
@@ -700,9 +724,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registersavediv']          = '  ';
         $aClassAndAttributes['class']['registersavedivbutton']    = ' action--ls-button-submit ';
         $aClassAndAttributes['class']['registerhead']             = '  ';
-
-
-
 
         $aClassAndAttributes['attr']['registerul']                = ' role="alert" ';
         $aClassAndAttributes['attr']['registerformcolrowblabel']  = ' for="register_lastname"  ';
@@ -766,6 +787,7 @@ class TemplateConfig extends CActiveRecord
 
         // Bootstrap Modal Alert
         $aClassAndAttributes['id']['alertmodal']           = 'bootstrap-alert-box-modal';
+        $aClassAndAttributes['id']['mandatorySoftModal']   = 'mandatory-soft-alert-box-modal';
         $aClassAndAttributes['class']['alertmodal']        = ' modal fade ';
         $aClassAndAttributes['class']['modaldialog']       = ' modal-dialog ';
         $aClassAndAttributes['class']['modalcontent']      = ' modal-content ';
@@ -883,7 +905,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' id="ls-button-submit" type="submit" value="movesubmit" name="move" ';
         $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move" ';
 
-
         // Index Menu
         $aClassAndAttributes['class']['indexmenugli']     = ' ls-index-menu ls-no-js-hidden  ';
         $aClassAndAttributes['class']['indexmenuglia']    = '   ';
@@ -936,8 +957,6 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
         $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
 
-
-
         $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
         $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';
 
@@ -954,34 +973,44 @@ class TemplateConfig extends CActiveRecord
         // Maybe add a plugin event here?
 
         return $aClassAndAttributes;
-
     }
 
+    /**
+     * @todo document me
+     * @return string
+     */
     public function __toString()
     {
         $s = '';
         foreach ($this as $k => $v) {
             $s .= " <strong> $k : </strong>  $v  <br/>";
-            }
+        }
 
-            $aProp = get_object_vars($this);
-            foreach ($aProp as $k => $v) {
-                $s .= " <strong> $k : </strong>  $v  <br/>";
-
-            }
-
-            return $s;
+        $aProp = get_object_vars($this);
+        foreach ($aProp as $k => $v) {
+            $s .= " <strong> $k : </strong>  $v  <br/>";
+        }
+        return $s;
     }
 
-
+    /**
+     * @todo document me
+     * @param string $templatename Name of Template
+     * @return bool|int
+     */
     public static function uninstall($templatename)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
-                    $oTemplateConfig = TemplateConfiguration::model()->findByAttributes(array('template_name' => $templatename));
-                    return TemplateConfiguration::model()->deleteAll('template_name=:templateName', array(':templateName' => $templatename));
+                    $oTemplateConfig = TemplateConfiguration::model()->findByAttributes(
+                        array('template_name' => $templatename)
+                    );
+                    return TemplateConfiguration::model()->deleteAll(
+                        'template_name=:templateName',
+                        array(':templateName' => $templatename)
+                    );
                 }
             }
         }
@@ -1001,20 +1030,19 @@ class TemplateConfig extends CActiveRecord
             throw new InvalidArgumentException('$aDatas cannot be empty');
         }
 
-
         $oNewTemplate                   = new Template;
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
         $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
         $oNewTemplate->creation_date    = date("Y-m-d H:i:s");
-        $oNewTemplate->author           = Yii::app()->user->name;
+        $oNewTemplate->author           = App()->user->name;
         $oNewTemplate->author_email     = ''; // privacy
         $oNewTemplate->author_url       = ''; // privacy
         $oNewTemplate->api_version      = $aDatas['api_version'];
         $oNewTemplate->view_folder      = $aDatas['view_folder'];
         $oNewTemplate->files_folder     = $aDatas['files_folder'];
         $oNewTemplate->description      = $aDatas['description'];
-        $oNewTemplate->owner_id         = Yii::app()->user->id;
+        $oNewTemplate->owner_id         = App()->user->id;
         $oNewTemplate->extends          = $aDatas['extends'];
 
         if ($oNewTemplate->save()) {
@@ -1035,9 +1063,10 @@ class TemplateConfig extends CActiveRecord
 
 
             if ($oNewTemplateConfiguration->save()) {
-
                 // Find all surveys using this theme (if reinstalling) and create an entry on db for them
-                $aSurveysUsingThisTeme  =  Survey::model()->findAll('template=:template', array(':template'=>$sTemplateName));
+                $aSurveysUsingThisTeme  =  Survey::model()->findAll(
+                    'template=:template', array(':template'=>$sTemplateName)
+                );
                 foreach ($aSurveysUsingThisTeme as $oSurvey) {
                      TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
                 }
@@ -1066,23 +1095,23 @@ class TemplateConfig extends CActiveRecord
         // If in template manifest, a single file is provided, a string is produced instead of an array.
         // We force it to array here
 
-        foreach ( array('add', 'replace', 'remove') as $sAction){
+        foreach (array('add', 'replace', 'remove') as $sAction) {
             if (is_object($oFiled) && !empty($oFiled->$sAction) && is_string($oFiled->$sAction)) {
                 $sValue      = $oFiled->$sAction;
                 $oFiled->$sAction = array($sValue);
                 $jFiled      = json_encode($oFiled);
             }
         }
-
-
-
         return $jFiled;
     }
 
+    /**
+     * @todo document me
+     * @return array|null
+     */
     public function getAllDbTemplateFolders()
     {
         if (empty($this->allDbTemplateFolders)) {
-
             $oCriteria = new CDbCriteria;
             $oCriteria->select = 'folder';
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
@@ -1098,7 +1127,10 @@ class TemplateConfig extends CActiveRecord
         return $this->allDbTemplateFolders;
     }
 
-
+    /**
+     * @todo document me
+     * @return array|null
+     */
     public function getTemplatesWithNoDb()
     {
         if (empty(self::$aTemplatesWithoutDB)) {
@@ -1142,15 +1174,18 @@ class TemplateConfig extends CActiveRecord
     protected function changeMotherConfiguration($sType, $aSettings)
     {
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')) {
-
-
             // Check if each file exist in this template path
             // If the file exists in local template, we can remove it from mother template package.
-            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
+            // Else, we must remove it from current package, and if it doesn't exist in mother template definition,
+            // we must add it.
             // (and leave it in moter template definition if it already exists.)
             foreach ($aSettings as $key => $sFileName) {
                 if (file_exists($this->path.$sFileName)) {
-                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+                    App()->clientScript->removeFileFromPackage(
+                        $this->oMotherTemplate->sPackageName,
+                        $sType,
+                        $sFileName
+                    );
                 } else {
                     // File doesn't exist locally, so it should be removed
                     $key = array_search($sFileName, $aSettings);
@@ -1158,16 +1193,16 @@ class TemplateConfig extends CActiveRecord
 
                     $oRTemplate = self::getTemplateForAsset($sFileName, $this);
 
-                    if ($oRTemplate){
-                      Yii::app()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
-                    }else{
+                    if ($oRTemplate) {
+                        App()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
+                    } else {
                         $sMessage  = "Can't find file '$sFileName' defined in theme '$this->sTemplateName' \\n";
                         $sMessage .= "\\n";
                         $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
                         $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
                         $sMessage .= "\\n";
                         $sMessage .= "\\n";
-                      self::throwConsoleError($sMessage);
+                        self::throwConsoleError($sMessage);
                     }
 
                 }
@@ -1184,19 +1219,20 @@ class TemplateConfig extends CActiveRecord
      */
     public function getTemplateForAsset($sFile, $oRTemplate)
     {
-      do {
+        do {
+            if (!($oRTemplate instanceof TemplateConfiguration) ||
+                !($oRTemplate->oMotherTemplate instanceof TemplateConfiguration)) {
+                return false;
+                break;
+            }
 
-          if ( !($oRTemplate instanceof TemplateConfiguration) || !($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) ) {
-            return false;
-            break;
-          }
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            $oRTemplate = $oMotherTemplate;
+            $sPackageName = $oRTemplate->sPackageName;
 
-          $oMotherTemplate = $oRTemplate->oMotherTemplate;
-          $oRTemplate = $oMotherTemplate;
-          $sPackageName = $oRTemplate->sPackageName;
-
-          $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$oRTemplate->sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFile;
-
+            $sFilePath = Yii::getPathOfAlias(
+                App()->clientScript->packages[$oRTemplate->sPackageName]["basePath"]
+                ) . DIRECTORY_SEPARATOR . $sFile;
 
       }while(!file_exists($sFilePath));
 
@@ -1204,9 +1240,12 @@ class TemplateConfig extends CActiveRecord
     }
 
 
-    // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
-    // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
-    // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
+    // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their
+    // TODO: body here.
+    // It will consist in adding private methods to get the values of variables...
+    // See what has been done for createTemplatePackage
+    // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and
+    // format the data
     // Note: signature are already the same
     /*
     public static function rename($sOldName, $sNewName)

@@ -38,7 +38,7 @@
                 {{ checked }}
               />
 
-            <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label">{{ labeltext }}</label>
+            <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label">{{ processString(labeltext) }}</label>
             {# Value for expression manager javascript (use val()) ; no need to submit #}
             {{ C.Html.hiddenField(javaname,javavalue,({
                 'id' : javaname,

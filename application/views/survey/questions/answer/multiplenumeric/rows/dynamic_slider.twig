@@ -17,8 +17,8 @@
                 {{ gT('Remaining') }}:
             </div>
             {% if prefix %}
-                <div class="prefix-text prefix"><!-- Suffix prefix are not shown inline, but only in the slider: completely diofferent concept : set hidden -->
-                    {{ prefix }}
+                <div class="prefix-text prefix"><!-- Suffix prefix are not shown inline, but only in the slider: completely different concept : set hidden -->
+                    {{ processString(prefix) }}
                 </div>
             {% endif %}
             <div id="remainingvalue_{{ id }}" class="form-control-static numeric dynamic-remaining" data-number="1"><!-- alternative class : form-control : display like an input:text -->
@@ -26,7 +26,7 @@
             </div>
             {% if suffix %}
                 <div class="suffix-text suffix">
-                   {{ suffix }}
+                   {{ processString(suffix) }}
                 </div>
             {% endif %}
         </div>

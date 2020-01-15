@@ -151,7 +151,7 @@ const AdminCore = function(){
                 BaseNameSpace, 
                 globalWindowMethods, 
                 parameterGlobals, 
-                AjaxHelper, 
+                {AjaxHelper}, 
                 {notifyFader}, 
                 {createUrl}, 
                 {EventBus},

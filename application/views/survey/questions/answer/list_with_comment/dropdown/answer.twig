@@ -43,7 +43,7 @@
 
     <div class="answer-item text-item col-sm-6 col-xs-12">
         <label for="answer{{ name  }}comment">
-            {{ label_text }}:
+            {{ processString(label_text) }}:
         </label>
         <textarea
             class="form-control textarea {{ kpclass }}"

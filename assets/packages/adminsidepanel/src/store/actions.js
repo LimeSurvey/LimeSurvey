@@ -21,7 +21,8 @@ export default {
                     context.commit('updateSidemenus', newSidemenus);
                     context.dispatch('updatePjax');
                     resolve();
-                },reject);
+                })
+                .catch((error) => {reject(error)});
             }
         );
     },
@@ -40,42 +41,11 @@ export default {
                     context.commit('updateCollapsedmenus', newCollapsedmenus);
                     context.dispatch('updatePjax');
                     resolve();
-                },reject);
+                })
+                .catch((error) => {reject(error)});
             }
         );
     },
-    // getTopmenus(context) {
-    //     return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "top" }).then(
-    //         result => {
-    //             LOG.log("topmenus", result);
-    //             const newTopmenus = LS.ld.orderBy(
-    //                 result.data.menues,
-    //                 a => {
-    //                     return parseInt(a.order || 999999);
-    //                 },
-    //                 ["desc"]
-    //             );
-    //             context.commit('updateTopmenus', newTopmenus);
-    //             context.dispatch('updatePjax');
-    //         }
-    //     );
-    // },
-    // getBottommenus(context) {
-    //     return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "bottom" }).then(
-    //         result => {
-    //             LOG.log("bottommenus", result);
-    //             const newBottommenus = LS.ld.orderBy(
-    //                 result.data.menues,
-    //                 a => {
-    //                     return parseInt(a.order || 999999);
-    //                 },
-    //                 ["desc"]
-    //             );
-    //             context.commit('updateBottommenus', newBottommenus);
-    //             context.dispatch('updatePjax');
-    //         }
-    //     );
-    // },
     getQuestions(context) {
         return new Promise((resolve, reject) => {
             ajax.methods.get(window.SideMenuData.getQuestionsUrl).then(result => {
@@ -84,15 +54,35 @@ export default {
                 context.commit("updateQuestiongroups", newQuestiongroups);
                 context.dispatch('updatePjax');
                 resolve();
-            },reject);
+            })
+            .catch((error) => {reject(error)});
         });
     },
     collectMenus(context) {
         return Promise.all([
             context.dispatch('getSidemenus'),
             context.dispatch('getCollapsedmenus'),
-            // context.dispatch('getTopmenus'),
-            // context.dispatch('getBottommenus')
         ]);
+    },
+    unlockLockOrganizer(context) {
+        //context.commit("setAllowOrganizer", context.state.allowOrganizer);
+        return new Promise((resolve, reject) => {
+            ajax.methods.post(
+                window.SideMenuData.unlockLockOrganizerUrl,
+                { 
+                    setting : 'lock_organizer',
+                    newValue :  context.state.allowOrganizer ? '0' : '1'
+                }
+            ).then(
+                result => {
+                    LOG.log('setUsersettingLog', result);
+                    context.commit("setAllowOrganizer", parseInt(result.data.result));
+            }).catch((error) => {reject(error)});}
+        );
+    },
+    changeCurrentTab(context, payload) {
+        context.commit("changeCurrentTab", payload);
+        context.dispatch('collectMenus');
+        context.dispatch('getQuestions');
     }
 }

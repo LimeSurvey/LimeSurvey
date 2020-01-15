@@ -101,6 +101,147 @@ class Surveymenu extends LSActiveRecord
         $oSurveymenu->delete();
     }
 
+    public function getMenuesForGlobalSettings()
+    { 
+        $oSettingsMenu = Surveymenu::model()->findByPk(1);
+        $aResultCollected = $this->createSurveymenuArray([$oSettingsMenu], false);
+        $resultMenu = $aResultCollected[1];
+        $resultMenu['entries'] = array_filter(
+            $resultMenu['entries'], 
+            function ($entry) {
+                //@TODO add a database hook to make this more abstract
+                return in_array($entry['name'],  ['generalsettings','presentation','tokens','notification','publication']);
+            }
+        );
+
+        return [$resultMenu];
+    }
+
+    private function __useTranslationForSurveymenu(&$entryData)
+    {
+        $entryData['title']             = gT($entryData['title']);
+        $entryData['menu_title']        = gT($entryData['menu_title']);
+        $entryData['menu_description']  = gT($entryData['menu_description']);
+    }
+
+    public function createSurveymenuArray($oSurveyMenuObjects, $collapsed=false, $oSurvey=null)
+    {
+        //Posibility to add more languages to the database is given, so it is possible to add a call by language
+        //Also for peripheral menues we may add submenus someday.
+        $aResultCollected = [];
+        foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
+            $entries = [];
+            $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
+            $submenus = $this->getSurveymenuSubmenus($oSurveyMenuObject, $collapsed);
+            foreach ($aMenuEntries as $menuEntry) {
+                $aEntry = $menuEntry->attributes;
+                //Skip menuentry if not activated in collapsed mode
+                if ($collapsed && $aEntry['showincollapse'] == 0 ) {
+                    continue;
+                }
+
+                //Skip menuentry if no permission
+                 if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])){
+                     $inArray = array_search($aEntry['permission'],array_keys(Permission::getGlobalBasePermissions()));
+                    if($inArray) {
+                        $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
+                    } else if($oSurvey !== null){
+                        $hasPermission = Permission::model()->hasSurveyPermission($oSurvey->sid, $aEntry['permission'], $aEntry['permission_grade']);
+                    } else {
+                        $hasPermission = true;
+                    }
+
+                    if(!$hasPermission) {
+                        continue;
+                    }
+                }
+
+                // Check if a specific user owns this menuentry.
+                if (!empty($aEntry['user_id'])) {
+                    $userId = Yii::app()->session['loginID'];
+                    if ($userId != $aEntry['user_id']) {
+                        continue;
+                    }
+                }
+
+                //parse the render part of the data attribute
+                $oDataAttribute = new SurveymenuEntryData();
+                $oDataAttribute->apply($menuEntry, ($oSurvey ? $oSurvey->sid : null));
+
+                if ($oDataAttribute->isActive !== null && $oSurvey != null) {
+                    if (($oDataAttribute->isActive == true && $oSurvey->active == 'N') || ($oDataAttribute->isActive == false && $oSurvey->active == 'Y')) {
+                        continue;
+                    }
+                }
+
+                $aEntry['link'] = $oDataAttribute->linkCreator();
+                $aEntry['link_external'] = $oDataAttribute->linkExternal;
+                $aEntry['debugData'] = $oDataAttribute->attributes;
+                $aEntry['pjax'] = $oDataAttribute->pjaxed;
+                $this->__useTranslationForSurveymenu($aEntry);
+                $entries[$aEntry['id']] = $aEntry;
+            }
+
+            $aResultCollected[$oSurveyMenuObject->id] = [
+                "id" => $oSurveyMenuObject->id,
+                "title" => gt($oSurveyMenuObject->title),
+                "name" => $oSurveyMenuObject->name,
+                "ordering" => $oSurveyMenuObject->ordering,
+                "level" => $oSurveyMenuObject->level,
+                "description" => gT($oSurveyMenuObject->description),
+                "entries" => $entries,
+                "submenus" => $submenus
+            ];
+        }
+        return $aResultCollected;
+    }
+
+    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed=false)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
+        $criteria->addCondition('parent_id=:parentid');
+        $criteria->addCondition('level=:level');
+
+        if ($collapsed === true) {
+            $criteria->addCondition('showincollapse=1');
+        }
+
+        $criteria->params = [
+            ':surveyid' => $oParentSurveymenu->survey_id,
+            ':parentid' =>  $oParentSurveymenu->id,
+            ':level'=> ($oParentSurveymenu->level + 1)
+        ];
+
+        $oMenus = Surveymenu::model()->findAll($criteria);
+
+        $aResultCollected = $this->createSurveymenuArray($oMenus, $collapsed);
+        return $aResultCollected;
+    }
+
+    public function getDefaultSurveyMenus($position = '', $oSurvey=null)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'survey_id IS NULL AND (parent_id IS NULL OR parent_id=0)';
+        $collapsed = $position==='collapsed';
+
+        if ($position != '' && !$collapsed) {
+            $criteria->condition .= ' AND position=:position';
+            $criteria->params = array(':position'=>$position);
+        }
+
+        if ($collapsed) {
+            $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
+            $criteria->params = array(':position'=>$position);
+            $collapsed = true;
+        }
+
+        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
+        $aResultCollected = $this->createSurveymenuArray($oDefaultMenus, $collapsed, $oSurvey);
+
+        return $aResultCollected;
+    }
+
     public function getMenuIdOptions()
     {
         $oSurveymenus = Surveymenu::model()->findAll();
@@ -155,7 +296,8 @@ class Surveymenu extends LSActiveRecord
     {
         $oSurveymenus = Surveymenu::model()->findAll();
         $options = [];
-        for ($i = 0; $i <= count($oSurveymenus); $i++) {
+        $arraySize = count($oSurveymenus);
+        for ($i = 0; $i <= $arraySize; $i++) {
             $options[$i] = $i;
         }
         //return join('\n',$options);
@@ -342,6 +484,7 @@ class Surveymenu extends LSActiveRecord
             }
             $oTransaction->commit();
         } catch (Exception $e) {
+            // FIXME $sOldLanguage is undefined
             App()->setLanguage($sOldLanguage);
             return false;
         }

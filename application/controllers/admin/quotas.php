@@ -45,15 +45,15 @@ class quotas extends Survey_Common_Action
 
     private function _getData($iSurveyId)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         // Set the variables in an array
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        $aData['sBaseLang'] = Survey::model()->findByPk($iSurveyId)->language;
-        $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-        array_unshift($aData['aLangs'], $aData['sBaseLang']);
+        $aData['sBaseLang'] = $oSurvey->language;
+        $aData['aLangs'] = $oSurvey->allLanguages;
 
         $aData['action'] = $action = Yii::app()->request->getParam('action');
         if (!isset($action)) {
-                    $aData['action'] = 'quotas';
+            $aData['action'] = 'quotas';
         }
 
         return $aData;
@@ -215,7 +215,7 @@ class quotas extends Survey_Common_Action
                     }
 
                     $aQuotaItems[$oQuota['id']][] = array(
-                        'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
+                        'oQuestion' => Question::model()->with('questionL10ns')->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'answer_title' => $answerText,
                         'oQuotaMember'=>$oQuotaMember,
                         'valid'=>isset($answerText),
@@ -433,7 +433,7 @@ class quotas extends Survey_Common_Action
         $aData['baselang'] = $aData['sBaseLang'];
 
         $aData['sidemenu']['state'] = false;
-
+        $aData['topBar']['showSaveButton'] = true;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId; // Close button
@@ -507,12 +507,13 @@ class quotas extends Survey_Common_Action
         $aData       = $this->_getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
         $this->_checkPermissions($iSurveyId, 'read');
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
 
         $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
         $aQuestionType = $aQuestion['type'];
 
-        if ($aQuestionType == 'M') {
+        if ($aQuestionType == Question::QT_M_MULTIPLE_CHOICE) {
             $aResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
             $aAnswerList = array();
 
@@ -520,11 +521,11 @@ class quotas extends Survey_Common_Action
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
                 $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
             }
-        } elseif ($aQuestionType == 'G') {
+        } elseif ($aQuestionType == Question::QT_G_GENDER_DROPDOWN) {
             $aAnswerList = array(
                 'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
-        } elseif ($aQuestionType == 'L' || $aQuestionType == 'O' || $aQuestionType == '!') {
+        } elseif ($aQuestionType == Question::QT_L_LIST_DROPDOWN || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
 
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
@@ -534,7 +535,7 @@ class quotas extends Survey_Common_Action
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
             }
 
-        } elseif ($aQuestionType == 'A') {
+        } elseif ($aQuestionType == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
             $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
@@ -545,7 +546,7 @@ class quotas extends Survey_Common_Action
                     $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
-        } elseif ($aQuestionType == 'B') {
+        } elseif ($aQuestionType == Question::QT_B_ARRAY_10_CHOICE_QUESTIONS) {
             $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
 
             $aAnswerList = array();
@@ -556,13 +557,12 @@ class quotas extends Survey_Common_Action
                     $aAnswerList[$aDbAnsList['code']."-".$x] = $tmparrayans;
                 }
             }
-        } elseif ($aQuestionType == 'Y') {
+        } elseif ($aQuestionType == Question::QT_Y_YES_NO_RADIO) {
             $aAnswerList = array(
                 'Y' => array('Title' => $aQuestion['title'], 'Display' => gT("Yes"), 'code' => 'Y'),
                 'N' => array('Title' => $aQuestion['title'], 'Display' => gT("No"), 'code' => 'N'));
-        } elseif ($aQuestionType == 'I') {
-            $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-            array_unshift($slangs, $sBaseLang);
+        } elseif ($aQuestionType == Question::QT_I_LANGUAGE) {
+            $slangs = $oSurvey->allLanguages;
 
             foreach($slangs as $key => $value) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);

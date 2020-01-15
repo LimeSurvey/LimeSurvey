@@ -1,0 +1,22 @@
+{
+    "firstPicture.jpg": {
+        "iconClass": "fa-picture-o",
+        "isImage": true,
+        "src": "https:\/\/limesurvey.localhost\/upload\/themes\/survey\/generalfiles\/firstPicture.jpg",
+        "hash": "62a62fcf2b28ae7009feee5ae6c4f816",
+        "path": "upload\/themes\/survey\/generalfiles\/firstPicture.jpg",
+        "size": 240987,
+        "shortName": "firstPicture.jpg",
+        "mod_time": "01.01.2019 13:37"
+    },
+    "secondPicture.jpg": {
+        "iconClass": "fa-picture-o",
+        "isImage": true,
+        "src": "https:\/\/limesurvey.localhost\/upload\/themes\/survey\/generalfiles\/secondPicture.jpg",
+        "hash": "35c6bde5cce972f6a59aa4c88b16482a",
+        "path": "upload\/themes\/survey\/generalfiles\/secondPicture.jpg",
+        "size": 270593,
+        "shortName": "secondPicture.jpg",
+        "mod_time": "01.02.2019 13:37"
+    }
+}

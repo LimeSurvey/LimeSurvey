@@ -19,6 +19,9 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
+
+
+
 class GlobalSettings extends Survey_Common_Action
 {
 
@@ -103,7 +106,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
-        $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
+        $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
 
     /**
@@ -127,7 +130,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['templates'] = $this->getTemplateFolderStorage($uploaddir, $decimals);
 
         $html = Yii::app()->getController()->renderPartial(
-            '/admin/global_settings/_storage_ajax',
+            '/admin/globalsettings/_storage_ajax',
             $data,
             true
         );
@@ -236,10 +239,16 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
+        SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+
+        // Unstable extensions can only be changed by super admin.
+        if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
+            SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
+        }
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
-            if (array_key_exists($sTemplate, getTemplateList())) {
+            if (array_key_exists($sTemplate, Template::getTemplateList())) {
 // Filter template name
                 SettingGlobal::setSetting('defaulttheme', $sTemplate);
             }
@@ -254,7 +263,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod')));
         SettingGlobal::setSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
-            SettingGlobal::setSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
+            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(strip_tags(returnGlobal('emailsmtppassword'))));
         }
         SettingGlobal::setSetting('bounceaccounthost', strip_tags(returnGlobal('bounceaccounthost')));
         SettingGlobal::setSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype', 'off'));
@@ -262,7 +271,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            SettingGlobal::setSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(strip_tags(returnGlobal('bounceaccountpass'))));
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
@@ -284,10 +293,6 @@ class GlobalSettings extends Survey_Common_Action
             $warning .= gT("Warning! Administrator email address was not saved because it was not valid.").'<br/>';
         }
         SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
-        SettingGlobal::setSetting('shownoanswer', sanitize_int(Yii::app()->getRequest()->getPost('shownoanswer')));
-        SettingGlobal::setSetting('showxquestions', (Yii::app()->getRequest()->getPost('showxquestions')));
-        SettingGlobal::setSetting('showgroupinfo', (Yii::app()->getRequest()->getPost('showgroupinfo')));
-        SettingGlobal::setSetting('showqnumcode', (Yii::app()->getRequest()->getPost('showqnumcode')));
         $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
         if ($repeatheadingstemp == 0) {
             $repeatheadingstemp = 25;
@@ -320,6 +325,9 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('add_access_control_header', (bool) Yii::app()->getRequest()->getPost('add_access_control_header'));
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
+
+        SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles')== '1' ? 'Y' : 'N');
+
         $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60).' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+'.$savetime;
@@ -384,6 +392,62 @@ class GlobalSettings extends Survey_Common_Action
         'activetokens' => $activetokens,
         'deactivatedtokens' => $deactivatedtokens
         );
+    }
+
+    /**
+     * Update global survey settings
+     */
+    public function surveySettings()
+    {
+        $bRedirect = 0;
+        $gsid = 0; // global setting in SurveysGroupsettings model
+        $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
+        $oSurvey->setOptions();
+
+        $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
+
+        if (isset($_POST)) {
+            $oSurvey->attributes = $_POST;
+            $oSurvey->gsid = 0;
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if ($oSurvey->save()) {
+                $bRedirect = 1;
+            }
+        }
+
+        $users = getUserList();
+        $aData['users'] = array();
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+
+        $aData['oSurvey'] = $oSurvey;
+
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/index'));
+        }
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerPackage('globalsidepanel');
+
+        $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['jsData'] = [
+            'baseLinkUrl' => 'admin/globalsettings/sa/surveysettings',
+            'getUrl' => Yii::app()->createUrl('admin/globalsettings/sa/surveysettingmenues'),
+            'i10n' => [
+                'Survey settings' => gT('Survey settings')
+            ]
+        ];
+        $aData['partial'] = $sPartial;
+        $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
+    }
+
+    public function surveysettingmenues() {
+        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
 
     /**

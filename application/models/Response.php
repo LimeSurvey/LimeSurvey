@@ -40,25 +40,36 @@
          * Get all files related to this response and (optionally) question ID.
          *
          * @param int $qid
-         * @return array
+         * @return array[]
          */
         public function getFiles($qid = null)
         {
             $survey = Survey::model()->findByPk($this->dynamicId);
-            $conditions = [
-                'sid' => $this->dynamicId,
-                'type' => '|',
-                'language'=>$survey->language
-            ];
+            $criteria = new CDbCriteria();
+            $criteria->compare('sid', $this->dynamicId);
+            $criteria->compare('type', Question::QT_VERTICAL_FILE_UPLOAD);
+            $criteria->compare('questionL10ns.language', $survey->language);
             if ($qid !== null) {
-                $conditions['qid'] = $qid;
+                $criteria->compare('t.qid', $qid);
             }
-            $questions = Question::model()->findAllByAttributes($conditions);
+
+            $questions = Question::model()->with('questionL10ns')->findAll($criteria);
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
                 $data = json_decode(urldecode($this->getAttribute($field)), true);
                 if (is_array($data)) {
+                    /* adding the title and qid to fileinfo , see #14659 */
+                    $index = 0;
+                    $data = array_map( function($fileInfo) use (&$index, $question) {
+                        return array_merge($fileInfo, array(
+                            'question' => array(
+                                'title' => $question->title,
+                                'qid' => $question->qid,
+                            ),
+                            'index' => $index++,
+                        ));
+                    }, $data);
                     $files = array_merge($files, $data);
                 }
             }
@@ -198,4 +209,18 @@
         {
 
         }
+
+        public static function getEncryptedAttributes($surveyid = 0){
+            $survey = Survey::model()->findByPk($surveyid);
+            $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
+            $aAttributes = array();
+            foreach ($fieldmap as $field){
+                if (array_key_exists('encrypted', $field) &&  $field['encrypted'] == 'Y'){
+                    $aAttributes[] = $field['fieldname'];
+                }
+
+            }
+            return $aAttributes;
+        }
+    
     }

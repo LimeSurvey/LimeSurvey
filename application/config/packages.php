@@ -1,6 +1,9 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+/** @var array $userConfig */
+
+
 /**
  * Core packages , no third_party
  * sees third_party.php for third party package
@@ -19,6 +22,19 @@ if (isset($_GET['isAjax'])) {
     return array();
 }
 return array(
+    /* expressions manager function and system */
+    'expressions'=>array(
+        'devBaseUrl'  => 'assets/packages/expressions/',
+        'basePath' => 'core.expressions',
+        'js'=>array(
+            'em_javascript.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'moment', // Used by LEMval function
+            'decimalcustom', // Use by fixnum_checkconditions
+        )
+    ),
     /* For public template functionnality */
     'limesurvey-public'=>array(
         'devBaseUrl'  => 'assets/packages/limesurvey/',
@@ -31,21 +47,55 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'expressions',
             'fontawesome',
         )
     ),
+    'embeddables' => array(
+        'devBaseUrl'  => 'assets/packages/embeddables/',
+        'basePath' => 'core.embeddables',
+        'position' =>CClientScript::POS_END,
+        'css'=> array(
+            'build/embeddables'.$minVersion.'.css',
+        ),
+        'js'=>array(
+            'build/embeddables'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
+
+    'themeoptions-core' => [
+        'devBaseUrl'  => 'assets/packages/themeoptions-core/',
+        'basePath' => 'core.themeoptions-core',
+        'position' =>CClientScript::POS_END,
+        'css'=> [
+            'themeoptions-core.css',
+        ],
+        'js'=>[
+            'themeoptions-core.js',
+        ],
+        'depends' => [
+            'jquery',
+            'bootstrap'
+        ]
+    ],
     /* For public template extended functionnality (based on default template) */
     'template-core'=>array(
         'devBaseUrl'  => 'assets/packages/template-core/',
         'basePath' => 'core.template-core',
         'css'=> array(
+            'spectrum.css',
             'template-core.css',
         ),
         'js'=>array(
+            'spectrum.js',
             'template-core.js',
         ),
         'depends' => array(
             'limesurvey-public',
+            'embeddables'
         )
     ),
     'template-core-ltr'=>array( /* complement for ltr */
@@ -79,27 +129,6 @@ return array(
             'bootstrap',
         )
     ),
-    'ckeditor' => array(
-        'devBaseUrl'  => 'assets/packages/ckeditor',
-        'basePath' => 'core.ckeditor',
-        'js' => array(
-            'ckeditor.js',
-            'config.js',
-        ),
-        'depends' => array(
-            'adminbasics',
-        ),
-    ),
-    'ckeditoradditions' => array(
-        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
-        'basePath' => 'core.ckeditoradditions',
-        'js' => array(
-            'ckeditoradditions.js',
-        ),
-        'depends' => array(
-            'ckeditor'
-        )
-    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
@@ -113,11 +142,12 @@ return array(
     'pjaxbackend' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => ($debug > 0 ?
+        'js' => (
+            $debug > 0 ?
             array(
                 'pjax.js',
                 'loadPjax.js'
-            ) 
+            )
             : array(
                 'min/pjax.combined.min.js',
             )
@@ -125,6 +155,46 @@ return array(
         'depends' => array(
             'lslog',
         )
+    ),
+    'panelintegration' => array(
+       'devBaseUrl' => 'assets/packages/panelintegration/',
+       'basePath' => 'core.panelintegration',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/panelintegration.js',
+            )
+            : array(
+                'build.min/js/panelintegration.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics',
+       )
+    ),
+    'globalsidepanel' => array(
+       'devBaseUrl' => 'assets/packages/globalsidepanel/',
+       'basePath' => 'core.globalsidepanel',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/globalsidepanel.js',
+            )
+            : array(
+                'build.min/js/globalsidepanel.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
     ),
     'adminsidepanel' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
@@ -147,69 +217,231 @@ return array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
        'css' => (
-        $debug > 0
+           $debug > 0
             ? array(
                 'build/css/adminsidepanel.css',
             )
             : array(
                 'build.min/css/adminsidepanel.css'
             )
-            ),
+        ),
         'depends' => array(
-            'adminsidepanel',
+            'adminbasics',
         )
     ),
     'adminsidepanelrtl' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
        'css' => (
-        $debug > 0
+           $debug > 0
             ? array(
                 'build/css/adminsidepanel.rtl.css',
             )
             : array(
                 'build.min/css/adminsidepanel.rtl.css'
             )
-            ),
+        ),
         'depends' => array(
-            'adminsidepanel',
+            'adminbasics',
         )
     ),
-    'panelintegration' => array(
-        'devBaseUrl' => 'assets/packages/panelintegration/',
-        'basePath' => 'core.panelintegration',
+    'admintoppanel' => array(
+       'devBaseUrl' => 'assets/packages/admintoppanel/',
+       'basePath' => 'core.admintoppanel',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/admintoppanel.js',
+            )
+            : array(
+                'build.min/js/admintoppanel.js'
+            )
+        ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
+    
+    'admintoppanelltr' => array(
+       'devBaseUrl' => 'assets/packages/admintoppanel/',
+       'basePath' => 'core.admintoppanel',
+       'position' =>CClientScript::POS_END,
+       'css' => ( $debug > 0
+            ? array(
+                'build/css/admintoppanel.css',
+            )
+            : array(
+                'build.min/css/admintoppanel.css'
+            )
+        ),
+       'depends' => array(
+           'admintoppanel'
+       )
+    ),
+    'admintoppanelrtl' => array(
+       'devBaseUrl' => 'assets/packages/admintoppanel/',
+       'basePath' => 'core.admintoppanel',
+       'position' =>CClientScript::POS_END,
+       'css' => ( $debug > 0
+            ? array(
+                'build/css/admintoppanel.rtl.css',
+            )
+            : array(
+                'build.min/css/admintoppanel.rtl.css'
+            )
+        ),
+       'depends' => array(
+           'admintoppanel'
+       )
+    ),
+    
+    'adminbottompanel' => array(
+       'devBaseUrl' => 'assets/packages/adminbottompanel/',
+       'basePath' => 'core.adminbottompanel',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/adminbottompanel.js',
+            )
+            : array(
+                'build.min/js/adminbottompanel.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
+    'filemanager' => array(
+        'devBaseUrl' => 'assets/packages/filemanager/',
+        'basePath' => 'core.filemanager',
         'position' =>CClientScript::POS_END,
         'js' => (
             $debug > 0
-             ? array(
-                 'build/js/panelintegration.js',
-             )
-             : array(
-                 'build.min/js/panelintegration.js'
-             )
-         ),
+            ? array(
+                'build/js/filemanager.js',
+            )
+            : array(
+                'build.min/js/filemanager.js'
+            )
+        ),
         'css' => array(
             'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
         )
-     ),
-    // 'adminpanel' => array(
-    //     'devBaseUrl' => 'assets/packages/adminpanel/',
-    //     'basePath' => 'core.adminpanel',
-    //     'js' => array(
-    //         'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-    //         'build/surveysettings'.$minVersion.'.js',
-    //         'build/hammer'.$minVersion.'.js'
-    //     ),
-    //     'css' => array(
-    //         'build/lsadminpanel'.$minVersion.'.css'
-    //     ),
-    //     'depends' => array(
-    //         'adminbasics'
-    //     )
-    // ),
+    ),
+    'textelements' => array(
+        'devBaseUrl' => 'assets/packages/textelements/',
+        'basePath' => 'core.textelements',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/lstextelements.js',
+            )
+            : array(
+                'build.min/js/lstextelements.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'admintoppanel',
+        )
+    ),
+    'datasectextelements' => array(
+        'devBaseUrl' => 'assets/packages/datasecuritysettings/',
+        'basePath' => 'core.datasecuritysettings',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/datasecuritysettings.js'
+            )
+            : array(
+                'build.min/js/datasecuritysettings.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'admintoppanel',
+        )
+    ),
+    'questiongroupeditor' => array(
+        'devBaseUrl' => 'assets/packages/questiongroup/',
+        'basePath' => 'core.questiongroup',
+        'position' =>CClientScript::POS_END,
+        'js' =>  (
+            $debug > 0
+            ? array(
+                'build/js/questiongroupedit.js'
+            )
+            : array(
+                'build.min/js/questiongroupedit.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'admintoppanel',
+        )
+    ),
+    'questioneditor' => array(
+        'devBaseUrl' => 'assets/packages/questioneditor/',
+        'basePath' => 'core.questioneditor',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/questionedit.js'
+            )
+            : array(
+                'build.min/js/questionedit.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ace',
+            'admintoppanel',
+            
+        )
+    ),
+    'labelsets' => array(
+        'devBaseUrl' => 'assets/packages/labelsets/',
+        'basePath' => 'core.labelsets',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/labelsets.js'
+            )
+            : array(
+                'build.min/js/labelsets.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -233,6 +465,14 @@ return array(
             'build/lslog.js',
         )
     ),
+    'lshelp' => array(
+        'devBaseUrl' => 'assets/packages/lshelp/',
+        'basePath' => 'core.lshelp',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'build/lshelper'.$minVersion.'.js',
+        )
+    ),
     'panelboxes' => array(
         'devBaseUrl' => 'assets/packages/panelboxes/',
         'basePath' => 'core.panelboxes',
@@ -240,20 +480,6 @@ return array(
             'build/panelboxes'.$minVersion.'.css',
         )
     ),
-    'adminbasics' => array(
-        'devBaseUrl' => 'assets/packages/adminbasics/',
-        'basePath' => 'core.adminbasics',
-        'position' =>CClientScript::POS_HEAD,
-        'js' => array(
-            'build/adminbasics'.$minVersion.'.js',
-        ),
-        'depends' => array(
-            'jquery',
-            'pjaxbackend',
-            'lslog',
-        )
-    ),
-
     'adminbasicsrtl' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
@@ -275,16 +501,17 @@ return array(
         )
     ),
 
-    'adminbasicjs' => array(
+    'adminbasics' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'js' => array(
+            'build/adminbasics'.$minVersion.'.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
-            'adminbasics'
+            'lslog'
         )
     ),
 
@@ -300,7 +527,7 @@ return array(
         )
     ),
 
-    'emailtemplates' => array(
+    'emailtemplatesold' => array(
         'devBaseUrl' => 'assets/packages/emailtemplates/',
         'basePath' => 'core.emailtemplates',
         'position' =>CClientScript::POS_BEGIN,
@@ -313,7 +540,75 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+    ),
+
+    'emailtemplates' => array(
+        'devBaseUrl' => 'assets/packages/emailtemplates/',
+        'basePath' => 'core.emailtemplates',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/emailtemplates.js'
+            )
+            : array(
+                'build.min/js/emailtemplates.js'
+            )
         ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ace',
+        )
+    ),
+
+    'surveysummary' => array(
+        'devBaseUrl' => 'assets/packages/surveysummary/',
+        'basePath' => 'core.surveysummary',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'surveysummary.css'
+        ),
+        'js' => array(
+            'surveysummary.js',
+            'qrcode.js'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+
+    'permissionroles' => array(
+        'devBaseUrl' => 'assets/packages/permissionroles/',
+        'basePath' => 'core.permissionroles',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/permissionroles.css'
+        ),
+        'js' => array(
+            'js/permissionroles.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+
+    'usermanagement' => array(
+        'devBaseUrl' => 'assets/packages/usermanagement/',
+        'basePath' => 'core.usermanagement',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/usermanagement.css'
+        ),
+        'js' => array(
+            'js/usermanagement.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
 
     'printable' => array(
         'devBaseUrl' => 'assets/packages/printable/',
@@ -328,8 +623,13 @@ return array(
         'depends' => array(
             'adminbasics',
         )
-        ),
-
+    ),
+    /* An empty package to be extended for EM (after core expressions) */
+    'expression-extend' =>array(
+        'depends' => array(
+            'expressions',
+        )
+    ),
     'decimalcustom' => array(
         'devBaseUrl' => 'assets/packages/decimalcustom/',
         'basePath' => 'core.decimalcustom',
@@ -347,5 +647,4 @@ return array(
         'js'=>array(YII_DEBUG ? 'jquery.ba-bbq.js' : 'jquery.ba-bbq.min.js'),
         'depends'=>array('jquery'),
     ),
-
 );

@@ -5,6 +5,10 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <a class="btn btn-default pull-right" href="#" role="button" id="send-reminders-button">
+        <span class="icon-invite" ></span>
+        <?php eT("Send reminders");?>
+    </a>
     <h3><?php eT("Send email reminder"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -26,7 +30,7 @@
                 <div class="col-sm-6">
                 <?php if (count($tokenids)>0): ?>
                         <div class='form-group'>
-                            <label class='control-label '><?php eT("Send reminder to token ID(s):"); ?></label>
+                            <label class='control-label '><?php eT("Send reminder to participant ID(s):"); ?></label>
                             <div class=''>
                                 <?php echo short_implode(", ", "-", (array) $tokenids); ?>
                             </div>
@@ -34,7 +38,7 @@
                     <?php endif; ?>
 
                     <div class='form-group'>
-                        <label class='control-label ' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
+                        <label class='control-label ' for='bypassbademails'><?php eT("Bypass participant with failing email addresses:"); ?></label>
                         <div class=''>
                             <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -66,7 +70,7 @@
                     <div class='form-group'>
                           <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', 
                           array(
-                              'title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                              'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
                               'unescaped'=>'unescaped', 
                               'class' => 'control-label '
                               )

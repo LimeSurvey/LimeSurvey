@@ -1,0 +1,13 @@
+.RoleControl-loading {
+    position: fixed;
+    top: 3%;
+    left: 3%;
+    box-shadow: 1% 1% 3% rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.4);
+    height: 94%;
+    width: 94%;
+}
+
+@import 'errorCheck';
+@import 'successCheck';
+@import 'permissions';

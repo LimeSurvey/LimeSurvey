@@ -18,17 +18,27 @@
 <!-- answer -->
 <ul class='{{coreClass}} list-unstyled form-horizontal' role="group" aria-labelledby="ls-question-text-{{basename}}">
     {% block rows %}
-        {{ sRows }}
+        {% if aRows is empty %}
+            {% include '/survey/questions/answer/multiplenumeric/empty.twig' %}
+        {% else %}
+            {% for aRow in aRows %}
+                {% include rowTemplate with aRow only %}
+            {% endfor %}
+        {% endif %}
     {% endblock %}
     {% block dynamic %}
-        {{ include("/survey/questions/answer/multiplenumeric/rows/dynamic_slider.twig", {
-            'id' : id,
-            'sumRemainingEqn' : sumRemainingEqn,
-            'sumEqn' : sumEqn,
-            'sLabelWidth' : sLabelWidth,
-            'sInputContainerWidth' : sInputContainerWidth,
-            'prefix' : prefix,
-            'suffix' : suffix,
-        })}}
+        {{ 
+            include(dynamicTemplate|default("/survey/questions/answer/multiplenumeric/rows/dynamic.twig"), 
+                {
+                'id' : id,
+                'sumRemainingEqn' : sumRemainingEqn,
+                'sumEqn' : sumEqn,
+                'sLabelWidth' : sLabelWidth,
+                'sInputContainerWidth' : sInputContainerWidth,
+                'prefix' : prefix,
+                'suffix' : suffix,
+                }
+            )
+        }}
     {% endblock %}
 </ul>

@@ -94,7 +94,7 @@
                     <p>
                         <?php if (isset($toldtable) && $toldtable)
                         {
-                            echo gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable";
+                            echo gT("The participant table associated with this survey has been renamed to: ")." $tnewtable";
                     }?>
                 </p>
                 <p>

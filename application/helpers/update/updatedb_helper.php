@@ -48,7 +48,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310);
+    $aCriticalDBVersions = array(310, 400);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -70,7 +70,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
-
+    $options = "";
+    if(in_array(Yii::app()->db->driverName,['mysql','mysqli'])) {
+        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+    }
     try {
 
         // Version 1.80 had database version 132
@@ -279,7 +282,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $aFailedTemplates=array();
             // get each entry
             while($entryName = readdir($hTemplateDirectory)) {
-                if (!in_array($entryName,array('.','..','.svn')) && is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName) && !isStandardTemplate($entryName))
+                if (!in_array($entryName,array('.','..','.svn')) && is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName) && !Template::isStandardTemplate($entryName))
                 {
                     if (!rename($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName,$sUserTemplateRootDir.DIRECTORY_SEPARATOR.$entryName))
                     {
@@ -1677,7 +1680,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 316) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
+            //$oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>316), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -1765,7 +1768,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 323) {
-            $oTransaction = $oDB->beginTransaction();
+            $oTransaction = $oDB->beginTransaction();    
             dropPrimaryKey('labels', 'lid');
             $oDB->createCommand()->addColumn('{{labels}}', 'id', 'pk');
             $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid', 'sortorder', 'language'], false);
@@ -1992,7 +1995,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
         /**
          * Url parameter "surveyid" should be "sid" for this link.
          */
@@ -2108,7 +2110,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                         'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                         'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1"}',
+                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
                         'cssframework_name' => 'bootstrap',
                         'cssframework_css'  => '{}',
                         'cssframework_js'   => '',
@@ -2125,7 +2127,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                     'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                     'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1"}',
+                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
                     'cssframework_name' => 'bootstrap',
                     'cssframework_css'  => '{}',
                     'cssframework_js'   => '',
@@ -2188,7 +2190,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>346], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }
+        }        
 
         /**
          * Correct permission for survey menu email template (surveylocale, not assessments).
@@ -2205,6 +2207,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>347], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         /**
          * Adding security message and settings
          */
@@ -2385,13 +2388,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'id = 5'
                     );
             }
-
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>356], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
-
-
 
         if ($iOldDBVersion < 357) {
             $oTransaction = $oDB->beginTransaction();
@@ -2432,6 +2431,634 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }        
 
+        if ($iOldDBVersion < 400) {
+            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
+            $oTransaction = $oDB->beginTransaction();
+            
+            // Question table 
+            /* l10ns question table */
+            if(Yii::app()->db->schema->getTable('{{question_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{question_l10ns}}');
+            }
+            $oDB->createCommand()->createTable('{{question_l10ns}}', array(
+                'id' =>  "pk",
+                'qid' =>  "integer NOT NULL",
+                'question' =>  "text NOT NULL",
+                'help' =>  "text",
+                'language' =>  "string(20) NOT NULL"
+            ), $options);
+            $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
+            /* questions by rename/insert */
+            if(Yii::app()->db->schema->getTable('{{questions_update400}}')){
+                $oDB->createCommand()->dropTable('{{questions_update400}}');
+            }
+            $oDB->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
+            $oDB->createCommand()->createTable('{{questions}}', array(
+                'qid' =>  "pk",
+                'parent_qid' =>  "integer NOT NULL default '0'",
+                'sid' =>  "integer NOT NULL default '0'",
+                'gid' =>  "integer NOT NULL default '0'",
+                'type' =>  "string(30) NOT NULL default 'T'",
+                'title' =>  "string(20) NOT NULL default ''",
+                'preg' =>  "text",
+                'other' =>  "string(1) NOT NULL default 'N'",
+                'mandatory' =>  "string(1) NULL",
+                //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
+                'question_order' =>  "integer NOT NULL",
+                'scale_id' =>  "integer NOT NULL default '0'",
+                'same_default' =>  "integer NOT NULL default '0'",
+                'relevance' =>  "text",
+                'modulename' =>  "string(255) NULL"
+            ), $options);
+            switchMSSQLIdentityInsert('questions', true); // Untested
+            $oDB->createCommand("INSERT INTO {{questions}}
+                (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename)
+                SELECT qid, parent_qid, {{questions_update400}}.sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'')
+                FROM {{questions_update400}}
+                    INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
+                ")->execute();
+            switchMSSQLIdentityInsert('questions', false); // Untested
+            $oDB->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
+            $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
+            $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
+            $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
+            $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
+
+            // Groups table
+            if(Yii::app()->db->schema->getTable('{{group_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{group_l10ns}}');
+            }
+            $oDB->createCommand()->createTable('{{group_l10ns}}', array(
+                'id' =>  "pk",
+                'gid' =>  "integer NOT NULL",
+                'group_name' =>  "text NOT NULL",
+                'description' =>  "text",
+                'language' =>  "string(20) NOT NULL"
+            ), $options);
+            $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
+            if(Yii::app()->db->schema->getTable('{{groups_update400}}')){
+                $oDB->createCommand()->dropTable('{{groups_update400}}');
+            }
+            $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
+            $oDB->createCommand()->createTable('{{groups}}', array(
+                'gid' =>  "pk",
+                'sid' =>  "integer NOT NULL default '0'",
+                'group_order' =>  "integer NOT NULL default '0'",
+                'randomization_group' =>  "string(20) NOT NULL default ''",
+                'grelevance' =>  "text NULL"
+            ), $options);
+            switchMSSQLIdentityInsert('groups', true); // Untested
+            $oDB->createCommand("INSERT INTO {{groups}}
+                (gid, sid, group_order, randomization_group, grelevance)
+                SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
+                FROM {{groups_update400}}
+                    INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
+                ")->execute();
+            switchMSSQLIdentityInsert('groups', false); // Untested
+            $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
+            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+
+            // Answers table
+            if(Yii::app()->db->schema->getTable('{{answer_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{answer_l10ns}}');
+            }
+            $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
+                'id' =>  "pk",
+                'aid' =>  "integer NOT NULL",
+                'answer' =>  "text NOT NULL",
+                'language' =>  "string(20) NOT NULL"
+            ), $options);
+            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
+            /* Renaming old without pk answers */
+            if(Yii::app()->db->schema->getTable('{{answers_update400}}')){
+                $oDB->createCommand()->dropTable('{{answers_update400}}');
+            }
+            $oDB->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
+            /* Create new answers with pk and copy answers_update400 Grouping by unique part */
+            $oDB->createCommand()->createTable('{{answers}}',[
+                'aid' =>  'pk',
+                'qid' => 'integer NOT NULL',
+                'code' => 'string(5) NOT NULL',
+                'sortorder' => 'integer NOT NULL',
+                'assessment_value' => 'integer NOT NULL DEFAULT 0',
+                'scale_id' => 'integer NOT NULL DEFAULT 0'
+            ], $options);
+            $oDB->createCommand()->createIndex('answer_update400_idx_10', '{{answers_update400}}', ['qid', 'code', 'scale_id']);
+            /* No pk in insert */
+            $oDB->createCommand("INSERT INTO {{answers}}
+                (qid, code, sortorder, assessment_value, scale_id)
+                SELECT {{answers_update400}}.qid, {{answers_update400}}.code, {{answers_update400}}.sortorder, {{answers_update400}}.assessment_value, {{answers_update400}}.scale_id
+                FROM {{answers_update400}}
+                    INNER JOIN {{questions}} ON {{answers_update400}}.qid = {{questions}}.qid
+                    INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{answers_update400}}.language
+                ")->execute();
+            /* no pk in insert, get aid by INNER join */
+            $oDB->createCommand("INSERT INTO {{answer_l10ns}}
+                (aid, answer, language)
+                SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
+                FROM {{answers_update400}}
+                INNER JOIN {{answers}}
+                ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id
+            ")->execute();
+
+            $oDB->createCommand()->dropTable('{{answers_update400}}');
+            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
+
+            // Labels table
+            if(Yii::app()->db->schema->getTable('{{label_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{label_l10ns}}');
+            }
+            if(Yii::app()->db->schema->getTable('{{labels_update400}}')){
+                $oDB->createCommand()->dropTable('{{labels_update400}}');
+            }
+            $oDB->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
+            $oDB->createCommand()->createTable('{{labels}}',[
+                'id' =>  "pk",
+                'lid' => 'integer NOT NULL',
+                'code' => 'string(5) NOT NULL',
+                'sortorder' => 'integer NOT NULL',
+                'assessment_value' => 'integer NOT NULL DEFAULT 0'
+            ], $options);
+            /* The previous id is broken and can not be used, create a new one */
+            /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
+            $oDB->createCommand("INSERT INTO {{labels}}
+                (lid, code, sortorder, assessment_value)
+                SELECT lid, code, min(sortorder), min(assessment_value)
+                FROM {{labels_update400}}
+                GROUP BY lid, code")->execute();
+            $oDB->createCommand()->createTable('{{label_l10ns}}', array(
+                'id' =>  "pk",
+                'label_id' =>  "integer NOT NULL",
+                'title' =>  "text",
+                'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+            ), $options);
+            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{label_l10ns}}
+                (label_id, title, language)
+                SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
+                FROM {{labels_update400}}
+                    INNER JOIN {{labels}} ON {{labels_update400}}.lid = {{labels}}.lid AND {{labels_update400}}.code = {{labels}}.code 
+                ")->execute();
+            $oDB->createCommand()->dropTable('{{labels_update400}}');
+
+            // Extend language field on labelsets
+            alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+
+            // Extend question type field length
+            alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
+            
+            // Drop autoincrement on timings table primary key
+            upgradeSurveyTimings350();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+
+        /**
+         * Add load_error and load_error_message to plugin system.
+         */
+        if ($iOldDBVersion < 401) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->addColumn('{{plugins}}', 'load_error', 'int default 0');
+            $oDB->createCommand()->addColumn('{{plugins}}', 'load_error_message', 'text');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 402) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // Plugin type is either "core", "user" or "upload" (different folder locations).
+            $oDB->createCommand()->addColumn('{{plugins}}', 'plugin_type', "string(6) default 'user'");
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>402), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+            
+        /**
+         * Make tokens fit UUID 36 chars
+         */
+        if ($iOldDBVersion < 403) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTokenTables402('utf8mb4_bin');
+            upgradeSurveyTables402('utf8mb4_bin');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>403),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Add sureys_groupsettings table and update settings_global table 
+         */
+        if ($iOldDBVersion < 404) {
+            $oTransaction = $oDB->beginTransaction();
+            createSurveysGroupSettingsTable($oDB);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>404),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        // In case any LS4 user missed database update from version 356.
+        if ($iOldDBVersion < 405) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand("
+                UPDATE
+                    {{boxes}}
+                SET ico = CASE
+                    WHEN ico IN ('add', 'list', 'settings', 'shield', 'templates', 'label') THEN CONCAT('icon-', ico)
+                    ELSE ico
+                END
+                "
+            )->execute();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>405),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Database modification for encryption feature
+         */
+        if ($iOldDBVersion < 406) {
+            $oTransaction = $oDB->beginTransaction();
+            // surveys
+            $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
+            $oDB->createCommand()->update('{{surveys}}',array('tokenencryptionoptions'=>json_encode(Token::getDefaultEncryptionOptions())));
+            // participants
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            alterColumn('{{participants}}', 'firstname', "text");
+            alterColumn('{{participants}}', 'lastname', "text");
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL");
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL");
+            $aCoreAttributes = array('firstname', 'lastname', 'email');
+            foreach($aCoreAttributes as $attribute){
+                $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
+                    'attribute_type'    => 'TB',
+                    'defaultname'       => $attribute,
+                    'visible'           => 'TRUE',
+                    'encrypted'         => 'N',
+                    'core_attribute'    => 'Y'
+                ));
+            }
+            $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 407) {
+            $oTransaction = $oDB->beginTransaction();
+            // defaultvalues
+            if(Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
+            }
+            $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
+                'id' =>  "pk",
+                'dvid' =>  "integer NOT NULL default '0'",
+                'language' =>  "string(20) NOT NULL",
+                'defaultvalue' =>  "text",
+            ), $options);
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue_l10ns}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], true);
+            if(Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')){
+                $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
+            }
+            $oDB->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
+            $oDB->createCommand()->createIndex('defaultvalues_update407_idx_10', '{{defaultvalues_update407}}', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
+            $oDB->createCommand()->createTable('{{defaultvalues}}',[
+                'dvid' =>  "pk",
+                'qid' =>  "integer NOT NULL default '0'",
+                'scale_id' =>  "integer NOT NULL default '0'",
+                'sqid' =>  "integer NOT NULL default '0'",
+                'specialtype' =>  "string(20) NOT NULL default ''",
+            ], $options);
+            /* Get only survey->language */
+            $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, sqid, scale_id, specialtype)
+                SELECT qid, sqid, scale_id, specialtype
+                FROM {{defaultvalues_update407}}
+                GROUP BY qid, sqid, scale_id, specialtype
+                ")->execute();
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
+            $oDB->createCommand("INSERT INTO {{defaultvalue_l10ns}} (dvid, language, defaultvalue)
+                SELECT {{defaultvalues}}.dvid, {{defaultvalues_update407}}.language, {{defaultvalues_update407}}.defaultvalue
+                FROM {{defaultvalues}}
+                INNER JOIN {{defaultvalues_update407}}
+                    ON {{defaultvalues}}.qid = {{defaultvalues_update407}}.qid AND {{defaultvalues}}.sqid = {{defaultvalues_update407}}.sqid AND {{defaultvalues}}.scale_id = {{defaultvalues_update407}}.scale_id AND {{defaultvalues}}.specialtype = {{defaultvalues_update407}}.specialtype
+                ")->execute();
+            $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 408) {
+            $oTransaction = $oDB->beginTransaction();            
+            $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>'Y'),"core_attribute='Y'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>408),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 409) {
+
+            $oTransaction = $oDB->beginTransaction();
+            
+            $sEncrypted = 'N';
+            $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>$sEncrypted),"core_attribute='Y'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>409),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 410) {
+            $oTransaction = $oDB->beginTransaction();            
+            $oDB->createCommand()->addColumn('{{question_l10ns}}', 'script', " text NULL default NULL");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>410),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 411) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{plugins}}','priority',"int NOT NULL default 0");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>411),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 412) {
+            $oTransaction = $oDB->beginTransaction();
+            $aGroups = array_keys(SurveysGroups::model()->findAll(array('index'=>'gsid')));
+            $aGroupSettings = array_keys(SurveysGroupsettings::model()->findAll(array('index'=>'gsid')));
+            foreach ($aGroups as $group){
+                if (!array_key_exists($group, $aGroupSettings)){
+                    $settings = new SurveysGroupsettings;
+                    $settings->setToInherit();
+                    $settings->gsid = $group;
+                    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings->attributes);
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>412),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 413) {
+            /*
+             *  changes for this version are removed, but this block stays for the continuity
+             */
+            
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>413),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 414) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{users}}', 'lastLogin', "datetime NULL");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>414),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 415) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->update('{{surveymenu_entries}}', [
+                "menu_link" => "admin/filemanager",
+                "action" => '',
+                "template" => '',
+                "partial" => '',
+                "classes" => '',
+                "data" => '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
+            ], 'name=:name', [':name' => 'resources']);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>415),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 416) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            // encrypt values in db
+            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(getGlobalSetting('emailsmtppassword')));
+            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(getGlobalSetting('bounceaccountpass')));
+            
+            // encrypt bounceaccountpass value in db
+            alterColumn('{{surveys}}','bounceaccountpass',"text",true,'NULL');
+            $aSurveys = Survey::model()->findAll();
+            foreach($aSurveys as $oSurvey){
+                if (!empty($oSurvey->bounceaccountpass)){
+                    $oSurvey->bounceaccountpass = LSActiveRecord::encryptSingle($oSurvey->bounceaccountpass);
+                    $oSurvey->save();
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>416),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 417) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => 'reorder']);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>417),"stg_name='DBVersion'");
+            $oTransaction->commit();
+            
+            SurveymenuEntries::reorderMenu(2);
+        }
+
+        if($iOldDBVersion < 418) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert("{{plugins}}", [
+                'name'               => 'PasswordRequirement',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ]);
+            
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>418),"stg_name='DBVersion'");
+            $oTransaction->commit();
+            
+            SurveymenuEntries::reorderMenu(2);
+        }
+
+        if($iOldDBVersion < 419) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->createTable("{{permissiontemplates}}", [
+                'ptid' =>  "pk",
+                'name' =>  "string(127) NOT NULL",
+                'description' =>  "text NULL",
+                'renewed_last' =>  "datetime NULL",
+                'created_at' =>  "datetime NOT NULL",
+                'created_by' =>  "int NOT NULL"
+            ]);
+            
+            $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
+
+            $oDB->createCommand()->createTable('{{user_in_permissionrole}}', array(
+                    'ptid' => "integer NOT NULL",
+                    'uid' => "integer NOT NULL",
+                ), $options);
+        
+            $oDB->createCommand()->addPrimaryKey('{{user_in_permissionrole_pk}}', '{{user_in_permissionrole}}', ['ptid','uid']);
+            
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>419),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 420) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                "{{surveymenu_entries}}",
+                [
+                    'name' =>  "listSurveyGroups",
+                    'title' =>  gT('Group list','unescaped'),
+                    'menu_title' =>  gT('Group list','unescaped'),
+                    'menu_description' =>  gT('List question group','unescaped'),
+                ],
+                'name=\'listQuestionGroups\''
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>420),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 421) {
+            $oTransaction = $oDB->beginTransaction();
+            // question_themes
+            $oDB->createCommand()->createTable('{{question_themes}}', [
+                'id' => "pk",
+                'name' => "string(150) NOT NULL",
+                'visible' => "string(1) NULL",
+                'xml_path' => "string(255) NULL",
+                'image_path' => 'string(255) NULL',
+                'title' => "string(100) NOT NULL",
+                'creation_date' => "datetime NULL",
+                'author' => "string(150) NULL",
+                'author_email' => "string(255) NULL",
+                'author_url' => "string(255) NULL",
+                'copyright' => "text",
+                'license' => "text",
+                'version' => "string(45) NULL",
+                'api_version' => "string(45) NOT NULL",
+                'description' => "text",
+                'last_update' => "datetime NULL",
+                'owner_id' => "integer NULL",
+                'theme_type' => "string(150)",
+                'question_type' => "string(150) NOT NULL",
+                'core_theme' => 'boolean',
+                'extends' => "string(150) NULL",
+                'group' => "string(150)",
+                'settings' => "text"
+            ], $options);
+
+            $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
+
+            $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
+            switchMSSQLIdentityInsert('question_themes', true);
+            foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
+                $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
+            }
+            switchMSSQLIdentityInsert('question_themes', false);
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>421),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 422) {
+            $oTransaction = $oDB->beginTransaction();
+            //update core themes api_version
+            $oDB->createCommand()->update('{{templates}}', array(
+                'api_version' =>  "4.0",
+                'version' =>  "4.0",
+                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+            ), "name='fruity'");
+            $oDB->createCommand()->update('{{templates}}', array(
+                'api_version' =>  "4.0",
+                'version' =>  "4.0",
+                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+            ), "name='vanilla'");
+            $oDB->createCommand()->update('{{templates}}', array(
+                'api_version' =>  "4.0",
+                'version' =>  "4.0",
+                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+            ), "name='bootwatch'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>422),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 423) {
+            $oTransaction = $oDB->beginTransaction();
+            //update core themes api_version
+            $oDB->createCommand()->update('{{templates}}', array(
+                'api_version' =>  "3.0",
+                'version' =>  "3.0",
+                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+            ), "name='fruity'");
+            $oDB->createCommand()->update('{{templates}}', array(
+                'api_version' =>  "3.0",
+                'version' =>  "3.0",
+                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+            ), "name='vanilla'");
+            $oDB->createCommand()->update('{{templates}}', array(
+                'api_version' =>  "3.0",
+                'version' =>  "3.0",
+                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+            ), "name='bootwatch'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>423),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 424) {
+            $oTransaction = $oDB->beginTransaction();
+            $installedPlugins = $oDB->createCommand('SELECT name FROM {{plugins}}')->queryAll();
+            /**
+             * @param string $name Name of plugin
+             * @param int $active
+             */
+            $insertPlugin = function ($name, $active = 0) use ($installedPlugins, $oDB) {
+                if (!in_array($name, $installedPlugins)) {
+                    $oDB->createCommand()->insert("{{plugins}}", [
+                        'name'               => $name,
+                        'plugin_type'        => 'core',
+                        'active'             => $active,
+                        'version'            => '1.0.0',
+                        'load_error'         => 0,
+                        'load_error_message' => null
+                    ]);
+                }
+            };
+            $insertPlugin('AuthLDAP');
+            $insertPlugin('AuditLog');
+            $insertPlugin('Authwebserver');
+            $insertPlugin('ExportR', 1);
+            $insertPlugin('ExportSTATAxml', 1);
+            $insertPlugin('oldUrlCompat');
+            $insertPlugin('expressionQuestionHelp');
+            $insertPlugin('expressionQuestionForAll');
+            $insertPlugin('expressionFixedDbVar');
+            $insertPlugin('customToken');
+            $insertPlugin('mailSenderToFrom');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>424), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 425) {
+            $oTransaction = $oDB->beginTransaction();
+            $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
+            if (!empty($aUserDirectory)) {
+                reset($aUserDirectory);
+                $aUserXMLPaths = key($aUserDirectory);
+                foreach ($aUserDirectory[$aUserXMLPaths] as $sXMLDirectoryPath) {
+                    $aSuccess = QuestionTheme::convertLS3toLS4($sXMLDirectoryPath);
+                    if ($aSuccess['success']) {
+                        $oQuestionTheme = new QuestionTheme;
+                        $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
+                    };
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 425), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -2486,7 +3113,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         Yii::app()->cache->gc();
     }
 
-    // Inform  superadmin about update
+    // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
     // Update the global config object because it is static and set at start of App
@@ -2502,6 +3129,75 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
+
+/**
+ * @param string $sMySQLCollation
+ */
+function upgradeSurveyTables402($sMySQLCollation)
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if (Yii::app()->db->driverName != 'pgsql') {
+        $aTables = dbGetTablesLike("survey\_%");
+        foreach ($aTables as $sTableName) {
+            $oTableSchema = $oSchema->getTable($sTableName);
+            if (!in_array('token', $oTableSchema->columnNames)) {
+                continue;
+            }
+            // No token field in this table
+            switch (Yii::app()->db->driverName) {
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
+                    alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                    break;
+                case 'mysql':
+                case 'mysqli':
+                    alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
+                    break;
+                default: die('Unknown database driver');
+            }
+        }
+
+    }
+}
+
+/**
+ * @param string $sMySQLCollation
+ */
+function upgradeTokenTables402($sMySQLCollation)
+{
+    $oDB = Yii::app()->db;
+    if (Yii::app()->db->driverName != 'pgsql') {
+        $aTables = dbGetTablesLike("tokens%");
+        if (!empty($aTables)) {
+            foreach ($aTables as $sTableName) {
+                switch (Yii::app()->db->driverName) {
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
+                        alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
+                        break;
+                    default: die('Unknown database driver');
+                }
+            }
+        }
+    }
+}
+function upgradeSurveyTimings350()
+{
+    $aTables = dbGetTablesLike("%timings");
+    foreach ($aTables as $sTable) {
+            alterColumn($sTable, 'id', "int", false);
+    }
+}
+
+
 
 /**
  * @param CDbConnection $oDB
@@ -2769,6 +3465,88 @@ function createSurveyMenuTable(CDbConnection $oDB)
     foreach ($surveyMenuEntryRowData = LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
     }
+
+}
+
+/**
+* @param CDbConnection $oDB
+* @return void
+*/
+function createSurveysGroupSettingsTable(CDbConnection $oDB)
+{
+    // Drop the old surveys_groupsettings table.
+    if (tableExists('{surveys_groupsettings}')) {
+        $oDB->createCommand()->dropTable('{{surveys_groupsettings}}');
+    }
+
+    // create surveys_groupsettings table
+    $oDB->createCommand()->createTable('{{surveys_groupsettings}}', array(
+        'gsid' => "integer NOT NULL",
+        'owner_id' => "integer NULL DEFAULT NULL",
+        'admin' => "string(50) NULL DEFAULT NULL",
+        'adminemail' => "string(254) NULL DEFAULT NULL",
+        'anonymized' => "string(1) NOT NULL DEFAULT 'N'",
+        'format' => "string(1) NULL DEFAULT NULL",
+        'savetimings' => "string(1) NOT NULL DEFAULT 'N'",
+        'template' => "string(100) NULL DEFAULT 'default'",
+        'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+        'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
+        'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
+        'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
+        'autonumber_start' => "integer NULL DEFAULT '0'",
+        'autoredirect' => "string(1) NOT NULL DEFAULT 'N'",
+        'allowprev' => "string(1) NOT NULL DEFAULT 'N'",
+        'printanswers' => "string(1) NOT NULL DEFAULT 'N'",
+        'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
+        'refurl' => "string(1) NOT NULL DEFAULT 'N'",
+        'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
+        'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
+        'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
+        'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
+        'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
+        'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
+        'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
+        'assessments' => "string(1) NOT NULL DEFAULT 'N'",
+        'usecaptcha' => "string(1) NOT NULL DEFAULT 'N'",
+        'bounce_email' => "string(254) NULL DEFAULT NULL",
+        'attributedescriptions' => "text NULL",
+        'emailresponseto' => "text NULL",
+        'emailnotificationto' => "text NULL",
+        'tokenlength' => "integer NULL DEFAULT '15'",
+        'showxquestions' => "string(1) NULL DEFAULT 'Y'",
+        'showgroupinfo' => "string(1) NULL DEFAULT 'B'",
+        'shownoanswer' => "string(1) NULL DEFAULT 'Y'",
+        'showqnumcode' => "string(1) NULL DEFAULT 'X'",
+        'showwelcome' => "string(1) NULL DEFAULT 'Y'",
+        'showprogress' => "string(1) NULL DEFAULT 'Y'",
+        'questionindex' => "integer NULL DEFAULT '0'",
+        'navigationdelay' => "integer NULL DEFAULT '0'",
+        'nokeyboard' => "string(1) NULL DEFAULT 'N'",
+        'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+    ));
+    addPrimaryKey('surveys_groupsettings', array('gsid'));
+
+    // insert settings for global level
+    $settings1 = new SurveysGroupsettings;
+    $settings1->setToDefault();
+    $settings1->gsid = 0;
+    // get global settings from db
+    $globalSetting1 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'showqnumcode'))->queryRow();
+    $globalSetting2 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'showgroupinfo'))->queryRow();
+    $globalSetting3 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'shownoanswer'))->queryRow();
+    $globalSetting4 = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'showxquestions'))->queryRow();
+    // set db values to model
+    $settings1->showqnumcode = ($globalSetting1 === false || $globalSetting1['stg_value'] == 'choose') ? 'X' : str_replace(array('both', 'number', 'code', 'none'), array('B', 'N', 'C', 'X'), $globalSetting1['stg_value']);
+    $settings1->showgroupinfo = ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), $globalSetting2['stg_value']);
+    $settings1->shownoanswer = ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), $globalSetting3['stg_value']);
+    $settings1->showxquestions = ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), $globalSetting4['stg_value']);
+    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings1->attributes);
+
+    // insert settings for default survey group
+    $settings2 = new SurveysGroupsettings;
+    $settings2->setToInherit();
+    $settings2->gsid = 1;
+    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings2->attributes);
 
 }
 /**
@@ -3982,8 +4760,20 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
         case 'pgsql':
             $sType = $sFieldType;
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
-            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute(); } catch (Exception $e) {};
-            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute(); } catch (Exception $e) {};
+
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute();
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
+
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute();
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
 
             if ($bAllowNull != true) {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
@@ -4149,7 +4939,27 @@ function addPrimaryKey($sTablename, $aColumns)
 */
 function modifyPrimaryKey($sTablename, $aColumns)
 {
-    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
+    switch (Yii::app()->db->driverName) {
+        case 'mysql':
+            Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
+            break;
+        case 'pgsql':
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $pkquery = "SELECT CONSTRAINT_NAME "
+            ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+            ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+
+            $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
+            if ($primarykey !== false) {
+                Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0])->execute();
+                Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
+            }
+            break;
+        default: die('Unknown database type');
+    }
+
 }
 
 
@@ -4240,4 +5050,47 @@ function fixLanguageConsistencyAllSurveys()
     foreach ($surveyidresult as $sv) {
         fixLanguageConsistency($sv['sid'], $sv['additional_languages']);
     }
+}
+
+function runAddPrimaryKeyonAnswersTable400(&$oDB) {
+    if (!in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+        dropPrimaryKey('answers');
+        addColumn('{{answers}}', 'aid', 'pk');
+        modifyPrimaryKey('answers', array('aid'));        
+        $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
+        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM {{answers}} group by qid, code, scale_id")->query();
+        $iCounter = 1;
+        while (($row = $dataReader->read()) !== false) {
+            $oDB->createCommand("UPDATE {{answers}} SET aid={$iCounter} WHERE qid={$row['qid']} AND code='{$row['code']}' AND scale_id={$row['scale_id']}")->execute();
+            $iCounter++;
+        }
+        $oDB->createCommand()->dropindex('answer_idx_10', '{{answers}}');
+
+    } else {
+        $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
+        $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
+
+        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
+
+        $oDB->createCommand()->createTable('{{answers}}',[
+            'aid' =>  "pk",
+            'qid' => 'integer NOT NULL',
+            'code' => 'string(5) NOT NULL',
+            'sortorder' => 'integer NOT NULL',
+            'assessment_value' => 'integer NOT NULL DEFAULT 0',
+            'scale_id' => 'integer NOT NULL DEFAULT 0',
+            'answer' => 'text NOT NULL',
+            'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+        ]);
+
+        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
+        $iCounter = 1;
+        while (($row = $dataReader->read()) !== false) {
+            $dataBlock = $oDB->createCommand("SELECT * FROM answertemp WHERE qid={$row['qid']} AND code='{$row['code']}' AND scale_id={$row['scale_id']}")->queryRow();
+            $oDB->createCommand()->insert('{{answers}}', $dataBlock);
+        }
+        $oDB->createCommand()->dropindex('answer_idx_10', 'answertemp');
+        $oDB->createCommand()->dropTable('answertemp');
+    }
+
 }

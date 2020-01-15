@@ -526,7 +526,6 @@ class SurveymenuEntries extends LSActiveRecord
 
         } catch (Exception $e) {
             throw $e;
-            return false;
         }
         return true;
     }

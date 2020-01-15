@@ -126,7 +126,7 @@ if (!is_dir($system_path))
 // The name of THIS file
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
-define('ROOT', dirname(__FILE__));
+define('ROOT', dirname(dirname(__FILE__)));
 
 // The PHP file extension
 define('EXT', '.php');
@@ -251,12 +251,17 @@ define('PHP_ENV', 'test');
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
+// Enable if phpunit fails.
+// error_reporting(E_ALL);
+
 @copy($configFile, $configBackupFile);
 
-register_shutdown_function(function(){
-    $configFile = __DIR__ . '/application/config/config.php';
-    $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
-    
-    @unlink($configFile);
-    @rename($configBackupFile, $configFile);
-});
+register_shutdown_function(
+    function () {
+        $configFile = __DIR__ . '/application/config/config.php';
+        $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+
+        @unlink($configFile);
+        @rename($configBackupFile, $configFile);
+    }
+);

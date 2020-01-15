@@ -15,28 +15,10 @@
 
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
                 <!-- Display Responses -->
-                <?php if (count($oSurvey->allLanguages) < 2): ?>
-                    <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <span class="fa fa-list text-success"></span>
-                        <?php eT("Display responses"); ?>
-                    </a>
-                <?php else:?>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-list text-success"></span>
-                        <?php eT("Responses"); ?> <span class="fa fa-caret-down"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
-                        <li>
-                            <a class="pjax" href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
-                                <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
-                             </a>
-                        </li>
-                        <?php endforeach;?>
-                    </ul>
-                </div>
-                <?php endif;?>
+                <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
+                    <span class="fa fa-list text-success"></span>
+                    <?php eT("Display responses"); ?>
+                </a>
             <?php endif;?>
 
 
@@ -206,7 +188,6 @@
                         <span class="fa"></span>
                         <?php eT("View statistics"); ?>
                     </button>
-
                     <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/",array('surveyid'=>$surveyid)) ?>" id="clear-button">
                         <span class="fa fa-refresh text-success"></span>
                         <?php eT("Clear"); ?>

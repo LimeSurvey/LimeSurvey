@@ -959,6 +959,7 @@ function ajaxcheckdup()
 }
 
 function ajaxreqsave() {
+    scale_id == scale_id || 0;
     var lid = $('#lasets').val() ? $('#lasets').val() : 0;
     // get code for the current scale
     var code = new Array();

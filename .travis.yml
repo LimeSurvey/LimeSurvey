@@ -4,26 +4,29 @@
 # dummy
 
 language: php
-php:
-    - 5.6
-    - 7.0
-    - 7.1
-    - 7.2
-    - 7.3
-    # - 7.4 TODO: Fails on SaveDualScaleAnswerOptionsTest; needs Twig update
 services:
     - mysql
-
+php:
+    - 7.2
+    - 7.3
+env:
+  - DBENGINE=MYISAM
+  - DBENGINE=INNODB
+services:
+    - mysql
 notifications:
   email:
     recipients:
       - secure: "1x0CmJbr8GWdS7OJ5PRchf0lDxNk4quRfbZ4Slu4GnEMh599Bo1jhsRZnc5ghOf9Yuwn4FzB4Oyfr6tIXP63FbUE2F4lhCwluxw7BWRmjvwMncctWqgDu7Jn3HRXlTdoVNhPlspBsbsNw7waeER6+jv6YFyMKH6gYXtUqloCuyrrhkLWetpj5qvGXmEV22Rhh0kLl9q/Khu0hI8eS022wLs1hQFurc4xbCvpSpcSzmxaD6gevKCuRiLJbG3QsT7lTAwm6U1QqSEMQP5QKhvQ01klttVD3KG2/F6Gs5pKhiNSKYmzeI5OqU7BggQQKCTBi1G0FNsqtFi+InwBoY09RrHpbGDzCOfeRqr/DQAiZKxt2p4d7OEwPcbojvHSG4gG3hIfScCyJGNVa9hZAfR7qyg1wcQdAUfZB+DFNE9FaYdXHFsjKtq/iHROqnS6FNFJF2hRR8diltDTdra5A81LuZcsA82WAj1PPT07kzzKfcbSHHfHaT2H8bzZ3LLd7rjUqW1hd5pK/TfhtPOLCiSLmcktbppcM5V64e9ZoPmywVsFD3GJ+kxBqQ6hx40JcyKkFmiU6WGoYurt/OhXMvRtkWVbeF52M7Mzpx9Iyh48mf3Xm55Q5GnYv0gKKgwYAllPOFXuNCk+DVcs4inpTvwQsCt/7W2RGwMIxlDhJ0+QySk="
     on_success: change
     on_failure: always 
+
 before_script:
     # Test
     #- sudo apt-get update
     #- sudo apt-get upgrade
+    - echo $archive_url
+    - php -r 'var_dump(PHP_INT_SIZE);'
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
@@ -39,6 +42,18 @@ before_script:
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
+    # InnoDb needs large_file_prefix & Barracuda file format
+    # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+    - sudo service mysql status
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
+    - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
+    - mysql -uroot -e "SET @@global.innodb_file_format_max =  Barracuda;"
+
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "Show  variables like '%innodb_file%';"
+    - mysql -uroot -e "Show  variables like '%innodb_default%';"
+
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
@@ -77,6 +92,11 @@ before_script:
     #- wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
     #- unzip chromedriver_linux64.zip
 
+    # Prepare the packages that need to be tested
+    - nvm install 10.16.3
+    - nvm use 10.16.3
+    - node ./buildVueComponents.js -s adminbasics,filemanager -p
+
     # Setup Selenium with Firefox headless mode.
     - wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
     - wget "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz"
@@ -87,5 +107,5 @@ before_script:
 script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit
-
-
+    # yarn --cwd ./assets/packages/filemanager run test
+    - yarn --cwd ./assets/packages/adminbasics run test

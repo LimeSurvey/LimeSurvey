@@ -1,5 +1,7 @@
 <?php
+
 namespace LimeSurvey\PluginManager;
+
 interface iPlugin
 {
 
@@ -54,7 +56,7 @@ interface iPlugin
      * 
      * Assumes an array with valid key/value pairs is passed.
      * 
-     * @param array $aSettings An array with key/value pairs for all plugin settings
+     * @param array<string, mixed> $aSettings An array with key/value pairs for all plugin settings
      */
     public function saveSettings($aSettings);
     

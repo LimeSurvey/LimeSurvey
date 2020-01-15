@@ -16,15 +16,29 @@ if (!defined('BASEPATH')) {
 */
 class SurveyController extends LSYii_Controller
 {
+    /**
+     * @var string|null
+     */
     public $lang = null;
 
-    /* @var string : Default layout when using render : leave at bare actually : just send content */
+    /**
+     * @var string Default layout when using render : leave at bare actually : just send content
+     */
     public $layout = 'bare';
-    /* @var string the template name to be used when using layout */
-    public $sTemplate;
-    /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+
+    /**
+     * @var string|null the template name to be used when using layout
+     */
+    public $sTemplate = null;
+
+    /**
+     * @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements
+     */
     public $aReplacementData = array();
-    /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+
+    /**
+     * @var array Global data when use templatereplace function  in layout, @see templatereplace $redata
+     */
     public $aGlobalData = array();
 
     /**
@@ -61,7 +75,7 @@ class SurveyController extends LSYii_Controller
     protected function _sessioncontrol()
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '') {
-                    Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     }
@@ -101,38 +115,53 @@ class SurveyController extends LSYii_Controller
     //~ }
     /**
      * Show a message and exit
+     * @param int $iSurveyId : type of message
      * @param string $sType : type of message
      * @param string[] $aMessages :  array of message line to be shown
-     * @param string[]|null : $aUrl : if url can/must be set
+     * @param string[]|null $aUrl : if url can/must be set
      * @param string[]|null $aErrors : array of errors to be shown
      * @return void
      **/
-    function renderExitMessage($iSurveyId, $sType, $aMessages = array(), $aUrl = null, $aErrors = null)
+    public function renderExitMessage($iSurveyId, $sType, $aMessages = array(), $aUrl = null, $aErrors = null)
     {
         $this->layout = 'survey';
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         $this->sTemplate = $oTemplate->sTemplateName;
-        $message = $this->renderPartial("/survey/system/message", array(
-            'aMessage'=>$aMessages
-        ), true);
+        $message = $this->renderPartial(
+            "/survey/system/message",
+            array(
+                'aMessage'=>$aMessages
+            ),
+            true
+        );
         if (!empty($aUrl)) {
             $url = $this->renderPartial("/survey/system/url", $aUrl, true);
         } else {
             $url = "";
         }
         if (!empty($aErrors)) {
-            $error = $this->renderPartial("/survey/system/errorWarning", array(
-                'aErrors'=>$aErrors
-            ), true);
+            $error = $this->renderPartial(
+                "/survey/system/errorWarning",
+                array(
+                    'aErrors'=>$aErrors
+                ),
+                true
+            );
         } else {
             $error = "";
         }
 
         /* Set the data for templatereplace */
-        $aReplacementData['type'] = $sType; // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData = [];
+
+        // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData['type'] = $sType;
         $aReplacementData['message'] = $message;
         $aReplacementData['URL'] = $url;
-        $aReplacementData['title'] = $error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+
+        // Adding this to replacement data : allow to update title (for example) :
+        // @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+        $aReplacementData['title'] = $error;
 
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTemplate = $oSurvey->templateModel;
@@ -140,7 +169,11 @@ class SurveyController extends LSYii_Controller
         $aSurveyInfo = $oSurvey->attributes;
         $aSurveyInfo['aError'] = $aReplacementData;
 
-        Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo), false);
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            "layout_errors.twig",
+            array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo),
+            false
+        );
         App()->end();
     }
 }

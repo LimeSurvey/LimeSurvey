@@ -1,0 +1,23 @@
+.slide-fade-left-enter-active {
+    transition: all 350ms ease-in-out;
+    transition-delay: 100ms;
+  }
+  .slide-fade-left-leave-active {
+    position: absolute;
+    transition: all 450ms ease-in-out;
+  }
+  .slide-fade-left-enter
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  .slide-fade-left-enter-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  .slide-fade-left-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translate(50%, 0);
+    opacity: 0;
+  }

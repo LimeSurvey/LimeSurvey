@@ -76,15 +76,18 @@ Or fixed width and height of images in the question. Anything you can think of.
 
 You can have as many extra attributes as you want. But be careful not to flood the question edit view with a million new attributes.
 
-<category> tag is used to categorize attributes into different categories on edit question page right side accordion.
+`category` tag is used to categorize attributes into different categories on edit question page right side accordion.
+
+Existing attribute can be removed from edit question page, if `inputtype` tag is left empty (like ```xml <inputtype></inputtype> ```). 
+This is just a temporary way to hide attributes, a proper way to hide attribute would be created soon. 
 
 For a full list of possible input types please have a look at the questionHelper in application/helpers.
 
 A full list is coming someday.
 
-The `custom attributes` part should look something like this:
+The `attributes` part should look something like this:
 ```xml
-<custom_attributes>
+<attributes>
     <attribute>
         <name>myCustomAttribute</name>
         <category>Display</category>
@@ -95,7 +98,7 @@ The `custom attributes` part should look something like this:
         <caption>My custom Attribute: </caption>
         <i18n>en</i18n>
     </attribute>
-</custom_attributes>
+</attributes>
 ```
 
 ### Engine - Or, Somehow the system has to know about this.
@@ -153,7 +156,7 @@ Just take this as a base and build on top of it.
         </preview>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>customAttribute1</name>
             <category>My attributes</category>
@@ -174,7 +177,7 @@ Just take this as a base and build on top of it.
             <caption>My custom Attribute 2: </caption>
             <i18n>en</i18n>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <engine>
         <load_core_css>true</load_core_css>

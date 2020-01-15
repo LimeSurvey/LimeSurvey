@@ -16,17 +16,9 @@
     This file render the quetion text content.
     NOTE: see views/subviews/survey/question.twig comments for more infos
 #}
-
-
-{# If the question is mandatory, the asterisk will be shown  #}
-{% if aQuestion.mandatory != '' %}
-    <!-- Add a visual information + just Mandatory string for aria : can be improved -->
-    <div class="{{ aSurveyInfo.class.questionasterix }} pull-left" {{ aSurveyInfo.attr.questionasterix }} >
-        <small class="{{ aSurveyInfo.class.questionasterixsmall }} text-danger fa fa-asterisk small" {{ aSurveyInfo.attr.questionasterixsmall }}></small>
-        <span class="{{ aSurveyInfo.class.questionasterixspan }} sr-only text-danger" {{ aSurveyInfo.attr.questionasterixspan }} >
-            {{ gT("(This question is mandatory)") }}
-        </span>
-    </div>
+{# Use twig from core, if the question is mandatory,return ./subviews/survey/question_subviews/asterisk.twig #}
+{% if (aQuestion.mandatory == 'Y') %}
+    {{ include('./subviews/survey/question_subviews/asterisk.twig') }}
 {% endif %}
 
 {# If the question number is to be shown (set in survey settings) #}

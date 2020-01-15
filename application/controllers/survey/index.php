@@ -117,7 +117,20 @@ class index extends CAction
             $tokensexist = 1;
         }
 
-
+        // maintenance mode
+        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        if ($sMaintenanceMode == 'hard'){
+            if ($previewmode === false){
+                Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            }
+        } elseif ($sMaintenanceMode == 'soft'){
+            if ($move === null){
+                if ($previewmode === false){
+                    Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+                }
+            }
+        }
+                  
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
 
             // check also if it is allowed to change survey after completion
@@ -144,8 +157,8 @@ class index extends CAction
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
         } elseif ( !empty($oToken) ) {
             $sDisplayLanguage = $oToken->language;
-        }elseif (Survey::model()->findByPk($surveyid)) {
-            $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
+        } elseif ($oSurvey) {
+            $sDisplayLanguage = $oSurvey->language;
         }
 
         if ($surveyid && $surveyExists) {
@@ -159,8 +172,8 @@ class index extends CAction
 
         if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token'=>$clienttoken, 'lang'=>App()->language, 'newtest'=>'Y'));
-            $aErrors    = array(gT('Token mismatch'));
-            $asMessage  = array(gT('The token you provided doesn\'t match the one in your session.'));
+            $aErrors    = array(gT('Access code mismatch'));
+            $asMessage  = array(gT('The access code you provided doesn\'t match the one in your session.'));
             $aUrl       = array(
                             'url'=>$sReloadUrl,
                             'type'=>'restart-survey',
@@ -291,6 +304,7 @@ class index extends CAction
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        EmCacheHelper::init($thissurvey);
         /* Unsure it still work, and surely better in afterFindSurvey */
         if (!is_null($beforeSurveyPageEvent->get('template'))) {
             $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
@@ -427,7 +441,7 @@ class index extends CAction
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
-            if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
+            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
             }
@@ -466,7 +480,7 @@ class index extends CAction
                         $sError = gT("This invitation is not valid anymore.");
                     } else {
                         // This can not happen
-                        $sError = gT("This is a controlled survey. You need a valid token to participate.");
+                        $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                     }
 
                     $aMessage = array(
@@ -487,7 +501,7 @@ class index extends CAction
                         array($sError)
                     );
                 } else {
-                    $sError = gT("This is a controlled survey. You need a valid token to participate.");
+                    $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                 }
             }
         }
@@ -625,8 +639,9 @@ class index extends CAction
 
     private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if (is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang)) {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
+        $oSurvey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
+        if ($oSurvey) {
+            $baselang = $oSurvey->language;
         } elseif (!empty($mvSurveyIdOrBaseLang)) {
             $baselang = $mvSurveyIdOrBaseLang;
         } else {

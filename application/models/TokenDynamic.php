@@ -222,6 +222,9 @@ class TokenDynamic extends LSActiveRecord
         $command->order = 'tid';
 
         $oResult = TokenDynamic::model()->findAll($command);
+        foreach($oResult as $key=>$result){
+            $oResult[$key] = $result->decrypt();
+        }
         return $oResult;
     }
 
@@ -654,132 +657,132 @@ class TokenDynamic extends LSActiveRecord
     {
         return array(
             array(
-                'id'=>'tid',
-                'class'=>'CCheckBoxColumn',
+                'id' => 'tid',
+                'class' => 'CCheckBoxColumn',
                 'selectableRows' => '100',
             ),
             array(
                 'header' => gT('Action'),
-                'class'=>'bootstrap.widgets.TbButtonColumn',
-                'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}{viewparticipant}{viewparticipantspacer}',
-                'buttons'=> $this->getGridButtons(),
+                'class' => 'bootstrap.widgets.TbButtonColumn',
+                'template' => '{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}{viewparticipant}{viewparticipantspacer}',
+                'buttons' => $this->getGridButtons(),
             ),
 
             array(
                 'header' => gT('ID'),
                 'name' => 'tid',
-                'value'=>'$data->tid',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->tid',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs text-right'),
             ),
 
 
             array(
-                'header' => gT('First name'),
+                'header' => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
                 'name' => 'firstname',
-                'value'=>'$data->firstname',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->firstname',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
 
             array(
-                'header' => gT('Last name'),
+                'header' => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
                 'name' => 'lastname',
-                'value'=>'$data->lastname',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->lastname',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
 
             array(
-                'header' => gT('Email address'),
+                'header' => gT('Email address') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
                 'name' => 'email',
                 'type' => 'raw',
-                'value'=>'$data->emailFormated',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->emailFormated',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
 
             array(
-                'header' => gT('Email status'),
+                'header' => gT('Email status') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
                 'name' => 'emailstatus',
-                'value'=>'$data->emailstatusFormated',
+                'value' => '$data->emailstatusFormated',
                 'type' => 'raw',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
 
             array(
-                'header' => gT('Token'),
+                'header' => gT('Access code'),
                 'name' => 'token',
-                'value'=>'$data->token',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->token',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
 
             array(
                 'header' => gT('Language'),
                 'name' => 'language',
-                'value'=>'$data->language',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->language',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             ),
 
             array(
                 'header' => gT('Invitation sent?'),
                 'name' => 'sent',
-                'type'=>'raw',
-                'value'=>'$data->sentFormated',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'type' => 'raw',
+                'value' => '$data->sentFormated',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs  text-center'),
             ),
 
             array(
                 'header' => gT('Reminder sent?'),
                 'name' => 'remindersent',
-                'type'=>'raw',
-                'value'=>'$data->remindersentFormated',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'type' => 'raw',
+                'value' => '$data->remindersentFormated',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs text-center'),
             ),
 
             array(
                 'header' => gT('Reminder count'),
                 'name' => 'remindercount',
-                'value'=>'$data->remindercount',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->remindercount',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs text-right'),
             ),
 
             array(
                 'header' => gT('Completed?'),
                 'name' => 'completed',
-                'type'=>'raw',
-                'value'=>'$data->completedFormated',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'type' => 'raw',
+                'value' => '$data->completedFormated',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs text-center'),
             ),
 
             array(
                 'header' => gT('Uses left'),
                 'name' => 'usesleft',
-                'value'=>'$data->usesleft',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->usesleft',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs text-right'),
             ),
             array(
                 'header' => gT('Valid from'),
                 'name' => 'validfrom',
-                'type'=>'raw',
-                'value'=>'$data->validfromFormated',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'type' => 'raw',
+                'value' => '$data->validfromFormated',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
             array(
                 'header' => gT('Valid until'),
-                'type'=>'raw',
+                'type' => 'raw',
                 'name' => 'validuntil',
-                'value'=>'$data->validuntilFormated',
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->validuntilFormated',
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs name'),
             ),
         );
@@ -793,17 +796,17 @@ class TokenDynamic extends LSActiveRecord
         $aCustomAttributesCols = array();
         //$aCustomAttributes = $this->custom_attributes;
 
-        $oSurvey = Survey::model()->findByAttributes(array("sid"=>self::$sid));
+        $oSurvey = Survey::model()->findByAttributes(array("sid" => self::$sid));
         $aCustomAttributes = $oSurvey->tokenAttributes;
 
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
             $aCustomAttributesCols[] = array(
-                'header' => $desc, // $aAttributedescriptions->$sColName->description,
+                'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'value'=>'$data->'.$sColName,
-                'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                'value' => '$data->' . $sColName,
+                'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             );
         }
@@ -848,14 +851,14 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
+            'label'=>'<span class="sr-only">'.gT("Launch the survey with this participant").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>'.self::$sid.',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
                 'class'=>"btn btn-default btn-xs",
                 'target'=>"_blank",
                 'data-toggle'=>"tooltip",
-                'title'=>gT("Launch the survey with this token")
+                'title'=>gT("Launch the survey with this participant")
             ),
             'visible'=> $baseView . ' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
@@ -1103,7 +1106,7 @@ class TokenDynamic extends LSActiveRecord
             $criteria->compare($sColName, $this->$sColName, true);
         }
 
-        $dataProvider = new CActiveDataProvider('TokenDynamic', array(
+        $dataProvider = new LSCActiveDataProvider('TokenDynamic', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(

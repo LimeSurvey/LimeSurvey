@@ -409,6 +409,7 @@ function check_html_string($input, $min = '', $max = '')
 
 function check_ldap_string($input, $min = '', $max = '')
 {
+    // FIXME undefined function sanitize_string
     if ($input != sanitize_string($input, $min, $max)) {
         return false;
     }
@@ -424,6 +425,14 @@ function check_system_string($input, $min = '', $max = '')
 }
 
 // glue together all the other functions
+/**
+ * @param $input
+ * @param $flags
+ * @param string $min
+ * @param string $max
+ * @return bool
+ * @deprecated  2018-01-29 has undefined function my_utf8_decode inside !!
+ */
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;

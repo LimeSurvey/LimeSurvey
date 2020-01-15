@@ -2,6 +2,10 @@
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
+
 ?>
 <form class="custom-modal-datas form-horizontal">
     <div  class="form-group" id="OtherSelection">

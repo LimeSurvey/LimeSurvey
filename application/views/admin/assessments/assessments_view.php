@@ -82,7 +82,7 @@ LSYii_ClientScript::POS_BEGIN
                             'baselang' => $baselang,
                             'gid' => $gid,
                             'action' => $action,
-                            'groups' => $groups
+                            'groups' => isset($groups) ? $groups : []
                         ]
                     ); 
                 ?>

@@ -10,7 +10,8 @@ export default {
     },
     getCurrentParameters: (context) => {
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(window.PanelIntegrationData.getParametersUrl).then(
+            ajax.methods.$_get(window.PanelIntegrationData.getParametersUrl)
+            .then(
                 (result) => {
                     const dataSet = [];
                     LS.ld.forEach(result.data.rows, function (row, i) {
@@ -27,16 +28,15 @@ export default {
                     });
                     context.commit('setRowdata', dataSet);
                     resolve();
-                },
-                (error) => {
-                    LOG.error(error);
-                    reject(error);
                 }
-            );
+            )
+            .catch((error) => {
+                reject(error);
+            });
         });
     },
     getCurrentQuestionlist: (context) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             context.commit('setQuestionlist', window.PanelIntegrationData.questionList);
             resolve();
         });

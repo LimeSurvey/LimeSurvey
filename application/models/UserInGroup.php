@@ -58,25 +58,9 @@ class UserInGroup extends LSActiveRecord
     }
 
     /**
-     * @param mixed $condition
-     * @return static[]
-     */
-    public function getAllRecords($condition = false)
-    {
-        $criteria = new CDbCriteria;
-
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-            }
-        }
-        $data = $this->findAll($criteria);
-        return $data;
-    }
-
-    /**
      * @param array $data
      * @return bool
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {

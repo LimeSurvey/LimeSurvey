@@ -55,6 +55,9 @@ echo viewHelper::getViewTestTag('modifyUser');
                     <div class="">
                         <?php echo $form->passwordField($oUser, 'password',array('value'=>'', 'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                     </div>
+                    <div class="">
+                        <span class='text-info'><?php echo $passwordHelpText; ?></span>
+                    </div>
                 </div>
                 <?php endif; ?>
                 

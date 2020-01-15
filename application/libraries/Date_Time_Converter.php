@@ -31,19 +31,19 @@ class Date_Time_Converter
 
     /**
      * The date to be calculated in timestamp format
-     * @var int?
+     * @var mixed
      */
     public $date_time_stamp;
 
     /**
      * The date to be calculated. ex: 12/30/2008 17:40:00
-     * @var ?
+     * @var string
      */
     public $date_time;
 
     /**
      * The php date() style format that $date_time is in.  ex: m/d/Y H:i:s
-     * @var ?
+     * @var string
      */
     public $date_time_mask;
 

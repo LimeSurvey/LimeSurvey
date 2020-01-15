@@ -27,7 +27,7 @@
         {{ checkedState }}
         value="Y"
     />
-    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
+    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ processString(question) }}</label>
     <input
         type="hidden"
         name="java{{ myfname }}"

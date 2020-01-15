@@ -7,6 +7,9 @@ import Sidemenu from "./subcomponents/_sidemenu.vue";
 import Quickmenu from "./subcomponents/_quickmenu.vue";
 
 export default {
+    props: {
+        landOnTab: String,
+    },
     components: {
         questionexplorer: Questionexplorer,
         sidemenu: Sidemenu,
@@ -25,10 +28,14 @@ export default {
             isMouseDown: false,
             isMouseDownTimeOut: null,
             sideBarHeight: "400px",
-            showLoader: false
+            showLoader: false,
+            loading: true,
+            hiddenStateToggleDisplay: 'flex',
+            smallScreenHidden: false
         };
     },
     computed: {
+        useMobileView() { return window.innerWidth < 768; },
         isActive(){ return window.SideMenuData.isActive; },
         questiongroups() { return this.$store.state.questiongroups },
         sidemenus: {
@@ -39,17 +46,12 @@ export default {
             get(){return this.$store.state.collapsedmenus; },
             set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
         },
-        // topmenus: {
-        //     get(){return this.$store.state.topmenus; },
-        //     set(newValue) { this.$store.commit("updateTopmenus", newValue); }
-        // },
-        // bottommenus: {
-        //     get(){return this.$store.state.bottommenus; },
-        //     set(newValue) { this.$store.commit("updateBottommenus", newValue); }
-        // },
-        currentTab() { return this.$store.state.currentTab; },
+        currentTab: {
+            get() { return this.$store.state.currentTab; },
+            set(tab) { this.$store.commit("changeCurrentTab", tab); }
+        },
         getSideBarWidth() {
-            return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
+            return this.$store.getters.isCollapsed ? "98" : this.sideBarWidth;
         },
         sortedMenus() {
             return LS.ld.orderBy(
@@ -62,13 +64,13 @@ export default {
         },
         showSideMenu() {
             return (
-                !this.$store.state.isCollapsed &&
+                !this.$store.getters.isCollapsed &&
                 this.currentTab == "settings"
             );
         },
         showQuestionTree() {
             return (
-                !this.$store.state.isCollapsed &&
+                !this.$store.getters.isCollapsed &&
                 this.currentTab == "questiontree"
             );
         },
@@ -84,6 +86,9 @@ export default {
         }
     },
     methods: {
+        applyLoadingState(newState) {
+            this.loading = newState;
+        },
         calculateHeight(self) {
             self.$store.commit(
                 "changeSideBarHeight",
@@ -199,21 +204,14 @@ export default {
 
             //unload every selection
             this.$store.commit("closeAllMenus");
-            // self.$log.debug('setMenuActive', {
-            //     lastMenuItemObject : lastMenuItemObject,
-            //     lastQuickMenuItemObject : lastQuickMenuItemObject,
-            //     lastQuestionObject : lastQuestionObject,
-            //     lastQuestionGroupObject : lastQuestionGroupObject
-            // });
-            //apply selection based on the url
             if (
                 lastMenuItemObject != false &&
-                this.$store.state.isCollapsed != true
+                this.$store.getters.isCollapsed != true
             )
                 this.$store.commit("lastMenuItemOpen", lastMenuItemObject);
             if (
                 lastQuickMenuItemObject != false &&
-                this.$store.state.isCollapsed == true
+                this.$store.getters.isCollapsed == true
             )
                 this.$store.commit("lastMenuItemOpen", lastQuickMenuItemObject);
             if (lastQuestionObject != false)
@@ -245,29 +243,35 @@ export default {
             this.$emit("menuselected", sId);
         },
         toggleCollapse() {
-            this.$store.state.isCollapsed = !this.$store.state.isCollapsed;
             this.$store.commit(
                 "changeIsCollapsed",
-                this.$store.state.isCollapsed
+                !this.$store.state.isCollapsed
             );
-            if (this.$store.state.isCollapsed) {
+            if (this.$store.getters.isCollapsed) {
                 this.sideBarWidth = "98";
             } else {
                 this.sideBarWidth = this.$store.state.sidebarwidth;
             }
         },
+        toggleSmallScreenHide() {
+            this.smallScreenHidden = !this.smallScreenHidden;
+        },
         mousedown(e) {
-            this.isMouseDown = this.$store.state.isCollapsed ? false : true;
+            if(this.useMobileView) {
+                this.$store.commit("changeIsCollapsed", false);
+                this.smallScreenHidden = !this.smallScreenHidden;
+            }
+
+            this.isMouseDown = this.$store.getters.isCollapsed ? false : true;
             $("#sidebar").removeClass("transition-animate-width");
             $("#pjax-content").removeClass("transition-animate-width");
         },
         mouseup(e) {
             if (this.isMouseDown) {
                 this.isMouseDown = false;
-                this.$store.state.isCollapsed = false;
                 if (
                     parseInt(this.sideBarWidth) < 250 &&
-                    !this.$store.state.isCollapsed
+                    !this.$store.getters.isCollapsed
                 ) {
                     this.toggleCollapse();
                     this.$store.commit("changeSidebarwidth", "340");
@@ -337,34 +341,27 @@ export default {
                         ["desc"]
                     );
                     break;
-                // case 'top':
-                //     this.topmenus = LS.ld.orderBy(
-                //         entries,
-                //         a => {
-                //             return parseInt(a.order || 999999);
-                //         },
-                //         ["desc"]
-                //     );
-                //     break;
-                // case 'bottom':
-                //     this.bottommenus = LS.ld.orderBy(
-                //         entries,
-                //         a => {
-                //             return parseInt(a.order || 999999);
-                //         },
-                //         ["desc"]
-                //     );
-                //     break;
             };
         },
+        changeCurrentTab(tab) {
+            if (tab === 'structure') {
+                tab = 'questiontree';
+            } else {
+                tab = 'settings';
+            }
+
+            this.currentTab = tab;
+        }
     },
     created() {
         const self = this;
-        
+        if(window.innerWidth < 768) {
+            this.$store.commit("changeIsCollapsed", false);
+        }
         self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
         // self.$log.debug(this.$store.state);
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
-        if (this.$store.state.isCollapsed) {
+        if (this.$store.getters.isCollapsed) {
             this.sideBarWidth = "98";
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
@@ -374,6 +371,32 @@ export default {
     mounted() {
         const self = this;
 
+        LS.EventBus.$on('updateSideBar', (payload) => {
+            this.loading = true;
+            const promises = [
+                Promise.resolve()
+            ];
+            if(payload.updateQuestions) {
+                promises.push(this.$store.dispatch('getQuestions'));
+            }
+            if(payload.collectMenus) {
+                promises.push(this.$store.dispatch('collectMenus'));
+            }
+            if(payload.activeMenuIndex) {
+                this.controlActiveLink();
+                promises.push(Promise.resolve());
+            }
+            Promise.all(promises)
+                .then((results) => {})
+                .catch((errors) => {
+                    this.$log.error(errors);
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
+        });
+
+
         $(document).trigger("sidebar:mounted");
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
@@ -381,6 +404,12 @@ export default {
             self.calculateHeight(self);
         });
         
+
+        $(document).on("pjax:send", () => {
+            if(this.useMobileView && this.smallScreenHidden) {
+                this.smallScreenHidden = false
+            }
+        });
 
         $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();
@@ -405,40 +434,133 @@ export default {
         $("body").on("mousemove", event => {
             self.mousemove(event, self);
         });
+
+        if (this.landOnTab !== '') {
+           this.changeCurrentTab(this.landOnTab);
+        }
     }
 };
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{'max-height': $store.state.inSurveyViewHeight}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="sidebar_loader" :style="{width: getSideBarWidth, height: getloaderHeight}" v-if="showLoader"><div class="ls-flex ls-flex-column fill align-content-center align-items-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></div></div>
-        <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
-            <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
-                <sidebar-state-toggle @collapse="toggleCollapse"/>
-                <transition name="slide-fade">
-                    <sidemenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
-                </transition>
-                <transition name="slide-fade">
-                    <questionexplorer :style="{'min-height': calculateSideBarMenuHeight}" v-show="showQuestionTree" v-on:openentity="openEntity" v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
-                </transition>
-                <transition name="slide-fade">
-                    <quickmenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
-                </transition>
+    <div 
+        id="sidebar" 
+        class="ls-flex ls-ba ls-space padding left-0 col-md-4 nofloat transition-animate-width scoped-hide-on-small" 
+        :class=" smallScreenHidden ? 'toggled' : ''"
+        :style="{'max-height': $store.state.inSurveyViewHeight, 'display': hiddenStateToggleDisplay}" 
+        @mouseleave="mouseleave" 
+        @mouseup="mouseup"
+    >
+        <template v-if="(useMobileView && smallScreenHidden) || !useMobileView">
+            <div 
+                v-if="showLoader"
+                key="dragaroundLoader" 
+                class="sidebar_loader" 
+                :style="{width: getSideBarWidth, height: getloaderHeight}" 
+            >
+                <div class="ls-flex ls-flex-column fill align-content-center align-items-center">
+                    <i class="fa fa-circle-o-notch fa-2x fa-spin"></i>
+                </div>
             </div>
+            <div 
+                class="col-12 fill-height ls-space padding all-0 mainContentContainer" 
+                style="height: 100%" 
+                key="mainContentContainer"
+            >
+                <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
+                    <sidebar-state-toggle @collapse="toggleCollapse"/>
+                    <transition name="slide-fade">
+                        <sidemenu 
+                            v-show="showSideMenu"
+                            :loading="loading" 
+                            :style="{'min-height': calculateSideBarMenuHeight}" 
+                            @changeLoadingState="applyLoadingState" 
+                        />
+                    </transition>
+                    <transition name="slide-fade">
+                        <questionexplorer 
+                            v-show="showQuestionTree" 
+                            :loading="loading" 
+                            :style="{'min-height': calculateSideBarMenuHeight}" 
+                            @changeLoadingState="applyLoadingState" 
+                            @openentity="openEntity" 
+                            @questiongrouporder="changedQuestionGroupOrder"
+                        />
+                    </transition>
+                    <transition name="slide-fade">
+                        <quickmenu 
+                            v-show="$store.getters.isCollapsed" 
+                            :loading="loading" 
+                            :style="{'min-height': calculateSideBarMenuHeight}" 
+                            @changeLoadingState="applyLoadingState" 
+                        />
+                    </transition>
+                </div>
+            </div>
+        </template>
+        <div 
+            v-if="(useMobileView && !smallScreenHidden) || !useMobileView"
+            class="resize-handle ls-flex-column" 
+            key="resizeHandle"
+            :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}" 
+        >
+            <button 
+                v-show="!$store.getters.isCollapsed" 
+                class="btn btn-default" 
+                @mousedown="mousedown" @click.prevent="()=>{return false;}"
+            >
+                <i class="fa fa-ellipsis-v" />
+            </button>
         </div>
-        <div class="resize-handle ls-flex-column" :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}">
-            <button v-show="!$store.state.isCollapsed" class="btn btn-default" @mousedown="mousedown" @click.prevent="()=>{return false;}"><i class="fa fa-ellipsis-v"></i></button>
-        </div>
+        <div class="scoped-placeholder-greyed-area" 
+            v-if="(useMobileView && smallScreenHidden)" 
+            @click="toggleSmallScreenHide" 
+            v-html="' '"
+        />
     </div>
     
 </template>
 <style lang="scss" scoped>
-.sidebar_loader {
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    background: rgba(231, 231, 231, 0.3);
-    z-index: 4501;
-    box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
-    top: 0;
-}
+    .sidebar_loader {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        background: rgba(231, 231, 231, 0.3);
+        z-index: 4501;
+        box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
+        top: 0;
+    }
+
+    .scoped-placeholder-greyed-area {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .scoped-hide-on-small {
+            position: fixed;
+            top: 49px;
+            left:-96vw;
+            width: 100vw;
+            height:95vh;
+            z-index: 10;
+            &.toggled {
+                left:0;
+            }
+            .mainContentContainer {
+                max-width: 80vw;
+                background: white;
+            }
+        }
+        #sidebar .resize-handle {
+            &>button {
+                width:20px;
+                background: var(--LS-admintheme-basecolor);
+            }
+        }
+        .scoped-placeholder-greyed-area {
+            display: block;
+            background: rgba(125,125,125,0.2);
+            height:100%;
+            width:20vw;
+        }
+    }
 </style>

@@ -3,7 +3,14 @@
 #sidebar {
     padding-top: 15px;
     width:100%;
-    
+
+    .questiongroup-list-group>li.selected {
+        opacity: 0.9;
+        &.activated {
+            opacity: 1;
+        }
+    }
+
     .tabbutton.btn-primary {
         outline: none;
         &:after {
@@ -49,10 +56,10 @@
         }
     }
     .transition-animate-width {
-        -moz-transition: width 0.5s ease;
-        -webkit-transition: width 0.5s ease;
-        -ms-transition: width 0.5s ease;
-        transition: width 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -webkit-transition: all 0.5s ease;
+        -ms-transition: all 0.5s ease;
+        transition: all 0.5s ease;
     }
     div[class^="col-"],
     div[class*=" col-"] {
@@ -69,6 +76,10 @@
     }
     .dragPointer {
         cursor: move;
+        &.disabled {
+            color: #999999;
+            cursor: not-allowed;
+        }
     }
     .question-question-list {
         .question-question-list-item {
@@ -111,6 +122,7 @@
 .ls-ba {
     .list-group {
         padding-right: 0;
+        padding-inline-start: 0;
         >.list-group-item {
             padding-right: 0;
             .list-group {
@@ -364,5 +376,25 @@ ol.breadcrumb.title-bar-breadcrumb {
             z-index: 9999;
             font-size: 13rem;
         }
+    }
+}
+@media(max-width: 768px) {
+    .navbar-header {
+        background: white;
+    }
+    .simpleWrapper {
+        position: absolute;
+        background: white;
+        left: 0;
+        width: 20px !important;
+    }
+    #sidebar {
+        width: 99vw;
+        padding-right:10px;
+    }
+    #vue-apps-main-container,
+    footer.footer,
+    .surveymanagerbar {
+        margin-left:22px
     }
 }

@@ -25,7 +25,7 @@ const SaveController = () => {
             formId = '#' + $(that).attr('data-form-to-save');
             form = [$(formId)];
         } else {
-            form = $('#pjax-content').find('form');
+            form = $('#pjax-content').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
         }
 
         if (form.length < 1)
@@ -33,9 +33,12 @@ const SaveController = () => {
 
         return form;
     },
+    isSubmitting = () => formSubmitting,
     displayLoadingState = (el) => {
-        const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-        $(el).prop('disabled', true).append(loadingSpinner);
+        if($(el).data('form-id') == 'addnewsurvey') {
+            const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+            $(el).prop('disabled', true).append(loadingSpinner);
+        }
     },
     stopDisplayLoadingState = () => {
         LOG.log('StopLoadingIconAnimation');
@@ -47,92 +50,109 @@ const SaveController = () => {
         return {
             _checkExportButton: {
                 check: '[data-submit-form]',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
                     
-                    try {
-                        for (let instanceName in CKEDITOR.instances) {
-                            CKEDITOR.instances[instanceName].updateElement();
-                        }
-                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
-                    
-                    $form.find('[type="submit"]').first().trigger('click');
+                    if ($form.data('isvuecomponent') == true) {
+                        LS.EventBus.$emit('componentFormSubmit', button)
+                    } else {
+                        $form.find('[type="submit"]').first().trigger('click');
+                        displayLoadingState(this);
+                    }
                 },
                 on: 'click'
             },
             _checkSaveButton: {
                 check: '#save-button',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const $form = getForm(this);
-
                     formSubmitting = true;
-
-                    try {
-                        for (let instanceName in CKEDITOR.instances) {
-                            CKEDITOR.instances[instanceName].updateElement();
-                        }
-                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
-            
-                    $form.find('[type="submit"]').first().trigger('click');
-                    displayLoadingState(this);
+                    if ($form.data('isvuecomponent') == true) {
+                        LS.EventBus.$emit('componentFormSubmit', button)
+                    } else {
+                        $form.find('[type="submit"]:not(.ck)').first().trigger('click');
+                        displayLoadingState(this);
+                    }
                 },
                 on: 'click'
             },
             _checkSaveFormButton: {
                 check: '#save-form-button',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const
                         formid = '#' + $(this).attr('data-form-id'),
-                        $form = $(formid);
-                    //alert($form.find('[type="submit"]').attr('id'));
-                    $form.find('[type="submit"]').trigger('click');
-                    displayLoadingState(this);
+                        $form = $(formid),
+                        $firstSubmit = $form.find('[type="submit"]').first();
+
+                    if($firstSubmit.length > 0) {
+                        $firstSubmit.trigger('click');
+                    } else {
+                        $form.submit();
+                    }
+                    
+                    // check if there are any required inputs that are not filled
+                    var cntInvalid = 0;
+                    var requiredInputs =  $form.find('input,select').filter("[required='required']");
+                    requiredInputs.each(function () {
+                        if (this.validity.valueMissing == true) {
+                            cntInvalid += 1;
+                        }
+                    });
+                    // show loading state only if all required fields are filled, otherwise enable submit button again
+                    if (cntInvalid === 0){
+                        displayLoadingState(this);
+                    } else {
+                        $('#save-form-button').removeClass('disabled');
+                    }
                     return false;
                 },
                 on: 'click'
             },
             _checkSaveAndNewButton: {
                 check: '#save-and-new-button',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const $form = getForm(this);
 
                     formSubmitting = true;
                     $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
 
-                    try {
-                        for (let instanceName in CKEDITOR.instances) {
-                            CKEDITOR.instances[instanceName].updateElement();
-                        }
-                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
-
-                    $form.find('[type="submit"]').first().trigger('click');
-                    displayLoadingState(this);
+                    if ($form.data('isvuecomponent') == true) {
+                        LS.EventBus.$emit('componentFormSubmit', button)
+                    } else {
+                        $form.find('[type="submit"]').first().trigger('click');
+                        displayLoadingState(this);
+                    }
 
                 },
                 on: 'click'
             },
             _checkSaveAndCloseButton: {
                 check: '#save-and-close-button',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const $form = getForm(this);
 
                     closeAfterSaveInput.val("true");
                     $form.append(closeAfterSaveInput);
                     formSubmitting = true;
-                    $form.find('[type="submit"]').first().trigger('click');
-                    displayLoadingState(this);
+
+                    if ($form.data('isvuecomponent') == true) {
+                        LS.EventBus.$emit('componentFormSubmit', button)
+                    } else {
+                        $form.find('[type="submit"]').first().trigger('click');
+                        displayLoadingState(this);
+                    }
                 },
                 on: 'click'
             },
             _checkSaveAndCloseFormButton: {
                 check: '#save-and-close-form-button',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const formid = '#' + $(this).attr('data-form-id'),
                         $form = $(formid);
@@ -143,30 +163,28 @@ const SaveController = () => {
                         name: 'saveandclose',
                         value: '1'
                     }).appendTo($form);
-
-
-                    $form.find('[type="submit"]').trigger('click');
+                    
+                    $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);
+                        
                     return false;
                 },
                 on: 'click'
             },
             _checkSaveAndNewQuestionButton: {
                 check: '#save-and-new-question-button',
-                run: function(ev) {
+                run: function(ev, button=null) {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
                     $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
 
-                    try {
-                        for (let instanceName in CKEDITOR.instances) {
-                            CKEDITOR.instances[instanceName].updateElement();
-                        }
-                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
-
-                    $form.find('[type="submit"]').first().trigger('click');
-                    displayLoadingState(this);
+                    if ($form.data('isvuecomponent') == true) {
+                        LS.EventBus.$emit('componentFormSubmit', button)
+                    } else {
+                        $form.find('[type="submit"]').first().trigger('click');
+                        displayLoadingState(this);
+                    }
                 },
                 on: 'click'
             },
@@ -186,9 +204,22 @@ const SaveController = () => {
                     formSubmitting = false;
                 },
                 on: 'lsStopLoading'
+            },
+            _checkStopLoadingCreateCopyImport: {
+                check: '#create-import-copy-survey',
+                run: function(ev) {
+                    stopDisplayLoadingState();
+                    formSubmitting = false;
+                },
+                on: 'lsStopLoading'
             }
-        }
+        };
+
     };
+    const stubEvent = {
+        isStub: true,
+        preventDefault: ()=>{console.ls.log("Stub prevented");}
+    }
     //############PUBLIC
     return () => {
         forEach(checks(), (checkItem) => {
@@ -200,6 +231,20 @@ const SaveController = () => {
             if ($(item).length > 0) {
                 $(document).on(checkItem.on+'.centralsave', item, checkItem.run);
                 LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
+            }
+        });
+
+        LS.EventBus.$off("saveButtonCalled");
+        LS.EventBus.$emit("saveButtonFlushed");
+        
+        LS.EventBus.$on("saveButtonCalled", (button) => {
+            if(!isSubmitting()) {
+                forEach(checks(), (checkItem) => {
+                    if(checkItem.check == '#'+button.id) {
+                        checkItem.run(stubEvent, button);
+                        formSubmitting = false;
+                    }
+                });
             }
         });
     };

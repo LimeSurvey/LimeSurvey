@@ -32,7 +32,7 @@
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
     <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}' for="answer{{myfname}}">
-        {{ labelText }}
+        {{ processString(labelText) }}
     </label>
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
             {% if sliderleft is not empty %}
@@ -88,18 +88,17 @@
         'handle' : "{{slider_handle}}",
         'tooltip' : 'always',
         'reset' : "{{slider_reset}}",
-        'prefix' : "{{prefix}}",
-        'suffix' : "{{suffix}}",
+        'prefix' : "{{ processString(prefix,1) }}",
+        'suffix' : "{{ processString(suffix,1) }}",
         'separator' : "{{sSeparator}}",
         'number' : true,
         'integer' : {{integeronly}},
-        'position' : "{{slider_position}}",
+        'position' : parseInt({{slider_position}}),
         'custom_handle' : "{{slider_custom_handle}}",
         'setPosition' : "{{slider_reset_set}}",
         'reversed' : {{slider_reversed}},
     });
     window.activeSliders.s{{myfname}}.init();
-
 {% endset %}
 {{ registerScript( 'SliderQuestion'~myfname, script, 'POS_POSTSCRIPT') }}
 

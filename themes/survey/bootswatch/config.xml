@@ -12,17 +12,17 @@
     <metadata>
         <name>bootswatch</name>
         <title>Bootswatch Theme</title>
-
+        <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
-        <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <copyright>Copyright (C) 2005 - 2019 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>2.0</version>
+        <version>3.0</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>{{gT("LimeSurvey Bootwatch Theme")}}</strong><br>{{gT("Based on BootsWatch Themes:")}} <a href='https://bootswatch.com/3/'>{{gT("Visit BootsWatch page")}}</a> ]]></description>
-        <last_update>2017-11-29 19:28:00</last_update>
+        <lastUpdate>2019-10-24 12:00:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 
@@ -60,11 +60,16 @@
 
     <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
     <options>
-        <brandlogo>on</brandlogo>
-        <brandlogofile>./files/logo.png</brandlogofile>
-        <container>on</container>
-        <showpopups>1</showpopups>
-        <fixnumauto>off</fixnumauto>
+        <!-- simple options -->
+        <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
+        <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
+        <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
+        <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <!-- images -->
+        <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
+        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/bootswatch/files/logo.png</brandlogofile>
+        <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -88,6 +93,9 @@
             <add>pjax</add>
             <add>moment</add>
         </packages>
+
+        <!-- core: use core options view file, custom: use customized options.twig view file -->
+        <optionspage>core</optionspage>
 
         <!--
             List of pages/files for tempalte editor
@@ -273,7 +281,7 @@
                 </quotas>
 
                 <token>
-                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Token')}} ]]></screen_title>
+                  <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Participant')}} ]]></screen_title>
                   <file type="view" role="layout">layout_user_forms.twig</file>
                   <file type="view" role="content">./subviews/content/userforms.twig</file>
                   <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
@@ -327,5 +335,9 @@
             </default_data>
         </template_editor>
     </engine>
+
+    <!-- Disable the updater system for core themes. -->
+    <updaters disabled="disabled">
+    </updaters>
 
 </config>

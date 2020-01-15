@@ -215,7 +215,7 @@ foreach($systemInfos as &$systemInfo) {
                 <div class="h3 modal-title">
 			<span class="sr-only"><?php eT("Notifications"); ?></span>
 		</div>
-                <span class='notification-date text-muted'></span>
+                <span class='notification-date'></span>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'></p>
