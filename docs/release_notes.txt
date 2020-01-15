@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v3.x!
+Welcome to LimeSurvey v4.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -15,7 +15,7 @@ HOW TO INSTALL
 This release does have the following requirements:
 
 *MySQL 5.5.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 5.5.9 or later with the following modules/libraries enabled:
+*PHP 7.0.0 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
 
@@ -34,6 +34,58 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0-RC14 (build 200109) to 4.0.0 (build 200116) January 16, 2020
++New feature: Converting LS3 question themes to LS4 (Patrick Teichmann)
+-Fixed issue: cannot create label sets (lacrioque)
+-Fixed issue: Tooltips are not showing in hosting top bar (Eddy Lackmann)
+-Fixed issue: Proper error message when you save a question with wrong code (Marc Leonhardt)
+-Fixed issue: Proper error mesage when you save a question with wrong code (lacrioque)
+-Fixed issue: Potential lost responses on first page (Denis Chenu)
+-Fixed issue: Notice for filter search in encrypted values (Token - Survey participant gridview) (Eddy Lackmann)
+-Fixed issue: Notice for filter search in encrypted values (Response gridview) (Eddy Lackmann)
+-Fixed issue: Notice for filter search in encrypted values (Participant gridview) (Eddy Lackmann)
+-Fixed issue: List questions defunct gridview on firstload from sidepanel (Marc Leonhardt)
+-Fixed issue: Can't upload plugin zip file (Eddy Lackmann)
+-Fixed issue: 15715: Adjust text theme editor (Jessica Höck)
+-Fixed issue: #15697 Quick add and predefined label sets should be greted out when survey is active (they will not be rendered when survey is not active) (Jessica Höck)
+-Fixed issue #15715: Adjust message theme editor (Jessica Höck)
+-Fixed issue #15696: Multiple email addresses in token are not working (lacrioque)
+-Fixed issue #15696: Multiple email addresses in token are not working (Denis Chenu)
+-Fixed issue #15696: Multiple email addresses in token are not working (#1368) (Denis Chenu)
+-Fixed issue #15692: where-clause in reorderMenu (Marko Bischof)
+-Fixed issue #15690: User with XSS enable can add/update scripts (#1364) (Denis Chenu)
+-Fixed issue #15685: Issue when exporting decimal value in MSSQL (Denis Chenu)
+-Fixed issue #15684: When reloading decimal value with 0 with MSSQL : 0 disappear (#1360) (Denis Chenu)
+-Fixed issue #15684: MSSQL issue reloading decimal value (Denis Chenu)
+-Fixed issue #15681: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue #15680: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue #15672: LimeSurvey 3.21.1 Cross Site Scripting (lacrioque)
+-Fixed issue #15665: Filemanager is missing a download and mass download function (lacrioque)
+-Fixed issue #15651: delete_participant fails to delete and gives no error back (Adam Zammit)
+-Fixed issue #15644: Unable to translate theme options (Patrick Teichmann)
+-Fixed issue #15622: Theme Options are not available for translation (Patrick Teichmann)
+-Fixed issue #15584: Error when adding list-radio answer with code "0" (lacrioque)
+-Fixed issue #15570: Column filter gets stuck after selecting once and does not filter certain columns (Patrick Teichmann)
+-Fixed issue #14129: Translation missing in subquestion panel (Marc Leonhardt)
+-Fixed issue #15690: User with XSS enable can add/update scripts (Denis Chenu)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by eddylackmann
+#Updated translation: Russian by kmaksat
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Korean by zist21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by riqcles
+#Updated translation: Danish by Mikkel
+#Updated translation: Croatian by dominikvitt, rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC13 (build 191223) to 4.0.0-RC14 (build 200109) January 9, 2020
 -Fixed issue: Tooltips are not showing in admin top bar (Eddy Lackmann)
 -Fixed issue: CPDB attributes gridview pagination/ajax not working (Patricia Stelling)
