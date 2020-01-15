@@ -865,13 +865,13 @@
         * @return array
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
-                $LEM =& LimeExpressionManager::singleton();
-                $LEM->SetSurveyId($iSurveyId); // This update session only if needed
-                if( !in_array(Yii::app()->session['LEMlang'],Survey::model()->findByPk($iSurveyId)->getAllLanguages()) ) {
-                    $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
-                }
-                $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
-                return $LEM->qcode2sgqa;
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->SetSurveyId($iSurveyId); // This update session only if needed
+            if( !in_array(Yii::app()->session['LEMlang'],Survey::model()->findByPk($iSurveyId)->getAllLanguages()) ) {
+                $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
+            }
+            $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
+            return $LEM->qcode2sgqa;
         }
 
         /**
@@ -8178,18 +8178,12 @@
                     $neededCanonicalAttr[] = $LEM->varNameAttr[$nc];
                 }
                 $neededAliases = array_unique($neededAliases);
-                if (count($neededAliases) > 0)
-                {
-                    $jsParts[] = "var LEMalias2varName = {\n";
-                    $jsParts[] = implode(",\n",$neededAliases);
-                    $jsParts[] = "};\n";
-                }
-                if (count($neededCanonicalAttr) > 0)
-                {
-                    $jsParts[] = "var LEMvarNameAttr = {\n";
-                    $jsParts[] = implode(",\n",$neededCanonicalAttr);
-                    $jsParts[] = "};\n";
-                }
+                $jsParts[] = "var LEMalias2varName = {\n";
+                $jsParts[] = implode(",\n",$neededAliases);
+                $jsParts[] = "};\n";
+                $jsParts[] = "var LEMvarNameAttr = {\n";
+                $jsParts[] = implode(",\n",$neededCanonicalAttr);
+                $jsParts[] = "};\n";
             }
 
             if (!$bReturnArray){

@@ -87,19 +87,19 @@ class TestBaseClass extends TestCase
         }
     }
 
-	/**
-	 * Get all question inside current survey, key is question code
-	 * @return array[]
-	 */
-	public function getAllSurveyQuestions()
-	{
-		if(empty(self::$surveyId)) {
-			throw new \Exception('getAllSurveyQuestions call without survey.');
-		}
+    /**
+     * Get all question inside current survey, key is question code
+     * @return array[]
+     */
+    public function getAllSurveyQuestions()
+    {
+        if(empty(self::$surveyId)) {
+            throw new \Exception('getAllSurveyQuestions call without survey.');
+        }
         $survey = \Survey::model()->findByPk(self::$surveyId);
-		if(empty($survey)) {
-			throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
-		}
+        if(empty($survey)) {
+            throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
+        }
         $questions = [];
         foreach($survey->groups as $group) {
             $questionObjects = $group->questions;
@@ -108,7 +108,7 @@ class TestBaseClass extends TestCase
             }
         }
         return $questions;
-	}
+    }
 
     /**
      * @return void
@@ -131,6 +131,39 @@ class TestBaseClass extends TestCase
                 );
             }
             self::$testSurvey = null;
+        }
+    }
+
+    /**
+     * Helper install and activate plugins by name
+     * @param string $pluginName
+     * @return void
+     */
+    public static function installAndActivatePlugin($pluginName)
+    {
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>$pluginName));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = $pluginName;
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+    }
+
+    /**
+     * Helper dactivate plugins by name
+     * @param string $pluginName
+     * @return void
+     */
+    public static function deActivatePlugin($pluginName)
+    {
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>$pluginName));
+        if ($plugin) {
+            $plugin->active = 0;
+            $plugin->save();
         }
     }
 }
