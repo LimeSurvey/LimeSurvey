@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.21.4 (build 200108) to 3.21.5 (build 200115) January 15, 2020
+-Fixed issue #15696: Multiple email addresses in token are not working (#1368) (Denis Chenu)
+-Fixed issue #15692: where-clause in reorderMenu (Marko Bischof)
+-Fixed issue #15685: Issue when exporting decimal value in MSSQL (Denis Chenu)
+-Fixed issue #15684: When reloading decimal value with 0 with MSSQL : 0 disappear (#1360) (Denis Chenu)
+-Fixed issue #15684: MSSQL issue reloading decimal value (Denis Chenu)
+-Fixed issue #15570: Column filter gets stuck after selecting once and does not filter certain columns (Patrick Teichmann)
+
+
 Changes from 3.21.3 (build 191219) to 3.21.4 (build 200108) January 8, 2020
 -Fixed issue: Tooltips are not showing in hosting top bar (Eddy Lackmann)
 -Fixed issue: Potential lost responses on first page (Denis Chenu)
