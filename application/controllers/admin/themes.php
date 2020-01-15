@@ -1246,16 +1246,7 @@ class themes extends Survey_Common_Action
         $aData['relativePathEditfile'] = $editfile;
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
-        $usedVersion = App()->getConfig('versionnumber');
-        $delimiter   = '.';
-        $version     = explode($delimiter, $usedVersion);
-        $versionAsInteger = (int) $version[0];
-
-        if ($versionAsInteger >= 4) {
-            $this->showIntroNotificationForLS4();
-        } elseif ($versionAsInteger <= 3) {
-            $this->showIntroNotification();
-        }
+        $this->showIntroNotification();
 
         if ($showsummary) {
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
@@ -1267,7 +1258,7 @@ class themes extends Survey_Common_Action
     }
 
     /**
-     * First time user visits template editor on 3.0, show
+     * First time user visits template editor, show
      * a notification about manual and forum.
      * @return void
      */
@@ -1276,39 +1267,16 @@ class themes extends Survey_Common_Action
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $not = new UniqueNotification(array(
             'user_id'    => $user->uid,
-            'title'      => gT('LimeSurvey 3.0 theme editor'),
+            'title'      => gT('LimeSurvey theme editor'),
             'markAsNew'  => false,
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
-                gT('Welcome to the new theme editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
-                '<a target="_blank" href="https://manual.limesurvey.org/New_Template_System_in_LS3.x">', '</a>',
+                gT('Welcome to the new theme editor of LimeSurvey To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                '<a target="_blank" href="https://manualv4.limesurvey.org/LimeSurvey_Manual">', '</a>',
                 '<a target="_blank" href="https://www.limesurvey.org/community/forums">', '</a>'
             )
         ));
         $not->save();
-    }
-
-    /**
-     * First time user visits theme editor on 4.0.
-     * Show a notificiation about manual and forum.
-     * 
-     * @return void
-     */
-    private function showIntroNotificationForLS4(): void {
-        $user = User::model()->findByPk(App()->session['loginID']);
-        $notificationData = [
-            'user_id' => $user->uid,
-            'title'   => gT('LimeSurvey 4.0 theme editor'),
-            'markAsNew' => false,
-            'importance' => Notification::HIGH_IMPORTANCE,
-            'message' => sprintf(
-                gT('Welcome to the theme editor of LimeSurvey 4.0. To get an overview of all functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
-                '<a target="_blank" href="https://manualv4.limesurvey.org/LimeSurvey_Manual">', '</a>',
-                '<a target="_blank" href="https://www.limesurvey.org/community/forums">', '</a>'
-            )
-            ];
-        $notification = new UniqueNotification($notificationData);
-        $notification->save();
     }
 
     /**
