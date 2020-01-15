@@ -1386,6 +1386,8 @@ function LEManyNA()
     for (i=0;i<arguments.length;++i) {
         var arg = arguments[i];
         if (arg.match(/\.NAOK$/)) {
+            /* Must be arg.match(/\.(gid|gseq|mandatory|NAOK|qid|qseq|question|sgqa|shown|type|valueNAOK|relevanceStatus)$/ ? */
+            /* TODO : find a broken logic system (lss broken) */
             continue;
         }
         if (typeof LEMalias2varName[arg] === 'undefined') {
