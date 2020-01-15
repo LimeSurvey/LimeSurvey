@@ -518,8 +518,6 @@ class themes extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-
-
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
@@ -1024,12 +1022,10 @@ class themes extends Survey_Common_Action
      */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
-
-
         // LimeSurvey style
         $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 
-            //App()->getClientScript()->reset();
+        //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
@@ -1037,10 +1033,8 @@ class themes extends Survey_Common_Action
         $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
         $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
         $cssfiles     = $oEditedTemplate->getValidScreenFiles("css");
-        $jsfiles     = $oEditedTemplate->getValidScreenFiles("js");
+        $jsfiles      = $oEditedTemplate->getValidScreenFiles("js");
         $editfile     = (empty($editfile) || ! ( in_array($editfile, $files) || in_array( $editfile ,$cssfiles) || in_array( $editfile ,$jsfiles)  )) ? $sLayoutFile : $editfile;
-
-
 
         // Standard screens
         $screens = $oEditedTemplate->getScreensList();
@@ -1073,7 +1067,7 @@ class themes extends Survey_Common_Action
         $normalfiles = $normalfiles + $files + $cssfiles;
         // Some global data
         $aData['sitename'] = Yii::app()->getConfig('sitename');
-        $siteadminname = Yii::app()->getConfig('siteadminname');
+        $siteadminname  = Yii::app()->getConfig('siteadminname');
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
         // NB: Used by answer print PDF layout.
@@ -1086,19 +1080,15 @@ class themes extends Survey_Common_Action
         // Save these variables in an array
         // TODO: check if this aData is still used
         $aData['thissurvey']       = $thissurvey;
-
-
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
 
 
         switch ($screenname) {
             case 'welcome':
-
                 break;
 
             case 'question':
-
               // NOTE: this seems not to be used anymore
               // TODO: try if it can be removed
                 $aReplacements = array(
@@ -1122,14 +1112,12 @@ class themes extends Survey_Common_Action
                 break;
 
             case 'register':
-
                 break;
 
             case 'completed':
                 break;
 
             case 'assessments':
-
                 break;
 
             case 'printablesurvey':
@@ -1258,7 +1246,16 @@ class themes extends Survey_Common_Action
         $aData['relativePathEditfile'] = $editfile;
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
-        $this->showIntroNotification();
+        $usedVersion = App()->getConfig('versionnumber');
+        $delimiter   = '.';
+        $version     = explode($delimiter, $usedVersion);
+        $versionAsInteger = (int) $version[0];
+
+        if ($versionAsInteger >= 4) {
+            $this->showIntroNotificationForLS4();
+        } elseif ($versionAsInteger <= 3) {
+            $this->showIntroNotification();
+        }
 
         if ($showsummary) {
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
@@ -1289,6 +1286,29 @@ class themes extends Survey_Common_Action
             )
         ));
         $not->save();
+    }
+
+    /**
+     * First time user visits theme editor on 4.0.
+     * Show a notificiation about manual and forum.
+     * 
+     * @return void
+     */
+    private function showIntroNotificationForLS4(): void {
+        $user = User::model()->findByPk(App()->session['loginID']);
+        $notificationData = [
+            'user_id' => $user->uid,
+            'title'   => gT('LimeSurvey 4.0 theme editor'),
+            'markAsNew' => false,
+            'importance' => Notification::HIGH_IMPORTANCE,
+            'message' => sprintf(
+                gT('Welcome to the theme editor of LimeSurvey 4.0. To get an overview of all functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                '<a target="_blank" href="https://manualv4.limesurvey.org/LimeSurvey_Manual">', '</a>',
+                '<a target="_blank" href="https://www.limesurvey.org/community/forums">', '</a>'
+            )
+            ];
+        $notification = new UniqueNotification($notificationData);
+        $notification->save();
     }
 
     /**
