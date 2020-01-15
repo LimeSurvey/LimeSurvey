@@ -4358,7 +4358,7 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    if (is_string($content) && get_magic_quotes_gpc()) {
+    if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() && is_string($content)) {
         $content = stripslashes($content);
     }
     $ans = json_encode($content);
