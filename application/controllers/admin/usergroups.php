@@ -102,7 +102,7 @@ class Usergroups extends Survey_Common_Action
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $ugid = Yii::app()->request->getPost("ugid");
+            $ugid = Yii::app()->request->getParam("ugid");
             if (!empty($ugid) && ($ugid > -1)) {
                 $userGroup = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
                 if (!empty($userGroup)) {
