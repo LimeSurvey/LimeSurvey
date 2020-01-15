@@ -1212,6 +1212,21 @@ Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 201
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
 
+Changes from 3.21.4 (build 200108) to 3.21.5 (build 200115) January 15, 2020
+-Fixed issue #15696: Multiple email addresses in token are not working (#1368) (Denis Chenu)
+-Fixed issue #15692: where-clause in reorderMenu (Marko Bischof)
+-Fixed issue #15685: Issue when exporting decimal value in MSSQL (Denis Chenu)
+-Fixed issue #15684: When reloading decimal value with 0 with MSSQL : 0 disappear (#1360) (Denis Chenu)
+-Fixed issue #15684: MSSQL issue reloading decimal value (Denis Chenu)
+-Fixed issue #15570: Column filter gets stuck after selecting once and does not filter certain columns (Patrick Teichmann)
+
+
+Changes from 3.21.3 (build 191219) to 3.21.4 (build 200108) January 8, 2020
+-Fixed issue: Tooltips are not showing in hosting top bar (Eddy Lackmann)
+-Fixed issue: Potential lost responses on first page (Denis Chenu)
+-Fixed issue #15651: delete_participant fails to delete and gives no error back (Adam Zammit)
+
+
 Changes from 3.21.2 (build 191216) to 3.21.3 (build 191219) December 19, 2019
 +New translation: Kurdish (Kurmanji) (Carsten Schmitz)
 -Fixed issue [security] #15681: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
