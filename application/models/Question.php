@@ -335,7 +335,7 @@ class Question extends LSActiveRecord
                 $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
-                    foreach ($oQuestionTemplate->oConfig->attributes as $attribute) {
+                    foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
                         $sAttributeName = (string) $attribute->name;
                         $sInputType = (string)$attribute->inputtype;
                         // remove attribute if inputtype is empty
