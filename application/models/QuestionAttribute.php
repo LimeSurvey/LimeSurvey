@@ -233,9 +233,11 @@ class QuestionAttribute extends LSActiveRecord
             if ($sType == null) {
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
-
+            /* default attributes */
             $aAttributeNames = self::getQuestionAttributesSettings($sType);
-
+            /* LACK of question theme attributes */
+            /* plugins attributes */
+            $aAttributeNames = array_merge($aAttributeNames, self::getQuestionAttributesPlugins($sQuestionType));
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
 
@@ -274,7 +276,7 @@ class QuestionAttribute extends LSActiveRecord
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
                     } elseif (isset($aAttributeValues[$aAttribute['name']])) {
-/* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
+                        /* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
                         $aQuestionAttributes[$aAttribute['name']] = reset($aAttributeValues[$aAttribute['name']]);
                     } else {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttribute['default'];

@@ -292,6 +292,7 @@ class Question extends LSActiveRecord
             $aLanguages = array($sLanguage);
         }
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
+
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
         $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
 
@@ -299,7 +300,7 @@ class Question extends LSActiveRecord
         $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
         $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
         // Add the questions attributes by plugins
-        $aAttributeNames = array_merge($aAttributeNames, QuestionAttribute::getQuestionAttributesSettings($sQuestionType));
+        $aAttributeNames = array_merge($aAttributeNames, QuestionAttribute::getQuestionAttributesPlugins($sQuestionType));
         
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute) {
