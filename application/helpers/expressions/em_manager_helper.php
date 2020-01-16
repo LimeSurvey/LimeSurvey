@@ -5582,9 +5582,9 @@
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $iCountUpdated = Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
                         if (!$iCountUpdated) {
-                            $message = submitfailed('', print_r($response->getErrors())); // $response->getErrors() is array[string[]], then can not join
+                            $message = submitfailed('',$this->gT('Error on response update')); // NO response->errors when use ->updateByPk
                             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                                $message .= CHTml::errorSummary($response,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
+                                $message .= CHTml::errorSummary($response,$this->gT('Error on response submit'));  // Add SQL error according to debugLevel
                             }
                             LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                         } else {
