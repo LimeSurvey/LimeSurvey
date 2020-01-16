@@ -5,10 +5,10 @@
 
 echo '<h3> List of Surveys </h3>';
 
-/*
+
 foreach ($survey as $surv){
-    /**@var $surv Survey
+    /**@var $surv Survey */
     echo 'admin: ' . $surv->admin  . 'surveyname_id: ' . $surv->sid . '<br>';
 }
-*/
+
 
