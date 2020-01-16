@@ -417,6 +417,29 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
+     * Return the question attributes definition by question type
+     * @param $sType: type of question
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionAttributesPlugins($sType)
+    {
+        $event = new \LimeSurvey\PluginManager\PluginEvent('getQuestionAttributes');
+        $event->set('type',$sType);
+        App()->getPluginManager()->dispatchEvent($event);
+        $questionAttributesPlugins = (array) $event->get('questionAttributes');
+
+        foreach ($questionAttributesPlugins as $attribute => $settings) {
+            $questionAttributesPlugins[$attribute] = array_merge(
+                QuestionAttribute::getDefaultSettings(),
+                array("category"=>gT("Plugins")),
+                $settings,
+                array("name"=>$attribute),
+            );
+        }
+        return $questionAttributesPlugins;
+    }
+
+    /**
      * Read question attributes from XML file and convert it to array
      *
      * @param string $sXmlFilePath Path to XML

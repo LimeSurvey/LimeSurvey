@@ -296,10 +296,11 @@ class Question extends LSActiveRecord
         $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
-
         $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
         $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
-
+        // Add the questions attributes by plugins
+        $aAttributeNames = array_merge($aAttributeNames, QuestionAttribute::getQuestionAttributesSettings($sQuestionType));
+        
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute) {
             if ($aAttribute['i18n'] == false) {
@@ -318,7 +319,6 @@ class Question extends LSActiveRecord
                 }
             }
         }
-
         return $aAttributeNames;
     }
 
