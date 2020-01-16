@@ -15,9 +15,9 @@
                 <p class="lead"><?php eT("Warning"); ?></p>
                 <p>
                     <strong><?php eT("You are about to delete this survey"); ?> (<?php echo $surveyid; ?>)</strong><br /><br />
-                    <?php eT("This process will delete this survey, and all related groups, questions answers and conditions."); ?><br /><br />
+                    <?php eT("This process will delete this survey and all its corresponding groups, questions, subquestions, answers, and conditions."); ?><br /><br />
                     <?php eT("It will also delete any resources/files that have been uploaded for this survey."); ?><br /><br />
-                    <?php eT("We recommend that before you delete this survey you export the entire survey from the main administration screen."); ?>
+                    <?php eT("We recommend you to export the entire survey from the main administration screen before deleting it."); ?>
 
                     <?php if($survey->hasTokensTable):?>
                         <span class="text-warning"><?php eT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?></span><br /><br />
