@@ -5585,7 +5585,6 @@
                             // Fix #15733 comparing values of previous response
                             $aReponseCurrentAttributes = $oResponse->getAttributes();
                             $aIntersect = array_intersect_key($aReponseCurrentAttributes,$aResponseAttributes);
-                            $aDiff = array_intersect_key($aReponseCurrentAttributes,$aResponseAttributes);
                             if (!empty(array_diff_assoc($aResponseAttributes,$aIntersect))) {
                                 $message = submitfailed('',$this->gT('Error on response update'));
                                 LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
