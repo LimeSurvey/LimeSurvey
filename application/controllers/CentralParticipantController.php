@@ -101,9 +101,28 @@ class CentralParticipantController extends LSYii_Controller
         }
 
         // Loads the participant panel view and display participant view
-        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
+        App()->getClientScript()->registerPackage('bootstrap-multiselect');
+        $aData['display']['menu_bars'] = false;
 
+        // Add "_view" to urls
+        if (is_array($aViewUrls)) {
+            array_walk($aViewUrls, function (&$url) {
+                $url .= "_view";
+            });
+        } elseif (is_string($aViewUrls)) {
+            $aViewUrls .= "_view";
+        } else {
+            // Complete madness
+            throw new \InvalidArgumentException("aViewUrls must be either string or array");
+        }
 
+        /** Todo
+         * here we should get out of Survey_Common_Action
+         *
+         * use return $this->render(...) instead
+         *
+         */
+//        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
 }
