@@ -4,22 +4,42 @@
 class RefactoringController extends LSYii_Controller
 {
 
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow',
+                'actions'=>array('login'),
+                'users'=>array('*'), //everybody
+            ),
+            array(
+                'allow',
+                'actions'=>array('index','listSurveys'),
+                'users'=>array('@'), //only login users
+            ),
+            array('deny'),
+        );
+    }
     //##################################                 TESTING ONLY #################################################
 
 
     public function actionIndex(){
 
-      $survey = Survey::model()->findAll(); // works ...
-        $boxes = Box::model()->findAll(); //this works ...
+        if(!Yii::app()->user->isGuest) {
+            $survey = Survey::model()->findAll(); // works ...
+            $boxes = Box::model()->findAll(); //this works ...
 
-        $model = [];
-        $model['name'] = 'someName';
-        $model['id'] = 15;
+            $model = [];
+            $model['name'] = 'someName';
+            $model['id'] = 15;
 
-        $this->render('index', array(
-            'model' => $model,
-           'survey' => $survey
-        ));
+           return $this->render('index', array(
+                'model' => $model,
+                'survey' => $survey
+            ));
+        }
+            $this->redirect(array('/admin/authentication/sa/login'));
+
     }
 
     public function actionListSurveys(){
