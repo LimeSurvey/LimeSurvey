@@ -1122,11 +1122,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case 'K':
             case 'N':
                 // Fix the value : Value is stored as decimal in SQL
-                if($sValue[0] === ".") {
-                    // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-                    $sValue = "0".$sValue;
-                }
                 if (trim($sValue) != '') {
+                    if($sValue[0] === ".") {
+                        // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+                        $sValue = "0".$sValue;
+                    }
                     if (strpos($sValue, ".") !== false) {
                         $sValue = rtrim(rtrim($sValue, "0"), ".");
                     }
