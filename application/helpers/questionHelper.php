@@ -95,7 +95,7 @@ class questionHelper
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
-            "help"=>gT('Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
+            "help"=>gT('Repeat headers every n-th subquestions (Set to 0 to deactivate).'),
             "caption"=>gT('Repeat headers')
         );
 
@@ -827,7 +827,7 @@ class questionHelper
             'expression'=>1, // Must control if yes
             'i18n'=>true,
             'default'=>"",
-            "help"=>gT('In the printable version replace the condition with this explanation text.'),
+            "help"=>gT('In the printable version the condition is being replaced with this explanation text.'),
             "caption"=>gT("Condition replacement text for printable survey")
         );
 

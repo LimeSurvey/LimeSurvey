@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h2><?=gT("You don't have permission to enter this page!")?></h2>
+            <h2><?=gT("We are sorry but you don't have permissions to do this.")?></h2>
         </div>
     </div>
 </div>

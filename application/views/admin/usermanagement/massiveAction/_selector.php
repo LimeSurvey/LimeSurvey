@@ -47,7 +47,7 @@ $aActionsArray = array(
             'action'            => 'batchPermissions',
             'url'               => App()->createUrl('/admin/usermanagement/sa/batchPermissions'),
             'iconClasses'       => 'fa fa-unlock',
-            'text'              => gT('Edit Permissions'),
+            'text'              => gT('Edit permissions'),
             'grid-reload'       => 'yes',
             //modal
             'actionType'        => 'modal',

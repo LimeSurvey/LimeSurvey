@@ -152,12 +152,12 @@ class themeoptions  extends Survey_Common_Action
                             $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
                         } else {
                             $aResults[$template]['result'] = false;
-                            $aResults[$template]['error'] = gT('Error!! You cannot uninstall the default template');
+                            $aResults[$template]['error'] = gT('Error! You cannot uninstall the default template.');
                         }
 
                     } else {
                         $aResults[$template]['result'] = false;
-                        $aResults[$template]['error'] = gT('Error!! Some templates inherit from it');
+                        $aResults[$template]['error'] = gT('Error! Some theme(s) inherit from this theme');
                     }
                 }
             }
