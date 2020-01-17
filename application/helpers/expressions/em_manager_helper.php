@@ -5582,8 +5582,14 @@
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $iCountUpdated = Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
                         if (!$iCountUpdated) {
-                            $message = submitfailed('',$this->gT('Error on response update')); // NO response->errors when use ->updateByPk
-                            LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                            // Fix #15733 comparing values of previous response
+                            $aReponseCurrentAttributes = $oResponse->getAttributes();
+                            $aIntersect = array_intersect_key($aReponseCurrentAttributes,$aResponseAttributes);
+                            $aDiff = array_intersect_key($aReponseCurrentAttributes,$aResponseAttributes);
+                            if (!empty(array_diff_assoc($aResponseAttributes,$aIntersect))) {
+                                $message = submitfailed('',$this->gT('Error on response update'));
+                                LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                            }
                         } else {
                             // Action in case its saved with success : to be move in Response::aferSave ?
                             // Save Timings if needed
