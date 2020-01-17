@@ -237,6 +237,12 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 // allow these users to be able to use Javascript etc. .
 $config['filterxsshtml'] = true;
 
+// disablescriptwithxss
+// Allow update of script in question
+// true : Default : follow XSS rules
+// false : allowed for all
+$config['disablescriptwithxss'] = true;
+
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
 // users that belong to at least one of their groups
