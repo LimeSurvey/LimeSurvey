@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.0 (build 200116) to 4.0.1 (build 200120) January 20, 2020
++New feature #15693: Allow simple user to update script with XSS enable (Denis Chenu)
+-Fixed issue: Inherit option not editable on survey edit and in survey create view (lacrioque)
+-Fixed issue #15738: Welcome and Description texts are mixed up for survey texts (Patrick Teichmann)
+-Fixed issue #15727: Question text translations not displayed in the front end (Patrick Teichmann)
+-Fixed issue #15699: "File metadata" tab should be removed in gender (Patrick Teichmann)
+-Fixed issue #15585: Custom question attributes not available (Patrick Teichmann)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swedish by eddylackmann
+#Updated translation: Spanish (Spain) by larjona
+#Updated translation: Spanish (Argentina) (Informal) by MeryKilicMeT19
+#Updated translation: Portuguese (Brazil) by lucaspcs
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Korean by zist21
+#Updated translation: Hungarian by vargazsoltivan
+#Updated translation: German by Joffm
+#Updated translation: Finnish by Jmantysalo, aleksius369
+#Updated translation: Dutch by L191, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC14 (build 200109) to 4.0.0 (build 200116) January 16, 2020
 +New feature: Converting LS3 question themes to LS4 (Patrick Teichmann)
 -Fixed issue: cannot create label sets (lacrioque)
