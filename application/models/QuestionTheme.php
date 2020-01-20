@@ -862,7 +862,10 @@ class QuestionTheme extends LSActiveRecord
         // check if core question theme can be found to fill in missing information
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
-                'message' => gT("Question Theme could not be converted to LimeSurvey 4 standard. Reason: No matching core Theme with the name: " . $sThemeDirectoryName . " could be found"),
+                'message' => sprintf(
+                    gT("Question theme could not be converted to LimeSurvey 4 standard. Reason: No matching core theme with the name %s could be found"),
+                    $sThemeDirectoryName
+                ),
                 'success' => false
             ];
         }
