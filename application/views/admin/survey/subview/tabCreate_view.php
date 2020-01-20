@@ -140,7 +140,29 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                 $('#save-form-button').removeClass('disabled');
                 $('#save-and-close-form-button').removeClass('disabled');
             }
+
+            $('.text-option-inherit').on('change', function(e){
+                var newValue = $(this).find('.btn.active input').val();
+                var parent = $(this).parent().parent();
+                var inheritValue = parent.find('.inherit-edit').data('inherit-value');
+                var savedValue = parent.find('.inherit-edit').data('saved-value');
+                console.log({
+                newValue: newValue,
+                parent: parent,
+                inheritValue: inheritValue,
+                savedValue: savedValue
+                })
+                if (newValue == 'Y'){
+                    parent.find('.inherit-edit').addClass('hide').removeClass('show').val(inheritValue);
+                    parent.find('.inherit-readonly').addClass('show').removeClass('hide');
+                } else {
+                    var inputValue = (savedValue === inheritValue) ? "" : savedValue;
+                    parent.find('.inherit-edit').addClass('show').removeClass('hide').val(inputValue);
+                    parent.find('.inherit-readonly').addClass('hide').removeClass('show');
+                }
+            });
         });
+
         $('#addnewsurvey').on('submit',  function(event){
             event.preventDefault();
             var form = this;

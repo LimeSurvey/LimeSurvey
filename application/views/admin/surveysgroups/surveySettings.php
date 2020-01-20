@@ -106,24 +106,40 @@ Yii::app()->getClientScript()->registerScript(
         </div>
     </div>
 </div>
-<script>
+
+<?php
+Yii::app()->getClientScript()->registerScript( "editLocalSettings_submit", "
+
     window.LS.unrenderBootstrapSwitch();
     window.LS.renderBootstrapSwitch();
 
     $('#surveySettings a').click(function (e) {
         window.location.hash = $(this).attr('href');
         e.preventDefault();
-        $("#survey-settings-options-form").attr('action',' <?php echo Yii::app()->getController()->createUrl('/admin/surveysgroups/sa/surveysettings/id/'.$oSurvey->gsid) ?>'+window.location.hash);
+        $('#survey-settings-options-form').attr('action',' ".Yii::app()->getController()->createUrl('/admin/surveysgroups/sa/surveysettings/id/'.$oSurvey->gsid)."'+window.location.hash);
         $(this).tab('show');       
     });
 
-    
-    $(document).on('ready pjax:scriptcomplete', function(){
-        if(window.location.hash){
-            $('#surveySettings').find('a[href='+window.location.hash+']').trigger('click');
+    $('.text-option-inherit').on('change', function(e){
+        var newValue = $(this).find('.btn.active input').val();
+        var parent = $(this).parent().parent();
+        var inheritValue = parent.find('.inherit-edit').data('inherit-value');
+        var savedValue = parent.find('.inherit-edit').data('saved-value');
+
+        if (newValue == 'Y'){
+            parent.find('.inherit-edit').addClass('hide').removeClass('show').val(inheritValue);
+            parent.find('.inherit-readonly').addClass('show').removeClass('hide');
+        } else {
+            var inputValue = (savedValue === inheritValue) ? \"\" : savedValue;
+            parent.find('.inherit-edit').addClass('show').removeClass('hide').val(inputValue);
+            parent.find('.inherit-readonly').addClass('hide').removeClass('show');
         }
+    });
 
-        $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'survey-settings-options-form');
+    if(window.location.hash){
+        $('#surveySettings').find('a[href='+window.location.hash+']').trigger('click');
+    }
+    $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'survey-settings-options-form');
 
-    })
-</script>
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>
