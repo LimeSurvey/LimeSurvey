@@ -69,21 +69,14 @@
                 <div class="row" key="questioncode-block">
                     <div class="form-group col-sm-6">
                         <label for="questionCode">{{'Code' | translate }}</label>
-                        <input v-if="$store.getters.surveyObject.active === 'Y'"
-                               text="text"
-                               class="form-control"
-                               id="questionCode"
-                               :required="required"
-                               readonly="(editQuestion && useModalSelector && $store.getters.surveyObject.active === 'Y')"
-                               v-model="currentQuestionCode" />
-                        <input v-else
-                               type="text"
-                               class="form-control"
-                               id="questionCode"
-                               :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-                               required="required"
-                               v-model="currentQuestionCode"
-                               @dblclick="setEditQuestion"
+                        <input
+                           type="text"
+                           class="form-control"
+                           id="questionCode"
+                           :readonly="!(editQuestion || isCreateQuestion || initCopy)"
+                           required="required"
+                           v-model="currentQuestionCode"
+                           @dblclick="setEditQuestion"
                         />
                         <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
                     </div>
