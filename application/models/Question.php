@@ -650,37 +650,55 @@ class Question extends LSActiveRecord
 
         // Random order
         if ($this->getQuestionAttribute('random_order') == 1){
-          $keys = array_keys($aAnswerOptions[0]);
-          shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+            foreach($aAnswerOptions as $scaleId => $aScaleArray) {
+                $keys = array_keys($aScaleArray);
+                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+      
+                $aNew = array();
+                foreach($keys as $key) {
+                    $aNew[$key] = $aScaleArray[$key];
+                }
+                $aAnswerOptions[$scaleId] = $aNew;
+            }
 
-          $aNew = array();
-          foreach($keys as $key) {
-              $aNew[$key] = $aAnswerOptions[0][$key];
-          }
-          $aAnswerOptions[0] = $aNew;
+            return $aAnswerOptions;
         }
 
         // Alphabetic ordrer
-        if ($this->getQuestionAttribute('alphasort')){
+        $alphasort = $this->getQuestionAttribute('alphasort');
+        if ($alphasort == 1) {
+            foreach($aAnswerOptions as $scaleId => $aScaleArray) {
+                $aSorted = array();
 
-          $aSorted = array();
+                // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
+                foreach($aScaleArray as $iKey => $oAnswer){
+                    $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+                }
 
-          // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
-          foreach($aAnswerOptions[0] as $iKey => $oAnswer){
-              $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
-          }
+                ksort($aSorted);
 
-          ksort($aSorted);
+                // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
+                $aNew = array();
+                foreach($aSorted as $sAnswer => $iKey) {
+                    $aNew[] = $aScaleArray[$iKey];
+                }
+                $aAnswerOptions[$scaleId] = $aNew;
 
-          // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
-          $aNew = array();
-          foreach($aSorted as $sAnswer => $iKey) {
-              $aNew[] = $aAnswerOptions[0][$iKey];
-          }
-          $aAnswerOptions[0] = $aNew;
+                
+            }
+            return $aAnswerOptions;
         }
 
+        foreach($aAnswerOptions as $scaleId => $aScaleArray) {
+            usort($aScaleArray, function($a, $b){
+                return $a->sortorder > $b->sortorder
+                    ? 1 
+                    : ($a->sortorder < $b->sortorder ? -1 : 0);
+            });
+            $aAnswerOptions[$scaleId] = $aScaleArray;
+        }
         return $aAnswerOptions;
+
     }
 
     /**
