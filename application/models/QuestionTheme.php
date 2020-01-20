@@ -827,7 +827,10 @@ class QuestionTheme extends LSActiveRecord
         if (!$sQuestionConfigFile) {
             libxml_disable_entity_loader($bOldEntityLoaderState);
             return $aSuccess = [
-                'message' => gT('No Configuration could be found for ' . $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml'),
+                'message' => sprintf(
+                    gT('No Configuration could be found for %s/config.xml'),
+                    $sXMLDirectoryPath
+                ),
                 'success' => false
             ];
         }
