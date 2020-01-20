@@ -222,7 +222,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 } ?>
 
                 <?php if (isset($groupOrderDuplicates) && !empty($groupOrderDuplicates)): ?>
-                    <li><?php eT("The following surveys have an errorneous survey page order. Please go to each survey respectively, check the group order and save it."); ?>
+                    <li><?php eT("The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."); ?>
                         <ul>
                             <?php foreach ($groupOrderDuplicates as $info): ?>
                             <li>
@@ -231,7 +231,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                             <?php endforeach; ?>
                         </ul>
                 <?php else: ?>
-                    <li><?php eT("No issues with survey page order found."); ?></li>
+                    <li><?php eT("No issues with question group order found."); ?></li>
                 <?php endif; ?>
 
                 <?php

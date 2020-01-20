@@ -150,7 +150,7 @@
             <expression>1</expression>
             <i18n>1</i18n>
             <default></default>
-            <help>In the printable version replace the condition with this explanation text.</help>
+            <help>In the printable version the condition is being replaced with this explanation text.</help>
             <caption>Relevance help for printable survey</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -322,52 +322,6 @@
         <!-- Location Attributes START -->
         <!-- Location Attributes END -->
         <!-- File metadata Attributes START -->
-        <attribute>
-            <name>show_title</name>
-            <category>File metadata</category>
-            <sortorder>124</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>1</default>
-            <help>Is the participant required to give a title to the uploaded file?</help>
-            <caption>Show title</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
-        <attribute>
-            <name>show_comment</name>
-            <category>File metadata</category>
-            <sortorder>126</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>1</default>
-            <help>Is the participant required to give a comment to the uploaded file?</help>
-            <caption>Show comment</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
         <!-- File meta Attributes END -->
         <!-- Slider Attributes START -->
         <!-- Slider Attributes END -->

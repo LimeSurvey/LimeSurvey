@@ -127,10 +127,10 @@ class QuestionTemplate extends CFormModel
             $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
 
             // Core templates come first
-            if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplatePath = "$sCoreQTemplateRootDir/$sTemplateFolderName/";
-            } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName/";
+            if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName")) {
+                $this->sTemplatePath = "$sCoreQTemplateRootDir/$sTemplateFolderName";
+            } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName")) {
+                $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName";
             }
         }
         return $this->sTemplatePath;

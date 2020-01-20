@@ -239,6 +239,7 @@ class QuestionAttribute extends LSActiveRecord
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
 
+            // insert additional attributes from an extended question theme
             foreach ($oAttributeValues as $oAttributeValue) {
                 if ($oAttributeValue->attribute == 'question_template') {
                     $aAttributeValues['question_template'] = $oAttributeValue->value;

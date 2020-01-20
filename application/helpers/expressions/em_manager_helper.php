@@ -8568,7 +8568,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             foreach(explode("\n",$tests) as $test)
             {
                 $args = explode("~",$test);
-                $type = (($args[1]=='expr') ? Question::QT_ASTERISK_EQUATION : ($args[1]=='message') ? Question::QT_X_BOILERPLATE_QUESTION : Question::QT_S_SHORT_FREE_TEXT);
+                $type = $args[1]=='expr' ? Question::QT_ASTERISK_EQUATION : ($args[1]=='message' ? Question::QT_X_BOILERPLATE_QUESTION : Question::QT_S_SHORT_FREE_TEXT);
                 $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
                 $varSeq[] = $args[0];
                 $testArgs[] = $args;
@@ -9385,7 +9385,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     || ($this->surveyMode=='group' && $gseq != -1 && isset($var['gseq']) && $gseq == $var['gseq'])
                     || ($this->surveyMode=='question' && $qseq != -1 && isset($var['qseq']) && $qseq == $var['qseq']))
                     {
-                        return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
+                        // TODO: jsName_on will never be returned?
+                        return (isset($var['jsName_on']) ? $var['jsName_on'] : isset($var['jsName'])) ? $var['jsName'] : $default;
                     }
                     else {
                         return (isset($var['jsName']) ? $var['jsName'] : $default);

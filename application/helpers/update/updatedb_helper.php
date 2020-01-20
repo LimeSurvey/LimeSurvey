@@ -2911,10 +2911,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 "{{surveymenu_entries}}",
                 [
-                    'name' =>  "listSurveyPages",
-                    'title' =>  gT('Page list','unescaped'),
-                    'menu_title' =>  gT('Page list','unescaped'),
-                    'menu_description' =>  gT('List survey pages','unescaped'),
+                    'name' =>  "listSurveyGroups",
+                    'title' =>  gT('Group list','unescaped'),
+                    'menu_title' =>  gT('Group list','unescaped'),
+                    'menu_description' =>  gT('List question group','unescaped'),
                 ],
                 'name=\'listQuestionGroups\''
             );
@@ -3040,6 +3040,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $insertPlugin('customToken');
             $insertPlugin('mailSenderToFrom');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>424), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 425) {
+            $oTransaction = $oDB->beginTransaction();
+            $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
+            if (!empty($aUserDirectory)) {
+                reset($aUserDirectory);
+                $aUserXMLPaths = key($aUserDirectory);
+                foreach ($aUserDirectory[$aUserXMLPaths] as $sXMLDirectoryPath) {
+                    $aSuccess = QuestionTheme::convertLS3toLS4($sXMLDirectoryPath);
+                    if ($aSuccess['success']) {
+                        $oQuestionTheme = new QuestionTheme;
+                        $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
+                    };
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 425), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {

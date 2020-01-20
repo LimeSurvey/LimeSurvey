@@ -42,7 +42,7 @@
         </span>
     <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'create')): ?>
         <?php if (!$surveyHasGroup): ?>
-            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a survey page."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
+            <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                 <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                     <span class="icon-add"></span>
                     <?php eT("Add new question"); ?>

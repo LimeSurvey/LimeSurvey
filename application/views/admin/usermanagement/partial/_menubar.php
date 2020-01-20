@@ -29,10 +29,10 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <?= CHtml::link(gT("CSV"),App()->createUrl("admin/usermanagement/sa/exportUser",["outputFormat"=>"csv"]));?>
+                                <?= CHtml::link("CSV",App()->createUrl("admin/usermanagement/sa/exportUser",["outputFormat"=>"csv"]));?>
                             </li>
                             <li>
-                                <?= CHtml::link(gT("JSON"),App()->createUrl("admin/usermanagement/sa/exportUser",["outputFormat"=>"json"]));?>
+                                <?= CHtml::link("JSON",App()->createUrl("admin/usermanagement/sa/exportUser",["outputFormat"=>"json"]));?>
                             </li>
                         </ul>
                     </div>

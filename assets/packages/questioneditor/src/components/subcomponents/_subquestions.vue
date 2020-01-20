@@ -200,7 +200,8 @@ export default {
         },
         currentDataSet: {
             get() {
-                return map(this.$store.state.currentQuestionSubquestions, subquestionscale => sortBy(subquestionscale, subquestion => subquestion.question_order));
+                return map(this.$store.state.currentQuestionSubquestions, 
+                    subquestionscale => sortBy(subquestionscale, subquestion => parseInt(subquestion.question_order)));
             },
             set(newValue) {
                 this.$store.commit('setCurrentQuestionSubquestions', newValue);

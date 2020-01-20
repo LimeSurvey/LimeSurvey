@@ -1396,7 +1396,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
         }
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = gT("The new survey page/question order was successfully saved.");
+        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
     }
 
     /**
@@ -1990,7 +1990,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first survey page and an example question for you."), 'info');
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
                 $landOnSideMenuTab   = 'structure';
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
@@ -2300,7 +2300,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oGroup->save();
         $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
-        $oGroupL10ns->group_name = gt('My first survey page', 'html', $sLanguage);
+        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
         LimeExpressionManager::SetEMLanguage($sLanguage);

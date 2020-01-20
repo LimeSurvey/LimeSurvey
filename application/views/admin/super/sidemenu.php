@@ -61,11 +61,11 @@
                 [
                     "settings" => gT("Settings"),
                     "structure" => gT("Structure"),
-                    "createPage" => gT("Add page"),
+                    "createPage" => gT("Add group"),
                     "createQuestion" => gT("Add question"),
                     "lockOrganizerTitle" => gT("Lock question organizer"),
                     "unlockOrganizerTitle" => gT("Unlock question organizer"),
-                    "collapseAll" => gT("Collapse all survey pages"),
+                    "collapseAll" => gT("Collapse all question groups"),
                 ]
             )
         .'};', 
