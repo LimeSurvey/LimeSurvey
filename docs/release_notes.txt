@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.21.5 (build 200115) to 3.21.6 (build 200121) January 21, 2020
+-Fixed issue [security] #15720: Reflected Cross-Site Scripting in position widget (Maxime Roy) (Olle Haerstedt)
+-Fixed issue #15733: Survey administrator can receive invalid mail about error (#1371) (Denis Chenu)
+-Fixed issue #14328: Can not select SVG as logo for survey themes (Patrick Teichmann)
+-Fixed issue #14298: Text change recommendation - Delete survey (Patrick Teichmann)
+
+
 Changes from 3.21.4 (build 200108) to 3.21.5 (build 200115) January 15, 2020
 -Fixed issue #15696: Multiple email addresses in token are not working (#1368) (Denis Chenu)
 -Fixed issue #15692: where-clause in reorderMenu (Marko Bischof)
