@@ -1,8 +1,8 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use \ls\tests\TestHelper;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTest extends TestHelper
 {
     /* @var User */
     public $user;
@@ -14,24 +14,11 @@ abstract class BaseTest extends TestCase
     /* @var string see .travis.yml */
     const REMOTECONTROL_PASSWORD = 'password';
 
-    public static function setUpBeforeClass()
-    {
-        Yii::import('application.helpers.common_helper', true);
-        Yii::import('application.helpers.replacements_helper', true);
-        Yii::import('application.helpers.surveytranslator_helper', true);
-        Yii::import('application.helpers.admin.import_helper', true);
-        Yii::import('application.helpers.expressions.em_manager_helper', true);
-        Yii::import('application.helpers.expressions.em_manager_helper', true);
-        Yii::import('application.helpers.qanda_helper', true);
-        Yii::import('application.helpers.update.updatedb_helper', true);
-        Yii::import('application.helpers.update.update_helper', true);
-        Yii::import('application.helpers.SurveyRuntimeHelper', true);
-        Yii::app()->loadHelper('admin/activate');
-        Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
-    }
-    
     protected function setUp()
     {
+        $this->importAll();
+        Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+
         $user = User::model()->findByPk(1);
         if (!$user) {
             $this->fail('Admin User missing');
