@@ -35,7 +35,7 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
-        $sAction = Yii::app()->request->getParam('action');
+        $sAction = CHtml::encode(Yii::app()->request->getParam('action'));
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
             $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
             $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
