@@ -76,7 +76,7 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $max = Participant::model()->findByPk('max');
+        $max = \Participant::model()->findByPk('max');
         $this->assertInstanceOf('Participant', $max);
 
     }
@@ -110,9 +110,9 @@ class CPDImportParticpantsTest extends BaseTest
 
     public function testParticipantWithOneAttributeImportedSucessfully()
     {
-        Yii::app()->session['adminlang'] = 'de';
-        $this->assertTrue(empty(ParticipantAttributeName::model()->findAll()));
-        $result = ParticipantAttributeName::model()->storeAttribute(array(
+        \Yii::app()->session['adminlang'] = 'de';
+        $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
+        $result = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
             'defaultname' => 'website',
             'visible' => 'TRUE',
@@ -137,8 +137,8 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $max = Participant::model()->findByPk('max');
-        $this->assertInstanceOf(Participant::class, $max);
+        $max = \Participant::model()->findByPk('max');
+        $this->assertInstanceOf(\Participant::class, $max);
 
         $attribute = $max->getParticipantAttribute('ea_1');
         $this->assertEquals('http://www.example.com', $attribute);
@@ -146,9 +146,9 @@ class CPDImportParticpantsTest extends BaseTest
 
     public function testParticipantUpdatedSuccessfullyWhenUpdateTrue()
     {
-        Yii::app()->session['adminlang'] = 'de';
-        $this->assertTrue(empty(ParticipantAttributeName::model()->findAll()));
-        $result = ParticipantAttributeName::model()->storeAttribute(array(
+        \Yii::app()->session['adminlang'] = 'de';
+        $this->assertTrue(empty(\ParticipantAttributeName::model()->findAll()));
+        $result = \ParticipantAttributeName::model()->storeAttribute(array(
             'attribute_type' => 'TB',
             'defaultname' => 'website',
             'visible' => 'TRUE',
@@ -184,8 +184,8 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('UpdateCount', $result);
         $this->assertEquals(1, $result['UpdateCount']);
 
-        $max = Participant::model()->findByPk('max');
-        $this->assertInstanceOf(Participant::class, $max);
+        $max = \Participant::model()->findByPk('max');
+        $this->assertInstanceOf(\Participant::class, $max);
 
         $attribute = $max->getParticipantAttribute('ea_1');
         $this->assertEquals('http://www.example.org', $attribute);
