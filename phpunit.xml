@@ -9,6 +9,9 @@
         <testsuite name="Helpers">
             <directory>tests/helpers</directory>
         </testsuite>
+        <testsuite name="Remotecontrol">
+            <directory>tests/helpers/remotecontrol</directory>
+        </testsuite>
         <testsuite name="Models">
             <directory>tests/models</directory>
         </testsuite>

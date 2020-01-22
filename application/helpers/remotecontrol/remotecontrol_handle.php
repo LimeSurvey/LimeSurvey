@@ -3115,107 +3115,105 @@ class remotecontrol_handle
      * @param int $sSessionKey
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
+     * @param bool $update
      * @return array with status
      */
-    public function cpd_importParticipants($sSessionKey, $aParticipants)
+    public function cpd_importParticipants($sSessionKey, $participants, $update = false)
     {
-
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => 'Invalid session key');
         }
 
-        $aAttributeData = array();
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
-        $bIsValidEmail = true;
-        $sMandatory = 0;
-        $sAttribCount = 0;
-        $aResponse = array();
-        $aResponse['ImportCount'] = 0;
+        $aResponse = array(
+            'ImportCount' => 0,
+            'UpdateCount' => 0
+        );
 
-        // get all attributes for mapping
-        $oFindCriteria = new CDbCriteria();
-        $oFindCriteria->offset = -1;
-        $oFindCriteria->limit = -1;
-        $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($oFindCriteria);
+        $aAttributeRecords = ParticipantAttributeName::model()
+            ->with('participant_attribute_names_lang')
+            ->findAll();
 
-        foreach ($aParticipants as $sKey => $aParticipantData) {
+        foreach ($participants as $participant) {
 
-            $aData = array(
-                'firstname' => $aParticipantData['firstname'],
-                'lastname' => $aParticipantData['lastname'],
-                'email' => $aParticipantData['email'],
-                'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
-                'blacklisted' => (isset($aParticipantData['blacklisted']) && $aParticipantData['blacklisted'] === 'Y') ? 'Y' : 'N'
-            );
+            $model = null;
 
-            //Check for duplicate participants
-            $arRecordExists = Participant::model()->exists(
-                'firstname = :firstname AND lastname = :lastname AND email = :email AND owner_uid = :owner_uid',
-                array(
-                    ':firstname' => $aData['firstname'],
-                    ':lastname' => $aData['lastname'],
-                    ':email' => $aData['email'],
-                    ':owner_uid' => $aData['owner_uid'],
+            if (isset($participant['id'])) {
+                $participant['participant_id'] = $participant['id'];
+            }
+
+            if (isset($participant['participant_id'])) {
+                $model = Participant::model()->findByPk($participant['participant_id']);
+            } else {
+                $model = Participant::model()->findByAttributes(array(
+                    'firstname' => $participant['firstname'],
+                    'lastname'  => $participant['lastname'],
+                    'email'     => $participant['email'],
+                    'owner_uid' => Yii::app()->session['loginID']
                 ));
+            }
 
-            // check if email is valid
-            $this->_checkEmailFormat($aData['email']);
+            // Participant not found, so we create a new one
+            if (!$model) {
+                $model = new Participant();
+                if (isset($participant['participant_id'])) {
+                    $model->participant_id = $participant['participant_id'];
+                } else {
+                    $model->participant_id = Participant::gen_uuid();
+                }
+            }
 
-            if ($bIsValidEmail == true) {
+            $scenario = $model->getScenario(); // insert or update
+            if ($scenario == 'update' && $update === false) {
+                continue;
+            }
 
-                //First, process the known fields
-                if (!isset($aData['participant_id']) || $aData['participant_id'] == "") {
-                    //  $arParticipantModel = new Participant();
-                    $aData['participant_id'] = Participant::gen_uuid();
-                }
-                if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == '')) {
-                    unset($aData['emailstatus']);
-                }
-                if (!isset($aData['language']) || $aData['language'] == "") {
-                    $aData['language'] = "en";
-                }
-                if (!isset($aData['blacklisted']) || $aData['blacklisted'] == "") {
-                    $aData['blacklisted'] = "N";
-                }
-                $aData['owner_uid'] = Yii::app()->session['loginID'];
-                if (isset($aData['validfrom']) && trim($aData['validfrom'] == '')) {
-                    unset($aData['validfrom']);
-                }
-                if (isset($aData['validuntil']) && trim($aData['validuntil'] == '')) {
-                    unset($aData['validuntil']);
-                }
+            $model->firstname   = $participant['firstname'];
+            $model->lastname    = $participant['lastname'];
+            $model->email       = $participant['email'];
+            $model->language    = isset($participant['language']) ? $participant['language'] : 'en';
+            $model->owner_uid   = Yii::app()->session['loginID'];
+            $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 
-                if (!empty($aData['email'])) {
-                    //The mandatory fields of email, firstname and lastname
-                    $sMandatory++;
-                }
+            if ($scenario == 'insert') {
+                $model->created = date('Y-m-d H:i:s');
+                $model->created_by = Yii::app()->session['loginID'];
+            } else { // update
+                $model->modified = date('Y-m-d H:i:s');
+            }
 
-                // Write to database if record not exists
-                if (empty($arRecordExists)) {
-                    // save participant to database
-                    Participant::model()->insertParticipantCSV($aData);
+            if ($model->save()) {
 
-                    // Prepare atrribute values to store in db . Iterate through our values
-                    foreach ($aParticipantData as $sLabel => $sAttributeValue) {
-                        // skip default fields
-                        if (!in_array($sLabel, $aDefaultFields)) {
-                            foreach ($aAttributeRecords as $sKey => $arValue) {
-                                $aAttributes = $arValue->getAttributes();
-                                if ($aAttributes['defaultname'] == $sLabel) {
-                                    $aAttributeData['participant_id'] = $aData['participant_id'];
-                                    $aAttributeData['attribute_id'] = $aAttributes['attribute_id'];
-                                    $aAttributeData['value'] = $sAttributeValue;
-                                    $sAttribCount++;
-                                    // save attributes values for participant
+                foreach ($participant as $sLabel => $sAttributeValue) {
+                    if (!in_array($sLabel, $aDefaultFields)) {
+                        foreach ($aAttributeRecords as $sKey => $arValue) {
+                            $aAttributes = $arValue->getAttributes();
+                            if ($aAttributes['defaultname'] == $sLabel) {
+                                $aAttributeData = array(
+                                    'participant_id' => $model->participant_id,
+                                    'attribute_id' => $aAttributes['attribute_id'],
+                                    'value' => $sAttributeValue
+                                );
+                                if ($scenario == 'insert') {
                                     ParticipantAttributeName::model()->saveParticipantAttributeValue($aAttributeData);
+                                } else { // update
+                                    ParticipantAttribute::model()->updateParticipantAttributeValue($aAttributeData);
                                 }
+
                             }
                         }
                     }
+                }
+
+                if ($scenario == 'insert') {
                     $aResponse['ImportCount']++;
+                } else {
+                    $aResponse['UpdateCount']++;
                 }
             }
+
         }
+
         return $aResponse;
     }
 
