@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'BaseTest.php';
+namespace ls\tests;
 
 class GetSessionKeyTest extends BaseTest
 {

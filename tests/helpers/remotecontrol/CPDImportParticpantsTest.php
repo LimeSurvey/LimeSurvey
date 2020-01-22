@@ -1,17 +1,17 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'BaseTest.php';
+namespace ls\tests;
 
 class CPDImportParticpantsTest extends BaseTest
 {
     public function setUp()
     {
-        Yii::app()->db->createCommand()->truncateTable('{{participants}}');
-        Yii::app()->db->createCommand()->truncateTable('{{participant_attribute}}');
-        Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_names}}');
-        Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_names_lang}}');
-        Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_values}}');
-        Yii::app()->db->createCommand()->truncateTable('{{participant_shares}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{participants}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_names}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_names_lang}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{participant_attribute_values}}');
+        \Yii::app()->db->createCommand()->truncateTable('{{participant_shares}}');
         parent::setUp();
     }
 
