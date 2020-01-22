@@ -19,9 +19,9 @@ class CPDImportParticpantsTest extends BaseTest
     {
         $participants = array(
             array(
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'Y'
             )
@@ -37,16 +37,16 @@ class CPDImportParticpantsTest extends BaseTest
     {
         $participants = array(
             array(
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'Y'
             ),
             array(
-                'firstname' => 'Marcel',
-                'lastname' => 'minke',
-                'email' => 'marcel.minke@survey-consulting.com',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann2',
+                'email' => 'max.mustermann2@example.com',
                 'language' => 'de',
                 'blacklisted' => 'N'
             )
@@ -62,10 +62,10 @@ class CPDImportParticpantsTest extends BaseTest
     {
         $participants = array(
             array(
-                'participant_id' => 'mbi',
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'participant_id' => 'max',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'Y'
             )
@@ -76,8 +76,8 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $mbi = Participant::model()->findByPk('mbi');
-        $this->assertInstanceOf('Participant', $mbi);
+        $max = Participant::model()->findByPk('max');
+        $this->assertInstanceOf('Participant', $max);
 
     }
 
@@ -85,16 +85,16 @@ class CPDImportParticpantsTest extends BaseTest
     {
         $participants = array(
             array(
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'Y'
             ),
             array(
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'en',
                 'blacklisted' => 'N'
             )
@@ -122,13 +122,13 @@ class CPDImportParticpantsTest extends BaseTest
 
         $participants = array(
             array(
-                'participant_id' => 'mbi',
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'participant_id' => 'max',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'Y',
-                'website' => 'http://www.hello-world.de'
+                'website' => 'http://www.example.com'
             )
         );
 
@@ -137,11 +137,11 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('ImportCount', $result);
         $this->assertEquals(1, $result['ImportCount']);
 
-        $mbi = Participant::model()->findByPk('mbi');
-        $this->assertInstanceOf(Participant::class, $mbi);
+        $max = Participant::model()->findByPk('max');
+        $this->assertInstanceOf(Participant::class, $max);
 
-        $attribute = $mbi->getParticipantAttribute('ea_1');
-        $this->assertEquals('http://www.hello-world.de', $attribute);
+        $attribute = $max->getParticipantAttribute('ea_1');
+        $this->assertEquals('http://www.example.com', $attribute);
     }
 
     public function testParticipantUpdatedSuccessfullyWhenUpdateTrue()
@@ -158,22 +158,22 @@ class CPDImportParticpantsTest extends BaseTest
 
         $participants = array(
             array(
-                'participant_id' => 'mbi',
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'participant_id' => 'max',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'Y',
-                'website' => 'http://www.hello-world.de'
+                'website' => 'http://www.example.com'
             ),
             array(
-                'id' => 'mbi',
-                'firstname' => 'Marko',
-                'lastname' => 'Bischof',
-                'email' => 'marko.bischof@gmail.com',
+                'id' => 'max',
+                'firstname' => 'Max',
+                'lastname' => 'Mustermann',
+                'email' => 'max.mustermann@example.com',
                 'language' => 'de',
                 'blacklisted' => 'N',
-                'website' => 'http://www.example.de'
+                'website' => 'http://www.example.org'
             )
         );
 
@@ -184,10 +184,10 @@ class CPDImportParticpantsTest extends BaseTest
         $this->assertArrayHasKey('UpdateCount', $result);
         $this->assertEquals(1, $result['UpdateCount']);
 
-        $mbi = Participant::model()->findByPk('mbi');
-        $this->assertInstanceOf(Participant::class, $mbi);
+        $max = Participant::model()->findByPk('max');
+        $this->assertInstanceOf(Participant::class, $max);
 
-        $attribute = $mbi->getParticipantAttribute('ea_1');
-        $this->assertEquals('http://www.example.de', $attribute);
+        $attribute = $max->getParticipantAttribute('ea_1');
+        $this->assertEquals('http://www.example.org', $attribute);
     }
 }
