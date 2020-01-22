@@ -228,8 +228,8 @@ class QuestionTheme extends LSActiveRecord
             } catch (Exception $e) {
                 //TODO: flashmessage for users
                 echo $e->getMessage();
-                var_dump($e->getTrace());
-                var_dump($missingQuestionThemeAttributes);
+                // var_dump($e->getTrace());
+                // var_dump($missingQuestionThemeAttributes);
                 if ($bUseTransaction) {
                     $transaction->rollback();
                 }
