@@ -116,7 +116,9 @@ class CPDImportParticpantsTest extends BaseTest
             'attribute_type' => 'TB',
             'defaultname' => 'website',
             'visible' => 'TRUE',
-            'attribute_name' => 'Webseite'
+            'attribute_name' => 'Webseite',
+            'encrypted'      => 'N',
+            'core_attribute' => 'N'
         ));
         $this->assertTrue(intval($result) > 0);
 
@@ -152,7 +154,9 @@ class CPDImportParticpantsTest extends BaseTest
             'attribute_type' => 'TB',
             'defaultname' => 'website',
             'visible' => 'TRUE',
-            'attribute_name' => 'Webseite'
+            'attribute_name' => 'Webseite',
+            'encrypted'      => 'N',
+            'core_attribute' => 'N'
         ));
         $this->assertTrue(intval($result) > 0);
 
