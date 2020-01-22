@@ -1,6 +1,6 @@
 <?php
 
-use \ls\tests\TestHelper;
+namespace ls\tests;
 
 abstract class BaseTest extends TestHelper
 {
@@ -17,15 +17,15 @@ abstract class BaseTest extends TestHelper
     protected function setUp()
     {
         $this->importAll();
-        Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
 
-        $user = User::model()->findByPk(1);
+        $user = \User::model()->findByPk(1);
         if (!$user) {
             $this->fail('Admin User missing');
         }
 
         $this->user = $user;
-        $this->handler  = new remotecontrol_handle(new AdminController('dummyid'));
+        $this->handler  = new \remotecontrol_handle(new \AdminController('dummyid'));
     }
 
     /**

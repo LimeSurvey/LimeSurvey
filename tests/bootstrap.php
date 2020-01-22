@@ -238,12 +238,14 @@ set_error_handler(function($no, $msg, $file, $line, $context) {
     throw new ErrorException($msg, 0, $no, $file, $line);
 }, E_ERROR & E_WARNING & E_PARSE & E_NOTICE);
 
+// TODO: Edit composer.json to add autoloading with proper namespaces.
 require_once(__DIR__ . '/LimeSurveyWebDriver.php');
 require_once(__DIR__ . '/TestHelper.php');
 require_once(__DIR__ . '/TestBaseClass.php');
 require_once(__DIR__ . '/TestBaseClassWeb.php');
 require_once(__DIR__ . '/TestBaseClassView.php');
 require_once(__DIR__ . '/DummyController.php');
+require_once __DIR__ . '/helpers/remotecontrol/BaseTest.php';
 
 define('PHP_ENV', 'test');
 
