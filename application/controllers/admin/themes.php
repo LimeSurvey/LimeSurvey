@@ -27,7 +27,9 @@ class themes extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'read')) {
+
+        $sTemplateName = Yii::app()->request->getPost('templatename', '');
+        if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
@@ -57,9 +59,8 @@ class themes extends Survey_Common_Action
 
             if (is_file($zipfile)) {
                 // Send the file for download!
-                header("Pragma: public");
                 header("Expires: 0");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Cache-Control: must-revalidate");
                 header("Content-Type: application/force-download");
                 header("Content-Disposition: attachment; filename=$templatename.zip");
                 header("Content-Description: File Transfer");
@@ -132,9 +133,8 @@ class themes extends Survey_Common_Action
 
         if (is_file($zipfile)) {
             // Send the file for download!
-            header("Pragma: public");
             header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: must-revalidate");
             header("Content-Type: application/force-download");
             header("Content-Disposition: attachment; filename=$templatename.zip");
             header("Content-Description: File Transfer");
@@ -172,147 +172,21 @@ class themes extends Survey_Common_Action
      */
     public function upload()
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'import')) {
-            Yii::app()->loadHelper('admin/template');
+        $action = returnGlobal('action');
+        if ($action == 'templateuploadimagefile' && App()->request->getPost('surveyid') ) {
+            App()->getController()->forward("/admin/survey/sa/uploadimagefile/");
+            App()->end();
+        }
+        $sTemplateName = App()->request->getPost('templatename');
+        if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
+            App()->loadHelper('admin/template');
+            // NB: lid = label id
             $lid = returnGlobal('lid');
-            $action = returnGlobal('action');
-            $uploadresult = "";
-            $success = false;
-            $debug = [];
-
             if ($action == 'templateuploadimagefile') {
-                // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
-                // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
-                $sTemplateName = Yii::app()->request->getPost('templatename');
-                $oTemplateConfiguration = Template::getInstance($sTemplateName);
-
-                $debug[] = $sTemplateName;
-                $debug[] = $oTemplateConfiguration;
-                if (Yii::app()->getConfig('demoMode')) {
-                    $uploadresult = gT("Demo mode: Uploading images is disabled.");
-                    return Yii::app()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
-                $debug[] = $_FILES;
-                if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
-                    $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
-                    return Yii::app()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
-                $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
-                if ($checkImage['check'] === false) {
-                    return Yii::app()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
-                        false,
-                        false
-                    );
-                }
-
-                $destdir = $oTemplateConfiguration->filesPath;
-                if(Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
-                    $destdir = $oTemplateConfiguration->generalFilesPath;
-                }
-
-                $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
-                $fullfilepath = $destdir.$filename;
-                $debug[] = $destdir;
-                $debug[] = $filename;
-                $debug[] = $fullfilepath;
-                if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
-                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-                } else {
-                    $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                    Yii::app()->user->setFlash('success', "Data1 saved!");
-                    $success = true;
-                };
-
-                return Yii::app()->getController()->renderPartial(
-                    '/admin/super/_renderJson',
-                    array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                    false,
-                    false
-                );
-
+                return $this->uploadTemplateImageFile($sTemplateName);
             } else if ($action == 'templateupload') {
-
-                Yii::app()->loadLibrary('admin.pclzip');
-
-                // Redirect back if demo mode is set.
-                $this->checkDemoMode();
-
-                // Redirect back at file size error.
-                $this->checkFileSizeError();
-
-                $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
-                $destdir = Yii::app()->getConfig('userthemerootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
-
-                // Redirect back if $destdir is not writable OR if it already exists.
-                $this->checkDestDir($destdir, $sNewDirectoryName);
-
-                // All OK if we're here.
-                mkdir($destdir);
-
-                $aImportedFilesInfo = array();
-                $aErrorFilesInfo = array();
-
-                if (is_file($_FILES['the_file']['tmp_name'])) {
-                    $zip = new PclZip($_FILES['the_file']['tmp_name']);
-                    $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
-
-                    if ($aExtractResult === 0) {
-                        Yii::app()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
-                        rmdirr($destdir);
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
-                    } else {
-                        // Successfully unpacked
-                        foreach ($aExtractResult as $sFile) {
-                            if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
-                                $aErrorFilesInfo[] = array(
-                                    "filename" => $sFile['stored_filename'],
-                                );
-                            } else {
-                                $aImportedFilesInfo[] = array(
-                                    "filename" => $sFile['stored_filename'],
-                                    "status" => gT("OK"),
-                                    'is_folder' => $sFile['folder']
-                                );
-                            }
-                        }
-
-                        if (Template::checkIfTemplateExists($sNewDirectoryName)) {
-                            Yii::app()->user->setFlash('error', gT("Can not import a theme that already exists!"));
-                            rmdirr($destdir);
-                            $this->getController()->redirect(array("admin/themes/sa/upload"));
-                        }
-                        TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
-                    }
-
-                    if (count($aImportedFilesInfo) == 0) {
-                        Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid template files. Import failed."));
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
-                    }
-                } else {
-                    Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
-                    rmdirr($destdir);
-                    $this->getController()->redirect(array("admin/themes/sa/upload"));
-                }
-
+                $aData = $this->uploadTemplate();
                 $aViewUrls = 'importuploaded_view';
-                $aData = array(
-                    'aImportedFilesInfo' => $aImportedFilesInfo,
-                    'aErrorFilesInfo' => $aErrorFilesInfo,
-                    'lid' => $lid,
-                    'newdir' => $sNewDirectoryName,
-                );
             } else {
                 $aViewUrls = 'importform_view';
                 $aData = array('lid' => $lid);
@@ -320,11 +194,229 @@ class themes extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(array("admin/themeoptions"));
+        }
+    }
+
+    /**
+     * @param string $sTemplateName
+     * @return boolean
+     */
+    protected function uploadTemplateImageFile(string $sTemplateName)
+    {
+        // $iTemplateConfigurationId = App()->request->getPost('templateconfig');
+        // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
+        /** @var Template */
+        $oTemplateConfiguration = Template::getInstance($sTemplateName);
+
+        /** @var boolean */
+        $success = false;
+        /** @var string */
+        $uploadresult = "";
+        /** @var array<mixed> */
+        $debug = [];
+
+        $debug[] = $sTemplateName;
+        $debug[] = $oTemplateConfiguration;
+
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        $debug[] = $_FILES;
+
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
+        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
+        if ($checkImage['check'] === false) {
+            return App()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => $success,
+                        'message' => $checkImage['uploadresult'],
+                        'debug' => $checkImage['debug']
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
+        $destdir = $oTemplateConfiguration->filesPath;
+        if (Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)) {
+            $destdir = $oTemplateConfiguration->generalFilesPath;
+        }
+
+        // Don't force lowercase or alphanumeric
+        $filename = sanitize_filename($_FILES['file']['name'], false, false, false);
+        $fullfilepath = $destdir.$filename;
+        $debug[] = $destdir;
+        $debug[] = $filename;
+        $debug[] = $fullfilepath;
+        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
+            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+        } else {
+            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+            App()->user->setFlash('success', "Data saved!");
+            $success = true;
+        };
+
+        return App()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Upload template/theme/question theme.
+     *
+     * @return array $aData
+     */
+    protected function uploadTemplate()
+    {
+        App()->loadLibrary('admin.pclzip');
+
+        // NB: lid = label id
+        $lid = returnGlobal('lid');
+
+        // TODO: Don't branch on $_POST, but on config.xml <type> tag.
+        /** @var string */
+        $themeType = returnGlobal('theme');
+
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
+        $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+
+        if ($themeType == 'question') {
+            $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+        } elseif ($themeType == 'survey') {
+            $destdir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+        } else {
+            App()->setFlashMessage(
+                sprintf(
+                    gT("This theme type (%s) is not allowed."),
+                    json_encode(htmlspecialchars($themeType))
+                ),
+                'error'
+            );
             $this->getController()->redirect(array("admin/themeoptions"));
         }
 
+        // make questiontheme upload folder if it doesnt exist
+        if ($themeType == 'question') {
+            if (!is_dir($questionthemerootdir = App()->getConfig('userquestionthemerootdir'))) {
+                mkdir($questionthemerootdir);
+            }
+        }
 
+        // Redirect back if $destdir is not writable OR if it already exists.
+        $this->checkDestDir($destdir, $sNewDirectoryName, $themeType);
+
+        // All OK if we're here.
+        // TODO: Always check if successful.
+        if ($themeType == 'question'){
+            $extractDir = App()->getConfig('userquestionthemerootdir');
+            mkdir($destdir, 0777, true);
+        } else {
+            $extractDir = $destdir;
+            mkdir($destdir);
+        }
+
+        $aImportedFilesInfo = array();
+        $aErrorFilesInfo = array();
+
+        if (is_file($_FILES['the_file']['tmp_name'])) {
+            $zip = new PclZip($_FILES['the_file']['tmp_name']);
+            $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $extractDir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+
+            if ($aExtractResult === 0) {
+                App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
+                rmdirr($destdir);
+                $this->getController()->redirect(array("admin/themes/sa/upload"));
+            } else {
+                // Successfully unpacked
+                foreach ($aExtractResult as $sFile) {
+                    if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
+                        $aErrorFilesInfo[] = array(
+                            "filename" => $sFile['stored_filename'],
+                        );
+                    } else {
+                        $aImportedFilesInfo[] = array(
+                            "filename" => $sFile['stored_filename'],
+                            "status" => gT("OK"),
+                            'is_folder' => $sFile['folder']
+                        );
+                    }
+                }
+
+                if (Template::checkIfTemplateExists($sNewDirectoryName)) {
+                    App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
+                    rmdirr($destdir);
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
+                if (count($aImportedFilesInfo) == 0) {
+                    App()->user->setFlash(
+                        'error',
+                        gT("This ZIP archive contains no valid template files. Import failed.")
+                    );
+                    // TODO: Always check if successful.
+                    rmdirr($destdir);
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
+                // TODO: make proper import manifest for questiontheme in configuration class
+                if ($themeType !== 'question') {
+                    TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
+                }
+                if ($themeType == 'question') {
+                    $questionTheme = new QuestionTheme();
+                    $sPathToThemeDirectory = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
+                    // check if the required path is right and existing
+                    if (!is_dir($sPathToThemeDirectory)) {
+                        rmdirr($destdir);
+                        App()->setFlashMessage(
+                            gT("The ZIP file contains wrong paths"),
+                            'error'
+                        );
+                        $this->getController()->redirect(array("admin/themeoptions/sa/index/#questionthemes"));
+                    }
+                    $sThemeDirectory = scandir($sPathToThemeDirectory)[2];
+                    // install the Question Theme
+                    $sQuestionThemeTitle = $questionTheme->importManifest($sPathToThemeDirectory . DIRECTORY_SEPARATOR . $sThemeDirectory);
+                    if (empty($sQuestionThemeTitle)) {
+                        rmdirr($destdir);
+                        App()->setFlashMessage(
+                            gT("An error occured while generating the Question theme"),
+                            'error'
+                        );
+                        $this->getController()->redirect(array("admin/themeoptions/sa/index/#questionthemes"));
+                    }
+                }
+            }
+        } else {
+            App()->setFlashMessage(
+                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
+                'error'
+            );
+            // TODO: Always check if successful.
+            rmdirr($destdir);
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+
+        return array(
+            'aImportedFilesInfo' => $aImportedFilesInfo,
+            'aErrorFilesInfo' => $aErrorFilesInfo,
+            'lid' => $lid,
+            'newdir' => $sNewDirectoryName,
+            'theme' => $themeType
+        );
     }
 
     /**
@@ -426,8 +518,6 @@ class themes extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-
-
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
@@ -458,22 +548,39 @@ class themes extends Survey_Common_Action
             $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
-            $filesdir        = $oEditedTemplate->filesPath;
-            $sPostedFile     = App()->request->getPost('otherfile');
-            $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
-            $sFileToDelete   = sanitize_filename($sFileToDelete, false, false, false);
-            $the_full_file_path = $filesdir.$sFileToDelete;
-
+            $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
+            $sPostedFile     = CHtml::decode(App()->request->getPost('filename')); // Filename is encode, need to decode.
+            
+            if ($sPostedFiletype == 'screen'){
+                $filesdir        = $oEditedTemplate->viewPath;
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            } elseif ($sPostedFiletype == 'js' || $sPostedFiletype == 'css'){
+                $filesdir        = $oEditedTemplate->path;
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            } elseif ($sPostedFiletype == 'other'){
+                $filesdir        = $oEditedTemplate->filesPath;
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            } else {
+                Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+                $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));        
+            }            
+            
+            $the_full_file_path = realpath($filesdir.$sFileToDelete);
+            if(substr($the_full_file_path, 0, strlen(realpath($filesdir))) != realpath($filesdir)) {
+                /* User tries to delete a file outside of files dir */
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s cannot be deleted for security reasons."), CHtml::encode($sPostedFile)));
+                $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));
+            }
+            /* No try to hack, go to delete */
             if (@unlink($the_full_file_path)) {
-                Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), CHtml::encode($sPostedFile)));
                 Template::model()->findByPk($sTemplateName)->resetAssetVersion(); // Delete a files, asset need to be resetted (maybe)
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), CHtml::encode($sPostedFile)));
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-
         $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));
     }
 
@@ -493,7 +600,7 @@ class themes extends Survey_Common_Action
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
                 $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".returnGlobal('copydir');
 
-                if (isStandardTemplate(returnGlobal('newname'))) {
+                if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
@@ -539,8 +646,14 @@ class themes extends Survey_Common_Action
     public function templatecopy()
     {
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
+
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
+
+            if(Template::isStandardTemplate($newname)){
+                Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
+                $this->getController()->redirect(array("admin/themeoptions"));
+            }
 
             if ($newname && $copydir) {
                 // Copies all the files from one template directory to a new one
@@ -581,8 +694,9 @@ class themes extends Survey_Common_Action
      * @param string $templatename
      * @return void
      */
-    public function delete($templatename)
+    public function delete()
     {
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
@@ -628,17 +742,51 @@ class themes extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
-    public function deleteBrokenTheme($templatename)
+    public function deleteBrokenTheme()
     {
-        // First we check that the theme is really broken
-        $aBrokenThemes = Template::getBrokenThemes();
-        $templatename  = sanitize_dirname($templatename);
-        if (array_key_exists($templatename, $aBrokenThemes)) {
-            if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
-                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
+
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            // First we check that the theme is really broken
+            $aBrokenThemes = Template::getBrokenThemes();
+            $templatename  = sanitize_dirname($templatename);
+            if (array_key_exists($templatename, $aBrokenThemes)) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                }
+            }else{
+                Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
             }
-        }else{
-            Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
+        }
+
+        $this->getController()->redirect(array("admin/themeoptions"));
+    }
+
+
+    public function deleteAvailableTheme()
+    {
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
+
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir')."/".$templatename);
+            /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
+            if(!is_dir($completeFileName) || substr($completeFileName, 0, strlen(Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
+                throw new CHttpException(403,"Disable for security reasons.");
+            }
+            // CheckIfTemplateExists check if the template is installed....
+            if ( ! Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                }else{
+                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                }
+            }else{
+                // This should never happen... trying to submit the form via a script? so no translation
+                Yii::app()->setFlashMessage( "You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
+            }
+
+
+
         }
 
         $this->getController()->redirect(array("admin/themeoptions"));
@@ -659,7 +807,7 @@ class themes extends Survey_Common_Action
             if (returnGlobal('changes')) {
                 $changedtext = returnGlobal('changes');
                 $changedtext = str_replace('<?', '', $changedtext);
-                if (get_magic_quotes_gpc()) {
+                if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
                     $changedtext = stripslashes($changedtext);
                 }
             }
@@ -667,7 +815,7 @@ class themes extends Survey_Common_Action
             if (returnGlobal('changes_cp')) {
                 $changedtext = returnGlobal('changes_cp');
                 $changedtext = str_replace('<?', '', $changedtext);
-                if (get_magic_quotes_gpc()) {
+                if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
                     $changedtext = stripslashes($changedtext);
                 }
             }
@@ -875,9 +1023,9 @@ class themes extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::getInstance($templatename, null, null, true);
+        $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 
-            //App()->getClientScript()->reset();
+        //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
@@ -885,27 +1033,11 @@ class themes extends Survey_Common_Action
         $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
         $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
         $cssfiles     = $oEditedTemplate->getValidScreenFiles("css");
-        $jsfiles     = $oEditedTemplate->getValidScreenFiles("js");
+        $jsfiles      = $oEditedTemplate->getValidScreenFiles("js");
         $editfile     = (empty($editfile) || ! ( in_array($editfile, $files) || in_array( $editfile ,$cssfiles) || in_array( $editfile ,$jsfiles)  )) ? $sLayoutFile : $editfile;
 
         // Standard screens
-        // Only these may be viewed
-        $screens = array();
-
-        $screens['welcome']         = gT('Welcome', 'unescaped'); // first  page*
-        $screens['question']        = gT('Question', 'unescaped'); // main
-        $screens['completed']       = gT('Completed', 'unescaped'); // submit?
-        $screens['clearall']        = gT('Clear all', 'unescaped');
-        $screens['load']            = gT('Load', 'unescaped');
-        $screens['save']            = gT('Save', 'unescaped');
-        $screens['surveylist']      = gT('Survey list', 'unescaped');
-        $screens['error']           = gT('Error', 'unescaped');
-        $screens['assessments']     = gT('Assessments', 'unescaped');
-        $screens['register']        = gT('Registration', 'unescaped');
-        $screens['printanswers']    = gT('Print answers', 'unescaped');
-        $screens['pdf']             = gT('PDF', 'unescaped');
-        $screens['navigation']      = gT('Navigation', 'unescaped');
-        //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
+        $screens = $oEditedTemplate->getScreensList();
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
@@ -926,7 +1058,7 @@ class themes extends Survey_Common_Action
         if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages)) {
             $sLanguageCode = Yii::app()->session['adminlang'];
         }
-        $aAllTemplates = getTemplateList();
+        $aAllTemplates = Template::getTemplateList();
         if (!isset($aAllTemplates[$templatename])) {
             $templatename = getGlobalSetting('defaulttheme');
         }
@@ -935,79 +1067,40 @@ class themes extends Survey_Common_Action
         $normalfiles = $normalfiles + $files + $cssfiles;
         // Some global data
         $aData['sitename'] = Yii::app()->getConfig('sitename');
-        $siteadminname = Yii::app()->getConfig('siteadminname');
+        $siteadminname  = Yii::app()->getConfig('siteadminname');
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
         // NB: Used by answer print PDF layout.
         $print = [];
 
-        // Set this so common.php doesn't throw notices about undefined variables
-        $thissurvey['active'] = 'N';
-
-        // FAKE DATA FOR TEMPLATES
-        $thissurvey['name'] = gT("Template Sample");
-        $thissurvey['surveyls_title'] = $thissurvey['name'];
-        $thissurvey['description'] =
-        "<p>".gT('This is a sample survey description. It could be quite long.')."</p>".
-        "<p>".gT("But this one isn't.")."<p>";
-        $thissurvey['surveyls_description'] = $thissurvey['description'];
-        $thissurvey['welcome'] =
-        "<p>".gT('Welcome to this sample survey')."<p>".
-        "<p>".gT('You should have a great time doing this')."<p>";
-        $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
-        $thissurvey['therearexquestions'] = gT('There is 1 question in this survey');
-        $thissurvey['allowsave'] = "Y";
-        $thissurvey['active'] = "Y";
-        $thissurvey['tokenanswerspersistence'] = "Y";
-        $thissurvey['templatedir'] = $templatename;
-        $thissurvey['format'] = "G";
-        $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
-        $thissurvey['surveyls_urldescription'] = gT("Some URL description");
-        $thissurvey['usecaptcha'] = "A";
-        $thissurvey['showprogress'] = true;
-        $thissurvey['aNavigator']['show'] = true;
-        $thissurvey['aNavigator']['aMoveNext']['show'] = true;
-        $thissurvey['aNavigator']['aMovePrev']['show'] = true;
-
-        $groupname = gT("Group 1: The first lot of questions");
-        $groupdescription = gT("This group description is fairly vacuous, but quite important.");
-
+        $thissurvey  = $oEditedTemplate->getDefaultDataForRendering();
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
+        // TODO: check if this aData is still used
         $aData['thissurvey']       = $thissurvey;
-
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
 
 
         switch ($screenname) {
             case 'welcome':
-                // Show language changer.
-                $thissurvey['alanguageChanger']['show'] = true;
-                $thissurvey['alanguageChanger']['datas'] = [
-                    'sSelected' => 'en',
-                    //'withForm' => true,  // Set to true for no-js functionality.
-                    'aListLang' => [
-                        'en' => gT('English'),
-                        'de' => gT('German')
-                    ]
-                ];
-
                 break;
 
             case 'question':
+              // NOTE: this seems not to be used anymore
+              // TODO: try if it can be removed
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
                     'QUESTIONHELP' => $this->getController()->renderPartial('/survey/questions/question_help/questionhelp', array('classes' => '', 'questionHelp'=>gT("This is some helpful text.")), true),
-                    'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/questions/question_help/asterisk', array(), true),
+                    'QUESTION_MANDATORY' => App()->twigRenderer->renderPartial('/survey/questions/question_help/asterisk.twig', array()),
                     'QUESTION_MAN_CLASS' => ' mandatory',
                     'QUESTION_ESSENTIALS' => 'id="question1"',
                     'QUESTION_CLASS' => 'list-radio',
                     'QUESTION_NUMBER' => '1',
-                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/questions/question_help/em-tip', array(
+                    'QUESTION_VALID_MESSAGE'=>App()->twigRenderer->renderPartial('/survey/questions/question_help/em_tip.twig', array(
                         'coreId'=>"vmsg_4496_num_answers",
                         'coreClass'=>"em-tip ", // Unsure for this one
                         'vtip'=>gT('Hint when response is valid')
@@ -1016,81 +1109,15 @@ class themes extends Survey_Common_Action
 
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements, $aReplacements);
-
-                // Group Datas
-                $thissurvey['aGroups'][1]["name"]            = $groupname;
-                $thissurvey['aGroups'][1]["showdescription"] = true;
-                $thissurvey['aGroups'][1]["description"]     = $groupdescription;
-
-                // Question 1 Datas
-                $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
-                $thissurvey['aGroups'][1]["aQuestions"][1]["code"]          = 'Q1 ';
-                $thissurvey['aGroups'][1]["aQuestions"][1]["text"]          = gT("How many roads must a man walk down?");
-                $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
-                $thissurvey['aGroups'][1]["aQuestions"][1]["valid_message"] = '<div id="vmsg_1_default" class="ls-question-message ls-em-tip em_default ls-em-success"><span class="fa fa-exclamation-circle" aria-hidden="true"></span>Choose one of the following answers</div>';
-                $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
-                $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
-                $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = "This is some helpful text.";
-                $thissurvey['aGroups'][1]["aQuestions"][1]["class"]         = "list-radio mandatory";
-                $thissurvey['aGroups'][1]["aQuestions"][1]["attributes"]    = 'id="question42"';
-
-                // Question 2 Datas
-                $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
-                $thissurvey['aGroups'][1]["aQuestions"][2]["code"]          = 'Q2 ';
-                $thissurvey['aGroups'][1]["aQuestions"][2]["text"]          = gT("Please explain something in detail:");
-                $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
-                $thissurvey['aGroups'][1]["aQuestions"][2]["valid_message"] = '<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span>Hint when response is not valid</div>';
-                $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = $this->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
-                $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
-                $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = "This is some helpful text.";
-                $thissurvey['aGroups'][1]["aQuestions"][2]["class"]         = "text-long";
-                $thissurvey['aGroups'][1]["aQuestions"][2]["attributes"]    = 'id="question43"';
-
-                // This is just to prevent getAllClasses to retreive .ls-hidden CSS class
-                $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;
-                $thissurvey['aGroups'][1]["aQuestions"][2]['templateeditor'] = true;
                 break;
 
             case 'register':
-                // $sLayoutFile = ""; // TODO
-                // $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-
-                // $aData = array(
-                //     'aReplacements' => array_merge($aGlobalReplacements,array(
-                //         'SURVEYNAME' => 'Survey name'
-                //     ))
-                // );
-                // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
-
-                // $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
-                //     'REGISTERERROR' => 'Example error message',
-                //     'REGISTERMESSAGE1' => 'Register message 1',
-                //     'REGISTERMESSAGE2' => 'Register message 2',
-                //     'REGISTERFORM' => $this->getController()->renderPartial('/admin/themes/templateeditor_register_view', array('alt' => true), true),
-                // ));
-
-                // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
-                // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                // $myoutput[] = "\n";
-                $thissurvey['registration_view'] = 'register_form';
                 break;
 
             case 'completed':
-                $thissurvey['aCompleted']['showDefault'] = true;
-                $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
-                $thissurvey['aCompleted']['aPublicStatistics']['show'] = true;
                 break;
 
             case 'assessments':
-                $thissurvey['aAssessments']['show'] = true;
-
-                // Datas for assessments
-                $thissurvey['aAssessments']["datas"]["total"][0]               = array("name" => gT("Welcome to the Assessment"), "min" => "0", "max" => "3", "message" => gT("You got {TOTAL} points out of 3 possible points."));
-                $thissurvey['aAssessments']["datas"]["total"]["show"]          = true;
-                $thissurvey['aAssessments']["datas"]["subtotal"]["show"]       = true;
-                $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
-                $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
-                $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
                 break;
 
             case 'printablesurvey':
@@ -1145,47 +1172,6 @@ class themes extends Survey_Common_Action
 
             case 'navigation':
                 // Show question index navigation.
-                $thissurvey['aQuestionIndex']['bShow'] = true;
-                $thissurvey['aQuestionIndex']['items'] = [
-                    [
-                        'text' => gT('A group without step status styling')
-                    ],
-                    [
-                        'text' => gT('This group is unanswered'),
-                        'stepStatus' => [
-                            'index-item-unanswered' => true
-                        ]
-                    ],
-                    [
-                        'text' => gT('This group has an error'),
-                        'stepStatus' => [
-                            'index-item-error' => true
-                        ]
-                    ],
-                    [
-                        'text' => gT('Current group is disabled'),
-                        'stepStatus' => [
-                            'index-item-current' => true
-                        ]
-                    ]
-                ];
-
-                // Show "Clear all".
-                $thissurvey['bShowClearAll'] = true;
-
-                // Show language changer.
-                $thissurvey['alanguageChanger']['show'] = true;
-                $thissurvey['alanguageChanger']['datas'] = [
-                    'sSelected' => 'en',
-                    'aListLang' => [
-                        'en' => gT('English'),
-                        'de' => gT('German')
-                    ]
-                ];
-
-                $thissurvey['aNavigator']['load'] = [
-                    'show' => "Y"
-                ];
 
                 break;
 
@@ -1200,15 +1186,19 @@ class themes extends Survey_Common_Action
                 ];
                 break;
 
+            case 'maintenance':
+                break;
+
             case 'error':
-                $thissurvey['aError']['title'] = gT("Error");
-                $thissurvey['aError']['message'] = gT("This is an error message example");
                 break;
         }
 
 
         $thissurvey['include_content'] = $sContentFile;
 
+
+        // new TemplateConfiguration model created so preview can read theme options from DB
+        $oTemplateForPreview =  Template::getInstance($templatename, null, null, false);
 
         try {
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
@@ -1217,7 +1207,7 @@ class themes extends Survey_Common_Action
                     'aSurveyInfo' =>$thissurvey,
                     'print'       => $print  // Only used for PDF print layout.
                 ),
-                $oEditedTemplate
+                $oTemplateForPreview
             );
         } catch (Exception $ex) {
             $myoutput = "<h3>ERROR!</h3>";
@@ -1268,7 +1258,7 @@ class themes extends Survey_Common_Action
     }
 
     /**
-     * First time user visits template editor on 3.0, show
+     * First time user visits template editor, show
      * a notification about manual and forum.
      * @return void
      */
@@ -1277,12 +1267,12 @@ class themes extends Survey_Common_Action
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $not = new UniqueNotification(array(
             'user_id'    => $user->uid,
-            'title'      => gT('LimeSurvey 3.0 theme editor'),
+            'title'      => gT('LimeSurvey theme editor'),
             'markAsNew'  => false,
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
-                gT('Welcome to the new theme editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
-                '<a target="_blank" href="https://manual.limesurvey.org/New_Template_System_in_LS3.x">', '</a>',
+                gT('Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                '<a target="_blank" href="https://manualv4.limesurvey.org/LimeSurvey_Manual">', '</a>',
                 '<a target="_blank" href="https://www.limesurvey.org/community/forums">', '</a>'
             )
         ));
@@ -1311,7 +1301,6 @@ class themes extends Survey_Common_Action
             Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
-
     }
 
     /**
@@ -1334,20 +1323,29 @@ class themes extends Survey_Common_Action
 
     /**
      * Redirect back if $destdir is not writable or already exists.
+     *
      * @param string $destdir
      * @param string $sNewDirectoryName
+     * @param string $themeType *
      * @return void
      */
-    protected function checkDestDir($destdir, $sNewDirectoryName)
+    protected function checkDestDir($destdir, $sNewDirectoryName, $themeType)
     {
+        if ($themeType == 'question'){
+            $redirectUrl = 'admin/themeoptions#questionthemes';
+        } elseif ($themeType == 'survey'){
+            $redirectUrl = 'admin/themes/sa/upload';
+        } else {
+            $redirectUrl = 'admin/themes/sa/upload';
+        }
         if (!is_writeable(dirname($destdir))) {
             Yii::app()->user->setFlash('error', sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
+            $this->getController()->redirect(array($redirectUrl));
         }
 
         if (is_dir($destdir)) {
             Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
+            $this->getController()->redirect(array($redirectUrl));
         }
     }
 }

@@ -79,7 +79,8 @@ class QuotaLanguageSetting extends LSActiveRecord
     }
     public function urlValidator()
     {
-        if ($this->quota->autoload_url == 1 && !$this->quotals_url) {
+        // $quota might be still empty while doing an import
+        if (!empty($this->quota) && $this->quota->autoload_url == 1 && !$this->quotals_url) {
             $this->addError('quotals_url', gT('URL must be set if autoload URL is turned on!'));
         }
     }
@@ -93,6 +94,11 @@ class QuotaLanguageSetting extends LSActiveRecord
         );
     }
 
+    /**
+     * @param $data
+     * @return bool
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         $settings = new self;

@@ -21,314 +21,179 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
 ", LSYii_ClientScript::POS_BEGIN); 
 ?>
 
+<?php 
+
+$optionsQuestionIndex = array(
+    0 => gT('Disabled','unescaped'),
+    1 => gT('Incremental','unescaped'),
+    2 => gT('Full','unescaped')
+);
+if ($bShowInherited){
+    $optionsQuestionIndex['-1'] = gT('Inherit','unescaped').' ['. $oSurveyOptions->questionindex . ']';
+}
+?>
+
 <!-- Presentation panel -->
 <div id='presentation-panel' class="container-fluid">
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">
-            <label class=" control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
-            <div class="">
-                <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')" />
+            <?php $navigationdelay = $oSurvey->navigationdelay; ?>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                    <label class=" control-label"  for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
+                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
+                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                    <label class=" control-label content-center col-sm-12"  for='navigationdelay'><?php  eT("Inherit:"); ?></label>
+                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                        'name' => 'navigationdelaybutton',
+                        'value'=> ($bShowInherited && $navigationdelay === '-1' ? 'Y' : 'N'),
+                        'selectOptions'=>$optionsOnOff,
+                        'htmlOptions' => array(
+                            'class' => 'text-option-inherit'
+                            )
+                        ));
+                        ?>
+                </div>
             </div>
         </div>
+
         <!-- Show question index -->
         <div class="form-group">
             <label class=" control-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>
             <div class="">
 
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'questionindex',
-                    'value'=> $oSurvey->questionindex ,
-                    'selectOptions'=>array(
-                        0 => gT('Disabled','unescaped'),
-                        1 => gT('Incremental','unescaped'),
-                        2 => gT('Full','unescaped'))
-                    ));?>
+                'name' => 'questionindex',
+                'value'=> $oSurvey->questionindex ,
+                'selectOptions'=>$optionsQuestionIndex
+                ));
+            ?>
             </div>
         </div>
-        <?php switch($showgroupinfo):
-                case 'both': ?>
 
-                    <!-- Show group name and/or group description -->
-                    <div class="form-group">
-                        <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                        <div class="">
-                            <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="B" />
-                            <input class="form-control"  type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>" />
-                        </div>
-                    </div>
-            <?php break;?>
-            <?php case 'name': ?>
+        <?php
+            $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' , 'I' => '' );
+            if (isset($oSurvey->showgroupinfo))
+            {
+                $set_showgri = $oSurvey->showgroupinfo;
+                $sel_showgri[$set_showgri] = ' selected="selected"';
+            }
+            if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']) && empty($sel_showgri['I']))
+                $sel_showgri['B'] = ' selected="selected"';
+        ?>
 
-                <!-- Show group name and/or group description -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" />
-                        <input type="text" class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group name only (Forced by the system administrator)'); ?>" />
-                    </div>
-                </div>
-            <?php break;?>
+        <!-- Show group name and/or group description -->
+        <div class="form-group">
+            <label class=" control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+            <div class="">
+                <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
+                    <?php if ($bShowInherited){ ?>
+                        <option value="I"<?php echo $sel_showgri['I']; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->showgroupinfo . ']'; ?></option>
+                    <?php } ?>
+                    <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
+                    <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
+                    <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show group description only'); ?></option>
+                    <option value="X"<?php echo $sel_showgri['X']; ?>><?php  eT('Hide both'); ?></option>
+                </select>
+                <?php unset($sel_showgri,$set_showgri); ?>
+            </div>
+        </div>
 
-            <?php case 'description': ?>
+        <?php
+            $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' , 'I' => '' );
+            if (isset($oSurvey->showqnumcode)) {
+                $set_showqnc = $oSurvey->showqnumcode;
+                $sel_showqnc[$set_showqnc] = ' selected="selected"';
+            }
+            if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X']) && empty($sel_showqnc['I'])) {
+                $sel_showqnc['X'] = ' selected="selected"';
+            };
+        ?>
 
-                <!-- Show group name and/or group description -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="">
-                        <input type="text" class="form-control"  name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group description only (Forced by the system administrator)'); ?>" />
-                        <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" />
-                    </div>
-                </div>
-            <?php break;?>
+        <!-- Show question number and/or code -->
+        <div class="form-group">
+            <label class=" control-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+            <div class="">
+                <select class="form-control" id="showqnumcode" name="showqnumcode">
+                    <?php if ($bShowInherited){ ?>
+                        <option value="I"<?php echo $sel_showqnc['I']; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->showqnumcode . ']'; ?></option>
+                    <?php } ?>
+                    <option value="B"<?php echo $sel_showqnc['B']; ?>><?php  eT('Show both'); ?></option>
+                    <option value="N"<?php echo $sel_showqnc['N']; ?>><?php  eT('Show question number only'); ?></option>
+                    <option value="C"<?php echo $sel_showqnc['C']; ?>><?php  eT('Show question code only'); ?></option>
+                    <option value="X"<?php echo $sel_showqnc['X']; ?>><?php  eT('Hide both'); ?></option>
+                </select>
+                <?php unset($sel_showqnc,$set_showqnc);?>
+            </div>
+        </div>
 
-            <?php case 'none': ?>
-
-                <!-- Show group name and/or group description -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" />
-                        <input type="text"  class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
-
-                    </div>
-                </div>
-            <?php break;?>
-
-            <?php default: ?>
-                <?php
-                    $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
-                    if (isset($oSurvey->showgroupinfo))
-                    {
-                        $set_showgri = $oSurvey->showgroupinfo;
-                        $sel_showgri[$set_showgri] = ' selected="selected"';
-                    }
-                    if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']))
-                        $sel_showgri['C'] = ' selected="selected"';
+        <!-- Show "No answer" -->
+        <div class="form-group">
+            <label class=" control-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
+            <div class="">
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
+                    'name' => 'shownoanswer',
+                    'value'=> $oSurvey->shownoanswer,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->shownoanswer . ']')): $optionsOnOff
+                    ));
                 ?>
-
-                <!-- Show group name and/or group description -->
-                <div class="form-group">
-                    <label class=" control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="">
-                        <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
-                            <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
-                            <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
-                            <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show group description only'); ?></option>
-                            <option value="X"<?php echo $sel_showgri['X']; ?>><?php  eT('Hide both'); ?></option>
-                        </select>
-                        <?php unset($sel_showgri,$set_showgri); ?>
-                    </div>
-                </div>
-            <?php break;?>
-
-        <?php endswitch ?>
-
-        <?php switch($showqnumcode):
-                case 'none':  ?>
-
-                    <!-- Show question number and/or code -->
-                    <div class="form-group">
-                        <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                        <div class="">
-                            <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" />
-                            <input type="text" class="form-control" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
-                        </div>
-                    </div>
-            <?php break;?>
-
-            <?php case 'number': ?>
-
-                <!-- Show question number and/or code -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" />
-                        <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question number only (Forced by the system administrator)') ; ?>" />
-
-                    </div>
-                </div>
-            <?php break;?>
-
-            <?php case 'code': ?>
-
-                <!-- Show question number and/or code -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" />
-                        <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question code only (Forced by the system administrator)'); ?>" />
-                    </div>
-                </div>
-            <?php break;?>
-
-            <?php case 'both': ?>
-
-                <!-- Show question number and/or code -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" />
-                        <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>"/>
-                    </div>
-                </div>
-            <?php break;?>
-
-            <?php default: ?>
-                <?php
-                    $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
-                    if (isset($oSurvey->showqnumcode)) {
-                        $set_showqnc = $oSurvey->showqnumcode;
-                        $sel_showqnc[$set_showqnc] = ' selected="selected"';
-                    }
-                    if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
-                        $sel_showqnc['X'] = ' selected="selected"';
-                    };
-                ?>
-
-                <!-- Show question number and/or code -->
-                <div class="form-group">
-                    <label class=" control-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="">
-                        <select class="form-control" id="showqnumcode" name="showqnumcode">
-                            <option value="B"<?php echo $sel_showqnc['B']; ?>><?php  eT('Show both'); ?></option>
-                            <option value="N"<?php echo $sel_showqnc['N']; ?>><?php  eT('Show question number only'); ?></option>
-                            <option value="C"<?php echo $sel_showqnc['C']; ?>><?php  eT('Show question code only'); ?></option>
-                            <option value="X"<?php echo $sel_showqnc['X']; ?>><?php  eT('Hide both'); ?></option>
-                        </select>
-                        <?php unset($sel_showqnc,$set_showqnc);?>
-                    </div>
-                </div>
-            <?php break;?>
-        <?php endswitch; ?>
-
-        <?php switch($shownoanswer):
-                case 0:  ?>
-
-                    <!-- Show "No answer" -->
-                    <div class="form-group">
-                        <label class=" control-label" for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" />
-                        <div class="">
-                            <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>" />
-                        </div>
-                    </div>
-            <?php break;?>
-
-            <?php case 2: ?>
-
-                <!-- Show "No answer" -->
-                <div class="form-group">
-                    <label class=" control-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
-                    <div class="">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'shownoanswer',
-                            'value'=> $oSurvey->isShowNoAnswer,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
-                            ));
-                        ?>
-                    </div>
-                </div>
-            <?php break;?>
-
-            <?php default: ?>
-
-                <!-- Show "No answer" -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="shownoanswer" id="shownoanswer" value="Y" />
-                        <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('On (Forced by the system administrator)'); ?>" />
-                    </div>
-                </div>
-            <?php break;?>
-
-        <?php endswitch ?>
+            </div>
+        </div>
+            
     </div>
     <div class="col-sm-12 col-md-6">
         
-        <!-- showxquestions -->
-        <?php switch($showxquestions):
-                case 'show':  ?>
-
-                    <!-- Show "There are X questions in this survey -->
-                    <div class="form-group">
-                        <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                        <div class="">
-                            <input type="hidden" class="form-control"  name="showxquestions" id="" value="1" />
-                            <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
-                        </div>
-                    </div>
-            <?php break;?>
-
-            <?php case 'hide': ?>
-
-                <!-- Show "There are X questions in this survey -->
-                <div class="form-group">
-                    <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                    <div class="">
-                        <input type="hidden" name="showxquestions" id="" value="0" />
-                        <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('No (Forced by the system administrator)'); ?>" />
-                    </div>
-                </div>
-            <?php break;?>
-
-            <?php default: ?>
-
-                <!-- Show "There are X questions in this survey" -->
-                <div class="form-group">
-                    <label class=" control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                    <div class="">
-                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'showxquestions',
-                            'value'=> $oSurvey->isShowXQuestions,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
-                            ));
-                        ?>
-                    </div>
-                </div>
-            <?php break;?>
-        <?php endswitch ?>
-
-        <!-- welcome screen -->
+        <!-- Show "There are X questions in this survey" -->
+        <div class="form-group">
+            <label class=" control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+            <div class="">
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
+                    'name' => 'showxquestions',
+                    'value'=> $oSurvey->showxquestions,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->showxquestions . ']')): $optionsOnOff
+                    ));
+                ?>
+            </div>
+        </div>
+ 
+        <!-- Show welcome screen -->
         <div class="form-group">
             <label class=" control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showwelcome',
-                    'value'=> $oSurvey->isShowWelcome,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->showwelcome,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->showwelcome . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
         </div>
 
-        <!-- Show [<< Prev] button -->
+        <!-- Allow backward navigation: -->
         <div class="form-group">
             <label class=" control-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'allowprev',
-                    'value'=> $oSurvey->isAllowPrev,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->allowprev,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->allowprev . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
         </div>
 
 
-        <!-- Keyboard-less operation -->
+        <!-- Show on-screen keyboard -->
         <div class="form-group">
             <label class=" control-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'nokeyboard',
-                    'value'=> $oSurvey->isNoKeyboard,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->nokeyboard,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->nokeyboard . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
@@ -338,11 +203,10 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         <div class="form-group">
             <label class=" control-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'showprogress',
-                    'value'=> $oSurvey->isShowProgress,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->showprogress,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->showprogress . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
@@ -351,11 +215,10 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         <div class="form-group">
             <label class=" control-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'printanswers',
-                    'value'=> $oSurvey->isPrintAnswers,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->printanswers,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->printanswers . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
@@ -365,11 +228,10 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         <div class="form-group">
             <label class=" control-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'publicstatistics',
-                    'value'=> $oSurvey->isPublicStatistics,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->publicstatistics,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->publicstatistics . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
@@ -379,11 +241,10 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         <div class="form-group">
             <label class=" control-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'publicgraphs',
-                    'value'=> $oSurvey->isPublicGraphs,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->publicgraphs,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->publicgraphs . ']')): $optionsOnOff
                     ));
                 ?>
             </div>
@@ -391,13 +252,12 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
     
         <!-- Automatically load URL -->
         <div class="form-group">
-            <label class=" control-label" for='autoredirect'><?php  eT("Automatically load URL when survey complete:"); ?></label>
+            <label class=" control-label" for='autoredirect'><?php  eT("Automatically load end URL when survey complete:"); ?></label>
             <div class="">
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'autoredirect',
-                    'value'=> $oSurvey->isAutoRedirect,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off')
+                    'value'=> $oSurvey->autoredirect,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->autoredirect . ']')): $optionsOnOff
                     ));
                 ?>
             </div>

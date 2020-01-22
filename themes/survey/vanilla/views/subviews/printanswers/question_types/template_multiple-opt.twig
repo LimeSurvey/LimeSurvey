@@ -11,7 +11,7 @@
                 {% endif %}
             </div>
             <div class="col-md-8 text-left">
-                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+                <b>{{subquestion.question}} {% if subquestion.qid != 'other' %}({{subquestion.qid}}){% endif %}</b>
             </div>
         </div>
     {% endfor %}

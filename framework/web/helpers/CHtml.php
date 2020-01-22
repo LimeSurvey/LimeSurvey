@@ -996,13 +996,13 @@ class CHtml
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -1064,13 +1064,13 @@ class CHtml
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -1970,13 +1970,13 @@ EOD;
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -2037,13 +2037,13 @@ EOD;
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -2348,8 +2348,21 @@ EOD;
 		if(is_scalar($attribute) || $attribute===null)
 			foreach(explode('.',$attribute) as $name)
 			{
-				if(is_object($model) && isset($model->$name))
-					$model=$model->$name;
+				if(is_object($model))
+				{
+					if ((version_compare(PHP_VERSION, '7.2.0', '>=')
+						&& is_numeric($name))
+						|| !isset($model->$name)
+					)
+					{
+						return $defaultValue;
+					}
+					else
+					{
+						$model=$model->$name;
+					}
+				}
+
 				elseif(is_array($model) && isset($model[$name]))
 					$model=$model[$name];
 				else
@@ -2373,7 +2386,7 @@ EOD;
 
 	/**
 	 * Generates input field ID for a model attribute.
-	 * @param CModel $model the data model
+	 * @param CModel|string $model the data model
 	 * @param string $attribute the attribute
 	 * @return string the generated input field ID
 	 */
@@ -2420,7 +2433,7 @@ EOD;
 	/**
 	 * Generates input field name for a model attribute.
 	 * Unlike {@link resolveName}, this method does NOT modify the attribute name.
-	 * @param CModel $model the data model
+	 * @param CModel|string $model the data model
 	 * @param string $attribute the attribute
 	 * @return string the generated input field name
 	 */
@@ -2485,13 +2498,13 @@ EOD;
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * <li>key: string, specifies the name of key attribute of the selection object(s).
@@ -2666,7 +2679,7 @@ EOD;
 	 * This method will update the HTML options by setting appropriate 'name' and 'id' attributes.
 	 * This method may also modify the attribute name if the name
 	 * contains square brackets (mainly used in tabular input).
-	 * @param CModel $model the data model
+	 * @param CModel|string $model the data model
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions the HTML options
 	 */
@@ -2684,7 +2697,7 @@ EOD;
 	 * Generates input name for a model attribute.
 	 * Note, the attribute name may be modified after calling this method if the name
 	 * contains square brackets (mainly used in tabular input) before the real attribute name.
-	 * @param CModel $model the data model
+	 * @param CModel|string $model the data model
 	 * @param string $attribute the attribute
 	 * @return string the input name
 	 */

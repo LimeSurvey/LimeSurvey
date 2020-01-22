@@ -1,0 +1,975 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <!-- Metadata -->
+    <metadata>
+        <name>multiplenumeric</name>
+        <type>question_theme</type>
+        <title>Multiple Numerical Input</title>
+        <creationDate>09/08/2018</creationDate>
+        <author>Dominik Vitt</author>
+        <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Multiple numerical input question type configuration</description>
+        <questionType>K</questionType>
+        <group>Mask questions</group>
+        <subquestions>1</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>numeric-multi</class>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <!--
+        List of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename></filename>
+        </css>
+        <js>
+            <filename></filename>
+        </js>
+        <preview>
+            <filename></filename>
+        </preview>
+    </files>
+
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+<!--        <attribute>other</attribute>-->
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <attribute>clear_default</attribute>
+        <attribute>preg</attribute>
+    </generalattributes>
+
+    <!-- Question attributes -->
+    <attributes>
+        <attribute>
+            <name>array_filter</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question.</help>
+            <caption>Array filter</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_exclude</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question.</help>
+            <caption>Array filter exclusion</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_style</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Hidden</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Disabled</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Specify how array-filtered sub-questions should be displayed</help>
+            <caption>Array filter style</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>equals_num_value</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Multiple numeric inputs sum must equal this value</help>
+            <caption>Equals sum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_q</name>
+            <category>Logic</category>
+            <sortorder>200</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>2</expression>
+            <help>Enter a boolean equation to validate the whole question.</help>
+            <caption>Question validation equation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_q_tip</name>
+            <category>Logic</category>
+            <sortorder>210</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>true</i18n>
+            <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
+            <caption>Question validation tip</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_sq</name>
+            <category>Logic</category>
+            <sortorder>220</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>2</expression>
+            <help>Enter a boolean equation to validate each sub-question.</help>
+            <caption>Sub-question validation equation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_sq_tip</name>
+            <category>Logic</category>
+            <sortorder>230</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>true</i18n>
+            <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
+            <caption>Sub-question validation tip</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>exclude_all_others</name>
+            <category>Logic</category>
+            <sortorder>130</sortorder>
+            <inputtype>text</inputtype>
+            <help>Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon.</help>
+            <caption>Exclusive option</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>statistics_showgraph</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>101</sortorder>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Display a chart in the statistics?</help>
+            <caption>Display chart</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>statistics_graphtype</name>
+            <category>Statistics</category>
+            <inputtype>singleselect</inputtype>
+            <sortorder>102</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Bar chart</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Pie chart</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Radar</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Line</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>PolarArea</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>Doughnut</text>
+                </option>
+            </options>
+            <help>Select the type of chart to be displayed</help>
+            <caption>Chart type</caption>
+            <default>0</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hide_tip</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide the tip that is normally shown with a question</help>
+            <caption>Hide tip</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>cssclass</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
+            <caption>CSS class(es)</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>max_answers</name>
+            <category>Logic</category>
+            <sortorder>11</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Limit the number of possible answers</help>
+            <caption>Maximum answers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>max_num_value</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Maximum sum value of multiple numeric input</help>
+            <caption>Maximum sum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>max_num_value_n</name>
+            <category>Input</category>
+            <sortorder>110</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Maximum value of the numeric input</help>
+            <caption>Maximum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>maximum_chars</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Maximum characters allowed</help>
+            <caption>Maximum characters</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>min_answers</name>
+            <category>Logic</category>
+            <sortorder>10</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Ensure a minimum number of possible answers (0=No limit)</help>
+            <caption>Minimum answers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>min_num_value</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>The sum of the multiple numeric inputs must be greater than this value</help>
+            <caption>Minimum sum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>min_num_value_n</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Minimum value of the numeric input</help>
+            <caption>Minimum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>num_value_int_only</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Restrict input to integer values</help>
+            <caption>Integer only</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>input_size</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
+            <caption>Text input box size</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>page_break</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <caption>Insert page break in printable view</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>prefix</name>
+            <category>Display</category>
+            <sortorder>10</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>true</i18n>
+            <help>Add a prefix to the answer field</help>
+            <caption>Answer prefix</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>printable_help</name>
+            <category>Display</category>
+            <sortorder>201</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>true</i18n>
+            <default></default>
+            <help>In the printable version the condition is being replaced with this explanation text.</help>
+            <caption>Relevance help for printable survey</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>public_statistics</name>
+            <category>Statistics</category>
+            <sortorder>80</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Show statistics of this question in the public statistics page</help>
+            <caption>Show in public statistics</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>random_order</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Present subquestions/answer options in random order</help>
+            <caption>Random order</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_layout</name>
+            <category>Slider</category>
+            <sortorder>1</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Use slider layout</help>
+            <caption>Use slider layout</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_min</name>
+            <category>Slider</category>
+            <sortorder>10</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.</help>
+            <caption>Slider minimum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_max</name>
+            <category>Slider</category>
+            <sortorder>11</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.</help>
+            <caption>Slider maximum value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_accuracy</name>
+            <category>Slider</category>
+            <sortorder>30</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>You can use Expression manager, but this must be a number before showing the page else set to 1.</help>
+            <caption>Slider accuracy</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_default</name>
+            <category>Slider</category>
+            <sortorder>50</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Slider start as this value. You can use Expression manager, but this must be a number before showing the page.</help>
+            <caption>Slider initial value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>slider_middlestart</name>
+            <category>Slider</category>
+            <sortorder>40</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).</help>
+            <caption>Slider starts at the middle position</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_default_set</name>
+            <category>Slider</category>
+            <sortorder>51</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>1</default>
+            <help>When using slider initial value set this value at survey start.</help>
+            <caption>Slider initial value set at start</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_orientation</name>
+            <category>Slider</category>
+            <sortorder>2</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Horizontal</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Vertical</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Set the orientation.</help>
+            <caption>Orientation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_handle</name>
+            <category>Slider</category>
+            <sortorder>3</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Circle</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Square</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Triangle</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Custom</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Set the handle shape. &amp;#039;Custom&amp;#039; is defined in CSS using the Font Awesome font.</help>
+            <caption>Handle shape</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_custom_handle</name>
+            <category>Slider</category>
+            <sortorder>4</sortorder>
+            <inputtype>text</inputtype>
+            <default>f1ae</default>
+            <help>Accepts Font Awesome Unicode characters.</help>
+            <caption>Custom handle Unicode code</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_reversed</name>
+            <category>Slider</category>
+            <sortorder>50</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Reverses the slider direction and repositions the min/max text accordingly.</help>
+            <caption>Reverse the slider direction</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_reset</name>
+            <category>Slider</category>
+            <sortorder>50</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.</help>
+            <caption>Allow reset the slider</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_showminmax</name>
+            <category>Slider</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Display min and max value under the slider</help>
+            <caption>Display slider min and max value</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>slider_separator</name>
+            <category>Slider</category>
+            <sortorder>110</sortorder>
+            <inputtype>text</inputtype>
+            <help>Answer|Left-slider-text|Right-slider-text separator character</help>
+            <default>|</default>
+            <caption>Slider left/right text separator</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>suffix</name>
+            <category>Display</category>
+            <sortorder>11</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>true</i18n>
+            <help>Add a suffix to the answer field</help>
+            <caption>Answer suffix</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>text_input_width</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default></default>
+            <options>
+                <option>
+                    <value></value>
+                    <text>Default</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>8%</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>17%</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>25%</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>33%</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>41%</text>
+                </option>
+                <option>
+                    <value>6</value>
+                    <text>50%</text>
+                </option>
+                <option>
+                    <value>7</value>
+                    <text>58%</text>
+                </option>
+                <option>
+                    <value>8</value>
+                    <text>67%</text>
+                </option>
+                <option>
+                    <value>9</value>
+                    <text>75%</text>
+                </option>
+                <option>
+                    <value>10</value>
+                    <text>83%</text>
+                </option>
+                <option>
+                    <value>11</value>
+                    <text>92%</text>
+                </option>
+                <option>
+                    <value>12</value>
+                    <text>100%</text>
+                </option>
+            </options>
+            <help>Relative width of the text input wrapper element</help>
+            <caption>Text input box width</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>label_input_columns</name>
+            <category>Display</category>
+            <sortorder>91</sortorder>
+            <inputtype>singleselect</inputtype>
+            <default></default>
+            <options>
+                <option>
+                    <value></value>
+                    <text>Default</text>
+                </option>
+                <option>
+                    <value>hidden</value>
+                    <text>Hidden</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>8%</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>17%</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>25%</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>33%</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>41%</text>
+                </option>
+                <option>
+                    <value>6</value>
+                    <text>50%</text>
+                </option>
+                <option>
+                    <value>7</value>
+                    <text>58%</text>
+                </option>
+                <option>
+                    <value>8</value>
+                    <text>67%</text>
+                </option>
+                <option>
+                    <value>9</value>
+                    <text>75%</text>
+                </option>
+                <option>
+                    <value>10</value>
+                    <text>83%</text>
+                </option>
+                <option>
+                    <value>11</value>
+                    <text>92%</text>
+                </option>
+                <option>
+                    <value>12</value>
+                    <text>100%</text>
+                </option>
+            </options>
+            <help>Relative width of the labels</help>
+            <caption>Label wrapper width</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>random_group</name>
+            <category>Logic</category>
+            <sortorder>180</sortorder>
+            <inputtype>text</inputtype>
+            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
+            <caption>Randomization group name</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>value_range_allows_missing</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>1</default>
+            <help>Is no answer (missing) allowed when either &amp;#039;Equals sum value&amp;#039; or &amp;#039;Minimum sum value&amp;#039; are set?</help>
+            <caption>Value range allows missing</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+    </attributes>
+
+    <!-- Core question js/css configuration -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

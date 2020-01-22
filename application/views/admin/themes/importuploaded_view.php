@@ -52,12 +52,12 @@
                             {
                                 if ($entry['is_folder']){
                                 ?>
-                                <li><?php echo gT("Folder:") . " " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                                <li><?php printf(gT("Folder: %s"),CHtml::encode($entry["filename"])); ?></li>
                                 <?php
                                 }
                                 else
                                 { ?>
-                                <li><?php echo gT("File:") . " " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                                <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
 
 
                                 <?php
@@ -74,7 +74,7 @@
                             foreach ($aErrorFilesInfo as $entry)
                             {
                             ?>
-                            <li><?php echo gT("File:") . " " . $entry["filename"] ?></li>
+                            <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
                             <?php
                             }
                         }
@@ -82,7 +82,16 @@
                 </ul>
             </p>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme" value='<?php eT("Open imported theme") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) ?>', '_top')" />
+                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme"
+                       value='<?php eT("Open imported theme") ?>'
+                       onclick="window.open('<?php
+                       if ($theme == 'question') {
+                           echo $this->createUrl('admin/themeoptions/sa/index/#questionthemes') . '\', ' . '\'_top\'';
+                       } elseif ($theme == 'survey') {
+                           echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) . '\', ' . '\'_top\'';
+                       }
+                       ?>)"
+                />
             </p>
         </div>
     </div>

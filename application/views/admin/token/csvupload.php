@@ -104,6 +104,7 @@
                             'offLabel' => gT('Off')));
                         ?>
                     </div>
+                    <div class="help-block"><?php eT("The access code field is always checked for duplicates."); ?></div>
                 </div>
 
                 <!-- Duplicates are determined by -->
@@ -111,6 +112,7 @@
                     <label class=" control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
                     <div class="">
                         <?php
+                            unset($aTokenTableFields['token']); // token are already duplicate forbidden mantis #14334, remove it
                             echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7','class'=>'form-control'));
                         ?>
                     </div>

@@ -5,7 +5,7 @@
 
 <div class="col-lg-12 list-surveys">
 
-    <h3><?php eT('Update survey group: '); echo '<strong><em>'.$model->title.'</strong></em>'; ?></h3>
+    <h3><?php eT('Update survey group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
     <?php $this->renderPartial('super/fullpagebar_view', array(
             'fullpagebar' => array(
                 'returnbutton'=>array(
@@ -13,6 +13,9 @@
                     'text'=>gT('Close'),
                 ),
                 'savebutton' => array(
+                    'form' => 'surveys-groups-form'
+                ),
+                'saveandclosebutton' => array(
                     'form' => 'surveys-groups-form'
                 )
             )
@@ -46,25 +49,34 @@
                     }
                 ?>
             </div>
+            
         </div>
     </div>
 </div>
 <script>
+
     $('#surveygrouptabsystem a').click(function (e) {
         window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
-        console.log($(this).attr('href'));
-        if($(this).attr('href') == '#templateSettingsFortThisGroup'){
-            $('#save-form-button').attr('data-form-id', 'template-options-form');
-        } else {
-            $('#save-form-button').attr('data-form-id', 'surveys-groups-form');
+        $("surveygrouptabsystem.last a").unbind('click');
 
+        if($(this).attr('href') == '#surveysInThisGroup'){
+            e.preventDefault();
+            $(this).tab('show');
+        } else if($(this).attr('href') == '#settingsForThisGroup'){
+            //e.preventDefault();
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
+            $(this).tab('show');
+        } else if($(this).attr('href') == '#templateSettingsFortThisGroup'){
+            e.preventDefault();
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'template-options-form');
+            $(this).tab('show');
         }
     });
+    
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
-            $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
+            $('#surveygrouptabsystem').find('a[href='+window.location.hash+']').trigger('click');
         }
+
     })
 </script>

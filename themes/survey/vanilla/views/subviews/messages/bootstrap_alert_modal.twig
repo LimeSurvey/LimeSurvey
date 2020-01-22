@@ -23,8 +23,9 @@
 
 {# Register script for modal #}
 {% if( empty(json_decode(aSurveyInfo.jPopup)) == false ) %}
-    {{ registerScript('startPopup',"LSvar.startPopups=" ~ aSurveyInfo.jPopup, "POS_HEAD") }}
-    {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~");", "POS_END") }}
+    {{ registerScript('startPopup',"LSvar.startPopups = " ~ aSurveyInfo.jPopup , "POS_HEAD") }}
+    {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~ ");", "POS_END") }}
+    {{ registerScript('activateSoftMandatory',"activateSoftMandatory();", "POS_END") }}
 {% endif %}
 
 <!-- Bootstrap Modal Alert -->
@@ -37,11 +38,17 @@
                 <div class="{{ aSurveyInfo.class.modaltitle }}" {{ aSurveyInfo.attr.modaltitle }}>&nbsp;</div>
             </div>
             <div class="{{ aSurveyInfo.class.modalbody }}" {{ aSurveyInfo.attr.modalbody }}>
-                <p></p>
             </div>
+            {% if(aSurveyInfo.mandNonSoft == false and aSurveyInfo.mandSoft)%}
+            <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
+                <a id="{{ aSurveyInfo.id.mandatorySoftModal }}" class="{{ aSurveyInfo.class.modalfooterlink }}" data-movenext="{{ aSurveyInfo.aNavigator.aMoveNext.value }}">{{ gT("Continue without answering") }}</a>
+                <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Answer question") }}</a>
+            </div>
+            {% else %}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
                 <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</a>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

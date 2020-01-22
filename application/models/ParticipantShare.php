@@ -11,6 +11,9 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+use ls\ajax\AjaxHelper;
+
 /**
  * This is the model class for table "{{participant_shares}}".
  *
@@ -229,6 +232,7 @@ class ParticipantShare extends LSActiveRecord
             array(
                 "name" => 'share_uid',
                 "value" => '$data->sharedBy',
+                "type" => 'raw',
                 "header" => gT("Shared by"),
                 "filter" => $this->getSharedByList($this->share_uid)
             ),
@@ -306,7 +310,7 @@ class ParticipantShare extends LSActiveRecord
         $criteria->compare('participant.email', $participantFilter['email'], true);
 
         $pageSize = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
-        return new CActiveDataProvider($this, array(
+        return new LSCActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'sort' => $sort,
             'pagination' => array(
@@ -317,14 +321,25 @@ class ParticipantShare extends LSActiveRecord
 
     /**
      * @param array $data
+     * @param array $permission
+     *
      * @return void
+     * @throws CException
      */
-    public function storeParticipantShare($data)
+    public function storeParticipantShare($data, $permission)
     {
-        $ownerid = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
+        $hasUpdatePermission = isset($permission['hasUpdatePermission'])? $permission['hasUpdatePermission'] : false;
+        $isSuperAdmin = isset($permission['isSuperAdmin'])? $permission['isSuperAdmin'] : false;
+        $userId = App()->user->getId();
+        $ownerid = App()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
+
         // CHeck if share already exists
-        $arShare = $this->findByPk(array('participant_id'=>$data['participant_id'], 'share_uid'=>$data['share_uid']));
-        if ($ownerid['owner_uid'] == $data['share_uid']) {
+        $arShare = $this->findByPk(['participant_id' => $data['participant_id'], 'share_uid' => $data['share_uid']]);
+        $canEditShared = $this->canEditSharedParticipant($data['participant_id']);
+        $isOwner = $ownerid['owner_uid'] == $userId;
+
+        if ($ownerid['owner_uid'] == $data['share_uid'] || (!$permission && !$canEditShared && !$isOwner && !$isSuperAdmin && !$hasUpdatePermission)) {
+            ls\ajax\AjaxHelper::outputNoPermission();
             return;
         }
         if (is_null($arShare)) {
@@ -374,6 +389,29 @@ class ParticipantShare extends LSActiveRecord
     public function getOwnerName()
     {
         return $this->participant->owner->full_name;
+    }
+
+    /**
+     * Returns true if the user is allowed to edit the participant
+     *
+     * @param $participent_id
+     *
+     * @return boolean
+     */
+    public function canEditSharedParticipant($participent_id)
+    {
+        $participent = $this->findByAttributes(
+            ['participant_id' => $participent_id],
+            'can_edit = :can_edit AND share_uid = :userid',
+            [
+                ':userid' => App()->user->id,
+                ':can_edit' => '1'
+            ]
+        );
+        if ($participent) {
+            return true;
+        }
+        return false;
     }
 
 }

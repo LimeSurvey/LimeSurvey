@@ -20,7 +20,7 @@
 
     <?php echo $form->errorSummary($model); ?>
 
-    <?php echo $form->hiddenField($model,'owner_uid'); ?>
+    <?php echo $form->hiddenField($model,'owner_id'); ?>
     <?php echo $form->hiddenField($model,'gsid'); ?>
 
     <?php if($model->isNewRecord): ?>
@@ -67,4 +67,3 @@
 
 </div><!-- form -->
 </div>
-

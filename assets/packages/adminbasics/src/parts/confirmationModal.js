@@ -2,6 +2,7 @@
  * Neccessary methods for the confirmation modal
  */
 import _ from 'lodash';
+import LOG from "../components/lslog";
 
 const ConfirmationModal = function(e){
     //////PREGENERATED VARIABLES
@@ -27,10 +28,12 @@ const ConfirmationModal = function(e){
     },
     //Generate a simple link on the ok button
     _basicLink = () => {
+        LOG.log('Binding basicLink in notification panel');
         $(_this).find('.btn-ok').attr('href', options.href);
     },
     //Evaluate a function on ok button click
     _onClickFunction = () => {
+        LOG.log('Binding onClick-functions in notification panel');
         const onclick_fn = eval(options.onclick);
         if (typeof onclick_fn == 'function') {
             $(_this).find('.btn-ok').off('click');
@@ -41,11 +44,12 @@ const ConfirmationModal = function(e){
             });
             return
         }
-        console.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
+        LOG.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
         return;
     },
     //Set up an ajax call and regenerate a gridView on ok button click
     _ajaxHandler = () => {
+        LOG.log('Binding ajax handler in notification panel');
         $(_this).find('.btn-ok').on('click', function(ev) {
             $.ajax({
                 type: "POST",
@@ -80,7 +84,7 @@ const ConfirmationModal = function(e){
             _ajaxHandler();
             return;
         }
-        console.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
+        LOG.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
     };
 
     //////RUN BINDINGS
@@ -93,6 +97,7 @@ const ConfirmationModal = function(e){
 };
 
 const loadMethods = ()=>{
+    LOG.log('ConfirmationModal calling');
     $('#confirmation-modal').on('show.bs.modal', function(e) {
         ConfirmationModal.call(this,e);
     });

@@ -243,8 +243,6 @@ class pdf extends TCPDF
         $this->_config = $tcpdf;
         unset($tcpdf);
 
-
-
         # set the TCPDF system constants
         foreach ($this->cfg_constant_map as $const => $cfgkey) {
             if (!defined($const)) {
@@ -272,7 +270,7 @@ class pdf extends TCPDF
         #$this->print_header = FALSE;
         $this->setHeaderFont(array($this->_config['header_font'], '', $this->_config['header_font_size']));
         $this->setHeaderMargin($this->_config['header_margin']);
-        $this->SetHeaderData();
+        //$this->SetHeaderData();
         //$this->SetHeaderData(
         //	$this->_config['header_logo'],
         //	$this->_config['header_logo_width'],
@@ -306,7 +304,7 @@ class pdf extends TCPDF
 
     /**
      *
-     * 
+     *
      * @param string $text
      * @param $format
      * @deprecated
@@ -364,7 +362,8 @@ class pdf extends TCPDF
         $maxwidth = $this->getEqualWidth($array);
         $oldStyle = $this->FontStyle;
         $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             for ($b = 0; $b < sizeof($array[$a]); $b++) {
                 $this->Cell($maxwidth, 4, $this->delete_html($array[$a][$b]), 0, 0, 'L');
             }
@@ -378,14 +377,15 @@ class pdf extends TCPDF
      * Creates a Table with equal cell width.
      * @param $array - table array( 0=> array("td", "td", "td"),
      * 								1=> array("td", "td", "td"))
-     * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
+     * @param integer $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
      * @return void
      */
     public function equalTable($array, $modulo = 1)
     {
         $maxwidth = $this->getEqualWidth($array);
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 0; } else {$fill = 1; }
             } else {$fill = 0; }
@@ -412,11 +412,13 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 0; } else {$fill = 1; }
             } else {$fill = 0; }
-            for ($b = 0; $b < sizeof($array[$a]); $b++) {
+            $subArraySize = sizeof($array[$a]);
+            for ($b = 0; $b < $subArraySize; $b++) {
                 //echo $maxwidth[$b]." max $b.Spalte<br/>";
                 $this->Cell($maxwidth[$b], 4, $this->delete_html($array[$a][$b]), 0, 0, 'L', $fill);
             }
@@ -441,7 +443,9 @@ class pdf extends TCPDF
         $maxwidth = $this->getFullWidth($array);
 
         $this->SetFillColor(220, 220, 220);
-        for ($a = 0; $a < sizeof($array); $a++) {
+        $iHeight = 0;
+        $arraySize = sizeof($array);
+        for ($a = 0; $a < $arraySize; $a++) {
             if ($modulo) {
                 if ($a % 2 === 0) {$fill = 1; } else {$fill = 0; }
             } else {$fill = 0; }
@@ -491,7 +495,8 @@ class pdf extends TCPDF
     public function getminwidth($array)
     {
         $width = array();
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 $stringWidth = 0;
                 $chars = str_split($this->delete_html($array[$i][$j]), 1);
@@ -512,7 +517,8 @@ class pdf extends TCPDF
     }
     public function getmaxwidth($array)
     {
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (($i - 1) >= 0) {
                     if (strlen($this->delete_html($array[($i - 1)][$j])) < strlen($this->delete_html($array[$i][$j]))) {
@@ -542,7 +548,8 @@ class pdf extends TCPDF
         $fullWidth = ($this->GetLineWidth() * 1000) - $deadSpace;
         $faktor = $fullWidth / array_sum($width);
 
-        for ($i = 0; $i < sizeof($width); $i++) {
+        $arraySize = sizeof($width);
+        for ($i = 0; $i < $arraySize; $i++) {
             $maxlength[$i] = $faktor * $width[$i];
         }
         return $maxlength;
@@ -552,7 +559,7 @@ class pdf extends TCPDF
      * gets the width for each column in tables, based on pagewidth and count of columns.
      * Good for static tables with equal value String-length
      * @param $array
-     * @return unknown_type
+     * @return mixed
      */
     public function getEqualWidth($array)
     {
@@ -561,7 +568,8 @@ class pdf extends TCPDF
 
         $width = ($this->GetLineWidth() * 1000) - $deadSpace;
         $count = 0;
-        for ($i = 0; $i < sizeof($array); $i++) {
+        $arraySize = sizeof($array);
+        for ($i = 0; $i < $arraySize; $i++) {
             for ($j = 0; $j < sizeof($array[$i]); $j++) {
                 if (sizeof($array[$i]) > $count) {
                     $count = sizeof($array[$i]);
@@ -589,11 +597,11 @@ class pdf extends TCPDF
     /**
      *
      * Create Answer PDF document, set metadata and set title
-     * @param $aSurveyInfo - Survey Information (preventing from passing to methods every time)
-     * @param $aPdfLanguageSettings - Pdf language settings
-     * @param $sSiteName - LimeSurvey site name (header and metadata)
-     * @param $sSurveyName - Survey name (header, metadata and title),
-     * @param $sDefaultHeaderString - TCPDF header string
+     * @param array $aSurveyInfo - Survey Information (preventing from passing to methods every time)
+     * @param array $aPdfLanguageSettings - Pdf language settings
+     * @param string $sSiteName - LimeSurvey site name (header and metadata)
+     * @param string $sSurveyName - Survey name (header, metadata and title),
+     * @param string $sDefaultHeaderString - TCPDF header string
      * @return void
      */
     public function initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, $sSiteName, $sSurveyName, $sDefaultHeaderString = '')
@@ -623,12 +631,13 @@ class pdf extends TCPDF
     /**
      *
      * Add title to pdf
-     * @param $sTitle - Title
-     * @param $sSubtitle - Subtitle
+     * @param string $sTitle - Title
+     * @param string $sSubtitle - Subtitle
      * @return void
      */
     public function addTitle($sTitle, $sSubtitle = "")
     {
+      if (getGlobalSetting('pdfshowsurveytitle') == 'Y') {
         if (!empty($sTitle)) {
             $this->ln(1);
             $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
@@ -644,24 +653,27 @@ class pdf extends TCPDF
             $this->ln(6);
             $this->SetFontSize($this->_ibaseAnswerFontSize);
         }
+      }
+
     }
 
     /**
      *
      * Add header to pdf
-     * @param $aPdfLanguageSettings - Pdf language settings
-     * @param $sSiteName - LimeSurvey site name (header and metadata)
-     * @param $sDefaultHeaderString - TCPDF header string
+     * @param array $aPdfLanguageSettings - Pdf language settings
+     * @param string $sSiteName - LimeSurvey site name (header and metadata)
+     * @param string $sDefaultHeaderString - TCPDF header string
      * @return void
      */
     public function addHeader($aPdfLanguageSettings, $sSiteName, $sDefaultHeaderString)
     {
 
-        $oTemplate = Template::model()->getInstance();
+        $oTemplate = Template::getLastInstance();
         $sLogoFileName = $oTemplate->filesPath.Yii::app()->getConfig('pdflogofile');
-        if (!file_exists(K_PATH_IMAGES.$sLogoFileName)) {
+        if (!file_exists($sLogoFileName)) {
             $sLogoFileName = '';
         }
+
         if (Yii::app()->getConfig('pdfshowheader') == 'Y') {
             $sHeaderTitle = Yii::app()->getConfig('pdfheadertitle');
             if ($sHeaderTitle == '') {
@@ -675,6 +687,79 @@ class pdf extends TCPDF
             $this->SetHeaderData($sLogoFileName, Yii::app()->getConfig('pdflogowidth'), $sHeaderTitle, $sHeaderString);
             $this->SetHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', $this->_ibaseAnswerFontSize - 2));
             $this->SetFooterFont(Array($aPdfLanguageSettings['pdffont'], '', $this->_ibaseAnswerFontSize - 2));
+        }
+    }
+
+    public function Header() {
+        if ($this->header_xobjid === false) {
+            // start a new XObject Template
+            $this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);
+            $headerfont = $this->getHeaderFont();
+            $headerdata = $this->getHeaderData();
+            $this->y = $this->header_margin;
+            if ($this->rtl) {
+                $this->x = $this->w - $this->original_rMargin;
+            } else {
+                $this->x = $this->original_lMargin;
+            }
+
+            if (($headerdata['logo']) AND ($headerdata['logo'] != K_BLANK_IMAGE)) {
+                $imgtype = TCPDF_IMAGES::getImageFileType(K_PATH_IMAGES.$headerdata['logo']);
+                if (($imgtype == 'eps') OR ($imgtype == 'ai')) {
+                    $this->ImageEps($headerdata['logo'], '', '', $headerdata['logo_width']);
+                } elseif ($imgtype == 'svg') {
+                    $this->ImageSVG($headerdata['logo'], '', '', $headerdata['logo_width']);
+                } else {
+                    $this->Image($headerdata['logo'], '', '', $headerdata['logo_width']);
+                }
+                $imgy = $this->getImageRBY();
+            } else {
+                $imgy = $this->y;
+            }
+            $cell_height = $this->getCellHeight($headerfont[2] / $this->k);
+            // set starting margin for text data cell
+            if ($this->getRTL()) {
+                $header_x = $this->original_rMargin + ($headerdata['logo_width'] * 1.1);
+            } else {
+                $header_x = $this->original_lMargin + ($headerdata['logo_width'] * 1.1);
+            }
+            $cw = $this->w - $this->original_lMargin - $this->original_rMargin - ($headerdata['logo_width'] * 1.1);
+            $this->SetTextColorArray($this->header_text_color);
+            // header title
+            $this->SetFont($headerfont[0], 'B', $headerfont[2] + 1);
+            $this->SetX($header_x);
+            $this->Cell($cw, $cell_height, $headerdata['title'], 0, 1, '', 0, '', 0);
+            // header string
+            $this->SetFont($headerfont[0], $headerfont[1], $headerfont[2]);
+            $this->SetX($header_x);
+            $this->MultiCell($cw, $cell_height, $headerdata['string'], 0, '', 0, 1, '', '', true, 0, false, true, 0, 'T', false);
+            // print an ending header line
+            $this->SetLineStyle(array('width' => 0.85 / $this->k, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $headerdata['line_color']));
+            $this->SetY((2.835 / $this->k) + max($imgy, $this->y));
+            if ($this->rtl) {
+                $this->SetX($this->original_rMargin);
+            } else {
+                $this->SetX($this->original_lMargin);
+            }
+            $this->Cell(($this->w - $this->original_lMargin - $this->original_rMargin), 0, '', 'T', 0, 'C');
+            $this->endTemplate();
+        }
+        // print header template
+        $x = 0;
+        $dx = 0;
+        if (!$this->header_xobj_autoreset AND $this->booklet AND (($this->page % 2) == 0)) {
+            // adjust margins for booklet mode
+            $dx = ($this->original_lMargin - $this->original_rMargin);
+        }
+        if ($this->rtl) {
+            $x = $this->w + $dx;
+        } else {
+            $x = 0 + $dx;
+        }
+        $this->printTemplate($this->header_xobjid, $x, 0, 0, 0, '', '', false);
+        if ($this->header_xobj_autoreset) {
+            // reset header xobject template at each page
+            $this->header_xobjid = false;
         }
     }
 
@@ -717,12 +802,12 @@ class pdf extends TCPDF
      *
      * Add answer to PDF
      *
-     * @param $sQuestion - Question field text array
-     * @param $sResponse - Answer field text array
-     * @param $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
+     * @param string $sQuestion - Question field text array
+     * @param string $sResponse - Answer field text array
+     * @param boolean $bReplaceExpressions - Try to replace LimeSurvey Expressions. This is false when exporting answers PDF from admin GUI
      *                               because we can not interpret expressions so just purify.
      *                               TODO: Find a universal valid method to interpret expressions
-     * @param $bAllowBreakPage - Allow break cell in two pages
+     * @param boolean $bAllowBreakPage - Allow break cell in two pages
      * @return void
      */
     public function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)

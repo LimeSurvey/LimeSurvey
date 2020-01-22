@@ -36,85 +36,87 @@ class PrintanswersController extends LSYii_Controller
     public $aGlobalData = array();
 
 
-    /**
-     * printanswers::view()
-     * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
-     * @param mixed $surveyid
-     * @param bool $printableexport
-     * @return
-     */
-    function actionView($surveyid, $printableexport = false)
-    {
-        Yii::app()->loadHelper("frontend");
-        Yii::import('application.libraries.admin.pdf');
-        $survey = Survey::model()->findByPk($surveyid);
-        $iSurveyID = $survey->sid;
-        $sExportType = $printableexport;
+        /**
+         * printanswers::view()
+         * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
+         * @param mixed $surveyid
+         * @param bool $printableexport
+         * @return
+         */
+        function actionView($surveyid, $printableexport = false)
+        {
+            Yii::app()->loadHelper("frontend");
+            Yii::import('application.libraries.admin.pdf');
+            $survey = Survey::model()->findByPk($surveyid);
+            $iSurveyID = $survey->sid;
+            $sExportType = $printableexport;
 
-        Yii::app()->loadHelper('database');
+            Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION['survey_'.$iSurveyID]['sid'])) {
-            $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
-        } else {
-            //die('Invalid survey/session');
-        }
-        // Get the survey inforamtion
-        // Set the language for dispay
-        if (isset($_SESSION['survey_'.$iSurveyID]['s_lang'])) {
-            $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
-        } elseif (Survey::model()->findByPk($iSurveyID)) {
-            // survey exist
-            $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        } else {
-            $iSurveyID = 0;
-            $sLanguage = Yii::app()->getConfig("defaultlang");
-        }
-        SetSurveyLanguage($iSurveyID, $sLanguage);
-        Yii::import('application.helpers.SurveyRuntimeHelper');
-        $SurveyRuntimeHelper = new SurveyRuntimeHelper();
-        $SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
-        $aSurveyInfo = getSurveyInfo($iSurveyID, $sLanguage);
-        $oTemplate = Template::model()->getInstance(null, $iSurveyID);
-        /* Need a Template function to replace this line */
-        //Yii::app()->clientScript->registerPackage( 'survey-template' );
+            if (isset($_SESSION['survey_'.$iSurveyID]['sid'])) {
+                $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
+            } else {
+                //die('Invalid survey/session');
+            }
+            // Get the survey inforamtion
+            // Set the language for dispay
+            if (isset($_SESSION['survey_'.$iSurveyID]['s_lang'])) {
+                $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
+            } elseif ($survey) {
+                // survey exist
+            {
+                $sLanguage = $survey->language;
+            }
+            } else {
+                $iSurveyID = 0;
+                $sLanguage = Yii::app()->getConfig("defaultlang");
+            }
+            SetSurveyLanguage($iSurveyID, $sLanguage);
+            Yii::import('application.helpers.SurveyRuntimeHelper');
+            $SurveyRuntimeHelper = new SurveyRuntimeHelper();
+            $SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
+            $aSurveyInfo = getSurveyInfo($iSurveyID, $sLanguage);
+            $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+            /* Need a Template function to replace this line */
+            //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        //Survey is not finished or don't exist
-        if (!isset($_SESSION['survey_'.$iSurveyID]['srid'])) {
+            //Survey is not finished or don't exist
+            if (!isset($_SESSION['survey_'.$iSurveyID]['srid'])) {
 
-            //display "sorry but your session has expired"
-            $this->sTemplate = $oTemplate->sTemplateName;
-            $error = $this->renderPartial("/survey/system/errorWarning", array(
-                'aErrors'=>array(
-                    gT("We are sorry but your session has expired."),
-                ),
-            ), true);
-            $message = $this->renderPartial("/survey/system/message", array(
-                'aMessage'=>array(
-                    gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
-                ),
-            ), true);
-            /* Set the data for templatereplace */
-            $aReplacementData['title'] = 'session-timeout';
-            $aReplacementData['message'] = $error."<br/>".$message;
+                //display "sorry but your session has expired"
+                $this->sTemplate = $oTemplate->sTemplateName;
+                $error = $this->renderPartial("/survey/system/errorWarning", array(
+                    'aErrors'=>array(
+                        gT("We are sorry but your session has expired."),
+                    ),
+                ), true);
+                $message = $this->renderPartial("/survey/system/message", array(
+                    'aMessage'=>array(
+                        gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
+                    ),
+                ), true);
+                /* Set the data for templatereplace */
+                $aReplacementData['title'] = 'session-timeout';
+                $aReplacementData['message'] = $error."<br/>".$message;
 
-            $aData = array();
-            $aData['aSurveyInfo'] = getSurveyInfo($iSurveyID);
-            $aData['aError'] = $aReplacementData;
+                $aData = array();
+                $aData['aSurveyInfo'] = getSurveyInfo($iSurveyID);
+                $aData['aError'] = $aReplacementData;
 
-            Yii::app()->twigRenderer->renderTemplateFromFile('layout_errors.twig', $aData, false);
-            // $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
-            // $this->render("/survey/system/display",array('content'=>$content));
-            // App()->end();
-        }
-        //Fin session time out
-        $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
-        //Ensure script is not run directly, avoid path disclosure
-        //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
+                Yii::app()->twigRenderer->renderTemplateFromFile('layout_errors.twig', $aData, false);
+                // $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+                // $this->render("/survey/system/display",array('content'=>$content));
+                // App()->end();
+            }
+            //Fin session time out
+            $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
+            //Ensure script is not run directly, avoid path disclosure
+            //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
-        //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
-        if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
-            throw new CHttpException(401, gT('You are not allowed to print answers.'));
-        }
+            //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
+            if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) {
+                throw new CHttpException(401, gT('You are not allowed to print answers.'));
+            }
 
         //CHECK IF SURVEY IS ACTIVATED AND EXISTS
         $sSurveyName = $aSurveyInfo['surveyls_title'];
@@ -128,9 +130,9 @@ class PrintanswersController extends LSYii_Controller
         // Remove all <script>...</script> content from result.
         Yii::import('application.helpers.viewHelper');
         foreach ($groupArray as &$group) {
-            $group['description'] = viewHelper::flatEllipsizeText($group['description'], true, 0);
+            $group['description'] = viewHelper::purified($group['description']);
             foreach ($group['answerArray'] as &$answer) {
-                $answer['question'] = viewHelper::flatEllipsizeText($answer['question'], true, 0);
+                $answer['question'] = viewHelper::purified($answer['question']);
             }
         }
 
@@ -178,8 +180,8 @@ class PrintanswersController extends LSYii_Controller
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 
-            header("Pragma: public");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
+            
             $sExportFileName = sanitize_filename($sSurveyName);
             $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf", "D");
             LimeExpressionManager::FinishProcessingGroup();

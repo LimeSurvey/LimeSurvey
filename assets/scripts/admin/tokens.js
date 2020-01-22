@@ -349,12 +349,11 @@ var startEditToken = function(){
     var $that       = $(this),
         $sid        = $that.data('sid'),
         $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url'),
+        $actionUrl  = $that.data('url') || $that.attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
         $oldModalBody   = $modalBody.html();
-
     $ajaxLoader.show();
     $modal.modal('show');
     // Ajax request
@@ -418,6 +417,7 @@ var startEditToken = function(){
             console.ls.error(html);
         }
     });
+    return false;
 };
 
 var conditionid=1;

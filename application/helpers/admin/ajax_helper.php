@@ -100,6 +100,7 @@ class AjaxHelper
     {
         header('Content-Type: application/json');
         echo $str;
+        \Yii::app()->end();
     }
 }
 

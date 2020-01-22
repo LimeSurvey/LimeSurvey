@@ -33,6 +33,7 @@
                     {% for i, anslang in anslangs %}
                         <div id='tabpage_{{ anslang }}' class='tab-page tab-pane fade in {% if i==0 %}active{% endif %}'>
                             {% for scale_id in range(0,scalecount-1) %}
+
                                  {% set result = results[anslang][scale_id] %}
                                  {% set anscount = result|length %}
                                 {# TODO : check the rendering of XSCALES / Y SCALES #}
@@ -85,7 +86,7 @@
                                                 {% if first %}
                                                     {% if scale_id == 0 %}
                                                         <th id='rel-eq-th' class='col-md-1'>
-                                                            {{ gT("Relevance equation") }}
+                                                            {{ gT("Condition") }}
                                                         </th>
                                                     {% endif %}
                                                     <th class="col-md-1">
@@ -106,7 +107,7 @@
                                                 {% endif %}
 
                                                 <th class='col-md-8'>
-                                                    {{ gT("Answer option") }}
+                                                    {{ gT("Answer options") }}
                                                 </th>
 
                                                 <th class='col-md-1'>
@@ -131,9 +132,9 @@
                                                     'surveyid'  : surveyid,
                                                     'gid'       : gid,
                                                     'qid'       : row.qid,
-                                                    'language'  : row.language,
+                                                    'language'  : anslang,
                                                     'title'     : row.title,
-                                                    'question'  : row.question,
+                                                    'question'  : row.questionL10ns[anslang].question,
                                                     'relevance' : row.relevance,
                                                     'oldCode'   : true,
                                                 } %}
@@ -148,10 +149,10 @@
                                                     'surveyid'          : surveyid,
                                                     'gid'               : gid,
                                                     'qid'               : qid,
-                                                    'language'          : row.language,
+                                                    'language'          : anslang,
                                                     'assessment_value'  : row.assessment_value,
                                                     'sortorder'         : row.sortorder,
-                                                    'answer'            : row.answer,
+                                                    'answer'            : row.answerL10ns[anslang].answer,
                                                     'oldCode'   : true,
                                                 } %}
 
@@ -201,8 +202,10 @@
                     {% endfor %}
 
                     <!--   Modals   -->
-                    {% include 'admin/survey/Question/question_subviews/_modals.twig' %}
-
+                    {% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+                        {% include '/admin/survey/Question/question_subviews/_modals.twig' %}
+                    {% endif %}
+ 
                     <p>
                         <input type='submit' class="hidden" id='saveallbtn_{{ anslang }}' name='method' value='{{ gT("Save changes") }}' />
                         <!-- For javascript -->
@@ -218,7 +221,7 @@
                                     'gid' : gid
                                 })
                             ) }}"
-                            data-assessmentvisible="{% if assessmentvisible|length and assessmentvisible==true%}1{% else %}0{% endif %}"
+                            data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
                             data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="{{ surveyid }}"
                             data-languages='{{ json_encode(all_languages) }}'
@@ -230,5 +233,3 @@
 
                 </div>
                 <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
-
-            

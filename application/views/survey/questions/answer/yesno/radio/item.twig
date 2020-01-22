@@ -14,7 +14,7 @@
 
 <ul class="{{ coreClass }} list-unstyled form-inline" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Yes -->
-    <li id="javatbd{{ name }}Y"  class="form-group answer-item radio-item">
+    <li id="javatbd{{ name }}Y"  class="answer-item radio-item">
         <input
             type="radio"
             name="{{ name }}"
@@ -28,7 +28,7 @@
     </li>
 
     <!-- No -->
-    <li id="javatbd{{ name }}N"  class="form-group answer-item radio-item">
+    <li id="javatbd{{ name }}N"  class="answer-item radio-item">
         <input
             type="radio"
             name="{{ name }}"
@@ -43,7 +43,7 @@
 
     <!-- No answer -->
     {% if noAnswer %}
-        <li id="javatbd{{ name }}"  class="form-group answer-item radio-item noanswer-item">
+        <li id="javatbd{{ name }}"  class="answer-item radio-item noanswer-item">
             <input
                 type="radio"
                 name="{{ name }}"

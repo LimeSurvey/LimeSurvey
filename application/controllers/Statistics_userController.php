@@ -49,9 +49,11 @@ class Statistics_userController extends SurveyController
     }
 
     /**
-     * @param int $surveyid
+     * @param int    $surveyid
      * @param string $language
+     *
      * @throws CHttpException
+     * @throws CException
      */
     public function actionAction($surveyid, $language = null)
     {
@@ -60,7 +62,7 @@ class Statistics_userController extends SurveyController
 
         $this->sLanguage = $language;
 
-        $iSurveyID = (int) $survey->sid;
+        $iSurveyID = (int)$survey->sid;
         $this->iSurveyID = $survey->sid;
 
         //$postlang = returnglobal('lang');
@@ -73,7 +75,7 @@ class Statistics_userController extends SurveyController
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         } else {
-            $iSurveyID = (int) $iSurveyID;
+            $iSurveyID = (int)$iSurveyID;
         }
         if (!$iSurveyID) {
             //This next line ensures that the $iSurveyID value is never anything but a number.
@@ -109,23 +111,25 @@ class Statistics_userController extends SurveyController
         //True -> include
         //False -> forget about charts
         if (isset($publicgraphs) && $publicgraphs == 1) {
-            require_once(APPPATH.'third_party/pchart/pChart.class.php');
-            require_once(APPPATH.'third_party/pchart/pData.class.php');
-            require_once(APPPATH.'third_party/pchart/pCache.class.php');
+            require_once(APPPATH . 'third_party/pchart/pChart.class.php');
+            require_once(APPPATH . 'third_party/pchart/pData.class.php');
+            require_once(APPPATH . 'third_party/pchart/pCache.class.php');
 
-            $MyCache = new pCache(Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR);
+            $MyCache = new pCache(Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR);
             //$currentuser is created as prefix for pchart files
             if (isset($_SERVER['REDIRECT_REMOTE_USER'])) {
                 $currentuser = $_SERVER['REDIRECT_REMOTE_USER'];
-            } else if (session_id()) {
-                $currentuser = substr(session_id(), 0, 15);
             } else {
-                $currentuser = "standard";
+                if (session_id()) {
+                    $currentuser = substr(session_id(), 0, 15);
+                } else {
+                    $currentuser = "standard";
+                }
             }
         }
         // Set language for questions and labels to base language of this survey
-        if ($sLanguage == null || !in_array($sLanguage, Survey::model()->findByPk($iSurveyID)->getAllLanguages())) {
-            $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        if ($sLanguage == null || !in_array($sLanguage, $survey->allLanguages)) {
+            $sLanguage = $survey->language;
         } else {
             $sLanguage = sanitize_languagecode($sLanguage);
         }
@@ -140,51 +144,31 @@ class Statistics_userController extends SurveyController
         $data['condition'] = $condition;
         $data['thisSurveyCssPath'] = $thisSurveyCssPath;
 
-        /*
-         * only show questions where question attribute "public_statistics" is set to "1"
-         */
 
-        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa
-                    WHERE g.gid = q.gid AND g.language = :lang1 AND q.language = :lang2 AND q.sid = :surveyid AND q.qid = qa.qid AND q.parent_qid = 0 AND qa.attribute = 'public_statistics'";
-        $databasetype = Yii::app()->db->getDriverName();
-        if ($databasetype == 'mssql' || $databasetype == "sqlsrv" || $databasetype == "dblib") {
-            $query .= " AND CAST(CAST(qa.value as varchar) as int)='1'\n";
-        } else {
-            $query .= " AND qa.value='1'\n";
-        }
+        // ---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
+        // only show questions where question attribute "public_statistics" is set to "1"
+        $questions = Question::model()->with(['group' => ['alias' => 'g'], 'questionAttributes' => ['alias' => 'qa']])->findAll([
+            'condition' => 't.sid = :surveyid AND t.parent_qid = :parent_qid AND qa.attribute = :attribute AND qa.value = :value',
+            'params'    => [':surveyid' => $iSurveyID, ':parent_qid' => 0, ':attribute' => 'public_statistics', ':value' => '1'],
+            'order'     => 'g.group_order, t.question_order'
+        ]);
 
-        //execute query
-        $result = Yii::app()->db->createCommand($query)->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)->bindParam(":surveyid", $iSurveyID, PDO::PARAM_INT)->queryAll();
-
-        //store all the data in $rows
-        $rows = $result;
-
-
-        //SORT IN NATURAL ORDER!
-        usort($rows, 'groupOrderThenQuestionOrder');
-
-        //put the question information into the filter array
-        $filters = array();
-        foreach ($rows as $row) {
-            //store some column names in $filters array
-            $filters[] = array($row['qid'],
-            $row['gid'],
-            $row['type'],
-            $row['title'],
-            $row['group_name'],
-            flattenText($row['question']));
-        }
+        //...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
+        $allfields = [];
+        // check if there are any question with public statistics
+        if (isset($questions)) {
+            $allfields = $this->createSGQA($questions);
+        }// end if -> for removing the error message in case there are no filters
+        $summary = $allfields;
 
         //number of records for this survey
         $totalrecords = 0;
-
         //count number of answers
-        $query = "SELECT count(*) FROM ".$survey->responsesTableName;
-
+        $query = "SELECT count(*) FROM " . $survey->responsesTableName;
         //if incompleted answers should be filtert submitdate has to be not null
         //this setting is taken from config-defaults.php
         if (Yii::app()->getConfig("filterout_incomplete_answers") == true) {
-            $query .= " WHERE ".$survey->responsesTableName.".submitdate is not null";
+            $query .= " WHERE " . $survey->responsesTableName . ".submitdate is not null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
 
@@ -193,37 +177,8 @@ class Statistics_userController extends SurveyController
             $totalrecords = reset($row);
         }
 
-        //...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
-        $allfields = array();
-
-        //---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
-
-        /*
-         * let's go through the filter array which contains
-         *     ['qid'],
-         ['gid'],
-         ['type'],
-         ['title'],
-         ['group_name'],
-         ['question'];
-                 */
-
-        $currentgroup = '';
-        // use to check if there are any question with public statistics
-        if (isset($filters)) {
-            $allfields = $this->createSGQA($filters);
-        }// end if -> for removing the error message in case there are no filters
-
-        $summary = $allfields;
-
-        // Get the survey inforamtion
-        $thissurvey = getSurveyInfo($surveyid, $sLanguage);
-
         //SET THE TEMPLATE DIRECTORY
         //---------- CREATE STATISTICS ----------
-
-
-
         //some progress bar stuff
 
         // Create progress bar which is shown while creating the results
@@ -255,7 +210,6 @@ class Statistics_userController extends SurveyController
         $data['summary'] = $summary;
         //show some main data at the beginnung
         // CHANGE JSW_NZ - let's allow html formatted questions to show
-
 
         //push progress bar from 35 to 40
         $process_status = 40;
@@ -293,7 +247,7 @@ class Statistics_userController extends SurveyController
             //~ $prb->hide();
         }
 
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'statistics_user.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
         $this->layout = "public";
         $this->render('/statistics_user_view', $data);
 
@@ -304,109 +258,112 @@ class Statistics_userController extends SurveyController
     /**
      * Create SGQA of all questions which use "public_statistics"
      * Assumes this->sLanguage and this->iSurveyID is set.
+     *
      * @param array $filters
+     *
      * @return array
+     * @throws CException
      */
     public function createSGQA(array $filters)
     {
         $allfields = array();
 
+        /**
+         * @var $flt Question
+         */
         foreach ($filters as $flt) {
             //SGQ identifier
-            $myfield = $this->iSurveyID.'X'.$flt[1].'X'.$flt[0];
+            $type = $flt['type'];
+            $SGQidentifier = $this->iSurveyID . 'X' . $flt->gid . 'X' . $flt->qid;
 
             //let's switch through the question type for each question
-            switch ($flt[2]) {
-                case "K": // Multiple Numerical
-                case "Q": // Multiple Short Text
-                    //get answers
-                    $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-
-                    //go through all the (multiple) answers
-                    foreach ($result as $row) {
-                        $myfield2 = $flt[2].$myfield.reset($row);
-                        $allfields[] = $myfield2;
+            switch ($type) {
+                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
+                    $results = Question::model()->with('questionL10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
+                    ]);
+                    foreach ($results as $row) {
+                        $allfields[] = $flt->type . $SGQidentifier . $row->title;
                     }
                     break;
-                case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-                case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case "C": // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-                case "F": // FlEXIBLE ARRAY
-                case "H": // ARRAY (By Column)
-                    //get answers
-                    $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-
-                    //go through all the (multiple) answers
-                    foreach ($result as $row) {
-                        $myfield2 = $myfield.reset($row);
-                        $allfields[] = $myfield2;
+                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
+                case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
+                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+                    $results = Question::model()->with('questionL10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
+                    ]);
+                    foreach ($results as $row) {
+                        $allfields[] = $SGQidentifier . $row->title;
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
-                case "T": // Long free text
-                case "U": // Huge free text
-                case "S": // Short free text
-                    $myfield = "T".$myfield;
-                    $allfields[] = $myfield;
+                case Question::QT_T_LONG_FREE_TEXT: // Long free text
+                case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
+                case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+                    $allfields = "T" . $SGQidentifier;
                     break;
-                case ";":  //ARRAY (Multi Flex) (Text)
-                case ":":  //ARRAY (Multi Flex) (Numbers)
-                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-                    foreach ($result as $row) {
-                        $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
-                        $fresult = Yii::app()->db->createCommand($fquery)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-                        foreach ($fresult as $frow) {
-                            $myfield2 = $myfield.reset($row)."_".$frow['title'];
-                        $allfields[] = $myfield2;
-                    }
+                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
+                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
+                    $resultsScale0 = Question::model()->with('questionL10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale:id',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid, ':scale_id' => 0],
+                        'order'     => 'question_order'
+                    ]);
+                    $resultsScale1 = Question::model()->with('questionL10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale:id',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid, ':scale_id' => 1],
+                        'order'     => 'question_order'
+                    ]);
+                    foreach ($resultsScale0 as $rowScale0) {
+                        foreach ($resultsScale1 as $rowScale1) {
+                            $allfields[] = $SGQidentifier . reset($rowScale0) . "_" . $rowScale1['title'];
+                        }
                     }
                     break;
-                case "R": //RANKING
-                    //get some answers
-                    $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-
-                    //get number of answers
-                    $count = count($result);
-
+                case Question::QT_R_RANKING_STYLE: //RANKING
+                    $results = Question::model()->with('questionL10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
+                    ]);
+                    $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $myfield2 = "R".$myfield.$i."-".strlen($i);
-                        $allfields[] = $myfield2;
+                        $allfields[] = $flt->type . $SGQidentifier . $i . "-" . strlen($i);
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                case "X":  //This is a boilerplate question and it has no business in this script
+                case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
                     break;
-                case "1": // MULTI SCALE
-                    //get answers
-                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
-                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-
+                case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
+                    $results = Question::model()->with('questionL10ns')->findAll([
+                        'condition' => 'language=:language AND parent_qid=:parent_qid',
+                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
+                        'order'     => 'question_order'
+                    ]);
                     //loop through answers
-                    foreach ($result as $row) {
-                        //----------------- LABEL 1 ---------------------
-                        $myfield2 = $myfield.$row['title']."#0";
-                        $allfields[] = $myfield2;
-                        //----------------- LABEL 2 ---------------------
-                        $myfield2 = $myfield.$row['title']."#1";
-                        $allfields[] = $myfield2;
+                    foreach ($results as $row) {
+                        $allfields[] = $SGQidentifier . $row['title'] . "#0";
+                        $allfields[] = $SGQidentifier . $row['title'] . "#1";
                     }    //end WHILE -> loop through all answers
                     break;
 
-                case "P":  //P - Multiple choice with comments
-                case "M":  //M - Multiple choice
-                case "N":  //N - Numerical input
-                case "D":  //D - Date
-                    $myfield2 = $flt[2].$myfield;
-                    $allfields[] = $myfield2;
+                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
+                case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
+                case Question::QT_N_NUMERICAL:  //N - Numerical input
+                case Question::QT_D_DATE:  //D - Date
+                    $allfields[] = $flt->type . $SGQidentifier;
                     break;
                 default:   //Default settings
-                    $allfields[] = $myfield;
+                    $allfields[] = $SGQidentifier;
                     break;
 
             }    //end switch -> check question types and create filter forms

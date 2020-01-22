@@ -27,7 +27,7 @@ jQuery has trouble finding the width/height of invisible DOM elements. With elem
 
 ## Requires
 
-- jQuery 1.2.3 ~ 1.8.0
+- jQuery >= 1.2.3
 
 
 
@@ -89,6 +89,10 @@ Example code:
     // please see demo/css3pie in action
     $( '.hidden' ).actual( 'width', { clone : true });
 
+    // if it is not a block element. By default { display: 'block' }.
+    // for example a inline element
+    $( '.hidden' ).actual( 'width', { display: 'inline-block' });
+
 
 
 ## Credits
@@ -97,6 +101,10 @@ Example code:
 - [Jon Tara](https://github.com/jtara)
 - [Matt Hinchliffe](https://github.com/i-like-robots)
 - [Ryan Millikin](https://github.com/dhamma)
+- [Jacob Quant](https://github.com/jacobq)
+- [ejn](https://github.com/ejn)
+- [Rudolf](https://github.com/qakovalyov)
+- [jamesallchin](https://github.com/jamesallchin)
 
 
 

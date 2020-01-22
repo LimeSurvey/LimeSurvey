@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/components/subcomponents/_uploadModal.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">All files</a> / <a href="index.html">src/components/subcomponents</a> _uploadModal.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">6.67% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">6.67% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/15</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+&lt;script&gt;
+&nbsp;
+import vue2Dropzone from 'vue2-dropzone'
+&nbsp;
+export default {
+    name: 'UploadModal',
+    components: {
+        'vue-dropzone': vue2Dropzone,
+    },
+    props: {},
+    data(){
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            dropzoneOptions: {
+                url: window.FileManager.baseUrl+'uploadFile',
+                thumbnailWidth: 200,
+                addRemoveLinks: true
+            }
+        };
+    },
+    methods: {
+        fileAdded(file) {
+            
+        },
+        applyFolderAndData(file, xhr, formData){
+<span class="cstat-no" title="statement not covered" >            formData.append(LS.data.csrfTokenName, LS.data.csrfToken);</span>
+<span class="cstat-no" title="statement not covered" >            formData.append('folder', this.$store.state.currentFolder);</span>
+<span class="cstat-no" title="statement not covered" >            const surveyId = LS.reparsedParameters().combined.surveyid;</span>
+<span class="cstat-no" title="statement not covered" >            if(surveyId != undefined) {</span>
+<span class="cstat-no" title="statement not covered" >                formData.append('surveyid', surveyId);</span>
+            }
+        },
+        onErrorHandler(error) {
+<span class="cstat-no" title="statement not covered" >            this.$log.error('error =&gt; ', error);</span>
+<span class="cstat-no" title="statement not covered" >            let errorMessage = this.translate("File could not be uploaded");</span>
+<span class="cstat-no" title="statement not covered" >            try {</span>
+<span class="cstat-no" title="statement not covered" >                const jsonResponse = JSON.parse(error.xhr.response);</span>
+<span class="cstat-no" title="statement not covered" >                errorMessage = jsonResponse.message;</span>
+            } catch(e) {
+<span class="cstat-no" title="statement not covered" >                this.$log.error(error);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            window.LS.notifyFader(</span>
+                errorMessage,
+                'well-lg bg-danger text-center'
+            );
+        },
+        onCompleteHandler(response) {
+<span class="cstat-no" title="statement not covered" >            this.$emit('close');</span>
+        }
+    }
+}
+&lt;/script&gt;
+&nbsp;
+&lt;template&gt;
+    &lt;div class="panel panel-default ls-flex-column fill"&gt;
+        &lt;div class="panel-heading"&gt;
+            &lt;div class="pagetitle h3"&gt;{{'Upload a file' | translate}} &lt;/div&gt;
+            &lt;div&gt; &lt;b&gt;{{'Allowed file formats' | translate}}&lt;/b&gt;: &lt;/div&gt;
+            &lt;div&gt; {{'File formats' | translate}}. &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="panel-body ls-flex-column grow-1 fill"&gt;
+            &lt;vue-dropzone 
+                ref="fileUploaderDropzone" 
+                id="FileUploader--dropzone" 
+                v-on:vdropzone-sending="applyFolderAndData" 
+                v-on:vdropzone-error="onErrorHandler"
+                v-on:vdropzone-complete="onCompleteHandler"
+                :options="dropzoneOptions" 
+                :useCustomSlot="true"
+                :uploadMultiple="true"
+                class="FileUpload--dropzone"
+            &gt;
+                &lt;div class="dropzone-custom-content"&gt;
+                    &lt;h3&gt;{{"Drag and drop here, or click once to start uploading" | translate}}&lt;/h3&gt;
+                    &lt;p&gt;{{"File is uploaded to currently selected folder" | translate}}&lt;/p&gt;
+                    &lt;p&gt;{{"A .zip archive will be automatically unpacked on the server" | translate}}&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/vue-dropzone&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;    
+&lt;/template&gt;
+&nbsp;
+&lt;style scoped&gt;
+    .FileUpload--dropzone {
+        height: 100%;
+    }
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jan 20 2020 18:19:02 GMT+0100 (Central European Standard Time)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

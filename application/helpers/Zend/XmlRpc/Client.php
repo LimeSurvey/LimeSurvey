@@ -20,7 +20,6 @@
  * @version    $Id: Client.php 24159 2011-06-28 12:30:56Z adamlundrigan $
  */
 
-
 /**
  * For handling the HTTP connection to the XML-RPC service
  * @see Zend_Http_Client

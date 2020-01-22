@@ -17,15 +17,9 @@ $categoryNum=0;
         <?php endif; ?>
         <div class="panel panel-default panel-advancedquestionsettings">
             <div class="panel-heading" role="tab">
-                <div class="panel-title h4">
-                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                        <span class="fa fa-chevron-left"></span>
-                        <span class="sr-only"><?php eT("Expand/Collapse");?></span>
-                    </a>
-                    <a id="button-collapse<?php echo $categoryNum ?>" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
-                        <?php echo $aAttribute['category']; ?>
-                    </a>
-                </div>
+                <a class="panel-title h4 selector--questionEdit-collapse" id="button-collapse<?php echo $categoryNum ?>"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
+                    <?php echo $aAttribute['category']; ?>
+                </a>
             </div>
             <div id="collapse-cat<?php echo $categoryNum ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="button-collapse<?php echo $categoryNum ?>">
                 <div class="panel-body">
@@ -40,13 +34,16 @@ $categoryNum=0;
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
-            ?>:
+            ?>
+            <?php if (!empty($aAttribute['help'])): ?>
             <a class="text-primary show-help" data-toggle="collapse" href="#help<?php echo $aAttribute['name'];?>" aria-expanded="false" aria-controls="help<?php echo $aAttribute['name'];?>" aria-hidden=true>
                 <span class="fa fa-info-circle" ></span>
             </a>
+            <?php endif; ?>
         </label>
+        <?php if (!empty($aAttribute['help'])): ?>
         <p class="help-block collapse" id="help<?php echo $aAttribute['name'];?>"><?php echo $aAttribute['help'];?></p>
-
+        <?php endif; ?>
         <!-- Input -->
         <div class="">
             <?php
@@ -173,6 +170,7 @@ $categoryNum=0;
             </div>
         </div>
 <?php endforeach;?>
+<input type='hidden' name='advancedquestionsettingsLoaded' value="ok" />
  </div></div></div></div>
 <?php
 /* Launch all needed script (here after load) needed for widget */

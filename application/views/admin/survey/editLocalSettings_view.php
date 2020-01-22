@@ -33,7 +33,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                         <?php eT("Survey title:"); ?>
                     </label>
                     <div class="">
-                        <?php echo CHtml::textField("short_title_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_title'],array('class'=>'form-control','size'=>"80",'id'=>"short_title_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
+                        <?php echo CHtml::textField("short_title_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_title'],array('class'=>'form-control','size'=>"80",'maxlength'=>200,'id'=>"short_title_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <div class="form-group">
                     <label class="control-label "><?php eT("URL description:"); ?></label>
                     <div class="">
-                        <?php echo CHtml::textField("urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_urldescription'],array('class'=>'form-control','size'=>"80",'id'=>"urldescrip_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
+                        <?php echo CHtml::textField("urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_urldescription'],array('class'=>'form-control','size'=>"80",'maxlength'=>255,'id'=>"urldescrip_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                     </div>
                 </div>
 

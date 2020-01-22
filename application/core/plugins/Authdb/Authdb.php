@@ -33,22 +33,38 @@ class Authdb extends AuthPluginBase
      */
     public function createNewUser()
     {
-        // Do nothing if the user to be added is not DB type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
+        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return;
         }
+
         $oEvent = $this->getEvent();
-        $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
-        $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
-        if (!validateEmailAddress($new_email)) {
+        $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+
+        if(empty($preCollectedUserArray)) {
+            // Do nothing if the user to be added is not DB type
+            if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
+                return;
+            }
+            $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
+            $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
+            $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
+            $presetPassword = null;
+        } else {
+            $new_user = flattenText($preCollectedUserArray['users_name']);
+            $new_email = flattenText($preCollectedUserArray['email']);
+            $new_full_name = flattenText($preCollectedUserArray['full_name']);
+            $presetPassword = flattenText($preCollectedUserArray['password']);
+        }
+        
+        if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
             $oEvent->set('errorMessageBody', gT("The email address is not valid."));
             return;
         }
-        $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
-        $new_pass = createPassword();
-        $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+
+        $new_pass = $presetPassword === null ? createPassword() : $presetPassword;
+        $iNewUID = User::insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
         if (!$iNewUID) {
             $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle', '');
@@ -56,7 +72,7 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        Permission::model()->setGlobalPermission($iNewUID, 'auth_db');
+        @Permission::model()->setGlobalPermission($iNewUID, 'auth_db');
 
         $oEvent->set('newUserID', $iNewUID);
         $oEvent->set('newPassword', $new_pass);
@@ -105,8 +121,8 @@ class Authdb extends AuthPluginBase
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', $sUserName, array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', $sPassword, array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', $sUserName, array('size'=>240, 'maxlength'=>240, 'class'=>"form-control"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', $sPassword, array('size'=>240, 'maxlength'=>240, 'class'=>"form-control"))));
     }
 
     public function newUserSession()

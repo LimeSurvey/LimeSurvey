@@ -12,11 +12,15 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 <?php eT("Central participant management"); ?>
             </div>
             <div class="col-xs-4 text-right">
-                <button class="btn btn-default" id="addParticipantToCPP">
-                    <i class="fa fa-plus-circle text-success"></i> 
-                    &nbsp;
-                    <?php eT("Add new participant"); ?>
-                </button>
+                <?php if (
+                    Permission::model()->hasGlobalPermission('superadmin', 'read')
+                    || Permission::model()->hasGlobalPermission('participantpanel', 'create')
+                ): ?>
+                    <button class="btn btn-default" id="addParticipantToCPP">
+                        <i class="fa fa-plus-circle text-success"></i>&nbsp;
+                        <?php eT("Add new participant"); ?>
+                    </button>
+                <?php endif; ?>
             </div>
         </div>
     <div class="row" style="margin-bottom: 100px">
@@ -30,7 +34,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                             . "<div class='col-xs-12'>"
                                     . gT("Active filters:")
                                 . "<span class=''>&nbsp;&nbsp;</span>"
-                                . "<button id='removeAllFilters' class='btn btn-warning btn-xs'>".gT("Remove filters")."</button>"
+                                . "<button id='removeAllFilters' class='btn btn-warning btn-xs' data_url='".App()->createUrl("admin/participants/sa/displayParticipants")."'>".gT("Remove filters")."</button>"
                             . "</div>"
                         . "</div>";
                 $i=0;
@@ -85,7 +89,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                     'htmlOptions' => array('class'=> 'table-responsive'),
                     'itemsCssClass' => 'table table-responsive table-striped',
                     'filter'=>$model,
-                    'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
+                    'afterAjaxUpdate' => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
                     'ajaxType' => 'POST',
                     'beforeAjaxUpdate' => 'insertSearchCondition',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",

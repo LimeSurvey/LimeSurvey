@@ -19,9 +19,8 @@
                 <p>
                     <ul>
                         <?php
-                        foreach ($aImportedFilesInfo as $entry)
-                        {
-                            echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
+                        foreach ($aImportedFilesInfo as $entry) {
+                            echo CHtml::tag('li', array(), sprintf(gT("File: %s"),CHtml::encode($entry["filename"])));
                         }
                         ?>
                     </ul>
@@ -55,9 +54,8 @@
                     <p>
                         <ul>
                             <?php
-                            foreach ($aImportedFilesInfo as $entry)
-                            {
-                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
+                            foreach ($aImportedFilesInfo as $entry) {
+                                echo CHtml::tag('li', array(), sprintf(gT("File: %s"),CHtml::encode($entry["filename"])));
                             }
                             ?>
                         </ul>
@@ -67,9 +65,8 @@
                     </p>
                     <p>
                         <?php
-                            foreach ($aErrorFilesInfo as $entry)
-                            {
-                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+                            foreach ($aErrorFilesInfo as $entry) {
+                                echo CHtml::tag('li', array(), sprintf(gT("File: %s (%s)"),CHtml::encode($entry["filename"]),$entry['status']));
                             }
                         ?>
                         </ul>
@@ -102,9 +99,8 @@
                     </p>
                     <p>
                         <?php
-                            foreach ($aErrorFilesInfo as $entry)
-                            {
-                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+                            foreach ($aErrorFilesInfo as $entry) {
+                                echo CHtml::tag('li', array(), sprintf(gT("File: %s (%s)"),CHtml::encode($entry["filename"]),$entry['status']));
                             }
                         ?>
                         </ul>

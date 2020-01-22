@@ -77,7 +77,7 @@ const ConfirmDeleteModal = function (options) {
                 formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
             }
 
-            formObject.append('<input name="YII_CSRF_TOKEN" value="' + LS.data.csrfToken + '" type="hidden" />');
+            formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
             modalObject.find('.modal-body').append(formObject)
             modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 
@@ -115,7 +115,7 @@ const ConfirmDeleteModal = function (options) {
                     }
 
                     if (onSuccess) {
-                        var func = eval(onSuccess);
+                        var func = new Function(onSuccess);
                         func(html);
                         return;
                     }

@@ -26,14 +26,13 @@ class RSyntaxWriter extends Writer
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_".$survey->id."_R_syntax_file.R");
             header("Content-type: application/download; charset=UTF-8");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
+            header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {
             $this->handle = fopen($this->filename, 'w');
         }
 
-        $this->out('data <- read.csv("survey_'.$survey->id.'_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE, fileEncoding="UTF-8")');
+        $this->out('data <- read.csv("survey_'.$survey->id.'_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE, fileEncoding="UTF-8-BOM")');
         $this->out("");
         $this->out("");
 
@@ -61,8 +60,10 @@ class RSyntaxWriter extends Writer
     {
         $this->headers = $oOptions->selectedColumns;
         foreach ($oOptions->selectedColumns as $id => $title) {
+            if (!isset($this->customFieldmap[$title])) {
+                continue;
+            }
             $field = $this->customFieldmap[$title];
-
             if (!isset($field['answers'])) {
                 $strTmp = mb_substr(stripTagsFull($values[$id]), 0, $this->maxLength);
 
@@ -86,6 +87,9 @@ class RSyntaxWriter extends Writer
     {
         $errors = '';
         foreach ($this->headers as $id => $title) {
+            if (!isset($this->customFieldmap[$title])){
+                continue;
+            }
             $field = $this->customFieldmap[$title];
             $i = $id + 1;
             if ($field['SPSStype'] == 'DATETIME23.2') {

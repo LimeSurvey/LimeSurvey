@@ -62,39 +62,10 @@ echo viewHelper::getViewTestTag('themeEditor');
         <!-- Left Menu -->
         <div class="col-md-5">
 
-            <!-- Import -->
+
             <?php $importModal=false;?>
             <?php if(is_writable($tempdir)):?>
-                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
-                    <?php if (is_writable($userthemerootdir) && function_exists("zip_open")):?>
-                        <?php $importModal=true;?>
-                        <a class="btn btn-default" id="button-import" href="" role="button" data-toggle="modal" data-target="#importModal">
-                            <span class="icon-import text-success"></span>
-                            <?php eT("Import"); ?>
-                        </a>
-                        <?php else:
-                        if (function_exists("zip_open")){
-                            $sMessage=gT("The theme upload directory doesn't exist or is not writable.");
-                        }
-                        else{
-                            $sMessage=gT("You do not have the required ZIP library installed in PHP.");
-                        }
-                        ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                            <button type="button" id="button-import" class="btn btn-default btntooltip" disabled="disabled">
-                                <span class="icon-import text-success"></span>
-                                <?php eT("Import"); ?>
-                            </button>
-                        </span>
-                        <?php endif;?>
-                    <?php else: ?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
-                        <button type="button" id="button-import" class="btn btn-default btntooltip" disabled="disabled">
-                            <span class="icon-import text-success"></span>
-                            <?php eT("Import"); ?>
-                        </button>
-                    </span>
-                    <?php endif;?>
+
 
                 <!-- Export -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
@@ -102,7 +73,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
                     </a>
-                    <?php endif;?>
+                <?php endif;?>
 
                 <!-- Copy -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
@@ -177,10 +148,16 @@ echo viewHelper::getViewTestTag('themeEditor');
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                    <a class="btn btn-default" id="button-delete" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
-                        <span class="fa fa-trash  text-warning"></span>
-                        <?php eT("Delete"); ?>
-                    </a>
+                    <a
+                        id="button-delete"
+                        href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/delete/'); ?>"
+                        data-post='{ "templatename": "<?php echo $templatename; ?>" }'
+                        data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                        title="<?php eT('Delete'); ?>"
+                        class="btn btn-danger selector--ConfirmModal">
+                            <span class="fa fa-trash "></span>
+                            <?php eT('Delete'); ?>
+                        </a>
                     <?php endif;?>
                 <?php endif;?>
         </div>
@@ -232,7 +209,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 </div>
 
 <?php if($importModal):?>
-    <?php $this->renderPartial('themeoptions/import_modal',[]); ?>
+    <?php $this->renderPartial('themeoptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
 <?php endif;?>
 
 <div class="col-lg-12 templateeditor">
@@ -251,7 +228,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             ?>
         </div>
     <?php endif;?>
-    <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
+    <?php if(intval($templateapiversion) < intval(App()->getConfig("templateapiversion")) ):?>
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <div class="h4">

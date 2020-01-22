@@ -154,6 +154,6 @@ class ConsoleShim {
     }
 }
 
-const adminCoreLSConsole = new ConsoleShim('AdminCore');
+const adminCoreLSConsole = new ConsoleShim('AdminCore', (window.debugState ? window.debugState.backend : false)); //!window.debugState.backend);
 
 export default adminCoreLSConsole;

@@ -63,7 +63,7 @@
   font-style: italic;
 }
 .grid-view.grid-view-loading {
-  background: url(../img/loader.gif) no-repeat 100% 10px;
+  background: url(img/loader.gif) no-repeat 100% 10px;
 }
 .grid-view.grid-view-loading .table {
   opacity: 0.5;

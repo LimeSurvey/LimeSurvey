@@ -56,13 +56,15 @@
                         </div>
                     </div>
 
+                    <!-- Relevance Equation -->
                     <div class="form-group">
-                        <label class="control-label " id="relevance-group"><?php eT("Relevance equation:"); ?></label>
-                        <div class="">
-                            <?php echo CHtml::textArea("grelevance",$aGroupData[$aBaseLanguage]['grelevance'],array('class'=>'form-control','cols'=>'20','rows'=>'1','id'=>"grelevance")); ?>
+                        <label class="control-label " id="relevance-group"><?php eT("Condition:"); ?></label>
+                        <div class="input-group">
+                          <div class="input-group-addon">{</div>
+                            <?php  echo CHtml::textArea("grelevance",$aGroupData[$aBaseLanguage]['grelevance'],array('class'=>'form-control','cols'=>'20','rows'=>'1','id'=>"grelevance")); ?>
+                            <div class="input-group-addon">}</div>
+                          </div>
                         </div>
-                    </div>
-
                     <input type="submit" class="btn btn-primary hidden" value="Save" role="button" aria-disabled="false">
                 </form>
             </div>

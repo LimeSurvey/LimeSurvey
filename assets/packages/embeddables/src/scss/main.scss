@@ -1,0 +1,23 @@
+oembed {
+    display: block;
+    background: grey;
+    &>.svgcontainer {
+        min-height:400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        align-self: center;
+        &>svg {
+            &:hover {
+                fill: #efefef;
+            }
+            width: 120px;
+        }
+    }
+}
+
+oembed, embed {
+    min-height: 400px;
+}

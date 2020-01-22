@@ -127,16 +127,19 @@ class CHttpRequest extends CApplicationComponent
 	protected function normalizeRequest()
 	{
 		// normalize request
-		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
+		if(version_compare(PHP_VERSION,'7.4.0','<'))
 		{
-			if(isset($_GET))
-				$_GET=$this->stripSlashes($_GET);
-			if(isset($_POST))
-				$_POST=$this->stripSlashes($_POST);
-			if(isset($_REQUEST))
-				$_REQUEST=$this->stripSlashes($_REQUEST);
-			if(isset($_COOKIE))
-				$_COOKIE=$this->stripSlashes($_COOKIE);
+			if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
+			{
+				if(isset($_GET))
+					$_GET=$this->stripSlashes($_GET);
+				if(isset($_POST))
+					$_POST=$this->stripSlashes($_POST);
+				if(isset($_REQUEST))
+					$_REQUEST=$this->stripSlashes($_REQUEST);
+				if(isset($_COOKIE))
+					$_COOKIE=$this->stripSlashes($_COOKIE);
+			}
 		}
 
 		if($this->enableCsrfValidation)
@@ -539,9 +542,7 @@ class CHttpRequest extends CApplicationComponent
 	{
 		if($this->_requestUri===null)
 		{
-			if(isset($_SERVER['HTTP_X_REWRITE_URL'])) // IIS
-				$this->_requestUri=$_SERVER['HTTP_X_REWRITE_URL'];
-			elseif(isset($_SERVER['REQUEST_URI']))
+			if(isset($_SERVER['REQUEST_URI']))
 			{
 				$this->_requestUri=$_SERVER['REQUEST_URI'];
 				if(!empty($_SERVER['HTTP_HOST']))
@@ -1028,6 +1029,21 @@ class CHttpRequest extends CApplicationComponent
 	}
 
 	/**
+	 * String compare function used by usort.
+	 * Included to circumvent the use of closures (not supported by PHP 5.2) and create_function (deprecated since PHP 7.2.0)
+	 * @param array $a
+	 * @param array $b
+	 * @return int -1 (a>b), 0 (a==b), 1 (a<b)
+	 */
+	private function stringCompare($a, $b)
+	{
+		if ($a[0] == $b[0]) {
+			return 0;
+		}
+		return ($a[0] < $b[0]) ? 1 : -1;
+	}
+
+	/**
 	 * Returns an array of user accepted languages in order of preference.
 	 * The returned language IDs will NOT be canonicalized using {@link CLocale::getCanonicalID}.
 	 * @return array the user accepted languages in the order of preference.
@@ -1051,7 +1067,7 @@ class CHttpRequest extends CApplicationComponent
 						$languages[]=array((float)$q,$matches[1][$i]);
 				}
 
-				usort($languages,function($a,$b) {if($a[0]==$b[0]) {return 0;} return ($a[0]<$b[0]) ? 1 : -1;});
+				usort($languages, array($this, 'stringCompare'));
 				foreach($languages as $language)
 					$sortedLanguages[]=$language[1];
 			}
@@ -1510,7 +1526,9 @@ class CCookieCollection extends CMap
 		$value=$cookie->value;
 		if($this->_request->enableCookieValidation)
 			$value=Yii::app()->getSecurityManager()->hashData(serialize($value));
-		if(version_compare(PHP_VERSION,'5.2.0','>='))
+		if(version_compare(PHP_VERSION,'7.3.0','>='))
+			setcookie($cookie->name,$value,$this->getCookieOptions($cookie));
+		elseif(version_compare(PHP_VERSION,'5.2.0','>='))
 			setcookie($cookie->name,$value,$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else
 			setcookie($cookie->name,$value,$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure);
@@ -1522,9 +1540,29 @@ class CCookieCollection extends CMap
 	 */
 	protected function removeCookie($cookie)
 	{
-		if(version_compare(PHP_VERSION,'5.2.0','>='))
-			setcookie($cookie->name,'',0,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
+		$cookie->expire=0;
+		if(version_compare(PHP_VERSION,'7.3.0','>='))
+			setcookie($cookie->name,'',$this->getCookieOptions($cookie));
+		elseif(version_compare(PHP_VERSION,'5.2.0','>='))
+			setcookie($cookie->name,'',$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure,$cookie->httpOnly);
 		else
-			setcookie($cookie->name,'',0,$cookie->path,$cookie->domain,$cookie->secure);
+			setcookie($cookie->name,'',$cookie->expire,$cookie->path,$cookie->domain,$cookie->secure);
+	}
+
+	/**
+	 * Builds the setcookie $options parameter.
+	 * @param CHttpCookie $cookie
+	 * @return array
+	 */
+	protected function getCookieOptions($cookie)
+	{
+		return array(
+			'expires'=>$cookie->expire,
+			'path'=>$cookie->path,
+			'domain'=>$cookie->domain,
+			'secure'=>$cookie->secure,
+			'httpOnly'=>$cookie->httpOnly,
+			'sameSite'=>$cookie->sameSite
+		);
 	}
 }

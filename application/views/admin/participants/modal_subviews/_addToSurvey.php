@@ -24,7 +24,9 @@
                 <div class='col-sm-8'>
                     <select name='survey_id' class='form-control'>
                         <?php foreach ($surveys as $survey): ?>
-                            <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?></option>
+                            <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
+                                <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?></option>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -33,7 +35,7 @@
         <div class="row ls-space margin top-10 bottom-10">
             <div class='form-group'>
                 <label class='control-label col-sm-4'>
-                    <?php eT('Display survey tokens after adding?'); ?>
+                    <?php eT('Display survey participants after adding?'); ?>
                 </label>
                 <div class='col-sm-8'>
                     <!--<input type='checkbox' name='redirect' />-->

@@ -15,7 +15,7 @@
 <tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %} ls-odd{% else %} ls-even{% endif %}{%
  if error %} ls-error-mandatory has-error{% endif %}" role="radiogroup"  aria-labelledby="answertext{{ myfname }}">
     <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
-        {{ answertext }}
+        {{ processString(answertext) }}
         
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~myfname,value,({
@@ -24,16 +24,20 @@
         }))
         }}
     </th>
-    
+
+        {% for aAnswerColumn in aAnswerColumns %}
+            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aAnswerColumn only %}
+        {% endfor %}
         {# Defined in answer_td view #}
-        {{ answer_tds }}
     
     {% if right_exists %}
-        <th class='answertextright information-item{% if answerwidth==0 %} sr-only{% endif %}'>{{ answertextright }}</th>
+        <th class='answertextright information-item{% if answerwidth==0 %} sr-only{% endif %}'>{{ processString(answertextright) }}</th>
     {% endif %}
     
         {# No answer should come after right text at bipolar question #}
-         {{ no_answer_td }}
+        {% if aNoAnswerColumn is not empty %}
+            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aNoAnswerColumn only %}
+        {% endif %}
     
 </tr>
 <!-- end of answer_row -->

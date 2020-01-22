@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <!-- Metadata -->
+    <metadata>
+        <name>date</name>
+        <type>question_theme</type>
+        <title>Date/Time</title>
+        <creationDate>09/08/2018</creationDate>
+        <author>Dominik Vitt</author>
+        <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Date/Time question type configuration</description>
+        <questionType>D</questionType>
+        <group>Mask questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>1</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>date</class>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <!--
+        List of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename></filename>
+        </css>
+        <js>
+            <filename></filename>
+        </js>
+        <preview>
+            <filename></filename>
+        </preview>
+    </files>
+
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+        <attribute>other</attribute>
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <attribute>clear_default</attribute>
+        <attribute>preg</attribute>
+    </generalattributes>
+
+    <!-- Question attributes -->
+    <attributes>
+        <!-- Display Attributes START -->
+        <attribute>
+            <name>reverse</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Present answer options in reverse order</help>
+            <caption>Reverse answer order</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hide_tip</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide the tip that is normally shown with a question</help>
+            <caption>Hide tip</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>cssclass</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
+                may use expressions - remember this part is static.
+            </help>
+            <caption>CSS class(es)</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>printable_help</name>
+            <category>Display</category>
+            <sortorder>201</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <default></default>
+            <help>In the printable version the condition is being replaced with this explanation text.</help>
+            <caption>Relevance help for printable survey</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>dropdown_dates</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Use accessible dropdown boxes instead of calendar popup</help>
+            <caption>Display dropdown boxes</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>dropdown_dates_month_style</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Short names</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Full names</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Numbers</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Change the display style of the month when using select boxes</help>
+            <caption>Month display style</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>date_min</name>
+            <category>Display</category>
+            <sortorder>110</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression
+                Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date
+                use variable not in same page.
+            </help>
+            <caption>Minimum date</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>date_max</name>
+            <category>Display</category>
+            <sortorder>111</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example).
+                Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is
+                restricted if date use variable not in same page.
+            </help>
+            <caption>Maximum date</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <!-- Display Attributes END -->
+        <!-- Logic Attributes START -->
+        <attribute>
+            <name>random_group</name>
+            <category>Logic</category>
+            <sortorder>180</sortorder>
+            <inputtype>text</inputtype>
+            <help>Place questions into a specified randomization group, all questions included in the specified
+                group will appear in a random order
+            </help>
+            <caption>Randomization group name</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>em_validation_q</name>
+            <category>Logic</category>
+            <sortorder>200</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>2</expression>
+            <help>Enter a boolean equation to validate the whole question.</help>
+            <caption>Question validation equation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_q_tip</name>
+            <category>Logic</category>
+            <sortorder>210</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>This is a hint text that will be shown to the participant describing the question validation
+                equation.
+            </help>
+            <caption>Question validation tip</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <!-- Logic Attributes END -->
+        <!-- Other Attributes START -->
+        <attribute>
+            <name>page_break</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <caption>Insert page break in printable view</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Other Attributes END -->
+        <!-- Statistics Attributes START -->
+        <attribute>
+            <name>statistics_showgraph</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>101</sortorder>
+            <options>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+            </options>
+            <help>Display a chart in the statistics?</help>
+            <caption>Display chart</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>statistics_graphtype</name>
+            <category>Statistics</category>
+            <inputtype>singleselect</inputtype>
+            <sortorder>102</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Bar chart</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Pie chart</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Radar</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Line</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>PolarArea</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>Doughnut</text>
+                </option>
+            </options>
+            <help>Select the type of chart to be displayed</help>
+            <caption>Chart type</caption>
+            <default>0</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Statistics Attributes END -->
+        <!-- Timer Attributes START -->
+        <!-- Timer Attributes END -->
+        <!-- Input Attributes START -->
+        <attribute>
+            <name>date_format</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Specify a custom date/time format (the &amp;lt;i&amp;gt;d/dd m/mm yy/yyyy H/HH M/MM&amp;lt;/i&amp;gt;
+                formats and &amp;quot;-./: &amp;quot; characters are allowed for day/month/year/hour/minutes without or
+                with leading zero respectively. Defaults to survey&amp;#039;s date format
+            </help>
+            <caption>Date/Time format</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>dropdown_dates_minute_step</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default>1</default>
+            <help>Minute step interval when using select boxes</help>
+            <caption>Minute step interval</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Input Attributes END -->
+    </attributes>
+
+    <!-- Core question js/css configuration -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

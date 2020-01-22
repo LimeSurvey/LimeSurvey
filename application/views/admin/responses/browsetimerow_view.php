@@ -39,7 +39,7 @@
         'itemsCssClass' => 'table-striped',
         'htmlOptions' => array('class' => 'time-statistics-table'),
 
-        'ajaxUpdate' => true,
+        'ajaxUpdate' => 'time-grid',
         'afterAjaxUpdate' => 'window.LS.doToolTip',
 
         // Number of row per page selection

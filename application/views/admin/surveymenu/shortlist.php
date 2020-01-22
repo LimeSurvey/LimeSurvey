@@ -22,7 +22,7 @@
 
 					'itemsCssClass' =>'table table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
-					'ajaxUpdate' => true
+					'ajaxUpdate' => 'surveymenu-shortlist-grid'
 				));
 			?>
 			</div>

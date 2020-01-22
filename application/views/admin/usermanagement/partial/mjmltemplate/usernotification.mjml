@@ -1,0 +1,134 @@
+<mjml>
+  <mj-head>
+    <mj-font name="Open Sans" href="https://fonts.googleapis.com/css?family=Open+Sans"></mj-font>
+    <mj-title> <mj-raw><?=$surveyapplicationname?></mj-raw></mj-title>
+    <mj-attributes>
+      <mj-all font-family="Open Sans" font-size="18px" line-height="1.8"></mj-all>
+    </mj-attributes>
+  </mj-head>
+  <mj-body width="1920px" background-color="#fff">
+    <mj-wrapper full-width="full-width">
+      <mj-section>
+        <mj-column width="540px">
+          <mj-image width="320px" src="<?=$mainLogoFile?>"></mj-image>
+        </mj-column>
+      </mj-section>
+      <mj-raw>
+        <!-- Welcome message -->
+      </mj-raw>
+      <mj-section full-width="full-width" background-color="#dfeadd">
+        <mj-column width="540px">
+          <mj-text align="center"><mj-raw>
+              <?=$emailMessage?>
+            </mj-raw>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-raw>
+        <!-- Login Credentials -->
+      </mj-raw>
+      <mj-section full-width="full-width" background-color="#dfeadd">
+        <mj-column width="540px">
+          <mj-text align="center">
+            <mj-raw>
+              <?=$credentialsText?>
+            </mj-raw>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section full-width="full-width" background-color="#ffffff">
+        <mj-column>
+          <mj-text align="center">
+            <mj-raw>
+              <?=gT("Your username:")?>
+            </mj-raw>
+          </mj-text>
+          <mj-text align="center" font-weight="700">
+            <mj-raw>
+              <?=$username?>
+            </mj-raw>
+          </mj-text>
+        </mj-column>
+        <mj-raw>
+          <!-- ALTERNATIVES! -->
+        </mj-raw>
+      </mj-section>
+      <mj-raw>
+        <!-- <?php if ($showPasswordSection) { ?>  -->
+      </mj-raw>
+      <mj-section full-width="full-width" background-color="#ffffff">
+        <mj-raw>
+          <!-- <?php if ($showPassword) { ?>  -->
+        </mj-raw>
+        <mj-column>
+          <mj-text align="center">
+            <mj-raw>
+              <?=gT("Your password:")?>
+            </mj-raw>
+          </mj-text>
+          <mj-text align="center" font-weight="700">
+            <mj-raw>
+              <?=$password?>
+            </mj-raw>
+          </mj-text>
+        </mj-column>
+        <mj-raw>
+          <!-- ALTERNATIVES! -->
+        </mj-raw>
+        <mj-raw>
+          <!-- <?php } else { ?> -->
+        </mj-raw>
+        <mj-raw>
+          <!-- ALTERNATIVES! -->
+        </mj-raw>
+        <mj-column>
+          <mj-text align="center">
+            <mj-raw>
+              <?=gT("Please contact your LimeSurvey administrator for your password")?>
+            </mj-raw>
+          </mj-text>
+        </mj-column>
+        <mj-raw>
+          <!-- ALTERNATIVES END -->
+        </mj-raw>
+        <mj-raw>
+          <!-- <?php } ?> -->
+        </mj-raw>
+      </mj-section>
+      <mj-raw>
+        <!-- <?php } ?> -->
+      </mj-raw>
+      <mj-raw>
+        <!-- ADDITION START -->
+      </mj-raw>
+      <mj-section full-width="full-width" background-color="#ffffff">
+        <mj-column width="540px">
+          <mj-button background-color="#169100" href="<?=$linkToAdminpanel?>" width="320px">Login now</mj-button>
+        </mj-column>
+      </mj-section>
+      <mj-section full-width="full-width" background-color="#dfeadd">
+        <mj-column width="540px">
+          <mj-text align="center">
+            <mj-raw>
+              <?=sprintf(gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail"))?>
+            </mj-raw>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-raw>
+        <!-- ADDITION END -->
+      </mj-raw>
+      <mj-section>
+        <mj-column>
+          <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey" />
+        </mj-column>
+      </mj-section>
+      <mj-section full-width="full-width" background-color="#ffffff">
+        <mj-column width="540px">
+          <mj-text align="center">If the button above is not working, please copy this link into the address line of your browser</mj-text>
+          <mj-text align="center"><a class="regular-text" href="<?=$linkToAdminpanel?>"><mj-raw><?=$linkToAdminpanel?></mj-raw></a></mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

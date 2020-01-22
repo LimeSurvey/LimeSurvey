@@ -53,7 +53,6 @@
                             'header' => gT('Description'),
                             'name' => 'description',
                             'value'=> '$data->description',
-                            'type' => 'LongText',
                             'htmlOptions' => array('class' => 'col-md-5'),
                         ),
 
@@ -83,7 +82,7 @@
 
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                     'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                    'ajaxUpdate' => true,
+                    'ajaxUpdate' => 'usergroups-grid-mine',
                    ));
             ?>
         </div>
@@ -116,7 +115,7 @@
                     'columns' => $model->columns,
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                     'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                    'ajaxUpdate' => true,
+                    'ajaxUpdate' => 'usergroups-grid-belong-to',
                    ));
             }
             ?>

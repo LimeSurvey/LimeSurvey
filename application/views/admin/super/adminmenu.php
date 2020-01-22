@@ -26,7 +26,7 @@
 
     <!-- Only on xs screens -->
     <div class="collapse navbar-collapse pull-left hidden-sm  hidden-md hidden-lg" id="small-screens-menus">
-        <ul class="nav navbar-nav hidden-sm  hidden-md hidden-lg">
+        <ul class="nav navbar-nav hidden-sm  hidden-md hidden-lg small-screens-menus">
 
             <li><br/><br/></li>
             <!-- active surveys -->
@@ -54,24 +54,25 @@
         </ul>
     </div>
 
-    <div class="collapse navbar-collapse js-navbar-collapse pull-right">
+    <div class="collapse navbar-collapse js-navbar-collapse pull-right ls--selector--configuration-menu">
         <ul class="nav navbar-nav navbar-right">
 
-            <!-- Tutorial menu -->
-            <?php $this->renderPartial( "/admin/super/_tutorial_menu", []); ?>
+            <!-- Help menu -->
+            <?php $this->renderPartial( "/admin/super/_help_menu", []); ?>
             
             <!-- Configuration menu -->
             <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
-                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>"><span class="icon-list" ></span>
+                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                    <span class="fa fa-list" ></span>
                     <?php eT("Surveys");?>
                 </a>
             </li>
             <li class="dropdown dropdown-split-right">
-                <a style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="sr-only">Toggle Dropdown</span>
+                <a class="ls-space padding left-5 right-5" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="sr-only">Toggle Dropdown</span>
                     <span style="margin-left: 0px;" class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -79,21 +80,21 @@
                          <!-- Create a new survey -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
-                                 <?php eT("Create a new survey");?>
+                                 <?php eT("Create");?>
                              </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
                            <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
-                               <?php eT("Import a survey");?>
+                               <?php eT("Import");?>
                            </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
                            <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
-                               <?php eT("Copy a survey");?>
+                               <?php eT("Copy");?>
                            </a>
                          </li>
 
@@ -102,7 +103,7 @@
                          <!-- List surveys -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
-                                 <?php eT("List surveys");?>
+                                 <?php eT("List all");?>
                              </a>
                          </li>
 
@@ -177,4 +178,25 @@
 
         </ul>
     </div><!-- /.nav-collapse -->
+
+    <!-- Maintenance mode -->
+    <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft'){ ?>
+            <div class="collapse navbar-collapse js-navbar-collapse pull-right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                    <a class="text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>" >
+                            <span class="fa fa-warning" ></span>
+                            <?php eT("Maintenance mode is active!");?>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <?php } ?>
 </nav>
+<script type="text/javascript">
+    //show tooltips 
+    $('body').tooltip({
+        selector: '[data-toggle="tooltip"]'
+    });
+</script>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>expressionQuestionHelp</name>
+        <type>plugin</type>
+        <creationDate>2019-04-05</creationDate>
+        <last_update>2019-04-05</last_update>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.sondages.pro</authorUrl>
+        <version>1.0.0</version>
+        <license>GPL</license>
+        <description><![CDATA[Add QCODE.help for expression Manager.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

@@ -23,7 +23,7 @@
           <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
         </div>
         <div class="col-sm-2">
-          <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl(" admin/responses/sa/setSession/ ", array('unset'=>'true', 'sid'=>$surveyid)); ?>" role="button">
+          <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/setSession/", array('unset'=>'true', 'sid'=>$surveyid)); ?>" role="button">
             <?php eT("Reset");?>
           </a>
         </div>

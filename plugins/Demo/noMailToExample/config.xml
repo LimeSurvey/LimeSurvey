@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>noMailToExample</name>
+        <type>plugin</type>
+        <creationDate>2016-12-15</creationDate>
+        <last_update>2019-03-18</last_update>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.sondages.pro</authorUrl>
+        <version>0.0.2</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[deactivate mail send to @example.org or @example.com. A simple demo plugin for beforeEmail and related event.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

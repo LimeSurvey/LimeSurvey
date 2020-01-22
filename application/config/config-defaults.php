@@ -72,7 +72,7 @@ $config['allowexportalldb']          = 0; // 0 will only export prefixed tables 
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['shownoanswer']              = 1; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
+$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
@@ -85,10 +85,25 @@ $config['defaulttheme']              = 'fruity'; // This setting specifys the de
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
+$config['allowedfileuploads'] = [
+    //Documents
+    'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
+    //Images
+    'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif', 'svg',
+    //soundfiles
+    'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
+    //videos
+    'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
+];
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
+// File types allowed to be uploaded as plugin
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2,twig,php,html';
+
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
+
+$config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
 
 $config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
 //  2 = defined by Theme option (default)
@@ -380,6 +395,7 @@ $config['notsupportlanguages'] = array(
     );
 $config['pdffontsize']    = 9; //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P'; // Set L for Landscape or P for portrait format
+$config['pdfshowsurveytitle'] = 'Y'; // Show header in pdf answer export
 $config['pdfshowheader'] = 'N'; // Show header in pdf answer export
 $config['pdflogofile'] = 'logo_pdf.png'; // File name of logo for single answer export. Path is theme path, i.e. theme/default/logo_pdf.png.
                                             // If not found, resulting pdf doesn't have header. A large image implies slower pdf generation.
@@ -477,9 +493,7 @@ $config['showqnumcode'] = 'choose';
 * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
 * 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
 *		to fail in SSL is turned off)
-*	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
-*		running through SSL)
-*	'' =	do nothing (default)
+*	Any other string value = do nothing (default)
 *
 * DO NOT turn on secure unless you are sure SSL/HTTPS is working and
 * that you have a current, working, valid certificate. If you are
@@ -489,7 +503,7 @@ $config['showqnumcode'] = 'choose';
 * If LimeSurvey comes up as normal, then everything is fine. If you
 * get a page not found error or permission denied error then
 */
-$config['force_ssl'] = 'neither'; // DO not turn on unless you are sure your server supports SSL/HTTPS
+$config['force_ssl'] = 'off'; // DO not turn on unless you are sure your server supports SSL/HTTPS
 
 
 /**
@@ -508,13 +522,18 @@ $config['force_ssl'] = 'neither'; // DO not turn on unless you are sure your ser
 $config['ssl_emergency_override'] = false;
 
 /**
+* @var $ssl_disable_alert boolean disable alert for super admin
+*/
+$config['ssl_disable_alert'] = false;
+
+/**
 * Sets if any part of LimeSUrvey may be embedded in an iframe
 * Valid values are allow, sameorigin
-* Default: allow
-* Recommended: sameorigin
+* Default / Recommended: sameorigin
+* To disable the header, set it to allow
 * Using 'deny' is currently not supported as it will disable the theme editor preview and probably file upload.
 */
-$config['x_frame_options'] = 'allow';
+$config['x_frame_options'] = 'sameorigin';
 
 
 // Get your IP Info DB key from http://ipinfodb.com/
@@ -552,6 +571,24 @@ $config['characterset'] = 'auto';
 $config['iFileUploadTotalSpaceMB'] = 0;
 
 
+$config['uniq_upload_dir'] = false; // Use a single KCFinder upload directory for all surveys
+
+/**
+ * Allow to use a different MIME database for finfo_open
+ * @see https://www.php.net/manual/en/function.finfo-open.php
+ * Example : '/usr/share/misc/magic.mgc' for redhat based linux
+ */
+$config['magic_database'] = null;
+
+/**
+ * Allow to use a different magic file array 
+ * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
+ * This file must return a PHP array of extension by mimeTypes
+ * Example : https://github.com/LimeSurvey/LimeSurvey/blob/master/framework/utils/fileExtensions.php
+ */
+$config['magic_file'] = null;
+
+
 // defines if the CKeditor toolbar should be opened by default
 $config['ckeditexpandtoolbar'] = true;
 
@@ -570,6 +607,7 @@ $config['restrictToLanguages'] = '';
 * @var string
 */
 $config['RPCInterface'] = 'off';
+$config['add_access_control_header'] = 1;
 
 /**
 * This parameter sets the default session expiration time in seconds
@@ -601,6 +639,19 @@ $config['proxy_host_port'] = 80;
  */
 $config['forcedsuperadmin'] = array(1);
 
+/**
+ * Set when install a post 4.0, mysql engine before was always MyIsam
+ * Need to be set for old config.php file
+ */
+$config['mysqlEngine'] = "MyISAM";
+
+/** final theme set if default theme didn't exist. Updatebale only via PHP file
+ * if this theme didn't exist in standardthemerootdir and url : this can broke your instance.
+ * Choose vanilla since it's parent of other's core theme.
+ * @var string
+ */
+$config['defaultfixedtheme'] = 'vanilla';
+
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
@@ -631,23 +682,31 @@ $config['adminimageurl']          = $config['styleurl'].$config['admintheme'].'/
 $config['applicationurl']         = $config['publicurl'].'application/';
 $config['extensionsurl']          = $config['applicationurl'].'extensions/';
 $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/'; // Location of button bar files for admin script
+$config['userfontsurl']            = $config['uploadurl'].'/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
 $config['homedir']                  = $config['rootdir']; // The directory path of the admin scripts
+$config['configdir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config';
 $config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp"; // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."images"; // The directory path of the image directory
 $config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the standard themes
 $config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
+$config['corequestiontypedir']      = "application".DIRECTORY_SEPARATOR."views";
 $config['corequestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
 $config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir']; // The directory containing the core's question themes.
 $config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
 $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
+$config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user custom twig extensions
 $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; // The directory containing the user's question themes.
-$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
+$config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
+$config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
+$config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";
+//Overwrite files with the same name on upload?
+$config['overwritefiles'] = 'off';
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
@@ -673,6 +732,9 @@ $config['bounceaccountuser'] = '';
 
 // Question selector
 $config['defaultquestionselectormode'] = 'default';
+
+// Preselected Question Type
+$config['preselectquestiontype'] = 'T';
 
 // theme editor mode
 $config['defaultthemeteeditormode'] = 'default';
@@ -709,6 +771,20 @@ $config['pluginCoreList'] = [
 ];
 
 $config['pluginWhitelist'] = [];
+
+/* replaced in generated application/config/security.php if exist */
+$config['encryptionkeypair'] = '';
+$config['encryptionpublickey'] = '';
+$config['encryptionsecretkey'] = '';
+
+$config['passwordValidationRules'] = array(
+    'min' => 4,
+    'max' => 0,
+    'lower' => 0,
+    'upper' => 0,
+    'numeric' => 0,
+    'symbol' => 0,
+);
 
 return $config;
 //settings deleted

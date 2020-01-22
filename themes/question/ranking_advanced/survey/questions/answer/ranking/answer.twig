@@ -50,26 +50,30 @@
 </div>
 
 {% set script %}
-try{
- var ranking{{qId}} = new AdvancedRankingQuestion({
-        max_answers      : {{max_answers}},
-        min_answers      : {{min_answers}},
-        showpopups       : "{{showpopups}}",
-        samechoiceheight : "{{samechoiceheight}}",
-        samelistheight   : "{{samelistheight}}",
-        rankingName      : "{{rankingName}}",
-        questionId       : "{{qId}}",
-        numbersActive    : {{ ((show_number is same as('yes'))) ? 1 : 0 }},
-        withHandle       : {{ ((show_handle is same as('yes'))) ? 1 : 0 }}
-    });
- ranking{{qId}}.init()
-} catch(e){}
+    try{
+    var ranking{{qId}} = new AdvancedRankingQuestion({
+            max_answers      : {{max_answers}},
+            min_answers      : {{min_answers}},
+            showpopups       : "{{showpopups}}",
+            samechoiceheight : "{{samechoiceheight}}",
+            samelistheight   : "{{samelistheight}}",
+            rankingName      : "{{rankingName}}",
+            questionId       : "{{qId}}",
+            numbersActive    : {{ ((show_number is same as('yes'))) ? 1 : 0 }},
+            withHandle       : {{ ((show_handle is same as('yes'))) ? 1 : 0 }}
+        });
+        ranking{{qId}}.init()
+        console.ls.log("Ranking advances initialized for qid {{qId}}");
+    } catch(e){
+        console.ls.error(e);
+    }
 {% endset %}
 {# DEBUG #}
 <div class="hidden">
 {{script}}
 </div>
 {{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
+{{ registerPackage( 'sortable' ) }}
 
 
 <!-- end of answer -->

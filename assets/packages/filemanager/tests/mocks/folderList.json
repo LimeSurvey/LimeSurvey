@@ -1,0 +1,19 @@
+[{
+    "folder": "upload/themes/survey/generalfiles",
+    "realPath": "/var/www/upload/themes/survey/generalfiles",
+    "shortName": "generalfiles",
+    "key": "generalfiles_0",
+    "children": [{
+        "folder": "upload/themes/survey/generalfiles/subfolder",
+        "realPath": "/var/www/upload/global/subfolder",
+        "shortName": "subfolder",
+        "key": "subfolder_1",
+        "children": []
+    }]
+}, {
+    "folder": "upload/global",
+    "realPath": "/var/www/upload/global",
+    "shortName": "global",
+    "key": "global_0",
+    "children": []
+}]

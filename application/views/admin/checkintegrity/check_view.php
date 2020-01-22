@@ -293,7 +293,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <br /> <?php eT("No database action required!"); ?>
                 <?php } else
                 {?>
-                <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post');?>
+                <?php echo CHtml::form(array("admin/checkintegrity",'sa'=>'fixredundancy'), 'post');?>
                     <ul class='data-redundancy-list list-unstyled'>
                         <?php
                             if (isset($redundantsurveytables))
@@ -312,7 +312,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <?php
                             if (isset($redundanttokentables) && count($redundanttokentables)>0)
                             {?>
-                            <li><?php eT("The following old token list tables exist and may be deleted if no longer required:"); ?>
+                            <li><?php eT("The following old participant tables exist and may be deleted if no longer required:"); ?>
                                 <ul class='token-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundanttokentables as $tokentable) {?>

@@ -118,9 +118,12 @@ class viewHelper
 
         $sQuestionText = ""; // Allways return a string
         if (isset($aField['fieldname'])) {
-            $sQuestionText = self::flatEllipsizeText($aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']).$aOption['afterquestion'];
+            $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
+            if($bHaveSubQuestion) {
+                $sQuestionText .= $aOption['afterquestion'];
+            }
             if (isset($aField['subquestion']) && $bHaveSubQuestion) {
                 $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
@@ -184,7 +187,8 @@ class viewHelper
      * Return a string with the good separator before and after
      *
      * @param $sString :the string
-     * @param : string/array : the string to put before of the array (before,after)
+     * @param string|array : the string to put before of the array (before,after)
+     * @return string
      */
     public static function putSeparator($sString, $separator)
     {
@@ -209,7 +213,7 @@ class viewHelper
     public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
     {
         if ($bFlat || $iAbbreviated) {
-            $sString = flattenText($sString, false, true);
+            $sString = self::flatten($sString);
         }
 
         if ($iAbbreviated > 0) {
@@ -226,12 +230,12 @@ class viewHelper
      * @return void
      * @author Menno Dekker
      */
-        public static function disableHtmlLogging()
-        {
+    public static function disableHtmlLogging()
+    {
         foreach (App()->log->routes as $route) {
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
         }
-        }
+    }
 
     /**
      * Deactivate script but show it for debuging
@@ -243,28 +247,44 @@ class viewHelper
      * @return string
      * @author Denis Chenu
      */
-        public static function filterScript($sHtml)
-        {
+    public static function filterScript($sHtml)
+    {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
-        }
+    }
+
     /**
      * Show purified html
      * @param string : Html to purify
-     * @param string $sHtml
      * @return string
      */
-        public static function purified($sHtml)
-        {
+    public static function purified($sHtml)
+    {
         $oPurifier = new CHtmlPurifier();
         return $oPurifier->purify($sHtml);
-        }
+    }
+
+    /**
+     * return cleaned HTML
+     * @param string : Html to purify
+     * @return string
+     */
+    public static function flatten($sHtml)
+    {
+        $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.Allowed'=>'',
+            'Output.Newline'=> ' '
+        );
+        return $oPurifier->purify($sHtml);
+    }
+
     /**
      * Show clean string, leaving ONLY tag for Expression
      * @param string : Html to clean
      * @return string
      */
-        public static function stripTagsEM($sHtml)
-        {
+    public static function stripTagsEM($sHtml)
+    {
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
             'HTML.Allowed'=>'span[title|class],a[class|title|href]',
@@ -280,6 +300,7 @@ class viewHelper
                 'em-var-error',
                 'em-assign',
                 'em-error',
+                'em-warning',
             ),
             'URI.AllowedSchemes'=>array( // Maybe only local ?
                 'http' => true,
@@ -287,26 +308,27 @@ class viewHelper
                 )
         );
         return $oPurifier->purify($sHtml);
-        }
+    }
 
-        /**
-         * NOTE:  A real class helper is needed for twig, so I used this one for now.
-         * TODO: convert surveytranslator to a real helper
-         */
-        public static function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
-        {
-            Yii::app()->loadHelper("surveytranslator");
-            return getLanguageData($bOrderByNative, $sLanguageCode);
-        }
+    
+    /**
+     * NOTE:  A real class helper is needed for twig, so I used this one for now.
+     * TODO: convert surveytranslator to a real helper
+     */
+    public static function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
+    {
+        Yii::app()->loadHelper("surveytranslator");
+        return getLanguageData($bOrderByNative, $sLanguageCode);
+    }
 
-        /**
-         * Get a tag to help automated tests identify pages
-         * @param string $name unique view name
-         * @return string
-         */
-        public static function getViewTestTag($name)
-        {
-            return sprintf('<x-test id="action::%s"></x-test>', $name);
-        }
+    /**
+     * Get a tag to help automated tests identify pages
+     * @param string $name unique view name
+     * @return string
+     */
+    public static function getViewTestTag($name)
+    {
+        return sprintf('<x-test id="action::%s"></x-test>', $name);
+    }
 
 }

@@ -6,15 +6,15 @@
         {% if subquestion.question_order == 1 %}
             <tr>
                 <th></th>
-                {% for colname, value in subquestion.answervalues %}
-                    <th><b>{{colname}}</b></th>
+                {% for colname, value in question.dualscale_header %}
+                    <th><b>{{value}}</b></th>
                 {% endfor %}                    
             </tr>
         {% endif %}
         
         <tr>
             <td>
-                {{subquestion.title}}
+                {{subquestion.question}} ({{subquestion.title}})
             </td>
             {% for colname, value in subquestion.answervalues %}
                 <td>

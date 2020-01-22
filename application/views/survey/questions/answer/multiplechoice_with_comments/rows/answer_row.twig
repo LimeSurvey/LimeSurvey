@@ -24,10 +24,10 @@
  */
 #}
 <!-- answer_row -->
-<li id="javatbd{{ name }}" class='row checkbox-text-item form-group'>
+<li id="javatbd{{ name }}" class='row checkbox-text-item form-group' role='group'>
     <!-- Checkbox + label -->
     <div class="col-sm-{{ sLabelWidth }} col-xs-12">
-        <div class="checkbox-item answer-item form-group">
+        <div class="checkbox-item answer-item">
             <input
                 class="{{ classes }} {{ kpclass }}"
                 title="{{ title }}"
@@ -38,7 +38,7 @@
                 {{ checked }}
               />
 
-            <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label">{{ labeltext }}</label>
+            <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label">{{ processString(labeltext) }}</label>
             {# Value for expression manager javascript (use val()) ; no need to submit #}
             {{ C.Html.hiddenField(javaname,javavalue,({
                 'id' : javaname,

@@ -39,8 +39,8 @@ class Authentication extends Survey_Common_Action
     public function index()
     {
         /* Set adminlang to the one set in dropdown */
-        if (Yii::app()->request->getPost('loginlang', 'default') != 'default') {
-            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('loginlang', 'default');
+        if (Yii::app()->request->getParam('loginlang', 'default') != 'default') {
+            Yii::app()->session['adminlang'] = Yii::app()->request->getParam('loginlang', 'default');
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         }
         // The page should be shown only for non logged in users
@@ -91,15 +91,14 @@ class Authentication extends Survey_Common_Action
     {
         $aData = array();
 
-        // Plugins, include core plugins, can't be activated by default.
-        // So after a fresh installation, core plugins are not activated
-        // They need to be manually loaded.
         if (!class_exists('Authdb', false)) {
             $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
             if (!$plugin) {
+                // TODO: Should not be possible to get here after LS4. See LsDefaultDataSets::getDefaultPluginsData().
                 $plugin = new Plugin();
                 $plugin->name = 'Authdb';
                 $plugin->active = 1;
+                $plugin->plugin_type = 'core';
                 $plugin->save();
                 App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
             } else {
@@ -173,6 +172,7 @@ class Authentication extends Survey_Common_Action
                 Yii::app()->session['loginsummary'] = self::getSummary();
 
                 $event = new PluginEvent('afterSuccessfulLogin');
+                $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
 
                 return array('success');
@@ -265,23 +265,22 @@ class Authentication extends Survey_Common_Action
      */
     private function _sendPasswordEmail( $arUser)
     {
-        $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
-        $sTo = $arUser->email;
-        $sSubject = gT('User data');
+        $mailer = New \LimeMailer;
+        $mailer->emailType = 'passwordreminderadminuser';
+        $mailer->addAddress($arUser->email,$arUser->full_name);
+        $mailer->Subject = gT('User data');
+        /* Body construct */
         $sNewPass = createPassword();
-        $sSiteName = Yii::app()->getConfig('sitename');
-        $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
-
         $username = sprintf(gT('Username: %s'), $arUser['users_name']);
         $password = sprintf(gT('New password: %s'), $sNewPass);
-
         $body   = array();
         $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
         $body[] = $username;
         $body[] = $password;
         $body   = implode("\n", $body);
-
-        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
+        $mailer->Body = $body;
+        /* Go to send email and set password */
+        if ($mailer->sendMessage()) {
             User::updatePassword($arUser['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');

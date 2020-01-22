@@ -170,6 +170,7 @@ class SurveyLink extends LSActiveRecord
             $date = new DateTime($inviteDate);
             return $date->format($this->dateFormat);
         }
+        return null;
     }
 
     /**
@@ -182,6 +183,7 @@ class SurveyLink extends LSActiveRecord
             $date = new DateTime($reminddate);
             return $date->format($this->dateFormat);
         }
+        return null;
     }
 
     /**
@@ -230,7 +232,7 @@ class SurveyLink extends LSActiveRecord
     {
         return array(
             'survey_id' => gT("Survey ID"),
-            'token_id' => gT('Token ID'),
+            'token_id' => gT('Access code'),
             'participant_id' => gT('Participant'),
             'date_created' => gT('Date added')
         );

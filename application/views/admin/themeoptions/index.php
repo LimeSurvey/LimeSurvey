@@ -1,9 +1,12 @@
 <?php
-/* @var $this AdminController */
-/* @var $dataProvider CActiveDataProvider */
-/* @var bool $canImport */
-/* @var string $importErrorMessage */
-
+    /**
+     * @var AdminController     $this
+     * @var CActiveDataProvider $dataProvider
+     * @var bool                $canImport
+     * @var string              $importErrorMessage
+     * @var object              $oQuestionTheme
+     * @var object              $oSurveyTheme
+     */
 
 // TODO: rename to template_list.php and move to template controller
 
@@ -20,7 +23,7 @@ $this->renderPartial('super/fullpagebar_view', array(
 ));
 ?>
 
-<div class="ls-space margin left-15 right-15 row list-themes">
+<div class="meme ls-space margin left-15 right-15 row list-themes">
     <ul class="nav nav-tabs" id="themelist" role="tablist">
         <li class="active"><a href="#surveythemes"><?php eT('Survey themes'); ?></a></li>
         <li><a href="#adminthemes"><?php eT('Admin themes'); ?></a></li>
@@ -32,7 +35,7 @@ $this->renderPartial('super/fullpagebar_view', array(
 
                 <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
-                <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage]); ?>
+                <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage, 'importModal' => 'importSurveyModal', 'importTemplate' => 'importSurveyTemplate', 'themeType' => 'survey']); ?>
                 <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme, 'pageSize'=>$pageSize )); ?>
 
                 <!-- Available Themes -->
@@ -61,6 +64,8 @@ $this->renderPartial('super/fullpagebar_view', array(
                                                 <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
                                             </tr>
                                         <?php endforeach;?>
+
+
                                     </tbody>
                                 </table>
 
@@ -106,9 +111,15 @@ $this->renderPartial('super/fullpagebar_view', array(
 
                                                     <!-- Delete -->
                                                     <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                                                        <a class="btn btn-default btn-block" id="button-delete" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this broken theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/deleteBrokenTheme/templatename/'.$sName); ?>", "_top")'>
-                                                            <span class="fa fa-trash  text-warning"></span>
-                                                            <?php eT("Delete"); ?>
+                                                        <a
+                                                            id="button-delete"
+                                                            href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
+                                                            data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                            data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                            title="<?php eT('Delete'); ?>"
+                                                            class="btn btn-danger selector--ConfirmModal">
+                                                                <span class="fa fa-trash "></span>
+                                                                <?php eT('Delete'); ?>
                                                         </a>
                                                     <?php endif;?>
 
@@ -209,14 +220,13 @@ $this->renderPartial('super/fullpagebar_view', array(
         </div>
         <div id="questionthemes" class="tab-pane">
             <div class="col-lg-12 list-surveys">
-
-                <?php echo '<h3>'.gT('Question themes:').'</h3>'; ?>
-
-                Soon, here, you'll have the list of all question types, and all customed question types. <br>
-                You'll be able to manage them like the Survey Themes (inheritance, theme editor, configuration at global/survey group/survey ; show/hide by survey group, etc)
-                <br>Engine is already working, the interface will come very soon.
+                <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
+                <!-- Installed Question Themes -->
+                <?php $this->renderPartial('themeoptions/surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
+                <?php $this->renderPartial('themeoptions/partials/question_themes/installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <!-- Available Quesiton Themes-->
+                <?php $this->renderPartial('themeoptions/partials/question_themes/availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
-
         </div>
     </div>
 </div>

@@ -91,10 +91,6 @@
     {{ include('./subviews/header/head.twig') }}
 
     <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
-        {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
-            {# In vanilla, this file is empty, we keep it to have a common layout between all core themes #}
-            {{ include('./subviews/navigation/ajax_indicator.twig') }}
-        {% endif %}
 
         {# This used for the pjax system #}
         <div id="beginScripts">

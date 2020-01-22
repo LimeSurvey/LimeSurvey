@@ -8,7 +8,7 @@
 */
 ?>
 
-<!-- State when page is loaded : for JavaScript-->
+<!-- State when group is loaded : for JavaScript-->
 <li id="explorer" class="dropdownlvl2 dropdownstyle panel panel-default">
 <?php if(isset($sidemenu['explorer']['state']) && $sidemenu['explorer']['state']==true):?>
     <input type="hidden" id="open-explorer" />

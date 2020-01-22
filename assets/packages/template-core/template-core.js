@@ -9,21 +9,30 @@ var TemplateCoreClass = function () {
         /**
          * Dialog and confirm
          */
-        /* showStartPopups : replace core function : allow HTML and use it. */
+        /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
         showStartPopups: function () {
-            if (LSvar.showpopup  && LSvar.startPopups.length) {
-                startPopup = LSvar.startPopups.map(function (text) {
-                    return text;
-
+            if (LSvar.showpopup == 1  && $.isArray(LSvar.startPopups)) {
+                startPopups = LSvar.startPopups.map( function (text) {
+                    return "<p>"+text+"</p>";
                 });
-                alertSurveyDialog(startPopup);
+                window.templateCore.alertSurveyDialog(startPopups.join(""));
             }
         },
-        /* alertSurveyDialog @see application/core/package/limesurvey */
-        alertSurveyDialog: function (text, title) {
-            if (LSvar.showpopup===1) {
+        /* alertSurveyDialog @see application/core/package/limesurvey
+         * @var string[] startPopups array of text to be shown
+         * @var string title
+         */
+        alertSurveyDialog: function (startPopups, title) {
+            text = "";
+            if (LSvar.showpopup == 1  && $.isArray(startPopups)) {
+                startPopups = startPopups.map(function (text) {
+                    return "<p>"+text+"</p>";
+                });
+                text = startPopups.join("");
+            }
+            if (text) {
                 $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
-                $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" || "");
+                $("#bootstrap-alert-box-modal .modal-body").html(text);
                 $("#bootstrap-alert-box-modal").modal('show');
             }
         },
@@ -66,7 +75,6 @@ var TemplateCoreClass = function () {
         triggerEmClassChangeTemplate: function () {
             $('.ls-em-tip').each(function () {
                 $(this).on('classChangeError', function () {
-                    console.trace('change error');
                     /* If user choose hide-tip : leave it */
                     $parent = $(this).parent('div.hide-tip');
                     if ($parent.hasClass('hide-tip')) {
@@ -99,23 +107,25 @@ var TemplateCoreClass = function () {
          * Must be before ready (event happen before ready)
          */
         hideQuestionWithRelevanceSubQuestion: function () {
-            $("[id^='question']:not(.ls-irrelevant)").on('relevance:on', "[id^='javatbd']", function (event, data) {
+            $(".question-container:not(.ls-irrelevant)").on('relevance:on', "[id^='javatbd']", function (event, data) {
                 if (event.target != this) return; // not needed now, but after (2016-11-07)
                 data = $.extend({
                     style: 'hidden'
                 }, data);
                 if (data.style == 'hidden') {
-                    $(this).closest("[id^='question']").removeClass("ls-hidden")
+                    $(this).closest(".question-container").removeClass("ls-hidden");
                 }
             });
-            $("[id^='question']:not(.ls-hidden)").on('relevance:off', "[id^='javatbd']", function (event, data) {
+            $(".question-container:not(.ls-hidden)").on('relevance:off', "[id^='javatbd']", function (event, data) {
                 if (event.target != this) return; // not needed now, but after (2016-11-07)
                 data = $.extend({
                     style: 'hidden'
                 }, data);
                 if (data.style == 'hidden') {
-                    if ($(this).closest("[id^='question']").find("[id^='javatbd']:visible").length == 0) {
-                        $(this).closest("[id^='question']").addClass("ls-hidden");
+                    var questionContainer = $(this).closest(".question-container");
+                    $(this).addClass("ls-hidden");
+                    if ($(questionContainer).find("[id^='javatbd']").filter(':not(.ls-hidden)').length == 0) {
+                        $(questionContainer).addClass("ls-hidden");
                     }
                 }
             });

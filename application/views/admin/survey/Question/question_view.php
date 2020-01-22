@@ -1,5 +1,8 @@
+<?php
+/** @var Question $oQuestion */
+?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></div>
+    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo (int) $qid;?>)</small></div>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -9,7 +12,7 @@
                 <!-- Question Group -->
                 <tr>
                     <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-                    <td><em><?php echo flattenText($oQuestion->groups->group_name);?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
+                    <td><em><?php echo flattenText($oQuestion->group->questionGroupL10ns[$baselang]->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
                 </tr>
 
                 <!-- Code -->
@@ -22,7 +25,7 @@
 
                     <td>
                         <?php echo $qrrow['title']; ?>
-                        <?php if ($qrrow['type'] != "X"): ?>
+                        <?php if ($qrrow['type'] != Question::QT_X_BOILERPLATE_QUESTION): ?>
                             <?php if ($qrrow['mandatory'] == "Y") :?>
                                 : (<i><?php eT("Mandatory Question"); ?></i>)
                             <?php else: ?>
@@ -41,7 +44,7 @@
                     </td>
                     <td>
                         <?php
-                            templatereplace($qrrow['question'],array('QID'=>$qrrow['qid']),$aReplacementData,'Unspecified', false ,$qid);
+                            templatereplace($oQuestion->questionL10ns[$baselang]->question,array(),$aReplacementData,'Unspecified', false ,$qid);
                             echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                         ?>
                     </td>
@@ -57,9 +60,9 @@
                     <td>
 
                         <?php
-                            if (trim($qrrow['help'])!='')
+                            if (trim($oQuestion->questionL10ns[$baselang]->help)!='')
                             {
-                                templatereplace($qrrow['help'],array('QID'=>$qrrow['qid']),$aReplacementData,'Unspecified', false ,$qid);
+                                templatereplace($oQuestion->questionL10ns[$baselang]->help,array(),$aReplacementData,'Unspecified', false ,$qid);
                                 echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             }
                         ?>
@@ -126,7 +129,7 @@
                 <?php endif; ?>
 
                 <!-- Option 'Other' -->
-                <?php if ($qrrow['type'] == "M" or $qrrow['type'] == "P"):?>
+                <?php if ($qrrow['type'] == Question::QT_M_MULTIPLE_CHOICE or $qrrow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS):?>
                     <tr>
                         <td>
                             <strong>
@@ -144,7 +147,7 @@
                 <?php endif; ?>
 
                 <!-- Mandatory -->
-                <?php if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X") and ($qrrow['type'] != "|")):?>
+                <?php if (isset($qrrow['mandatory']) and ($qrrow['type'] != Question::QT_X_BOILERPLATE_QUESTION) and ($qrrow['type'] != Question::QT_VERTICAL_FILE_UPLOAD)):?>
                     <tr>
                         <td>
                             <strong>
@@ -154,6 +157,26 @@
                         <td>
                             <?php if ($qrrow['mandatory'] == "Y") : ?>
                                 <?php eT("Yes"); ?>
+                            <?php elseif ($qrrow['mandatory'] == "S") : ?>
+                                <?php eT("Soft"); ?>
+                            <?php else:?>
+                                <?php eT("No"); ?>
+                            <?php endif;  ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+
+                <!-- Encrypted -->
+                <?php if (isset($qrrow['mandatory'])):?>
+                    <tr>
+                        <td>
+                            <strong>
+                                <?php eT("Encrypted:"); ?>
+                            </strong>
+                        </td>
+                        <td>
+                            <?php if ($qrrow['encrypted'] == "Y") : ?>
+                                <?php eT("Yes"); ?>
                             <?php else:?>
                                 <?php eT("No"); ?>
                             <?php endif;  ?>
@@ -162,13 +185,26 @@
                 <?php endif; ?>
 
                 <!-- Relevance equation -->
-                <?php if (trim($qrrow['relevance']) != ''): ?>
+                <?php if (trim($qrrow['relevance']) != '' && trim($qrrow['relevance']) != '1'): ?>
                     <tr>
-                        <td><?php eT("Relevance equation:"); ?></td>
+                        <td><?php eT("Condition:"); ?></td>
                         <td>
                             <?php
                             LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
-                            echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                            ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+
+                <!-- Group Relevance equation -->
+                <?php if (trim($oQuestion->group->grelevance)!='' && trim($oQuestion->group->grelevance)!='1'): ?>
+                    <tr>
+                        <td><?php eT("Group relevance:"); ?></td>
+                        <td>
+                            <?php
+                            LimeExpressionManager::ProcessString("{" . $oQuestion->group->grelevance . "}", $qid);
+                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             ?>
                         </td>
                     </tr>
@@ -226,3 +262,12 @@
         </div>
     </div>
 </div>
+
+<?php
+App()->getClientScript()->registerScript(
+    'activatePanelClickable', 
+    'LS.pageLoadActions.panelClickable()', 
+    LSYii_ClientScript::POS_POSTSCRIPT 
+)
+?>
+

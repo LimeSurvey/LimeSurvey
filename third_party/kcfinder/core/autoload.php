@@ -21,7 +21,7 @@ spl_autoload_register(function($path) {
     list($ns, $class) = $path;
 
     if ($ns == "kcfinder") {
-
+        $class = preg_replace("/[^_a-zA-Z0-9]/", "", $class);
         if ($class == "uploader")
             require "core/class/uploader.php";
         elseif ($class == "browser")

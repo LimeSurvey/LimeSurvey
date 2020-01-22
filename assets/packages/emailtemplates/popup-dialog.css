@@ -6,3 +6,8 @@ iframe#dialog{
     padding: 0;
     width: 100%;
 }
+
+.filename {
+    text-decoration: underline;
+    cursor:pointer;
+}

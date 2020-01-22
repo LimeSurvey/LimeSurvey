@@ -6,7 +6,7 @@
 ?>
 <div class=''>
     <div class='form-group'>
-        <label class='control-label col-sm-3' for='loadname'><?php echo gT("Token:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
+        <label class='control-label col-sm-3' for='loadname'><?php echo gT("Access code:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
         <div class='col-sm-7 load-survey-input input-cell'>
             <?php if(!isset($token)): ?>
                 <input class='form-control' type='password' id='token' name='token' value='' required>

@@ -32,5 +32,20 @@
         <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='{{ aSurveyInfo.class.savelinkslia }} animate'>
             {{ gT('Resume later') }}
         </a>
+        {% if(aSurveyInfo.saved.text and aSurveyInfo.options.showpopups > 0) %}
+            <div class="alert-popup"></div>
+            {{ registerScript("saveflashmessage","
+                $('.alert-popup').popover({
+                    title: '" ~ aSurveyInfo.saved.title ~ "',
+                    content: '<div>" ~ aSurveyInfo.saved.text ~ "</div>',
+                    html: true,
+                    container: 'body',
+                    placement: 'bottom',
+                    delay: { 'show': 500, 'hide': 100 },
+                    trigger: 'click',
+                }).popover('show');
+                setTimeout(function(){ $('.alert-popup').popover('destroy'); }, 3500);
+                ", "POS_POSTSCRIPT" ) }}
+        {% endif %}
     </li>
 {% endif %}

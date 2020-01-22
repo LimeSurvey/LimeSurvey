@@ -37,7 +37,7 @@
             <!-- Submit -->
             <div class='form-group col-12'>
                 <div class=''>
-                    <input type='submit' class="btn btn-default col-6" value='<?php  eT("Import survey"); ?>' />
+                    <input type='submit' class="btn btn-primary col-6" value='<?php  eT("Import survey"); ?>' />
                 </div>
             </div>
 

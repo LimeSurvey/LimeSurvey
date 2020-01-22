@@ -28,25 +28,37 @@
         );
         echo $form->textFieldControlGroup($model,'defaultname', $baseControlGroupHtmlOptions);
         echo $form->dropDownListControlGroup($model,'attribute_type', $model->attributeTypeDropdownArray, $baseControlGroupHtmlOptions);
-        echo 
-        "<div class='row'>
-            <label class='control-label col-sm-12'>".gT("Should this attribute be visible on the panel?")."</label>
-            <div class='col-sm-12'>
-                &nbsp;
-                <label class='radio-inline'>"
-                 . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"TRUE\" "
-                    .($model->visible == "TRUE" ? "checked" : "")." />"
-                 . gT("Yes")."
-                </label>
-                <label class='radio-inline'>"
-                 . "<input name=\"ParticipantAttributeName[visible]\" id=\"ParticipantAttributeName_visible\" type=\"radio\" value=\"FALSE\" "
-                    .($model->visible == "FALSE" ? "checked" : "")." />"
-                 . gT("No")."
-                </label>
-            </div>
-        </div>
-        <br/>"; 
     ?>
+    <div class=" form-group" id="">
+        <label class='control-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
+        <div>
+            <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => "ParticipantAttributeName[visible]",
+                'id'=>"visible",
+                'value' => $model['visible']=='TRUE'?'1':'0',
+                'onLabel'=>gT('On'),
+                'offLabel' => gT('Off')));
+            ?>
+        </div>
+    </div>
+    <div class=" form-group" id="">
+        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
+        <div>
+            <?php
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => "ParticipantAttributeName[encrypted]",
+                'id'=>"encrypted",
+                'value' => $model['encrypted']=='Y'?'1':'0',
+                'onLabel'=>gT('On'),
+                'offLabel' => gT('Off'),
+                'htmlOptions'=>array(
+                    'disabled'=>!$bEncrypted,
+                )
+            ));
+            ?>
+        </div>
+    </div>
     <div id="ParticipantAttributeNamesDropdownEdit" class="row form-group" style="display: none;">
         <div class="row">
             <div class="col-xs-2">
@@ -59,7 +71,11 @@
                 foreach($model->getAttributesValues($model->attribute_id) as $attribute_value){
                     echo "<div class='control-group'>";
                     echo "<div class='dropDownContainer col-xs-8 col-offset-xs-2'>";
-                    echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
+                    echo TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], [
+                        'class' => 'form-control',
+                        'id' => ''
+                    ]);
+                    // echo "<input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='".$attribute_value['value']."' />";
                     echo "</div>";
                     echo '<div class="col-xs-1">
                             <button class="btn btn-default form-group action_delDropdownField">
@@ -222,6 +238,8 @@
             return false;
         });
         jQuery(function(){jQuery('#ParticipantAttributeName_attribute_type').trigger('change');});
+
+        LS.renderBootstrapSwitch();
     </script>
 </div>
 <div class="modal-footer">
@@ -231,3 +249,5 @@
 <?php
 $this->endWidget();
 ?>
+
+

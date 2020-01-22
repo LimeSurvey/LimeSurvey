@@ -1,0 +1,9 @@
+{#
+/**
+ * This file render the help message when validating
+ * @var $message
+ */
+#}
+<div class="ls-question-help {{ classes }}" role="alert" {% if id %} id="{{ id }}" {% endif %} >
+    {{ message }}
+</div>

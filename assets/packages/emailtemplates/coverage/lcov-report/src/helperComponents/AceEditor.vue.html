@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/helperComponents/AceEditor.vue</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">src/helperComponents</a> AceEditor.vue
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.7% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.7% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/37</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
+    &lt;div class="aceEditor--main"&gt;
+        &lt;div class="aceEditor--topbar"&gt;
+            &lt;div class="aceEditor--subcontainer" v-if="showThemeToggle"&gt;
+                &lt;button @click="toggleDarkMode" class="btn btn-xs btn-default"&gt; {{'Toggle dark mode'|translate}}&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="aceEditor--subcontainer" v-if="showLangSelector"&gt;
+                &lt;select class="aceEditor--langselect" v-model="lang"&gt;
+                    &lt;option value="html"&gt;HTML&lt;/option&gt;
+                    &lt;option value="javascript"&gt;JavaScript&lt;/option&gt;
+                    &lt;option value="css"&gt;CSS&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="aceEditor--editor" :id="thisId" &gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&nbsp;
+&lt;script&gt;
+import debounce from 'lodash/debounce';
+&nbsp;
+export default {
+    name: 'AceEditor',
+    props: {
+        value: {
+            type: String,
+            required: true,
+        },
+        applyExternalChange: {type: Boolean, default: false},
+        thisId: {
+            type: String,
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >            default: ()=&gt;`vue-ace-editor-${Math.round(Math.random()*100000)}`</span></span>
+        },
+<span class="fstat-no" title="function not covered" >        options: {type: Object, default: ()=&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                autoScrollEditorIntoView: true,
+                wrap: true,
+                maxLines: 80,
+                minLines: 10
+            }}
+        },
+        showLangSelector: {type: Boolean, default: true},
+        showThemeToggle: {type: Boolean, default: true},
+        baseLang: {type: String, default: 'html'}
+    },
+<span class="fstat-no" title="function not covered" >    data: function() {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            lang: 'html',
+            darkMode: false,
+            editor: null,
+            contentBackup: "",
+        };
+    },
+    methods: {
+        toggleDarkMode(){
+<span class="cstat-no" title="statement not covered" >            if(this.darkMode) {</span>
+<span class="cstat-no" title="statement not covered" >                this.editor.setTheme("ace/theme/solarized_light");</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                this.editor.setTheme("ace/theme/solarized_dark");</span>
+            }
+<span class="cstat-no" title="statement not covered" >            this.darkMode = !this.darkMode;</span>
+        },
+        resizeEditor(){
+<span class="cstat-no" title="statement not covered" >            event.target.innerHeight</span>
+<span class="cstat-no" title="statement not covered" >            this.editor.resize();</span>
+        }
+    },
+    watch: {
+<span class="fstat-no" title="function not covered" >        lang: function(newLang) {</span>
+<span class="cstat-no" title="statement not covered" >            if(this.editor != null) {</span>
+<span class="cstat-no" title="statement not covered" >                this.editor.getSession().setMode("ace/mode/" + newLang);</span>
+            }
+        },
+<span class="fstat-no" title="function not covered" >        value: function(newValue) {</span>
+<span class="cstat-no" title="statement not covered" >            if(this.editor != null &amp;&amp; this.applyExternalChange) {</span>
+<span class="cstat-no" title="statement not covered" >                this.editor.setValue((this.value || ''), 1);</span>
+<span class="cstat-no" title="statement not covered" >                this.$emit('external-change-applied');</span>
+            }
+        },
+    },
+<span class="fstat-no" title="function not covered" >    beforeDestroy: function() {</span>
+<span class="cstat-no" title="statement not covered" >        this.editor.destroy();</span>
+<span class="cstat-no" title="statement not covered" >        this.editor.container.remove();</span>
+    },
+    created(){
+<span class="cstat-no" title="statement not covered" >        this.lang = this.baseLang;</span>
+    },
+    mounted() {
+<span class="cstat-no" title="statement not covered" >        this.editor = ace.edit(this.thisId);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        this.$emit("init", this.editor);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        this.editor.setOption("enableemmet", true);</span>
+<span class="cstat-no" title="statement not covered" >        this.editor.getSession().setMode("ace/mode/" + this.lang);</span>
+<span class="cstat-no" title="statement not covered" >        this.editor.setTheme("ace/theme/solarized_light");</span>
+        
+<span class="cstat-no" title="statement not covered" >        this.editor.setValue((this.value || ''), 1);</span>
+<span class="cstat-no" title="statement not covered" >        this.contentBackup = this.value;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        this.editor.on("change", () =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >            let content = this.editor.getValue();</span>
+<span class="cstat-no" title="statement not covered" >            this.$emit("input", content);</span>
+<span class="cstat-no" title="statement not covered" >            this.contentBackup = content;</span>
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (this.options != null) {</span>
+<span class="cstat-no" title="statement not covered" >            this.editor.setOptions(this.options);</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        jQuery('.aceEditor--main').on('resize', (e)=&gt;{</span></span>
+<span class="cstat-no" title="statement not covered" >            this.editor.resize(true);</span>
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        jQuery('#'+this.thisId).on('contextmenu', (e)=&gt;{</span></span>
+<span class="cstat-no" title="statement not covered" >            e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >            e.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >            return false;</span>
+        });
+    }
+};
+&lt;/script&gt;
+&nbsp;
+&lt;style lang="scss" scoped&gt;
+    .aceEditor--main {
+        padding: 0.2rem;
+&nbsp;
+        .aceEditor--topbar{
+            height: 3rem;
+            padding: 0.2rem;
+            background-color: rgb(196, 196, 196);
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: space-around;
+            align-content: space-around;
+            .aceEditor--subcontainer {
+                flex: 1;
+                &amp;:first-child {
+                    text-align: left;
+                }
+                &amp;:last-child {
+                    text-align: right;
+                }
+            }
+            .aceEditor--darkmodeswitch {
+                border-radius: 0;
+                align-self: flex-start;
+                padding: 0.4rem;
+                height: 2.2rem;
+                margin: 0.2rem;
+            }
+&nbsp;
+            .aceEditor--langselect {
+                border-radius: 0;
+                align-self: flex-end;
+                height: 2.2rem;
+                margin: 0.2rem;
+            }
+        }
+&nbsp;
+        .aceEditor--editor {
+            min-height: 10rem;
+            resize: vertical;
+        }
+    }
+&lt;/style&gt;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 16 2019 14:32:56 GMT+0200 (GMT+02:00)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>

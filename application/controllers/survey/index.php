@@ -30,12 +30,6 @@ class index extends CAction
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
 
-        // only attempt to change session lifetime if using a DB backend
-        // with file based sessions, it's up to the admin to configure maxlifetime
-        if (isset(Yii::app()->session->connectionID)) {
-            @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
-        }
-
         $this->_loadRequiredHelpersAndLibraries();
         $param       = $this->_getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
@@ -44,6 +38,24 @@ class index extends CAction
         $clienttoken = trim($param['token']);
 
         $oSurvey = Survey::model()->findByPk($surveyid);
+
+        if(empty($oSurvey)) {
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyDoesNotExist');
+            App()->getPluginManager()->dispatchEvent($event);
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            /* Alt solution */
+            //~ header("HTTP/1.0 404 Not Found",true,404);
+            //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
+                //~ array('aSurveyInfo' =>array(
+                    //~ 'aError'=>array(
+                        //~ 'error'=>gT('404: Not Found'),
+                        //~ 'title'=>gT('This survey does not seem to exist'),
+                        //~ 'message'=>gT("The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.")
+                    //~ ),
+                //~ )), false);
+        }
 
         Yii::app()->setConfig('surveyID', $surveyid);
         Yii::app()->setConfig('move', $move);
@@ -65,7 +77,6 @@ class index extends CAction
         $surveyExists   = ($oSurvey != null);
         $isSurveyActive = ($surveyExists && $oSurvey->isActive);
 
-
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
@@ -75,14 +86,14 @@ class index extends CAction
 
             if (!$this->_canUserPreviewSurvey($surveyid)) {
 
-                // @todo : throw a 401
                 $aErrors  = array(gT('Error'));
-                $message = gT("We are sorry but you don't have permissions to do this.");
+                $message = gT("We are sorry but you don't have permissions to do this.",'unescaped');
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, $message);
                 }
                 throw new CHttpException(401, $message);
             } else {
+                killSurveySession($surveyid);
                 if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
                     $previewmode = 'question';
                 }
@@ -106,7 +117,20 @@ class index extends CAction
             $tokensexist = 1;
         }
 
-
+        // maintenance mode
+        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        if ($sMaintenanceMode == 'hard'){
+            if ($previewmode === false){
+                Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            }
+        } elseif ($sMaintenanceMode == 'soft'){
+            if ($move === null){
+                if ($previewmode === false){
+                    Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+                }
+            }
+        }
+                  
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
 
             // check also if it is allowed to change survey after completion
@@ -131,10 +155,10 @@ class index extends CAction
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif ( !empty($clienttoken) ) {
+        } elseif ( !empty($oToken) ) {
             $sDisplayLanguage = $oToken->language;
-        }elseif (Survey::model()->findByPk($surveyid)) {
-            $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
+        } elseif ($oSurvey) {
+            $sDisplayLanguage = $oSurvey->language;
         }
 
         if ($surveyid && $surveyExists) {
@@ -148,8 +172,8 @@ class index extends CAction
 
         if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token'=>$clienttoken, 'lang'=>App()->language, 'newtest'=>'Y'));
-            $aErrors    = array(gT('Token mismatch'));
-            $asMessage  = array(gT('The token you provided doesn\'t match the one in your session.'));
+            $aErrors    = array(gT('Access code mismatch'));
+            $asMessage  = array(gT('The access code you provided doesn\'t match the one in your session.'));
             $aUrl       = array(
                             'url'=>$sReloadUrl,
                             'type'=>'restart-survey',
@@ -184,7 +208,7 @@ class index extends CAction
         if ($this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) {
             $aReloadUrlParam = array('lang'=>App()->language, 'newtest'=>'Y');
 
-            if ($clienttoken) {
+            if (!empty($clienttoken)) {
                 $aReloadUrlParam['token'] = $clienttoken;
             }
 
@@ -216,9 +240,9 @@ class index extends CAction
 
                 App()->getPluginManager()->dispatchEvent($event);
                 if(Permission::getUserId()) {
-                    throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
+                    throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
                 }
-                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this."));
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
             }
         }
 
@@ -239,7 +263,7 @@ class index extends CAction
             );
 
             $aReloadUrlParam = array('lang'=>App()->language, 'newtest'=>'Y');
-            if ($clienttoken) {
+            if (!empty($clienttoken)) {
                 $aReloadUrlParam['token'] = $clienttoken;
             }
             $aUrl = array(
@@ -276,29 +300,11 @@ class index extends CAction
                 UpdateGroupList($surveyid, App()->language); // to refresh the language strings in the group list session variable
                 updateFieldArray(); // to refresh question titles and question text
             }
-        } else {
-
-            $event = new PluginEvent('onSurveyDenied');
-            $event->set('surveyId', $surveyid);
-            $event->set('reason', 'surveyDoesNotExist');
-            App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
-            /* Alt solution */
-            //~ header("HTTP/1.0 404 Not Found",true,404);
-            //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
-                //~ array('aSurveyInfo' =>array(
-                    //~ 'aError'=>array(
-                        //~ 'error'=>gT('404: Not Found'),
-                        //~ 'title'=>gT('This survey does not seem to exist'),
-                        //~ 'message'=>gT("The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.")
-
-                    //~ ),
-                //~ )), false);
-
         }
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        EmCacheHelper::init($thissurvey);
         /* Unsure it still work, and surely better in afterFindSurvey */
         if (!is_null($beforeSurveyPageEvent->get('template'))) {
             $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
@@ -396,13 +402,13 @@ class index extends CAction
             // && Yii::app()->request->isPostRequest ?
             if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
-                $captcha        = Yii::app()->getController()->createAction('captcha');
-                $captchaCorrect = $captcha->validate($sLoadSecurity, false);
 
                 if (empty($sLoadSecurity)) {
                     $aLoadErrorMsg['captchaempty'] = gT("You did not answer to the security question.");
-                } elseif (!$captchaCorrect) {
-                    $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
+                } elseif (!Yii::app()->request->getPost('loadsecurity')
+                    || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
+                    || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']) {
+                        $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
                 }
             }
 
@@ -430,12 +436,17 @@ class index extends CAction
             /* Construction of the form */
             $aLoadForm['aCaptcha']['show'] = false;
 
-            if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
+            // save current survey data when clicking on "Load unfinished survey"
+            Yii::import('application.helpers.SurveyRuntimeHelper');
+            $SurveyRuntimeHelper = new SurveyRuntimeHelper();
+            $SurveyRuntimeHelper->saveAllIfNeeded();
+
+            if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
             }
 
-            if (isset($clienttoken)) {
+            if (!empty($clienttoken)) {
                 $aLoadForm['sHiddenField'] = CHtml::hiddenField('token', $clienttoken);
             }
 
@@ -469,7 +480,7 @@ class index extends CAction
                         $sError = gT("This invitation is not valid anymore.");
                     } else {
                         // This can not happen
-                        $sError = gT("This is a controlled survey. You need a valid token to participate.");
+                        $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                     }
 
                     $aMessage = array(
@@ -490,7 +501,7 @@ class index extends CAction
                         array($sError)
                     );
                 } else {
-                    $sError = gT("This is a controlled survey. You need a valid token to participate.");
+                    $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                 }
             }
         }
@@ -628,8 +639,9 @@ class index extends CAction
 
     private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if (is_numeric($mvSurveyIdOrBaseLang) && Survey::model()->findByPk($mvSurveyIdOrBaseLang)) {
-            $baselang = Survey::model()->findByPk($mvSurveyIdOrBaseLang)->language;
+        $oSurvey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
+        if ($oSurvey) {
+            $baselang = $oSurvey->language;
         } elseif (!empty($mvSurveyIdOrBaseLang)) {
             $baselang = $mvSurveyIdOrBaseLang;
         } else {

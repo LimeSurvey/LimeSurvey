@@ -1,0 +1,81 @@
+.lsimageSelect--dropdown-list > li.ck.ck-list__item {
+    border-bottom: 1px solid #c9c9c9;
+    border-left: 1px solid #727272;
+    padding-left: 0.2rem;
+    margin-left: 0.2rem;
+    width:95%;
+}
+
+.ck.ck-reset_all {
+    .ck.ck-listgroup__separator {
+        min-height: 1.2rem;
+        padding-left: 0.2rem;
+        padding-top: 0.1rem;
+        margin-top: 0.1rem;
+        font-weight: bold;
+        border-bottom: 1px solid #323232;
+        border-top: 1px solid #323232;
+        background: var(--LS-admintheme-hintedbasecolor);
+    }
+    
+    .lsimageSelect--dropdown-button-inner {
+        width: 100%;
+        flex-wrap: wrap;
+
+        .ck-button__label {
+            margin:auto;
+            display:block;
+            width: 100%;
+            min-width:50%;
+        }
+
+        .lsimageSelect--dropdown-button-image {
+            display:block;
+            margin:auto;
+            max-width:100%;
+            max-height:60px;
+        }
+        
+    }
+}
+
+.ck.ck-dropdown__panel {
+	max-height: 350px;
+	max-height: 50vh; /* or anything else, more likely ~300px or so */
+	overflow-y: auto;
+}
+
+:root {
+    /* Overrides the border radius setting in the theme. */
+    --ck-border-radius: 4px;
+
+    /* Helper variables to avoid duplication in the colors. */
+    --ck-custom-background: var(--LS-admintheme-hintedbasecolor);
+    --ck-custom-foreground: var(--LS-admintheme-hintedhovercolor);
+    --ck-custom-border: var(--LS-admintheme-basecolor);
+
+    /* -- Overrides generic colors. ------------------------------------------------------------- */
+
+    --ck-color-base-foreground: var(--ck-custom-background);
+    --ck-color-focus-border: var(--LS-admintheme-hovercolor);
+    --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.2);
+    --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
+
+    /* -- Overrides the default .ck-list class colors. ------------------------------------------ */
+    --ck-color-button-default-hover-background: var(--LS-admintheme-hintedhovercolor);
+    --ck-color-button-on-background: var(--LS-admintheme-hintedhovercolor);
+    --ck-color-button-on-hover-background: var(--LS-admintheme-lighthovercolor);
+    --ck-color-list-button-hover-background: var(--ck-color-base-foreground);
+
+}
+
+// :root {
+//     --LS-admintheme-basecolor: #{$base-color};
+//     --LS-admintheme-hintedbasecolor: #{adjust-color($base-color, $lightness: +50%, $alpha: -0.3)};
+//     --LS-admintheme-lightbasecolor: #{adjust-color($base-color, $lightness: +30%)};
+//     --LS-admintheme-hovercolor: #{$color_parsley_approx};
+//     --LS-admintheme-hintedhovercolor: #{adjust-color($color_parsley_approx, $lightness: +50%, $alpha: -0.3)};
+//     --LS-admintheme-lighthovercolor: #{adjust-color($color_parsley_approx, $lightness: +30%)};
+//     --LS-admintheme-dangercolor: #{$color_stiletto_approx};
+//     --LS-admintheme-infocolor: #{$color_info};
+// }

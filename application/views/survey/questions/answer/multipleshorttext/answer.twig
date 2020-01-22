@@ -9,7 +9,15 @@
 <!-- Multiple Shor Text -->
 
 <!-- answer -->
-<ul class="{{ coreClass }} list-unstyled " role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    {{ sRows }}
+<ul class="{{ coreClass }} list-unstyled form-horizontal" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    {% if aRows is empty %}
+        {% include 'survey/questions/answer/multipleshorttext/empty.twig' %}
+    {% else %}
+        {% for aRow in aRows %}
+            {% set rowTemplate = (aRow.textarea ? 'survey/questions/answer/multipleshorttext/rows/answer_row_textarea.twig' : 'survey/questions/answer/multipleshorttext/rows/answer_row_inputtext.twig') %}
+            {% include rowTemplate with aRow only %}
+        {% endfor %}
+    {% endif %}
+
 </ul>
 <!-- end of answer -->

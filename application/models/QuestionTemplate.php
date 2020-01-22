@@ -127,10 +127,10 @@ class QuestionTemplate extends CFormModel
             $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
 
             // Core templates come first
-            if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplatePath = "$sCoreQTemplateRootDir/$sTemplateFolderName/";
-            } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName/";
+            if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName")) {
+                $this->sTemplatePath = "$sCoreQTemplateRootDir/$sTemplateFolderName";
+            } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName")) {
+                $this->sTemplatePath = "$sUserQTemplateRootDir/$sTemplateFolderName";
             }
         }
         return $this->sTemplatePath;
@@ -279,14 +279,19 @@ class QuestionTemplate extends CFormModel
                 $this->bLoadCoreJs             = $this->oConfig->engine->load_core_js;
                 $this->bLoadCoreCss            = $this->oConfig->engine->load_core_css;
                 $this->bLoadCorePackage        = $this->oConfig->engine->load_core_package;
-                $this->bHasCustomAttributes    = !empty($this->oConfig->custom_attributes);
+                $this->bHasCustomAttributes    = !empty($this->oConfig->attributes);
 
                 // Set the custom attributes
                 if ($this->bHasCustomAttributes) {
                     $this->aCustomAttributes = array();
-                    foreach ($this->oConfig->custom_attributes->attribute as $oCustomAttribute) {
+                    foreach ($this->oConfig->attributes->attribute as $oCustomAttribute) {
                         $attribute_name = (string) $oCustomAttribute->name;
-                        $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute", array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name));
+                        if (isset($oCustomAttribute->i18n) && $oCustomAttribute->i18n){
+                            $sLang = App()->language;
+                            $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute and language =:language", array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name, 'language'=>$sLang));
+                        } else {
+                            $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute", array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name));
+                        }
                         if (is_object($oAttributeValue)) {
                             $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
                         } else {
@@ -369,6 +374,7 @@ class QuestionTemplate extends CFormModel
         if ($this->bHasCustomAttributes) {
             return $this->aCustomAttributes;
         }
+        return null;
     }
 
     /**
@@ -378,15 +384,32 @@ class QuestionTemplate extends CFormModel
      */
     static public function getQuestionTemplateList($type)
     {
-        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
-        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
-        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
+        $aQuestionTemplateList = QuestionTheme::model()->findAllByAttributes([], 'question_type = :question_type', ['question_type' => $type]);
+        $aQuestionTemplates = [];
+
+        foreach ($aQuestionTemplateList as $aQuestionTemplate) {
+            if ($aQuestionTemplate['core_theme'] == true && empty($aQuestionTemplate['extends'])) {
+                $aQuestionTemplates['core'] = [
+                    'title' => gT('Default'),
+                    'preview' => $aQuestionTemplate['image_path']
+                ];
+            } else {
+                $aQuestionTemplates[$aQuestionTemplate['name']] = [
+                    'title' => $aQuestionTemplate['title'],
+                    'preview' => $aQuestionTemplate['image_path']
+                ];
+            }
+        }
+//        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
+//        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
+//        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
         return $aQuestionTemplates;
     }
 
     /**
      * @param string $type
      * @return array
+     * @deprecated
      */
     static public function getQuestionTemplateUserList($type)
     {
@@ -410,7 +433,6 @@ class QuestionTemplate extends CFormModel
 
                         // Get the config file and check if template is available
                         $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
-
                         if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
                             if (!empty($oConfig->metadata->title)){
                                 $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), TRUE)[0];
@@ -418,11 +440,24 @@ class QuestionTemplate extends CFormModel
                                 $templateName = $file;
                                 $aQuestionTemplates[$file]['title'] = $templateName;
                             }
-
                             if (!empty($oConfig->files->preview->filename)){
-                                $aQuestionTemplates[$file]['preview'] = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
-                            } else {
-                                $aQuestionTemplates[$file]['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
+                                $fileName = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
+                                $previewPath = $sFullPathToQuestionTemplate."/assets/".$fileName;
+                                if(is_file($previewPath)) {
+                                    $check = LSYii_ImageValidator::validateImage($previewPath);
+                                    if($check['check']) {
+                                        $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
+                                    } else {
+                                        /* Log it a theme.question.$oConfig->name as error, review ? */
+                                        Yii::log("Unable to use $fileName for preview in $sFullPathToQuestionTemplate/assets/",'error','theme.question.'.$oConfig->metadata->name);
+                                    }
+                                } else {
+                                        /* Log it a theme.question.$oConfig->name as error, review ? */
+                                        Yii::log("Unable to find $fileName for preview in $sFullPathToQuestionTemplate/assets/",'error','theme.question.'.$oConfig->metadata->name);
+                                }
+                            }
+                            if(empty($aQuestionTemplates[$file]['preview'])) {
+                                $aQuestionTemplates[$file]['preview'] = $aQuestionTemplates['core']['preview'];
                             }
                         }
                     }
@@ -436,6 +471,7 @@ class QuestionTemplate extends CFormModel
     /**
      * @param string $type
      * @return array
+     * @deprecated
      */
     static public function getQuestionTemplateCoreList($type)
     {
@@ -499,6 +535,7 @@ class QuestionTemplate extends CFormModel
     /**
      * @param string $type
      * @return string|null
+     * @deprecated use QuestionTheme::getQuestionXMLPathForBaseType
      */
     static public function getFolderName($type)
     {
@@ -507,12 +544,14 @@ class QuestionTemplate extends CFormModel
             $sFolderName    = $aTypeToFolder[$type];
             return $sFolderName;
         }
+        return null;
     }
 
     /**
      * Correspondence between question type and the view folder name
      * Rem: should be in question model. We keep it here for easy access
      * @return array
+     * @deprecated
      */
     static public function getTypeToFolder()
     {

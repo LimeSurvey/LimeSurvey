@@ -1,0 +1,5 @@
+For package size reasons the migmix-1p-regular.ttf font to show Japanese characters in the statistics graphs 
+is not included with LimeSurvey.
+
+Please download it from http://mix-mplus-ipa.sourceforge.jp/migmix/ , 
+unzip and put the migmix-1p-regular.ttf file into the /assets/fonts directory of your LimeSurvey installation.

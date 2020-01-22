@@ -45,15 +45,15 @@
             <?php endif;?>
 
             <?php if ($bShowPercentage  = true): ?>
-                <th width='' align='center' >
-                    <strong><?php eT("Percentage");?></strong>
+                <th width='' align='center' <?=(!$bSum ? 'colspan="2"' :'')?>>
+                    <strong><?php eT("Gross percentage");?></strong>
                 </th>
             <?php endif;?>
 
             <?php if($bSum): ?>
                 <th width='' align='center' >
                     <strong>
-                        <?php eT("Sum");?>
+                        <?php eT("Top 2, Middle, Bottom 2");?>
                     </strong>
                 </th>
             <?php endif; ?>

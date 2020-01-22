@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>mailSenderToFrom</name>
+        <type>plugin</type>
+        <creationDate>2019-03-19</creationDate>
+        <last_update>2019-03-18</last_update>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.sondages.pro</authorUrl>
+        <version>1.0.0</version>
+        <license>MIT</license>
+        <description><![CDATA[Force sender, From etc … to be the mail set for sending email. Some SMTP server need smtp user as From and Return-Path.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

@@ -13,21 +13,18 @@
 
 function navigator_countdown(n)
 {
-	$(document).on('ready pjax:scriptcomplete',function()
-	{
-		$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
-		$(window).data('countdown', n);
-		navigator_countdown_btn().each(function(i, e)
-		{
-			$(e).data('text', $(e).text());
-		});
-		navigator_countdown_int();
-	});
+	$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
+    $(window).data('countdown', n);
+    navigator_countdown_btn().each(function(i, e)
+    {
+        $(e).data('text', $(e).text());
+    });
+    navigator_countdown_int();
 }
 
 function navigator_countdown_btn()
 {
-	return $('.action--ls-button-submit');
+	return $('.ls-move-btn');
 }
 
 function navigator_countdown_end()

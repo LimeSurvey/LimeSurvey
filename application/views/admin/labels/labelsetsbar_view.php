@@ -68,10 +68,15 @@
                 <!-- Delete label set -->
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
-                        <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
-                            <span class="fa fa-trash  text-warning"></span>
+                        <button class="btn btn-default"
+                           data-toggle="modal"
+                           data-target="#confirmation-modal"
+                           data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $lid])); ?> })'
+                           data-message="<?php eT("Do you really want to delete this label set?","js"); ?>"
+                           >
+                            <span class="fa fa-trash text-danger"></span>
                             <?php eT("Delete label set"); ?>
-                        </a>
+                        </button>
                         <?php endif; ?>
                     <?php endif; ?>
 

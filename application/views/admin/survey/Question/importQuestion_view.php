@@ -9,7 +9,15 @@
     <h3><?php eT("Import a question"); ?></h3>
     <div class="row">
         <div class="col-lg-12">
-            <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'class'=>'', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return window.LS.validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>
+            <?php echo CHtml::form(
+                array("admin/questions/sa/import"), 
+                'post', 
+                array(
+                    'id'=>'importquestion',
+                    'class'=>'', 'name'=>'importquestion',
+                    'enctype'=>'multipart/form-data',
+                    'onsubmit'=>"return window.LS.validatefilename(this, '".gT("Please select a file to import!",'js')."');")
+            ); ?>
                 <div class="form-group">
                     <label class=" control-label" for='the_file'><?php eT("Select question file (*.lsq):");
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);?>
@@ -44,6 +52,18 @@
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'translinksfields',
                             'id'=>'translinksfields',
+                            'value' => 1,
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')));
+                        ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class=" control-label" for='jumptoquestion'><?php eT("Jump to question after import?"); ?></label>
+                    <div class="">
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'jumptoquestion',
+                            'id'=>'jumptoquestion',
                             'value' => 1,
                             'onLabel'=>gT('On'),
                             'offLabel' => gT('Off')));

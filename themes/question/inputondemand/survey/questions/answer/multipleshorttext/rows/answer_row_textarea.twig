@@ -1,0 +1,55 @@
+{#
+/**
+ * Multiple short texts question, item text area Html
+ * @var $extraclass
+ * @var $sDisplayStyle
+ * @var $prefix
+ * @var $myfname
+ * @var $labelText                  $ansrow['question']
+ * @var $prefix
+ * @var $kpclass
+ * @var $rows                       $drows.' '.$maxlength
+ * @var $checkconditionFunction     $checkconditionFunction.'(this.value, this.name, this.type)'
+ * @var $dispVal
+ * @var $suffix
+ */
+#}
+<!-- answer_row_textarea -->
+<!-- Multiple short texts question, item text area Html -->
+<!-- question attribute "display_rows" is set -> we need a textarea to be able to show several rows -->
+<li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group {% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }}>
+        <!--  color code missing mandatory questions red -->
+        <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth==0 %} hidden {% endif %}" for="answer{{ myfname }}">
+            {{ question }}
+        </label>
+
+
+    <div class="col-xs-12 col-sm-{{ sInputContainerWidth }}">
+        {% if prefix != '' or suffix != '' %}
+            <div class="ls-input-group">
+        {% endif %}
+            {% if prefix != '' %}
+                <div class="ls-input-group-extra prefix-text prefix">
+                    {{ prefix }}
+                </div>
+            {% endif %}
+            <textarea
+                class="form-control {{ kpclass }}"
+                name="{{ myfname }}"
+                id="answer{{ myfname }}"
+                rows="{{ rows }}"
+                {% if inputsize %} size="{{ inputsize }}" {% endif %}
+                {% if maxlength %} maxlength="{{ maxlength }}"  {% endif %}
+                {% if numbersonly %} data-number="{{ numbersonly }}"  {% endif %}
+            >{{ dispVal }}</textarea>
+            {% if suffix != '' %}
+                <div class="ls-input-group-extra suffix-text suffix">
+                    {{ suffix }}
+                </div>
+            {% endif %}
+        {% if prefix != '' or suffix != '' %}
+            </div>
+        {% endif %}
+    </div>
+</li>
+<!-- end of answer_row_textarea -->

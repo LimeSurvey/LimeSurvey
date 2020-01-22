@@ -36,6 +36,9 @@ class TestBaseClass extends TestCase
     {
         parent::setUpBeforeClass();
 
+        // Clear database cache.
+        \Yii::app()->db->schema->refresh();
+
         //$lt = ini_get('session.gc_maxlifetime');
         //var_dump('gc_maxlifetime = ' . $lt);
         //die;
@@ -52,6 +55,8 @@ class TestBaseClass extends TestCase
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
         self::$testHelper->importAll();
+
+        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**
@@ -63,7 +68,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            self::assertTrue(false, 'Found no survey file ' . $fileName);
+            throw new \Exception(sprintf('Survey file %s not found',$surveyFile));
         }
 
         $translateLinksFields = false;
@@ -78,9 +83,32 @@ class TestBaseClass extends TestCase
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            self::assertTrue(false, 'Could not import survey file ' . $fileName);
+            throw new \Exception(sprintf('Failed to import survey file %s',$surveyFile));
         }
     }
+
+	/**
+	 * Get all question inside current survey, key is question code
+	 * @return array[]
+	 */
+	public function getAllSurveyQuestions()
+	{
+		if(empty(self::$surveyId)) {
+			throw new \Exception('getAllSurveyQuestions call without survey.');
+		}
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+		if(empty($survey)) {
+			throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
+		}
+        $questions = [];
+        foreach($survey->groups as $group) {
+            $questionObjects = $group->questions;
+            foreach ($questionObjects as $q) {
+                $questions[$q->title] = $q;
+            }
+        }
+        return $questions;
+	}
 
     /**
      * @return void

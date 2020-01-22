@@ -15,17 +15,16 @@
             'dropUpText'  => gT('Selected participant(s)...'),
 
             'aActions'    => array(
-
                 // Massive update
                 array(
                     // li element
                     'type'        => 'action',
                     'action'      => 'edit',
+                    'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
                     'url'         => App()->createUrl('/admin/tokens/sa/editMultiple/'),
                     'iconClasses' => 'fa fa-pencil text-success',
                     'text'        => gT('Batch-edit participants'),
                     'grid-reload' => 'yes',
-
                     // modal
                     'actionType'    => 'modal',
                     'modalType'     => 'yes-no',
@@ -41,6 +40,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'delete',
+                    'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'),
                     'url'         =>  App()->createUrl('/admin/tokens/sa/deleteMultiple/'),
                     'iconClasses' => 'text-danger fa fa-trash',
                     'text'        =>  gT('Delete'),
@@ -53,7 +53,7 @@
                     'sModalTitle'   => gT('Delete survey participants'),
                     'htmlModalBody' => gT('Are you sure you want to delete the selected participants?'),
                     'aCustomDatas'  => array(
-                        array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
+                        array( 'name'=>'sid',  'value'=> $surveyid),
                     ),
                 ),
 
@@ -77,7 +77,8 @@
                     // li element
                     'type'            => 'action',
                     'action'          => 'invite',
-                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$_GET['surveyid']),
+                    'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
                     'iconClasses'     => 'icon-invite text-success',
                     'text'            =>  gT('Send email invitations'),
 
@@ -94,7 +95,8 @@
                     // li element
                     'type'            => 'action',
                     'action'          => 'remind',
-                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$_GET['surveyid']),
+                    'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
                     'iconClasses'     => 'icon-remind text-success',
                     'text'            =>  gT('Send email reminder'),
 
@@ -126,10 +128,10 @@
                     // li element
                     'type'            => 'action',
                     'action'          => 'addCPDB',
-                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/'.$_GET['surveyid']),
+                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/'.$surveyid),
                     'iconClasses'     => 'ui-icon ui-add-to-cpdb-link',
                     'text'            =>  gT('Add participants to central database'),
-
+                    'disabled'         => !Permission::model()->hasGlobalPermission('participantpanel', 'create'),
                     'aLinkSpecificDatas'  => array(
                         'input-name'     => 'tokenids',
                     ),

@@ -2,21 +2,36 @@
 <div class="row">
     <div class="col-sm-12 content-right">
         
-        <?php $this->widget('bootstrap.widgets.TbGridView', array(
+        <?php
+        $massiveAction = App()->getController()->renderPartial(
+            '/admin/themeoptions/massive_action/_selector',
+            array(
+                'oSurveyTheme' => $oSurveyTheme,
+                'gridID' => 'themeoptions-grid',
+                'dropupID' => 'themeoptions-dropup',
+                'pk' => 'id'
+            ),
+            true,
+            false);
+        $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $oSurveyTheme->searchGrid(),
             'filter'        => $oSurveyTheme,
             'id'            => 'themeoptions-grid',
-            'ajaxUpdate'    => true,
-            'ajaxType'      => 'POST',
             'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                "<div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div>",
                 CHtml::dropDownList(
                     'pageSize',
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
                     array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
-                )
+                )          
             ),            
             'columns' => array(
+                array(
+                    'id'=>'id',
+                    'class'=>'CCheckBoxColumn',
+                    'selectableRows' => '100',
+                ),
                 array(
                     'header' => gT('Preview'),
                     'name' => 'preview',
@@ -36,7 +51,8 @@
                 array(
                     'header' => gT('Description'),
                     'name' => 'template_description',
-                    'value'=>'$data->template->description',
+                    //'value'=>'$data->template->description',
+                    'value'=>'$data->description',
                     'htmlOptions' => array('class' => 'col-md-3'),
                     'type'=>'raw',
                 ),
@@ -66,12 +82,15 @@
                     'filter' => false,
                 ),
 
-            )));
+            ), 
+            'ajaxUpdate'    => true,
+            'ajaxType'      => 'POST',
+            'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}', 
+        ));
         ?>
 
         <!-- To update rows per page via ajax setSession-->
             <?php
-
             $script = '
                 jQuery(document).on("change", "#pageSize", function(){
                     $.fn.yiiGridView.update("themeoptions-grid",{ data:{ pageSize: $(this).val() }});

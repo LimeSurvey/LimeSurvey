@@ -131,12 +131,14 @@ class RegisterController extends LSYii_Controller
         if (empty($this->aRegisterErrors) && $iTokenId && $this->sMessage === null) {
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
-                $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
+                if($event->get('sendRegistrationEmail', false)) {
+                    self::sendRegistrationEmail($iSurveyId, $iTokenId);
+                }
+                $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
                 $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
-            
             self::sendRegistrationEmail($iSurveyId, $iTokenId);
             self::display($iSurveyId, $iTokenId, 'register_success');
             Yii::app()->end();
@@ -178,7 +180,7 @@ class RegisterController extends LSYii_Controller
         //Check and validate attribute
         foreach ($aRegisterAttributes as $key => $aAttribute) {
             if ($aAttribute['show_register'] == 'Y' && $aAttribute['mandatory'] == 'Y' && empty($aFieldValue['aAttribute'][$key])) {
-                $this->aRegisterErrors[] = sprintf(gT("%s cannot be left empty").".", $aAttribute['caption']);
+                $this->aRegisterErrors[] = sprintf(gT("%s cannot be left empty."), $aAttribute['caption']);
             }
         }
     }
@@ -189,19 +191,19 @@ class RegisterController extends LSYii_Controller
      * @param Integer $iSurveyId The survey id
      * @param Integer $iTokenId The token id
      * 
-     * @return Array The rendereable array
+     * @return array The rendereable array
      */
     public function getRegisterSuccess($iSurveyId, $iTokenId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         
-        $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
         
         $aData['active'] = $oSurvey->active;        
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;
-        $aData['sFirstName'] = $oToken->firstname;
-        $aData['sLastName'] = $oToken->lastname;
+        $aData['sFirstName'] = Yii::app()->request->getPost('register_firstname', '');
+        $aData['sLastName'] = Yii::app()->request->getPost('register_lastname', '');
         $aData['sEmail'] = $oToken->email;
         $aData['thissurvey'] = $oSurvey->attributes;
 
@@ -214,7 +216,7 @@ class RegisterController extends LSYii_Controller
      *
      * @param Integer $iSurveyId The surey id
      * 
-     * @return Array The rendereable array
+     * @return array The rendereable array
      */
     public function getRegisterForm($iSurveyId)
     {
@@ -278,99 +280,28 @@ class RegisterController extends LSYii_Controller
         $sLanguage = App()->language;
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
 
-        $aMail = array();
-        $aMail['subject'] = $aSurveyInfo['email_register_subj'];
-        $aMail['message'] = $aSurveyInfo['email_register'];
-        $aReplacementFields = array();
-        $aReplacementFields["{ADMINNAME}"] = $aSurveyInfo['adminname'];
-        $aReplacementFields["{ADMINEMAIL}"] = $aSurveyInfo['adminemail'];
-        $aReplacementFields["{SURVEYNAME}"] = $aSurveyInfo['name'];
-        $aReplacementFields["{SURVEYDESCRIPTION}"] = $aSurveyInfo['description'];
-        $aReplacementFields["{EXPIRY}"] = $aSurveyInfo["expiry"];
-        $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
-        foreach ($oToken->attributes as $attribute=>$value) {
-            $aReplacementFields["{".strtoupper($attribute)."}"] = $value;
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt(); // Reload the token (needed if just created)
+        $mailer = new \LimeMailer();
+        $mailer->setSurvey($iSurveyId);
+        $mailer->setToken($oToken->token);
+        $mailer->setTypeWithRaw('register',$sLanguage);
+        $mailer->replaceTokenAttributes = true;
+        $mailerSent = $mailer->sendMessage();
+        if($mailer->getEventMessage()) {
+            $this->sMailMessage = $mailer->getEventMessage();
         }
-        $sToken = $oToken->token;
-        $useHtmlEmail = (getEmailFormat($iSurveyId) == 'html');
-        $aMail['subject'] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", $aMail['subject']);
-        $aMail['message'] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", $aMail['message']);
-        $aReplacementFields["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyId}", array('lang'=>$sLanguage, 'token'=>$sToken));
-        $aReplacementFields["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/surveyid/{$iSurveyId}", array('langcode'=>$sLanguage, 'token'=>$sToken));
-        $aReplacementFields["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/surveyid/{$iSurveyId}", array('langcode'=>$sLanguage, 'token'=>$sToken));
-        foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key) {
-            $url = $aReplacementFields["{{$key}URL}"];
-            if ($useHtmlEmail) {
-                            $aReplacementFields["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
-            }
-            $aMail['subject'] = str_replace("@@{$key}URL@@", $url, $aMail['subject']);
-            $aMail['message'] = str_replace("@@{$key}URL@@", $url, $aMail['message']);
-        }
-        // Replace the fields
-        $aMail['subject'] = ReplaceFields($aMail['subject'], $aReplacementFields);
-        $aMail['message'] = ReplaceFields($aMail['message'], $aReplacementFields);
-        $sFrom = "{$aSurveyInfo['adminname']} <{$aSurveyInfo['adminemail']}>";
-        $sBounce = getBounceEmail($iSurveyId);
-        $sTo = $oToken->email;
-        $sitename = Yii::app()->getConfig('sitename');
-        // Plugin event for email handling (Same than admin token but with register type)
-        $event = new PluginEvent('beforeTokenEmail');
-        $event->set('survey', $iSurveyId);
-        $event->set('type', 'register');
-        $event->set('model', 'register');
-        $event->set('subject', $aMail['subject']);
-        $event->set('to', $sTo);
-        $event->set('body', $aMail['message']);
-        $event->set('from', $sFrom);
-        $event->set('bounce', $sBounce);
-        $event->set('token', $oToken->attributes);
-        App()->getPluginManager()->dispatchEvent($event);
-        $aMail['subject'] = $event->get('subject');
-        $aMail['message'] = $event->get('body');
-        $sTo = $event->get('to');
-        $sFrom = $event->get('from');
-        $sBounce = $event->get('bounce');
-
-        $aRelevantAttachments = array();
-        if (isset($aSurveyInfo['attachments'])) {
-            $aAttachments = unserialize($aSurveyInfo['attachments']);
-            if (!empty($aAttachments)) {
-                if (isset($aAttachments['registration'])) {
-                    LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
-
-                    foreach ($aAttachments['registration'] as $aAttachment) {
-                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                            $aRelevantAttachments[] = $aAttachment['url'];
-                        }
-                    }
-                }
-            }
-        }
-
-        if ($event->get('send', true) == false) {
-            $this->sMessage = $event->get('message', $this->sMailMessage); // event can send is own message
-            if ($event->get('error') == null) {
-// mimic core system, set send to today
-                $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-                $oToken->sent = $today;
-                $oToken->save();
-            }
-        } elseif (SendEmailMessage($aMail['message'], $aMail['subject'], $sTo, $sFrom, $sitename, $useHtmlEmail, $sBounce, $aRelevantAttachments)) {
-            // TLR change to put date into sent
+        $aMessage = array();
+        $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
+        if($mailerSent) {
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent = $today;
-            $oToken->save();
-            $aMessage = array();
-            $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
+            $oToken->encryptSave();
             $aMessage['mail-message'] = $this->sMailMessage;
-            $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
-            $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage'=>$aMessage), true);
         } else {
-            $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
-            $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
-            $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage'=>$aMessage), true);
         }
+        $aMessage['mail-contact'] = sprintf(gT("Survey administrator %s (%s)"), $aSurveyInfo['adminname'], $aSurveyInfo['adminemail']);
+        $this->sMessage = $this->renderPartial('/survey/system/message', array('aMessage'=>$aMessage), true);
         // Allways return true : if we come here, we allways trye to send an email
         return true;
     }
@@ -392,6 +323,7 @@ class RegisterController extends LSYii_Controller
             'email' => $aFieldValue['sEmail']
         ));
         if ($oToken) {
+            $oToken->decrypt();
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
             } elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout") {
@@ -422,7 +354,7 @@ class RegisterController extends LSYii_Controller
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
             $oToken->generateToken();
-            $oToken->save();
+            $oToken->encryptSave();
             $this->sMailMessage = gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;
         }

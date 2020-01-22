@@ -42,11 +42,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('.codeval').on('keyup change', sync_label);
     $('.assessmentval').on('keyup change', sync_label);
 
-    $('#neweditlblset0 .answertable tbody').sortable({
-        update:sort_complete,
-        distance:2
-    });
-
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
 
@@ -296,14 +291,15 @@ function add_label(event) {
  */
 function del_label(event) {
     event.preventDefault();
-    var $sRowID = $(event.target).parent().parent().attr('id');
+    var sRowID = $(event.target).closest('tr').attr('id');
 
-    $aRowInfo=$sRowID.split('_');// first is row, second langage and last the row number
+    var aRowInfo = sRowID.split('_');// first is row, second langage and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
 
-        if (typeof(div_language)!="undefined")
-            $("#row_"+div_language+"_"+$aRowInfo[2]).remove();
+        if (typeof(div_language)!="undefined") {
+            $("#row_"+div_language+"_"+aRowInfo[2]).remove();
+        }
     });
 
     fix_highlighting();

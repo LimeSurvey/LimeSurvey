@@ -54,27 +54,35 @@ echo viewHelper::getViewTestTag('exportSpss');
     <div class="form-group row">
         <label for='limit' class='col-sm-2  form-control-label'><?php eT("Limit:");?></label>
         <div class="col-sm-1">
-            <input class="form-control" type='text' name='limit' value='<?php echo App()->getRequest()->getParam('limit');?>' />
+            <?php
+                echo CHtml::textField('limit',App()->getRequest()->getParam('limit'),array('class'=>'form-control'));
+            ?>
         </div>
     </div>
     <div class="form-group row">
         <label for='offset' class='col-sm-2  form-control-label'><?php eT("Offset:");?></label>
         <div class="col-sm-1">
-            <input class="form-control" type='text' name='offset' value='<?php echo App()->getRequest()->getParam('offset');?>' />
+            <?php
+                echo CHtml::textField('offset',App()->getRequest()->getParam('offset'),array('class'=>'form-control'));
+            ?>
         </div>
     </div>
 
     <div class="form-group row">
         <label for='offset' class='col-sm-2  form-control-label'><?php eT("No answer:");?></label>
         <div class="col-sm-1">
-            <input class="form-control" type='text' name='noanswervalue' value='<?php echo App()->getRequest()->getParam('noanswervalue');?>' />
+            <?php
+                echo CHtml::textField('noanswervalue',App()->getRequest()->getParam('noanswervalue'),array('class'=>'form-control'));
+            ?>
         </div>
     </div>
 
 
     <div class="form-group row">
-        <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-        <input type='hidden' name='action' value='exportspss' />
+        <?php
+            echo CHtml::hiddenField('sid',$surveyid);
+            echo CHtml::hiddenField('action','exportspss');
+        ?>
         <label for='dlstructure' class='col-sm-1 form-control-label'><?php eT("Step 1:");?></label>
         <div class="col-sm-10">
             <input class="btn btn-default" type='submit' name='dlstructure' id='dlstructure' value='<?php eT("Export syntax");?>'/>

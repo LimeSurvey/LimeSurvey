@@ -18,8 +18,10 @@ background-color:white;
 color:red;
 font-weight:bold;
 }
-
 tr.LEMsubq td
 {
 background-color:lightyellow;
+}
+.expression-tooltip .tooltip-inner {
+    max-width: none;
 }

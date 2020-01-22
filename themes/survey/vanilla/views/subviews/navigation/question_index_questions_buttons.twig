@@ -24,7 +24,7 @@
             {% set templateClass = statusClass ~  ' disabled'  %}
         {% endif %}
             <button type="submit" name="move" value="{{ indexQuestion.step }}" class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }}" data-qid="{{ indexQuestion.qid }}">
-                {{ ellipsizeString(indexQuestion.text, 80, "…", 0.6 ) }}
+                {{ ellipsizeString(indexQuestion.text, 80, 0.6, "…" ) }}
             </button>
         {% endfor %}
     </div>

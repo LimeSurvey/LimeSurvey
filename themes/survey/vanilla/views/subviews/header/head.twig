@@ -33,22 +33,18 @@
         {{ processString(aSurveyInfo.surveyls_title,1) }}
     </title>
 
-    <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}files/favicon.ico" />
+    <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
     <script type="text/javascript">
         if(window.basicThemeScripts === undefined){ 
             window.basicThemeScripts = new ThemeScripts(); 
         } 
     </script>
-    {# Ajax mode #}
-    {% if(aSurveyInfo.options.ajaxmode == "on") %}
-        <script type="text/javascript">
-            var ajaxHandler = new AjaxSubmitObject();
-            $(document).on('ready', function () {
-                ajaxHandler.bindActions();
-            });
-        </script>
+    {# LSvar update with  #}
+    {{ registerScript("LSvarTemplateInit","LSvar= LSvar || {};","POS_HEAD") }}
+    {% if(aSurveyInfo.options.fixnumauto and aSurveyInfo.options.fixnumauto != "off") %}
+        {{ registerScript("LSvarTemplateRealFixNumAuto","LSvar.bFixNumAuto = "~(aSurveyInfo.options.fixnumauto == "enable" ? 1 : 0)~";","POS_HEAD") }}
+        {{ registerScript("LSvarTemplateRealNumRealValue","LSvar.bNumRealValue = "~(aSurveyInfo.options.fixnumauto == "disable" ? 1 : 0)~";","POS_HEAD") }}
     {% endif %}
-
     {{ include('./subviews/header/custom_header.twig') }}
 
     {{ include('./subviews/header/google_analytics.twig') }}

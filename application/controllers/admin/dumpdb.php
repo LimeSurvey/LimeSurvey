@@ -64,7 +64,8 @@ class Dumpdb extends Survey_Common_Action
     {
         header('Content-type: application/octet-stream');
         header('Content-Disposition: attachment; filename='.$sFileName);
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header("Cache-Control: no-store, no-cache, must-revalidate");  // Don't store in cache because it is sensitive data
+        
     }
 
 }

@@ -16,7 +16,6 @@
 
 class LSYii_Validators extends CValidator
 {
-
     /**
      * Filter attribute for fixCKeditor
      * @var boolean
@@ -46,11 +45,11 @@ class LSYii_Validators extends CValidator
     public function __construct()
     {
         if (Yii::app()->getConfig('DBVersion') < 172) {
-// Permission::model exist only after 172 DB version
+            // Permission::model exist only after 172 DB version
             return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
         }
-        $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin', 'read'));
-        return null;
+        $this->xssfilter = ($this->xssfilter && Yii::app()->user->isXssFiltered());
+        return;
     }
 
     protected function validateAttribute($object, $attribute)
@@ -63,7 +62,9 @@ class LSYii_Validators extends CValidator
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
         if ($this->isUrl) {
-            if ($object->$attribute == 'http://' || $object->$attribute == 'https://') {$object->$attribute = ""; }
+            if ($object->$attribute == 'http://' || $object->$attribute == 'https://') {
+                $object->$attribute = "";
+            }
         }
         if ($this->isLanguage) {
             $object->$attribute = $this->languageFilter($object->$attribute);
@@ -94,7 +95,7 @@ class LSYii_Validators extends CValidator
             $value = "";
         }
         if (trim($value) == "&nbsp;" || trim($value) == '') {
-// chrome adds a single &nbsp; element to empty fckeditor fields
+            // chrome adds a single &nbsp; element to empty fckeditor fields
             $value = "";
         }
         return $value;
@@ -128,6 +129,45 @@ class LSYii_Validators extends CValidator
         );
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
 
+        // to enable video or something else we must use the config object of HTML-Purifier
+        $config = $filter->getPurifier()->config;
+
+        // enable video
+        $config->set('HTML.DefinitionID', 'html5-definitions');
+
+        $def = $config->maybeGetRawHTMLDefinition();
+        $max = $config->get('HTML.MaxImgLength');
+        if ($def) {
+            $def->addElement(
+                'video',   // name
+                'Inline',  // content set
+                'Flow', // allowed children
+                'Common', // attribute collection
+                array( // attributes
+                    'src' => 'URI',
+                    'id' => 'Text',
+                    'poster' => 'Text',
+                    'width' => 'Pixels#' . $max,
+                    'height' => 'Pixels#' . $max,
+                    'controls' => 'Bool#controls',
+                    'autobuffer' => 'Bool#autobuffer',
+                    'autoplay' => 'Bool#autoplay',
+                    'loop' => 'Bool#loop',
+                    'muted' => 'Bool#muted'
+                )
+            );
+            $def->addElement(
+                'source',   // name
+                'Inline',  // content set
+                'Empty', // allowed children
+                null, // attribute collection
+                array( // attributes
+                    'src*' => 'URI',
+                    'type' => 'Enum#video/mp4,video/webm',
+                )
+            );
+        }
+
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $filter->purify($value));
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
@@ -138,7 +178,7 @@ class LSYii_Validators extends CValidator
         $bCountIsOk = count($aValues) == count($aFilteredValues);
         /** Construction of new string with unfiltered EM and filtered HTML **/
         $sNewValue = "";
-        foreach ($aValues as $key=>$aValue) {
+        foreach ($aValues as $key => $aValue) {
             if ($aValue[2] == "STRING") {
                 $sNewValue .= $bCountIsOk ? $aFilteredValues[$key][0] : $filter->purify($aValue[0]); // If EM is broken : can throw invalid $key
             } else {
@@ -185,5 +225,4 @@ class LSYii_Validators extends CValidator
         $aValue = array_map("sanitize_languagecode", $aValue);
         return implode(" ", $aValue);
     }
-
 }

@@ -4,8 +4,6 @@
  * Plugin options panel
  */
 
-// DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('surveyPlugins');
 
 App()->getClientScript()->registerScript("plugin-panel-variables", "
     var jsonUrl = '';

@@ -87,7 +87,7 @@ const NotifcationSystem  = function (){
      */
     initNotification = () => {
         // const self = this;
-        LOG.group('initNotification');
+        
         $('.admin-notification-link').each((nr, that) => {
             
             LOG.log('Number of Notification: ', nr);
@@ -110,7 +110,7 @@ const NotifcationSystem  = function (){
             });
 
         });
-        LOG.groupEnd('initNotification');
+        
     },
 
     /**

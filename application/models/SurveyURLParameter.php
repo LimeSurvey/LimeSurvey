@@ -60,7 +60,7 @@ class SurveyURLParameter extends LSActiveRecord
      */
     public function getParametersForSurvey($iSurveyID)
     {
-        return Yii::app()->db->createCommand("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
+        return Yii::app()->db->createCommand("select '' as act, up.*,q.title, sq.title as sqtitle from {{survey_url_parameters}} up
             left join {{questions}} q on q.qid=up.targetqid
             left join {{questions}} sq on q.qid=up.targetsqid
             where up.sid=:surveyid")

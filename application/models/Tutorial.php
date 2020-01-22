@@ -137,7 +137,13 @@ class Tutorial extends LSActiveRecord
         ));
     }
 
-    public function findByName($tutorialName) {
+
+    /**
+     * @param string $tutorialName
+     * @return Tutorial
+     */
+    public function findByName($tutorialName)
+    {
         $defaultTutorials = LsDefaultDataSets::getTutorialData();
         if (array_key_exists($tutorialName, $defaultTutorials)) {
             $oTutorial = new Tutorial();

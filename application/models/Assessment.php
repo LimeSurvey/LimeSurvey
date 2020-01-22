@@ -30,6 +30,17 @@
  */
 class Assessment extends LSActiveRecord
 {
+    public function init()
+    {
+        parent::init();
+        if ($this->isNewRecord) {
+            // default values
+            if (empty($this->scope)) {
+                $this->scope = '0';
+            }
+        }
+    }
+
     /**
      * @inheritdoc
      * @return Assessment
@@ -143,7 +154,7 @@ class Assessment extends LSActiveRecord
             array(
                 'name' => 'message',
                 'htmlOptions' => ['class' => 'col-sm-5'],
-                "type" => 'raw',
+                "type" => 'html', // This show all html (filtered, raw show unfiltered html) … maybe need another type , something like strip tag and ellipsize ?
             )
         );
     }
@@ -181,6 +192,7 @@ class Assessment extends LSActiveRecord
     /**
      * @param array $data
      * @return Assessment
+     * @deprecated use model->attributes = $data && $model->save()
      */
     public static function insertRecords($data)
     {

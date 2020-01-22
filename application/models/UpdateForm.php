@@ -2,17 +2,18 @@
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+
 /*
-* LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * LimeSurvey
+ * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
 /**
 * Update Form Model
@@ -277,7 +278,7 @@ class UpdateForm extends CFormModel
             // To debug pcl_zip, comment the following line:
             Yii::app()->loadLibrary("admin/pclzip");
 
-            $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip);
+            $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip, false);
 
             // TODO : RESTORE REPLACE NEWER !!
             // To debug pcl_zip, uncomment the following line :

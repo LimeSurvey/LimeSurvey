@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>Authdb</name>
+        <type>plugin</type>
+        <creationDate>2013-03-28</creationDate>
+        <lastUpdate>2018-01-24</lastUpdate>
+        <author>Menno Dekker</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Core: Database authentication + exports]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>3.0</version>
+        <version>2.73</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

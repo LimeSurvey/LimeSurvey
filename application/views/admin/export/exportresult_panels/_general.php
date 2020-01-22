@@ -1,5 +1,5 @@
 <!-- General -->
-<div class="panel panel-primary" id="panel-3">
+<div class="panel panel-primary" id="panel-various">
   <div class="panel-heading">
     <div class="panel-title h4">
       <?php eT("General"); ?>

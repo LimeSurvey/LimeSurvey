@@ -6,7 +6,7 @@
  * @var $stddev
  */
 ?>
-
+<tr><td colspan="4"><?php eT("Descriptive statistics"); ?></td></tr>
 <tr>
     <td align='center'>
         <?php eT("Arithmetic mean"); ?>
@@ -14,11 +14,8 @@
     <td>
         &nbsp;
     </td>
-    <td align='center'>
+    <td align='center' colspan="2">
         <?php echo $am; ?>
-    </td>
-    <td>
-        &nbsp;
     </td>
 </tr>
 <tr>
@@ -28,10 +25,7 @@
     <td>
         &nbsp;
     </td>
-    <td align='center'>
+    <td align='center' colspan="2">
         <?php echo $stddev; ?>
-    </td>
-    <td>
-        &nbsp;
     </td>
 </tr>

@@ -51,8 +51,7 @@ class STATAxmlWriter extends Writer
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_".$survey->id."_STATA.xml");
             header("Content-type: application/download; charset=US-ASCII");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Pragma: public");
+            header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {
             $this->handle = fopen($this->filename, 'w');
@@ -111,7 +110,7 @@ class STATAxmlWriter extends Writer
             $aFieldmap['questions'][$key]['qid'] = '';
             $aFieldmap['questions'][$key]['question'] = $value['description'];
             $aFieldmap['questions'][$key]['fieldname'] = $key;
-            $aFieldmap['questions'][$key]['type'] = 'S';
+            $aFieldmap['questions'][$key]['type'] = Question::QT_S_SHORT_FREE_TEXT;
         }
         // add only questions and answers to the fieldmap that are relevant to the selected columns (variables)
         foreach ($aFieldmap['questions'] as $question) {
@@ -152,19 +151,19 @@ class STATAxmlWriter extends Writer
 
             //set field types for standard vars
             if ($aQuestion['varname'] == 'submitdate' || $aQuestion['varname'] == 'startdate' || $aQuestion['varname'] == 'datestamp') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'D';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_D_DATE;
             } elseif ($aQuestion['varname'] == 'startlanguage') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'token') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'id') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             } elseif ($aQuestion['varname'] == 'ipaddr') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'refurl') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'lastpage') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             }
 
 
@@ -196,7 +195,7 @@ class STATAxmlWriter extends Writer
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
 
 
-                if ($aQuestion['type'] == 'M') {
+                if ($aQuestion['type'] == Question::QT_M_MULTIPLE_CHOICE) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -205,7 +204,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                } elseif ($aQuestion['type'] == "P") {
+                } elseif ($aQuestion['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -214,7 +213,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                } elseif ($aQuestion['type'] == "G") {
+                } elseif ($aQuestion['type'] == Question::QT_G_GENDER_DROPDOWN) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
                         'answer' => gT('Female')
@@ -223,7 +222,7 @@ class STATAxmlWriter extends Writer
                         'code' => 'M',
                         'answer' => gT('Male')
                     );
-                } elseif ($aQuestion['type'] == "Y") {
+                } elseif ($aQuestion['type'] == Question::QT_Y_YES_NO_RADIO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -232,7 +231,7 @@ class STATAxmlWriter extends Writer
                         'code' => $nvalue,
                         'answer' => gT('No')
                     );
-                } elseif ($aQuestion['type'] == "C") {
+                } elseif ($aQuestion['type'] == Question::QT_C_ARRAY_YES_UNCERTAIN_NO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Yes')
@@ -245,7 +244,7 @@ class STATAxmlWriter extends Writer
                         'code' => 3,
                         'answer' => gT('Uncertain')
                     );
-                } elseif ($aQuestion['type'] == "E") {
+                } elseif ($aQuestion['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Increase')
@@ -362,7 +361,7 @@ class STATAxmlWriter extends Writer
                 if ($response != '') {
                     // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
                     switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type']) {
-                        case "G": //GENDER drop-down list
+                        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
                             $response = str_replace(array(
                                 'F',
                                 'M'
@@ -371,8 +370,8 @@ class STATAxmlWriter extends Writer
                                 '1'
                             ), $response);
                             break;
-                        case "Y": //YES/NO radio-buttons
-                        case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $response = str_replace(array(
                                 'Y',
                                 'N',
@@ -383,7 +382,7 @@ class STATAxmlWriter extends Writer
                                 '9'
                             ), $response);
                             break;
-                        case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                             $response = str_replace(array(
                                 'I',
                                 'S',
@@ -394,10 +393,10 @@ class STATAxmlWriter extends Writer
                                 '-1'
                             ), $response);
                             break;
-                        case "D": //replace in customResponsemap: date/time as string with STATA-timestamp
+                        case Question::QT_D_DATE: //replace in customResponsemap: date/time as string with STATA-timestamp
                             $response = strtotime($response.' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
                             break;
-                        case "L":
+                        case Question::QT_L_LIST_DROPDOWN:
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
                             foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
@@ -408,7 +407,7 @@ class STATAxmlWriter extends Writer
                             }
                             break;
                     }
-                    
+
                     /* look at each of the responses and determine STATA data type and format of the respective variables
                        datatypes coded as follows:
                        1=""
@@ -434,7 +433,7 @@ class STATAxmlWriter extends Writer
                             } elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt) {
                                 $iDatatype = 3; // and this is is 'int'
                             } else {
-                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
+                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == Question::QT_D_DATE) {
 // if datefield then a 'double' data type is needed
                                     $iDatatype = 6; // double
                                 } else {
@@ -454,7 +453,7 @@ class STATAxmlWriter extends Writer
                 } else {
                     $iDatatype = 1; // response = "" 
                 }
-                
+
                 // initialize format and type (default: empty)
                 if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['type'])) {
                                     $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
@@ -480,7 +479,7 @@ class STATAxmlWriter extends Writer
                 $this->customResponsemap[$iRespId][$iVarid] = $response;
             }
         }
-        
+
         // translate coding into STATA datatypes, format and length
         foreach ($aStatatypelist as $variable => $data) {
             switch ($data['type']) {
@@ -488,27 +487,27 @@ class STATAxmlWriter extends Writer
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'str'.min($data['format'], $this->maxStringLength);
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%'.min($data['format'], $this->maxStringLength).'s';
                     break;
-                case 6: 
+                case 6:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'double';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%tc';
                     break;
-                case 5: 
+                case 5:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'float';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 4: 
+                case 4:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'long';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 3: 
+                case 3:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'int';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 2: 
+                case 2:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 1: 
+                case 1:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%9.0g';
                     break;

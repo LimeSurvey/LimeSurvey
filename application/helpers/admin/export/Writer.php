@@ -226,15 +226,17 @@ abstract class Writer implements IWriter
         //The following if block handles transforms of Ys and Ns.
         if (($oOptions->convertN || $oOptions->convertY) &&
         isset($fieldType) &&
-        ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y')) {
+        ($fieldType == Question::QT_M_MULTIPLE_CHOICE || $fieldType == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS || $fieldType == Question::QT_Y_YES_NO_RADIO)) {
             if (($value == 'N' || ($value == '' && !is_null($value))) && $oOptions->convertN) {
-                return $oOptions->nValue;
+                $value = $oOptions->nValue;
             } else if ($value == 'Y' && $oOptions->convertY) {
-                    return $oOptions->yValue;
-                }
+                $value = $oOptions->yValue;
+            }
         }
-
-        //This spot should only be reached if no transformation occurs.
+        // Quote equal signs to prevent CSV injection attacks
+        if ($oOptions->csvMaskEquations && isset($value[0]) && $value[0]=='=') {
+            $value="'".$value;
+        }
         return $value;
     }
 
@@ -294,10 +296,24 @@ abstract class Writer implements IWriter
 
         // If no empty survey, render/export responses array.
         foreach ($oSurvey->responses as $response) {
+            // prepare the data for decryption
+            $sTokenTableName='tokens_'.$oSurvey->id;
+            $aResponse = array();
+            if (tableExists($sTokenTableName)) {
+                $oToken = Token::model($oSurvey->id);
+                $oToken->setAttributes($response, false); 
+                $oToken->decrypt();
+                $aResponse = array_merge($aResponse, $oToken->attributes);
+            }
+            $oResponse = Response::model($oSurvey->id);
+            $oResponse->setAttributes($response, false); 
+            $oResponse->decrypt();
+            $aResponse = array_merge($aResponse, $oResponse->attributes);
+
             $elementArray = array();
 
             foreach ($oOptions->selectedColumns as $column) {
-                $value = $response[$column];
+                $value = $aResponse[$column];
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type'] != 'answer_time' && $oSurvey->fieldMap[$column]['type'] != 'page_time' && $oSurvey->fieldMap[$column]['type'] != 'interview_time') {
                     switch ($oOptions->answerFormat) {
                         case 'long':

@@ -538,9 +538,8 @@ class CaptchaExtendedAction extends CCaptchaAction{
 
         imagecolordeallocate($image,$foreColor);
 
-		header('Pragma:public');
 		header('Expires:0');
-		header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header("Cache-Control: must-revalidate, no-store, no-cache");
 		header('Content-Transfer-Encoding:binary');
         header("Content-type:image/png");
         imagepng($image); //This will normally output the image, but because of ob_start(), it won't.

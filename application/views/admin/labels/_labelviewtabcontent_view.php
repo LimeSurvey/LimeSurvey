@@ -25,16 +25,16 @@ $codeids = '';
                 <tbody>
                     <?php $position = 0; $alternate = false; ?>
 
-                    <?php foreach ($results[$i] as $row): ?>
+                    <?php foreach ($results as $row): ?>
                         <?php
-                        $sortorderids = $sortorderids . ' ' . $row['language'] . '_' . $row['sortorder'];
+                        $sortorderids = $sortorderids . ' ' . $lslanguage . '_' . $row['sortorder'];
                         if ($first)
                         {
                             $codeids = $codeids . ' ' . $row['sortorder'];
                         }
                         ?>
 
-                        <tr class="labelDatas" style='white-space: nowrap;' id='row_<?php echo $row['language']; ?>_<?php echo $row['sortorder'] ?>'>
+                        <tr class="labelDatas" style='white-space: nowrap;' id='row_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>'>
                             <?php if (!$first):?>
                                 <td><?php echo $row['code'] ?></td><td><?php echo $row['assessment_value'] ?></td>
                                 <?php else:?>
@@ -53,9 +53,10 @@ $codeids = '';
                                 <?php endif;?>
                             <td>
                             <div class="input-group">
-                                <input type='text' class=" form-control  " name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
+                                <input type='text' class=" form-control  " name='title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php 
+                                echo HTMLEscape($row->labelL10ns[$lslanguage]->title) ?>" />
                                 <span class="input-group-addon">
-                                    <?php  echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action); ?>
+                                    <?php  echo getEditor("editlabel", "title_{$lslanguage}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $lslanguage . ")", '', '', '', $action); ?>
                                 </span>
                             </div>
                                 

@@ -5,7 +5,6 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('createNewBox');
 ?>
-?>
 <div class="col-lg-12 list-surveys">
 
     <?php $this->renderPartial('super/fullpagebar_view', array(

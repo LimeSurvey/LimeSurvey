@@ -31,8 +31,8 @@
 #}
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
-    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ sLabelWidth == 0 ? " hidden":"" }}' for="answer{{myfname}}">
-        {{ labelText }}
+    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}' for="answer{{myfname}}">
+        {{ processString(labelText) }}
     </label>
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
             {% if sliderleft is not empty %}
@@ -41,16 +41,16 @@
 
             <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
                     {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
-                            'class': 'form-control answer-item numeric-item',
+                            'class': 'form-control answer-item numeric-item hidden',
                             'id' : "answer" ~ myfname ~ "slid", 
+                        })
+                    }}
+                    {{ C.Html.textField( myfname, dispVal ,{
+                            'class': 'form-control answer-item numeric-item ls-js-hidden slider-untouched',
+                            'id' : "answer" ~ myfname,
                             'aria-labelledby' : 'label-' ~ myfname
                         })
-                    }}                
-                    {{ C.Html.textField( myfname, dispVal ,{
-                            'class': 'form-control answer-item numeric-item hidden slider-untouched',
-                            'id' : "answer" ~ myfname, 
-                        })
-                    }}                
+                    }}
                 {% if slider_showminmax %}
                     <div class='pull-left help-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
                     <div class='pull-right help-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
@@ -79,6 +79,7 @@
         'qid': "{{qid}}",
         'element': "{{myfname}}slid",
         'rootElement': "{{myfname}}",
+        'labelElement': "label-{{ myfname }}",
         'value' : '{{slider_value}}',
         'min' : {{slider_min}},
         'max' : {{slider_max}},
@@ -87,18 +88,17 @@
         'handle' : "{{slider_handle}}",
         'tooltip' : 'always',
         'reset' : "{{slider_reset}}",
-        'prefix' : "{{prefix}}",
-        'suffix' : "{{suffix}}",
+        'prefix' : "{{ processString(prefix,1) }}",
+        'suffix' : "{{ processString(suffix,1) }}",
         'separator' : "{{sSeparator}}",
         'number' : true,
         'integer' : {{integeronly}},
-        'position' : "{{slider_position}}",
+        'position' : parseInt({{slider_position}}),
         'custom_handle' : "{{slider_custom_handle}}",
         'setPosition' : "{{slider_reset_set}}",
         'reversed' : {{slider_reversed}},
     });
     window.activeSliders.s{{myfname}}.init();
-
 {% endset %}
 {{ registerScript( 'SliderQuestion'~myfname, script, 'POS_POSTSCRIPT') }}
 

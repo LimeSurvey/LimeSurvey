@@ -101,34 +101,50 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('email_admin_responses', 'lsdefault'),
 
             array('surveyls_email_invite_subj', 'LSYii_Validators'),
+            array('surveyls_email_invite_subj', 'length', 'min' => 0, 'max'=>255),
             array('surveyls_email_invite', 'LSYii_Validators'),
             array('surveyls_email_remind_subj', 'LSYii_Validators'),
+            array('surveyls_email_remind_subj', 'length', 'min' => 0, 'max'=>255),
             array('surveyls_email_remind', 'LSYii_Validators'),
             array('surveyls_email_confirm_subj', 'LSYii_Validators'),
+            array('surveyls_email_confirm_subj', 'length', 'min' => 0, 'max'=>255),
             array('surveyls_email_confirm', 'LSYii_Validators'),
             array('surveyls_email_register_subj', 'LSYii_Validators'),
+            array('surveyls_email_register_subj', 'length', 'min' => 0, 'max'=>255),
             array('surveyls_email_register', 'LSYii_Validators'),
             array('email_admin_notification_subj', 'LSYii_Validators'),
+            array('email_admin_notification_subj', 'length', 'min' => 0, 'max'=>255),
             array('email_admin_notification', 'LSYii_Validators'),
             array('email_admin_responses_subj', 'LSYii_Validators'),
+            array('email_admin_responses_subj', 'length', 'min' => 0, 'max'=>255),
             array('email_admin_responses', 'LSYii_Validators'),
 
             array('surveyls_title', 'LSYii_Validators'),
+            array('surveyls_title', 'length', 'min' => 0, 'max'=>200),
             array('surveyls_description', 'LSYii_Validators'),
             array('surveyls_welcometext', 'LSYii_Validators'),
             array('surveyls_endtext', 'LSYii_Validators'),
             array('surveyls_policy_notice', 'LSYii_Validators'),
             array('surveyls_policy_error', 'LSYii_Validators'),
             array('surveyls_policy_notice_label', 'LSYii_Validators'),
+            array('surveyls_policy_notice_label', 'length', 'min' => 0, 'max'=>192),
             array('surveyls_url', 'filter', 'filter'=>'trim'),
             array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
             array('surveyls_urldescription', 'LSYii_Validators'),
+            array('surveyls_urldescription', 'length', 'min' => 0, 'max'=>255),
 
             array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true),
             array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
 
+    /**
+     * @inheritdoc
+     * Pass this to all findAll query : indexed by surveyls_language : return only one survey id
+     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#defaultScope-detail
+     * Remind to use resetScope if you need to disable this behaviour
+     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#resetScope-detail
+     */
     public  function defaultScope()
     {
         return array('index'=>'surveyls_language');
@@ -142,7 +158,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     public function lsdefault($attribute)
     {
         $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
-        $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
+        $sEmailFormat = $oSurvey->isHtmlEmail ? 'html' : '';
         $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 
             $aDefaultTextData = array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
@@ -178,20 +194,6 @@ class SurveyLanguageSetting extends LSActiveRecord
     {
         $captions = @json_decode($this->surveyls_attributecaptions, true);
         return $captions !== false ? $captions : array();
-    }
-
-    /**
-     * @param mixed|bool $condition
-     * @param bool $return_query
-     * @return mixed
-     */
-    public function getAllRecords($condition = false, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
-        if ($condition != false) {
-            $query->where($condition);
-        }
-        return ($return_query) ? $query->queryAll() : $query;
     }
 
     /**

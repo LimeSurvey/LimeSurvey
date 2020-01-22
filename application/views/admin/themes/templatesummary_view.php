@@ -34,7 +34,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                         </div>
                         <div class="col-sm-3">
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate,false) && $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
-                                <span class="label label-success"> <?php eT("local"); ?> </span>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
+                                        <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
+                                    </form>
+                                <?php } ?>
                             <?php } else { ?>
                                 <span class="label label-danger"> <?php eT("inherited"); ?> </span>
                             <?php }?>
@@ -56,7 +65,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                         </div>
                         <div class="col-sm-3">
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {?>
-                                <span class="label label-success"><?php eT("local"); ?></span>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
+                                    <input type='hidden' name="filetype" value="<?php echo CHtml::encode('js'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
+                                    </form>
+                                <?php } ?>
                             <?php } else { ?>
                                 <span class="label label-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
@@ -77,7 +95,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                         </div>
                         <div class="col-sm-3">
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
-                                <span class="label label-success"><?php eT("local"); ?></span>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
+                                    <input type='hidden' name="filetype" value="<?php echo CHtml::encode('css'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
+                                    </form>
+                                <?php } ?>
                             <?php } else { ?>
                                 <span class="label label-danger"><?php eT("inherited"); ?></span>
                             <?php }?>
@@ -126,19 +153,19 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                 <?php foreach ($otherfiles as $fileName => $file) { ?>
                     <div class="row other-files-row">
                         <div class="col-sm-9 other-files-filename">
-                            <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                            <?php echo CHtml::encode($fileName) ;?>
                         </div>
                         <div class="col-sm-3">
                             <?php //TODO: make it ajax and less messy ?>
                             <?php if ( $oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
                                 if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
-                                    <?=CHtml::form(array('admin/themes/sa/templatefiledelete'), 'post'); ?>
-                                        <input type='hidden' name="otherfile" value="<?php echo $file; ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs other-files-delete-button' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
-                                        <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
-                                        <input type='hidden' name='templatename' value='<?php echo htmlspecialchars($templatename); ?>' />
-                                        <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
-                                        <input type='hidden' name='action' value='templatefiledelete' />
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
+                                        <input type='hidden' name="filetype" value="<?php echo CHtml::encode('other'); ?>" />
+                                        <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button other-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>

@@ -103,7 +103,7 @@ steps: [
         }
     },
     { //10
-        element: '#adminpanel__sidebar--selectorSettingsButton',
+        element: '#adminsidepanel__sidebar--selectorSettingsButton',
         path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid' : '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
@@ -126,7 +126,7 @@ steps: [
         redirect: false 
     },
     { //12
-        element: '#adminpanel__sidebar--selectorStructureButton',
+        element: '#adminsidepanel__sidebar--selectorStructureButton',
         path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid' : '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
@@ -134,21 +134,21 @@ steps: [
         content: `<p>This is the structure view of your survey.</p>
         <p>Here you can see all your questiongroups and questions.</p>`,
         onShow(tour){
-            $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
+            $('#adminsidepanel__sidebar--selectorStructureButton').trigger('click');
             return Promise.resolve(tour);
         },
         redirect: false 
         
     },
     { //13
-        element: '#adminpanel__sidebar--selectorCreateQuestionGroup',
+        element: '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
         path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'right',
         title: 'Let\'s add another questiongroup',
         content: '<p>Click on the add questiongroup button</p>',
         reflex: true,
         onNext(tour){ 
-            $('#adminpanel__sidebar--selectorCreateQuestionGroup').trigger('click');
+            $('#adminsidepanel__sidebar--selectorCreateQuestionGroup').trigger('click');
             return Promise.resolve(tour);
         },
         redirect: false 
@@ -259,7 +259,7 @@ steps: [
         redirect:  false
     },
     { //24
-        element: '#adminpanel__topbar--selectorAddSubquestions',
+        element: '#adminsidepanel__topbar--selectorAddSubquestions',
         path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'bottom',
         title: 'Add some subquestions to your question',
@@ -268,7 +268,7 @@ steps: [
         <p>Let's start with subquestions.</p>`,
         reflex: true,
         onNext(tour){ 
-            document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
+            document.location.href = $('#adminsidepanel__topbar--selectorAddSubquestions').attr('href');
             return Promise.resolve(tour);
         },
         redirect: false
@@ -308,7 +308,7 @@ steps: [
         }                 
     },
     { //28
-        element: '#adminpanel__topbar--selectorAddAnswerOptions',
+        element: '#adminsidepanel__topbar--selectorAddAnswerOptions',
         path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'bottom',
         title: 'Add some answer options to your question',
@@ -317,7 +317,7 @@ steps: [
         reflex: true,
         redirect: false,
         onNext(tour){ 
-            document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
+            document.location.href = $('#adminsidepanel__topbar--selectorAddAnswerOptions').attr('href');
             return Promise.resolve(tour);
         },
     },

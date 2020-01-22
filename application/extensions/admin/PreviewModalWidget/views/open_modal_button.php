@@ -2,7 +2,7 @@
 <?php //The button ?>
 
 <div class="btn-group" id="trigger_<?=$this->widgetsJsName?>_button">
-    <button type="button" class="btn btn-default " data-target="#selector__<?=$this->widgetsJsName?>-modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
+    <button type="button" class="btn <?=join(' ', $this->buttonClasses);?>" data-target="#selector__<?=$this->widgetsJsName?>-modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
         <?php if($this->iconPosition==='front') { ?>
             <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
         <?php } ?>

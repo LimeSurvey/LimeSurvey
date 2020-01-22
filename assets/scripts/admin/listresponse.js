@@ -125,7 +125,48 @@ function onDocumentReadyListresponse() {
 
 }
 
-$(document).on('ready pjax:scriptcomplete',function(){
+$(window).bind("load", function(){
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
+});
+
+$(function () {
+    // hide and submit Modal on click for pjax preventDefault submit
+    $('#responses-column-filter-modal-submit').on('click', function (e) {
+        e.preventDefault();
+        var form = $('#responses-column-filter-modal form');
+        form.submit();
+        form.modal('hide');
+    });
+});
+
+$(function () {
+    // select all columns for the response table
+    $('#responses-column-filter-modal-selectall').on('click', function (e) {
+        e.preventDefault();
+        $(".responses-multiselect-checkboxes .checkbox input").prop('checked', true);
+    });
+});
+
+$(function () {
+    // remove selection fir the response table
+    $('#responses-column-filter-modal-clear').on('click', function (e) {
+        e.preventDefault();
+        $(".responses-multiselect-checkboxes .checkbox input").prop('checked', false);
+    });
+});
+
+$(function () {
+    // cancel current modifications to the selection of columns for the response table
+    $('#responses-column-filter-modal-cancel').on('click', function (e) {
+        e.preventDefault();
+        var form = $('#responses-column-filter-modal form');
+        var filteredColumns = form.data('filtered-columns');
+
+        $(".responses-multiselect-checkboxes .checkbox input").prop('checked', false);
+        filteredColumns.forEach(function (item) {
+            $(".responses-multiselect-checkboxes .checkbox input[value=" + item + "]").prop('checked', true);
+        });
+        form.modal('hide');
+    });
 });

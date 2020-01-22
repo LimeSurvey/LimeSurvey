@@ -7,7 +7,7 @@
  * primary concern and you are using an opcode cache. PLEASE DO NOT EDIT THIS
  * FILE, changes will be overwritten the next time the script is run.
  *
- * @version 4.9.2
+ * @version 4.10.0
  *
  * @warning
  *      You must *not* include any other HTML Purifier files before this file,
@@ -39,7 +39,7 @@
  */
 
 /*
-    HTML Purifier 4.9.2 - Standards Compliant HTML Filtering
+    HTML Purifier 4.10.0 - Standards Compliant HTML Filtering
     Copyright (C) 2006-2008 Edward Z. Yang
 
     This library is free software; you can redistribute it and/or
@@ -78,12 +78,12 @@ class HTMLPurifier
      * Version of HTML Purifier.
      * @type string
      */
-    public $version = '4.9.2';
+    public $version = '4.10.0';
 
     /**
      * Constant with version of HTML Purifier.
      */
-    const VERSION = '4.9.2';
+    const VERSION = '4.10.0';
 
     /**
      * Global configuration object.
@@ -225,11 +225,11 @@ class HTMLPurifier
         // purified HTML
         $html =
             $this->generator->generateFromTokens(
-                // list of tokens
+            // list of tokens
                 $this->strategy->execute(
-                    // list of un-purified tokens
+                // list of un-purified tokens
                     $lexer->tokenizeHTML(
-                        // un-purified HTML
+                    // un-purified HTML
                         $html,
                         $config,
                         $context
@@ -1105,7 +1105,7 @@ class HTMLPurifier_Bootstrap
             } else {
                 $buggy  = version_compare(PHP_VERSION, '5.2.11', '<');
                 $compat = version_compare(PHP_VERSION, '5.1.2', '<=') &&
-                          version_compare(PHP_VERSION, '5.1.0', '>=');
+                    version_compare(PHP_VERSION, '5.1.0', '>=');
                 foreach ($funcs as $func) {
                     if ($buggy && is_array($func)) {
                         // :TRICKY: There are some compatibility issues and some
@@ -1225,24 +1225,24 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         );
 
         $border_style =
-            $this->info['border-bottom-style'] =
-            $this->info['border-right-style'] =
-            $this->info['border-left-style'] =
-            $this->info['border-top-style'] = new HTMLPurifier_AttrDef_Enum(
-                array(
-                    'none',
-                    'hidden',
-                    'dotted',
-                    'dashed',
-                    'solid',
-                    'double',
-                    'groove',
-                    'ridge',
-                    'inset',
-                    'outset'
-                ),
-                false
-            );
+        $this->info['border-bottom-style'] =
+        $this->info['border-right-style'] =
+        $this->info['border-left-style'] =
+        $this->info['border-top-style'] = new HTMLPurifier_AttrDef_Enum(
+            array(
+                'none',
+                'hidden',
+                'dotted',
+                'dashed',
+                'solid',
+                'double',
+                'groove',
+                'ridge',
+                'inset',
+                'outset'
+            ),
+            false
+        );
 
         $this->info['border-style'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_style);
 
@@ -1308,31 +1308,31 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         $this->info['background-position'] = new HTMLPurifier_AttrDef_CSS_BackgroundPosition();
 
         $border_color =
-            $this->info['border-top-color'] =
-            $this->info['border-bottom-color'] =
-            $this->info['border-left-color'] =
-            $this->info['border-right-color'] =
-            $this->info['background-color'] = new HTMLPurifier_AttrDef_CSS_Composite(
-                array(
-                    new HTMLPurifier_AttrDef_Enum(array('transparent')),
-                    new HTMLPurifier_AttrDef_CSS_Color()
-                )
-            );
+        $this->info['border-top-color'] =
+        $this->info['border-bottom-color'] =
+        $this->info['border-left-color'] =
+        $this->info['border-right-color'] =
+        $this->info['background-color'] = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_Enum(array('transparent')),
+                new HTMLPurifier_AttrDef_CSS_Color()
+            )
+        );
 
         $this->info['background'] = new HTMLPurifier_AttrDef_CSS_Background($config);
 
         $this->info['border-color'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_color);
 
         $border_width =
-            $this->info['border-top-width'] =
-            $this->info['border-bottom-width'] =
-            $this->info['border-left-width'] =
-            $this->info['border-right-width'] = new HTMLPurifier_AttrDef_CSS_Composite(
-                array(
-                    new HTMLPurifier_AttrDef_Enum(array('thin', 'medium', 'thick')),
-                    new HTMLPurifier_AttrDef_CSS_Length('0') //disallow negative
-                )
-            );
+        $this->info['border-top-width'] =
+        $this->info['border-bottom-width'] =
+        $this->info['border-left-width'] =
+        $this->info['border-right-width'] = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_Enum(array('thin', 'medium', 'thick')),
+                new HTMLPurifier_AttrDef_CSS_Length('0') //disallow negative
+            )
+        );
 
         $this->info['border-width'] = new HTMLPurifier_AttrDef_CSS_Multiple($border_width);
 
@@ -1380,30 +1380,30 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier_Definition
         );
 
         $margin =
-            $this->info['margin-top'] =
-            $this->info['margin-bottom'] =
-            $this->info['margin-left'] =
-            $this->info['margin-right'] = new HTMLPurifier_AttrDef_CSS_Composite(
-                array(
-                    new HTMLPurifier_AttrDef_CSS_Length(),
-                    new HTMLPurifier_AttrDef_CSS_Percentage(),
-                    new HTMLPurifier_AttrDef_Enum(array('auto'))
-                )
-            );
+        $this->info['margin-top'] =
+        $this->info['margin-bottom'] =
+        $this->info['margin-left'] =
+        $this->info['margin-right'] = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_CSS_Length(),
+                new HTMLPurifier_AttrDef_CSS_Percentage(),
+                new HTMLPurifier_AttrDef_Enum(array('auto'))
+            )
+        );
 
         $this->info['margin'] = new HTMLPurifier_AttrDef_CSS_Multiple($margin);
 
         // non-negative
         $padding =
-            $this->info['padding-top'] =
-            $this->info['padding-bottom'] =
-            $this->info['padding-left'] =
-            $this->info['padding-right'] = new HTMLPurifier_AttrDef_CSS_Composite(
-                array(
-                    new HTMLPurifier_AttrDef_CSS_Length('0'),
-                    new HTMLPurifier_AttrDef_CSS_Percentage(true)
-                )
-            );
+        $this->info['padding-top'] =
+        $this->info['padding-bottom'] =
+        $this->info['padding-left'] =
+        $this->info['padding-right'] = new HTMLPurifier_AttrDef_CSS_Composite(
+            array(
+                new HTMLPurifier_AttrDef_CSS_Length('0'),
+                new HTMLPurifier_AttrDef_CSS_Percentage(true)
+            )
+        );
 
         $this->info['padding'] = new HTMLPurifier_AttrDef_CSS_Multiple($padding);
 
@@ -1764,7 +1764,7 @@ class HTMLPurifier_Config
      * HTML Purifier's version
      * @type string
      */
-    public $version = '4.9.2';
+    public $version = '4.10.0';
 
     /**
      * Whether or not to automatically finalize
@@ -2076,7 +2076,7 @@ class HTMLPurifier_Config
         }
 
         // Raw type might be negative when using the fully optimized form
-        // of stdclass, which indicates allow_null == true
+        // of stdClass, which indicates allow_null == true
         $rtype = is_int($def) ? $def : $def->type;
         if ($rtype < 0) {
             $type = -$rtype;
@@ -2396,7 +2396,7 @@ class HTMLPurifier_Config
     {
         return $this->getDefinition('HTML', true, true);
     }
-    
+
     /**
      * @return HTMLPurifier_CSSDefinition
      */
@@ -2404,7 +2404,7 @@ class HTMLPurifier_Config
     {
         return $this->getDefinition('CSS', true, true);
     }
-    
+
     /**
      * @return HTMLPurifier_URIDefinition
      */
@@ -2525,8 +2525,8 @@ class HTMLPurifier_Config
      */
     public function mergeArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true)
     {
-         $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
-         $this->loadArray($ret);
+        $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
+        $this->loadArray($ret);
     }
 
     /**
@@ -2688,11 +2688,11 @@ class HTMLPurifier_ConfigSchema
      *
      *  array(
      *      'Namespace' => array(
-     *          'Directive' => new stdclass(),
+     *          'Directive' => new stdClass(),
      *      )
      *  )
      *
-     * The stdclass may have the following properties:
+     * The stdClass may have the following properties:
      *
      *  - If isAlias isn't set:
      *      - type: Integer type of directive, see HTMLPurifier_VarParser for definitions
@@ -2703,8 +2703,8 @@ class HTMLPurifier_ConfigSchema
      *      - namespace: Namespace this directive aliases to
      *      - name: Directive name this directive aliases to
      *
-     * In certain degenerate cases, stdclass will actually be an integer. In
-     * that case, the value is equivalent to an stdclass with the type
+     * In certain degenerate cases, stdClass will actually be an integer. In
+     * that case, the value is equivalent to an stdClass with the type
      * property set to the integer. If the integer is negative, type is
      * equal to the absolute value of integer, and allow_null is true.
      *
@@ -2769,7 +2769,7 @@ class HTMLPurifier_ConfigSchema
      */
     public function add($key, $default, $type, $allow_null)
     {
-        $obj = new stdclass();
+        $obj = new stdClass();
         $obj->type = is_int($type) ? $type : HTMLPurifier_VarParser::$types[$type];
         if ($allow_null) {
             $obj->allow_null = true;
@@ -2816,14 +2816,14 @@ class HTMLPurifier_ConfigSchema
      */
     public function addAlias($key, $new_key)
     {
-        $obj = new stdclass;
+        $obj = new stdClass;
         $obj->key = $new_key;
         $obj->isAlias = true;
         $this->info[$key] = $obj;
     }
 
     /**
-     * Replaces any stdclass that only has the type property with type integer.
+     * Replaces any stdClass that only has the type property with type integer.
      */
     public function postProcess()
     {
@@ -3140,8 +3140,8 @@ abstract class HTMLPurifier_DefinitionCache
     public function generateKey($config)
     {
         return $config->version . ',' . // possibly replace with function calls
-               $config->getBatchSerial($this->type) . ',' .
-               $config->get($this->type . '.DefinitionRev');
+            $config->getBatchSerial($this->type) . ',' .
+            $config->get($this->type . '.DefinitionRev');
     }
 
     /**
@@ -3923,7 +3923,7 @@ class HTMLPurifier_Encoder
         }
 
         $mState = 0; // cached expected number of octets after the current octet
-                     // until the beginning of the next UTF8 character sequence
+        // until the beginning of the next UTF8 character sequence
         $mUcs4  = 0; // cached Unicode character
         $mBytes = 1; // cached expected number of octets in the current sequence
 
@@ -3938,7 +3938,7 @@ class HTMLPurifier_Encoder
 
         $len = strlen($str);
         for ($i = 0; $i < $len; $i++) {
-            $in = ord($str{$i});
+            $in = ord($str[$i]);
             $char .= $str[$i]; // append byte to char
             if (0 == $mState) {
                 // When mState is zero we expect either a US-ASCII character
@@ -4094,7 +4094,7 @@ class HTMLPurifier_Encoder
     public static function unichr($code)
     {
         if ($code > 1114111 or $code < 0 or
-          ($code >= 55296 and $code <= 57343) ) {
+            ($code >= 55296 and $code <= 57343) ) {
             // bits are set outside the "valid" range as defined
             // by UNICODE 4.1.0
             return '';
@@ -4600,32 +4600,32 @@ class HTMLPurifier_EntityParser
      */
     protected $_substituteEntitiesRegex =
         '/&(?:[#]x([a-fA-F0-9]+)|[#]0*(\d+)|([A-Za-z_:][A-Za-z0-9.\-_:]*));?/';
-        //     1. hex             2. dec      3. string (XML style)
+    //     1. hex             2. dec      3. string (XML style)
 
     /**
      * Decimal to parsed string conversion table for special entities.
      * @type array
      */
     protected $_special_dec2str =
-            array(
-                    34 => '"',
-                    38 => '&',
-                    39 => "'",
-                    60 => '<',
-                    62 => '>'
-            );
+        array(
+            34 => '"',
+            38 => '&',
+            39 => "'",
+            60 => '<',
+            62 => '>'
+        );
 
     /**
      * Stripped entity names to decimal conversion table for special entities.
      * @type array
      */
     protected $_special_ent2dec =
-            array(
-                    'quot' => 34,
-                    'amp'  => 38,
-                    'lt'   => 60,
-                    'gt'   => 62
-            );
+        array(
+            'quot' => 34,
+            'amp'  => 38,
+            'lt'   => 60,
+            'gt'   => 62
+        );
 
     /**
      * Substitutes non-special entities with their parsed equivalents. Since
@@ -5228,11 +5228,11 @@ class HTMLPurifier_Generator
             $tidy->parseString(
                 $html,
                 array(
-                   'indent'=> true,
-                   'output-xhtml' => $this->_xhtml,
-                   'show-body-only' => true,
-                   'indent-spaces' => 2,
-                   'wrap' => 68,
+                    'indent'=> true,
+                    'output-xhtml' => $this->_xhtml,
+                    'show-body-only' => true,
+                    'indent-spaces' => 2,
+                    'wrap' => 68,
                 ),
                 'utf8'
             );
@@ -5268,7 +5268,7 @@ class HTMLPurifier_Generator
             $attr = $this->generateAttributes($token->attr, $token->name);
             if ($this->_flashCompat) {
                 if ($token->name == "object") {
-                    $flash = new stdclass();
+                    $flash = new stdClass();
                     $flash->attr = $token->attr;
                     $flash->param = array();
                     $this->_flashStack[] = $flash;
@@ -5290,7 +5290,7 @@ class HTMLPurifier_Generator
                 $this->_flashStack[count($this->_flashStack)-1]->param[$token->attr['name']] = $token->attr['value'];
             }
             $attr = $this->generateAttributes($token->attr, $token->name);
-             return '<' . $token->name . ($attr ? ' ' : '') . $attr .
+            return '<' . $token->name . ($attr ? ' ' : '') . $attr .
                 ( $this->_xhtml ? ' /': '' ) // <br /> v. <br>
                 . '>';
 
@@ -5790,7 +5790,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                             }
                             break;
                         }
-                        // otherwise fall through
+                    // otherwise fall through
                     case 1:
                         $attribute = htmlspecialchars($bits[0]);
                         trigger_error(
@@ -6506,8 +6506,8 @@ class HTMLPurifier_HTMLModuleManager
 
         // note the different choice
         $this->contentSets = new HTMLPurifier_ContentSets(
-            // content set assembly deals with all possible modules,
-            // not just ones deemed to be "safe"
+        // content set assembly deals with all possible modules,
+        // not just ones deemed to be "safe"
             $this->modules
         );
         $this->attrCollections = new HTMLPurifier_AttrCollections(
@@ -6871,12 +6871,14 @@ abstract class HTMLPurifier_Injector
             return false;
         }
         // check for exclusion
+        if (!empty($this->currentNesting)) {
         for ($i = count($this->currentNesting) - 2; $i >= 0; $i--) {
             $node = $this->currentNesting[$i];
             $def  = $this->htmlDefinition->info[$node->name];
             if (isset($def->excludes[$name])) {
                 return false;
             }
+        }
         }
         return true;
     }
@@ -7437,12 +7439,14 @@ class HTMLPurifier_Length
     protected $isValid;
 
     /**
-     * Array Lookup array of units recognized by CSS 2.1
+     * Array Lookup array of units recognized by CSS 3
      * @type array
      */
     protected static $allowedUnits = array(
         'em' => true, 'ex' => true, 'px' => true, 'in' => true,
-        'cm' => true, 'mm' => true, 'pt' => true, 'pc' => true
+        'cm' => true, 'mm' => true, 'pt' => true, 'pc' => true,
+        'ch' => true, 'rem' => true, 'vw' => true, 'vh' => true,
+        'vmin' => true, 'vmax' => true
     );
 
     /**
@@ -7668,7 +7672,7 @@ class HTMLPurifier_Lexer
                         break;
                     }
 
-                    if (class_exists('DOMDocument') &&
+                    if (class_exists('DOMDocument', false) &&
                         method_exists('DOMDocument', 'loadHTML') &&
                         !extension_loaded('domxml')
                     ) {
@@ -7923,7 +7927,7 @@ class HTMLPurifier_Lexer
         $hidden_elements = $config->get('Core.HiddenElements');
         if ($config->get('Core.AggressivelyRemoveScript') &&
             !($config->get('HTML.Trusted') || !$config->get('Core.RemoveScriptContents')
-            || empty($hidden_elements["script"]))) {
+                || empty($hidden_elements["script"]))) {
             $html = preg_replace('#<script[^>]*>.*?</script>#i', '', $html);
         }
 
@@ -11082,7 +11086,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         }
         if ($caught['position'] !== false) {
             $caught['position'] = $this->info['background-position']->
-                validate($caught['position'], $config, $context);
+            validate($caught['position'], $config, $context);
         }
 
         $ret = array();
@@ -13343,11 +13347,15 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
 
         // PHP 5.3 and later support this functionality natively
         if (function_exists('idn_to_ascii')) {
-            $string = idn_to_ascii($string);
+            if (defined('IDNA_NONTRANSITIONAL_TO_ASCII') && defined('INTL_IDNA_VARIANT_UTS46')) {
+                $string = idn_to_ascii($string, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+            } else {
+                $string = idn_to_ascii($string);
+            }
 
-        // If we have Net_IDNA2 support, we can support IRIs by
-        // punycoding them. (This is the most portable thing to do,
-        // since otherwise we have to assume browsers support
+            // If we have Net_IDNA2 support, we can support IRIs by
+            // punycoding them. (This is the most portable thing to do,
+            // since otherwise we have to assume browsers support
         } elseif ($config->get('Core.EnableIDNA')) {
             $idna = new Net_IDNA2(array('encoding' => 'utf8', 'overlong' => false, 'strict' => true));
             // we need to encode each period separately
@@ -14577,7 +14585,7 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
     protected function _compileRegex()
     {
         $raw = str_replace(' ', '', $this->dtd_regex);
-        if ($raw{0} != '(') {
+        if ($raw[0] != '(') {
             $raw = "($raw)";
         }
         $el = '[#a-zA-Z0-9_.-]+';
@@ -14724,7 +14732,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier_ChildDef
         // a little sanity check to make sure it's not ALL whitespace
         $all_whitespace = true;
 
-        $current_li = false;
+        $current_li = null;
 
         foreach ($children as $node) {
             if (!empty($node->is_whitespace)) {
@@ -14745,7 +14753,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier_ChildDef
                 // to handle non-list elements; non-list elements should
                 // not be appended to an existing li; only li created
                 // for non-list. This distinction is not currently made.
-                if ($current_li === false) {
+                if ($current_li === null) {
                     $current_li = new HTMLPurifier_Node_Element('li');
                     $result[] = $current_li;
                 }
@@ -15005,8 +15013,8 @@ class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Requi
             if ($block_wrap === false) {
                 if (($node instanceof HTMLPurifier_Node_Text && !$node->is_whitespace) ||
                     ($node instanceof HTMLPurifier_Node_Element && !isset($this->elements[$node->name]))) {
-                        $block_wrap = new HTMLPurifier_Node_Element($def->info_block_wrapper);
-                        $ret[] = $block_wrap;
+                    $block_wrap = new HTMLPurifier_Node_Element($def->info_block_wrapper);
+                    $ret[] = $block_wrap;
                 }
             } else {
                 if ($node instanceof HTMLPurifier_Node_Element && isset($this->elements[$node->name])) {
@@ -15129,7 +15137,7 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
         $content = array();
 
         $tbody_mode = false; // if true, then we need to wrap any stray
-                             // <tr>s with a <tbody>.
+        // <tr>s with a <tbody>.
 
         $ws_accum =& $initial_ws;
 
@@ -15139,71 +15147,71 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
                 continue;
             }
             switch ($node->name) {
-            case 'tbody':
-                $tbody_mode = true;
+                case 'tbody':
+                    $tbody_mode = true;
                 // fall through
-            case 'tr':
-                $content[] = $node;
-                $ws_accum =& $content;
-                break;
-            case 'caption':
-                // there can only be one caption!
-                if ($caption !== false)  break;
-                $caption = $node;
-                $ws_accum =& $after_caption_ws;
-                break;
-            case 'thead':
-                $tbody_mode = true;
-                // XXX This breaks rendering properties with
-                // Firefox, which never floats a <thead> to
-                // the top. Ever. (Our scheme will float the
-                // first <thead> to the top.)  So maybe
-                // <thead>s that are not first should be
-                // turned into <tbody>? Very tricky, indeed.
-                if ($thead === false) {
-                    $thead = $node;
-                    $ws_accum =& $after_thead_ws;
-                } else {
-                    // Oops, there's a second one! What
-                    // should we do?  Current behavior is to
-                    // transmutate the first and last entries into
-                    // tbody tags, and then put into content.
-                    // Maybe a better idea is to *attach
-                    // it* to the existing thead or tfoot?
-                    // We don't do this, because Firefox
-                    // doesn't float an extra tfoot to the
-                    // bottom like it does for the first one.
-                    $node->name = 'tbody';
+                case 'tr':
                     $content[] = $node;
                     $ws_accum =& $content;
-                }
-                break;
-            case 'tfoot':
-                // see above for some aveats
-                $tbody_mode = true;
-                if ($tfoot === false) {
-                    $tfoot = $node;
-                    $ws_accum =& $after_tfoot_ws;
-                } else {
-                    $node->name = 'tbody';
-                    $content[] = $node;
-                    $ws_accum =& $content;
-                }
-                break;
-            case 'colgroup':
-            case 'col':
-                $cols[] = $node;
-                $ws_accum =& $cols;
-                break;
-            case '#PCDATA':
-                // How is whitespace handled? We treat is as sticky to
-                // the *end* of the previous element. So all of the
-                // nonsense we have worked on is to keep things
-                // together.
-                if (!empty($node->is_whitespace)) {
-                    $ws_accum[] = $node;
-                }
-                break;
+                    break;
+                case 'caption':
+                    // there can only be one caption!
+                    if ($caption !== false)  break;
+                    $caption = $node;
+                    $ws_accum =& $after_caption_ws;
+                    break;
+                case 'thead':
+                    $tbody_mode = true;
+                    // XXX This breaks rendering properties with
+                    // Firefox, which never floats a <thead> to
+                    // the top. Ever. (Our scheme will float the
+                    // first <thead> to the top.)  So maybe
+                    // <thead>s that are not first should be
+                    // turned into <tbody>? Very tricky, indeed.
+                    if ($thead === false) {
+                        $thead = $node;
+                        $ws_accum =& $after_thead_ws;
+                    } else {
+                        // Oops, there's a second one! What
+                        // should we do?  Current behavior is to
+                        // transmutate the first and last entries into
+                        // tbody tags, and then put into content.
+                        // Maybe a better idea is to *attach
+                        // it* to the existing thead or tfoot?
+                        // We don't do this, because Firefox
+                        // doesn't float an extra tfoot to the
+                        // bottom like it does for the first one.
+                        $node->name = 'tbody';
+                        $content[] = $node;
+                        $ws_accum =& $content;
+                    }
+                    break;
+                case 'tfoot':
+                    // see above for some aveats
+                    $tbody_mode = true;
+                    if ($tfoot === false) {
+                        $tfoot = $node;
+                        $ws_accum =& $after_tfoot_ws;
+                    } else {
+                        $node->name = 'tbody';
+                        $content[] = $node;
+                        $ws_accum =& $content;
+                    }
+                    break;
+                case 'colgroup':
+                case 'col':
+                    $cols[] = $node;
+                    $ws_accum =& $cols;
+                    break;
+                case '#PCDATA':
+                    // How is whitespace handled? We treat is as sticky to
+                    // the *end* of the previous element. So all of the
+                    // nonsense we have worked on is to keep things
+                    // together.
+                    if (!empty($node->is_whitespace)) {
+                        $ws_accum[] = $node;
+                    }
+                    break;
             }
         }
 
@@ -15234,25 +15242,25 @@ class HTMLPurifier_ChildDef_Table extends HTMLPurifier_ChildDef
 
             foreach($content as $node) {
                 switch ($node->name) {
-                case 'tbody':
-                    $current_tr_tbody = null;
-                    $ret[] = $node;
-                    break;
-                case 'tr':
-                    if ($current_tr_tbody === null) {
-                        $current_tr_tbody = new HTMLPurifier_Node_Element('tbody');
-                        $ret[] = $current_tr_tbody;
-                    }
-                    $current_tr_tbody->children[] = $node;
-                    break;
-                case '#PCDATA':
-                    //assert($node->is_whitespace);
-                    if ($current_tr_tbody === null) {
+                    case 'tbody':
+                        $current_tr_tbody = null;
                         $ret[] = $node;
-                    } else {
+                        break;
+                    case 'tr':
+                        if ($current_tr_tbody === null) {
+                            $current_tr_tbody = new HTMLPurifier_Node_Element('tbody');
+                            $ret[] = $current_tr_tbody;
+                        }
                         $current_tr_tbody->children[] = $node;
-                    }
-                    break;
+                        break;
+                    case '#PCDATA':
+                        //assert($node->is_whitespace);
+                        if ($current_tr_tbody === null) {
+                            $ret[] = $node;
+                        } else {
+                            $current_tr_tbody->children[] = $node;
+                        }
+                        break;
                 }
             }
         } else {
@@ -15675,9 +15683,14 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
         $directory = $this->generateDirectoryPath($config);
         $chmod = $config->get('Cache.SerializerPermissions');
         if ($chmod === null) {
-            // TODO: This races
-            if (is_dir($directory)) return true;
-            return mkdir($directory);
+            if (!@mkdir($directory) && !is_dir($directory)) {
+                trigger_error(
+                    'Could not create directory ' . $directory . '',
+                    E_USER_WARNING
+                );
+                return false;
+            }
+            return true;
         }
         if (!is_dir($directory)) {
             $base = $this->generateBaseDirectoryPath($config);
@@ -15691,7 +15704,7 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
             } elseif (!$this->_testPermissions($base, $chmod)) {
                 return false;
             }
-            if (!mkdir($directory, $chmod)) {
+            if (!@mkdir($directory, $chmod) && !is_dir($directory)) {
                 trigger_error(
                     'Could not create directory ' . $directory . '',
                     E_USER_WARNING
@@ -18929,7 +18942,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         restore_error_handler();
 
         $body = $doc->getElementsByTagName('html')->item(0)-> // <html>
-                      getElementsByTagName('body')->item(0);  // <body>
+        getElementsByTagName('body')->item(0);  // <body>
 
         $div = $body->getElementsByTagName('div')->item(0); // <div>
         $tokens = array();
@@ -18983,6 +18996,41 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
     }
 
     /**
+     * Portably retrieve the tag name of a node; deals with older versions
+     * of libxml like 2.7.6
+     * @param DOMNode $node
+     */
+    protected function getTagName($node)
+    {
+        if (property_exists($node, 'tagName')) {
+            return $node->tagName;
+        } else if (property_exists($node, 'nodeName')) {
+            return $node->nodeName;
+        } else if (property_exists($node, 'localName')) {
+            return $node->localName;
+        }
+        return null;
+    }
+
+    /**
+     * Portably retrieve the data of a node; deals with older versions
+     * of libxml like 2.7.6
+     * @param DOMNode $node
+     */
+    protected function getData($node)
+    {
+        if (property_exists($node, 'data')) {
+            return $node->data;
+        } else if (property_exists($node, 'nodeValue')) {
+            return $node->nodeValue;
+        } else if (property_exists($node, 'textContent')) {
+            return $node->textContent;
+        }
+        return null;
+    }
+
+
+    /**
      * @param DOMNode $node DOMNode to be tokenized.
      * @param HTMLPurifier_Token[] $tokens   Array-list of already tokenized tokens.
      * @param bool $collect  Says whether or start and close are collected, set to
@@ -18997,7 +19045,10 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         // but we're not getting the character reference nodes because
         // those should have been preprocessed
         if ($node->nodeType === XML_TEXT_NODE) {
-            $tokens[] = $this->factory->createText($node->data);
+            $data = $this->getData($node); // Handle variable data property
+            if ($data !== null) {
+              $tokens[] = $this->factory->createText($data);
+            }
             return false;
         } elseif ($node->nodeType === XML_CDATA_SECTION_NODE) {
             // undo libxml's special treatment of <script> and <style> tags
@@ -19027,21 +19078,20 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             // not-well tested: there may be other nodes we have to grab
             return false;
         }
-
         $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : array();
-
+        $tag_name = $this->getTagName($node); // Handle variable tagName property
+        if (empty($tag_name)) {
+            return (bool) $node->childNodes->length;
+        }
         // We still have to make sure that the element actually IS empty
         if (!$node->childNodes->length) {
             if ($collect) {
-                $tokens[] = $this->factory->createEmpty($node->tagName, $attr);
+                $tokens[] = $this->factory->createEmpty($tag_name, $attr);
             }
             return false;
         } else {
             if ($collect) {
-                $tokens[] = $this->factory->createStart(
-                    $tag_name = $node->tagName, // somehow, it get's dropped
-                    $attr
-                );
+                $tokens[] = $this->factory->createStart($tag_name, $attr);
             }
             return true;
         }
@@ -19053,9 +19103,9 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
      */
     protected function createEndNode($node, &$tokens)
     {
-        $tokens[] = $this->factory->createEnd($node->tagName);
+        $tag_name = $this->getTagName($node); // Handle variable tagName property
+        $tokens[] = $this->factory->createEnd($tag_name);
     }
-
 
     /**
      * Converts a DOMNamedNodeMap of DOMAttr objects into an assoc array.
@@ -19992,10 +20042,10 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         $parent_def = $definition->info_parent_def;
         $stack = array(
             array($top_node,
-                  $parent_def->descendants_are_inline,
-                  $parent_def->excludes, // exclusions
-                  0)
-            );
+                $parent_def->descendants_are_inline,
+                $parent_def->excludes, // exclusions
+                0)
+        );
 
         while (!empty($stack)) {
             list($node, $is_inline, $excludes, $ix) = array_pop($stack);
@@ -20012,7 +20062,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                         // child_def, but double check this...
                         $is_inline || $def->descendants_are_inline,
                         empty($def->excludes) ? $excludes
-                                              : array_merge($excludes, $def->excludes),
+                            : array_merge($excludes, $def->excludes),
                         0);
                     break;
                 }
@@ -20222,8 +20272,8 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
 
         // isset is in loop because $tokens size changes during loop exec
         for (;;
-             // only increment if we don't need to reprocess
-             $reprocess ? $reprocess = false : $token = $zipper->next($token)) {
+            // only increment if we don't need to reprocess
+            $reprocess ? $reprocess = false : $token = $zipper->next($token)) {
 
             // check for a rewind
             if (is_int($i)) {
@@ -20804,7 +20854,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier_Strategy
                     // there is a transformation for this tag
                     // DEFINITION CALL
                     $token = $definition->
-                        info_tag_transform[$token->name]->transform($token, $config, $context);
+                    info_tag_transform[$token->name]->transform($token, $config, $context);
                     if ($e) {
                         $e->send(E_NOTICE, 'Strategy_RemoveForeignElements: Tag transform', $original_name);
                     }
@@ -21060,7 +21110,7 @@ class HTMLPurifier_TagTransform_Font extends HTMLPurifier_TagTransform
         if (isset($attr['size'])) {
             // normalize large numbers
             if ($attr['size'] !== '') {
-                if ($attr['size']{0} == '+' || $attr['size']{0} == '-') {
+                if ($attr['size'][0] == '+' || $attr['size'][0] == '-') {
                     $size = (int)$attr['size'];
                     if ($size < -2) {
                         $attr['size'] = '-2';
@@ -22297,8 +22347,8 @@ class HTMLPurifier_URIScheme_tel extends HTMLPurifier_URIScheme
         // Delete all non-numeric characters, non-x characters
         // from phone number, EXCEPT for a leading plus sign.
         $uri->path = preg_replace('/(?!^\+)[^\dx]/', '',
-                     // Normalize e(x)tension to lower-case
-                     str_replace('X', 'x', $uri->path));
+            // Normalize e(x)tension to lower-case
+            str_replace('X', 'x', $uri->path));
 
         return true;
     }

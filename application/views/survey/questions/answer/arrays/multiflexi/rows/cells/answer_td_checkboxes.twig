@@ -4,37 +4,27 @@
  * @var $dataTitle
  * @var $ld
  * @var $answertypeclass
- * @var $value $myvalue
+ * @var $value $myvalue : 1 VS 0 or '' : OK to use it as boolean directly
  * @var $myfname2
  * @var $setmyvalue
  * @var $checkconditionFunction
  * @var $extraclass
 #}
-
 <!-- answer_td_checkboxes -->
 <td class="answer_cell_{{ ld }} question-item answer-item {{ answertypeclass }}-item checkbox-item">
-    {# Value for expression manager javascript ; no need to submit #}
-    {{ C.Html.hiddenField("java"~myfname2,value,({
-        'id' : "java"~myfname2,
+    <!-- Used by EM , don't update id *-->
+    {{ C.Html.hiddenField("java"~myfname2, C.Html.encode( value ),({
+        'id' : "answer"~myfname2,
         'disabled' : true,
-    }))
+        }))
     }}
-    {# Value submited by default, replaced by next if checked #}
-    {# EM use javaXXXX, no need updating the value of this one, just submit '' if other one is unchecked , review JS ? #}
-    {# See http://www.yiiframework.com/doc/api/1.1/CHtml#checkBox-detail width uncheckValue for replacing ? #}
-    {# Add prefix 'answer' to make question relevance work in LEMval(). #}
-    {{ C.Html.hiddenField('answer'~myfname2,"",({
-        'class' : "hidden",
-    }))
-    }}
+    <!-- Don't add hidden input to send empty value because ajax mode is broken ! -->
     {{ C.Html.checkBox(myfname2,value,({
         'class' : extraclass,
-        'id' : "cbox_"~myfname2,
+        'id' : "cbox"~myfname2,
         'value' : "1"
     }))
     }}
-    <label for="cbox_{{ myfname2 }}" class="ls-label-xs-visibility">
-        {{ dataTitle }}
-    </label>
+    <label for="cbox{{ myfname2 }}" class="ls-label-xs-visibility">{{ dataTitle }}</label>
 </td>
 <!-- end of answer_td_checkboxes -->

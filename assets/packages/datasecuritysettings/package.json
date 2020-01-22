@@ -1,0 +1,61 @@
+{
+  "name": "datasecuritysettings",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "yarn run dev && yarn run prod",
+    "prod": "vue-cli-service build",
+    "dev": "vue-cli-service build --mode developement",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-theme-lark": "^14.0.0",
+    "core-js": "^2.6.5",
+    "lodash": "^4.17.11",
+    "mousetrap": "^1.6.2",
+    "vue": "^2.6.10",
+    "vue-bootstrap-toggle": "^1.1.4",
+    "vue-localstorage": "^0.5.0",
+    "vuex": "^3.0.1",
+    "vuex-persist": "^1.0.3"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-utils": "^12.0.1",
+    "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.1",
+    "@vue/cli-plugin-babel": "^3.6.0",
+    "@vue/cli-plugin-eslint": "^3.6.0",
+    "@vue/cli-service": "^3.6.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.11.0",
+    "raw-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

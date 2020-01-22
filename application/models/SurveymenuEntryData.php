@@ -17,7 +17,7 @@ class SurveymenuEntryData extends CFormModel
     /**
      * @param integer|null $surveyid
      */
-    public function apply($menuEntry, $surveyid)
+    public function apply($menuEntry, $surveyid=null)
     {
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;
@@ -68,7 +68,7 @@ class SurveymenuEntryData extends CFormModel
     public function linkCreator()
     {
         if( $this->linkExternal ) {
-            return $this->link;
+            return  Yii::app()->getController()->createAbsoluteUrl($this->link, $this->linkData);
         }
         return  Yii::app()->getController()->createUrl($this->link, $this->linkData);
         
@@ -104,7 +104,11 @@ class SurveymenuEntryData extends CFormModel
     }
 
     /**
+     * @param $variable
      * @param string[] $checkArray
+     * @param int $i
+     * @param callable $fallback
+     * @return mixed|null
      */
     private function _recursiveIssetWithDefault($variable, $checkArray, $i = 0, $fallback = null)
     {
@@ -138,13 +142,13 @@ class SurveymenuEntryData extends CFormModel
                 $oTypeObject = Template::model()->findByPk($oSurvey->template);
                 break;
             case 'questiongroup':
-                if (isset($_REQUEST['gid'])) {
-                    $oTypeObject = QuestionGroup::model()->getByPk(((int) $_REQUEST['gid']));
+                if (App()->getRequest()->getParam('gid')) {
+                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('gid'),'language'=>App()->getLanguage()));
                 }
                 break;
             case 'question':
-                if (isset($_REQUEST['qid'])) {
-                    $oTypeObject = QuestionGroup::model()->getByPk(((int) $_REQUEST['qid']));
+                if (App()->getRequest()->getParam('qid')) {
+                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('qid'),'language'=>App()->getLanguage()));
                 }
                 break;
             break;

@@ -19,7 +19,7 @@
  */
 #}
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item form-group {{ relevanceClass }}' >
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item {{ relevanceClass }}' >
     <input
         type="checkbox"
         name="{{ myfname }}"
@@ -27,7 +27,7 @@
         {{ checkedState }}
         value="Y"
     />
-    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
+    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ processString(question) }}</label>
     <input
         type="hidden"
         name="java{{ myfname }}"

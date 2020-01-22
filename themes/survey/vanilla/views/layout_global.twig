@@ -74,12 +74,12 @@
     {{ include('./subviews/header/head.twig') }}
     {% endblock %}
     <body style="padding-top: 90px;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
-        {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
-            {% block ajaxindicator %}
-            {# In vanilla, this file is empty, we keep it to have a common layout between all core themes #}
-            {{ include('./subviews/navigation/ajax_indicator.twig') }}
-            {% endblock %}
-            
+
+        {# Notice if emcache is on or off, used by tests. #}
+        {% if aSurveyInfo.emcache %}
+            <span style="display: none;" id="__emcache_debug" value="on"></span>
+        {% else %}
+            <span style="display: none;" id="__emcache_debug" value="off"></span>
         {% endif %}
 
         {# This used for the pjax system #}

@@ -1,12 +1,23 @@
 /*! Copyright 2012, Ben Lin (http://dreamerslab.com/)
  * Licensed under the MIT License (LICENSE.txt).
  *
- * Version: 1.0.11
+ * Version: 1.0.19
  *
- * Requires: jQuery 1.2.3 ~ 1.8.2
+ * Requires: jQuery >= 1.2.3
  */
-;( function ( $ ){
+;( function ( factory ) {
+if ( typeof define === 'function' && define.amd ) {
+    // AMD. Register module depending on jQuery using requirejs define.
+    define( ['jquery'], factory );
+} else {
+    // No AMD.
+    factory( jQuery );
+}
+}( function ( $ ){
+  $.fn.addBack = $.fn.addBack || $.fn.andSelf;
+
   $.fn.extend({
+
     actual : function ( method, options ){
       // check if the jQuery method exist
       if( !this[ method ]){
@@ -16,12 +27,13 @@
       var defaults = {
         absolute      : false,
         clone         : false,
-        includeMargin : false
+        includeMargin : false,
+        display       : 'block'
       };
 
       var configs = $.extend( defaults, options );
 
-      var $target = this.filter( ':first' );
+      var $target = this.eq( 0 );
       var fix, restore;
 
       if( configs.clone === true ){
@@ -40,28 +52,27 @@
           $target.remove();
         };
       }else{
-        var tmp = [];
-        var $hidden, style;
+        var tmp   = [];
+        var style = '';
+        var $hidden;
 
         fix = function (){
           // get all hidden parents
-          $hidden = $target.
-            parents().
-            andSelf().
-            filter( ':hidden' );
-
-          style += 'visibility: hidden !important; display: block !important; ';
+          $hidden = $target.parents().addBack().filter( ':hidden' );
+          style   += 'visibility: hidden !important; display: ' + configs.display + ' !important; ';
 
           if( configs.absolute === true ) style += 'position: absolute !important; ';
 
           // save the origin style props
           // set the hidden el css to be got the actual value later
           $hidden.each( function (){
-            var $this = $( this );
-
             // Save original style. If no style was set, attr() returns undefined
-            tmp.push( $this.attr( 'style' ));
-            $this.attr( 'style', style );
+            var $this     = $( this );
+            var thisStyle = $this.attr( 'style' );
+
+            tmp.push( thisStyle );
+            // Retain as much of the original style as possible, if there is one
+            $this.attr( 'style', thisStyle ? thisStyle + ';' + style : style );
           });
         };
 
@@ -84,7 +95,7 @@
       // get the actual value with user specific methed
       // it can be 'width', 'height', 'outerWidth', 'innerWidth'... etc
       // configs.includeMargin only works for 'outerWidth' and 'outerHeight'
-      var actual = /(outer)/g.test( method ) ?
+      var actual = /(outer)/.test( method ) ?
         $target[ method ]( configs.includeMargin ) :
         $target[ method ]();
 
@@ -93,4 +104,4 @@
       return actual;
     }
   });
-})( jQuery );
+}));

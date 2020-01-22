@@ -17,7 +17,11 @@
                     <?php
                     foreach ($firstline as $value)
                     {
-                        echo "<div id='cs_" . $value . "' data-name='" . $value . "' class='draggable well well-sm csv-attribute-item'>" . $value . "</div>";
+                        echo CHtml::tag(
+                            "div",
+                            array('id'=>"cs_{$value}",'data-name'=>$value,'class'=>"draggable well well-sm csv-attribute-item"),
+                            $value
+                        );
                     }
                     ?>
                 </div>
@@ -55,7 +59,7 @@
                 <div class='explanation'>
                     <div class="explanation-row">
                         <input type='checkbox' id='overwrite' name='overwrite' />
-                        <label for='overwrite'><?php eT("Overwrite existing token attribute values if a duplicate participant is found?") ?>
+                        <label for='overwrite'><?php eT("Overwrite existing participant attribute values if a duplicate participant is found?") ?>
                         <br />
                         <?php
                         if($participant_id_exists) {

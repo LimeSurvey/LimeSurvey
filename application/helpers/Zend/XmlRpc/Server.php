@@ -19,6 +19,7 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Server.php 23775 2011-03-01 17:25:24Z ralph $
  */
+use Zend_XmlRpc_Server_Exception;
 
 /**
  * Extends Zend_Server_Abstract
@@ -549,7 +550,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      *
      * @param Zend_XmlRpc_Request $request
      * @return Zend_XmlRpc_Response
-     * @throws Zend_XmlRpcServer_Exception|Exception
+     * @throws Zend_XmlRpc_Server_Exception|Exception
      * Zend_XmlRpcServer_Exceptions are thrown for internal errors; otherwise,
      * any other exception may be thrown by the callback
      */

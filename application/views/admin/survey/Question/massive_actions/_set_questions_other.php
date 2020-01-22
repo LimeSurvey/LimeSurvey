@@ -2,8 +2,12 @@
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
+
 ?>
-<form class="custom-modal-datas">
+<form class="custom-modal-datas form-horizontal">
     <div  class="form-group" id="OtherSelection">
         <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
         <div class="col-sm-8">

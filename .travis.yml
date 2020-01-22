@@ -1,36 +1,64 @@
 #
 # Note: If you ever need to debug Travis locally, see this
 # documentation: https://docs.travis-ci.com/user/common-build-problems/#Running-a-Container-Based-Docker-Image-Locally
-#
+# dummy
 
 language: php
+services:
+    - mysql
 php:
-    - 7.0
-    - 7.1
-    - 5.6
+    - 7.2
+    - 7.3
+env:
+  - DBENGINE=MYISAM
+  - DBENGINE=INNODB
+services:
+    - mysql
+notifications:
+  email:
+    recipients:
+      - secure: "1x0CmJbr8GWdS7OJ5PRchf0lDxNk4quRfbZ4Slu4GnEMh599Bo1jhsRZnc5ghOf9Yuwn4FzB4Oyfr6tIXP63FbUE2F4lhCwluxw7BWRmjvwMncctWqgDu7Jn3HRXlTdoVNhPlspBsbsNw7waeER6+jv6YFyMKH6gYXtUqloCuyrrhkLWetpj5qvGXmEV22Rhh0kLl9q/Khu0hI8eS022wLs1hQFurc4xbCvpSpcSzmxaD6gevKCuRiLJbG3QsT7lTAwm6U1QqSEMQP5QKhvQ01klttVD3KG2/F6Gs5pKhiNSKYmzeI5OqU7BggQQKCTBi1G0FNsqtFi+InwBoY09RrHpbGDzCOfeRqr/DQAiZKxt2p4d7OEwPcbojvHSG4gG3hIfScCyJGNVa9hZAfR7qyg1wcQdAUfZB+DFNE9FaYdXHFsjKtq/iHROqnS6FNFJF2hRR8diltDTdra5A81LuZcsA82WAj1PPT07kzzKfcbSHHfHaT2H8bzZ3LLd7rjUqW1hd5pK/TfhtPOLCiSLmcktbppcM5V64e9ZoPmywVsFD3GJ+kxBqQ6hx40JcyKkFmiU6WGoYurt/OhXMvRtkWVbeF52M7Mzpx9Iyh48mf3Xm55Q5GnYv0gKKgwYAllPOFXuNCk+DVcs4inpTvwQsCt/7W2RGwMIxlDhJ0+QySk="
+    on_success: change
+    on_failure: always 
+
 before_script:
     # Test
     #- sudo apt-get update
     #- sudo apt-get upgrade
+    - echo $archive_url
+    - php -r 'var_dump(PHP_INT_SIZE);'
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
+
     # Install LimeSurvey.
-    - phpunit --version
     - mysql --version
+    - sudo service mysql status
     - touch enabletests
-      #- rm composer.lock
-      #- rm -r third_party
+    # NB: PHPUnit 6.5.* is installed with composer.
     - composer install
+    - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
+    # InnoDb needs large_file_prefix & Barracuda file format
+    # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+    - sudo service mysql status
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "SET @@global.innodb_large_prefix = 1;"
+    - mysql -uroot -e "SET @@global.innodb_file_format =  Barracuda;"
+    - mysql -uroot -e "SET @@global.innodb_file_format_max =  Barracuda;"
+
+    - mysql -uroot -e "Show  variables like '%large%';"
+    - mysql -uroot -e "Show  variables like '%innodb_file%';"
+    - mysql -uroot -e "Show  variables like '%innodb_default%';"
+
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
-    # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
+    # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
     # TODO: Disable, a lines was added to config file and some tests started to fail.
-    # - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+    # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -52,24 +80,32 @@ before_script:
     - sudo service apache2 restart
 
     # Check for syntax errors.
+    # TODO: Should be ! find ... instead of || true (when all warnings are fixed)
     - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
 
     # Test server.
     - wget localhost
-    - more localhost
+    - cat index.html
 
     # Chromedriver setup.
     # Note: Keep getting timeout problems on Travis with chromedriver.
     #- wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
     #- unzip chromedriver_linux64.zip
 
+    # Prepare the packages that need to be tested
+    - nvm install 10.16.3
+    - nvm use 10.16.3
+    - node ./buildVueComponents.js -s adminbasics,filemanager -p
+
     # Setup Selenium with Firefox headless mode.
     - wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
-    - wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz"
-    - tar xvzf geckodriver-v0.19.1-linux64.tar.gz
+    - wget "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz"
+    - tar xvzf geckodriver-v0.23.0-linux64.tar.gz
     - export MOZ_HEADLESS=1
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
-
+  
 script:
     # Run tests.
-    - DOMAIN=localhost phpunit # --stop-on-failure
+    - DOMAIN=localhost ./third_party/bin/phpunit
+    - yarn --cwd ./assets/packages/filemanager run test
+    - yarn --cwd ./assets/packages/adminbasics run test

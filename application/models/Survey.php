@@ -80,12 +80,15 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
+ * @property string $tokenencryptionoptions Token encryption options
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
+ * @property Question[] $allQuestions All survey questions including subquestions
+ * @property Question[] $baseQuestions Survey questions NOT including subquestions
  * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
@@ -143,6 +146,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
@@ -157,10 +161,19 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
 
 
+    // survey options
+    public $oOptions;
+    public $oOptionLabels;
+    // used for twig files, same content as $oOptions, but in array format
+    public $aOptions = array();
+    
+    public $showInherited = 1;
 
     public $searched_value;
 
     public $showsurveypolicynotice = 0;
+
+    public $bShowRealOptionValues = true;
 
 
     private $sSurveyUrl;
@@ -176,6 +189,7 @@ class Survey extends LSActiveRecord
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
+        $this->tokenencryptionoptions = '';
 
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
@@ -184,7 +198,7 @@ class Survey extends LSActiveRecord
             $this->googleanalyticsapikeysetting = "G";
         }
         /* default template */
-        $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+        $this->template = 'inherit';
         /* default language */
         $validator = new LSYii_Validators;
         $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
@@ -203,6 +217,7 @@ class Survey extends LSActiveRecord
                 }
             }
         }
+        
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
@@ -274,17 +289,38 @@ class Survey extends LSActiveRecord
             }
             SettingGlobal::model()->deleteAll($oCriteria);
 
-            $oResult = Question::model()->findAllByAttributes(array('sid' => $this->sid));
-            foreach ($oResult as $aRow) {
-                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+            $oQuestions = Question::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oQuestions as $aQuestion) {
+                // answers
+                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $aQuestion['qid']));
+                foreach ($oAnswers as $aAnswer) {
+                    AnswerL10n::model()->deleteAllByAttributes(array('aid' =>$aAnswer['aid']));
+                }
+                Answer::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+                QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                // delete defaultvalues and defaultvalueL10ns
+                $oDefaultValues = DefaultValue::model()->findAll('qid = :qid', array(':qid' => $aQuestion['qid']));
+                foreach($oDefaultValues as $defaultvalue){
+                    DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                    DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                };
+
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
             Assessment::model()->deleteAllByAttributes(array('sid' => $this->sid));
+
+            // question groups
+            $oQuestionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oQuestionGroups as $aQuestionGroup) {
+                QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$aQuestionGroup['gid']));
+            }
             QuestionGroup::model()->deleteAllByAttributes(array('sid' => $this->sid));
+
             SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $this->sid));
             Permission::model()->deleteAllByAttributes(array('entity_id' => $this->sid, 'entity'=>'survey'));
             SavedControl::model()->deleteAllByAttributes(array('sid' => $this->sid));
@@ -360,6 +396,7 @@ class Survey extends LSActiveRecord
         } else {
             self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
+        return null;
 
     }
 
@@ -381,7 +418,9 @@ class Survey extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var Survey $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -393,10 +432,11 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'group_order ASC'),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'groups.group_order ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -430,52 +470,56 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('sid', 'numerical', 'integerOnly'=>true,'min'=>1), // max ?
+            array('sid', 'unique'),// Not in pk
             array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default', 'value'=>date("Y-m-d")),
             array('startdate', 'default', 'value'=>null),
             array('expires', 'default', 'value'=>null),
             array('admin,faxto', 'LSYii_Validators'),
+            array('admin', 'length', 'min' => 1, 'max'=>50),
+            array('faxto', 'length', 'min' => 0, 'max'=>20),
             array('adminemail', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'filter', 'filter'=>'trim'),
-            array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
+            //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
-            array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('usecookie', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowregister', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowsave', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('autoredirect', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowprev', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('printanswers', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('ipaddr', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('refurl', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('publicstatistics', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('publicgraphs', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('listpublic', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('htmlemail', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('sendconfirmation', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('assessments', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('anonymized', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('savetimings', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('datestamp', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('usecookie', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowregister', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowsave', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('autoredirect', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowprev', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('printanswers', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('ipaddr', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('refurl', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('publicstatistics', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('publicgraphs', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('listpublic', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('htmlemail', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('sendconfirmation', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('assessments', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('usetokens', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showxquestions', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('shownoanswer', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showwelcome', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showxquestions', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('shownoanswer', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('showwelcome', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('showsurveypolicynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
-            array('showprogress', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('questionindex', 'numerical', 'min' => 0, 'max' => 2, 'allowEmpty'=>false),
-            array('nokeyboard', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showprogress', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty'=>false),
+            array('nokeyboard', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('bounceprocessing', 'in', 'range'=>array('L', 'N', 'G'), 'allowEmpty'=>true),
-            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N'), 'allowEmpty'=>true),
-            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X'), 'allowEmpty'=>true),
-            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X'), 'allowEmpty'=>true),
-            array('format', 'in', 'range'=>array('G', 'S', 'A'), 'allowEmpty'=>true),
-            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
+            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'), 'allowEmpty'=>true),
+            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X', 'I'), 'allowEmpty'=>true),
+            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X', 'I'), 'allowEmpty'=>true),
+            array('format', 'in', 'range'=>array('G', 'S', 'A', 'I'), 'allowEmpty'=>true),
+            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'3', 'allowEmpty'=>true),
             array('autonumber_start', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('tokenlength', 'default', 'value'=>15),
-            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'5', 'max'=>'36'),
+            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'-1', 'max'=>'36'),
             array('bouncetime', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('navigationdelay', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('template', 'filter', 'filter'=>array($this, 'filterTemplateSave')),
@@ -512,7 +556,13 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
-        $this->template = Template::templateNameFilter($this->template);
+
+        // set inherited values for existing survey
+        $this->setOptions($this->gsid);
+        
+        if ($this->template != 'inherit'){
+            $this->template = Template::templateNameFilter($this->template);
+        }
     }
 
 
@@ -532,10 +582,15 @@ class Survey extends LSActiveRecord
                     $sTemplateName = getGlobalSetting('defaulttheme');
                 }
             } else {
-                $sTemplateName = getGlobalSetting('defaulttheme');
+                $sTemplateName = 'inherit';
             }
         }
-        return Template::templateNameFilter($sTemplateName);
+        if ($sTemplateName == 'inherit'){
+            return $sTemplateName;
+        } else {
+            return Template::templateNameFilter($sTemplateName);
+        }
+        
     }
 
 
@@ -630,6 +685,7 @@ class Survey extends LSActiveRecord
                     $fields[$fieldname] = array(
                         'description' => $desc,
                         'mandatory' => 'N',
+                        'encrypted' => 'N',
                         'show_register' => 'N',
                         'cpdbmap' =>''
                     );
@@ -662,6 +718,7 @@ class Survey extends LSActiveRecord
                 $aCompleteData[$sKey] = array_merge(array(
                     'description' => $sKey,
                     'mandatory' => 'N',
+                    'encrypted' => 'N',
                     'show_register' => 'N',
                     'cpdbmap' =>''
                 ), $aValues);
@@ -776,121 +833,6 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
-    private function __useTranslationForSurveymenu(&$entryData) {
-        $entryData['title']             = gT($entryData['title']);
-        $entryData['menu_title']        = gT($entryData['menu_title']);
-        $entryData['menu_description']  = gT($entryData['menu_description']);
-    }
-
-    private function _createSurveymenuArray($oSurveyMenuObjects, $collapsed=false)
-    {
-        //Posibility to add more languages to the database is given, so it is possible to add a call by language
-        //Also for peripheral menues we may add submenus someday.
-        $aResultCollected = [];
-        foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
-            $entries = [];
-            $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
-            $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject, $collapsed);
-            foreach ($aMenuEntries as $menuEntry) {
-                $aEntry = $menuEntry->attributes;
-                //Skip menu if not activated in collapsed mode
-                if ($collapsed && $aEntry['showincollapse'] == 0 ) {
-                    continue;
-                }
-
-                //Skip menu if no permission
-                if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
-                    && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
-                ) {
-                    continue;
-                }
-
-                // Check if a specific user owns this menu.
-                if (!empty($aEntry['user_id'])) {
-                    $userId = Yii::app()->session['loginID'];
-                    if ($userId != $aEntry['user_id']) {
-                        continue;
-                    }
-                }
-
-                //parse the render part of the data attribute
-                $oDataAttribute = new SurveymenuEntryData();
-                $oDataAttribute->apply($menuEntry, $this->sid);
-
-                if ($oDataAttribute->isActive !== null) {
-                    if (($oDataAttribute->isActive == true && $this->active == 'N') || ($oDataAttribute->isActive == false && $this->active == 'Y')) {
-                        continue;
-                    }
-                }
-
-                $aEntry['link'] = $oDataAttribute->linkCreator();
-                $aEntry['link_external'] = $oDataAttribute->linkExternal;
-                $aEntry['debugData'] = $oDataAttribute->attributes;
-                $aEntry['pjax'] = $oDataAttribute->pjaxed;
-                $this->__useTranslationForSurveymenu($aEntry);
-                $entries[$aEntry['id']] = $aEntry;
-            }
-            $aResultCollected[$oSurveyMenuObject->id] = [
-                "id" => $oSurveyMenuObject->id,
-                "title" => gt($oSurveyMenuObject->title),
-                "name" => $oSurveyMenuObject->name,
-                "ordering" => $oSurveyMenuObject->ordering,
-                "level" => $oSurveyMenuObject->level,
-                "description" => gT($oSurveyMenuObject->description),
-                "entries" => $entries,
-                "submenus" => $submenus
-            ];
-        }
-        return $aResultCollected;
-    }
-
-    private function _getSurveymenuSubmenus($oParentSurveymenu, $collapsed=false)
-    {
-        $criteria = new CDbCriteria;
-        $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
-        $criteria->addCondition('parent_id=:parentid');
-        $criteria->addCondition('level=:level');
-
-        if ($collapsed === true) {
-            $criteria->addCondition('showincollapse=1');
-        }
-
-        $criteria->params = [
-            ':surveyid' => $oParentSurveymenu->survey_id,
-            ':parentid' =>  $oParentSurveymenu->id,
-            ':level'=> ($oParentSurveymenu->level + 1)
-        ];
-
-        $oMenus = Surveymenu::model()->findAll($criteria);
-
-        $aResultCollected = $this->_createSurveymenuArray($oMenus, $collapsed);
-        return $aResultCollected;
-    }
-
-    private function _getDefaultSurveyMenus($position = '')
-    {
-        $criteria = new CDbCriteria;
-        $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
-        $collapsed = $position==='collapsed';
-
-        if ($position != '' && !$collapsed) {
-            $criteria->condition .= ' AND position=:position';
-            $criteria->params = array(':position'=>$position);
-        }
-
-        if ($collapsed) {
-            $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
-            $criteria->params = array(':position'=>$position);
-            $collapsed = true;
-        }
-
-        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
-        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus, $collapsed);
-
-        return $aResultCollected;
-    }
-
-
     /**
      * Get surveymenu configuration
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
@@ -899,14 +841,13 @@ class Survey extends LSActiveRecord
     {
         $collapsed = $position==='collapsed';
         //Get the default menus
-        $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
+        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position,$this);
         //get all survey specific menus
-        $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus, $collapsed);
+        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this, $position);
         //merge them
         $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
         // var_dump($aDefaultSurveyMenus);
         // var_dump($aThisSurveyMenues);
-        //soon to come => Event to add menus for plugins
 
         return $aSurveyMenus;
     }
@@ -922,26 +863,34 @@ class Survey extends LSActiveRecord
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
-
-        do {
-            // if wishSID is set check if it is not taken already
-            if (isset($aData['wishSID'])) {
-                $aData['sid'] = $aData['wishSID'];
-            } else {
-                $aData['sid'] = randomChars(6, '123456789');
-            }
-            $isresult = self::model()->findByPk($aData['sid']);
+        if(isset($aData['wishSID'])) {
+            $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
         }
-        while (!is_null($isresult));
-
+        if(empty($aData['sid'])) {
+            $aData['sid'] = intval(randomChars(6, '123456789'));
+        }
         $survey = new self;
+        /* Remove NULL value (default for not submitted data ) : insert must leave default if not set in POST */
+        $aData = array_filter($aData, function($value) {
+                return !is_null($value);
+        });
         foreach ($aData as $k => $v) {
             $survey->$k = $v;
         }
-        $sResult = $survey->save();
 
-        if (!$sResult) {
+        $attempts = 0;
+        /* Validate sid : > 1 and unique */
+        while(!$survey->validate(array('sid'))) {
+            $attempts++;
+            $survey->sid = intval(randomChars(6, '123456789'));
+            /* If it's happen : there are an issue in server … (or in randomChars function …) */
+            if($attempts > 50) {
+                throw new Exception("Unable to get a valid survey id after 50 attempts");
+            }
+        }
+
+        if (!$survey->save()) {
             $survey->sid = null;
         }
         return $survey;
@@ -969,18 +918,20 @@ class Survey extends LSActiveRecord
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
+        /** @var self $model */
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
             } else {
-                $result = parent::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
+                $model = parent::findByPk($pk, $condition, $params);
+                if (!is_null($model)) {
+                    $this->findByPkCache[$pk] = $model;
                 }
-                return $result;
+                return $model;
             }
         }
-        return parent::findByPk($pk, $condition, $params);
+        $model = parent::findByPk($pk, $condition, $params);
+        return $model;
     }
 
     /**
@@ -999,9 +950,9 @@ class Survey extends LSActiveRecord
     public function setAllowjumps($value)
     {
         if ($value === 'Y') {
-            $this->questionindex = 1;
+            $this->oOptions->questionindex = 1;
         } else {
-            $this->questionindex = 0;
+            $this->oOptions->questionindex = 0;
         }
     }
 
@@ -1053,7 +1004,7 @@ class Survey extends LSActiveRecord
      */
     public function getAnonymizedResponses()
     {
-        return ($this->anonymized == 'Y') ? gT('Yes') : gT('No');
+        return ($this->oOptions->anonymized == 'Y') ? gT('Yes') : gT('No');
     }
 
     /**
@@ -1080,32 +1031,51 @@ class Survey extends LSActiveRecord
     {
         if ($this->active == 'N') {
             return 'inactive';
-        } elseif ($this->expires != '' || $this->startdate != '') {
+        }
+        if ($this->expires != '' || $this->startdate != '') {
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-            $sStart  = ($this->startdate != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
-            $bExpired = ($oStop < $oNow);
-            $bWillRun = ($oStart > $oNow);
+            $bExpired = (!is_null($sStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
-            } elseif ($bWillRun) {
+            }
+            if ($bWillRun) {
+                // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
-            } else {
+            }
+            if(!is_null($sStop)) {
                 return 'willExpire';
             }
         }
-        // If it's active, and doesn't have expire date, it's running
-        else {
-            return 'running';
+        // No returned before : it's running
+        return 'running';
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function getIsDateExpired()
+    {
+        if (!empty($this->expires)) {
+            $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+
+            $oNow = new DateTime($sNow);
+            $oStop = new DateTime($sStop);
+            return $oStop < $oNow;
         }
+        return false;
     }
 
 
@@ -1167,7 +1137,9 @@ class Survey extends LSActiveRecord
     public function getPartialAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1193,28 +1165,28 @@ class Survey extends LSActiveRecord
      */
     public function getIsAnonymized()
     {
-        return ($this->anonymized === 'Y');
+        return ($this->oOptions->anonymized === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsSaveTimings()
     {
-        return ($this->savetimings === 'Y');
+        return ($this->oOptions->savetimings === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsDateStamp()
     {
-        return ($this->datestamp === 'Y');
+        return ($this->oOptions->datestamp === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsUseCookie()
     {
-        return ($this->usecookie === 'Y');
+        return ($this->oOptions->usecookie === 'Y');
     }
 
     /**
@@ -1222,154 +1194,154 @@ class Survey extends LSActiveRecord
      */
     public function getIsAllowRegister()
     {
-        return ($this->allowregister === 'Y');
+        return ($this->oOptions->allowregister === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowSave()
     {
-        return ($this->allowsave === 'Y');
+        return ($this->oOptions->allowsave === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAutoRedirect()
     {
-        return ($this->autoredirect === 'Y');
+        return ($this->oOptions->autoredirect === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowPrev()
     {
-        return ($this->allowprev === 'Y');
+        return ($this->oOptions->allowprev === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPrintAnswers()
     {
-        return ($this->printanswers === 'Y');
+        return ($this->oOptions->printanswers === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsIpAddr()
     {
-        return ($this->ipaddr === 'Y');
+        return ($this->oOptions->ipaddr === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsRefUrl()
     {
-        return ($this->refurl === 'Y');
+        return ($this->oOptions->refurl === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPublicStatistics()
     {
-        return ($this->publicstatistics === 'Y');
+        return ($this->oOptions->publicstatistics === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPublicGraphs()
     {
-        return ($this->publicgraphs === 'Y');
+        return ($this->oOptions->publicgraphs === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsListPublic()
     {
-        return ($this->listpublic === 'Y');
+        return ($this->oOptions->listpublic === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsHtmlEmail()
     {
-        return ($this->htmlemail === 'Y');
+        return ($this->oOptions->htmlemail === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsSendConfirmation()
     {
-        return ($this->sendconfirmation === 'Y');
+        return ($this->oOptions->sendconfirmation === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsTokenAnswersPersistence()
     {
-        return ($this->tokenanswerspersistence === 'Y');
+        return ($this->oOptions->tokenanswerspersistence === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAssessments()
     {
-        return ($this->assessments === 'Y');
+        return ($this->oOptions->assessments === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowXQuestions()
     {
-        return ($this->showxquestions === 'Y');
+        return ($this->oOptions->showxquestions === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowGroupInfo()
     {
-        return ($this->showgroupinfo === 'Y');
+        return ($this->oOptions->showgroupinfo === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowNoAnswer()
     {
-        return ($this->shownoanswer === 'Y');
+        return ($this->oOptions->shownoanswer === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowQnumCode()
     {
-        return ($this->showqnumcode === 'Y');
+        return ($this->oOptions->showqnumcode === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowWelcome()
     {
-        return ($this->showwelcome === 'Y');
+        return ($this->oOptions->showwelcome === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowProgress()
     {
-        return ($this->showprogress === 'Y');
+        return ($this->oOptions->showprogress === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsNoKeyboard()
     {
-        return ($this->nokeyboard === 'Y');
+        return ($this->oOptions->nokeyboard === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowEditAfterCompletion()
     {
-        return ($this->alloweditaftercompletion === 'Y');
+        return ($this->oOptions->alloweditaftercompletion === 'Y');
     }
 
     /**
@@ -1391,7 +1363,9 @@ class Survey extends LSActiveRecord
     public function getFullAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1411,7 +1385,9 @@ class Survey extends LSActiveRecord
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1430,7 +1406,9 @@ class Survey extends LSActiveRecord
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1465,7 +1443,7 @@ class Survey extends LSActiveRecord
      */
     public function getbuttons()
     {
-        $sEditUrl     = App()->createUrl("/admin/survey/sa/editlocalsettings/surveyid/".$this->sid);
+        $sEditUrl     = App()->createUrl("/admin/survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/".$this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
         $sAddGroup    = App()->createUrl("/admin/questiongroups/sa/add/surveyid/".$this->sid); ;
         $sAddquestion = App()->createUrl("/admin/questions/sa/newquestion/surveyid/".$this->sid); ;
@@ -1482,7 +1460,7 @@ class Survey extends LSActiveRecord
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if ($this->active != 'Y') {
-                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
+                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid)); 
                 if ($groupCount > 0) {
                     $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new question').'</span></a>';
                 } else {
@@ -1562,6 +1540,11 @@ class Survey extends LSActiveRecord
             $criteria->compare("t.gsid", $this->gsid, false);
         }
 
+        // show only surveys belonging to selected survey group
+        if (!empty(Yii::app()->request->getParam('id'))) {
+            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
+        }
+
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
@@ -1625,48 +1608,6 @@ class Survey extends LSActiveRecord
 
     /**
      * Transcribe from 3 checkboxes to 1 char for captcha usages
-     * Uses variables from $_POST
-     *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
-     * @return string One character that corresponds to captcha usage
-     * @todo Should really be saved as three fields in the database!
-     */
-    public static function transcribeCaptchaOptions()
-    {
-        // TODO POST handling should be done in controller!
-        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
-        $registration = App()->request->getPost('usecaptcha_registration');
-        $saveandload = App()->request->getPost('usecaptcha_saveandload');
-
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
-    }
-
-    /**
-     * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
      *
      * 'A' = All three captcha enabled
@@ -1676,35 +1617,93 @@ class Survey extends LSActiveRecord
      * 'X' = Only survey access
      * 'R' = Only registration
      * 'S' = Only save and load
+     * 
+     * 'E' = All inherited
+     * 'F' = Inherited save and load + survey access + registration
+     * 'G' = Inherited survey access + registration + save and load
+     * 'H' = Inherited registration + save and load + survey access
+     * 'I' = Inherited save and load + inherited survey access + registration
+     * 'J' = Inherited survey access + inherited registration + save and load
+     * 'K' = Inherited registration + inherited save and load + survey access
+     * 
+     * 'L' = Inherited survey access + save and load
+     * 'M' = Inherited survey access + registration
+     * 'O' = Inherited registration + survey access
+     * '1' = Inherited survey access + inherited registration
+     * '2' = Inherited survey access + inherited save and load
+     * '3' = Inherited registration + inherited save and load
+     * '4' = Inherited survey access
+     * '5' = Inherited save and load
+     * '6' = Inherited registration
+     * 
      * 'N' = None
      *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey)
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
     {
-        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
 
         if ($surveyaccess === null && $registration === null && $saveandload === null) {
-            return $oSurvey->usecaptcha;
+            if ($oSurvey !== null){
+                return $oSurvey->usecaptcha;
+            }
         }
 
-        if ($surveyaccess && $registration && $saveandload) {
+        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
+            return 'E';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
+            return 'F';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'G';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
+            return 'H';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
+            return 'I';
+        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
+            return 'J';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
+            return 'K';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
+            return 'L';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
+            return 'M';
+        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
+            return 'O';
+        } elseif ($registration == 'I' && $saveandload == 'Y') {
+            return 'P';
+        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
+            return 'T';
+        } elseif ($saveandload == 'I' && $registration == 'Y') {
+            return 'U';
+        } elseif ($surveyaccess == 'I' && $registration == 'I') {
+            return '1';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
+            return '2';
+        } elseif ($registration == 'I' && $saveandload == 'I') {
+            return '3';
+        } elseif ($surveyaccess == 'I') {
+            return '4';
+        } elseif ($saveandload == 'I') {
+            return '5';
+        } elseif ($registration == 'I') {
+            return '6';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
             return 'A';
-        } elseif ($surveyaccess && $registration) {
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
             return 'B';
-        } elseif ($surveyaccess && $saveandload) {
+        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
             return 'C';
-        } elseif ($registration && $saveandload) {
+        } elseif ($registration == 'Y' && $saveandload == 'Y') {
             return 'D';
-        } elseif ($surveyaccess) {
+        } elseif ($surveyaccess == 'Y') {
             return 'X';
-        } elseif ($registration) {
+        } elseif ($registration == 'Y') {
             return 'R';
-        } elseif ($saveandload) {
+        } elseif ($saveandload == 'Y') {
             return 'S';
         }
 
@@ -1759,8 +1758,8 @@ return $s->hasTokensTable; });
         /* Delete invalid questions (don't exist in primary language) using qid like column name*/
         $validQuestion = Question::model()->findAll(array(
             'select'=>'qid',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid = 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid = 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1771,8 +1770,8 @@ return $s->hasTokensTable; });
         /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid != 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid != 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1801,19 +1800,48 @@ return $s->hasTokensTable; });
     public function getQuotableQuestions()
     {
         $criteria = $this->getQuestionOrderCriteria();
-
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
-            't.language' => $this->language,
             'parent_qid' => 0,
-
         ));
-
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
+        /** @var Question[] $questions */
+        $questions = Question::model()->with('questionL10ns')->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function getBaseQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        $criteria->addColumnCondition(array(
+            'parent_qid' => 0,
+        ));
 
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
         return $questions;
+    }
+
+    private function getSurveyQuestionsCriteria(){
+        $criteria = $this->getQuestionOrderCriteria();
+        $criteria->addColumnCondition(array(
+            't.sid' => $this->sid,
+        ));
+        return $criteria;
     }
 
     /**
@@ -1827,21 +1855,21 @@ return $s->hasTokensTable; });
         $criteria->with = array(
             'survey.groups',
         );
-        $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
-            .Yii::app()->db->quoteColumnName('t.question_order');
+        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib'){
+            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+        } else {
+            $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','.Yii::app()->db->quoteColumnName('t.question_order');
+        }
         $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
-
     }
+
     /**
      * Gets number of groups inside a particular survey
      */
     public function getGroupsCount()
     {
-        //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language);
-        $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
-        return $sumresult3;
+        return QuestionGroup::model()->countByAttributes(['sid'=>$this->sid]);
     }
 
     /**
@@ -1849,7 +1877,7 @@ return $s->hasTokensTable; });
      */
     public function getCountTotalQuestions()
     {
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language, 'parent_qid'=>0);
+        $condn = array('sid'=>$this->sid, 'parent_qid'=>0);
         $sumresult = Question::model()->countByAttributes($condn);
         return (int) $sumresult;
     }
@@ -1862,7 +1890,6 @@ return $s->hasTokensTable; });
     {
         $condn = array(
             'sid'=>$this->sid,
-            'language'=>$this->language,
             'parent_qid'=>0,
             'type'=>['X', '*'],
         );
@@ -1940,4 +1967,69 @@ return $s->hasTokensTable; });
         return $dataSecurityNoticeLabel;
 
     }
+    
+    /**
+     * @param string $type Question->type
+     * @param bool $includeSubquestions
+     * @return Question
+     */
+    public function findQuestionByType($type, $includeSubquestions = false){
+        $criteria = $this->getSurveyQuestionsCriteria();
+        if ($includeSubquestions){
+            $criteria->addColumnCondition(['parent_qid' => 0]);
+        }
+        $criteria->addColumnCondition(['type'=>$type]);
+        return Question::model()->find($criteria);
+    }
+
+    /**
+     * decodes the tokenencryptionoptions to be used anywhere necessary
+     * @return Array
+     */
+    public function getTokenEncryptionOptions()
+    {
+        $aOptions = json_decode_ls($this->tokenencryptionoptions);
+        if (empty($aOptions)){
+            $aOptions = Token::getDefaultEncryptionOptions();
+        }
+        return $aOptions;
+    }
+
+    /**
+     * @param ? $tmp
+     */
+    public function setTokenEncryptionOptions($options)
+    {
+        $this->tokenencryptionoptions = $options;
+    }
+
+    public function setOptions($gsid = 1)
+    {
+        $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
+        if ($instance){
+            $this->oOptions = $instance->oOptions;
+            $this->oOptionLabels = $instance->oOptionLabels;
+            $this->aOptions = (array) $instance->oOptions;
+            $this->showInherited = $instance->showInherited;
+        }
+
+    }
+
+    public function setOptionsFromDatabase()
+    {
+        // set real survey options with inheritance
+        $this->bShowRealOptionValues = false;
+        $this->setOptions($this->gsid);
+    }
+
+    public function setToInherit()
+    {
+        $settings = new SurveysGroupsettings();
+        $settings->setToInherit();        
+        // set Survey attributes to 'inherit' values
+        foreach ($settings as $key => $value){
+            $this->$key = $value;
+        }
+    }
+
 }

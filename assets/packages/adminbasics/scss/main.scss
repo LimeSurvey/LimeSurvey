@@ -1,0 +1,69 @@
+
+$size: 2em;
+$color: rgb(15, 62, 18);
+
+@import 'grid';
+@import 'bootstrap-sub-submenues';
+
+#vue-apps-main-container {
+    min-height: 75vh;
+}
+
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+}
+
+.fa-stack-1x.halfed {
+  font-size: 0.5em;
+}
+
+.fa-1x.halfed {
+  font-size: 0.5em;
+}
+
+.contain-pulse {
+  display: flex;
+  flex-flow:row wrap;
+  justify-content: center;
+  align-content:bottom;
+  height: $size+1;
+}
+
+.square {
+  background: $color;
+  border-radius: 0.6em;
+  box-sizing: border-box;
+  height: $size;
+  margin: $size/10;
+  overflow: hidden;
+  padding: $size/4;
+  width: $size;
+}
+
+.animate-pulse {
+  .square:nth-of-type(1) {
+    animation: pulse ease-in-out 1.8s infinite 0.2s;
+  }
+  .square:nth-of-type(2) {
+    animation: pulse ease-in-out 1.8s infinite 0.6s;
+  }
+  .square:nth-of-type(3) {
+    animation: pulse ease-in-out 1.8s infinite 1.0s;
+  }
+  .square:nth-of-type(4) {
+    animation: pulse ease-in-out 1.8s infinite 1.4s;
+  }
+}
+
+.simpleWrapper{
+  padding: 0;
+  margin:0;
+  border:none;
+  display: inline-block;
+}
+
+.vue-general-topbar {
+    
+}

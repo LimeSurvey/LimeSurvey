@@ -88,8 +88,6 @@ class NotifyFader {
 
 window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
 
-export default {
-    notifyFader : (text, classes, styles, customOptions) => {
-        window.LS.LsGlobalNotifier.create(text, classes, styles, customOptions);
-    }
+export default function (text, classes, styles, customOptions) {
+    window.LS.LsGlobalNotifier.create(text, classes, styles, customOptions);
 };

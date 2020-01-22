@@ -100,7 +100,7 @@ const globalWindowMethods = {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
         
-        $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
+        $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();
     },
@@ -108,14 +108,9 @@ const globalWindowMethods = {
         $('<input type="hidden"/>').attr('name', name).attr('value', value).appendTo($(form));
     },
     fixAccordionPosition : () => {
-        $(document).on('shown.bs.collapse',"#accordion", function () {
-            let collapsed = $(this).find('.collapse.in').prev('.panel-heading');
-            /* test if is up to surveybarid bottom, if yes : scrollTo */
-            if($(collapsed).offset().top-$(window).scrollTop() < $(".navbar-fixed-top").first().outerHeight(true)){
-                $('html, body').animate({
-                    scrollTop: $(collapsed).offset().top-$(".navbar-fixed-top").first().outerHeight(true)
-                }, 500);
-            }
+        $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function (e) {
+            if(e.target != this) return;
+            $('#accordion').find('.panel-collapse.collapse').not('#'+$(this).attr('id')).collapse('hide');
         });
     }
 };
@@ -133,7 +128,6 @@ const globalStartUpMethods = {
         });
 
         globalWindowMethods.tableCellAdapters();
-        globalWindowMethods.fixAccordionPosition();
     }
 };
 

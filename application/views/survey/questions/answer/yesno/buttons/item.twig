@@ -10,7 +10,7 @@
  * @var $value                          $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$name]
  */
 #}
-<ul class="{{ coreClass }} list-unstyled form-inline btn-group btn-group-justified" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
+<ul class="{{ coreClass }} list-unstyled btn-group btn-group-justified" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Yes -->
     <li id="javatbd{{ name }}Y" class="button-item form-group btn btn-primary {% if yChecked %}active{% endif %}">
         <input
@@ -33,7 +33,7 @@
             value="N"
             {{ nChecked }}
         />
-        <label for="answer{{ name }}Y">
+        <label for="answer{{ name }}N">
             <span class="fa fa-ban ls-icon" aria-hidden="true"></span> {{ gT('No') }}
         </label>
     </li>
@@ -48,7 +48,7 @@
                 value=""
                 {{ naChecked }}
             />
-            <label for="answer{{ name }}Y">
+            <label for="answer{{ name }}">
                 <span class="fa fa-circle-thin ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
             </label>
         </li>

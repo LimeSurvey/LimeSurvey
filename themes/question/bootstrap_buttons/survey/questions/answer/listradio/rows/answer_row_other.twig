@@ -22,20 +22,19 @@
 <!-- answer_row_other -->
 <!-- Checkbox + label -->
 <div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div id="javatbd{{ name }}F" class="bootstrap-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active focus {% endif %} col-xs-12 col-sm-12"  {{ sDisplayStyle }}>
+    <div id="javatbd{{ name }}other" class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active focus {% endif %} col-xs-12 col-sm-12"  {{ sDisplayStyle }}>
         <input
-            class="radio bootstrap-radio"
+            class="bootstrap-radio sr-only"
             type="radio"
             value="-oth-"
             name="{{ name }}"
-            id="SOTH{{ name }}"
+            id="answer{{ name }}othercbox"
             {{ checkedState }}
             />
-        <label for="answer{{ name }}">
-            <span class="" aria-hidden="true"></span> {{ gT('Other') }}
+        <label for="answer{{ name }}othercbox">
+            {{ gT('Other') }}
         </label>
     </div>
-    <input type="hidden" class="bootstrap-radio-value" {{ answer_other }} name="answer{{ name }}othervalue" data-name="{{ name }}" id="answer{{ name }}othervalue">
 </div>
+<script>doBootstrapRadio();</script>
 <!-- end of answer_row_other -->
-

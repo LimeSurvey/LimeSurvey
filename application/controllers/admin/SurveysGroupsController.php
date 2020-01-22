@@ -43,12 +43,20 @@ class SurveysGroupsController extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['SurveysGroups'])) {
-            $model->attributes = $_POST['SurveysGroups'];
-            $model->name = sanitize_paranoid_string($model->name);
-            $model->created_by = $model->owner_uid = Yii::app()->user->id;
+        if (Yii::app()->getRequest()->getPost('SurveysGroups')) {
+            $model->attributes = Yii::app()->getRequest()->getPost('SurveysGroups');
+            $model->created_by = $model->owner_id = Yii::app()->user->id;
             if ($model->save()) {
-                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                // save new SurveysGroupsettings record
+                $modelSettings = new SurveysGroupsettings;
+                $modelSettings->gsid = $model->gsid;
+                $modelSettings->setToInherit();
+                $modelSettings->owner_id = $model->owner_id;
+
+                if ($modelSettings->save()) {
+                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                }
+                // What happen iof SurveysGroups saved but no SurveysGroupsettings ?
             }
         }
 
@@ -69,12 +77,27 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function update($id)
     {
+        $bRedirect = 0;
         $model = $this->loadModel($id);
 
         if (isset($_POST['SurveysGroups'])) {
             $model->attributes = $_POST['SurveysGroups'];
+
+
+                // prevent loop
+                if (!empty($_POST['SurveysGroups']['parent_id'])){
+                    $sgid = $_POST['SurveysGroups']['parent_id'] ;
+                    $ParentSurveyGroup = $this->loadModel($sgid);
+                    $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
+
+                    if ( in_array( $model->gsid, $aParentsGsid  ) ) {
+                        Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
+                        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    }
+                }
+
             if ($model->save()) {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                $bRedirect = 1;
             }
         }
 
@@ -87,6 +110,10 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        }
+
         // Page size
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
@@ -94,6 +121,71 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function surveySettings($id)
+    {
+        $bRedirect = 0;
+        $model = $this->loadModel($id);
+
+        $aData['model'] = $model;
+
+        $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
+        $oSurvey = SurveysGroupsettings::model()->findByPk($model->gsid);
+        $oSurvey->setOptions();
+        $oSurvey->owner_id = $model->owner_id;
+
+        if (isset($_POST['template'])) {
+            $oSurvey->attributes = $_POST;
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if ($oSurvey->save()) {
+                $bRedirect = 1;
+            }
+        }
+
+        $users = getUserList();
+        $aData['users'] = array();
+        $inheritOwner = empty($oSurvey['ownerLabel']) ? $oSurvey['owner_id'] : $oSurvey['ownerLabel'];
+        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+
+        $aData['oSurvey'] = $oSurvey;
+
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        }
+
+        // Page size
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerPackage('globalsidepanel');
+
+        $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['jsData'] = [
+            'sgid' => $id,
+            'baseLinkUrl' => 'admin/surveysgroups/sa/surveysettings/id/'.$id,
+            'getUrl' => Yii::app()->createUrl('admin/globalsettings/sa/surveysettingmenues'),
+            'i10n' => [
+                'Survey settings' => gT('Survey settings')
+            ]
+        ];
+        $aData['partial'] = $sPartial;
+
+        $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
 
     /**
@@ -106,20 +198,21 @@ class SurveysGroupsController extends Survey_Common_Action
         $oGroupToDelete = $this->loadModel($id);
         $sGroupTitle    = $oGroupToDelete->title;
 
-        if (!$oGroupToDelete->hasSurveys) {
+        if ($oGroupToDelete->hasSurveys) {
+            Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+        } elseif ($oGroupToDelete->hasChildGroups) {
+            Yii::app()->setFlashMessage(gT("You can't delete a group because one or more groups depend on it as parent!"), 'error');
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+        } else {
             $oGroupToDelete->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax'])) {
-                Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), $sGroupTitle), 'success');
+                Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), CHtml::encode($sGroupTitle)), 'success');
                 $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
             }
-
-        } else {
-            Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
-            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
         }
-
     }
 
     /**
@@ -147,6 +240,7 @@ class SurveysGroupsController extends Survey_Common_Action
             'model'=>$model,
         ));
     }
+
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

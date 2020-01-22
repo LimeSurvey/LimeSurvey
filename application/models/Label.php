@@ -23,7 +23,6 @@
  * @property string $code
  * @property string $title
  * @property integer $sortorder
- * @property string $language
  * @property integer $assessment_value
  */
 class Label extends LSActiveRecord
@@ -43,8 +42,9 @@ class Label extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('id');
+        return 'id';
     }
+     
     /**
      * @inheritdoc
      * @return Label
@@ -62,13 +62,11 @@ class Label extends LSActiveRecord
         return array(
             array('lid', 'numerical', 'integerOnly'=>true),
             array('code', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                            'condition'=>'lid = :lid AND language=:language',
-                            'params'=>array(':lid'=>$this->lid, ':language'=>$this->language)
+                            'condition'=>'lid = :lid',
+                            'params'=>array(':lid'=>$this->lid)
                     ),
                     'message'=>'{attribute} "{value}" is already in use.'),
-            array('title', 'LSYii_Validators'),
             array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
         );
     }
@@ -79,24 +77,18 @@ class Label extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'labelset' => array(self::HAS_ONE, 'LabelSet', 'lid')
+            'labelset' => array(self::BELONGS_TO, 'LabelSet', 'lid'),
+            'labelL10ns' => array(self::HAS_MANY, 'LabelL10n', 'label_id')
         );
     }
 
-    /**
-     * @param mixed|bool $condition
-     * @return static[]
-     */
-    public function getAllRecords($condition = false)
-    {
-        $criteria = new CDbCriteria;
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item.'="'.$value.'"');
-            }
-        }
+    public function getTranslated($sLanguage) {
+        $ol10N = $this->labelL10ns;
+        if(isset($ol10N[$sLanguage])) {
+            return array_merge($this->attributes, $ol10N[$sLanguage]->attributes);
+        } 
 
-        return $this->findAll($criteria);
+        return [];
     }
 
     /**
@@ -108,6 +100,10 @@ class Label extends LSActiveRecord
         return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from($this->tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
 
+    /**
+     * @param $data
+     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
+     */
     public function insertRecords($data)
     {
         $lbls = new self;

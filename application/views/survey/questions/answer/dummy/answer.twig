@@ -1,0 +1,13 @@
+{#
+/**
+ * Boilerplate Html
+ * @var $name
+ */
+#}
+<!-- boilerplate -->
+<!-- Did we need really something ? Why not return an empty string ? -->
+<!-- answer -->
+<div class="{{ coreClass }} dummyQuestion" type="hidden" name="{{ name }}" id="answer{{ name }}" value="" >
+    {{ content | json_encode }}
+</div>
+<!-- end of answer -->
