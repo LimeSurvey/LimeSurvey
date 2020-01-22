@@ -75,16 +75,16 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
-     /**
-     * render selected items for massive action
-     * @return void
-     */
+        /**
+         * render selected items for massive action
+         * @return void
+         */
 
     public function renderItemsSelected()
     {
         $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
         $aResults = [];
-        $tableLabels= array(gT('Survey ID'),gT('Survey Title') ,gT('Status'));
+        $tableLabels = array(gT('Survey ID'), gT('Survey Title'), gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
                 $oSurvey                        = Survey::model()->findByPk($iSurveyID);
@@ -201,8 +201,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['oSurveyOptions'] = $oSurveyOptions->oOptionLabels;
 
         $aData['optionsOnOff'] = array(
-            'Y' => gT('On','unescaped'),
-            'N' => gT('Off','unescaped'),
+            'Y' => gT('On', 'unescaped'),
+            'N' => gT('Off', 'unescaped'),
         );
 
         //Prepare the edition panes
@@ -326,7 +326,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $sTemplate = App()->request->getPost('theme');
 
-        foreach ($aSIDs as $iSurveyID){
+        foreach ($aSIDs as $iSurveyID) {
             $aResults = self::changetemplate($iSurveyID, $sTemplate, $aResults, true);
         }
 
@@ -345,7 +345,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $iSurveyGroupId = sanitize_int(App()->request->getPost('surveygroupid'));
 
-        foreach ($aSIDs as $iSurveyID){
+        foreach ($aSIDs as $iSurveyID) {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
@@ -356,14 +356,14 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Update the theme of a survey
-    *
-    * @access public
-    * @param int     $iSurveyID
-    * @param string  $template      the survey theme name
-    * @param array   $aResults      if the method is called from changeMultipleTheme(), it will update its array of results
-    * @param boolean $bReturn       should the method update and return aResults
-    * @return mixed                 null or array
+     * Update the theme of a survey
+     *
+     * @access public
+     * @param int     $iSurveyID
+     * @param string  $template      the survey theme name
+     * @param array   $aResults      if the method is called from changeMultipleTheme(), it will update its array of results
+     * @param boolean $bReturn       should the method update and return aResults
+     * @return mixed                 null or array
      */
     public function changetemplate($iSurveyID, $template, $aResults = null, $bReturn = false)
     {
@@ -376,11 +376,11 @@ class SurveyAdmin extends Survey_Common_Action
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
 
-            if (!empty($bReturn)){
+            if (!empty($bReturn)) {
                 $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = false;
                 return $aResults;
-            }else{
+            } else {
                 die('No permission');
             }
         }
@@ -396,7 +396,7 @@ class SurveyAdmin extends Survey_Common_Action
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
-        if (!empty($bReturn)){
+        if (!empty($bReturn)) {
             $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
             $aResults[$iSurveyID]['result'] = true;
             return $aResults;
@@ -1034,7 +1034,7 @@ class SurveyAdmin extends Survey_Common_Action
         // set values from database to survey attributes
 
         if (empty($survey)) {
-            throw new Exception('Found no survey with id ' . $iSurveyID);
+            throw new Exception('Found no survey with id '.$iSurveyID);
         }
 
         $survey->setOptionsFromDatabase();
@@ -1062,10 +1062,10 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_registerScriptFiles();
 
         // override survey settings if global settings exist
-        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !=='choose'?getGlobalSetting('showqnumcode'):$survey->showqnumcode;
-        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !=='choose'?getGlobalSetting('shownoanswer'):$survey->shownoanswer;
-        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !=='2'?getGlobalSetting('showgroupinfo'):$survey->showgroupinfo;
-        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose'?getGlobalSetting('showxquestions'):$survey->showxquestions;
+        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !== 'choose' ?getGlobalSetting('showqnumcode') : $survey->showqnumcode;
+        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !== 'choose' ?getGlobalSetting('shownoanswer') : $survey->shownoanswer;
+        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !== '2' ?getGlobalSetting('showgroupinfo') : $survey->showgroupinfo;
+        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !== 'choose' ?getGlobalSetting('showxquestions') : $survey->showxquestions;
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
@@ -1087,8 +1087,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['topBar']['showSaveButton'] = true;
 
         $aData['optionsOnOff'] = array(
-            'Y' => gT('On','unescaped'),
-            'N' => gT('Off','unescaped'),
+            'Y' => gT('On', 'unescaped'),
+            'N' => gT('Off', 'unescaped'),
         );
 
         $aViewUrls[] = $menuEntry->template;
@@ -1493,7 +1493,7 @@ class SurveyAdmin extends Survey_Common_Action
         $inheritOwner = empty($oSurvey->oOptions->ownerLabel) ? $oSurvey->owner_id : $oSurvey->oOptions->ownerLabel;
         $users = getUserList();
         $aData['users'] = array();
-        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
+        $aData['users']['-1'] = gT('Inherit').' ['.$inheritOwner.']';
         foreach ($users as $user) {
             $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
         }
@@ -1877,7 +1877,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             $iTokenLength = (int) Yii::app()->request->getPost('tokenlength');
             //token length has to be at least 5, otherwise set it to default (15)
-            if ($iTokenLength !== -1){
+            if ($iTokenLength !== -1) {
                 if ($iTokenLength < 5) {
                     $iTokenLength = 15;
                 }
@@ -1969,8 +1969,8 @@ class SurveyAdmin extends Survey_Common_Action
                 'surveyls_urldescription'      => Yii::app()->request->getPost('urldescrip', ''),
                 'surveyls_endtext'             => Yii::app()->request->getPost('endtext', ''),
                 'surveyls_url'                 => Yii::app()->request->getPost('url', ''),
-                'surveyls_dateformat'          => (int)Yii::app()->request->getPost('dateformat'),
-                'surveyls_numberformat'        => (int)Yii::app()->request->getPost('numberformat'),
+                'surveyls_dateformat'          => (int) Yii::app()->request->getPost('dateformat'),
+                'surveyls_numberformat'        => (int) Yii::app()->request->getPost('numberformat'),
                 'surveyls_policy_notice'       => App()->request->getPost('surveyls_policy_notice'),
                 'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
             );
@@ -1991,7 +1991,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $iNewQuestionID = $this->_createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
                 Yii::app()->setFlashMessage($warning.gT("Your new survey was created. We also created a first question group and an example question for you."), 'info');
-                $landOnSideMenuTab   = 'structure';
+                $landOnSideMenuTab = 'structure';
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
                 $redirecturl = $this->getController()->createUrl(
@@ -2024,7 +2024,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param integer $qid 
      * @return string
      */
-    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab) {
+    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab)
+    {
         $url = 'admin/questioneditor/sa/view/';
         $params = [
             'surveyid' => $sid, 
@@ -2040,7 +2041,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param integer $sid
      * @return JSON
      */
-    public function getCurrentEditorValues($sid){
+    public function getCurrentEditorValues($sid)
+    {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -2064,7 +2066,7 @@ class SurveyAdmin extends Survey_Common_Action
             ]
         ];
 
-        if($oSurvey == null ) {
+        if ($oSurvey == null) {
             $defaultLanguage = App()->getConfig('defaultlang');
             $aLanguageDetails = getLanguageDetails($defaultLanguage);
             $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
@@ -2089,7 +2091,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         foreach ($oSurvey->allLanguages as $sLanguage) {
-            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
             $aReturner["surveyTitle"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_title;
             $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
             $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
@@ -2117,13 +2119,16 @@ class SurveyAdmin extends Survey_Common_Action
      * @param [type] $sid
      * @return JSON
      */
-    public function getDateFormatOptions($sid){
+    public function getDateFormatOptions($sid)
+    {
         $iSurveyId = (int) $sid;
         $aRawDateFormats = getDateFormatData();
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
-            ['data' => array_map(function($aDateFormats) {return $aDateFormats['dateformat']; }, $aRawDateFormats)],
+            ['data' => array_map(function($aDateFormats)
+            {
+return $aDateFormats['dateformat']; }, $aRawDateFormats)],
             false,
             false
         );
@@ -2135,7 +2140,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param integer $sid
      * @return JSON
      */
-    public function saveTextData($sid){
+    public function saveTextData($sid)
+    {
         $iSurveyId = (int) $sid;
         $changes = Yii::app()->request->getPost('changes');
         $aSuccess = [];
@@ -2158,7 +2164,8 @@ class SurveyAdmin extends Survey_Common_Action
             unset($oSurveyLanguageSetting);
         }
 
-        $success = array_reduce($aSuccess, function ($carry, $subsuccess) {
+        $success = array_reduce($aSuccess, function ($carry, $subsuccess)
+        {
             return $carry = $carry && $subsuccess;
         }, true);
 
@@ -2180,7 +2187,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param integer $sid
      * @return JSON
      */
-    public function getDataSecTextSettings($sid=null) {
+    public function getDataSecTextSettings($sid=null)
+    {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -2191,7 +2199,7 @@ class SurveyAdmin extends Survey_Common_Action
             "datasecerror" => [],
         ];
 
-        if($oSurvey == null ) {
+        if ($oSurvey == null) {
 
             $defaultLanguage = App()->getConfig('defaultlang');
             $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
@@ -2206,7 +2214,7 @@ class SurveyAdmin extends Survey_Common_Action
                     "textdata" => $aReturner,
                     "languages" => $aLanguages,
                     "permissions" => [
-                        "update" => Permission::model()->hasGlobalPermission('surveys','create'),
+                        "update" => Permission::model()->hasGlobalPermission('surveys', 'create'),
                         "editorpreset" => Yii::app()->session['htmleditormode'],
                     ]
                 ]],
@@ -2216,7 +2224,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         foreach ($oSurvey->allLanguages as $sLanguage) {
-            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
             $aReturner["datasecmessage"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_notice;
             $aReturner["datasecerror"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_error;
             $aReturner["dataseclabel"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_notice_label;
@@ -2229,7 +2237,7 @@ class SurveyAdmin extends Survey_Common_Action
                 "textdata" => $aReturner,
                 "languages" => $aLanguages,
                 "permissions" => [
-                    "update" => Permission::model()->hasSurveyPermission($iSurveyId,'surveysecurity','update'),
+                    "update" => Permission::model()->hasSurveyPermission($iSurveyId, 'surveysecurity', 'update'),
                     "editorpreset" => Yii::app()->session['htmleditormode'],
                 ]
             ]],
@@ -2244,7 +2252,8 @@ class SurveyAdmin extends Survey_Common_Action
      * @param integer $sid
      * @return JSON
      */
-    public function saveDataSecTextData($sid){
+    public function saveDataSecTextData($sid)
+    {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $changes = Yii::app()->request->getPost('changes', []);
@@ -2252,9 +2261,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
         $aSuccess[] = $oSurvey->save();
-        foreach ($oSurvey->allLanguages as $sLanguage ) {
+        foreach ($oSurvey->allLanguages as $sLanguage) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(["surveyls_survey_id" => $iSurveyId, "surveyls_language" => $sLanguage]);
-            if($oSurveyLanguageSetting == null) {
+            if ($oSurveyLanguageSetting == null) {
                 $oSurveyLanguageSetting = new SurveyLanguageSetting();
                 $oSurveyLanguageSetting->surveyls_title = "";
                 $oSurveyLanguageSetting->surveyls_survey_id = $iSurveyId;
@@ -2268,7 +2277,8 @@ class SurveyAdmin extends Survey_Common_Action
             unset($oSurveyLanguageSetting);
         }
 
-        $success = array_reduce($aSuccess, function ($carry, $subsuccess) {
+        $success = array_reduce($aSuccess, function ($carry, $subsuccess)
+        {
             return $carry = $carry && $subsuccess;
         }, true);
 
@@ -2359,9 +2369,9 @@ class SurveyAdmin extends Survey_Common_Action
             $sTemplateName = $oSurvey->template;
             $aThemeOptions = json_decode(App()->request->getPost('themeoptions', ''));
 
-            if (!empty($aThemeOptions)){
+            if (!empty($aThemeOptions)) {
                 $oSurveyConfig = TemplateConfiguration::getInstance($sTemplateName, null, $iSurveyID);
-                if ($oSurveyConfig->options === 'inherit'){
+                if ($oSurveyConfig->options === 'inherit') {
                     $oSurveyConfig->setOptionKeysToInherit();
                 }
 
@@ -2384,7 +2394,7 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
-        if(!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array('data' => ['success' => $success, 'message' => gT("You don't have sufficient permissions to upload images in this survey"), 'debug' => $debug]),
@@ -2393,7 +2403,7 @@ class SurveyAdmin extends Survey_Common_Action
             );
         }
         $debug[] = $_FILES;
-        if(empty($_FILES)) {
+        if (empty($_FILES)) {
             $uploadresult = gT("No file was uploaded.");
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
@@ -2460,7 +2470,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     }
 
-    public function getTokenTopBar($sid, $onlyclose = false) {
+    public function getTokenTopBar($sid, $onlyclose = false)
+    {
         $oSurvey   = Survey::model()->findByPk($sid);
 
         return Yii::app()->getController()->renderPartial(
@@ -2472,7 +2483,7 @@ class SurveyAdmin extends Survey_Common_Action
             ),
             false,
             false
-      );
+        );
     }
 
     /**
@@ -2509,7 +2520,7 @@ class SurveyAdmin extends Survey_Common_Action
             $context = gT("Preview survey");
             $contextbutton = 'preview_survey';
         } else {
-            $context =  gT("Execute survey");
+            $context = gT("Execute survey");
             $contextbutton = 'execute_survey';
         }
 

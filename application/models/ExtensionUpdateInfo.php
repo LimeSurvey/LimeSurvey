@@ -44,7 +44,7 @@ class ExtensionUpdateInfo
     public function __construct($type, $versions, $security = false)
     {
         $this->extensionType    = $type;
-        $this->versions          = $versions;
+        $this->versions = $versions;
         $this->isSecurityUpdate = $security;
     }
 

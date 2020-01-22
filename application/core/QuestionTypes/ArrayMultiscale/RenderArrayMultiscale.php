@@ -96,15 +96,15 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
     {
         // Find if we have rigth and center text
         /* All of this part seem broken actually : we don't send it to view and don't explode it */
-        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%'";
+        $sQuery = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%'";
         $rigthCount  = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
         $rightexists = ($rigthCount > 0);
         
-        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%|%'";
+        $sQuery = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%|%'";
         $centerCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
-        $centerexists  = ($centerCount > 0);
+        $centerexists = ($centerCount > 0);
         /* Then always set to false : see bug https://bugs.limesurvey.org/view.php?id=11750 */
         //~ $rightexists=false;
         //~ $centerexists=false;
@@ -139,7 +139,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             if ($defaultWidth) {
                 $columnswidth -= $this->answerwidth;
             } else {
-                $this->answerwidth  = $this->answerwidth / 2;
+                $this->answerwidth = $this->answerwidth / 2;
             }
         } else {
             $extraanswerwidth = $separatorwidth;
@@ -417,14 +417,14 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->sCoreClass  = "ls-answers subquestion-list questions-list";
 
         $aLastMoveResult   = LimeExpressionManager::GetLastMoveResult();
-        $this->aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && ($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S'))
+        $this->aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S'))
                                         ? explode("|", $aLastMoveResult['unansweredSQs'])
                                         : [];
 
         if ($this->useDropdownLayout === false) {
             $answer = $this->renderNoDropdown();
         } else {
-            $answer =  $this->renderDropdown();
+            $answer = $this->renderDropdown();
         }
 
         $this->registerAssets();

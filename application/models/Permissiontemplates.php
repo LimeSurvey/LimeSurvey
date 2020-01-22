@@ -13,41 +13,41 @@
  */
 class Permissiontemplates extends CActiveRecord
 {
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{permissiontemplates}}';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{permissiontemplates}}';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('name, description, renewed_last, created_at, created_by', 'required'),
-			array('created_by', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>192),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('ptid, name, description, renewed_last, created_at, created_by', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('name, description, renewed_last, created_at, created_by', 'required'),
+            array('created_by', 'numerical', 'integerOnly'=>true),
+            array('name', 'length', 'max'=>192),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('ptid, name, description, renewed_last, created_at, created_by', 'safe', 'on'=>'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
             'connectedusers' => array(self::HAS_MANY, 'UserInPermissionrole', ['ptid']),
-		);
+        );
     }
     
     /**
@@ -55,19 +55,21 @@ class Permissiontemplates extends CActiveRecord
      *
      * @return array filled with usermodels
      */
-    public function getConnectedUserobjects() 
+    public function getConnectedUserobjects()
     {
         return array_map(
-            function ($oMappingInstance) {
+            function ($oMappingInstance)
+            {
                 return User::model()->findByPk($oMappingInstance->uid);
             }, 
             $this->connectedusers
         );
     }
 
-    public function applyToUser($iUserId, $ptid = null) {
+    public function applyToUser($iUserId, $ptid = null)
+    {
 
-        if($ptid == null) {
+        if ($ptid == null) {
             $ptid = $this->ptid;
         }
 
@@ -82,7 +84,8 @@ class Permissiontemplates extends CActiveRecord
         return $oModel->save();
     }
 
-    public function clearUser($iUserId) {
+    public function clearUser($iUserId)
+    {
         $aModels = UserInPermissionrole::model()->findAllByAttributes(['uid' => $iUserId]);
 
         if (safecount($aModels) == 0) {
@@ -91,7 +94,8 @@ class Permissiontemplates extends CActiveRecord
 
         return array_reduce(
             $aModels, 
-            function ($cur,  $oModel) { 
+            function ($cur,  $oModel)
+            {
                 return $cur && $oModel->delete(); 
             },
             true
@@ -165,7 +169,7 @@ class Permissiontemplates extends CActiveRecord
                     <i class='fa fa-trash text-danger'></i>
               </button>";
 
-        return join("\n",[
+        return join("\n", [
             $roleDetail, 
             $editPermissionButton, 
             $editRoleButton, 
@@ -220,7 +224,8 @@ class Permissiontemplates extends CActiveRecord
         return $cols;
     }
 
-    public function compileExportXML () {
+    public function compileExportXML ()
+    {
         $xml = new SimpleXMLElement('<limepermissionrole/>');
 
         //Meta section
@@ -237,7 +242,7 @@ class Permissiontemplates extends CActiveRecord
 
         //Permission section
         $permission = $xml->addChild('permissions');
-        foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions) {
+        foreach ($aBasePermissions as $sPermissionKey=>$aCRUDPermissions) {
             $curKeyRow = $permission->addChild($sPermissionKey);
             foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue) {
                 $curKeyRow->addChild(
@@ -250,7 +255,8 @@ class Permissiontemplates extends CActiveRecord
         return $xml;
     }
 
-    public function createFromXML ($xmlEntitiy, $includeRootData = false) {
+    public function createFromXML ($xmlEntitiy, $includeRootData = false)
+    {
         $name = $this->removeCdataFormat($xmlEntitiy->meta->name);
         $iExisiting = self::model()->countByAttributes(['name' => $name]);
         if ($iExisiting > 0) {
@@ -279,7 +285,7 @@ class Permissiontemplates extends CActiveRecord
     public function removeCdataFormat($node)
     {
         $nodeText = (string) $node;
-        $regex_replace = array('','');
+        $regex_replace = array('', '');
         $regex_patterns = array(
             '/<!\[CDATA\[/',
             '/\]\]>/'
@@ -287,7 +293,8 @@ class Permissiontemplates extends CActiveRecord
        return trim(preg_replace($regex_patterns, $regex_replace, $nodeText));
     }
 
-    public function getHasPermission($sPermission, $sCRUD) {
+    public function getHasPermission($sPermission, $sCRUD)
+    {
         return Permission::model()->hasRolePermission($this->ptid, $sPermission, $sCRUD);
     }
 
@@ -322,14 +329,14 @@ class Permissiontemplates extends CActiveRecord
         ));
     }
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return Permissiontemplates the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Permissiontemplates the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
 }

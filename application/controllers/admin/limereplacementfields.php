@@ -30,7 +30,7 @@ class limereplacementfields extends Survey_Common_Action
         }
 
         if ($newType) {
-            $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid );
+            $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid);
             return;
         }
 
@@ -182,16 +182,16 @@ class limereplacementfields extends Survey_Common_Action
             $question = $row['question'];
 
             if (isset($row['subquestion'])) {
-                $question = "[{$row['subquestion']}] " . $question;
+                $question = "[{$row['subquestion']}] ".$question;
             }
             if (isset($row['subquestion1'])) {
-                $question = "[{$row['subquestion1']}] " . $question;
+                $question = "[{$row['subquestion1']}] ".$question;
             }
             if (isset($row['subquestion2'])) {
-                $question = "[{$row['subquestion2']}] " . $question;
+                $question = "[{$row['subquestion2']}] ".$question;
             }
 
-            $shortquestion = $row['title'] . ": " . flattenText($question);
+            $shortquestion = $row['title'].": ".flattenText($question);
             $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage']);
         }
         return $cquestions;
@@ -232,7 +232,8 @@ class limereplacementfields extends Survey_Common_Action
             || strpos($fieldtype, 'editdescription') !== false// for translation
             || strpos($fieldtype, 'editwelcome') !== false// for translation
             || strpos($fieldtype, 'editend') !== false
-        ) { // for translation
+        ) {
+// for translation
 
             $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
             $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
@@ -240,7 +241,7 @@ class limereplacementfields extends Survey_Common_Action
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields['TOKEN:' . strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['EXPIRY'] = gT("Survey expiration date");
@@ -370,7 +371,7 @@ class limereplacementfields extends Survey_Common_Action
             || strpos($fieldtype, 'editgroup_desc') !== false           // for translation
             || strpos($fieldtype, 'editquestion') !== false             // for translation
             || strpos($fieldtype, 'editquestion_help') !== false        // for translation
-        ) { 
+        ) {
             $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
             $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
             $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
@@ -381,7 +382,7 @@ class limereplacementfields extends Survey_Common_Action
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields['TOKEN:' . strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['EXPIRY'] = gT("Survey expiration date");
@@ -398,7 +399,7 @@ class limereplacementfields extends Survey_Common_Action
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
-                $replFields['TOKEN:' . strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
+                $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
             $replFields['EXPIRY'] = gT("Survey expiration date");
@@ -434,7 +435,8 @@ class limereplacementfields extends Survey_Common_Action
         return;
     }
 
-    private function collectQuestionReplacements($surveyid, $gid = null, $qid = null) {
+    private function collectQuestionReplacements($surveyid, $gid = null, $qid = null)
+    {
         $oSurvey = Survey::model()->findByPk($surveyid);
         $oCurrentQuestion = Question::model()->findByPk($qid);
         $aResult = [];
@@ -463,7 +465,7 @@ class limereplacementfields extends Survey_Common_Action
         
         uasort( 
             $aQuestions, 
-            function ($a,$b) {
+            function($a, $b) {
             if ($a->gid != $b->gid) {
                 return $a->group->group_order < $b->group->group_order ? -1 : 1;
             }
@@ -478,7 +480,7 @@ class limereplacementfields extends Survey_Common_Action
             if (safecount($oQuestion->subquestions) != 0) {
                 $aSubquestions = $oQuestion->subquestions;
                 
-                uasort($aSubquestions, function ($a,$b) { return $a->question_order < $b->question_order ? -1 : 1; });
+                uasort($aSubquestions, function($a, $b) { return $a->question_order < $b->question_order ? -1 : 1; });
 
                 foreach ($aSubquestions as $oSubQuestion) {
                     $aResult[$oQuestion->title.'_'.$oSubQuestion->title] = [

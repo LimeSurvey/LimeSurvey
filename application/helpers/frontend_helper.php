@@ -234,7 +234,8 @@ function getLanguageChangerDatasPublicList($sSelectedLanguage)
  *
  * @return string
  */
-function makeFlashMessage() {
+function makeFlashMessage()
+{
     global $surveyid;
     $html = "";
 
@@ -252,7 +253,7 @@ function makeFlashMessage() {
     );
 
     foreach (Yii::app()->user->getFlashes() as $key => $message) {
-        $html .= "<div class='alert alert-" . $mapYiiToBootstrapClass[$key] . " alert-dismissible flash-" . $key . "'>" . $message . "</div>\n";
+        $html .= "<div class='alert alert-".$mapYiiToBootstrapClass[$key]." alert-dismissible flash-".$key."'>".$message."</div>\n";
     }
 
     Yii::app()->user->setStateKeyPrefix($originalPrefix);
@@ -426,11 +427,11 @@ function submittokens($quotaexit = false)
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
-                templatereplace("{SID}",$thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
                 $mail = new \LimeMailer;
                 $mail->setSurvey($surveyid);
                 $mail->setToken($token->token);
-                $mail->setTypeWithRaw('confirm',Yii::app()->getLanguage());
+                $mail->setTypeWithRaw('confirm', Yii::app()->getLanguage());
                 $mail->replaceTokenAttributes = true;
                 $mail->addUrlsPlaceholders(array('SURVEY'));
                 $mail->sendMessage();
@@ -461,13 +462,13 @@ function sendSubmitNotifications($surveyid)
     $aReplacementVars['VIEWRESPONSEURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
     $aReplacementVars['EDITRESPONSEURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
     $aReplacementVars['STATISTICSURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
-    $mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
+    $mailer->aUrlsPlaceholders = ['VIEWRESPONSE', 'EDITRESPONSE', 'STATISTICS'];
     $aReplacementVars['ANSWERTABLE'] = '';
     $aEmailResponseTo = array();
     $aEmailNotificationTo = array();
 
     if (!empty($thissurvey['emailnotificationto'])) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' =>$thissurvey['adminemail']),3, true));
+        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' =>$thissurvey['adminemail']), 3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
@@ -476,7 +477,7 @@ function sendSubmitNotifications($surveyid)
         }
     }
     if (!empty($thissurvey['emailresponseto'])) {
-        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' =>$thissurvey['adminemail']),3, true));
+        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' =>$thissurvey['adminemail']), 3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
@@ -484,8 +485,8 @@ function sendSubmitNotifications($surveyid)
             }
         }
     }
-    if(count($aEmailNotificationTo) || count($aEmailResponseTo)) {
-        templatereplace("{SID}",$thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+    if (count($aEmailNotificationTo) || count($aEmailResponseTo)) {
+        templatereplace("{SID}", $thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
     }
     if (count($aEmailResponseTo)) {
         // there was no token used so lets remove the token field from insertarray
@@ -524,9 +525,9 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailNotificationTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
-                if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
+                if ($debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Basic admin notification could not be sent with error: %s"),$mailer->getError()));
+                    echo CHtml::tag("div", array('class'=>'alert alert-danger'), sprintf(gT("Basic admin notification could not be sent with error: %s"), $mailer->getError()));
                 }
             }
         }
@@ -538,9 +539,9 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailResponseTo as $sRecipient) {
             $mailer->setTo($sRecipient);
             if (!$mailer->SendMessage()) {
-                if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
+                if ($debug > 0 && Permission::model()->hasSurveyPermission($surveyid, 'surveysettings', 'update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Detailed admin notification could not be sent with error: %s"),$mailer->getError()));
+                    echo CHtml::tag("div", array('class'=>'alert alert-danger'), sprintf(gT("Detailed admin notification could not be sent with error: %s"), $mailer->getError()));
                 }
             }
         }
@@ -593,7 +594,7 @@ function submitfailed($errormsg = '', $query = null)
         }
         if(!empty($errormsg)) {
             $email .= gT("ERROR MESSAGE", "unescaped").":\n"
-               . $errormsg."\n\n";
+                . $errormsg."\n\n";
         }
 
         $mailer = new \LimeMailer;
@@ -642,21 +643,21 @@ function buildsurveysession($surveyid, $preview = false)
     // We keep it here only for Travis Tested thar are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
     $lang       = $_SESSION['survey_'.$surveyid]['s_lang'];
-    if (empty($lang)){
+    if (empty($lang)) {
 
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
-           if (returnGlobal('lang', true)) {
-               $language_to_set = returnGlobal('lang', true);
-           } elseif (isset($oTokenEntry) && $oTokenEntry) {
-               // If survey have token : we have a $oTokenEntry
-               // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
-               $language_to_set = $oTokenEntry->language;
-           } else {
-               $language_to_set = $thissurvey['language'];
-           }
+            if (returnGlobal('lang', true)) {
+                $language_to_set = returnGlobal('lang', true);
+            } elseif (isset($oTokenEntry) && $oTokenEntry) {
+                // If survey have token : we have a $oTokenEntry
+                // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
+                $language_to_set = $oTokenEntry->language;
+            } else {
+                $language_to_set = $thissurvey['language'];
+            }
             // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
-           SetSurveyLanguage($surveyid, $language_to_set);
+            SetSurveyLanguage($surveyid, $language_to_set);
     }
 
 
@@ -766,19 +767,19 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
     }
-    if (Yii::app()->getRequest()->getRequestType()=='GET') {
-        $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
-        if(!empty($getValues)) {
+    if (Yii::app()->getRequest()->getRequestType() == 'GET') {
+        $getValues = array_diff_key($_GET, array_combine($reservedGetValues, $reservedGetValues));
+        if (!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
             foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details) {
-                $qcode2sgqa[viewHelper::getFieldCode($details,array('LEMcompat'=>true))] = $sgqa;
+                $qcode2sgqa[viewHelper::getFieldCode($details, array('LEMcompat'=>true))] = $sgqa;
             }
             foreach ($getValues as $k=>$v) {
                 if (isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k])) {
                     // sXgXqa prefilling
                     $startingValues[$k] = $v;
-                } elseif( array_key_exists($k,$qcode2sgqa) ) {
+                } elseif (array_key_exists($k, $qcode2sgqa)) {
                     // EM code prefilling
                     $startingValues[$qcode2sgqa[$k]] = $v;
                 }
@@ -888,7 +889,7 @@ function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap 
     list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
 
     $randomized = $randomized1 || $randomized2; ;
-    $_SESSION['survey_' . $surveyid]['randomized'] = $randomized;
+    $_SESSION['survey_'.$surveyid]['randomized'] = $randomized;
 
     if ($randomized === true) {
         $fieldmap = finalizeRandomization($fieldmap);
@@ -1174,7 +1175,7 @@ function getRenderWay($renderToken, $renderCaptcha)
  * @param int $surveyid
  * @return void
  */
-function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid, $aSurveyInfo=null)
+function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid, $aSurveyInfo = null)
 {
     switch ($renderWay) {
         case "main": //Token required, maybe Captcha required
@@ -1188,8 +1189,8 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
                 Yii::app()->getController()->createAction('captcha');
             }
             $oSurvey = Survey::model()->findByPk($surveyid);
-            if(empty($aSurveyInfo)) {
-                $aSurveyInfo  =  getsurveyinfo($surveyid,App()->getLanguage());
+            if (empty($aSurveyInfo)) {
+                $aSurveyInfo = getsurveyinfo($surveyid, App()->getLanguage());
             }
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
@@ -1200,7 +1201,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
             
             // Language selector
-            if ($aSurveyInfo['alanguageChanger']['show']){
+            if ($aSurveyInfo['alanguageChanger']['show']) {
                 $aSurveyInfo['alanguageChanger']['datas']['targetUrl'] = $thissurvey['surveyUrl'];
             }
             $thissurvey['alanguageChanger'] = $aSurveyInfo['alanguageChanger'];
@@ -1471,7 +1472,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
                         'params' => array(":qid" => $field['qid'], ":code" => $_SESSION['survey_'.$surveyid][$field['fieldname']])
                     ));
                     if ($oAssessementAnswer) {
-                        $assessmentValue    = $oAssessementAnswer->assessment_value;
+                        $assessmentValue = $oAssessementAnswer->assessment_value;
                     }
                 }
                 $fieldmap[$field['fieldname']]['assessment_value'] = $assessmentValue;
@@ -1514,7 +1515,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
         }
     }
     $assessment['total_score'] = $total;
-    if($onlyCurrent) {
+    if ($onlyCurrent) {
         return array(
             'show'=> false,
             'datas' => $assessment,
@@ -1540,13 +1541,13 @@ function doAssessment($surveyid, $onlyCurrent = true)
     $aoAssessements = Assessment::model()->findAll(array(
         'condition' => "sid = :sid and language = :language",
         'order' => 'scope,id', // No real order in assessment, here : group first (why ?) and by creation
-        'params' => array(':sid' => $surveyid,':language' => $currentLanguage)
+        'params' => array(':sid' => $surveyid, ':language' => $currentLanguage)
     ));
-    if(!empty($aoAssessements)) {
+    if (!empty($aoAssessements)) {
         foreach ($aoAssessements as $oAssessement) {
             if ($oAssessement->scope == "G") {
                 /* send only current valid assessments */
-                if($oAssessement->minimum <= $subtotal[$oAssessement->gid] && $subtotal[$oAssessement->gid] <= $oAssessement->maximum) {
+                if ($oAssessement->minimum <= $subtotal[$oAssessement->gid] && $subtotal[$oAssessement->gid] <= $oAssessement->maximum) {
                     $assessment['group'][$oAssessement->gid][] = array(
                         "name"    => $oAssessement->name,
                         "min"     => $oAssessement->minimum,
@@ -1556,7 +1557,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
                 }
             } else {
                 /* send only current valid assessments */
-                if($oAssessement->minimum <= $total && $total <= $oAssessement->maximum) {
+                if ($oAssessement->minimum <= $total && $total <= $oAssessement->maximum) {
                     $assessment['total']['show'] = true;
                     $assessment['total'][] = array(
                         "name"    => $oAssessement->name,
@@ -1809,7 +1810,7 @@ function checkCompletedQuota($surveyid, $return = false)
                                               <input type="hidden" name="thisstep" value="'.(isset($_SESSION['survey_'.$surveyid]['step']) ? $_SESSION['survey_'.$surveyid]['step'] : 0).'" />';
 
 
-    if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])){
+    if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
         foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
             $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
         }

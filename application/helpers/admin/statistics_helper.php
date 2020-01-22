@@ -66,7 +66,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->loadColorPalette($adminThemePath.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -82,7 +82,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->loadColorPalette($adminThemePath.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -172,7 +172,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($adminThemePath.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -256,7 +256,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
                 $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($adminThemePath.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 
@@ -633,7 +633,7 @@ class statistics_helper
             //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
-            if (array_key_exists($fld, $fieldmap)){
+            if (array_key_exists($fld, $fieldmap)) {
                 $fielddata = $fieldmap[$fld];
 
                 //get question data
@@ -650,7 +650,7 @@ class statistics_helper
                 // This question type then can provide a % of the question answered in the summary.
                 $alist[] = array("Answer", gT("Answer"), $mfield);
                 $alist[] = array("NoAnswer", gT("No answer"), $mfield);
-                if ($qtype == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT){
+                if ($qtype == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
                     $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
                 }
             }
@@ -853,7 +853,7 @@ class statistics_helper
 
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
-                $qquestion = LimeExpressionManager::ProcessString($fielddata['question'], $qqid, NULL, 1, 1, false, true, true);
+                $qquestion = LimeExpressionManager::ProcessString($fielddata['question'], $qqid, null, 1, 1, false, true, true);
 
                 //Get answer texts for multiple numerical
                 if (substr($rt, 0, 1) == "K") {
@@ -1437,7 +1437,7 @@ class statistics_helper
             $alist[] = array("", gT("No answer"), false, 'is_no_answer');
         }
 
-        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>(int)$qqid);
+        return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>(int) $qqid);
     }
 
     /**
@@ -1465,7 +1465,7 @@ class statistics_helper
         }
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
-        foreach($oResponses as $key => $oResponse){
+        foreach ($oResponses as $key => $oResponse) {
             $oResponses[$key] = $oResponse->decrypt();
         }
 
@@ -1479,18 +1479,18 @@ class statistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
                             $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
-                            if ($column =='-oth-' && !empty($oResponse->$sResponseColumn)){
+                            if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
                             }
                         }
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != ''){
+                            if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
                         }
@@ -1510,40 +1510,40 @@ class statistics_helper
 
                     //free text answers
                     if ($al[0] == "Answer") {
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != ''){
+                            if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
                         }
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn == ''){
+                            if ($oResponse->$sResponseColumn == '') {
                                 $row += 1;
                             }
                         }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
-                        if ($oResponse->$sResponseColumn != ''){
+                        if ($oResponse->$sResponseColumn != '') {
                             $row += 1;
                         }
                     }
                 // all other question types
                 } else {
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
                         if (substr($rt, 0, 1) == "R") {
                             $sSubquestionCode = $al[0];
-                            if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                            if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                                 $row += 1;
                             }
                         } else {
-                            if ($oResponse->$sResponseColumn == 'Y'){
+                            if ($oResponse->$sResponseColumn == 'Y') {
                                 $row += 1;
                             }
                         }
@@ -1555,10 +1555,10 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
                         $sSubquestionCode = $al[0];
-                        if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                        if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                             $row += 1;
                         }
                     }
@@ -1571,9 +1571,9 @@ class statistics_helper
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' '){
+                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' ') {
                             $row += 1;
                         }
                     }
@@ -2244,7 +2244,7 @@ class statistics_helper
         }
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
-        foreach($oResponses as $key => $oResponse){
+        foreach ($oResponses as $key => $oResponse) {
             $oResponses[$key] = $oResponse->decrypt();
         }
 
@@ -2259,18 +2259,18 @@ class statistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
                             $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
-                            if ($column =='-oth-' && !empty($oResponse->$sResponseColumn)){
+                            if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
                             }
                         }
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != ''){
+                            if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
                         }
@@ -2290,40 +2290,40 @@ class statistics_helper
 
                     //free text answers
                     if ($al[0] == "Answer") {
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != ''){
+                            if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
                         }
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn == ''){
+                            if ($oResponse->$sResponseColumn == '') {
                                 $row += 1;
                             }
                         }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
-                        if ($oResponse->$sResponseColumn != ''){
+                        if ($oResponse->$sResponseColumn != '') {
                             $row += 1;
                         }
                     }
                 // all other question types
                 } else {
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
                         if (substr($rt, 0, 1) == "R") {
                             $sSubquestionCode = $al[0];
-                            if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                            if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                                 $row += 1;
                             }
                         } else {
-                            if ($oResponse->$sResponseColumn == 'Y'){
+                            if ($oResponse->$sResponseColumn == 'Y') {
                                 $row += 1;
                             }
                         }
@@ -2334,10 +2334,10 @@ class statistics_helper
             else {
                 if ($al[0] != "") {
                     //get more data
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
                         $sSubquestionCode = $al[0];
-                        if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                        if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                             $row += 1;
                         }
                     }
@@ -2350,9 +2350,9 @@ class statistics_helper
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' '){
+                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' ') {
                             $row += 1;
                         }
                     }
@@ -2624,7 +2624,7 @@ class statistics_helper
                     break;
 
                 case 'both':
-                    $aGraphLabels[] = $sFlatLabel = empty($al[0]) ? $flatLabel : $al[0] . ': ' . $flatLabel;
+                    $aGraphLabels[] = $sFlatLabel = empty($al[0]) ? $flatLabel : $al[0].': '.$flatLabel;
                 break;
 
                 default:
@@ -3120,7 +3120,7 @@ class statistics_helper
 
         $aData['showaggregateddata'] = false;
 
-        $aData['sumallitems']             = array_sum($grawdata);
+        $aData['sumallitems'] = array_sum($grawdata);
         $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_gross_total', $aData, true);
 
         //only show additional values when this setting is enabled
@@ -3279,15 +3279,15 @@ class statistics_helper
 
             // NOTE: in ls3, not so many tests were needed. We suscpect that a bug has been introduced (like no "show graph" attribute for certains question type, also, why now sometime $outputs['parentqid']=0 at this point? )
             //       so if debug mode is on, we'll show a warning, so dev will not strugle to find a deeper bug.
-            if (YII_DEBUG){
-                if (!$aattr){
-                    Yii::app()->setFlashMessage('Warning: could not get question attributes for '. $qqid . ' parent qid: ' . $outputs['parentqid'], 'error');
-                }elseif (!array_key_exists("statistics_showgraph", $aattr)){
-                    Yii::app()->setFlashMessage('Warning: question '. $qqid .' has not attribute "statistics_showgraph" ', 'error');
+            if (YII_DEBUG) {
+                if (!$aattr) {
+                    Yii::app()->setFlashMessage('Warning: could not get question attributes for '.$qqid.' parent qid: '.$outputs['parentqid'], 'error');
+                }elseif (!array_key_exists("statistics_showgraph", $aattr)) {
+                    Yii::app()->setFlashMessage('Warning: question '.$qqid.' has not attribute "statistics_showgraph" ', 'error');
                 }
             }
 
-            $bShowGraph = ( $aattr && array_key_exists("statistics_showgraph", $aattr) && $aattr["statistics_showgraph"] == "1");
+            $bShowGraph = ($aattr && array_key_exists("statistics_showgraph", $aattr) && $aattr["statistics_showgraph"] == "1");
 
             $bAllowPieChart = ($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE && $outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
@@ -3324,14 +3324,14 @@ class statistics_helper
                                 break;
                             case 'both':
                                 if ($al[0] == "") {
-                                    $graphLbl[] =  gT("No answer") . ': ' . $al[1];
+                                    $graphLbl[] = gT("No answer").': '.$al[1];
                                 } else {
-                                    $graphLbl[] = $al[0] . ': ' . $al[1];
+                                    $graphLbl[] = $al[0].': '.$al[1];
                                 }
                                 break;
                             default:
                                 if ($al[0] == "") {
-                                    $graphLbl[] =  gT("No answer");
+                                    $graphLbl[] = gT("No answer");
                                 } else {
                                     $graphLbl[] = $al[0];
                                 }
@@ -3448,7 +3448,7 @@ class statistics_helper
                 $iMaxLabelLength = 0;
 
                 // add "Not completed or Not displayed" label if missing
-                if (isset($_POST['noncompleted']) && $_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)){
+                if (isset($_POST['noncompleted']) && $_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)) {
                     $aGraphLabels[] = gT("Not completed or Not displayed");
                 }
 
@@ -3648,20 +3648,19 @@ class statistics_helper
                 $myField = $surveyid."X".$field['gid']."X".$field['qid'];
 
                 // Multiple choice get special treatment
-                if ($field['type'] == Question::QT_M_MULTIPLE_CHOICE)               { $myField = "M".$myField; }
+                if ($field['type'] == Question::QT_M_MULTIPLE_CHOICE) { $myField = "M".$myField; }
                 if ($field['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) { $myField = "P".$myField; }
                 //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-                if ($field['type'] == Question::QT_N_NUMERICAL)                     { $myField = "N".$myField; }
-                if ($field['type'] == Question::QT_VERTICAL_FILE_UPLOAD)            { $myField = "|".$myField; }
-                if ($field['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT)           { $myField = "Q".$myField; }
+                if ($field['type'] == Question::QT_N_NUMERICAL) { $myField = "N".$myField; }
+                if ($field['type'] == Question::QT_VERTICAL_FILE_UPLOAD) { $myField = "|".$myField; }
+                if ($field['type'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) { $myField = "Q".$myField; }
                 // textfields get special treatment
                 if ($field['type'] == Question::QT_S_SHORT_FREE_TEXT || $field['type'] == Question::QT_T_LONG_FREE_TEXT || $field['type'] == Question::QT_U_HUGE_FREE_TEXT)
                                                                                     { $myField = "T".$myField; }
                 //statistics for Date questions are not implemented yet.
-                if ($field['type'] == Question::QT_D_DATE)                          { $myField = "D".$myField; }
+                if ($field['type'] == Question::QT_D_DATE) { $myField = "D".$myField; }
 
-                if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN")
-                {
+                if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN") {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='".$field['qid']."' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
                     $result = Yii::app()->db->createCommand($query)->query();
@@ -3677,7 +3676,7 @@ class statistics_helper
                 if ($q2show == 'all') {
                         $summary[] = $myField;
                 }
-          }                  //$allfields[]=$myField;
+            }                  //$allfields[]=$myField;
         } else {
                     // This gets all the 'to be shown questions' from the POST and puts these into an array
                     if (!is_array($q2show)) {

@@ -2,4 +2,6 @@
 
 
 
-class DataSetNumerical extends QuestionBaseDataSet {}
+class DataSetNumerical extends QuestionBaseDataSet
+{
+}

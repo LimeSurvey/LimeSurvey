@@ -109,10 +109,10 @@ class Assessment extends LSActiveRecord
             'trash text-danger',
             gT("Delete")
         );
-        if (Permission::model()->hasSurveyPermission($this->sid,'assessments', 'delete')) {
+        if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'delete')) {
             $buttons .= vsprintf($raw_button_template, $deleteData);
         }
-        if (Permission::model()->hasSurveyPermission($this->sid,'assessments', 'update')) {
+        if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'update')) {
             $buttons .= vsprintf($raw_button_template, $editData);
         }
         $buttons .= '</div>';

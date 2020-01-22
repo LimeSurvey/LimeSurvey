@@ -102,13 +102,14 @@ class Surveymenu extends LSActiveRecord
     }
 
     public function getMenuesForGlobalSettings()
-    { 
+    {
         $oSettingsMenu = Surveymenu::model()->findByPk(1);
         $aResultCollected = $this->createSurveymenuArray([$oSettingsMenu], false);
         $resultMenu = $aResultCollected[1];
         $resultMenu['entries'] = array_filter(
             $resultMenu['entries'], 
-            function ($entry) {
+            function ($entry)
+            {
                 //@TODO add a database hook to make this more abstract
                 return in_array($entry['name'],  ['generalsettings','presentation','tokens','notification','publication']);
             }
@@ -124,7 +125,7 @@ class Surveymenu extends LSActiveRecord
         $entryData['menu_description']  = gT($entryData['menu_description']);
     }
 
-    public function createSurveymenuArray($oSurveyMenuObjects, $collapsed=false, $oSurvey=null)
+    public function createSurveymenuArray($oSurveyMenuObjects, $collapsed = false, $oSurvey = null)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
@@ -141,8 +142,8 @@ class Surveymenu extends LSActiveRecord
                 }
 
                 //Skip menuentry if no permission
-                 if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])){
-                     $inArray = array_search($aEntry['permission'],array_keys(Permission::getGlobalBasePermissions()));
+                    if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])){
+                        $inArray = array_search($aEntry['permission'],array_keys(Permission::getGlobalBasePermissions()));
                     if($inArray) {
                         $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
                     } else if($oSurvey !== null){
@@ -196,7 +197,7 @@ class Surveymenu extends LSActiveRecord
         return $aResultCollected;
     }
 
-    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed=false)
+    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed = false)
     {
         $criteria = new CDbCriteria;
         $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
@@ -219,11 +220,11 @@ class Surveymenu extends LSActiveRecord
         return $aResultCollected;
     }
 
-    public function getDefaultSurveyMenus($position = '', $oSurvey=null)
+    public function getDefaultSurveyMenus($position = '', $oSurvey = null)
     {
         $criteria = new CDbCriteria;
         $criteria->condition = 'survey_id IS NULL AND (parent_id IS NULL OR parent_id=0)';
-        $collapsed = $position==='collapsed';
+        $collapsed = $position === 'collapsed';
 
         if ($position != '' && !$collapsed) {
             $criteria->condition .= ' AND position=:position';

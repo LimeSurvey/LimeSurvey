@@ -177,16 +177,16 @@ class SettingsUser extends LSActiveRecord
      * @param integer|null $entity_id | optional defaults to 'null'
      * @return mixed|null  The current settings value or null id there is no setting
      */
-    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null, $default=null)
+    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null, $default = null)
     {
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
         return $setting != null ? $setting->getAttribute('stg_value') : $default;
     }
 
-    public static function applyBaseSettings($iUid) 
+    public static function applyBaseSettings($iUid)
     {
         $defaults = LsDefaultDataSets::getDefaultUserSettings();
-        foreach($defaults as $default) {
+        foreach ($defaults as $default) {
             self::setUserSetting($default['stg_name'], $default['stg_value'], $iUid);
         }
     }

@@ -82,7 +82,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     public function getRows()
     {
         $aRows = [];
-        if($this->getQuestionCount() == 0) {
+        if ($this->getQuestionCount() == 0) {
             return $aRows;
         }
 
@@ -127,13 +127,13 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         }
 
         if ($this->oQuestion->other == 'Y') {
-          $aRows[] = $this->getOtherRow();
+            $aRows[] = $this->getOtherRow();
         }
 
         return $aRows;
     }
 
-    public function getOtherRow(){
+    public function getOtherRow() {
 
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
 
@@ -218,22 +218,22 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         }
         $this->registerAssets();
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'aRows' => $this->getRows(),
             'coreClass'=>$this->sCoreClasses,
             'name'=>'MULTI'.$this->sSGQA,
             'basename'=> $this->sSGQA,
             'value'=> $this->getQuestionCount()
-           ), true);
+            ), true);
 
         $this->inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
     }
 
-    protected function getQuestionCount($iScaleId=0){
-        if(!empty($this->aSubQuestions)) {
+    protected function getQuestionCount($iScaleId = 0) {
+        if (!empty($this->aSubQuestions)) {
             $counter = count($this->aSubQuestions[$iScaleId]);
-            if($this->oQuestion->other == 'Y') {
+            if ($this->oQuestion->other == 'Y') {
                 $counter++;
                 $counter++;
             }

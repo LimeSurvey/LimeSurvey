@@ -109,11 +109,11 @@ class Answer extends LSActiveRecord
 
     public function checkUniqueness($attribute, $params)
     {
-        if($this->code !== $this->oldCode || $this->qid !== $this->oldQid || $this->scale_id !== $this->oldScaleId)
+        if ($this->code !== $this->oldCode || $this->qid !== $this->oldQid || $this->scale_id !== $this->oldScaleId)
         {
             $model = self::model()->find('code = ? AND qid = ? AND scale_id = ?', array($this->code, $this->qid, $this->scale_id));
-            if($model != null)
-                $this->addError('code','Answer codes must be unique by question');
+            if ($model != null)
+                $this->addError('code', 'Answer codes must be unique by question');
         }   
     }
 
@@ -257,7 +257,7 @@ class Answer extends LSActiveRecord
 
         $oAnswers = Answer::model()->with('answerL10ns')->findAll($condition);
         $arr = array();
-        foreach($oAnswers as $key => $answer)
+        foreach ($oAnswers as $key => $answer)
         {
             $arr[$key] = array_merge($answer->attributes, current($answer->answerL10ns)->attributes);
         }

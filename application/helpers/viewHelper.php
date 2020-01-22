@@ -121,7 +121,7 @@ class viewHelper
             $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
-            if($bHaveSubQuestion) {
+            if ($bHaveSubQuestion) {
                 $sQuestionText .= $aOption['afterquestion'];
             }
             if (isset($aField['subquestion']) && $bHaveSubQuestion) {

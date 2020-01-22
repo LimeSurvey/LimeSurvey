@@ -259,7 +259,7 @@ class tokens extends Survey_Common_Action
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        if(!Yii::app()->getRequest()->isPostRequest) {
+        if (!Yii::app()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
@@ -424,7 +424,7 @@ class tokens extends Survey_Common_Action
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
                     if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                         $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
-                        if ($sCoreTokenField == 'language' and empty($value)){
+                        if ($sCoreTokenField == 'language' and empty($value)) {
                             continue;
                         }
                         $aData[$sCoreTokenField] = $value;
@@ -461,7 +461,7 @@ class tokens extends Survey_Common_Action
                             $aResults[$iTokenId]['status']    = false;                            
                             $aResults[$iTokenId]['message']   = '';
                             
-                            foreach ($token->getErrors() as $key => $error){
+                            foreach ($token->getErrors() as $key => $error) {
                                 $aResults[$iTokenId]['message']   .= $key . ': ' . $error[0];                                
                             }
                         }
@@ -637,7 +637,7 @@ class tokens extends Survey_Common_Action
                 ->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
         $subAction = $request->getPost('subaction');
-        if ( $subAction == 'inserttoken') {
+        if ($subAction == 'inserttoken') {
             // TODO: This part could be refactored into function like "insertToken()"
             Yii::import('application.libraries.Date_Time_Converter');
 
@@ -967,7 +967,7 @@ class tokens extends Survey_Common_Action
                 $value = flattenText(Yii::app()->request->getPost($attr_name));
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                     Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
-                    $cntAttributeErrors+=1;
+                    $cntAttributeErrors += 1;
                 }
                 $aData[$attr_name] = $value;
             }
@@ -1006,7 +1006,8 @@ class tokens extends Survey_Common_Action
             }
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            if ($cntAttributeErrors > 0){ // attribute validation errors
+            if ($cntAttributeErrors > 0) {
+// attribute validation errors
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
                 $this->_renderWrappedTemplate('token', array('dummytokenform'), $aData);
@@ -1092,7 +1093,7 @@ class tokens extends Survey_Common_Action
                 
         $aMandatoryList = array();
         $aAttributesDesc = $oSurvey->decodedAttributedescriptions;
-        foreach($aMandatoryAttributes['columns'] as $key => $attribute){
+        foreach($aMandatoryAttributes['columns'] as $key => $attribute) {
             $aAttributesDesc[$key] = array(
                 'coreattribute' => true,
                 'mandatory' => $key == 'email' ? true : false,
@@ -1113,7 +1114,7 @@ class tokens extends Survey_Common_Action
                 $description = "";
             }
             $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", $tokenfield), $description);
-            if (!in_array($tokenfield, $aMandatoryList)){
+            if (!in_array($tokenfield, $aMandatoryList)) {
                 $tokenfieldlist[] = array("id"=>$tokenfield, "description"=>$description); 
             }
         }
@@ -1277,7 +1278,7 @@ class tokens extends Survey_Common_Action
         }
         // custom attributes
         foreach ($tokenattributefieldnames as $fieldname) {
-            if (isset(json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted)){
+            if (isset(json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted)) {
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted;
             } else {
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
@@ -1304,17 +1305,17 @@ class tokens extends Survey_Common_Action
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            foreach($oTokens as $token){
+            foreach($oTokens as $token) {
                 $aUpdateData = array();
                 foreach ($aOptionsAfterChange as $column => $value) {
-                    if ($aOptionsBeforeChange[$column]['encrypted'] == 'Y' && $aOptionsAfterChange[$column]['encrypted'] == 'N'){
+                    if ($aOptionsBeforeChange[$column]['encrypted'] == 'Y' && $aOptionsAfterChange[$column]['encrypted'] == 'N') {
                         $aUpdateData[$column] = LSActiveRecord::decryptSingle($token->$column);
-                    } elseif ($aOptionsBeforeChange[$column]['encrypted'] == 'N' && $aOptionsAfterChange[$column]['encrypted'] == 'Y'){
+                    } elseif ($aOptionsBeforeChange[$column]['encrypted'] == 'N' && $aOptionsAfterChange[$column]['encrypted'] == 'Y') {
                         $aUpdateData[$column] = LSActiveRecord::encryptSingle($token->$column);
                     }
                 }
                 
-                if (!empty($aUpdateData)){
+                if (!empty($aUpdateData)) {
                     $oDB->createCommand()->update('{{tokens_'.$iSurveyId.'}}', $aUpdateData, "tid=".$token->tid);
                 }
             }
@@ -1452,13 +1453,13 @@ class tokens extends Survey_Common_Action
                 $mail->addUrlsPlaceholders(array('OPTOUT', 'OPTIN', 'SURVEY'));
                 foreach ($emresult as $emrow) {
                     $mail = \LimeMailer::getInstance();
-                    if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'],$bIsInvitation)) {
+                    if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'], $bIsInvitation)) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".
                         if ($bIsInvitation) {
-                            $tokenoutput .= sprintf(gT("Invitation %s skipped, already sent."), $emrow['tid']) . "<br/>";
+                            $tokenoutput .= sprintf(gT("Invitation %s skipped, already sent."), $emrow['tid'])."<br/>";
                         } else {
-                            $tokenoutput .= sprintf(gT("Reminder %s skipped, already sent."), $emrow['tid']) . "<br/>";
+                            $tokenoutput .= sprintf(gT("Reminder %s skipped, already sent."), $emrow['tid'])."<br/>";
                         }
                         continue;
                     }
@@ -1490,7 +1491,7 @@ class tokens extends Survey_Common_Action
 
                             // Mark token email as send this session.
                             // NB: This cache is cleared on form page for invitation/reminder.
-                            $sType = $bIsInvitation?'i':'r';
+                            $sType = $bIsInvitation ? 'i' : 'r';
                             $_SESSION[$this->getEmailCacheName($iSurveyId)][$sType][$emrow['tid']] = 1;
 
                             //Update central participant survey_links        
@@ -1507,7 +1508,7 @@ class tokens extends Survey_Common_Action
                             }
                         } else {
                             $maildebug = $mail->getDebug('html');
-                            $tokenoutput .= $stringInfo.CHtml::tag("span",array('class'=>"text-warning"),sprintf(gT("Error message: %s"), $mail->getError()))."<br>\n";
+                            $tokenoutput .= $stringInfo.CHtml::tag("span", array('class'=>"text-warning"), sprintf(gT("Error message: %s"), $mail->getError()))."<br>\n";
                             if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
                                 $tokenoutput .= $mail->getDebug('html');
                             }
@@ -1580,7 +1581,7 @@ class tokens extends Survey_Common_Action
      * @return void
      */
     public function exportdialog($iSurveyId)
-    {                
+    {
         $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
         $aData = array();
@@ -1984,7 +1985,7 @@ class tokens extends Survey_Common_Action
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');
             } else {
                 $iRecordImported = 0;
-                $iRecordCount =  0;
+                $iRecordCount = 0;
                 $iRecordOk = 0;
                 $iInvalidEmailCount = 0; // Count invalid email imported
                 // This allows to read file with MAC line endings too
@@ -2764,7 +2765,7 @@ class tokens extends Survey_Common_Action
      */
     protected function tokenIsSetInEmailCache($iSurveyId, $tid, $bIsInvitation)
     {
-        $sType = $bIsInvitation?'i':'r';
+        $sType = $bIsInvitation ? 'i' : 'r';
         $cacheName = $this->getEmailCacheName($iSurveyId);
         return isset($_SESSION[$cacheName])
             && isset($_SESSION[$cacheName][$sType][$tid])

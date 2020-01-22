@@ -33,14 +33,14 @@ class ExtensionUpdaterServiceLocator
     {
         $this->addUpdaterType(
             'plugin',
-            function () {
+            function() {
                 return PluginUpdater::createUpdaters();
             }
         );
 
         $this->addUpdaterType(
             'theme',
-            function () {
+            function() {
                 return ThemeUpdater::createUpdaters();
             }
         );
@@ -67,7 +67,7 @@ class ExtensionUpdaterServiceLocator
     public function getUpdater(string $name)
     {
         if (isset($this->updaters[$name])) {
-            $updater =  $this->updaters[$name]();
+            $updater = $this->updaters[$name]();
             return $updater;
         } else {
             return null;

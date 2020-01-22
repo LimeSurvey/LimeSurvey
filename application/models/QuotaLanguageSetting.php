@@ -103,7 +103,7 @@ class QuotaLanguageSetting extends LSActiveRecord
     {
         $settings = new self;
         foreach ($data as $k => $v) {
-            if ($k === 'autoload_url'){
+            if ($k === 'autoload_url') {
                 $settings->quota->autoload_url = $v;
             } else {
                 $settings->$k = $v;

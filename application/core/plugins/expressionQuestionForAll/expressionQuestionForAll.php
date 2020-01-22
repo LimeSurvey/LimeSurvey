@@ -28,7 +28,7 @@ class expressionQuestionForAll extends PluginBase
 
     public function init()
     {
-        $this->subscribe('setVariableExpressionEnd','addQuestionAll');
+        $this->subscribe('setVariableExpressionEnd', 'addQuestionAll');
     }
 
     /**
@@ -39,7 +39,7 @@ class expressionQuestionForAll extends PluginBase
     {
         $knownVars = $this->event->get('knownVars');
         $language = $this->event->get('language');
-        $surveyId =  $this->event->get('surveyId');
+        $surveyId = $this->event->get('surveyId');
 
         $aQuestionManaged = array(
             \QuestionType::QT_1_ARRAY_MULTISCALE,
@@ -55,15 +55,15 @@ class expressionQuestionForAll extends PluginBase
             \QuestionType::QT_Q_MULTIPLE_SHORT_TEXT,
         );
         $criteria = New CDbCriteria;
-        $criteria->select = array('qid','gid','title');
-        $criteria->compare('sid',$surveyId);
-        $criteria->compare('parent_qid',0);
-        $criteria->addInCondition('type',$aQuestionManaged);
+        $criteria->select = array('qid', 'gid', 'title');
+        $criteria->compare('sid', $surveyId);
+        $criteria->compare('parent_qid', 0);
+        $criteria->addInCondition('type', $aQuestionManaged);
         $aoQuestions = \Question::model()->findAll($criteria);
         
         $newKnownVars = array();
-        foreach($aoQuestions as $oQuestion) {
-            $oQuestionL10n = \QuestionL10n::model()->find("qid = :qid and language = :language", array(":qid"=>$oQuestion->qid,":language" => $language));
+        foreach ($aoQuestions as $oQuestion) {
+            $oQuestionL10n = \QuestionL10n::model()->find("qid = :qid and language = :language", array(":qid"=>$oQuestion->qid, ":language" => $language));
             $newKnownVars[$oQuestion->title] = array(
                 'code' => '',
                 'jsName_on' => '',

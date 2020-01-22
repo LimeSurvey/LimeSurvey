@@ -32,7 +32,7 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function index()
     {
-        $jsFile = App()->getConfig('adminscripts') . 'plugin_manager.js';
+        $jsFile = App()->getConfig('adminscripts').'plugin_manager.js';
         App()->getClientScript()->registerScriptFile($jsFile);
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
@@ -223,7 +223,7 @@ class PluginManagerController extends Survey_Common_Action
             $this->getController()->redirect($url);
         }
 
-        $plugin      = Plugin::model()->findByPk($id);
+        $plugin = Plugin::model()->findByPk($id);
         $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id);
 
         if (empty($oPluginObject)) {
@@ -420,7 +420,7 @@ class PluginManagerController extends Survey_Common_Action
             $this->getController()->redirect($this->getPluginManagerUrl('uploadConfirm'));
         } catch (Exception $ex) {
             $installer->abort();
-            $this->errorAndRedirect(gT('Could not fetch files.') . ' ' . $ex->getMessage());
+            $this->errorAndRedirect(gT('Could not fetch files.').' '.$ex->getMessage());
         }
 
         //$tempdir = Yii::app()->getConfig("tempdir");

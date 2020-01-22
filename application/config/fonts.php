@@ -114,21 +114,21 @@ if (is_dir($configUserFontsDir)) {
     foreach (new \DirectoryIterator($configUserFontsDir) as $userFont) {
         if (!$userFont->isDot() && $userFont->isDir()) {
             $userFontDir = $userFont->getFilename();
-            $configFile = $configUserFontsDir . DIRECTORY_SEPARATOR . $userFontDir . DIRECTORY_SEPARATOR . 'config.xml';
-            if (function_exists('simplexml_load_file') && file_exists($configFile)){
+            $configFile = $configUserFontsDir.DIRECTORY_SEPARATOR.$userFontDir.DIRECTORY_SEPARATOR.'config.xml';
+            if (function_exists('simplexml_load_file') && file_exists($configFile)) {
                 libxml_disable_entity_loader(false);
                 $xml = simplexml_load_file($configFile);
                 $cssFiles = array();
-                foreach($xml->files->css as $file){
-                    if (!empty((string)$file)){
-                        $cssFiles[] = (string)$file;
+                foreach ($xml->files->css as $file) {
+                    if (!empty((string) $file)) {
+                        $cssFiles[] = (string) $file;
                     }
                 }
 
-                $userFonts['font-' . $xml->metadata->name] = array(
+                $userFonts['font-'.$xml->metadata->name] = array(
                     'title' => $xml->metadata->title,
                     'type' => 'user',
-                    'devBaseUrl' => $configUserFontsUrl . DIRECTORY_SEPARATOR . $xml->metadata->name . DIRECTORY_SEPARATOR,
+                    'devBaseUrl' => $configUserFontsUrl.DIRECTORY_SEPARATOR.$xml->metadata->name.DIRECTORY_SEPARATOR,
                         'basePath' => 'fonts',
                         'css' => $cssFiles,
                 );

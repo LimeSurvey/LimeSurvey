@@ -246,7 +246,7 @@ class Condition extends LSActiveRecord
                 'params' => array(':lang2' => $language)
             )
             ))->findAll(
-                't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
+                't.qid = '.$qid.' and scenario = '.$scenarionr['scenario'].' and cfieldname NOT LIKE \'{%\''
             );
 
         return (int) count($result);
@@ -277,13 +277,13 @@ class Condition extends LSActiveRecord
             ))->findAll(
                 array(
                     'select' => 't.cid, t.scenario, t.cqid, t.cfieldname, t.method, t.value',
-                    'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
+                    'condition' => 't.qid = '.$qid.' and scenario = '.$scenarionr['scenario'].' and cfieldname NOT LIKE \'{%\''
                 )
         );     
 
         $aResults = array();
         $i = 0;
-        foreach($results as $result){
+        foreach ($results as $result) {
             $aResults[$i] = $result->attributes;
             $aResults[$i]['type'] = $result->questions->type;
             $i += 1;

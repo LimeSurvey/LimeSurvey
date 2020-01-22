@@ -729,7 +729,7 @@ class UserAction extends Survey_Common_Action
         $aRawUserSettings = SettingsUser::model()->findAllByAttributes(['uid' => $oUser->uid]);
 
         $aUserSettings = [];
-        array_walk($aRawUserSettings, function ($oUserSetting) use (&$aUserSettings) {
+        array_walk($aRawUserSettings, function($oUserSetting) use (&$aUserSettings) {
             $aUserSettings[$oUserSetting->stg_name] = $oUserSetting->stg_value;
         });
 
@@ -750,7 +750,7 @@ class UserAction extends Survey_Common_Action
         }
     }
 
-    public function togglesetting($surveyid=0) 
+    public function togglesetting($surveyid = 0) 
     {
         $setting  = Yii::app()->request->getPost('setting');
         $newValue = Yii::app()->request->getPost('newValue');

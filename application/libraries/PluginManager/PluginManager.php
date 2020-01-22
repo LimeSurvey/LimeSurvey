@@ -106,7 +106,7 @@ class PluginManager extends \CApplicationComponent
      */
     public function installUploadedPlugin($destdir)
     {
-        $configFile = $destdir . '/config.xml';
+        $configFile = $destdir.'/config.xml';
         $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
         if (empty($extensionConfig)) {
             return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
@@ -140,8 +140,8 @@ class PluginManager extends \CApplicationComponent
         $plugin = new Plugin();
         $plugin->name        = $newName;
         $plugin->version     = (string) $extensionConfig->xml->metadata->version;
-        if(!empty($extensionConfig->xml->priority)) {
-            $plugin->priority   = (int) $extensionConfig->xml->priority;
+        if (!empty($extensionConfig->xml->priority)) {
+            $plugin->priority = (int) $extensionConfig->xml->priority;
         }
         $plugin->plugin_type = $pluginType;
         $plugin->save();
@@ -303,7 +303,7 @@ class PluginManager extends \CApplicationComponent
                                         // This only happens if database save fails.
                                         $this->shutdownObject->disable();
                                         throw new \Exception(
-                                            'Internal error: Could not save load error for plugin ' . $pluginName
+                                            'Internal error: Could not save load error for plugin '.$pluginName
                                         );
                                     }
                                 }
@@ -357,8 +357,8 @@ class PluginManager extends \CApplicationComponent
                     Yii::import($pluginDir.".$pluginClass.*");
 
                     $configFile = Yii::getPathOfAlias($pluginDir)
-                        . DIRECTORY_SEPARATOR . $pluginClass
-                        . DIRECTORY_SEPARATOR .'config.xml';
+                        . DIRECTORY_SEPARATOR.$pluginClass
+                        . DIRECTORY_SEPARATOR.'config.xml';
                     $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
                     if ($extensionConfig) {
                         $pluginType = $type;
@@ -397,7 +397,7 @@ class PluginManager extends \CApplicationComponent
         if (empty($alias)) {
             return null;
         }
-        $folder = Yii::getPathOfAlias($alias) . '/' . $config->getName();
+        $folder = Yii::getPathOfAlias($alias).'/'.$config->getName();
         return $folder;
     }
 
@@ -451,7 +451,7 @@ class PluginManager extends \CApplicationComponent
                 // This only happens if database save fails.
                 $this->shutdownObject->disable();
                 throw new \Exception(
-                    'Internal error: Could not save load error for plugin ' . $pluginName
+                    'Internal error: Could not save load error for plugin '.$pluginName
                 );
             }
         }
@@ -472,9 +472,9 @@ class PluginManager extends \CApplicationComponent
         $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name'=>'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
         if ($dbVersion && $dbVersion->stg_value >= 165) {
             $pluginModel = Plugin::model();
-            if($dbVersion->stg_value >= 411) {
+            if ($dbVersion->stg_value >= 411) {
                 /* Before DB 411 version, unable to set order, must check to load before upgrading */
-                $records = $pluginModel->findAllByAttributes(array('active'=>1),['order'=>'priority DESC']);
+                $records = $pluginModel->findAllByAttributes(array('active'=>1), ['order'=>'priority DESC']);
             } else {
                 $records = $pluginModel->findAllByAttributes(array('active'=>1));
             }
@@ -642,7 +642,7 @@ class PluginManager extends \CApplicationComponent
 
             $whiteList = App()->getConfig('pluginWhitelist');
             $coreList = App()->getConfig('pluginCoreList');
-            $allowedPlugins =  array_merge($coreList, $whiteList);
+            $allowedPlugins = array_merge($coreList, $whiteList);
             return array_search($pluginName, $allowedPlugins) !== false;
         }
         return true;

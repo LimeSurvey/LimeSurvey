@@ -17,12 +17,12 @@
 class LSYii_ImageValidator
 {
     /**
-    * A function to validate images,
-    * This don't validate file : must validate if file exist before.
-    *
-    * @param array|string $file Either array with keys 'tmp_name' and 'type' or full file path
-    * @return array
-    */
+     * A function to validate images,
+     * This don't validate file : must validate if file exist before.
+     *
+     * @param array|string $file Either array with keys 'tmp_name' and 'type' or full file path
+     * @return array
+     */
     public static function validateImage($file)
     {
         if (is_array($file)) {
@@ -31,7 +31,7 @@ class LSYii_ImageValidator
         } elseif (is_string($file)) {
             $parts = explode('.', $file);
             $path = $file;
-            $type = 'image/' . $parts[count($parts) - 1];
+            $type = 'image/'.$parts[count($parts) - 1];
         } else {
             return [
                 // No translation ? send $file ?
@@ -41,7 +41,7 @@ class LSYii_ImageValidator
         }
 
         /** @var array<string, mixed> */
-        $result =[];
+        $result = [];
 
         /** @var ?? */
         $checkImage = CFileHelper::getMimeType($path);

@@ -48,11 +48,11 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         $this->setSubquestions();
         $this->setPrefixAndSuffix();
         
-        $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
+        $this->sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $this->useSliderLayout = $this->getQuestionAttribute('slider_layout') == 1; 
         
         $this->widthArray = $this->getLabelInputWidth();
-        $this->extraclass   .= " numberonly";
+        $this->extraclass .= " numberonly";
 
         if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -66,8 +66,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         }
 
         if ($this->useSliderLayout) {
-            $this->sCoreClasses  .= " slider-list";
-            $this->extraclass   .= " withslider";
+            $this->sCoreClasses .= " slider-list";
+            $this->extraclass .= " withslider";
             $this->sliderOptionsArray = [
                 'slider_step'          => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
                 'slider_min'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
@@ -83,8 +83,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $this->sliderOptionsArray['slider_maxtext'] = $this->sliderOptionsArray['slider_max'];
             
             //Eventually reset numbers with wrong decimal separator
-            if($this->sSeparator != '.') {
-                $this->sliderOptionsArray['slider_step']    = preg_replace('/'.$this->sSeparator.'/','.',$this->sliderOptionsArray['slider_step']);
+            if ($this->sSeparator != '.') {
+                $this->sliderOptionsArray['slider_step'] = preg_replace('/'.$this->sSeparator.'/', '.', $this->sliderOptionsArray['slider_step']);
             }
 
             $this->sliderOptionsArray['slider_step']    = (is_numeric($this->sliderOptionsArray['slider_step'])) ? $this->sliderOptionsArray['slider_step'] : 1;
@@ -99,7 +99,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 $this->sliderOptionsArray['slider_position'] = intval(($this->sliderOptionsArray['slider_max'] + $this->sliderOptionsArray['slider_min']) / 2);
             }
             
-            $this->sliderOptionsArray['slider_separator'] = $this->setDefaultIfEmpty($this->getQuestionAttribute('slider_separator'),"");
+            $this->sliderOptionsArray['slider_separator'] = $this->setDefaultIfEmpty($this->getQuestionAttribute('slider_separator'), "");
             $this->sliderOptionsArray['slider_reset'] = ($this->getQuestionAttribute('slider_reset')) ? 1 : 0;
     
             // Slider reversed value 
@@ -130,7 +130,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         }
     }
 
-    public function setPrefixAndSuffix(){
+    public function setPrefixAndSuffix() {
         $sPrefix = $this->setDefaultIfEmpty($this->getQuestionAttribute('prefix', $this->sLanguage), '');
         if ($sPrefix != '') {
             $this->prefix = $sPrefix;
@@ -165,7 +165,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
             $sDisplayStyle = '';
 
-            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '');
             $dispVal = str_replace('.', $this->sSeparator, $dispVal);
 
             if (!$this->useSliderLayout) {
@@ -203,11 +203,11 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
-                        $sliderWidth = $sliderWidth-2;
+                        $sliderWidth = $sliderWidth - 2;
                     }
                     
                     if (!empty($sliderright)) {
-                        $sliderWidth = $sliderWidth-2;
+                        $sliderWidth = $sliderWidth - 2;
                     }
 
                 } else {
@@ -291,7 +291,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         return  $aRows;
     }
 
-    public function renderSlider($sCoreClasses){
+    public function renderSlider($sCoreClasses) {
         
         
         return Yii::app()->twigRenderer->renderQuestion(
@@ -305,7 +305,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         );
     }
     
-    public function renderInput($sCoreClasses){
+    public function renderInput($sCoreClasses) {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/answer_input',
             array(

@@ -97,10 +97,11 @@ class QuestionType extends StaticModel
         ];
     }
 
-    public function applyToQuestion($oQuestion) {
+    public function applyToQuestion($oQuestion)
+    {
         $this->question = $oQuestion;
         $aSettingsArray = self::modelsAttributes($oQuestion->survey->language)[$oQuestion->type];
-        foreach($aSettingsArray as $settingKey => $setting) {
+        foreach ($aSettingsArray as $settingKey => $setting) {
             $this->$settingKey = $setting;
         }
     }

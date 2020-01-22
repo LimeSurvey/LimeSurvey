@@ -306,7 +306,7 @@ class STATAxmlWriter extends Writer
         Yii::app()->loadHelper('export');
         function clean(&$item)
         {
-            if (is_string($item)){
+            if (is_string($item)) {
             $item = trim((htmlspecialchars_decode(stripTagsFull($item))));
             }
 

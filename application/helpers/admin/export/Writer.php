@@ -234,8 +234,8 @@ abstract class Writer implements IWriter
             }
         }
         // Quote equal signs to prevent CSV injection attacks
-        if ($oOptions->csvMaskEquations && isset($value[0]) && $value[0]=='=') {
-            $value="'".$value;
+        if ($oOptions->csvMaskEquations && isset($value[0]) && $value[0] == '=') {
+            $value = "'".$value;
         }
         return $value;
     }
@@ -297,7 +297,7 @@ abstract class Writer implements IWriter
         // If no empty survey, render/export responses array.
         foreach ($oSurvey->responses as $response) {
             // prepare the data for decryption
-            $sTokenTableName='tokens_'.$oSurvey->id;
+            $sTokenTableName = 'tokens_'.$oSurvey->id;
             $aResponse = array();
             if (tableExists($sTokenTableName)) {
                 $oToken = Token::model($oSurvey->id);

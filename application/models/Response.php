@@ -61,7 +61,7 @@
                 if (is_array($data)) {
                     /* adding the title and qid to fileinfo , see #14659 */
                     $index = 0;
-                    $data = array_map( function($fileInfo) use (&$index, $question) {
+                    $data = array_map(function($fileInfo) use (&$index, $question) {
                         return array_merge($fileInfo, array(
                             'question' => array(
                                 'title' => $question->title,
@@ -198,7 +198,8 @@
          * Get current surveyId for other model/function
          * @return int
          */
-        public function getSurveyId() {
+        public function getSurveyId()
+        {
             return $this->getDynamicId();
         }
 
@@ -210,12 +211,12 @@
 
         }
 
-        public static function getEncryptedAttributes($surveyid = 0){
+        public static function getEncryptedAttributes($surveyid = 0) {
             $survey = Survey::model()->findByPk($surveyid);
             $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
             $aAttributes = array();
-            foreach ($fieldmap as $field){
-                if (array_key_exists('encrypted', $field) &&  $field['encrypted'] == 'Y'){
+            foreach ($fieldmap as $field) {
+                if (array_key_exists('encrypted', $field) && $field['encrypted'] == 'Y') {
                     $aAttributes[] = $field['fieldname'];
                 }
 

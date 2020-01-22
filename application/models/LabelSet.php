@@ -114,7 +114,8 @@ class LabelSet extends LSActiveRecord
         return false;
     }
 
-    public function getLanguageArray() {
+    public function getLanguageArray()
+    {
         return explode(' ', $this->languages);
     }
 
@@ -193,6 +194,6 @@ class LabelSet extends LSActiveRecord
             LabelL10n::model()->deleteAllByAttributes([], 'id = :id', [':id' => $oLabel->id]);
             $oLabel->delete();
         }
-        rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);
+        rmdirr(App()->getConfig('uploaddir').'/labels/'.$this->lid);
     }
 }

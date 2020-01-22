@@ -46,7 +46,7 @@ class InstallFromConfigCommand extends CConsoleCommand
             $this->configuration = include($readFromConfig);
             $this->dbConnectionArray = $this->configuration['components']['db'];
             
-            foreach($this->configuration as $configKey => $configValue){
+            foreach($this->configuration as $configKey => $configValue) {
                 Yii::app()->params[$configKey] = $configValue; 
             }
 
@@ -173,7 +173,7 @@ class InstallFromConfigCommand extends CConsoleCommand
             $this->output('Opening connection...');
             $this->connection->active = true;
         } catch (Exception $e) {
-            print_r( $dbConnectArray);
+            print_r($dbConnectArray);
             throw new CException("Invalid access data. Check your config.php db access data");
         }
 

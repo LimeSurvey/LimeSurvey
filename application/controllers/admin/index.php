@@ -31,7 +31,7 @@ class Index extends Survey_Common_Action
         if ($lastsurvey) {
             try {
                 $survey = Survey::model()->findByPk($lastsurvey);
-                if ($survey){
+                if ($survey) {
                     $aData['showLastSurvey'] = true;
                     $iSurveyID = $lastsurvey;
                     $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -39,7 +39,7 @@ class Index extends Survey_Common_Action
                 } else {
                     $aData['showLastSurvey'] = false;
                 }
-            } catch(Exception $e){
+            } catch (Exception $e) {
                 $aData['showLastSurvey'] = false;
             }
         } else {
@@ -59,7 +59,7 @@ class Index extends Survey_Common_Action
         $lastquestionsid = getGlobalSetting($setting_entry);
         if ($lastquestion && $lastquestiongroup && $lastquestionsid) {
             $survey = Survey::model()->findByPk($lastquestionsid);
-            if ($survey){
+            if ($survey) {
                 $baselang = $survey->language;
                 $aData['showLastQuestion'] = true;
                 $qid = $lastquestion;

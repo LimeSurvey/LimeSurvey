@@ -133,7 +133,7 @@ class UserManagement extends Survey_Common_Action
             if (!$oPasswordTestEvent->get('passwordOk')) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
-                    'errors' => gT('Passwords does not fulfill minimum requirement:') . '<br/>' . $oPasswordTestEvent->get('passwordError'),
+                    'errors' => gT('Passwords does not fulfill minimum requirement:').'<br/>'.$oPasswordTestEvent->get('passwordError'),
                 ]]);
             }
         }
@@ -178,19 +178,19 @@ class UserManagement extends Survey_Common_Action
 
                 if ($mailer->getError()) {
                     $sReturnMessage = CHtml::tag("h4", array(), gT("Error"));
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $newUser['users_name'] . "</strong>", $newUser['email']));
+                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>".$newUser['users_name']."</strong>", $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), $mailer->getError());
                     $success = false;
                 } else {
                     // has to be sent again or no other way
-                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));;
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success")); ;
                     $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
             }
 
             $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $aUser['password'] . '</b>') : '';
+            $sReturnMessage .= $display_user_password_in_html ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>'.$aUser['password'].'</b>') : '';
 
             $data = array();
 
@@ -221,7 +221,7 @@ class UserManagement extends Survey_Common_Action
         $errorDiv = '<ul class="list-unstyled">';
         foreach ($errors as $key => $error) {
             foreach ($error as $errormessages) {
-                $errorDiv .= '<li>' . print_r($errormessages, true) . '</li>';
+                $errorDiv .= '<li>'.print_r($errormessages, true).'</li>';
             }
         }
         $errorDiv .= '</ul>';
@@ -243,7 +243,7 @@ class UserManagement extends Survey_Common_Action
         }
         $oUser = User::model()->findByPk($userid);
 
-        $usergroups = array_map(function ($oUGMap) {
+        $usergroups = array_map(function($oUGMap) {
             return $oUGMap->group->name;
         }, UserInGroup::model()->findAllByAttributes(['uid' => $oUser->uid]));
 
@@ -381,7 +381,7 @@ class UserManagement extends Survey_Common_Action
         $userId = $oRequest->getParam('userid');
         $oUser = User::model()->findByPk($userId);
 
-        $aTemplates = array_map(function ($oTemplate) use ($userId) {
+        $aTemplates = array_map(function($oTemplate) use ($userId) {
             $oPermission = Permission::model()->findByAttributes(array('permission' => $oTemplate->folder, 'uid' => $userId, 'entity' => 'template'));
             $aTemplate = $oTemplate->attributes;
             $aTemplate['value'] = $oPermission == null ? 0 : $oPermission->read_p;
@@ -436,14 +436,14 @@ class UserManagement extends Survey_Common_Action
         }
 
         $aAllSurveys = Survey::model()->findAll();
-        $aMySurveys = array_filter($aAllSurveys, function ($oSurvey) {
+        $aMySurveys = array_filter($aAllSurveys, function($oSurvey) {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 return true;
             }
             if ($oSurvey->owner_id == App()->user->id) {
                 return true;
             }
-            return array_reduce($oSurvey->permissions, function ($coll, $oPermission) {
+            return array_reduce($oSurvey->permissions, function($coll, $oPermission) {
                 if ($oPermission->permission == 'surveysecurity' && $oPermission->update_p == 1 && $oPermission->uid == App()->user->id) {
                     return true;
                 }
@@ -547,11 +547,11 @@ class UserManagement extends Survey_Common_Action
         $aPossibleRoles = [];
         array_walk(
             $aPermissiontemplates,
-            function ($oPermissionRole) use (&$aPossibleRoles) {
+            function($oPermissionRole) use (&$aPossibleRoles) {
                 $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
             }
         );
-        $aCurrentRoles = array_map(function ($oRole) {
+        $aCurrentRoles = array_map(function($oRole) {
             return $oRole->ptid;
         }, $oUser->roles);
 
@@ -713,7 +713,7 @@ class UserManagement extends Survey_Common_Action
             $results[] = $result;
         }
 
-        $success = array_reduce($results, function ($coll, $arr) {
+        $success = array_reduce($results, function($coll, $arr) {
             return $coll = $coll && $arr['saved'];
         }, true);
 
@@ -944,7 +944,7 @@ class UserManagement extends Survey_Common_Action
 
             $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
 
-            if ($oUser  !== null) {
+            if ($oUser !== null) {
                 if ($overwriteUsers) {
 
                     $oUser->full_name = $aNewUser['full_name'];
@@ -1023,7 +1023,7 @@ class UserManagement extends Survey_Common_Action
 
         $aUsers = array();
         $sTempDir = Yii::app()->getConfig("tempdir");
-        $exportFile = $sTempDir . DIRECTORY_SEPARATOR . 'users_export.' . $outputFormat;
+        $exportFile = $sTempDir.DIRECTORY_SEPARATOR.'users_export.'.$outputFormat;
 
         foreach ($oUsers as $user) {
             $exportUser['uid'] = $user->attributes['uid'];
@@ -1049,7 +1049,7 @@ class UserManagement extends Survey_Common_Action
                 $fp = fopen($exportFile, 'w');
 
                 //Add utf-8 encoding
-                fprintf($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));
+                fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF));
                 $header = array('uid', 'users_name', 'full_name', 'email', 'lang', 'password');
                 //Add csv header
                 fputcsv($fp, $header, ';');
@@ -1064,7 +1064,7 @@ class UserManagement extends Survey_Common_Action
                 break;
         }
         //end file to download
-        header("Content-Disposition: attachment; filename=userExport." . $outputFormat);
+        header("Content-Disposition: attachment; filename=userExport.".$outputFormat);
         header("Pragma: no-cache");
         header("Expires: 0");
         @readfile($exportFile);
@@ -1143,7 +1143,7 @@ class UserManagement extends Survey_Common_Action
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors'  => $event->get('errorMessageTitle') . '<br/>' . $event->get('errorMessageBody'),
+                    'errors'  => $event->get('errorMessageTitle').'<br/>'.$event->get('errorMessageBody'),
                     'debug'   => ['title' => $event->get('errorMessageTitle'), 'body' => $event->get('errorMessageBody'), 'code' => $event->get('errorCode'), 'event' => $event],
                 ]
             ]);
@@ -1200,7 +1200,7 @@ class UserManagement extends Survey_Common_Action
             case "resetPassword":
                 $renderArray = [
                     'surveyapplicationname' => Yii::app()->getConfig("sitename"),
-                    'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
+                    'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name'])."<br />"
                         . sprintf(gT("this is an automated email to notify that your login credentials for '%s' have been reset."), Yii::app()->getConfig("sitename")),
                     'credentialsText' => gT("Here are you're new credentials."),
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
@@ -1211,14 +1211,14 @@ class UserManagement extends Survey_Common_Action
                     'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
                     'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
                 ];
-                $subject = "[" . Yii::app()->getConfig("sitename") . "] " . gT("Your login credentials have been reset");
+                $subject = "[".Yii::app()->getConfig("sitename")."] ".gT("Your login credentials have been reset");
                 $emailType = "addadminuser";
                 break;
             case 'registration':
             default:
                 $renderArray = [
                     'surveyapplicationname' => Yii::app()->getConfig("sitename"),
-                    'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
+                    'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name'])."<br />"
                         . sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'.."), Yii::app()->getConfig("sitename")),
                     'credentialsText' => gT("You can use now the following credentials to log into the site:"),
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
@@ -1229,7 +1229,7 @@ class UserManagement extends Survey_Common_Action
                     'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
                     'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
                 ];
-                $subject = "[" . Yii::app()->getConfig("sitename") . "] " . gT("An account has been created for you");
+                $subject = "[".Yii::app()->getConfig("sitename")."] ".gT("An account has been created for you");
                 $emailType = "addadminuser";
                 break;
         }
@@ -1275,7 +1275,7 @@ class UserManagement extends Survey_Common_Action
         if (is_callable('openssl_random_pseudo_bytes')) {
             $uiq = openssl_random_pseudo_bytes(128);
         } else {
-            $uiq = decbin(rand(1000000, 9999999) * (rand(100, 999) . rand(100, 999) . rand(100, 999) . rand(100, 999)));
+            $uiq = decbin(rand(1000000, 9999999) * (rand(100, 999).rand(100, 999).rand(100, 999).rand(100, 999)));
         }
         return hash('sha256', bin2hex($uiq));
     }
@@ -1292,7 +1292,7 @@ class UserManagement extends Survey_Common_Action
     {
         do {
             $rand = $this->getRandomString();
-            $username = $prefix . '_' . substr($rand, rand(0, strlen($rand) - 6), 4);
+            $username = $prefix.'_'.substr($rand, rand(0, strlen($rand) - 6), 4);
             $oUser = User::model()->findByAttributes(['users_name' => $username]);
         } while ($oUser != null);
         return $username;
@@ -1338,7 +1338,7 @@ class UserManagement extends Survey_Common_Action
             $oPermission->permission = $sPermissionKey;
 
             foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
-                $oPermissionDBSettingKey = $sSettingKey . '_p';
+                $oPermissionDBSettingKey = $sSettingKey.'_p';
                 $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
             }
 
@@ -1403,7 +1403,7 @@ class UserManagement extends Survey_Common_Action
         $check = [];
         foreach ($permissionTemplate as $permission) {
             $oPermission = new Permission();
-            array_walk($permission, function ($val, $key) use (&$oPermission) {
+            array_walk($permission, function($val, $key) use (&$oPermission) {
                 $oPermission->$key = $val;
             });
             $check[$permission['permission']] = $oPermission->save(false);
@@ -1425,13 +1425,13 @@ class UserManagement extends Survey_Common_Action
         $permissionTemplate = []; //PermissionTemplates::getPermissionTemplateBlock($permissionclass, $oUser->uid);
         $check = [];
         foreach ($permissionTemplate as $permission) {
-            array_walk($entity_ids, function ($entity_id) use ($permission, &$check) {
+            array_walk($entity_ids, function($entity_id) use ($permission, &$check) {
                 $oPermission = new Permission();
                 $permission['entity_id'] = $entity_id;
-                array_walk($permission, function ($val, $key) use (&$oPermission) {
+                array_walk($permission, function($val, $key) use (&$oPermission) {
                     $oPermission->$key = $val;
                 });
-                $check[$permission['permission'] . '/' . $entity_id] = $oPermission->save(false);
+                $check[$permission['permission'].'/'.$entity_id] = $oPermission->save(false);
             });
         }
         return $check;

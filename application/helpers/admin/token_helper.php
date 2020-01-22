@@ -22,7 +22,7 @@
 */
 function emailTokens($iSurveyID, $aResultTokens, $sType)
 {
-    if(!in_array($sType,['invite','remind','register','confirm'])) {
+    if (!in_array($sType, ['invite', 'remind', 'register', 'confirm'])) {
         throw new Exception('Invalid email type');
     }
     $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -34,7 +34,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     foreach ($aResultTokens as $aTokenRow) {
         $mail = \LimeMailer::getInstance();
         $mail->setToken($aTokenRow['token']);
-        $mail->setTypeWithRaw($sType,$aTokenRow['language']);
+        $mail->setTypeWithRaw($sType, $aTokenRow['language']);
 
         if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
@@ -54,7 +54,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
             );
             break 1;
         }
-        if($mail->sendMessage()) {
+        if ($mail->sendMessage()) {
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);
             if ($sType == 'invite' || $sType == 'register') {
                 $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));

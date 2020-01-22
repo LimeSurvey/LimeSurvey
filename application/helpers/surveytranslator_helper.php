@@ -475,7 +475,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ms']['radixpoint'] = 0;    
     
     // Malayalam
-    $supportedLanguages['ml']['description'] =  gT('Malayalam');
+    $supportedLanguages['ml']['description'] = gT('Malayalam');
     $supportedLanguages['ml']['nativedescription'] = 'Malay&#257;&#7735;a&#7745;';
     $supportedLanguages['ml']['rtl'] = false;
     $supportedLanguages['ml']['dateformat'] = 2;
@@ -509,7 +509,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['cnr']['rtl'] = false;
     $supportedLanguages['cnr']['dateformat'] = 4;
     $supportedLanguages['cnr']['radixpoint'] = 1;
-    $supportedLanguages['cnr']['cldr'] ='sr_Latn_ME';
+    $supportedLanguages['cnr']['cldr'] = 'sr_Latn_ME';
     
 
     // Myanmar / Burmese

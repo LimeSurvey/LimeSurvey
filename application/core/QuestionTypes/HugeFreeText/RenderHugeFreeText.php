@@ -43,7 +43,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
 
         $drows = $this->setDefaultIfEmpty(
             $this->getQuestionAttribute('display_rows'), 
-            ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
+            ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT ? 4 : 30)
         );
 
         if ($this->oQuestion->survey->nokeyboard == 'Y') {
@@ -70,8 +70,8 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             $extraclass .= " ls-input-sized";
         }
 
-        if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
-            $placeholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+        if (trim($this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
+            $placeholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         }
 
         $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(

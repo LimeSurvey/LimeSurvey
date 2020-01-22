@@ -139,16 +139,16 @@ class LSYii_Validators extends CValidator
         $max = $config->get('HTML.MaxImgLength');
         if ($def) {
             $def->addElement(
-                'video',   // name
-                'Inline',  // content set
+                'video', // name
+                'Inline', // content set
                 'Flow', // allowed children
                 'Common', // attribute collection
                 array( // attributes
                     'src' => 'URI',
                     'id' => 'Text',
                     'poster' => 'Text',
-                    'width' => 'Pixels#' . $max,
-                    'height' => 'Pixels#' . $max,
+                    'width' => 'Pixels#'.$max,
+                    'height' => 'Pixels#'.$max,
                     'controls' => 'Bool#controls',
                     'autobuffer' => 'Bool#autobuffer',
                     'autoplay' => 'Bool#autoplay',
@@ -157,8 +157,8 @@ class LSYii_Validators extends CValidator
                 )
             );
             $def->addElement(
-                'source',   // name
-                'Inline',  // content set
+                'source', // name
+                'Inline', // content set
                 'Empty', // allowed children
                 null, // attribute collection
                 array( // attributes

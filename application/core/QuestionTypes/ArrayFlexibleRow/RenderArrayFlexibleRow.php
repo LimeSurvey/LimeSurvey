@@ -36,7 +36,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
     public $sCoreClass = "ls-answers subquestion-list questions-list";
 
-    public function __construct($aFieldArray, $bRenderDirect = false) {
+    public function __construct($aFieldArray, $bRenderDirect = false)
+    {
         parent::__construct($aFieldArray, $bRenderDirect);
 
         $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
@@ -66,7 +67,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->setSubquestions();
         $this->setAnsweroptions();
 
-        $iCount = array_reduce($this->aSubQuestions[0], function ($combined, $oSubQuestions) {
+        $iCount = array_reduce($this->aSubQuestions[0], function($combined, $oSubQuestions) {
             if (preg_match("/^[^|]+\|[^|]+$/", $oSubQuestions->questionL10ns[$this->sLanguage]->question)) {
                 $combined++;
             }
@@ -77,11 +78,11 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->rightExists = ($iCount > 0);
 
         $this->answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), 33);
-        $this->defaultWidth = ($this->answerwidth===33);
+        $this->defaultWidth = ($this->answerwidth === 33);
         
         $this->columnswidth = 100 - $this->answerwidth;
 
-        if($this->rightExists) {
+        if ($this->rightExists) {
         /* put the right answer to same width : take place in answer width only if it's not default */
             if ($this->defaultWidth) {
                 $this->columnswidth -= $this->answerwidth;
@@ -89,7 +90,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $this->answerwidth = $this->answerwidth / 2;
             }
         }
-        if($this->getQuestionCount() > 0) {
+        if ($this->getQuestionCount() > 0) {
             $this->cellwidth = round(($this->columnswidth / $this->getQuestionCount()), 1);
         }
         $this->setHeaders();
@@ -103,14 +104,14 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             : '/survey/questions/answer/arrays/array/no_dropdown';
     }
 
-    public function setHeaders(){
+    public function setHeaders() {
         $sHeader = '';
-        if($this->bUseDropdownLayout) {
-            $this->sHeaders =  $sHeader;
+        if ($this->bUseDropdownLayout) {
+            $this->sHeaders = $sHeader;
             return;
         }
 
-        $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+        $sHeader .= Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/rows/cells/header_information', 
             [
                 'class'   => '',
@@ -119,7 +120,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         );
 
         foreach ($this->aAnswerOptions[0] as $oAnswer) {
-            $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+            $sHeader .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView().'/rows/cells/header_answer', 
                 [
                     'class'   => "answer-text",
@@ -129,7 +130,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         }
 
         if ($this->rightExists) {
-            $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+            $sHeader .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView().'/rows/cells/header_information', 
                 [
                     'class'   => '',
@@ -140,7 +141,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
         if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
             //Question is not mandatory and we can show "no answer"
-            $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+            $sHeader .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView().'/rows/cells/header_answer', 
                 [
                     'class'   => 'answer-text noanswer-text',
@@ -149,10 +150,11 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             );
         }
 
-        $this->sHeaders =  $sHeader;
+        $this->sHeaders = $sHeader;
     }
 
-    public function getDropdownRows() {
+    public function getDropdownRows()
+    {
         
         // $labels[] = array(
         //     'code'   => $aAnswer->code,
@@ -344,7 +346,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
        
         $answer = '';
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'anscount'   => $this->getQuestionCount(),
             'aRows'      => $this->getRows(),
             'aColumns'   => $this->getColumns(),
@@ -361,7 +363,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     }
 
     
-    protected function getAnswerCount($iScaleId=0)
+    protected function getAnswerCount($iScaleId = 0)
     {
         // Getting answerrcount
         $anscount  = count($this->aAnswerOptions[0]);

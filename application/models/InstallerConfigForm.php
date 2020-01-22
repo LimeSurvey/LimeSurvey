@@ -259,7 +259,8 @@ class InstallerConfigForm extends CFormModel
      * Memory limit in MB
      * @return float|int
      */
-    public function getMemoryLimit() {
+    public function getMemoryLimit()
+    {
         return convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024;
     }
 
@@ -283,7 +284,8 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return mixed
      */
-    public function getSupportedDbTypes(){
+    public function getSupportedDbTypes()
+    {
         foreach (CDbConnection::getAvailableDrivers() as $driver) {
             if (isset($this->db_names[$driver])) {
                 $result[$driver] = $this->db_names[$driver];
@@ -293,7 +295,8 @@ class InstallerConfigForm extends CFormModel
         return $result;
     }
 
-    private function setInitialEngine() {
+    private function setInitialEngine()
+    {
         if (isset($this->supportedDbTypes[self::DB_TYPE_MYSQL])) {
             if (getenv('DBENGINE')) {
                 $this->dbengine = getenv('DBENGINE');
@@ -306,21 +309,24 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return bool
      */
-    public function getIsConfigDirWriteable() {
+    public function getIsConfigDirWriteable()
+    {
         return is_writable(Yii::app()->getConfig('rootdir').'/application/config');
     }
 
     /**
      * @return bool
      */
-    public function getIsTmpDirWriteable() {
+    public function getIsTmpDirWriteable()
+    {
         return self::is_writable_recursive(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR);
     }
 
     /**
      * @return bool
      */
-    public function getIsUploadDirWriteable() {
+    public function getIsUploadDirWriteable()
+    {
         return self::is_writable_recursive(Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR);
     }
 
@@ -347,7 +353,8 @@ class InstallerConfigForm extends CFormModel
         return true;
     }
 
-    public function isInnoDbLargeFilePrefixEnabled() {
+    public function isInnoDbLargeFilePrefixEnabled()
+    {
         return $this->getMySqlConfigValue('innodb_large_prefix') == '1';
     }
 
@@ -371,7 +378,8 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return bool
      */
-    private function isInnoDbBarracudaFileFormat() {
+    private function isInnoDbBarracudaFileFormat()
+    {
         $check1 = $this->getMySqlConfigValue('innodb_file_format') == 'Barracuda';
         $check2 = $this->getMySqlConfigValue('innodb_file_format_max') == 'Barracuda';
         return $check1 && $check2;
@@ -380,7 +388,8 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return array
      */
-    public function getDbEngines() {
+    public function getDbEngines()
+    {
         return [
             self::ENGINE_TYPE_MYISAM => Yii::t('app', 'MyISAM'),
             self::ENGINE_TYPE_INNODB => Yii::t('app', 'InnoDB'),
@@ -412,8 +421,8 @@ class InstallerConfigForm extends CFormModel
             if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
                 $this->db->emulatePrepare = true;
             }
-            if (in_array($this->dbtype, [ self::DB_TYPE_SQLSRV, self::DB_TYPE_DBLIB, self::DB_TYPE_MSSQL])) {
-                $this->db->initSQLs=['SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'];
+            if (in_array($this->dbtype, [self::DB_TYPE_SQLSRV, self::DB_TYPE_DBLIB, self::DB_TYPE_MSSQL])) {
+                $this->db->initSQLs = ['SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'];
             }
             
             $this->db->tablePrefix = $this->dbprefix;
@@ -445,7 +454,8 @@ class InstallerConfigForm extends CFormModel
      * @param string $dbEngine
      * @throws CDbException
      */
-    private function setMySQLDefaultEngine($dbEngine) {
+    private function setMySQLDefaultEngine($dbEngine)
+    {
         if (!empty($this->db) && $this->db->driverName === self::DB_TYPE_MYSQL) {
             $this->db
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
@@ -486,7 +496,8 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return string
      */
-    private function getMysqlDsn() {
+    private function getMysqlDsn()
+    {
 
         $port = $this->getDbPort();
 
@@ -526,7 +537,8 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return string
      */
-    private function getMssqlDsn() {
+    private function getMssqlDsn()
+    {
         $port = $this->getDbPort();
         $sDatabaseLocation = $this->dblocation;
         if ($port != '') {
@@ -572,14 +584,16 @@ class InstallerConfigForm extends CFormModel
     /**
      * @return bool
      */
-    public function getIsMysql() {
+    public function getIsMysql()
+    {
         return in_array($this->dbtype, [self::DB_TYPE_MYSQL, self::DB_TYPE_MYSQLI]);
     }
 
     /**
      * @return bool
      */
-    public function getIsMSSql() {
+    public function getIsMSSql()
+    {
         return in_array($this->dbtype, [self::DB_TYPE_MSSQL, self::DB_TYPE_DBLIB, self::DB_TYPE_SQLSRV]);
     }
 
@@ -587,13 +601,14 @@ class InstallerConfigForm extends CFormModel
      * @return bool
      * @throws Exception
      */
-    public function createDatabase() {
+    public function createDatabase()
+    {
         $query = $this->createDbQuery();
         try {
             $this->db->createCommand($query)->execute();
         } catch (Exception $e) {
             throw new Exception(
-                'Could not create database: ' . $query . '. Please check your credentials.'
+                'Could not create database: '.$query.'. Please check your credentials.'
             );
         }
 

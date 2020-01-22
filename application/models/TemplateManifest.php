@@ -75,11 +75,11 @@ class TemplateManifest extends TemplateConfiguration
 
         $oEvent = new PluginEvent('getValidScreenFiles');
         $oEvent->set('type', $sType);
-        $oEvent->set('screen',$sScreen);
+        $oEvent->set('screen', $sScreen);
         //$oEvent->set('files',$aScreenFiles); // Not needed since we have remove and add event
         App()->getPluginManager()->dispatchEvent($oEvent);
         $aScreenFiles = array_values(array_diff($aScreenFiles, (array) $oEvent->get('remove')));
-        $aScreenFiles = array_merge($aScreenFiles, (array)$oEvent->get('add'));
+        $aScreenFiles = array_merge($aScreenFiles, (array) $oEvent->get('add'));
         $aScreenFiles = array_unique($aScreenFiles);
         return $aScreenFiles;
     }
@@ -90,10 +90,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getScreensDetails()
     {
-      $aContent = array();
+        $aContent = array();
 
-      $oScreensFromXML = $this->templateEditor->xpath('//screens');
-      foreach ($oScreensFromXML[0] as $sScreen => $oScreen){
+        $oScreensFromXML = $this->templateEditor->xpath('//screens');
+        foreach ($oScreensFromXML[0] as $sScreen => $oScreen){
 
         // We reset LayoutName and FileName at each loop to avoid errors
         $sLayoutName = "";
@@ -103,35 +103,35 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($oScreen as $sKey => $oField){
 
             if ($oField->attributes()->role == "layout") {
-              $sLayoutName  = (string) $oField;
+                $sLayoutName  = (string) $oField;
             }
 
             if ($oField->attributes()->role == "content") {
-              $sFile  = (string) $oField;
+                $sFile  = (string) $oField;
 
-              // From command line, we need to remove the full path for content. It's inside the layout. This could be an option
-              $aFile     = explode("/", $sFile);
-              $aFileName = explode(".", end($aFile));
-              $sContent = $aFileName[0];
+                // From command line, we need to remove the full path for content. It's inside the layout. This could be an option
+                $aFile     = explode("/", $sFile);
+                $aFileName = explode(".", end($aFile));
+                $sContent = $aFileName[0];
             }
 
             if ($oField->attributes()->role == "title") {
-              $sTitle  = (string) $oField;
+                $sTitle  = (string) $oField;
 
-              if ($oField->attributes()->twig == "on") {
+                if ($oField->attributes()->twig == "on") {
                 $sTitle = Yii::app()->twigRenderer->convertTwigToHtml($sTitle);
-              }
+                }
             }
 
         }
 
         if (!empty ($sLayoutName)){
-          $aContent[$sScreen]['title'] = $sTitle;
-          $aContent[$sScreen]['layouts'][$sLayoutName] = $sContent;
+            $aContent[$sScreen]['title'] = $sTitle;
+            $aContent[$sScreen]['layouts'][$sLayoutName] = $sContent;
         }
-      }
+        }
 
-      return $aContent;
+        return $aContent;
     }
 
     /**
@@ -142,44 +142,44 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getScreensList()
     {
-      $aScreenList = $this->getScreensDetails();
-      $aScreens = array();
+        $aScreenList = $this->getScreensDetails();
+        $aScreens = array();
 
-      foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
+        foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
         $aScreens[$sScreenName] = $aTitleAndLayouts['title'];
-      }
-
-      // We check there is at least one screen title in the array. Else, the theme manifest is outdated, so we use the default values
-      $bEmptyTitles = true;
-      foreach($aScreens as $sScreenName => $sTitle){
-        if (!empty($sTitle)){
-          $bEmptyTitles = false;
-          break;
         }
-      }
 
-      if ($bEmptyTitles){
-          if(YII_DEBUG){
+        // We check there is at least one screen title in the array. Else, the theme manifest is outdated, so we use the default values
+        $bEmptyTitles = true;
+        foreach($aScreens as $sScreenName => $sTitle){
+        if (!empty($sTitle)){
+            $bEmptyTitles = false;
+            break;
+        }
+        }
+
+        if ($bEmptyTitles){
+            if(YII_DEBUG){
             Yii::app()->setFlashMessage("Your theme does not implement screen definition in XML. Using the default ones <br> this message will not appear when debug mode is off", 'error');
-          }
+            }
 
-          $aScreens['welcome']         = gT('Welcome', 'unescaped');
-          $aScreens['question']        = gT('Question', 'unescaped');
-          $aScreens['completed']       = gT('Completed', 'unescaped');
-          $aScreens['clearall']        = gT('Clear all', 'unescaped');
-          $aScreens['load']            = gT('Load', 'unescaped');
-          $aScreens['save']            = gT('Save', 'unescaped');
-          $aScreens['surveylist']      = gT('Survey list', 'unescaped');
-          $aScreens['error']           = gT('Error', 'unescaped');
-          $aScreens['assessments']     = gT('Assessments', 'unescaped');
-          $aScreens['register']        = gT('Registration', 'unescaped');
-          $aScreens['printanswers']    = gT('Print answers', 'unescaped');
-          $aScreens['pdf']             = gT('PDF', 'unescaped');
-          $aScreens['navigation']      = gT('Navigation', 'unescaped');
-          $aScreens['misc']            = gT('Miscellaneous files', 'unescaped');
-      }
+            $aScreens['welcome']         = gT('Welcome', 'unescaped');
+            $aScreens['question']        = gT('Question', 'unescaped');
+            $aScreens['completed']       = gT('Completed', 'unescaped');
+            $aScreens['clearall']        = gT('Clear all', 'unescaped');
+            $aScreens['load']            = gT('Load', 'unescaped');
+            $aScreens['save']            = gT('Save', 'unescaped');
+            $aScreens['surveylist']      = gT('Survey list', 'unescaped');
+            $aScreens['error']           = gT('Error', 'unescaped');
+            $aScreens['assessments']     = gT('Assessments', 'unescaped');
+            $aScreens['register']        = gT('Registration', 'unescaped');
+            $aScreens['printanswers']    = gT('Print answers', 'unescaped');
+            $aScreens['pdf']             = gT('PDF', 'unescaped');
+            $aScreens['navigation']      = gT('Navigation', 'unescaped');
+            $aScreens['misc']            = gT('Miscellaneous files', 'unescaped');
+        }
 
-      return $aScreens;
+        return $aScreens;
 
     }
 
@@ -191,29 +191,29 @@ class TemplateManifest extends TemplateConfiguration
     public function getDefaultDataForRendering($thissurvey=array())
     {
 
-      $thissurvey    = empty($thissurvey)?$this->getDefaultCoreDataForRendering():$thissurvey;
+        $thissurvey    = empty($thissurvey)?$this->getDefaultCoreDataForRendering():$thissurvey;
 
-      $thissurvey = $this->getDefaultDataForRenderingFromXml($thissurvey);
+        $thissurvey = $this->getDefaultDataForRenderingFromXml($thissurvey);
 
-      //$thissurvey['alanguageChanger'] = $this->getDefaultDataForLanguageChanger();
+        //$thissurvey['alanguageChanger'] = $this->getDefaultDataForLanguageChanger();
 
-      // Redundant values
-      $thissurvey['surveyls_title'] = $thissurvey['name'];
-      $thissurvey['surveyls_description'] = $thissurvey['description'];
-      $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
+        // Redundant values
+        $thissurvey['surveyls_title'] = $thissurvey['name'];
+        $thissurvey['surveyls_description'] = $thissurvey['description'];
+        $thissurvey['surveyls_welcometext'] = $thissurvey['welcome'];
 
-      return $thissurvey;
+        return $thissurvey;
     }
 
 
     public function getDefaultDataForLanguageChanger($thissurvey=array())
     {
 
-      $thissurvey    = empty($thissurvey)?array():$thissurvey;
-      $oDataFromXML = $this->templateEditor->default_data->xpath('//survey_data');
+        $thissurvey    = empty($thissurvey)?array():$thissurvey;
+        $oDataFromXML = $this->templateEditor->default_data->xpath('//survey_data');
 
 
-      $thissurvey['alanguageChanger']['datas'] = [
+        $thissurvey['alanguageChanger']['datas'] = [
                     'sSelected' => 'en',
                     //'withForm' => true,  // Set to true for no-js functionality.
                     'aListLang' => [
@@ -225,9 +225,9 @@ class TemplateManifest extends TemplateConfiguration
 
     }
 
-    public function getDefaultDataForRenderingFromXml($thissurvey=array())
+    public function getDefaultDataForRenderingFromXml($thissurvey = array())
     {
-        $thissurvey    = empty($thissurvey)?array():$thissurvey;
+        $thissurvey = empty($thissurvey) ? array() : $thissurvey;
 
         if (empty($this->templateEditor)) {
             return $thissurvey;
@@ -235,7 +235,7 @@ class TemplateManifest extends TemplateConfiguration
 
         $thissurvey = $this->parseDefaultData('survey', $thissurvey);
         $thissurvey['aGroups'][1] = $this->parseDefaultData('group', $thissurvey['aGroups'][1]);
-        $thissurvey['aGroups'][1]["aQuestions"][1] = $this->parseDefaultData('question_1', $thissurvey['aGroups'][1]["aQuestions"][1]) ;
+        $thissurvey['aGroups'][1]["aQuestions"][1] = $this->parseDefaultData('question_1', $thissurvey['aGroups'][1]["aQuestions"][1]);
         $thissurvey['aGroups'][1]["aQuestions"][2] = $this->parseDefaultData('question_2', $thissurvey['aGroups'][1]["aQuestions"][2]);
         $thissurvey['aAssessments']["datas"]["total"][0] = $this->parseDefaultData('assessments', $thissurvey['aAssessments']["datas"]["total"][0]);
 
@@ -246,7 +246,7 @@ class TemplateManifest extends TemplateConfiguration
          * Where custom variable value can't be an array.
          * TODO: for LS5, refactor all the twig views and theme editor so we use only this convetion.
          * Eg: don't use arrays like $thissurvey['aAssessments']["datas"]["total"][0] or $thissurvey['aGroups'][1]["aQuestions"][1]
-        */
+         */
         $thissurvey = $this->getCustomScreenData($thissurvey);
 
         return $thissurvey;
@@ -258,41 +258,41 @@ class TemplateManifest extends TemplateConfiguration
      */
     protected function getCustomScreenData($thissurvey = array())
     {
-      $oDataFromXML = $this->templateEditor->xpath("//default_data"); //
+        $oDataFromXML = $this->templateEditor->xpath("//default_data"); //
 
-      foreach( $oDataFromXML[0] as $sScreenName => $oData){
+        foreach( $oDataFromXML[0] as $sScreenName => $oData){
         if ($oData->attributes()->type == "custom"){
-          $sArrayName = (string) $oData->attributes()->arrayName;
-          $thissurvey[$sArrayName] = array();
-          $thissurvey[$sArrayName] = $this->parseDefaultData($sScreenName, $thissurvey[$sArrayName]);
+            $sArrayName = (string) $oData->attributes()->arrayName;
+            $thissurvey[$sArrayName] = array();
+            $thissurvey[$sArrayName] = $this->parseDefaultData($sScreenName, $thissurvey[$sArrayName]);
         }
-      }
+        }
 
-      return $thissurvey;
+        return $thissurvey;
     }
 
 
     protected function parseDefaultData($sXpath, $aArrayToFeed)
     {
 
-      $oDataFromXML = $this->templateEditor->default_data->xpath('//'.$sXpath);
-      $oDataFromXML = end($oDataFromXML);
+        $oDataFromXML = $this->templateEditor->default_data->xpath('//'.$sXpath);
+        $oDataFromXML = end($oDataFromXML);
 
-      foreach( $oDataFromXML as $sKey => $oData){
+        foreach( $oDataFromXML as $sKey => $oData){
 
         if (!empty($sKey)){
 
-          $sData = (string) $oData;
+            $sData = (string) $oData;
 
-          if ($oData->attributes()->twig == "on") {
+            if ($oData->attributes()->twig == "on") {
             $sData = Yii::app()->twigRenderer->convertTwigToHtml($sData);
-          }
+            }
 
-          $aArrayToFeed[$sKey] = $sData;
+            $aArrayToFeed[$sKey] = $sData;
         }
-      }
+        }
 
-      return $aArrayToFeed;
+        return $aArrayToFeed;
     }
 
     /**
@@ -304,14 +304,14 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getTwigStrings($items = array())
     {
-      $oDataFromXML = $this->config;
-      $oElements = $oDataFromXML->xpath('//*[@twig="on"]');
+        $oDataFromXML = $this->config;
+        $oElements = $oDataFromXML->xpath('//*[@twig="on"]');
 
-      foreach($oElements as $key => $oELement){
+        foreach($oElements as $key => $oELement){
         $items[] = (string) $oELement;
-      }
+        }
 
-      return $items;
+        return $items;
     }
 
     /**
@@ -397,7 +397,7 @@ class TemplateManifest extends TemplateConfiguration
 
         // If called from command line to generate Twig temp, renderPartial doesn't exist in ConsoleApplication
         if (method_exists ( Yii::app()->getController() , 'renderPartial' ) ){
-          $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
+            $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array(), true);
         }
         $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
         $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = gT("This is some helpful text.");
@@ -407,7 +407,7 @@ class TemplateManifest extends TemplateConfiguration
         $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
         $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
         if (method_exists ( Yii::app()->getController() , 'renderPartial' ) ){
-          $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
+            $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = Yii::app()->getController()->renderPartial('/admin/themes/templateeditor_question_answer_view', array('alt' => true), true);
         }
         $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
         $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = gT("This is some helpful text.");
@@ -638,12 +638,12 @@ class TemplateManifest extends TemplateConfiguration
     public function getTemplateURL()
     {
 
-      // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
-      if (Template::isStandardTemplate($this->sTemplateName)) {
-          return Yii::app()->getConfig("standardthemerooturl").'/'.$this->sTemplateName.'/';
-      } else {
-          return  Yii::app()->getConfig("userthemerooturl").'/'.$this->sTemplateName.'/';
-      }
+        // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+        if (Template::isStandardTemplate($this->sTemplateName)) {
+            return Yii::app()->getConfig("standardthemerooturl").'/'.$this->sTemplateName.'/';
+        } else {
+            return  Yii::app()->getConfig("userthemerooturl").'/'.$this->sTemplateName.'/';
+        }
 
     //    return Template::getTemplateURL($this->sTemplateName);
     }
@@ -651,8 +651,8 @@ class TemplateManifest extends TemplateConfiguration
 
     public function getButtons()
     {
-        $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->sTemplateName));
-        $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
+        $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->sTemplateName));
+        $sDeleteUrl = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
 
 
         // TODO: load to DB
@@ -666,7 +666,7 @@ class TemplateManifest extends TemplateConfiguration
 
             //
 
-        $sLoadLink = CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+        $sLoadLink = CHtml::form(array("/admin/themeoptions/sa/importmanifest/"), 'post', array('id'=>'frmínstalltheme', 'name'=>'frmínstalltheme')).
                 "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
                 <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>
@@ -679,7 +679,7 @@ class TemplateManifest extends TemplateConfiguration
         $sDeleteLink = '';
         // We don't want user to be able to delete standard theme. Must be done via ftp (advanced users only)
         if(Permission::model()->hasGlobalPermission('templates','delete') && !Template::isStandardTemplate($this->sTemplateName) ){
-          $sDeleteLink = '<a
+            $sDeleteLink = '<a
               id="template_delete_link_'.$this->sTemplateName.'"
               href="'.$sDeleteUrl.'"
               data-post=\'{ "templatename": "'.$this->sTemplateName.'" }\'
@@ -689,9 +689,9 @@ class TemplateManifest extends TemplateConfiguration
                   <span class="fa fa-trash "></span>
                   '.gT('Delete').'
                   </a>';
-      }
+        }
 
-      return $sEditorLink.$sLoadLink.$sDeleteLink;
+        return $sEditorLink.$sLoadLink.$sDeleteLink;
 
     }
 
@@ -753,9 +753,9 @@ class TemplateManifest extends TemplateConfiguration
      * @param $xml SimpleXMLElement
      * @return boolean true on success
      */
-    public static function importManifestLss($iSurveyId = 0, $xml =null)
+    public static function importManifestLss($iSurveyId = 0, $xml = null)
     {
-        if ((int)$iSurveyId > 0 && !empty($xml)){
+        if ((int) $iSurveyId > 0 && !empty($xml)) {
             $oTemplateConfiguration = new TemplateConfiguration;
             $oTemplateConfiguration->setToInherit();
 
@@ -765,11 +765,11 @@ class TemplateManifest extends TemplateConfiguration
             $oTemplateConfiguration->template_name = $xml->template_name->__toString();
             $oTemplateConfiguration->sid = $iSurveyId;
 
-            if (isAssociativeArray((array)$xml->config->options)){
-                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+            if (isAssociativeArray((array) $xml->config->options)) {
+                $oTemplateConfiguration->options = TemplateConfig::formatToJsonArray($xml->config->options);
             }
 
-            if ($oTemplateConfiguration->save()){
+            if ($oTemplateConfiguration->save()) {
                 return true;
             }
         }
@@ -1021,11 +1021,11 @@ class TemplateManifest extends TemplateConfiguration
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
             if (!$this->iSurveyId) {
-                \SettingGlobal::setSetting('defaulttheme',Yii::app()->getConfig('defaultfixedtheme'));
+                \SettingGlobal::setSetting('defaulttheme', Yii::app()->getConfig('defaultfixedtheme'));
                 /* @todo ? : check if installed, install if not */
             }
             $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
-            if(Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+            if (Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
                 $this->isStandard    = true;
                 $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             } else {
@@ -1091,14 +1091,14 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Get showpopups value from config or template configuration
      */
-    public function getshowpopups(){
-        $config = (int)Yii::app()->getConfig('showpopups');
-        if ($config == 2){
-            if (isset($this->oOptions->showpopups)){
-                $this->showpopups = (int)$this->oOptions->showpopups;
+    public function getshowpopups() {
+        $config = (int) Yii::app()->getConfig('showpopups');
+        if ($config == 2) {
+            if (isset($this->oOptions->showpopups)) {
+                $this->showpopups = (int) $this->oOptions->showpopups;
             } else {
-               $this->showpopups = 1;
-           }
+                $this->showpopups = 1;
+            }
         } else {
             $this->showpopups = $config;
         }
@@ -1186,10 +1186,10 @@ class TemplateManifest extends TemplateConfiguration
     protected function setMotherTemplates()
     {
         if (isset($this->config->metadata->extends)) {
-            $sMotherTemplateName   = (string) $this->config->metadata->extends;
-            if (!empty($sMotherTemplateName)){
+            $sMotherTemplateName = (string) $this->config->metadata->extends;
+            if (!empty($sMotherTemplateName)) {
 
-                $instance= Template::getTemplateConfiguration($sMotherTemplateName, null, null, true);
+                $instance = Template::getTemplateConfiguration($sMotherTemplateName, null, null, true);
                 $instance->prepareTemplateRendering($sMotherTemplateName);
                 $this->oMotherTemplate = $instance; // $instance->prepareTemplateRendering($sMotherTemplateName, null);
             }
@@ -1252,7 +1252,7 @@ class TemplateManifest extends TemplateConfiguration
                 );
             }
             if (!empty($packageActionFromEngineSection->remove)) {
-                $this->packages =  array_diff($this->packages, $packageActionFromEngineSection->remove);
+                $this->packages = array_diff($this->packages, $packageActionFromEngineSection->remove);
             }
         }
         $this->depends = array_merge($this->depends, $this->packages);
@@ -1341,7 +1341,7 @@ class TemplateManifest extends TemplateConfiguration
 
         while (!empty($oRTemplate->oMotherTemplate)) {
 
-            $sTemplateNames .= ' ' . $oRTemplate->config->metadata->extends;
+            $sTemplateNames .= ' '.$oRTemplate->config->metadata->extends;
             $oRTemplate      = $oRTemplate->oMotherTemplate;
             if (!($oRTemplate instanceof TemplateConfiguration)) {
                 // Throw alert: should not happen
@@ -1355,29 +1355,29 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Get options_page value from template configuration
      */
-    public static function getOptionAttributes($path){
+    public static function getOptionAttributes($path) {
         libxml_disable_entity_loader(false);
         $file = realpath($path."config.xml");
         if (file_exists($file)) {
-            $sXMLConfigFile        = file_get_contents($file);
+            $sXMLConfigFile = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
             $aOptions['categories'] = array();
             
-            foreach($oXMLConfig->options->children() as $key  => $option){
-                $aOptions['optionAttributes'][$key]['type'] = !empty($option['type']) ? (string)$option['type'] : '';
-                $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';
-                $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string)$option['category'] : gT('Simple options');
-                $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string)$option['width'] : '2';
-                $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string)$option['options'] : '';
-                $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
-                $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
+            foreach ($oXMLConfig->options->children() as $key  => $option) {
+                $aOptions['optionAttributes'][$key]['type'] = !empty($option['type']) ? (string) $option['type'] : '';
+                $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string) $option['title'] : '';
+                $aOptions['optionAttributes'][$key]['category'] = !empty($option['category']) ? (string) $option['category'] : gT('Simple options');
+                $aOptions['optionAttributes'][$key]['width'] = !empty($option['width']) ? (string) $option['width'] : '2';
+                $aOptions['optionAttributes'][$key]['options'] = !empty($option['options']) ? (string) $option['options'] : '';
+                $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string) $option['optionlabels'] : '';
+                $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string) $option['parent'] : '';
 
-                if (!empty($option->dropdownoptions)){
+                if (!empty($option->dropdownoptions)) {
                     $dropdownOptions = '';
-                    if ($key == 'font'){
+                    if ($key == 'font') {
                         $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
                     }
-                    foreach($option->xpath('//options/' . $key . '/dropdownoptions') as $option){
+                    foreach ($option->xpath('//options/'.$key.'/dropdownoptions') as $option) {
                         $dropdownOptions .= $option->asXml();
                     }
 
@@ -1386,19 +1386,19 @@ class TemplateManifest extends TemplateConfiguration
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
 
-                if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])){
+                if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
                 }
             }
 
-            $aOptions['optionsPage'] = !empty((array)$oXMLConfig->engine->optionspage) ? ((array)$oXMLConfig->engine->optionspage)[0] : false;
+            $aOptions['optionsPage'] = !empty((array) $oXMLConfig->engine->optionspage) ? ((array) $oXMLConfig->engine->optionspage)[0] : false;
 
             return $aOptions;
         }
         return false;
     }
 
-    public static function getFontDropdownOptions(){
+    public static function getFontDropdownOptions() {
         $fontOptions = '';
         $fontPackages = App()->getClientScript()->fontPackages;
         $coreFontPackages = $fontPackages['core'];
@@ -1406,31 +1406,31 @@ class TemplateManifest extends TemplateConfiguration
 
         // generate CORE fonts package list
         $i = 0;
-        foreach($coreFontPackages as $coreKey => $corePackage){
-            $i+=1;
-            if ($i === 1){
-                $fontOptions .='<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+        foreach ($coreFontPackages as $coreKey => $corePackage) {
+            $i += 1;
+            if ($i === 1) {
+                $fontOptions .= '<optgroup  label="'.gT("Local Server").' - '.gT("Core").'">';
             }
-            $fontOptions .='<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
+            $fontOptions .= '<option class="font-'.$coreKey.'"     value="'.$coreKey.'"     data-font-package="'.$coreKey.'"      >'.$corePackage['title'].'</option>';
         }
-        if ($i > 0){
-            $fontOptions .='</optgroup>';
+        if ($i > 0) {
+            $fontOptions .= '</optgroup>';
         }
 
         // generate USER fonts package list
         $i = 0;
-        foreach($userFontPackages as $userKey => $userPackage){
-            $i+=1;
-            if ($i === 1){
-                $fontOptions .='<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+        foreach ($userFontPackages as $userKey => $userPackage) {
+            $i += 1;
+            if ($i === 1) {
+                $fontOptions .= '<optgroup  label="'.gT("Local Server").' - '.gT("User").'">';
             }
-            $fontOptions .='<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
+            $fontOptions .= '<option class="font-'.$userKey.'"     value="'.$userKey.'"     data-font-package="'.$userKey.'"      >'.$userPackage['title'].'</option>';
         }
-        if ($i > 0){
-            $fontOptions .='</optgroup>';
+        if ($i > 0) {
+            $fontOptions .= '</optgroup>';
         }
 
-        $fontOptions .='';
+        $fontOptions .= '';
         return $fontOptions;
     }
 
@@ -1444,9 +1444,9 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function __get($name)
     {
-      if ($name=="options"){
+        if ($name=="options"){
         return json_encode( $this->config->options);
-      }
-      return parent::__get($name);
+        }
+        return parent::__get($name);
     }
 }

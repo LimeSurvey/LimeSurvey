@@ -169,10 +169,10 @@ class database extends Survey_Common_Action
 
         if ($defaultvalue == '') {
             // Remove the default value if it is empty
-            if ($dvid !== null){
+            if ($dvid !== null) {
                 DefaultValueL10n::model()->deleteAllByAttributes(array('dvid'=>$dvid, 'language' => $language ));
                 $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
-                if ($iRowCount == 0){
+                if ($iRowCount == 0) {
                     DefaultValue::model()->deleteByPk($dvid);
                 }
             }
@@ -183,17 +183,17 @@ class database extends Survey_Common_Action
                 $oDefaultvalue->attributes = $data;
                 $oDefaultvalue->specialtype = $specialtype;
                 $oDefaultvalue->save();
-                if (!empty($oDefaultvalue->dvid)){
+                if (!empty($oDefaultvalue->dvid)) {
                     $dataL10n = array('dvid'=>$oDefaultvalue->dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
                     $oDefaultvalueL10n = new DefaultValueL10n();
                     $oDefaultvalueL10n->attributes = $dataL10n;
                     $oDefaultvalueL10n->save();
                 }   
             } else {
-                if ($dvid !== null){
+                if ($dvid !== null) {
                     $arDefaultValue->with('defaultValueL10ns');
                     $idL10n = !empty($arDefaultValue->defaultValueL10ns) && array_key_exists($language, $arDefaultValue->defaultValueL10ns) ? $arDefaultValue->defaultValueL10ns[$language]->id : null;
-                    if ($idL10n !== null){
+                    if ($idL10n !== null) {
                         DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
                     } else {
                         $dataL10n = array('dvid'=>$dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
@@ -239,7 +239,7 @@ class database extends Survey_Common_Action
         }
         if ($aQuestionTypeList[$sQuestionType]['subquestions'] > 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                $arQuestions = Question::model()->with('questionL10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
+                $arQuestions = Question::model()->with('questionL10ns', array('condition' => 'language = '.$sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
 
                 for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['subquestions']; $iScaleID++) {
                     foreach ($arQuestions as $aSubquestionrow) {
@@ -353,7 +353,7 @@ class database extends Survey_Common_Action
 
                     Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors, 'error');
                 }
-                if($bAnswerSave) {
+                if ($bAnswerSave) {
                     foreach ($survey->allLanguages as $sLanguage) {
                         $sAnswerText = Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
                         // Fix bug with FCKEditor saving strange BR types
@@ -596,7 +596,7 @@ class database extends Survey_Common_Action
 
 
         /* Check if we need to save QuestionAttribute testing advancedquestionsettings , see mantis #14563 */
-        if(Yii::app()->request->getPost('advancedquestionsettingsLoaded',true)) {
+        if (Yii::app()->request->getPost('advancedquestionsettingsLoaded', true)) {
             // Remove invalid question attributes on saving
             $criteria = new CDbCriteria;
             $criteria->compare('qid', $this->iQuestionID);
@@ -616,7 +616,7 @@ class database extends Survey_Common_Action
             $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
             foreach ($validAttributes as $validAttribute) {
                 /* Readonly attribute : disable save */
-                if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
+                if ($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive())) {
                     continue;
                 }
                 if ($validAttribute['i18n']) {
@@ -677,10 +677,10 @@ class database extends Survey_Common_Action
 
         /* Set the new question attribute with post value to fix it after */
         $fixedQuestionAttributes = array(
-            'preg' => Yii::app()->request->getPost('preg',''),
+            'preg' => Yii::app()->request->getPost('preg', ''),
             'other' => Yii::app()->request->getPost('other'),
             'mandatory' => Yii::app()->request->getPost('mandatory'),
-            'relevance' => Yii::app()->request->getPost('relevance',''),
+            'relevance' => Yii::app()->request->getPost('relevance', ''),
         );
 
         if ($sQuestionType == "!" || $sQuestionType == "L" || $sQuestionType == "M" || $sQuestionType == "P" ||
@@ -691,7 +691,7 @@ class database extends Survey_Common_Action
 
         // For Bootstrap Version using BAD YiiWheels switch only if needed
         // Alt solution : filter_var($fixedQuestionAttributes['mandatory'], FILTER_VALIDATE_BOOLEAN); then on is true and off is false
-        if(!in_array($fixedQuestionAttributes['other'],array('Y','N'))) {
+        if (!in_array($fixedQuestionAttributes['other'], array('Y', 'N'))) {
             $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
         }
 
@@ -1038,13 +1038,13 @@ class database extends Survey_Common_Action
             if ($oSurvey->save()) {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
             } else {
-                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class'=>'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }
         }
         $oSurvey->refresh();
 
         // Url params in json
-        if (Yii::app()->request->getPost('allurlparams',false)!==false) {
+        if (Yii::app()->request->getPost('allurlparams', false) !== false) {
             $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
             SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
             foreach ($aURLParams as $aURLParam) {
@@ -1193,7 +1193,7 @@ class database extends Survey_Common_Action
         if ($oSurvey->save()) {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         } else {
-            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class'=>'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
         }
         Yii::app()->end();
     }
@@ -1353,7 +1353,7 @@ class database extends Survey_Common_Action
 
                     if (returnGlobal('copysubquestions') == 1) {
                         if ($oldQID) {
-                            $oOldQuestion = Question::model()->findByPk( array('qid' => $oldQID));
+                            $oOldQuestion = Question::model()->findByPk(array('qid' => $oldQID));
 
                             // subquestions
                             $aOldNewSubquestions = array(); // track old and new sqid's
@@ -1362,12 +1362,12 @@ class database extends Survey_Common_Action
                                 $aInsertData = $subquestion->attributes;
                                 unset($aInsertData['qid']);
                                 $aInsertData['parent_qid'] = $this->iQuestionID;
-                                if (Question::model()->insertRecords($aInsertData)){
+                                if (Question::model()->insertRecords($aInsertData)) {
                                     $iNewSubquestionId = Yii::app()->db->getLastInsertID();
                                     $aOldNewSubquestions[$subquestion->qid] = $iNewSubquestionId;
 
-                                    if (isset($subquestion->questionL10ns)){
-                                        foreach($subquestion->questionL10ns as $language => $questionL10ns){
+                                    if (isset($subquestion->questionL10ns)) {
+                                        foreach($subquestion->questionL10ns as $language => $questionL10ns) {
                                             $oQuestionLS = new QuestionL10n;
                                             $oQuestionLS->language = $language;
                                             $oQuestionLS->question = $questionL10ns->question;
@@ -1388,8 +1388,8 @@ class database extends Survey_Common_Action
                             $newAnswer->qid = $this->iQuestionID;
                             if ($newAnswer->save()) {
                                 $iNewAnswerId = Yii::app()->db->getLastInsertID();                                 
-                                if (isset($answer->answerL10ns)){
-                                    foreach($answer->answerL10ns as $language => $answerL10ns){
+                                if (isset($answer->answerL10ns)) {
+                                    foreach($answer->answerL10ns as $language => $answerL10ns) {
                                         $oAnswerLS = new AnswerL10n;
                                         $oAnswerLS->language = $language;
                                         $oAnswerLS->answer = $answerL10ns->answer;
@@ -1410,8 +1410,8 @@ class database extends Survey_Common_Action
                             $newDefaultValue->specialtype = $defaultvalue['specialtype'];
                             if ($newDefaultValue->save()) {
                                 $iNewDefaultValueId = Yii::app()->db->getLastInsertID();                                 
-                                if (isset($defaultvalue->defaultValueL10ns)){
-                                    foreach($defaultvalue->defaultValueL10ns as $language => $defaultValueL10ns){
+                                if (isset($defaultvalue->defaultValueL10ns)) {
+                                    foreach($defaultvalue->defaultValueL10ns as $language => $defaultValueL10ns) {
                                         $oDefaultValueLS = new DefaultValueL10n;
                                         $oDefaultValueLS->dvid = $iNewDefaultValueId;
                                         $oDefaultValueLS->language = $language;
@@ -1531,12 +1531,12 @@ class database extends Survey_Common_Action
     private function _resetEM()
     {
         $oSurvey = Survey::model()->findByPk($this->iSurveyID);
-        $oEM =& LimeExpressionManager::singleton();
+        $oEM = & LimeExpressionManager::singleton();
         LimeExpressionManager::SetDirtyFlag(); // UpgradeConditionsToRelevance SetDirtyFlag too
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
-        LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
-        LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-        LimeExpressionManager::StartProcessingPage(true,true);
+        LimeExpressionManager::SetPreviewMode('database'); // Deactivate _UpdateValuesInDatabase
+        LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
+        LimeExpressionManager::StartProcessingPage(true, true);
         $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);

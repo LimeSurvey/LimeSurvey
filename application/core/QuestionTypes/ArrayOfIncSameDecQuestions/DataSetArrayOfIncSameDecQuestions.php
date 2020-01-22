@@ -2,4 +2,6 @@
 
 
 
-class DataSetArrayOfIncSameDecQuestions extends QuestionBaseDataSet {}
+class DataSetArrayOfIncSameDecQuestions extends QuestionBaseDataSet
+{
+}

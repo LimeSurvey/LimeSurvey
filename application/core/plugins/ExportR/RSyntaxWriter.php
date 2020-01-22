@@ -87,7 +87,7 @@ class RSyntaxWriter extends Writer
     {
         $errors = '';
         foreach ($this->headers as $id => $title) {
-            if (!isset($this->customFieldmap[$title])){
+            if (!isset($this->customFieldmap[$title])) {
                 continue;
             }
             $field = $this->customFieldmap[$title];
@@ -151,7 +151,7 @@ class RSyntaxWriter extends Writer
                 $str .= '),labels=c(';
 
                 foreach ($answers as $answer) {
-                    $str .= '"'.addslashes(!empty($answer['value'])?$answer['value']:$answer['code']).'", ';
+                    $str .= '"'.addslashes(!empty($answer['value']) ? $answer['value'] : $answer['code']).'", ';
                 }
 
                 $str = mb_substr($str, 0, -2);

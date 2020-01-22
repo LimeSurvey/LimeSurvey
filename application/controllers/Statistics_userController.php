@@ -62,7 +62,7 @@ class Statistics_userController extends SurveyController
 
         $this->sLanguage = $language;
 
-        $iSurveyID = (int)$survey->sid;
+        $iSurveyID = (int) $survey->sid;
         $this->iSurveyID = $survey->sid;
 
         //$postlang = returnglobal('lang');
@@ -75,7 +75,7 @@ class Statistics_userController extends SurveyController
         if (!isset($iSurveyID)) {
             $iSurveyID = returnGlobal('sid');
         } else {
-            $iSurveyID = (int)$iSurveyID;
+            $iSurveyID = (int) $iSurveyID;
         }
         if (!$iSurveyID) {
             //This next line ensures that the $iSurveyID value is never anything but a number.
@@ -111,11 +111,11 @@ class Statistics_userController extends SurveyController
         //True -> include
         //False -> forget about charts
         if (isset($publicgraphs) && $publicgraphs == 1) {
-            require_once(APPPATH . 'third_party/pchart/pChart.class.php');
-            require_once(APPPATH . 'third_party/pchart/pData.class.php');
-            require_once(APPPATH . 'third_party/pchart/pCache.class.php');
+            require_once(APPPATH.'third_party/pchart/pChart.class.php');
+            require_once(APPPATH.'third_party/pchart/pData.class.php');
+            require_once(APPPATH.'third_party/pchart/pCache.class.php');
 
-            $MyCache = new pCache(Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR);
+            $MyCache = new pCache(Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR);
             //$currentuser is created as prefix for pchart files
             if (isset($_SERVER['REDIRECT_REMOTE_USER'])) {
                 $currentuser = $_SERVER['REDIRECT_REMOTE_USER'];
@@ -164,11 +164,11 @@ class Statistics_userController extends SurveyController
         //number of records for this survey
         $totalrecords = 0;
         //count number of answers
-        $query = "SELECT count(*) FROM " . $survey->responsesTableName;
+        $query = "SELECT count(*) FROM ".$survey->responsesTableName;
         //if incompleted answers should be filtert submitdate has to be not null
         //this setting is taken from config-defaults.php
         if (Yii::app()->getConfig("filterout_incomplete_answers") == true) {
-            $query .= " WHERE " . $survey->responsesTableName . ".submitdate is not null";
+            $query .= " WHERE ".$survey->responsesTableName.".submitdate is not null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
 
@@ -247,7 +247,7 @@ class Statistics_userController extends SurveyController
             //~ $prb->hide();
         }
 
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'statistics_user.js');
         $this->layout = "public";
         $this->render('/statistics_user_view', $data);
 
@@ -274,7 +274,7 @@ class Statistics_userController extends SurveyController
         foreach ($filters as $flt) {
             //SGQ identifier
             $type = $flt['type'];
-            $SGQidentifier = $this->iSurveyID . 'X' . $flt->gid . 'X' . $flt->qid;
+            $SGQidentifier = $this->iSurveyID.'X'.$flt->gid.'X'.$flt->qid;
 
             //let's switch through the question type for each question
             switch ($type) {
@@ -286,7 +286,7 @@ class Statistics_userController extends SurveyController
                         'order'     => 'question_order'
                     ]);
                     foreach ($results as $row) {
-                        $allfields[] = $flt->type . $SGQidentifier . $row->title;
+                        $allfields[] = $flt->type.$SGQidentifier.$row->title;
                     }
                     break;
                 case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
@@ -301,14 +301,14 @@ class Statistics_userController extends SurveyController
                         'order'     => 'question_order'
                     ]);
                     foreach ($results as $row) {
-                        $allfields[] = $SGQidentifier . $row->title;
+                        $allfields[] = $SGQidentifier.$row->title;
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                 case Question::QT_S_SHORT_FREE_TEXT: // Short free text
-                    $allfields = "T" . $SGQidentifier;
+                    $allfields = "T".$SGQidentifier;
                     break;
                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
@@ -324,7 +324,7 @@ class Statistics_userController extends SurveyController
                     ]);
                     foreach ($resultsScale0 as $rowScale0) {
                         foreach ($resultsScale1 as $rowScale1) {
-                            $allfields[] = $SGQidentifier . reset($rowScale0) . "_" . $rowScale1['title'];
+                            $allfields[] = $SGQidentifier.reset($rowScale0)."_".$rowScale1['title'];
                         }
                     }
                     break;
@@ -337,7 +337,7 @@ class Statistics_userController extends SurveyController
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $allfields[] = $flt->type . $SGQidentifier . $i . "-" . strlen($i);
+                        $allfields[] = $flt->type.$SGQidentifier.$i."-".strlen($i);
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
@@ -351,8 +351,8 @@ class Statistics_userController extends SurveyController
                     ]);
                     //loop through answers
                     foreach ($results as $row) {
-                        $allfields[] = $SGQidentifier . $row['title'] . "#0";
-                        $allfields[] = $SGQidentifier . $row['title'] . "#1";
+                        $allfields[] = $SGQidentifier.$row['title']."#0";
+                        $allfields[] = $SGQidentifier.$row['title']."#1";
                     }    //end WHILE -> loop through all answers
                     break;
 
@@ -360,7 +360,7 @@ class Statistics_userController extends SurveyController
                 case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
                 case Question::QT_N_NUMERICAL:  //N - Numerical input
                 case Question::QT_D_DATE:  //D - Date
-                    $allfields[] = $flt->type . $SGQidentifier;
+                    $allfields[] = $flt->type.$SGQidentifier;
                     break;
                 default:   //Default settings
                     $allfields[] = $SGQidentifier;

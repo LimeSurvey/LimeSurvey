@@ -564,7 +564,7 @@ class quotas extends Survey_Common_Action
         } elseif ($aQuestionType == Question::QT_I_LANGUAGE) {
             $slangs = $oSurvey->allLanguages;
 
-            foreach($slangs as $key => $value) {
+            foreach ($slangs as $key => $value) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
                 $aAnswerList[$value] = $tmparrayans;
             }

@@ -2,4 +2,6 @@
 
 
 
-class DataSetArrayYesUncertainNo extends QuestionBaseDataSet {}
+class DataSetArrayYesUncertainNo extends QuestionBaseDataSet
+{
+}

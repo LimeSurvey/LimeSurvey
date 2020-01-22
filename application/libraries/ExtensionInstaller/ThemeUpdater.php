@@ -67,10 +67,10 @@ class ThemeUpdater extends ExtensionUpdater
         $templateDir   = $templateDirs[$this->getExtensionName()];
 
         if (empty($templateDir)) {
-            throw new \Exception('Found no theme dir for theme ' . $templateName);
+            throw new \Exception('Found no theme dir for theme '.$templateName);
         }
 
-        $file = $templateDir . '/config.xml';
+        $file = $templateDir.'/config.xml';
 
         if (!file_exists($file)) {
             throw new \Exception(

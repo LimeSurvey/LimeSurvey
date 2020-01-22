@@ -116,18 +116,18 @@ abstract class Token extends Dynamic
      */
     public function deleteAllByAttributes($attributes, $condition = '', $params = array())
     {
-        $builder=$this->getCommandBuilder();
-        $participantCriteria=$builder->createCriteria($condition,$params);
-        $participantCriteria->select = array('tid','participant_id');
+        $builder = $this->getCommandBuilder();
+        $participantCriteria = $builder->createCriteria($condition, $params);
+        $participantCriteria->select = array('tid', 'participant_id');
         $participantCriteria->addCondition('participant_id is not null');
         $oParticipantToDelete = self::model($this->dynamicId)->findAll($participantCriteria);
         $result = parent::deleteAllByAttributes($attributes, $condition, $params);
-        if($result && !empty($oParticipantToDelete)) {
+        if ($result && !empty($oParticipantToDelete)) {
             /* Get the participant not deleted : we must not delete survey link */
             $oParticipantNotDeleted = self::model($this->dynamicId)->findAll($participantCriteria);
-            $tidToDelete = array_diff(CHtml::listData($oParticipantToDelete,'tid','tid'),CHtml::listData($oParticipantNotDeleted,'tid','tid'));
-            if(!empty($tidToDelete)) {
-                SurveyLink::model()->deleteAllByAttributes(array('token_id'=>$tidToDelete,'survey_id'=>$this->dynamicId));
+            $tidToDelete = array_diff(CHtml::listData($oParticipantToDelete, 'tid', 'tid'), CHtml::listData($oParticipantNotDeleted, 'tid', 'tid'));
+            if (!empty($tidToDelete)) {
+                SurveyLink::model()->deleteAllByAttributes(array('token_id'=>$tidToDelete, 'survey_id'=>$this->dynamicId));
             }
         }
         return $result;
@@ -147,7 +147,7 @@ abstract class Token extends Dynamic
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
             $sCollation = "COLLATE 'utf8mb4_bin'";
-            if(!empty(Yii::app()->getConfig('mysqlEngine'))) {
+            if (!empty(Yii::app()->getConfig('mysqlEngine'))) {
                 $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
             }
         }
@@ -220,7 +220,7 @@ abstract class Token extends Dynamic
      * Generates a token for this object.
      * @throws CHttpException
      */
-    public function generateToken($tokenlength = NULL)
+    public function generateToken($tokenlength = null)
     {
         $iTokenLength = $tokenlength ? $tokenlength : $this->survey->tokenlength;
         $this->token = $this->_generateRandomToken($iTokenLength);
@@ -426,11 +426,11 @@ abstract class Token extends Dynamic
         return $this->getDynamicId();
     }
 
-    public static function getEncryptedAttributes(){
+    public static function getEncryptedAttributes() {
         return self::$aEncryptedAttributes;
     }
 
-    public static function getDefaultEncryptionOptions(){
+    public static function getDefaultEncryptionOptions() {
         $sEncrypted = 'N';
         return array(
                 'enabled' => 'N',

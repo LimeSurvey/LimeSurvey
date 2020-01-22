@@ -36,7 +36,7 @@ class RenderListRadio extends QuestionBaseRenderer
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->sOthertext = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')); // text for 'other'
-        $this->iNbCols   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
+        $this->iNbCols = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
         $this->setAnsweroptions();
 
         if ($this->iNbCols > 1) {
@@ -96,12 +96,12 @@ class RenderListRadio extends QuestionBaseRenderer
             // The column is opened if user set more than one column in question attribute
             // and if this is the first answer row, or if the column has been closed and the row count reset before.
             if ($this->iRowCount == 1) {
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
+                $sRows .= Yii::app()->twigRenderer->renderQuestion(
                         $this->getMainView().'/columns/column_header',
                         array('iColumnWidth' => $this->iColumnWidth),
                         true
                     );
-                $this->bColumnIsOpen  = true; // If a column is not closed, it will be closed at the end of the process
+                $this->bColumnIsOpen = true; // If a column is not closed, it will be closed at the end of the process
             }
         
             ////
@@ -116,14 +116,14 @@ class RenderListRadio extends QuestionBaseRenderer
             // If max answer rows by column is not reached while there is no more answer,
             // the column will remain opened, and it will be closed by 'other' answer row if set or at the end of the process
             if ($this->iRowCount == $this->iMaxRowsByColumn) {
-                $last      = ($iterator == $this->getAnswerCount()) ? true : false; // If this loop count equal to the number of answers, then this answer is the last one.
-                $sRows  .= Yii::app()->twigRenderer->renderQuestion(
+                $last = ($iterator == $this->getAnswerCount()) ? true : false; // If this loop count equal to the number of answers, then this answer is the last one.
+                $sRows .= Yii::app()->twigRenderer->renderQuestion(
                         $this->getMainView().'/columns/column_footer',
                         array('last'=>$last),
                         true
                     );
                 $this->iRowCount = 0;
-                $this->bColumnIsOpen    = false;
+                $this->bColumnIsOpen = false;
             }
         }
 
@@ -189,7 +189,7 @@ class RenderListRadio extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'sRows'     => $this->getRows(),
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
@@ -202,7 +202,7 @@ class RenderListRadio extends QuestionBaseRenderer
     }
 
 
-    protected function getAnswerCount($iScaleId=0)
+    protected function getAnswerCount($iScaleId = 0)
     {
         // Getting answerrcount
         $anscount  = count($this->aAnswerOptions[0]);

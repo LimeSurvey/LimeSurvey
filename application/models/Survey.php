@@ -206,12 +206,12 @@ class Survey extends LSActiveRecord
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
         $this->adminemail = App()->getConfig('siteadminemail');
-        if(!(Yii::app() instanceof CConsoleApplication)) {
+        if (!(Yii::app() instanceof CConsoleApplication)) {
             $iUserid = Permission::getUserId();
-            if($iUserid) {
+            if ($iUserid) {
                 $this->owner_id = $iUserid;
                 $oUser = User::model()->findByPk($iUserid);
-                if($oUser) {
+                if ($oUser) {
                     $this->admin = $oUser->full_name;
                     $this->adminemail = $oUser->email;
                 }
@@ -233,12 +233,12 @@ class Survey extends LSActiveRecord
      * @inheritdoc With allow to delete all related models and data and test Permission.
      * @param bool $recursive
      **/
-    public function delete($recursive=true)
+    public function delete($recursive = true)
     {
         if (!Permission::model()->hasSurveyPermission($this->sid, 'survey', 'delete')) {
             return false;
         }
-        if(!parent::delete()) {
+        if (!parent::delete()) {
             return false;
         }
         if ($recursive) {
@@ -304,7 +304,7 @@ class Survey extends LSActiveRecord
 
                 // delete defaultvalues and defaultvalueL10ns
                 $oDefaultValues = DefaultValue::model()->findAll('qid = :qid', array(':qid' => $aQuestion['qid']));
-                foreach($oDefaultValues as $defaultvalue){
+                foreach ($oDefaultValues as $defaultvalue) {
                     DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
                     DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
                 };
@@ -345,7 +345,7 @@ class Survey extends LSActiveRecord
     {
         if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language];
-        } else if(isset($this->languagesettings[$this->language])){
+        } else if (isset($this->languagesettings[$this->language])) {
             return $this->languagesettings[$this->language];
         } else {
             throw new Exception('Selected Surveys language not found');
@@ -470,8 +470,8 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('sid', 'numerical', 'integerOnly'=>true,'min'=>1), // max ?
-            array('sid', 'unique'),// Not in pk
+            array('sid', 'numerical', 'integerOnly'=>true, 'min'=>1), // max ?
+            array('sid', 'unique'), // Not in pk
             array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default', 'value'=>date("Y-m-d")),
             array('startdate', 'default', 'value'=>null),
@@ -550,7 +550,7 @@ class Survey extends LSActiveRecord
         $allowedAttributes = array('template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay',
-            'expires','stardate','admin','adminemail','emailnotificationto','emailresponseto');
+            'expires', 'stardate', 'admin', 'adminemail', 'emailnotificationto', 'emailresponseto');
         foreach ($allowedAttributes as $attribute) {
             if (!is_null($event->get($attribute))) {
                 $this->{$attribute} = $event->get($attribute);
@@ -560,7 +560,7 @@ class Survey extends LSActiveRecord
         // set inherited values for existing survey
         $this->setOptions($this->gsid);
         
-        if ($this->template != 'inherit'){
+        if ($this->template != 'inherit') {
             $this->template = Template::templateNameFilter($this->template);
         }
     }
@@ -585,7 +585,7 @@ class Survey extends LSActiveRecord
                 $sTemplateName = 'inherit';
             }
         }
-        if ($sTemplateName == 'inherit'){
+        if ($sTemplateName == 'inherit') {
             return $sTemplateName;
         } else {
             return Template::templateNameFilter($sTemplateName);
@@ -701,16 +701,17 @@ class Survey extends LSActiveRecord
         // Without token table : all extra attribute are only saved on $this->attributedescriptions
         $allKnowAttributes = $attdescriptiondata;
         // Without token table : all attribute $this->attributedescriptions AND real attribute. @see issue #13924
-        if($this->getHasTokensTable()){
+        if ($this->getHasTokensTable()) {
             $allKnowAttributes = array_intersect_key(
-                ( $attdescriptiondata + Token::model($this->sid)->getAttributes()),
+                ($attdescriptiondata + Token::model($this->sid)->getAttributes()),
                 Token::model($this->sid)->getAttributes()
             );
             // We remove deleted attribute even if deleted manually in DB
         }
         $aCompleteData = array();
         foreach ($allKnowAttributes as $sKey=>$aValues) {
-            if (preg_match("/^attribute_[0-9]{1,}$/", $sKey)) { // Select only extra attributes here
+            if (preg_match("/^attribute_[0-9]{1,}$/", $sKey)) {
+// Select only extra attributes here
                 if (!is_array($aValues)) {
                     $aValues = array();
                 }
@@ -839,9 +840,9 @@ class Survey extends LSActiveRecord
      */
     public function getSurveyMenus($position = '')
     {
-        $collapsed = $position==='collapsed';
+        $collapsed = $position === 'collapsed';
         //Get the default menus
-        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position,$this);
+        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position, $this);
         //get all survey specific menus
         $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this, $position);
         //merge them
@@ -863,16 +864,17 @@ class Survey extends LSActiveRecord
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
-        if(isset($aData['wishSID'])) {
+        if (isset($aData['wishSID'])) {
             $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
         }
-        if(empty($aData['sid'])) {
+        if (empty($aData['sid'])) {
             $aData['sid'] = intval(randomChars(6, '123456789'));
         }
         $survey = new self;
         /* Remove NULL value (default for not submitted data ) : insert must leave default if not set in POST */
-        $aData = array_filter($aData, function($value) {
+        $aData = array_filter($aData, function($value)
+        {
                 return !is_null($value);
         });
         foreach ($aData as $k => $v) {
@@ -881,11 +883,11 @@ class Survey extends LSActiveRecord
 
         $attempts = 0;
         /* Validate sid : > 1 and unique */
-        while(!$survey->validate(array('sid'))) {
+        while (!$survey->validate(array('sid'))) {
             $attempts++;
             $survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
-            if($attempts > 50) {
+            if ($attempts > 50) {
                 throw new Exception("Unable to get a valid survey id after 50 attempts");
             }
         }
@@ -1053,7 +1055,7 @@ class Survey extends LSActiveRecord
                 // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
             }
-            if(!is_null($sStop)) {
+            if (!is_null($sStop)) {
                 return 'willExpire';
             }
         }
@@ -1542,7 +1544,7 @@ class Survey extends LSActiveRecord
 
         // show only surveys belonging to selected survey group
         if (!empty(Yii::app()->request->getParam('id'))) {
-            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
+            $criteria->addCondition("t.gsid = ".sanitize_int(Yii::app()->request->getParam('id')), 'AND');
         }
 
         // Active filter
@@ -1648,7 +1650,7 @@ class Survey extends LSActiveRecord
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
 
         if ($surveyaccess === null && $registration === null && $saveandload === null) {
-            if ($oSurvey !== null){
+            if ($oSurvey !== null) {
                 return $oSurvey->usecaptcha;
             }
         }
@@ -1836,7 +1838,7 @@ return $s->hasTokensTable; });
         return $questions;
     }
 
-    private function getSurveyQuestionsCriteria(){
+    private function getSurveyQuestionsCriteria() {
         $criteria = $this->getQuestionOrderCriteria();
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
@@ -1855,7 +1857,7 @@ return $s->hasTokensTable; });
         $criteria->with = array(
             'survey.groups',
         );
-        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib'){
+        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
             $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
         } else {
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','.Yii::app()->db->quoteColumnName('t.question_order');
@@ -1946,21 +1948,21 @@ return $s->hasTokensTable; });
         $STARTPOLICYLINK = "";
         $ENDPOLICYLINK = "";
 
-        if(self::model()->findByPk($surveyId)->showsurveypolicynotice == 2){
+        if (self::model()->findByPk($surveyId)->showsurveypolicynotice == 2) {
             $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='collapse'>";
             $ENDPOLICYLINK = "</a>";
-            if(!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)){
-                $dataSecurityNoticeLabel.= "<br/> {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
+            if (!preg_match('/(\{STARTPOLICYLINK\}|\{ENDPOLICYLINK\})/', $dataSecurityNoticeLabel)) {
+                $dataSecurityNoticeLabel .= "<br/> {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
             }
         }
 
 
 
-        $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
+        $dataSecurityNoticeLabel = preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK, $dataSecurityNoticeLabel);
 
         $countEndLabel = 0;
-        $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel, -1, $countEndLabel);
-        if($countEndLabel == 0){
+        $dataSecurityNoticeLabel = preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK, $dataSecurityNoticeLabel, -1, $countEndLabel);
+        if ($countEndLabel == 0) {
             $dataSecurityNoticeLabel .= '</a>';
         }
 
@@ -1973,9 +1975,9 @@ return $s->hasTokensTable; });
      * @param bool $includeSubquestions
      * @return Question
      */
-    public function findQuestionByType($type, $includeSubquestions = false){
+    public function findQuestionByType($type, $includeSubquestions = false) {
         $criteria = $this->getSurveyQuestionsCriteria();
-        if ($includeSubquestions){
+        if ($includeSubquestions) {
             $criteria->addColumnCondition(['parent_qid' => 0]);
         }
         $criteria->addColumnCondition(['type'=>$type]);
@@ -1989,7 +1991,7 @@ return $s->hasTokensTable; });
     public function getTokenEncryptionOptions()
     {
         $aOptions = json_decode_ls($this->tokenencryptionoptions);
-        if (empty($aOptions)){
+        if (empty($aOptions)) {
             $aOptions = Token::getDefaultEncryptionOptions();
         }
         return $aOptions;
@@ -2006,7 +2008,7 @@ return $s->hasTokensTable; });
     public function setOptions($gsid = 1)
     {
         $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
-        if ($instance){
+        if ($instance) {
             $this->oOptions = $instance->oOptions;
             $this->oOptionLabels = $instance->oOptionLabels;
             $this->aOptions = (array) $instance->oOptions;
@@ -2027,7 +2029,7 @@ return $s->hasTokensTable; });
         $settings = new SurveysGroupsettings();
         $settings->setToInherit();        
         // set Survey attributes to 'inherit' values
-        foreach ($settings as $key => $value){
+        foreach ($settings as $key => $value) {
             $this->$key = $value;
         }
     }

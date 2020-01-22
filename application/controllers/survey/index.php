@@ -39,7 +39,7 @@ class index extends CAction
 
         $oSurvey = Survey::model()->findByPk($surveyid);
 
-        if(empty($oSurvey)) {
+        if (empty($oSurvey)) {
             $event = new PluginEvent('onSurveyDenied');
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
@@ -86,9 +86,9 @@ class index extends CAction
 
             if (!$this->_canUserPreviewSurvey($surveyid)) {
 
-                $aErrors  = array(gT('Error'));
-                $message = gT("We are sorry but you don't have permissions to do this.",'unescaped');
-                if(Permission::getUserId()) {
+                $aErrors = array(gT('Error'));
+                $message = gT("We are sorry but you don't have permissions to do this.", 'unescaped');
+                if (Permission::getUserId()) {
                     throw new CHttpException(403, $message);
                 }
                 throw new CHttpException(401, $message);
@@ -119,13 +119,13 @@ class index extends CAction
 
         // maintenance mode
         $sMaintenanceMode = getGlobalSetting('maintenancemode');
-        if ($sMaintenanceMode == 'hard'){
-            if ($previewmode === false){
+        if ($sMaintenanceMode == 'hard') {
+            if ($previewmode === false) {
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
             }
-        } elseif ($sMaintenanceMode == 'soft'){
-            if ($move === null){
-                if ($previewmode === false){
+        } elseif ($sMaintenanceMode == 'soft') {
+            if ($move === null) {
+                if ($previewmode === false) {
                     Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
                 }
             }
@@ -155,7 +155,7 @@ class index extends CAction
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif ( !empty($oToken) ) {
+        } elseif (!empty($oToken)) {
             $sDisplayLanguage = $oToken->language;
         } elseif ($oSurvey) {
             $sDisplayLanguage = $oSurvey->language;
@@ -196,7 +196,7 @@ class index extends CAction
             $clienttoken = isset($_SESSION['survey_'.$surveyid]['token']) ? $_SESSION['survey_'.$surveyid]['token'] : ""; // Fix for #12003
         }
 
-        if ($tokensexist != 1){
+        if ($tokensexist != 1) {
             $tokensexist = 0;
             unset($_POST['token']);
             unset($param['token']);
@@ -234,15 +234,15 @@ class index extends CAction
             $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
 
             if ($bPreviewRight === false) {
-                $event    = new PluginEvent('onSurveyDenied');
+                $event = new PluginEvent('onSurveyDenied');
                 $event->set('surveyId', $surveyid);
                 $event->set('reason', 'noPreviewPermission');
 
                 App()->getPluginManager()->dispatchEvent($event);
-                if(Permission::getUserId()) {
-                    throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
+                if (Permission::getUserId()) {
+                    throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this.", 'unescaped'));
                 }
-                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.", 'unescaped'));
             }
         }
 
@@ -401,7 +401,7 @@ class index extends CAction
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
             if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
-                $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
+                $sLoadSecurity = Yii::app()->request->getPost('loadsecurity');
 
                 if (empty($sLoadSecurity)) {
                     $aLoadErrorMsg['captchaempty'] = gT("You did not answer to the security question.");

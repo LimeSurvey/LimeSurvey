@@ -533,8 +533,8 @@ class responses extends Survey_Common_Action
             }
 
             // Model filters
-            if (isset($_SESSION['survey_' . $iSurveyId])) {
-                $sessionSurveyArray = App()->session->get('survey_' . $iSurveyId);
+            if (isset($_SESSION['survey_'.$iSurveyId])) {
+                $sessionSurveyArray = App()->session->get('survey_'.$iSurveyId);
                 $visibleColumns = isset($sessionSurveyArray['filteredColumns'])
                     ? $sessionSurveyArray['filteredColumns']
                     : null;
@@ -564,7 +564,7 @@ class responses extends Survey_Common_Action
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['survey_' . $iSurveyId]['filteredColumns'])) ? $_SESSION['survey_' . $iSurveyId]['filteredColumns'] : null;
+            $filteredColumns = !empty(isset($_SESSION['survey_'.$iSurveyId]['filteredColumns'])) ? $_SESSION['survey_'.$iSurveyId]['filteredColumns'] : null;
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -625,7 +625,7 @@ class responses extends Survey_Common_Action
     {
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')) {
             $aFilteredColumns = [];
-            $aColumns = (array)App()->request->getPost('columns');
+            $aColumns = (array) App()->request->getPost('columns');
             if (isset($aColumns)) {
                 if (!empty($aColumns)) {
                     foreach ($aColumns as $sColumn) {
@@ -633,9 +633,9 @@ class responses extends Survey_Common_Action
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['survey_' . $surveyid]['filteredColumns'] = $aFilteredColumns;
+                    $_SESSION['survey_'.$surveyid]['filteredColumns'] = $aFilteredColumns;
                 } else {
-                    $_SESSION['survey_' . $surveyid]['filteredColumns'] = [];
+                    $_SESSION['survey_'.$surveyid]['filteredColumns'] = [];
                 }
             }
         }
@@ -692,7 +692,7 @@ class responses extends Survey_Common_Action
         $ResponseId  = (App()->request->getPost('sItems') != '') ? json_decode(App()->request->getPost('sItems')) : json_decode(App()->request->getParam('sResponseId'), true);
         if (App()->request->getPost('modalTextArea') != '' ) {
             $ResponseId = explode(',', App()->request->getPost('modalTextArea'));
-            foreach ($ResponseId as $key => $sResponseId){
+            foreach ($ResponseId as $key => $sResponseId) {
                 $ResponseId[$key] = str_replace(' ', '', $sResponseId);
             }
         }
@@ -729,19 +729,19 @@ class responses extends Survey_Common_Action
         }
 
         if ($errors || $timingErrors) {
-            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.",$errors) : "";
-            $message.= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.",$errors) : "";
+            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.", $errors) : "";
+            $message .= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.", $errors) : "";
             if (App()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError($message);
             } else {
-                App()->setFlashMessage($message,'error');
+                App()->setFlashMessage($message, 'error');
                 $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
             }
         }
         if (App()->getRequest()->isAjaxRequest) {
             ls\ajax\AjaxHelper::outputSuccess(gT('Response(s) deleted.'));
         }
-        App()->setFlashMessage(gT('Response(s) deleted.'),'success');
+        App()->setFlashMessage(gT('Response(s) deleted.'), 'success');
         $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
     }
 
@@ -844,7 +844,8 @@ class responses extends Survey_Common_Action
         $stringItems = json_decode($request->getPost('sItems'));
         // Cast all ids to int.
         $items       = array_map(
-            function ($id) {
+            function ($id)
+            {
                 return (int) $id;
             },
             is_array($stringItems) ? $stringItems : array()
@@ -890,7 +891,7 @@ class responses extends Survey_Common_Action
             ls\ajax\AjaxHelper::outputSuccess($message);
             App()->end();
         }
-        App()->setFlashMessage($message,'success');
+        App()->setFlashMessage($message, 'success');
         $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
     }
 
@@ -1151,7 +1152,7 @@ class responses extends Survey_Common_Action
                 if (file_exists($tmpdir.basename($fileInfo['filename']))) {
                     $filelist[] = array(
                         PCLZIP_ATT_FILE_NAME => $tmpdir.basename($fileInfo['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'],$fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
                     );
                 }
             }

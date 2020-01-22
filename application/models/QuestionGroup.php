@@ -105,26 +105,26 @@ class QuestionGroup extends LSActiveRecord
         }
     }
 
-    public function cleanOrder($surveyid){
+    public function cleanOrder($surveyid) {
         $iSurveyId = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", $oSurvey->additional_languages));
 
         foreach ($aSurveyLanguages as $sSurveyLanguage) {
-            $oCriteria=new CDbCriteria;
-            $oCriteria->compare('sid',$iSurveyId);
+            $oCriteria = new CDbCriteria;
+            $oCriteria->compare('sid', $iSurveyId);
             $oCriteria->order = 'group_order ASC';
 
             $aQuestiongroups = QuestionGroup::model()->findAll($oCriteria);
-            foreach($aQuestiongroups as $itrt => $oQuestiongroup) {
-                $iQuestionGroupOrder = $itrt+1;
+            foreach ($aQuestiongroups as $itrt => $oQuestiongroup) {
+                $iQuestionGroupOrder = $itrt + 1;
                 $oQuestiongroup->group_order = $iQuestionGroupOrder;
                 $oQuestiongroup->save();
 
                 $aQuestions = $oQuestiongroup->questions;
                 foreach ($aQuestions as $qitrt => $oQuestion) {
-                    $iQuestionOrder = $qitrt+1;
+                    $iQuestionOrder = $qitrt + 1;
                     $oQuestion->question_order = $iQuestionOrder;
                     $oQuestion->save(true);
                 }
@@ -191,7 +191,8 @@ class QuestionGroup extends LSActiveRecord
      * @param string $sLanguage
      * @return string
      */
-    public function getGroupNameI10N($sLanguage) {
+    public function getGroupNameI10N($sLanguage)
+    {
         if (isset($this->questionGroupL10ns[$sLanguage])) {
             return $this->questionGroupL10ns[$sLanguage]->group_name;
         }
@@ -204,7 +205,8 @@ class QuestionGroup extends LSActiveRecord
      * @param string $sLanguage
      * @return string
      */
-    public function getGroupDescriptionI10N($sLanguage) {
+    public function getGroupDescriptionI10N($sLanguage)
+    {
         if (isset($this->questionGroupL10ns[$sLanguage])) {
             return $this->questionGroupL10ns[$sLanguage]->description;
         }
@@ -286,7 +288,7 @@ class QuestionGroup extends LSActiveRecord
             if (is_null($condarray)) {
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
                     .'<button class="btn btn-default" '
-                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
+                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $this->sid, "gid"=>$this->gid]))).' })" '
                     .' data-target="#confirmation-modal"'
                     .' role="button"'
                     .' data-toggle="modal"'
@@ -424,7 +426,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithoutQuestions($surveyid)
     {
-        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $cacheKey = 'getTotalGroupsWithoutQuestions_'.$surveyid;
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
@@ -433,7 +435,7 @@ class QuestionGroup extends LSActiveRecord
         $sQuery = "select count(*) from {{groups}}
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is null";
-        $result =  Yii::app()->db->createCommand($sQuery)->queryScalar();
+        $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
         EmCacheHelper::set($cacheKey, $result);
 
@@ -447,7 +449,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
-        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $cacheKey = 'getTotalGroupsWithoutQuestions_'.$surveyid;
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;

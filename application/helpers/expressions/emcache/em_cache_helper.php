@@ -107,7 +107,7 @@ class EmCacheHelper
         $result = \Yii::app()->emcache->set($key, $value);
 
         if (!$result && YII_DEBUG) {
-            throw new EmCacheException('Failed caching key ' . $key);
+            throw new EmCacheException('Failed caching key '.$key);
         }
     }
 
@@ -189,7 +189,7 @@ class EmCacheHelper
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomized']) {
+        if ($_SESSION['survey_'.self::$surveyinfo['sid']]['randomized']) {
             return false;
         }
 

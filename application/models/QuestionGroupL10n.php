@@ -71,7 +71,7 @@ class QuestionGroupL10n extends LSActiveRecord
                 'condition'=>'language=:language',
                 'params'=>array(':language'=>$this->language)
                 ),
-                'message'=>sprintf(gT("Group ID (gid): “%s” already set with language ”%s”."),$this->gid,$this->language),
+                'message'=>sprintf(gT("Group ID (gid): “%s” already set with language ”%s”."), $this->gid, $this->language),
             ),
         );
     }

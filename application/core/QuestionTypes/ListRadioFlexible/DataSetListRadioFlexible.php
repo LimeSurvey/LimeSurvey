@@ -2,4 +2,6 @@
 
 
 
-class DataSetListRadioFlexible extends QuestionBaseDataSet {}
+class DataSetListRadioFlexible extends QuestionBaseDataSet
+{
+}

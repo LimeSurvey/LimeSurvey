@@ -2,4 +2,6 @@
 
 
 
-class DataSetRanking extends QuestionBaseDataSet {}
+class DataSetRanking extends QuestionBaseDataSet
+{
+}

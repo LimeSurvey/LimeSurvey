@@ -69,11 +69,11 @@ class Survey_Common_Action extends CAction
         // Check if the method is public and of the action class, not its parents
         // ReflectionClass gets us the methods of the class and parent class
         // If the above method existence check passed, it might not be neceessary that it is of the action class
-        $oMethod  = new ReflectionMethod($this, $sSubAction);
+        $oMethod = new ReflectionMethod($this, $sSubAction);
 
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         // Merges it with actions from admin modules
-        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses() );
+        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses());
 
         if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
@@ -137,7 +137,7 @@ class Survey_Common_Action extends CAction
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
                         $params[$pseud] = $checkParam;
-                    } elseif($params[$pseud] != $checkParam){
+                    } elseif($params[$pseud] != $checkParam) {
                         // Throw error about multiple params (and if they are different) #15204
                         throw new CHttpException(403, sprintf(gT("Invalid parameter %s (%s already set)"),$pseud,$key));
                     }
@@ -523,7 +523,8 @@ class Survey_Common_Action extends CAction
         }
     }
 
-    public function _generaltopbar($aData) {
+    public function _generaltopbar($aData)
+    {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
             [
@@ -539,7 +540,8 @@ class Survey_Common_Action extends CAction
         Yii::app()->getClientScript()->registerPackage('admintoppanel');     
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
-    public function _generaltopbarAdditions($aData) {
+    public function _generaltopbarAdditions($aData)
+    {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
             [
@@ -561,7 +563,7 @@ class Survey_Common_Action extends CAction
         } else if (isset($aData['surveyid'])) {
             $sid = $aData['sid'];
             $oSurvey       = Survey::model()->findByPk($sid);
-            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
+            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read') ||
                             Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
                             Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
             $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
@@ -681,7 +683,7 @@ class Survey_Common_Action extends CAction
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
                 )->findByPk($surveyid);
             $aData['activated'] = $activated = $sumresult1->active;
-            if($gid !== null) {
+            if ($gid !== null) {
                 $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
             }
             $aData['condarray'] = $condarray ?? [];
@@ -1306,7 +1308,7 @@ class Survey_Common_Action extends CAction
      * @param array $aData
      * @return void
      */
-    protected function renderJSON($aData, $success=true)
+    protected function renderJSON($aData, $success = true)
     {
         
         $aData['success'] = $aData['success'] ?? $success;

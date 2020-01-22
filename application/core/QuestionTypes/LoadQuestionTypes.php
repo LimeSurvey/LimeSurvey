@@ -39,7 +39,7 @@ class LoadQuestionTypes
 
     public static function load($type)
     {
-        switch($type) {
+        switch ($type) {
             case Question::QT_X_BOILERPLATE_QUESTION:            Yii::import('questiontypes.BoilerplateQuestion.*'); break;
             case Question::QT_5_POINT_CHOICE:                    Yii::import('questiontypes.5PointChoice.*'); break;
             case Question::QT_ASTERISK_EQUATION:                 Yii::import('questiontypes.Equation.*'); break;
@@ -55,7 +55,7 @@ class LoadQuestionTypes
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:             Yii::import('questiontypes.MultipleShortText.*'); break;
             case Question::QT_T_LONG_FREE_TEXT:                  Yii::import('questiontypes.LongFreeText.*'); break;
             case Question::QT_U_HUGE_FREE_TEXT:                  Yii::import('questiontypes.HugeFreeText.*'); break;
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:     Yii::import('questiontypes.MultipleNumericalQuestion.*');break;
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:     Yii::import('questiontypes.MultipleNumericalQuestion.*'); break;
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:        Yii::import('questiontypes.Array5ChoiceQuestions.*'); break;
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:       Yii::import('questiontypes.Array10ChoiceQuestions.*'); break;
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:          Yii::import('questiontypes.ArrayYesUncertainNo.*'); break;

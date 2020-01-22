@@ -46,7 +46,7 @@ class LSYii_ClientScript extends CClientScript
     public function recordCachingAction($context, $method, $params)
     {
         if(($controller=Yii::app()->getController())!==null && (get_class($controller)!=='ConsoleApplication' )){
-          $controller->recordCachingAction($context,$method,$params);
+            $controller->recordCachingAction($context,$method,$params);
         }
 
     }
@@ -72,8 +72,8 @@ class LSYii_ClientScript extends CClientScript
     public function getFontPackages()
     {
         $aPackages = array();
-        foreach($this->packages as $key => $package){
-            if (strpos($key, 'font-') === 0){
+        foreach ($this->packages as $key => $package) {
+            if (strpos($key, 'font-') === 0) {
                 $key = str_replace('font-', '', $key);
                 $aPackages[$package['type']][$key] = $package;
             }
@@ -134,10 +134,10 @@ class LSYii_ClientScript extends CClientScript
 
 
             if (empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
-              Yii::app()->clientScript->packages[$sPackageName][$sType] = array();
+                Yii::app()->clientScript->packages[$sPackageName][$sType] = array();
             }
 
-            $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFileName;
+            $sFilePath = Yii::getPathOfAlias(Yii::app()->clientScript->packages[$sPackageName]["basePath"]).DIRECTORY_SEPARATOR.$sFileName;
             Yii::app()->clientScript->packages[$sPackageName][$sType][] = $sFileName;
         }
     }
@@ -614,10 +614,10 @@ class LSYii_ClientScript extends CClientScript
          * Set it before all other action allow registerScript by plugin
          * Whitelisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
          */
-        $publicControllers = array('option','optout','printanswers','register','statistics_user','survey','surveys','uploader');
-        if(Yii::app()->getController() && in_array(Yii::app()->getController()->getId(),$publicControllers) && strpos($output, '</body>')) {
+        $publicControllers = array('option', 'optout', 'printanswers', 'register', 'statistics_user', 'survey', 'surveys', 'uploader');
+        if (Yii::app()->getController() && in_array(Yii::app()->getController()->getId(), $publicControllers) && strpos($output, '</body>')) {
             $event = new PluginEvent('beforeCloseHtml');
-            $surveyId = Yii::app()->getRequest()->getParam('surveyid',Yii::app()->getRequest()->getParam('sid',Yii::app()->getConfig('surveyid')));
+            $surveyId = Yii::app()->getRequest()->getParam('surveyid', Yii::app()->getRequest()->getParam('sid', Yii::app()->getConfig('surveyid')));
             $event->set('surveyId', $surveyId); // Set to null if not set by param
             App()->getPluginManager()->dispatchEvent($event);
             $pluginHtml = $event->get('html');

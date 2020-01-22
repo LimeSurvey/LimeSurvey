@@ -23,7 +23,8 @@
 class emailtemplates extends Survey_Common_Action
 {
 
-    function index($iSurveyId) {
+    function index($iSurveyId)
+    {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('emailtemplates');
@@ -48,10 +49,10 @@ class emailtemplates extends Survey_Common_Action
         $aData['jsData'] = [
             'surveyid' => $iSurveyId,
             'getFileUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => 'getFileList']),
-            'surveyFolder' => 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId,
+            'surveyFolder' => 'upload'.DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$iSurveyId,
             'validatorUrl' => $this->getController()->createUrl(
                 'admin/validate', 
-                ['sa'=>'email','sid'=>$iSurveyId]
+                ['sa'=>'email', 'sid'=>$iSurveyId]
             ),
             'i10N' => [
                 'Subject' => gT('Subject'),
@@ -59,7 +60,7 @@ class emailtemplates extends Survey_Common_Action
                 'Validate Expressions' => gT('Validate Expressions'),
                 'Reset current' => gT('Reset current'),
                 'Add file to current' => gT('Add file to current'),
-               ]
+                ]
         ];
         $this->_renderWrappedTemplate('emailtemplates', 'emailtemplatescomponent', $aData);
     }
@@ -71,7 +72,7 @@ class emailtemplates extends Survey_Common_Action
         
         $aLanguages = [];
         $aTemplateTypeContents = [];
-        array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, &$aTemplateTypeContents, $aAllLanguages, $oSurvey) {
+        array_walk($aSurveyLanguages, function($lngString) use (&$aLanguages, &$aTemplateTypeContents, $aAllLanguages, $oSurvey) {
             $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
             $aTemplateTypeContents[$lngString] = $oSurvey->languagesettings[$lngString];
             $aTemplateTypeContents[$lngString]['attachments'] = json_decode($aTemplateTypeContents[$lngString]['attachments']);
@@ -94,17 +95,18 @@ class emailtemplates extends Survey_Common_Action
         Yii::app()->close();
     }
 
-    public function saveEmailTemplateData($iSurveyId) {
+    public function saveEmailTemplateData($iSurveyId)
+    {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
         $aSurveyLanguages = $oSurvey->getAllLanguages();
         
         $aTemplateTypeContents = Yii::app()->request->getPost('changes', []);
 
-        if(!empty($aTemplateTypeContents)) {
+        if (!empty($aTemplateTypeContents)) {
             $success = true;
             $detailedSuccess = [];
-            foreach($aSurveyLanguages as $language) {
+            foreach ($aSurveyLanguages as $language) {
                 $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id'=>$iSurveyId, 'surveyls_language'=> $language]);
                 $oSurveyLanguageSetting->setAttributes($aTemplateTypeContents[$language]);
                 $oSurveyLanguageSetting->attachments = json_encode($aTemplateTypeContents[$language]['attachments']);
@@ -257,7 +259,7 @@ class emailtemplates extends Survey_Common_Action
         self::index($iSurveyId);
     }
 
-    public static function getTemplateTypes(){
+    public static function getTemplateTypes() {
         return [
         'invitation',
         'reminder',
@@ -268,10 +270,10 @@ class emailtemplates extends Survey_Common_Action
         ];
     }
 
-    public function getTabTypeArray($iSurveyId, $language=null){
+    public function getTabTypeArray($iSurveyId, $language = null) {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
-        $language = $language==null ? $oSurvey->language : $language; 
+        $language = $language == null ? $oSurvey->language : $language; 
 
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('html', $language);
 
@@ -370,13 +372,13 @@ class emailtemplates extends Survey_Common_Action
         .(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
     }
 
-    public function getTemplateOfType($type, $language=null, $survey=0){
-        $language = $language===null ? App()->getLanguage() : $language;
+    public function getTemplateOfType($type, $language = null, $survey = 0) {
+        $language = $language === null ? App()->getLanguage() : $language;
         $oSurvey = Survey::model()->findByPk($survey);
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('unescaped', $language);
 
         $out = $aDefaultTexts[$type];
-        if($oSurvey->htmlemail=='Y') {
+        if ($oSurvey->htmlemail == 'Y') {
             $out = nl2br($out);
         }
         echo $out;

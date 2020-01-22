@@ -56,7 +56,7 @@ function CheckForDBUpgrades($subaction = null)
             'error',
             sprintf(
                 gT('An internal error occured during the database upgrade. Please go back to the %smain menu%s. Contact support if the error persists.'),
-                '<a href="' . Yii::app()->getController()->createUrl("/admin") . '">',
+                '<a href="'.Yii::app()->getController()->createUrl("/admin").'">',
                 '</a>'
             )
         );

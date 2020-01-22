@@ -68,13 +68,13 @@ class SettingGlobal extends LSActiveRecord
         $disableByDb = $this->disableByDb;
         /* Specific disable settings for demo mode */
         if (Yii::app()->getConfig("demoMode")) {
-            $disableByDb = array_merge($disableByDb,array('sitename','defaultlang','defaulthtmleditormode','filterxsshtml'));
+            $disableByDb = array_merge($disableByDb, array('sitename', 'defaultlang', 'defaulthtmleditormode', 'filterxsshtml'));
         }
         $aRules = array(
             array('stg_name', 'required'),
             array('stg_name', 'unique'),
             array('stg_value', 'default', 'value' => ''),
-            array('stg_name', 'in', 'not'=>true,'range' => $disableByDb),
+            array('stg_name', 'in', 'not'=>true, 'range' => $disableByDb),
         );
 
         return $aRules;
@@ -90,7 +90,7 @@ class SettingGlobal extends LSActiveRecord
     public static function setSetting($settingname, $settingvalue)
     {
         $setting = self::model()->findByPk($settingname);
-        if(empty($setting)) {
+        if (empty($setting)) {
             $setting = new self;
             $setting->stg_name = $settingname;
         }
@@ -105,7 +105,7 @@ class SettingGlobal extends LSActiveRecord
     protected function afterSave()
     {
         parent::afterSave();
-        Yii::app()->setConfig($this->stg_name,$this->stg_value);
+        Yii::app()->setConfig($this->stg_name, $this->stg_value);
     }
 
     /**
@@ -128,7 +128,7 @@ class SettingGlobal extends LSActiveRecord
     static public function increaseAssetsversionnumber()
     {
         @ini_set('auto_detect_line_endings', '1');
-        $sRootdir      = Yii::app()->getConfig("rootdir");
+        $sRootdir = Yii::app()->getConfig("rootdir");
         $versionlines = file($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
         $handle       = fopen($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");
         $iAssetNumber = self::generateAssetVersionNumber(Yii::app()->getConfig("assetsversionnumber"));
@@ -154,9 +154,9 @@ class SettingGlobal extends LSActiveRecord
     static public function generateAssetVersionNumber($iAssetNumber)
     {
         while ( $iAssetNumber == Yii::app()->getConfig("assetsversionnumber")) {
-            if ($iAssetNumber > 100000){
+            if ($iAssetNumber > 100000) {
                 $iAssetNumber++;
-            }else{
+            } else {
                 $iAssetNumber = Yii::app()->getConfig("assetsversionnumber") + 100000;
             }
         }

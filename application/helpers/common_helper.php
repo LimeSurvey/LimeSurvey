@@ -261,7 +261,8 @@ function convertGETtoPOST($url)
     }
     if(!empty($getArray)) {
         $calledscript = $calledscript."?".implode('&', array_map(
-            function ($v, $k) {
+            function ($v, $k)
+            {
                 return $k.'='.$v;
             },
             $getArray, 
@@ -761,9 +762,9 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
 
-            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)){
+            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)) {
                 $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid'=>$oSurvey->oOptions->owner_id))['users_name'];
-            } elseif (!empty($result->survey->owner->users_name)){
+            } elseif (!empty($result->survey->owner->users_name)) {
                 $thissurvey['owner_username'] = $result->survey->owner->users_name;
             } else {
                 $thissurvey['owner_username'] = '';
@@ -955,7 +956,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
             case Question::QT_N_NUMERICAL:
                 // Fix the value : Value is stored as decimal in SQL
-                if($sValue[0] === ".") {
+                if ($sValue[0] === ".") {
                     // issue #15685 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
                     $sValue = "0".$sValue;
                 }
@@ -1626,7 +1627,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'])));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
-            $columnsCount = min($columnsCount,$answersCount); // Can not be upper than current answers #14899
+            $columnsCount = min($columnsCount, $answersCount); // Can not be upper than current answers #14899
             for ($i = 1; $i <= $columnsCount; $i++) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
                 if (isset($fieldmap[$fieldname])) {
@@ -1677,7 +1678,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
                 $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
             }
-            $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}" . "_filecount";
+            $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
             $fieldmap[$fieldname] = array(
                 "fieldname" => $fieldname,
                 'type' => $arow['type'],
@@ -1692,7 +1693,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             
             if ($style == "full") {
                 $fieldmap[$fieldname]['title'] = $arow['title'];
-                $fieldmap[$fieldname]['question'] = "filecount - " . $arow['question'];
+                $fieldmap[$fieldname]['question'] = "filecount - ".$arow['question'];
                 $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                 $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
                 $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
@@ -2055,7 +2056,7 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
     if ($strip_tags == true) {
         $str = strip_tags($str);
     }
-    return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
+    return str_replace(array('"', '\''), array("&apos;", "&apos;"), $str);
 }
 
 /**
@@ -2085,7 +2086,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $customheaders = array();
     }
 
-    $mail =  new LimeMailer;
+    $mail = new LimeMailer;
     $mail->emailType = 'deprecated';
     
     $fromname = '';
@@ -2100,7 +2101,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $senderemail = $bouncemail;
     }
 
-    $mail->SetFrom($fromemail,$fromname);
+    $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     foreach ($to as $singletoemail) {
         $mail->addAddress($singletoemail);
@@ -3441,7 +3442,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen($sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote($sOldCode, '~');
-                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $arQuestion->relevance = preg_replace("/\b{$sOldCode}/", $sNewCode, $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -3469,7 +3470,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode) {
             $sOldCode = preg_quote($sOldCode, '~');
-            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $arGroup->grelevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
@@ -4471,13 +4472,13 @@ function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;
 function getIPAddress()
 {
     $sIPAddress = '127.0.0.1';
-    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)!==false) {
+    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP) !== false) {
         //check IP address from share internet
         $sIPAddress = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)!==false) {
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
         //Check IP address passed from proxy
         $sIPAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)!==false) {
+    } elseif (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
         $sIPAddress = $_SERVER['REMOTE_ADDR'];
     }
     return $sIPAddress;
@@ -4693,7 +4694,7 @@ function get_absolute_path($path)
             $absolutes[] = $part;
         }
     }
-    return ($startsWithSeparator ? '/' : '') . implode(DIRECTORY_SEPARATOR, $absolutes);
+    return ($startsWithSeparator ? '/' : '').implode(DIRECTORY_SEPARATOR, $absolutes);
 }
 
 /**
@@ -4702,7 +4703,8 @@ function get_absolute_path($path)
 * @param string $str
 * @return bool
 */
-function isJson($str) {
+function isJson($str)
+{
     $json = json_decode($str);
     return $json && $str != $json;
 }
@@ -4713,7 +4715,8 @@ function isJson($str) {
 * @param array $array
 * @return bool
 */
-function isAssociativeArray($array){
+function isAssociativeArray($array)
+{
     foreach ($array as $key => $value) {
         if (is_string($key)) {
             return true;
@@ -4731,9 +4734,9 @@ function isAssociativeArray($array){
 * @param  int    $mode     wanted  file mode for this directory
 * @return string           the path of the created directory
 */
-function createRandomTempDir($dir=null, $prefix = '', $mode = 0700)
+function createRandomTempDir($dir = null, $prefix = '', $mode = 0700)
 {
-    $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path ($dir);
+    $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path($dir);
 
     if (substr($sDir, -1) != DIRECTORY_SEPARATOR) {
         $sDir .= DIRECTORY_SEPARATOR;
@@ -4753,17 +4756,18 @@ function createRandomTempDir($dir=null, $prefix = '', $mode = 0700)
  * @param  int    $length wanted lenght of the random string (only for openssl mode)
  * @return string
  */
-function getRandomString($length=32){
+function getRandomString($length=32)
+{
 
     if ( function_exists('openssl_random_pseudo_bytes') ) {
         $token = "";
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
         $codeAlphabet.= "0123456789";
-        for($i=0;$i<$length;$i++){
+        for($i=0;$i<$length;$i++) {
             $token .= $codeAlphabet[crypto_rand_secure(0,strlen($codeAlphabet))];
         }
-    }else{
+    } else {
         $token = md5(uniqid(rand(), true));
     }
     return $token;
@@ -4775,9 +4779,13 @@ function getRandomString($length=32){
  * @param  int    $max
  * @return string
  */
-function crypto_rand_secure($min, $max) {
+function crypto_rand_secure($min, $max)
+{
         $range = $max - $min;
-        if ($range < 0) return $min; // not so random...
+        if ($range < 0) {
+            return $min;
+        }
+        // not so random...
         $log = log($range, 2);
         $bytes = (int) ($log / 8) + 1; // length in bytes
         $bits = (int) $log + 1; // length in bits
@@ -4797,7 +4805,7 @@ function crypto_rand_secure($min, $max) {
  */
 function isZipBomb($zip_filename)
 {
-    return ( get_zip_originalsize($zip_filename) >  Yii::app()->getConfig('maximum_unzipped_size') );
+    return (get_zip_originalsize($zip_filename) > Yii::app()->getConfig('maximum_unzipped_size'));
 }
 
 /**
@@ -4806,9 +4814,10 @@ function isZipBomb($zip_filename)
  * @param string $filename
  * @return int
  */
-function get_zip_originalsize($filename) {
+function get_zip_originalsize($filename)
+{
 
-    if ( function_exists ('zip_entry_filesize') ){
+    if ( function_exists ('zip_entry_filesize') ) {
         $size = 0;
         $resource = zip_open($filename);
 
@@ -4820,8 +4829,8 @@ function get_zip_originalsize($filename) {
         }
 
         return $size;
-    }else{
-        if ( YII_DEBUG ){
+    } else {
+        if ( YII_DEBUG ) {
             Yii::app()->setFlashMessage("Warning! The PHP Zip extension is not installed on this server. You're not protected from ZIP bomb attacks.", 'error');
         }
     }
@@ -4840,7 +4849,7 @@ function get_zip_originalsize($filename) {
 function safecount($element)
 {
     $isCountable = is_array($element) || $element instanceof Countable;
-    if($isCountable) {
+    if ($isCountable) {
         return count($element);
     }
     return 0;
@@ -4871,7 +4880,8 @@ function switchMSSQLIdentityInsert($table, $state)
 /**
  * Helper to filter the contents of a .zip file uploaded into the file manager
  */
-function resourceExtractFilter($p_event, &$p_header) {
+function resourceExtractFilter($p_event, &$p_header)
+{
     $aAllowExtensions = Yii::app()->getConfig('allowedfileuploads');
     $info = pathinfo($p_header['filename']);
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {

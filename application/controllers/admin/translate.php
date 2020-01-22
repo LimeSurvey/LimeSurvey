@@ -28,13 +28,13 @@ class translate extends Survey_Common_Action
     {
         /* existing + read (survey) already checked in Survey_Common_Action : existing use model : then if surveyid is not valid : return a 404 */
         /* survey : read OK, not survey:tranlations:read … */
-        if(!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
         $tolang = Yii::app()->getRequest()->getParam('lang');
-        if(!empty($tolang) && !in_array($tolang,$oSurvey->getAllLanguages())) {
-            Yii::app()->setFlashMessage(gT("Invalid language"),'warning');
+        if (!empty($tolang) && !in_array($tolang, $oSurvey->getAllLanguages())) {
+            Yii::app()->setFlashMessage(gT("Invalid language"), 'warning');
             $tolang = null;
         }
         $action = Yii::app()->getRequest()->getParam('action');
@@ -90,7 +90,7 @@ class translate extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
-        if(Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid; // Close button
             $aData['topBar']['showSaveButton'] = true;
@@ -202,17 +202,17 @@ class translate extends Survey_Common_Action
                 $aResultTo2 = array();
 
                 $class = get_class($oRowfrom);
-                if ($class == 'QuestionGroup'){
+                if ($class == 'QuestionGroup') {
                     $aRowfrom = $oRowfrom->questionGroupL10ns[$baselang]->getAttributes();
                     $aResultBase2 = !empty($type2) ? $oResultBase2->questionGroupL10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->questionGroupL10ns[$tolang]->getAttributes();
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questionGroupL10ns[$tolang]->getAttributes() : $aResultTo;
-                } elseif ($class == 'Question' || $class == 'Subquestion'){
+                } elseif ($class == 'Question' || $class == 'Subquestion') {
                     $aRowfrom = $oRowfrom->questionL10ns[$baselang]->getAttributes();
                     $aResultBase2 = !empty($type2) ? $oResultBase2->questionL10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->questionL10ns[$tolang]->getAttributes();
                     $aResultTo2 = !empty($type2) ? $oResultTo2->questionL10ns[$tolang]->getAttributes() : $aResultTo;
-                } elseif ($class == 'Answer'){
+                } elseif ($class == 'Answer') {
                     $aRowfrom = $oRowfrom->answerL10ns[$baselang]->getAttributes();
                     $aResultBase2 = !empty($type2) ? $oResultBase2->answerL10ns[$baselang]->getAttributes() : $aRowfrom;
                     $aResultTo = $oResultTo->answerL10ns[$tolang]->getAttributes();
@@ -766,19 +766,19 @@ class translate extends Survey_Common_Action
                         return SurveyLanguageSetting::model()->resetScope()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
-                        return QuestionGroup::model()->with('questionGroupL10ns', array('condition' => 'language = ' . $baselang))->findAllByAttributes(array('sid'=>$iSurveyID), array('order' => 't.gid'));
+                        return QuestionGroup::model()->with('questionGroupL10ns', array('condition' => 'language = '.$baselang))->findAllByAttributes(array('sid'=>$iSurveyID), array('order' => 't.gid'));
                     case 'question':
                     case 'question_help':
-                        return Question::model()->with('questionL10ns', array('condition' => 'language = ' . $baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group.group_order, t.question_order, t.scale_id'));
+                        return Question::model()->with('questionL10ns', array('condition' => 'language = '.$baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group.group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
                         return Question::model()
-                        ->with('questionL10ns', array('condition' => 'language = ' . $baselang))
-                        ->with('parent', array('condition' => 'language = ' . $baselang))
-                        ->with('group', array('condition' => 'language = ' . $baselang))
+                        ->with('questionL10ns', array('condition' => 'language = '.$baselang))
+                        ->with('parent', array('condition' => 'language = '.$baselang))
+                        ->with('group', array('condition' => 'language = '.$baselang))
                         ->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 'group.group_order, parent.question_order, t.scale_id, t.question_order', 'condition'=>'t.parent_qid>0', 'params'=>array()));
                     case 'answer':
                         return Answer::model()
-                        ->with('answerL10ns', array('condition' => 'language = ' . $baselang))
+                        ->with('answerL10ns', array('condition' => 'language = '.$baselang))
                         ->with('question') 
                         ->with('group')
                         ->findAllByAttributes(array(), array('order' => 'group.group_order, question.question_order, t.scale_id, t.sortorder', 'condition'=>'question.sid=:sid', 'params'=>array(':sid' => $iSurveyID)));
@@ -818,11 +818,11 @@ class translate extends Survey_Common_Action
                     case 'group_desc':
                         return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'question':
-                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
+                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid'=>$id1, ':language'=>$tolang));
                     case 'question_help':
-                        return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
+                        return QuestionL10n::model()->updateAll(array('help' => $new), 'qid = :qid and language = :language', array(':qid'=>$id1, ':language'=>$tolang));
                     case 'subquestion':
-                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language' , array(':qid'=>$id1, ':language'=>$tolang));
+                        return QuestionL10n::model()->updateAll(array('question' => $new), 'qid = :qid and language = :language', array(':qid'=>$id1, ':language'=>$tolang));
                     case 'answer':
                         $oAnswer = Answer::model()->find('qid = :qid and code = :code and scale_id = :scale_id', array(':qid'=>$id1, ':code'=>$id2, ':scale_id'=>$iScaleID));
                         return AnswerL10n::model()->updateAll(array('answer' => $new), 'aid = :aid and language = :language', array(':aid'=>$oAnswer->aid, ':language'=>$tolang));

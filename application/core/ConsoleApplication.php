@@ -55,8 +55,8 @@ class ConsoleApplication extends CConsoleApplication
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
-        if (file_exists( $configdir .  '/security.php')) {
-            $securityConfig = require(  $configdir .'/security.php');
+        if (file_exists($configdir.'/security.php')) {
+            $securityConfig = require($configdir.'/security.php');
             if (is_array($securityConfig)) {
                 $lsConfig = array_merge($lsConfig, $securityConfig);
             }
@@ -72,7 +72,7 @@ class ConsoleApplication extends CConsoleApplication
         
         /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
-           $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+            $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {

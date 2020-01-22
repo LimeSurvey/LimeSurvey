@@ -18,7 +18,8 @@
  * Used to spit out error messages if mapping attributes doesn't work.
  */
 class CPDBException extends Exception
-{ }
+{
+}
 
 /**
  * This is the model class for table "{{participants}}".
@@ -228,7 +229,7 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='" . $this->id . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='".$this->id."' >";
     }
 
     /**
@@ -237,15 +238,15 @@ class Participant extends LSActiveRecord
     public function attributeLabels()
     {
         $returnArray = array(
-            'participant_id' => gT('Participant'). $this->setEncryptedAttributeLabel(0 ,'Participant','participant_id'),
-            'firstname' => gT('First name'). $this->setEncryptedAttributeLabel(0 ,'Participant','firstname'),
-            'lastname' => gT('Last name').$this->setEncryptedAttributeLabel(0 ,'Participant','lastname'),
-            'email' => gT('Email address').$this->setEncryptedAttributeLabel(0 ,'Participant','email'),
-            'language' => gT('Language').$this->setEncryptedAttributeLabel(0 ,'Participant','language'),
-            'blacklisted' => gT('Blacklisted').$this->setEncryptedAttributeLabel(0 ,'Participant','blacklisted'),
-            'owner_uid' => gT('Owner ID').$this->setEncryptedAttributeLabel(0 ,'Participant','owner_uid'),
-            'surveyid' => gT('Active survey ID').$this->setEncryptedAttributeLabel(0 ,'Participant','surveyid'),
-            'created' => gT('Created on').$this->setEncryptedAttributeLabel(0 ,'Participant', 'created')
+            'participant_id' => gT('Participant').$this->setEncryptedAttributeLabel(0, 'Participant', 'participant_id'),
+            'firstname' => gT('First name').$this->setEncryptedAttributeLabel(0, 'Participant', 'firstname'),
+            'lastname' => gT('Last name').$this->setEncryptedAttributeLabel(0, 'Participant', 'lastname'),
+            'email' => gT('Email address').$this->setEncryptedAttributeLabel(0, 'Participant', 'email'),
+            'language' => gT('Language').$this->setEncryptedAttributeLabel(0, 'Participant', 'language'),
+            'blacklisted' => gT('Blacklisted').$this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
+            'owner_uid' => gT('Owner ID').$this->setEncryptedAttributeLabel(0, 'Participant', 'owner_uid'),
+            'surveyid' => gT('Active survey ID').$this->setEncryptedAttributeLabel(0, 'Participant', 'surveyid'),
+            'created' => gT('Created on').$this->setEncryptedAttributeLabel(0, 'Participant', 'created')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
             $returnArray[$name] = $attribute['defaultname'];
@@ -261,7 +262,7 @@ class Participant extends LSActiveRecord
         $allAttributes = ParticipantAttributeName::model()->getAllAttributes();
         $extraAttributes = array();
         foreach ($allAttributes  as $attribute) {
-            $extraAttributes["ea_" . $attribute['attribute_id']] = $attribute;
+            $extraAttributes["ea_".$attribute['attribute_id']] = $attribute;
         }
         return $extraAttributes;
     }
@@ -336,7 +337,7 @@ class Participant extends LSActiveRecord
     public function getBlacklistSwitchbutton()
     {
         if ($this->userHasPermissionToEdit()) {
-            $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='" . gT('No') . "' data-on-text='" . gT('Yes') . "' class='action_changeBlacklistStatus' "
+            $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
                 . ($this->blacklisted == "Y" ? "checked" : "")
                 . "/>";
             return  $inputHtml;
@@ -413,12 +414,12 @@ class Participant extends LSActiveRecord
             $col_array = array(
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
-                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
+                "header" => $attribute['defaultname'].$this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type" => "html",
             );
             //textbox
             if ($attribute['attribute_type'] == "TB") {
-                $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
+                $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
             }
             //dropdown
             else if ($attribute['attribute_type'] == "DD") {
@@ -430,11 +431,11 @@ class Participant extends LSActiveRecord
                     $options_array[$option['value']] = $option['value'];
                 }
 
-                $col_array["filter"] = TbHtml::dropDownList("extraAttribute[" . $name . "]", $extraAttributeParams[$name], $options_array);
+                $col_array["filter"] = TbHtml::dropDownList("extraAttribute[".$name."]", $extraAttributeParams[$name], $options_array);
             }
             //date -> still a text field, too many errors with the gridview
             else if ($attribute['attribute_type'] == "DP") {
-                $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
+                $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
         }
@@ -484,7 +485,7 @@ class Participant extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->join = 'LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
+        $criteria->join = 'LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = '.Yii::app()->user->id.' OR shares.share_uid = -1)';
         $criteria->compare('t.participant_id', $this->participant_id, true, 'AND', true);
         $criteria->compare('t.firstname', $this->firstname, true, 'AND', true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND', true);
@@ -520,29 +521,29 @@ class Participant extends LSActiveRecord
 
             // Use "LIKE" for text-box, equal for other types
             if ($attributeType == 'TB') {
-                $bindKey = ':attribute_id' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = " . $bindKey . " AND value LIKE '%" . $value . "%'", array($bindKey => $attributeId));
+                $bindKey = ':attribute_id'.$attributeId;
+                $callParticipantAttributes->where("attribute_id = ".$bindKey." AND value LIKE '%".$value."%'", array($bindKey => $attributeId));
                 $criteria->params[$bindKey] = $attributeId;
             } else {
                 /** @var string Param name to bind in prepared statement */
-                $bindKey = ':value' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value = " . $bindKey , array($bindKey => $value));
+                $bindKey = ':value'.$attributeId;
+                $callParticipantAttributes->where("attribute_id = '".$attributeId."' AND value = ".$bindKey, array($bindKey => $value));
                 // NB: Binding in andWhere() is not enough since the subquery is converted to string.
                 $criteria->params[$bindKey] = $value;
             }
 
-            $criteria->addCondition('t.participant_id IN (' . $callParticipantAttributes->getText() . ')');
+            $criteria->addCondition('t.participant_id IN ('.$callParticipantAttributes->getText().')');
         }
 
         $DBCountActiveSurveys = SurveyLink::model()->tableName();
-        $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM " . $DBCountActiveSurveys . " cas WHERE cas.participant_id = t.participant_id )";
+        $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
         $criteria->select = array(
             't.*',
             'shares.share_uid',
             'shares.date_added',
             'shares.can_edit',
-            $sqlCountActiveSurveys . ' AS countActiveSurveys',
+            $sqlCountActiveSurveys.' AS countActiveSurveys',
             // NB: This is need to avoid confusion between t.participant_id and shares.participant_id
             't.participant_id AS id',
         );
@@ -561,7 +562,7 @@ class Participant extends LSActiveRecord
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $readAllPermission = Permission::model()->hasGlobalPermission('participantpanel', 'read');
         if (!$isSuperAdmin && !$readAllPermission) {
-            $criteria->addCondition('t.owner_uid = ' . App()->user->id . ' OR ' . Yii::app()->user->id . ' = shares.share_uid OR shares.share_uid = -1');
+            $criteria->addCondition('t.owner_uid = '.App()->user->id.' OR '.Yii::app()->user->id.' = shares.share_uid OR shares.share_uid = -1');
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
@@ -650,7 +651,7 @@ class Participant extends LSActiveRecord
     {
         $result = '';
         foreach ($errors as $error) {
-            $result .= $error[0] . ' ';
+            $result .= $error[0].' ';
         }
         return $result;
     }
@@ -701,7 +702,7 @@ class Participant extends LSActiveRecord
         $command = Yii::app()->db->createCommand()
             ->select('p.*, ps.can_edit')
             ->from('{{participants}} p')
-            ->join('(' . $subquery->getText() . ') ps', 'ps.participant_id = p.participant_id')
+            ->join('('.$subquery->getText().') ps', 'ps.participant_id = p.participant_id')
             ->bindParam(":userid1", $userid, PDO::PARAM_INT)
             ->bindParam(":userid2", $userid, PDO::PARAM_INT);
 
@@ -775,10 +776,10 @@ class Participant extends LSActiveRecord
         $participants = array();
         foreach ($allData as $key => $data) {
             $participants[$key] = Participant::model()->findByPk($data['participant_id'])->decrypt()->attributes;
-            $attributes = ParticipantAttribute::model()->findAll(array('condition' => "participant_id = '" . $data['participant_id'] . "'"));
+            $attributes = ParticipantAttribute::model()->findAll(array('condition' => "participant_id = '".$data['participant_id']."'"));
             foreach ($attributes as $attribute) {
-                if (array_key_exists('a' . $attribute['attribute_id'], $data)) {
-                    $participants[$key]['a' . $attribute['attribute_id']] = $attribute->decrypt()->attributes['value'];
+                if (array_key_exists('a'.$attribute['attribute_id'], $data)) {
+                    $participants[$key]['a'.$attribute['attribute_id']] = $attribute->decrypt()->attributes['value'];
                 }
             }
         }
@@ -821,7 +822,7 @@ class Participant extends LSActiveRecord
 
         $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
         foreach ($aAllAttributes as $aAttribute) {
-            if (!is_null($search) && strpos($search->condition, 'attribute' . $aAttribute['attribute_id']) !== false) {
+            if (!is_null($search) && strpos($search->condition, 'attribute'.$aAttribute['attribute_id']) !== false) {
                 $attid[$aAttribute['attribute_id']] = $aAttribute;
             }
         }
@@ -838,11 +839,11 @@ class Participant extends LSActiveRecord
             }
             $sDatabaseType = Yii::app()->db->getDriverName();
             if ($sDatabaseType == 'mssql' || $sDatabaseType == "sqlsrv" || $sDatabaseType == 'dblib') {
-                $selectValue[] = "cast(attribute" . $iAttributeID . ".value as varchar(max)) as a" . $iAttributeID;
+                $selectValue[] = "cast(attribute".$iAttributeID.".value as varchar(max)) as a".$iAttributeID;
             } else {
-                $selectValue[] = "attribute" . $iAttributeID . ".value as a" . $iAttributeID;
+                $selectValue[] = "attribute".$iAttributeID.".value as a".$iAttributeID;
             }
-            array_push($joinValue, "LEFT JOIN {{participant_attribute}} attribute" . $iAttributeID . " ON attribute" . $iAttributeID . ".participant_id=p.participant_id AND attribute" . $iAttributeID . ".attribute_id=" . $iAttributeID);
+            array_push($joinValue, "LEFT JOIN {{participant_attribute}} attribute".$iAttributeID." ON attribute".$iAttributeID.".participant_id=p.participant_id AND attribute".$iAttributeID.".attribute_id=".$iAttributeID);
         }
 
         $aConditions = array(); // this wil hold all conditions
@@ -876,7 +877,7 @@ class Participant extends LSActiveRecord
             if ($idx > 0) {
                 $condition .= ' AND ';
             }
-            $condition .= '(' . $newCondition . ')';
+            $condition .= '('.$newCondition.')';
         }
 
         if (!empty($condition)) {
@@ -1159,18 +1160,18 @@ class Participant extends LSActiveRecord
                         break;
                     case 'contains':
                         $operator = "LIKE";
-                        $condition[2] = "%" . $condition[2] . "%";
+                        $condition[2] = "%".$condition[2]."%";
                         break;
                     case 'beginswith':
                         $operator = "LIKE";
-                        $condition[2] = $condition[2] . "%";
+                        $condition[2] = $condition[2]."%";
                         break;
                     case 'notequal':
                         $operator = "!=";
                         break;
                     case 'notcontains':
                         $operator = "NOT LIKE";
-                        $condition[2] = "%" . $condition[2] . "%";
+                        $condition[2] = "%".$condition[2]."%";
                         break;
                     case 'greaterthan':
                         $operator = ">";
@@ -1180,18 +1181,18 @@ class Participant extends LSActiveRecord
                 }
                 if ($condition[0] == "survey") {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND {{survey_links}}.survey_id ' . $operator . ' :param)');
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND {{survey_links}}.survey_id '.$operator.' :param)');
                     $command->params = array(':lang' => $lang, ':param' => $condition[2]);
                 }
                 //Search by quantity of linked surveys
                 elseif ($condition[0] == "surveys") {
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
-                    $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) ' . $operator . ' :param2 ORDER BY count(*))' . $addon);
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) '.$operator.' :param2 ORDER BY count(*))'.$addon);
                     $command->params = array(':param2' => $condition[2]);
                 } elseif ($condition[0] == "owner_name") {
                     $userid = Yii::app()->db->createCommand()
                         ->select('uid')
-                        ->where('full_name ' . $operator . ' :condition_2')
+                        ->where('full_name '.$operator.' :condition_2')
                         ->from('{{users}}')
                         ->bindParam("condition_2", $condition[2], PDO::PARAM_STR)
                         ->queryAll();
@@ -1201,10 +1202,10 @@ class Participant extends LSActiveRecord
                 }
                 //Searching for an attribute
                 elseif (is_numeric($condition[0])) {
-                    $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value ' . $operator . ' :condition_2)');
+                    $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value '.$operator.' :condition_2)');
                     $command->params = array(':condition_0' => $condition[0], ':condition_2' => $condition[2]);
                 } else {
-                    $command->addCondition($condition[0] . ' ' . $operator . ' :condition_2');
+                    $command->addCondition($condition[0].' '.$operator.' :condition_2');
                     $command->params = array(':condition_2' => $condition[2]);
                 }
 
@@ -1217,26 +1218,26 @@ class Participant extends LSActiveRecord
                 }
                 //Force the type of numeric values to be numeric
                 $booloperator = strtoupper($condition[$i]);
-                $condition1name = ":condition_" . ($i + 1);
-                $condition2name = ":condition_" . ($i + 3);
+                $condition1name = ":condition_".($i + 1);
+                $condition2name = ":condition_".($i + 3);
                 switch ($condition[$i + 2]) {
                     case 'equal':
                         $operator = "=";
                         break;
                     case 'contains':
                         $operator = "LIKE";
-                        $condition[$i + 3] = "%" . $condition[$i + 3] . "%";
+                        $condition[$i + 3] = "%".$condition[$i + 3]."%";
                         break;
                     case 'beginswith':
                         $operator = "LIKE";
-                        $condition[$i + 3] = $condition[$i + 3] . "%";
+                        $condition[$i + 3] = $condition[$i + 3]."%";
                         break;
                     case 'notequal':
                         $operator = "!=";
                         break;
                     case 'notcontains':
                         $operator = "NOT LIKE";
-                        $condition[$i + 3] = "%" . $condition[$i + 3] . "%";
+                        $condition[$i + 3] = "%".$condition[$i + 3]."%";
                         break;
                     case 'greaterthan':
                         $operator = ">";
@@ -1246,18 +1247,18 @@ class Participant extends LSActiveRecord
                 }
                 if ($condition[$i + 1] == "survey") {
                     $lang = Yii::app()->session['adminlang'];
-                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title ' . $operator . ' ' . $condition2name . '1 OR {{survey_links}}.survey_id ' . $operator . ' ' . $condition2name . '2))', $booloperator);
-                    $command->params = array_merge($command->params, array(':lang' => $lang, $condition2name . '1' => $condition[$i + 3], $condition2name . '2' => $condition[$i + 3]));
+                    $command->addCondition('participant_id IN (SELECT distinct {{survey_links}}.participant_id FROM {{survey_links}}, {{surveys_languagesettings}} WHERE {{survey_links}}.survey_id = {{surveys_languagesettings}}.surveyls_survey_id AND {{surveys_languagesettings}}.surveyls_language=:lang AND ({{surveys_languagesettings}}.surveyls_title '.$operator.' '.$condition2name.'1 OR {{survey_links}}.survey_id '.$operator.' '.$condition2name.'2))', $booloperator);
+                    $command->params = array_merge($command->params, array(':lang' => $lang, $condition2name.'1' => $condition[$i + 3], $condition2name.'2' => $condition[$i + 3]));
                 }
                 //search by quantity of linked surveys
                 elseif ($condition[$i + 1] == "surveys") {
                     $addon = ($operator == "<") ? " OR participant_id NOT IN (SELECT distinct participant_id FROM {{survey_links}})" : "";
-                    $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) ' . $operator . ' ' . $condition2name . ' ORDER BY count(*))' . $addon);
+                    $command->addCondition('participant_id IN (SELECT participant_id FROM {{survey_links}} GROUP BY participant_id HAVING count(*) '.$operator.' '.$condition2name.' ORDER BY count(*))'.$addon);
                     $command->params = array_merge($command->params, array($condition2name => $condition[$i + 3]));
                 } elseif ($condition[$i + 1] == "owner_name") {
                     $userid = Yii::app()->db->createCommand()
                         ->select('uid')
-                        ->where('full_name ' . $operator . ' ' . $condition2name)
+                        ->where('full_name '.$operator.' '.$condition2name)
                         ->from('{{users}}')
                         ->bindParam($condition2name, $condition[$i + 3], PDO::PARAM_STR)
                         ->queryAll();
@@ -1269,10 +1270,10 @@ class Participant extends LSActiveRecord
                 }
                 //Searching for an attribute
                 elseif (is_numeric($condition[$i + 1])) {
-                    $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition1name . ' AND {{participant_attribute}}.value ' . $operator . ' ' . $condition2name . ')', $booloperator);
+                    $command->addCondition('participant_id IN (SELECT distinct {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition1name.' AND {{participant_attribute}}.value '.$operator.' '.$condition2name.')', $booloperator);
                     $command->params = array_merge($command->params, array($condition1name => $condition[$i + 1], $condition2name => $condition[$i + 3]));
                 } else {
-                    $command->addCondition($condition[$i + 1] . ' ' . $operator . ' ' . $condition2name, $booloperator);
+                    $command->addCondition($condition[$i + 1].' '.$operator.' '.$condition2name, $booloperator);
                     $command->params = array_merge($command->params, array($condition2name => $condition[$i + 3]));
                 }
 
@@ -1327,7 +1328,7 @@ class Participant extends LSActiveRecord
             $sFieldname = $condition[$i * 4];
             $sOperator = $condition[($i * 4) + 1];
             $sValue = $condition[($i * 4) + 2];
-            $param = ':condition_' . $i;
+            $param = ':condition_'.$i;
             switch ($sOperator) {
                 case 'equal':
                     $operator = '=';
@@ -1335,11 +1336,11 @@ class Participant extends LSActiveRecord
                     break;
                 case 'contains':
                     $operator = 'LIKE';
-                    $aParams[$param] = '%' . $sValue . '%';
+                    $aParams[$param] = '%'.$sValue.'%';
                     break;
                 case 'beginswith':
                     $operator = 'LIKE';
-                    $aParams[$param] = $sValue . '%';
+                    $aParams[$param] = $sValue.'%';
                     break;
                 case 'notequal':
                     $operator = '!=';
@@ -1347,7 +1348,7 @@ class Participant extends LSActiveRecord
                     break;
                 case 'notcontains':
                     $operator = 'NOT LIKE';
-                    $aParams[$param] = '%' . $sValue . '%';
+                    $aParams[$param] = '%'.$sValue.'%';
                     break;
                 case 'greaterthan':
                     $operator = '>';
@@ -1365,39 +1366,39 @@ class Participant extends LSActiveRecord
             }
 
             if ($sFieldname == "email") {
-                $command->addCondition('p.email ' . $operator . ' ' . $param, $booloperator);
+                $command->addCondition('p.email '.$operator.' '.$param, $booloperator);
             } elseif ($sFieldname == "survey") {
                 $subQuery = Yii::app()->db->createCommand()
                     ->select('sl.participant_id')
                     ->from('{{survey_links}} sl')
                     ->join('{{surveys_languagesettings}} sls', 'sl.survey_id = sls.surveyls_survey_id')
-                    ->where('sls.surveyls_title ' . $operator . ' ' . $param)
+                    ->where('sls.surveyls_title '.$operator.' '.$param)
                     ->group('sl.participant_id');
-                $command->addCondition('t.participant_id IN (' . $subQuery->getText() . ')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             } elseif ($sFieldname == "surveyid") {
                 $subQuery = Yii::app()->db->createCommand()
                     ->select('sl.participant_id')
                     ->from('{{survey_links}} sl')
-                    ->where('sl.survey_id ' . $operator . ' ' . $param)
+                    ->where('sl.survey_id '.$operator.' '.$param)
                     ->group('sl.participant_id');
-                $command->addCondition('t.participant_id IN (' . $subQuery->getText() . ')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             //Search by quantity of linked surveys
             elseif ($sFieldname == "surveys") {
                 $subQuery = Yii::app()->db->createCommand()
                     ->select('sl.participant_id')
                     ->from('{{survey_links}} sl')
-                    ->having('count(*) ' . $operator . ' ' . $param)
+                    ->having('count(*) '.$operator.' '.$param)
                     ->group('sl.participant_id');
-                $command->addCondition('t.participant_id IN (' . $subQuery->getText() . ')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             } elseif ($sFieldname == "owner_name") {
-                $command->addCondition('full_name ' . $operator . ' ' . $param, $booloperator);
+                $command->addCondition('full_name '.$operator.' '.$param, $booloperator);
             } elseif ($sFieldname == "participant_id") {
-                $command->addCondition('t.participant_id ' . $operator . ' ' . $param, $booloperator);
+                $command->addCondition('t.participant_id '.$operator.' '.$param, $booloperator);
             }
             //Searching for an attribute
             elseif (is_numeric($sFieldname)) {
-                $command->addCondition('attribute' . $sFieldname . '.value ' . $operator . ' ' . $param, $booloperator);
+                $command->addCondition('attribute'.$sFieldname.'.value '.$operator.' '.$param, $booloperator);
             } else {
                 // Check if fieldname exists to prevent SQL injection
                 $aSafeFieldNames = array(
@@ -1415,7 +1416,7 @@ class Participant extends LSActiveRecord
                     // Skip invalid fieldname
                     continue;
                 }
-                $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname) . ' ' . $operator . ' ' . $param, $booloperator);
+                $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname).' '.$operator.' '.$param, $booloperator);
             }
 
             $i++;
@@ -1538,7 +1539,7 @@ class Participant extends LSActiveRecord
                 $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = ' . $surveyId);
+                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = '.$surveyId);
             }
         }
     }
@@ -1600,7 +1601,7 @@ class Participant extends LSActiveRecord
         $addedAttributeIds = array();
 
         foreach ($newAttributes as $value) {
-            $newfieldname = 'attribute_' . $value;
+            $newfieldname = 'attribute_'.$value;
             $fields[$newfieldname] = array('type' => 'string'); // TODO: Always string??
             $attname = Yii::app()->db
                 ->createCommand()
@@ -1631,7 +1632,7 @@ class Participant extends LSActiveRecord
                 "encrypted" => "N",
                 "show_register" => "N"
             );
-            array_push($addedAttributeIds, 'attribute_' . $value);
+            array_push($addedAttributeIds, 'attribute_'.$value);
             array_push($addedAttributes, $value);
         }
 
@@ -1653,7 +1654,7 @@ class Participant extends LSActiveRecord
 
         Yii::app()->db
             ->createCommand()
-            ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = ' . intval($surveyId)); // load description in the surveys table
+            ->update('{{surveys}}', array("attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyId)); // load description in the surveys table
 
         //Actually create the fields in the tokens table
         Yii::app()->loadHelper('update/updatedb');
@@ -1703,7 +1704,8 @@ class Participant extends LSActiveRecord
                 $blacklistSkipped++;
                 continue;
             }
-            $isDuplicate = array_reduce($oTokens, function ($carry, $oToken) use ($oParticipant) {
+            $isDuplicate = array_reduce($oTokens, function ($carry, $oToken) use ($oParticipant)
+            {
                 return $carry ? $carry : ($oToken->participant_id == $oParticipant->participant_id);
             }, false);
             if ($isDuplicate) {
@@ -1765,7 +1767,7 @@ class Participant extends LSActiveRecord
                 try {
                     $oSurveyLink->save();
                 } catch (Exception $e) {
-                    throw new Exception(gT("Could not update participant attribute value: " . $e->getMessage()));
+                    throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                 }
 
                 //If there are new attributes created, add those values to the token entry for this participant
@@ -1775,7 +1777,7 @@ class Participant extends LSActiveRecord
                         try {
                             Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $addedAttributes[$a], $addedAttributeIds[$a]);
                         } catch (Exception $e) {
-                            throw new Exception(gT("Could not update participant attribute value: " . $e->getMessage()));
+                            throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                         }
                     }
                 }
@@ -1790,7 +1792,7 @@ class Participant extends LSActiveRecord
 
                         Participant::model()->updateTokenAttributeValue($surveyId, $oParticipant->participant_id, $value, $key);
                     } catch (Exception $e) {
-                        throw new Exception(gT("Could not update participant attribute value: " . $e->getMessage()));
+                        throw new Exception(gT("Could not update participant attribute value: ".$e->getMessage()));
                     }
                 }
                 $successful++;
@@ -2098,7 +2100,7 @@ class Participant extends LSActiveRecord
                 }
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = ' . $surveyid);
+                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = '.$surveyid);
             }
             if (!empty($aMapped)) {
                 foreach ($aMapped as $cpdbatt => $tatt) {
@@ -2107,7 +2109,7 @@ class Participant extends LSActiveRecord
                 }
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = ' . $surveyid);
+                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = '.$surveyid);
             }
         }
         $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman);
@@ -2223,13 +2225,15 @@ class Participant extends LSActiveRecord
         $allLanguages = getLanguageData();
         $restrictToLanguages = Yii::app()->getConfig('restrictToLanguages');
         if (empty($restrictToLanguages)) {
-            return array_map(function ($lngArr) {
+            return array_map(function ($lngArr)
+            {
                 return $lngArr['description'];
             }, $allLanguages);
         }
         $usedLanguages = explode(' ', $restrictToLanguages);
         $returner = [];
-        array_walk($usedLanguages, function ($lngKey) use (&$returner, $allLanguages) {
+        array_walk($usedLanguages, function ($lngKey) use (&$returner, $allLanguages)
+        {
             $returner[$lngKey] = $allLanguages[$lngKey]['description'];
         });
         return $returner;

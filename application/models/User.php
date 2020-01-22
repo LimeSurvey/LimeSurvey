@@ -103,7 +103,8 @@ class User extends LSActiveRecord
         );
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'uid' => gT('User ID'),
             'users_name' => gT('Username'),
@@ -288,7 +289,8 @@ class User extends LSActiveRecord
         return false;
     }
 
-    public function checkPasswordStrength($password){
+    public function checkPasswordStrength($password)
+    {
         $settings = Yii::app()->getConfig("passwordValidationRules");
         $length = strlen($password);
         $lowercase = preg_match_all('@[a-z]@', $password);
@@ -298,22 +300,22 @@ class User extends LSActiveRecord
 
         $error = "";
         if((int) $settings['min'] > 0){
-          if($length < $settings['min']) $error = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
+            if($length < $settings['min']) $error = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
         }
         if((int) $settings['max'] > 0){
-          if($length > $settings['max']) $error = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+            if($length > $settings['max']) $error = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
         }
         if((int) $settings['lower'] > 0){
-          if($lowercase < $settings['lower']) $error = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
+            if($lowercase < $settings['lower']) $error = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
         }
         if((int) $settings['upper'] > 0){
-          if($uppercase < $settings['upper']) $error = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
+            if($uppercase < $settings['upper']) $error = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
         }
         if((int) $settings['numeric'] > 0){
-          if($number < $settings['numeric']) $error = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
+            if($number < $settings['numeric']) $error = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
         }
         if((int) $settings['symbol'] > 0){
-          if($specialChars < $settings['symbol']) $error = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
+            if($specialChars < $settings['symbol']) $error = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
         }
 
         return($error);
@@ -326,12 +328,12 @@ class User extends LSActiveRecord
         if((int) $settings['min'] > 0) $txt = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
         if((int) $settings['max'] > 0) $txt = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
         if((int) $settings['min'] > 0 && (int) $settings['max'] > 0){
-          if($settings['min'] == $settings['max']){
+            if($settings['min'] == $settings['max']){
             $txt = sprintf(ngT('Password must be exactly %d character in length|Password must be exactly %d characters in length', $settings['min']), $settings['min']);
-          } else
-          if($settings['min'] < $settings['max']){
+            } else
+            if($settings['min'] < $settings['max']){
             $txt = sprintf(gT('Password must be between %d - %d characters in length'), $settings['min'], $settings['max']);
-          }
+            }
         }
 
         $txt1 = array();
@@ -340,21 +342,21 @@ class User extends LSActiveRecord
         if((int) $settings['numeric'] > 0) $txt1[] = ' '.sprintf(ngT('%d number|%d numbers', $settings['numeric']), $settings['numeric']);
         if((int) $settings['symbol'] > 0) $txt1[] = ' '.sprintf(ngT('%d special character|%d special characters', $settings['symbol']), $settings['symbol']);
         if(!empty($txt1)){
-          foreach($txt1 as $i => $tmp){
+            foreach($txt1 as $i => $tmp){
             if($i == (count($txt1)-1)){
-              if($txt2) $txt2 .= ' '.gT("and").' ';
+                if($txt2) $txt2 .= ' '.gT("and").' ';
             } else {
-              if($txt2) $txt2 .= ", ";
+                if($txt2) $txt2 .= ", ";
             }
             $txt2 .= $tmp;
-          }
+            }
         }
 
         if($txt && $txt2){
-          $txt = $txt.' '. gT('and must include at least').' '.$txt2.'.';
+            $txt = $txt.' '. gT('and must include at least').' '.$txt2.'.';
         } else
         if($txt2){
-          $txt = gT('Password must include at least').' '.$txt2.'.';
+            $txt = gT('Password must include at least').' '.$txt2.'.';
         }
         return($txt);
     }
@@ -384,8 +386,10 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
-    public function getGroupList() {
-        $collector = array_map(function($oUserInGroup) {
+    public function getGroupList()
+    {
+        $collector = array_map(function($oUserInGroup)
+        {
             return $oUserInGroup->name;
         }, $this->groups);
         return join(', ', $collector);
@@ -587,7 +591,7 @@ class User extends LSActiveRecord
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             // and Except deleting themselves and changing permissions when they are forced superadmin
-            if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
+            if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ) {
                 return join("",[$userDetail, $editUserButton]);
             }
             return join("",[
@@ -676,7 +680,8 @@ class User extends LSActiveRecord
     public function getRoleList()
     {
         $list = array_map(
-            function($oRoleMapping){
+            function($oRoleMapping)
+            {
                 return $oRoleMapping->name;
             },
             $this->roles
@@ -684,18 +689,20 @@ class User extends LSActiveRecord
         return join(', ', $list);
     }
 
-    public function getLastloginFormatted() {
+    public function getLastloginFormatted()
+    {
         
         $lastLogin = $this->lastLogin;
-        if($lastLogin == null) {
+        if ($lastLogin == null) {
             return '---';
         }
 
         $date = new DateTime($lastLogin);
-        return $date->format($this->dateFormat).' '. $date->format('H:i');
+        return $date->format($this->dateFormat).' '.$date->format('H:i');
     }
 
-    public function getManagementCheckbox() {
+    public function getManagementCheckbox()
+    {
         return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='".$this->uid."'>";
     }
     /**
@@ -823,9 +830,9 @@ class User extends LSActiveRecord
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
         
-        $criteria->compare('full_name',$this->searched_value,true);
-        $criteria->compare('users_name',$this->searched_value,true, 'OR');
-        $criteria->compare('email',$this->searched_value,true, 'OR');
+        $criteria->compare('full_name', $this->searched_value, true);
+        $criteria->compare('users_name', $this->searched_value, true, 'OR');
+        $criteria->compare('email', $this->searched_value, true, 'OR');
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination' => array(

@@ -55,23 +55,23 @@ class questionedit extends Survey_Common_Action
         $aData['questionbar']['buttons']['view'] = true;
 
         // Last question visited : By user (only one by user)
-        $setting_entry = 'last_question_' . App()->user->getId();
+        $setting_entry = 'last_question_'.App()->user->getId();
         SettingGlobal::setSetting($setting_entry, $oQuestion->qid);
 
         // we need to set the sid for this question
-        $setting_entry = 'last_question_sid_' . App()->user->getId();
+        $setting_entry = 'last_question_sid_'.App()->user->getId();
         SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         // we need to set the gid for this question
-        $setting_entry = 'last_question_gid_' . App()->user->getId();
+        $setting_entry = 'last_question_gid_'.App()->user->getId();
         SettingGlobal::setSetting($setting_entry, $gid);
 
         // Last question for this survey (only one by survey, many by user)
-        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID;
+        $setting_entry = 'last_question_'.App()->user->getId().'_'.$iSurveyID;
         SettingGlobal::setSetting($setting_entry, $oQuestion->qid);
 
         // we need to set the gid for this question
-        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID . '_gid';
+        $setting_entry = 'last_question_'.App()->user->getId().'_'.$iSurveyID.'_gid';
         SettingGlobal::setSetting($setting_entry, $gid);
 
         ///////////
@@ -96,7 +96,7 @@ class questionedit extends Survey_Common_Action
         $aData['editing'] = true;
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
-        . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        . " (".gT("ID").":".$iSurveyID.")";
         $aData['surveyIsActive'] = $oSurvey->active !== 'N';
         $aData['activated'] = $oSurvey->active;
         $aData['jsData'] = [
@@ -106,7 +106,7 @@ class questionedit extends Survey_Common_Action
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,
             'baseSQACode' => [
-                'answeroptions' => SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO' ,
+                'answeroptions' => SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO',
                 'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ',
             ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
@@ -168,7 +168,7 @@ class questionedit extends Survey_Common_Action
         $aData['topBar']['importquestion'] = true;
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['savebuttonform'] = 'frmeditgroup';
-        $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/' . $iSurveyID; // Close button
+        $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
 
         if ($landOnSideMenuTab !== '') {
             $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
@@ -253,12 +253,12 @@ class questionedit extends Survey_Common_Action
             if (array_key_exists('save_as_default', $questionData['generalSettings'])
                 && $questionData['generalSettings']['save_as_default']['formElementValue'] == 'Y') {
                 SettingsUser::setUserSetting(
-                    'question_default_values_' . $questionData['question']['type'],
+                    'question_default_values_'.$questionData['question']['type'],
                     ls_json_encode($questionData['advancedSettings'])
                 );
             } elseif (array_key_exists('clear_default', $questionData['generalSettings'])
                 && $questionData['generalSettings']['clear_default']['formElementValue'] == 'Y') {
-                SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type'], '');
+                SettingsUser::deleteUserSetting('question_default_values_'.$questionData['question']['type'], '');
             }
 
             // If set, store subquestions
@@ -312,7 +312,8 @@ class questionedit extends Survey_Common_Action
             [
                 'success' => array_reduce(
                     $setApplied,
-                    function ($coll, $it) {
+                    function ($coll, $it)
+                    {
                         return $coll && $it;
                     },
                     true
@@ -378,7 +379,8 @@ class questionedit extends Survey_Common_Action
 
         array_walk(
             $aSurveyLanguages,
-            function ($lngString) use (&$aLanguages, $aAllLanguages) {
+            function ($lngString) use (&$aLanguages, $aAllLanguages)
+            {
                 $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
             }
         );
@@ -420,7 +422,8 @@ class questionedit extends Survey_Common_Action
         $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
         array_walk(
             $aSurveyLanguages,
-            function ($lngString) use (&$aLanguages, $aAllLanguages) {
+            function ($lngString) use (&$aLanguages, $aAllLanguages)
+            {
                 $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
             }
         );
@@ -597,10 +600,10 @@ class questionedit extends Survey_Common_Action
         $changedType = $changedType == null ? $oQuestion->type : $changedType;
 
         if ($changedText !== []) {
-            App()->session['edit_' . $iQuestionId . '_changedText'] = $changedText;
+            App()->session['edit_'.$iQuestionId.'_changedText'] = $changedText;
         } else {
-            $changedText = isset(App()->session['edit_' . $iQuestionId . '_changedText'])
-            ? App()->session['edit_' . $iQuestionId . '_changedText']
+            $changedText = isset(App()->session['edit_'.$iQuestionId.'_changedText'])
+            ? App()->session['edit_'.$iQuestionId.'_changedText']
             : [];
         }
 
@@ -634,7 +637,7 @@ class questionedit extends Survey_Common_Action
         foreach ($fieldmap as $info) {
             // Needed to set empty values.
             // TODO: Don't need to set all quesetions in survey, only ONE question.
-            $_SESSION['survey_' . $surveyid][$info['fieldname']] = null;
+            $_SESSION['survey_'.$surveyid][$info['fieldname']] = null;
         }
         // TODO: Language should be changed.
         $_SESSION['survey_'.$surveyid]['s_lang'] = $survey->language;
@@ -1015,7 +1018,8 @@ class questionedit extends Survey_Common_Action
         $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAllByAttributes(['qid' => $oldQid]);
         $setApplied['defaultValues'] = array_reduce(
             $oOldDefaultValues,
-            function ($collector, $oDefaultValue) use ($oQuestion) {
+            function ($collector, $oDefaultValue) use ($oQuestion)
+            {
                 $oNewDefaultValue = new DefaultValue();
                 $oNewDefaultValue->setAttributes($oDefaultValue->attributes, false);
                 $oNewDefaultValue->dvid = null;
@@ -1122,7 +1126,8 @@ class questionedit extends Survey_Common_Action
         $aSubquestions = $oQuestion->subquestions;
         array_walk(
             $aSubquestions,
-            function ($oSubquestion) use (&$dataSet, $oQuestion) {
+            function ($oSubquestion) use (&$dataSet, $oQuestion)
+            {
                 $exists = false;
                 foreach ($dataSet as $scaleId => $aSubquestions) {
                     foreach ($aSubquestions as $i => $aSubquestionDataSet) {
@@ -1160,7 +1165,7 @@ class questionedit extends Survey_Common_Action
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
-                } else if(!$oQuestion->survey->isActive) {
+                } else if (!$oQuestion->survey->isActive) {
                     $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
                     $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
                 }
@@ -1183,7 +1188,8 @@ class questionedit extends Survey_Common_Action
         $aAnsweroptions = $oQuestion->answers;
         array_walk(
             $aAnsweroptions,
-            function ($oAnsweroption) use (&$dataSet) {
+            function ($oAnsweroption) use (&$dataSet)
+            {
                 $exists = false;
                 foreach ($dataSet as $scaleId => $aAnsweroptions) {
                     foreach ($aAnsweroptions as $i => $aAnsweroptionDataSet) {
@@ -1263,14 +1269,16 @@ class questionedit extends Survey_Common_Action
 
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
-            $aScaledSubquestions[$scaleId] = array_map(function ($oSubQuestion) {
+            $aScaledSubquestions[$scaleId] = array_map(function ($oSubQuestion)
+            {
                 return array_merge($oSubQuestion->attributes, $oSubQuestion->questionL10ns);
             }, $aSubquestions);
         }
 
         $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
         foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
-            $aScaledAnswerOptions[$scaleId] = array_map(function ($oAnswerOption) {
+            $aScaledAnswerOptions[$scaleId] = array_map(function ($oAnswerOption)
+            {
                 return array_merge($oAnswerOption->attributes, $oAnswerOption->answerL10ns);
             }, $aAnswerOptions);
         }

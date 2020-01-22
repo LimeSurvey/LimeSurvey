@@ -307,7 +307,7 @@ class questiongroups extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData['gid'] = $gid;
         $baselang = $survey->language;
-        if ($gid!==null) {
+        if ($gid !== null) {
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         }
         $aData['condarray'] = $condarray ?? [];
@@ -390,7 +390,7 @@ class questiongroups extends Survey_Common_Action
                 'Mandatory' => gT('Mandatory'),
                 'Encrypted' => gT('Encrypted'),
                 'Actions' => gT('Actions'),
-               ]
+                ]
         ];
 
         $this->_renderWrappedTemplate('survey/QuestionGroups', 'group_view', $aData);
@@ -411,7 +411,7 @@ class questiongroups extends Survey_Common_Action
         $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
         $aSurveyLanguages = $oSurvey->getAllLanguages();
 
-        array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, $aAllLanguages) {
+        array_walk($aSurveyLanguages, function($lngString) use (&$aLanguages, $aAllLanguages) {
             $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
         });
 
@@ -419,7 +419,7 @@ class questiongroups extends Survey_Common_Action
             $oQuestionGroup = new QuestionGroup();
             $oQuestionGroup->sid = $oSurvey->sid;
             $i10N = [];
-            array_walk($aSurveyLanguages, function ($sLanguage) use (&$i10N) {
+            array_walk($aSurveyLanguages, function($sLanguage) use (&$i10N) {
                 $i10N[$sLanguage] = [
                     'language' => $sLanguage,
                     'group_name' => '',
@@ -466,7 +466,7 @@ class questiongroups extends Survey_Common_Action
         ];
 
         $aQuestionGroup = $oQuestionGroup->attributes;
-        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
+        LimeExpressionManager::ProcessString('{'.$aQuestionGroup['grelevance'].'}');
         $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
             LimeExpressionManager::GetLastPrettyPrintExpression()
         );
@@ -497,7 +497,7 @@ class questiongroups extends Survey_Common_Action
         }
         $aQuestions = [];
         $aAllQuestions = $oQuestionGroup->questions;
-        array_walk($aAllQuestions, function ($oQuestion) use (&$aQuestions) {
+        array_walk($aAllQuestions, function($oQuestion) use (&$aQuestions) {
             $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionL10ns);
         });
 
@@ -536,7 +536,7 @@ class questiongroups extends Survey_Common_Action
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
         $aQuestionGroup = $oQuestionGroup->attributes;
-        LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
+        LimeExpressionManager::ProcessString('{'.$aQuestionGroup['grelevance'].'}');
         $aQuestionGroup['grelevance_expression'] = viewHelper::stripTagsEM(
             LimeExpressionManager::GetLastPrettyPrintExpression()
         );
@@ -684,7 +684,7 @@ class questiongroups extends Survey_Common_Action
                         [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]
                     );
                     array_map(
-                        function ($oQuestiongroup) use ($aQuestiongroup, $success) {
+                        function($oQuestiongroup) use ($aQuestiongroup, $success) {
                             $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                             // TODO: unused variable $success
                             $success = $success && $oQuestiongroup->save();
@@ -703,14 +703,14 @@ class questiongroups extends Survey_Common_Action
                         );
                         array_walk(
                             $aQuestions,
-                            function ($oQuestion) use ($aQuestion, $success) {
+                            function($oQuestion) use ($aQuestion, $success) {
                                 $oQuestion->question_order = $aQuestion['question_order'];
                                 $oQuestion->gid = $aQuestion['gid'];
                                 if (safecount($oQuestion->subquestions) > 0) {
                                     $aSubquestions = $oQuestion->subquestions;
                                     array_walk(
                                         $aSubquestions,
-                                        function ($oSubQuestion) use ($aQuestion, $success) {
+                                        function($oSubQuestion) use ($aQuestion, $success) {
                                             $oSubQuestion->gid = $aQuestion['gid'];
                                             $success = $success && $oSubQuestion->save(true);
                                         }
@@ -766,7 +766,7 @@ class questiongroups extends Survey_Common_Action
                 "gid=:gid AND sid=:sid",
                 [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]
             );
-            array_map(function ($oQuestiongroup) use ($aQuestiongroup) {
+            array_map(function($oQuestiongroup) use ($aQuestiongroup) {
                 $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                 $oQuestiongroup->save();
             }, $oQuestiongroups);
@@ -861,7 +861,7 @@ class questiongroups extends Survey_Common_Action
         $oQuestionGroup = null;
         if ($gid) {
             $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
-            $sumcount  = safecount($oQuestionGroup->questions);
+            $sumcount = safecount($oQuestionGroup->questions);
         } else {
             $gid = 0;
             $sumcount = 0;
@@ -900,7 +900,7 @@ class questiongroups extends Survey_Common_Action
     private function _getQuestionGroupObject($iQuestionGroupId = null)
     {
         $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
-        $oQuestionGroup =  QuestionGroup::model()->findByPk($iQuestionGroupId);
+        $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
         if ($oQuestionGroup == null) {
             $oQuestionGroup = new QuestionGroup();
             $oQuestionGroup->sid = $iSurveyId;
@@ -934,7 +934,7 @@ class questiongroups extends Survey_Common_Action
             throw new CException("Object creation failed, input array malformed or invalid");
         }
         // Always add at the end
-        $oQuestionGroup->group_order = safecount($oSurvey->groups)+1;
+        $oQuestionGroup->group_order = safecount($oSurvey->groups) + 1;
         $saved = $oQuestionGroup->save();
         if ($saved == false) {
             throw new CException(
@@ -996,7 +996,7 @@ class questiongroups extends Survey_Common_Action
 
         foreach ($dataSet as $sLanguage => $aI10NBlock) {
             $i10N = QuestionGroupL10n::model()->findByAttributes(
-                ['gid' => $oQuestionGroup->gid,'language' => $sLanguage]
+                ['gid' => $oQuestionGroup->gid, 'language' => $sLanguage]
             );
             $i10N->setAttributes([
                 'group_name' => $aI10NBlock['group_name'],

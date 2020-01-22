@@ -74,7 +74,7 @@ class FormattingOptions
      *
      * @var boolean
      */
-    public $csvMaskEquations=false;    
+    public $csvMaskEquations = false;    
 
     /**
      * Valid values are:

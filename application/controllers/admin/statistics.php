@@ -117,8 +117,8 @@ class statistics extends Survey_Common_Action
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js', CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'json-js/json2.min.js');
 
         yii::app()->clientScript->registerPackage('jszip');
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
@@ -157,7 +157,7 @@ class statistics extends Survey_Common_Action
          */
 
         //store all the data in $rows
-        $rows = Question::model()->with('group')->findAll(array('condition' => 'parent_qid = 0 AND group.sid=' . $surveyid, 'order' => 'group_order,question_order'));
+        $rows = Question::model()->with('group')->findAll(array('condition' => 'parent_qid = 0 AND group.sid='.$surveyid, 'order' => 'group_order,question_order'));
 
         //SORT IN NATURAL ORDER!
         usort($rows, 'groupOrderThenQuestionOrder');
@@ -203,12 +203,12 @@ class statistics extends Survey_Common_Action
         $usegraph = (int) Yii::app()->request->getPost('usegraph', 0);
         if (!function_exists("gd_info")) {
             $grapherror = true;
-            $error .= '<br />' . gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-            $error .= '<br />' . gT('visit http://us2.php.net/manual/en/ref.image.php for more information') . '<br />';
+            $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+            $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         } elseif (!function_exists("imageftbbox")) {
             $grapherror = true;
-            $error .= '<br />' . gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-            $error .= '<br />' . gT('visit http://us2.php.net/manual/en/ref.image.php for more information') . '<br />';
+            $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+            $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         }
 
         if ($grapherror) {
@@ -441,7 +441,7 @@ class statistics extends Survey_Common_Action
                 default:
 
                     //get answers
-                    $result = Answer::model()->findAll("qid=" . $flt[0]);
+                    $result = Answer::model()->findAll("qid=".$flt[0]);
                     $aData['result'][$key1] = $result;
                     break;
             }    //end switch -> check question types and create filter forms
@@ -490,11 +490,11 @@ class statistics extends Survey_Common_Action
 
         $error = '';
         if (!function_exists("gd_info")) {
-            $error .= '<br />' . gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
-            $error .= '<br />' . gT('visit http://us2.php.net/manual/en/ref.image.php for more information') . '<br />';
+            $error .= '<br />'.gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+            $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         } else if (!function_exists("imageftbbox")) {
-            $error .= '<br />' . gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
-            $error .= '<br />' . gT('visit http://us2.php.net/manual/en/ref.image.php for more information') . '<br />';
+            $error .= '<br />'.gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+            $error .= '<br />'.gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
         }
 
         $aData['error'] = $error;
@@ -534,14 +534,14 @@ class statistics extends Survey_Common_Action
         Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
-        require_once(Yii::app()->basePath . '/third_party/pchart/pChart.class.php');
-        require_once(Yii::app()->basePath . '/third_party/pchart/pData.class.php');
-        require_once(Yii::app()->basePath . '/third_party/pchart/pCache.class.php');
+        require_once(Yii::app()->basePath.'/third_party/pchart/pChart.class.php');
+        require_once(Yii::app()->basePath.'/third_party/pchart/pData.class.php');
+        require_once(Yii::app()->basePath.'/third_party/pchart/pCache.class.php');
 
         Yii::import('application.third_party.ar-php.Arabic', true);
 
         $tempdir = Yii::app()->getConfig("tempdir");
-        $MyCache = new pCache($tempdir . '/');
+        $MyCache = new pCache($tempdir.'/');
         $aData['success'] = 1;
         $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
 
@@ -675,7 +675,7 @@ class statistics extends Survey_Common_Action
         foreach ($rows as $row) {
             $type = $row['type'];
             if ($type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_N_NUMERICAL) {
-                $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
+                $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
             switch ($type) {
 
@@ -688,7 +688,7 @@ class statistics extends Survey_Common_Action
                         $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid'  AND scale_id = 1", 'question_order, title');
                         foreach ($results as $row1) {
                             foreach ($fresults as $row2) {
-                                $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'] . '_' . $row2['title'];
+                                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'_'.$row2['title'];
                             }
                         }
                     }
@@ -698,8 +698,8 @@ class statistics extends Survey_Common_Action
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' ", 'question_order, title');
                     foreach ($results as $row1) {
-                        $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'] . '#0';
-                        $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'] . '#1';
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#0';
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#1';
                     }
 
                     break;
@@ -710,7 +710,7 @@ class statistics extends Survey_Common_Action
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     for ($i = 1; $i <= $count; $i++) {
-                        $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . '-' . $i;
+                        $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
                     }
                     break;
 
@@ -725,7 +725,7 @@ class statistics extends Survey_Common_Action
                     $qid = $row['qid'];
                     $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' ", 'question_order');
                     foreach ($results as $row1) {
-                        $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'] . $row1['title'];
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'];
                     }
                     break;
 
@@ -733,7 +733,7 @@ class statistics extends Survey_Common_Action
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
                 case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
                 case Question::QT_S_SHORT_FREE_TEXT:
-                    $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
+                    $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
                     break;
 
                     // Not shown (else would only show 'no answer' )
@@ -751,7 +751,7 @@ class statistics extends Survey_Common_Action
 
 
                 default:
-                    $summary[] = $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
+                    $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
                     break;
             }
         }
@@ -778,8 +778,8 @@ class statistics extends Survey_Common_Action
         
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js', CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'json-js/json2.min.js');
         yii::app()->clientScript->registerPackage('jspdf');
         yii::app()->clientScript->registerPackage('jszip');
         echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
@@ -807,7 +807,7 @@ class statistics extends Survey_Common_Action
         yii::app()->clientScript->registerPackage('jspdf');
         $oSurvey = Survey::model()->findByPk($aData['surveyid']);
 
-        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/" . $aData['surveyid']));
+        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']));
 
         $aData['display'] = array();
         $aData['display']['menu_bars'] = false;
@@ -818,7 +818,7 @@ class statistics extends Survey_Common_Action
         $aData['topBar']['type'] = 'responses';
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
-        $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         $aData['subaction'] = gT('Statistics');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }

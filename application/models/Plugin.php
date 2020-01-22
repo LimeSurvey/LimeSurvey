@@ -75,8 +75,8 @@ class Plugin extends LSActiveRecord
         // load the plugin system all over again.
         // TODO: Works on all SQL systems?
         $sql = sprintf(
-            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
-            addslashes($error['message'] . ' ' . $error['file'])
+            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = ".$this->id,
+            addslashes($error['message'].' '.$error['file'])
         );
         return \Yii::app()->db->createCommand($sql)->execute();
     }
@@ -97,14 +97,14 @@ class Plugin extends LSActiveRecord
      */
     public function getExtensionConfig()
     {
-        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
+        $file = $this->getDir().DIRECTORY_SEPARATOR.'config.xml';
         if (file_exists($file)) {
             libxml_disable_entity_loader(false);
             $config = simplexml_load_file(realpath($file));
             libxml_disable_entity_loader(true);
             return new ExtensionConfig($config);
         } else {
-            throw new \Exception('Missing configuration file for plugin ' . $this->name);
+            throw new \Exception('Missing configuration file for plugin '.$this->name);
         }
     }
 
@@ -156,8 +156,8 @@ class Plugin extends LSActiveRecord
      */
     public function getActionButtons()
     {
-        $output='';
-        if (Permission::model()->hasGlobalPermission('settings','update')) {
+        $output = '';
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             if ($this->load_error == 1) {
                 $reloadUrl = Yii::app()->createUrl(
                     'admin/pluginmanager',
@@ -166,7 +166,7 @@ class Plugin extends LSActiveRecord
                         'pluginId' => $this->id
                     ]
                 );
-                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
+                $output = "<a href='".$reloadUrl."' data-toggle='tooltip' title='".gT('Attempt plugin reload')."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
             } elseif ($this->active == 0) {
                 $output = $this->getActivateButton();
             } else {
@@ -192,7 +192,7 @@ class Plugin extends LSActiveRecord
                 'sa' => 'activate'
             ]
         );
-        $output = '&nbsp;' . CHtml::beginForm(
+        $output = '&nbsp;'.CHtml::beginForm(
             $activateUrl,
             'post',
             [
@@ -200,8 +200,8 @@ class Plugin extends LSActiveRecord
             ]
         );
         $output .= "
-                <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-default btn-xs'>
+                <input type='hidden' name='pluginId' value='" . $this->id."' />
+                <button data-toggle='tooltip' title='" . gT('Activate plugin')."' class='btntooltip btn btn-default btn-xs'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
@@ -220,7 +220,7 @@ class Plugin extends LSActiveRecord
                 'sa' => 'deactivate'
             ]
         );
-        $output = '&nbsp;' . CHtml::beginForm(
+        $output = '&nbsp;'.CHtml::beginForm(
             $deactivateUrl,
             'post',
             [
@@ -228,8 +228,8 @@ class Plugin extends LSActiveRecord
             ]
         );
         $output .= "
-                <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-xs'>
+                <input type='hidden' name='pluginId' value='" . $this->id."' />
+                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?')."\");' title='".gT('Deactivate plugin')."' class='btntooltip btn btn-warning btn-xs'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
@@ -249,7 +249,7 @@ class Plugin extends LSActiveRecord
                 'sa' => 'uninstallPlugin'
             ]
         );
-        $output = '&nbsp;' . CHtml::beginForm(
+        $output = '&nbsp;'.CHtml::beginForm(
             $uninstallUrl,
             'post',
             [
@@ -257,8 +257,8 @@ class Plugin extends LSActiveRecord
             ]
         );
         $output .= "
-                <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'>
+                <input type='hidden' name='pluginId' value='" . $this->id."' />
+                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?')."\");' title='".gT('Uninstall plugin')."' class='btntooltip btn btn-danger btn-xs'>
                     <i class='fa fa-times-circle'></i>
                 </button>
             </form>
@@ -301,16 +301,16 @@ class Plugin extends LSActiveRecord
         $alias = $pluginManager->pluginDirs[$this->plugin_type];
 
         if (empty($alias)) {
-            throw new \Exception('Unknown plugin type: ' . json_encode($this->plugin_type));
+            throw new \Exception('Unknown plugin type: '.json_encode($this->plugin_type));
         }
 
         $folder = Yii::getPathOfAlias($alias);
 
         if (empty($folder)) {
-            throw new \Exception('Alias has no folder: ' . json_encode($alias));
+            throw new \Exception('Alias has no folder: '.json_encode($alias));
         }
 
         // NB: Name is same as plugin folder and plugin main class.
-        return $folder . DIRECTORY_SEPARATOR . $this->name;
+        return $folder.DIRECTORY_SEPARATOR.$this->name;
     }
 }

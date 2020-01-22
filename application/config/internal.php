@@ -74,7 +74,7 @@ $internalConfig = array(
 
         //Root Modules are real Yii Modules and can be initiate like this:
         'HelloWorld' => array(
-          'class'=>'modules.root.HelloWorld.HelloWorldModule',
+            'class'=>'modules.root.HelloWorld.HelloWorldModule',
         ),
 
         /* Here you can unlock Gii
@@ -123,7 +123,7 @@ $internalConfig = array(
         ),
         'sodium'=>array(
             'class' => 'LSSodium',
-       ),
+        ),
         'clientScript'=>array(
             'packages' => array_merge(
                 require('third_party.php'),
@@ -268,11 +268,11 @@ $internalConfig = array(
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
                 'getConfig'               => 'LS_Twig_Extension::getConfig',
-                'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
-                'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
-                'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
+                'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput', /* Not in 3.X */
+                'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget', /* Not in 3.X */
+                'checkPermission'         => 'LS_Twig_Extension::checkPermission', /* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
-                'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
+                'getLanguageNameFromCode'    => 'getLanguageNameFromCode', /* Not in 3.X */
 
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -293,7 +293,7 @@ $internalConfig = array(
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
                 'ngT'                     => 'ngT',
-                'createAbsoluteUrl'       => 'LS_Twig_Extension::createAbsoluteUrl',/* Not in 3.X */
+                'createAbsoluteUrl'       => 'LS_Twig_Extension::createAbsoluteUrl', /* Not in 3.X */
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',

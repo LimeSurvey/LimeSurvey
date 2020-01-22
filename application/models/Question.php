@@ -134,7 +134,7 @@ class Question extends LSActiveRecord
             array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
             array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
-            array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
+            array('qid', 'unique', 'message'=>sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)), // Still needed ?
             array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('mandatory', 'in', 'range'=>array('Y', 'S', 'N'), 'allowEmpty'=>true),
             array('encrypted', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
@@ -183,7 +183,8 @@ class Question extends LSActiveRecord
             }
         }
         /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “Expression Manager” issue. */
-        if (!$this->parent_qid) { // 0 or empty
+        if (!$this->parent_qid) {
+// 0 or empty
             /* Unicity for ExpressionManager */
             $aRules[] = array('title', 'unique', 'caseSensitive'=>true,
                 'criteria'=>array(
@@ -203,10 +204,10 @@ class Question extends LSActiveRecord
             /* ExpressionManager reserved word (partial) */
             $aRules[] = array('title', 'in', 'not' => true,
                 'range' => array(
-                    'LANG','SID', // Global var
-                    'SAVEDID','TOKEN', // current survey related var
-                    'QID','GID','SGQ', // current question related var
-                    'self','that','this', // EM reserved variables
+                    'LANG', 'SID', // Global var
+                    'SAVEDID', 'TOKEN', // current survey related var
+                    'QID', 'GID', 'SGQ', // current question related var
+                    'self', 'that', 'this', // EM reserved variables
                 ),
                 'message'=> sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
@@ -337,7 +338,7 @@ class Question extends LSActiveRecord
                     // Add the custom attributes to the list
                     foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
                         $sAttributeName = (string) $attribute->name;
-                        $sInputType = (string)$attribute->inputtype;
+                        $sInputType = (string) $attribute->inputtype;
                         // remove attribute if inputtype is empty
                         if (empty($sInputType)) {
                             unset($aAttributeNames[$sAttributeName]);
@@ -418,7 +419,7 @@ class Question extends LSActiveRecord
 
         // delete defaultvalues and defaultvalueL10ns
         $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
-        foreach($oDefaultValues as $defaultvalue){
+        foreach($oDefaultValues as $defaultvalue) {
             DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
             DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
         }
@@ -473,14 +474,13 @@ class Question extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
-        if ($orderby === false){
+        if ($orderby === false) {
             $oQuestions = Question::model()->with('questionL10ns')->findAll(array('condition' => $condition));
         } else {
             $oQuestions = Question::model()->with('questionL10ns')->findAll(array('condition' => $condition, 'order' => $orderby));
         }
         $arr = array();
-        foreach($oQuestions as $key => $question)
-        {
+        foreach($oQuestions as $key => $question) {
             $arr[$key] = array_merge($question->attributes, current($question->questionL10ns)->attributes);
         }
         return $arr;
@@ -629,7 +629,7 @@ class Question extends LSActiveRecord
         return $button;
     }
 
-    public function getOrderedAnswers($scale_id=null)
+    public function getOrderedAnswers($scale_id = null)
     {
         //reset answers set prior to this call
         $aAnswerOptions = [
@@ -650,34 +650,34 @@ class Question extends LSActiveRecord
 
         // Random order
         if ($this->getQuestionAttribute('random_order') == 1){
-          $keys = array_keys($aAnswerOptions[0]);
-          shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+            $keys = array_keys($aAnswerOptions[0]);
+            shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
 
-          $aNew = array();
-          foreach($keys as $key) {
-              $aNew[$key] = $aAnswerOptions[0][$key];
-          }
-          $aAnswerOptions[0] = $aNew;
+            $aNew = array();
+            foreach($keys as $key) {
+                $aNew[$key] = $aAnswerOptions[0][$key];
+            }
+            $aAnswerOptions[0] = $aNew;
         }
 
         // Alphabetic ordrer
         if ($this->getQuestionAttribute('alphasort')){
 
-          $aSorted = array();
+            $aSorted = array();
 
-          // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
-          foreach($aAnswerOptions[0] as $iKey => $oAnswer){
-              $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
-          }
+            // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
+            foreach($aAnswerOptions[0] as $iKey => $oAnswer){
+                $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+            }
 
-          ksort($aSorted);
+            ksort($aSorted);
 
-          // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
-          $aNew = array();
-          foreach($aSorted as $sAnswer => $iKey) {
-              $aNew[] = $aAnswerOptions[0][$iKey];
-          }
-          $aAnswerOptions[0] = $aNew;
+            // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
+            $aNew = array();
+            foreach($aSorted as $sAnswer => $iKey) {
+                $aNew[] = $aAnswerOptions[0][$iKey];
+            }
+            $aAnswerOptions[0] = $aNew;
         }
 
         return $aAnswerOptions;
@@ -706,7 +706,8 @@ class Question extends LSActiveRecord
 
             $aOrderedSubquestions = ls\mersenne\shuffle($aOrderedSubquestions);
         } else {
-            usort($aOrderedSubquestions, function ($oQuestionA, $oQuestionB) {
+            usort($aOrderedSubquestions, function ($oQuestionA, $oQuestionB)
+            {
                 if ($oQuestionA->question_order == $oQuestionB->question_order) { return 0; }
                 return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
             });
@@ -724,7 +725,7 @@ class Question extends LSActiveRecord
                 ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
                 && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
             ) {
-                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id])-1);
+                $excludedSubquestionPosition = (safecount($aSubQuestions[$oSubquestion->scale_id]) - 1);
                 $excludedSubquestion = $oSubquestion;
                 continue;
             }
@@ -732,10 +733,10 @@ class Question extends LSActiveRecord
         }
 
         if ($excludedSubquestion != null) {
-            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order-1), 0, [$excludedSubquestion]);
+            array_splice($aSubQuestions[$excludedSubquestion->scale_id], ($excludedSubquestion->question_order - 1), 0, [$excludedSubquestion]);
         }
 
-        if($scale_id !== null) {
+        if ($scale_id !== null) {
             return $aSubQuestions[$scale_id];
         }
 
@@ -745,9 +746,9 @@ class Question extends LSActiveRecord
     public function getMandatoryIcon()
     {
         if ($this->type != Question::QT_X_BOILERPLATE_QUESTION && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
-            if ($this->mandatory == "Y"){
+            if ($this->mandatory == "Y") {
                 $sIcon = '<span class="fa fa-asterisk text-danger"></span>';
-            } elseif ($this->mandatory == "S"){
+            } elseif ($this->mandatory == "S") {
                 $sIcon = '<span class="fa fa-asterisk text-danger"> ' . gT('Soft') . '</span>';
             } else {
                 $sIcon = '<span></span>';
@@ -809,7 +810,8 @@ class Question extends LSActiveRecord
         );
         return $this;
     }*/
-    public function getQuestionListColumns(){
+    public function getQuestionListColumns()
+    {
     return array(
             array(
                 'id'=>'id',
@@ -940,7 +942,7 @@ class Question extends LSActiveRecord
             $criteria2->compare('ql10n.question', $this->title, true, 'OR');
             $criteria2->compare('t.type', $this->title, true, 'OR');
             /* search exact qid and make sure it's a numeric */
-            if(is_numeric($this->title)) {
+            if (is_numeric($this->title)) {
                 $criteria2->compare('t.qid', $this->title, false, 'OR');
             }
             $criteria->mergeWith($criteria2, 'AND');
@@ -1024,7 +1026,8 @@ class Question extends LSActiveRecord
         if ($this->parent_qid != 0) {
             /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
             // Use parents relation
-            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ?
+            if(!empty($this->parents)) {
+// Maybe need to throw error or find it if it's not set ?
                 return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
             }
             return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
@@ -1037,7 +1040,7 @@ class Question extends LSActiveRecord
      */
     public function getQuestionAttributes()
     {
-        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $sLanguage;
+        $cacheKey = 'getQuestionAttributes_'.$iQuestionID.'_'.$sLanguage;
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
@@ -1064,9 +1067,9 @@ class Question extends LSActiveRecord
         $criteria->addCondition('qid=:qid');
         $criteria->addCondition('attribute=:attribute');
         $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
-        $oQuestionAttribute =  QuestionAttribute::model()->find($criteria);
+        $oQuestionAttribute = QuestionAttribute::model()->find($criteria);
 
-        if($oQuestionAttribute != null) {
+        if ($oQuestionAttribute != null) {
             return $oQuestionAttribute->value;
         }
 
@@ -1197,11 +1200,13 @@ class Question extends LSActiveRecord
     }
 
 
-    public function getHasSubquestions(){
+    public function getHasSubquestions()
+    {
 
     }
 
-    public function getHasAnsweroptions(){
+    public function getHasAnsweroptions()
+    {
 
     }
 }

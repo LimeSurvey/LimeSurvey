@@ -17,7 +17,7 @@ class SurveymenuEntryData extends CFormModel
     /**
      * @param integer|null $surveyid
      */
-    public function apply($menuEntry, $surveyid=null)
+    public function apply($menuEntry, $surveyid = null)
     {
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;
@@ -67,7 +67,7 @@ class SurveymenuEntryData extends CFormModel
 
     public function linkCreator()
     {
-        if( $this->linkExternal ) {
+        if ($this->linkExternal) {
             return  Yii::app()->getController()->createAbsoluteUrl($this->link, $this->linkData);
         }
         return  Yii::app()->getController()->createUrl($this->link, $this->linkData);
@@ -143,12 +143,12 @@ class SurveymenuEntryData extends CFormModel
                 break;
             case 'questiongroup':
                 if (App()->getRequest()->getParam('gid')) {
-                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('gid'),'language'=>App()->getLanguage()));
+                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('gid'), 'language'=>App()->getLanguage()));
                 }
                 break;
             case 'question':
                 if (App()->getRequest()->getParam('qid')) {
-                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('qid'),'language'=>App()->getLanguage()));
+                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('qid'), 'language'=>App()->getLanguage()));
                 }
                 break;
             break;

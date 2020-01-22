@@ -2,4 +2,6 @@
 
 
 
-class DataSetFivePointChoice extends QuestionBaseDataSet {}
+class DataSetFivePointChoice extends QuestionBaseDataSet
+{
+}

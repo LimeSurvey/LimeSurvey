@@ -454,8 +454,8 @@ class conditionsaction extends Survey_Common_Action
 
                             $leftOperandType = 'unknown'; // prevquestion, tokenattr
                             if (preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
-                                if($surveyIsAnonymized) {
-                                    $data['name'] = sprintf(gT("Unable to use %s in anonymized survey."),trim($rows['cfieldname'],"{}"));
+                                if ($surveyIsAnonymized) {
+                                    $data['name'] = sprintf(gT("Unable to use %s in anonymized survey."), trim($rows['cfieldname'], "{}"));
                                 } else {
                                     $leftOperandType = 'tokenattr';
                                     $thisAttrName = $this->getAttributeName($extractedTokenAttr);
@@ -478,8 +478,8 @@ class conditionsaction extends Survey_Common_Action
                                     }
                                 }
                             }
-                            if(!isset($data['name'])) {
-                                $data['name'] = sprintf(gT("Variable not found: %s"),$rows['cfieldname']);
+                            if (!isset($data['name'])) {
+                                $data['name'] = sprintf(gT("Variable not found: %s"), $rows['cfieldname']);
                             }
 
                             // let's read the condition's right operand
@@ -724,33 +724,33 @@ class conditionsaction extends Survey_Common_Action
             // Other conditions like constant, other question or token field
             switch ($request->getPost('editTargetTab')) {
                 case '#CONST':
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst','');
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
                 case '#PREVQUESTIONS':
-                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA','');
+                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA', '');
                     break;
                 case '#TOKENATTRS':
-                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr','');
+                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr', '');
                     break;
                 case '#REGEXP':
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp','');
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp', '');
                     break;
                 default:
                     $posted_condition_value = null;
             }
 
             $result = null;
-            if ($posted_condition_value !=='') {
+            if ($posted_condition_value !== '') {
                 $condition_data['value'] = $posted_condition_value;
                 $result = Condition::model()->insertRecords($condition_data);
             }
-            if($result) {
+            if ($result) {
                 Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
             } else {
-                if($result === false) {
+                if ($result === false) {
                     Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
                 } else {
-                    Yii::app()->setFlashMessage(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
+                    Yii::app()->setFlashMessage(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
                 }
             }
         }
@@ -974,16 +974,16 @@ class conditionsaction extends Survey_Common_Action
         } else {
             switch ($request->getPost('editTargetTab')) {
                 case "#CONST":
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst','');
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionConst', '');
                     break;
                 case "#PREVQUESTIONS":
-                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA','');
+                    $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA', '');
                     break;
                 case "#TOKENATTRS":
-                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr','');
+                    $posted_condition_value = Yii::app()->request->getPost('tokenAttr', '');
                     break;
                 case "#REGEXP":
-                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp','');
+                    $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp', '');
                     break;
                 default:
                     $posted_condition_value = null;
@@ -1004,10 +1004,10 @@ class conditionsaction extends Survey_Common_Action
             if ($result) {
                 Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
             } else {
-                if($result === false) {
+                if ($result === false) {
                     Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
                 } else {
-                    Yii::app()->setFlashMessage(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
+                    Yii::app()->setFlashMessage(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
                 }
             }
         }
@@ -1839,9 +1839,9 @@ class conditionsaction extends Survey_Common_Action
     protected function getEDITConditionConst($subaction)
     {
         $request = Yii::app()->request;
-        $EDITConditionConst = HTMLEscape($request->getPost('ConditionConst',''));
-        if ($subaction == "editthiscondition" && $request->getPost('EDITConditionConst','') !== '') {
-            $EDITConditionConst = HTMLEscape($request->getPost('EDITConditionConst',''));
+        $EDITConditionConst = HTMLEscape($request->getPost('ConditionConst', ''));
+        if ($subaction == "editthiscondition" && $request->getPost('EDITConditionConst', '') !== '') {
+            $EDITConditionConst = HTMLEscape($request->getPost('EDITConditionConst', ''));
         }
         return $EDITConditionConst;
     }
@@ -1877,7 +1877,7 @@ class conditionsaction extends Survey_Common_Action
         $aViewUrls = array('output' => '');
         if ($subaction == "editthiscondition") {
             // in edit mode we read previous values in order to dusplay them in the corresponding inputs
-            if ($request->getPost('EDITConditionConst','') !== '') {
+            if ($request->getPost('EDITConditionConst', '') !== '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
                 //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('EDITConditionConst'))."';\n";
@@ -1907,7 +1907,7 @@ class conditionsaction extends Survey_Common_Action
             }
         } else {
             // in other modes, for the moment we do the same as for edit mode
-            if ($request->getPost('ConditionConst','') !== '') {
+            if ($request->getPost('ConditionConst', '') !== '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
                 //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('ConditionConst'))."';\n";
@@ -1963,7 +1963,7 @@ class conditionsaction extends Survey_Common_Action
     protected function getEditTargetTab()
     {
         $request = Yii::app()->request;
-        if ($request->getPost('EDITConditionConst','') !== '') {
+        if ($request->getPost('EDITConditionConst', '') !== '') {
             return '#CONST';
         } elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
             return '#PREVQUESTIONS';

@@ -82,9 +82,10 @@ class Label extends LSActiveRecord
         );
     }
 
-    public function getTranslated($sLanguage) {
+    public function getTranslated($sLanguage)
+    {
         $ol10N = $this->labelL10ns;
-        if(isset($ol10N[$sLanguage])) {
+        if (isset($ol10N[$sLanguage])) {
             return array_merge($this->attributes, $ol10N[$sLanguage]->attributes);
         } 
 

@@ -43,7 +43,7 @@ class Expressions extends Survey_Common_Action
             
             
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
+            App()->getClientScript()->registerPackage('expressions'); /* Why we need it ? */
             App()->getClientScript()->registerPackage('decimal');
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
             App()->getClientScript()->registerPackage('expression-extend');
@@ -63,7 +63,7 @@ class Expressions extends Survey_Common_Action
         }
     }
 
-    public function getReplacements($replacementClass){
+    public function getReplacements($replacementClass) {
         die('TEST');
     }
 
@@ -137,7 +137,7 @@ class Expressions extends Survey_Common_Action
 
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
+        App()->getClientScript()->registerPackage('expressions'); /* Why we need it ? */
         App()->getClientScript()->registerPackage('expression-extend');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
 

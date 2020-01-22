@@ -42,7 +42,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'ia'=>$this->aFieldArray,
             'name'=>$this->sSGQA,
             'basename'=>$this->sSGQA, 

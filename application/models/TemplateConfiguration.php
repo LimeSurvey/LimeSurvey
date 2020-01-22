@@ -309,7 +309,8 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->params = array('sid' => $iSurveyId);
         $oTemplateConfigurations = self::model()->findAll($criteria);
 
-        if ($bInherited) { // inherited values
+        if ($bInherited) {
+// inherited values
             foreach ($oTemplateConfigurations as $key => $oTemplateConfiguration) {
                 $oTemplateConfiguration->bUseMagicInherit = true;
                 $oTemplateConfiguration->setOptions();
@@ -317,9 +318,10 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['id'] = null;
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oTemplateConfiguration->template_name;
-                $aTemplateConfigurations[$key]['config']['options'] = (array)$oTemplateConfiguration->oOptions;
+                $aTemplateConfigurations[$key]['config']['options'] = (array) $oTemplateConfiguration->oOptions;
             }
-        } else { // db values
+        } else {
+// db values
             foreach ($oTemplateConfigurations as $key => $oTemplateConfiguration) {
                 $oTemplateConfiguration->bUseMagicInherit = false;
                 $oAttributes = $oTemplateConfiguration->attributes;
@@ -328,7 +330,7 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ?(array)json_decode($oAttributes['options'])
+                    ? (array) json_decode($oAttributes['options'])
                     :$oAttributes['options'];
             }
         }
@@ -496,7 +498,7 @@ class TemplateConfiguration extends TemplateConfig
         // check if survey group id is present
         $gsid = App()->request->getQuery('id', null);
         if ($gsid !== null) {
-            $criteria->addCondition('t.gsid = ' . $gsid);
+            $criteria->addCondition('t.gsid = '.$gsid);
         } else {
             $criteria->addCondition('t.gsid IS NULL');
         }
@@ -536,12 +538,12 @@ class TemplateConfiguration extends TemplateConfig
     {
         $sDescription = $this->template->description;
 
-          // If wrong Twig in manifest, we don't want to block the whole list rendering
-          // Note: if no twig statement in the description, twig will just render it as usual
+            // If wrong Twig in manifest, we don't want to block the whole list rendering
+            // Note: if no twig statement in the description, twig will just render it as usual
         try {
             $sDescription = App()->twigRenderer->convertTwigToHtml($this->template->description);
         } catch (\Exception $e) {
-          // It should never happen, but let's avoid to anoy final user in production mode :)
+            // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
                     "Twig error in template ".
@@ -553,7 +555,7 @@ class TemplateConfiguration extends TemplateConfig
             }
         }
 
-          return $sDescription;
+            return $sDescription;
     }
 
     /**
@@ -686,8 +688,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->sTypeIcon)) {
             $this->sTypeIcon = (Template::isStandardTemplate($this->template->name)) ?
-                gT("Core theme") :
-                gT("User theme");
+                gT("Core theme") : gT("User theme");
         }
         return $this->sTypeIcon;
     }
@@ -713,56 +714,55 @@ class TemplateConfiguration extends TemplateConfig
             App()->getController()->createUrl(
                 'admin/themeoptions/sa/updatesurveygroup',
                 array("id" => $this->id, "gsid" => $gsid)
-            ) :
-            App()->getController()->createUrl(
+            ) : App()->getController()->createUrl(
                 'admin/themeoptions/sa/update',
                 array("id" => $this->id)
             );
 
         $sEditorLink = "<a
-            id='template_editor_link_" . $this->template_name . "'
-            href='" . $sEditorUrl . "'
+            id='template_editor_link_" . $this->template_name."'
+            href='" . $sEditorUrl."'
             class='btn btn-default btn-block'>
                 <span class='icon-templates'></span>
-                " . gT('Theme editor') . "
+                " . gT('Theme editor')."
             </a>";
 
         $OptionLink = '';
         if ($this->hasOptionPage) {
             $OptionLink .= "<a
-                id='template_options_link_" . $this->template_name . "'
-                href='" . $sOptionUrl . "'
+                id='template_options_link_" . $this->template_name."'
+                href='" . $sOptionUrl."'
                 class='btn btn-default btn-block'>
                     <span class='fa fa-tachometer'></span>
-                    " . gT('Theme options') . "
+                    " . gT('Theme options')."
                 </a>";
         }
 
         $sExtendLink = '<a
-            id="extendthis_' . $this->template_name . '"
-            href="' . $sExtendUrl . '"
+            id="extendthis_' . $this->template_name.'"
+            href="' . $sExtendUrl.'"
             data-post=\''
             . json_encode([
                 "copydir" => $this->template_name,
                 "action" => "templatecopy",
                 "newname" => [
-                    "value" => "extends_" . $this->template_name,
+                    "value" => "extends_".$this->template_name,
                     "type" => "text",
                     "class" => "form-control col-sm-12"
                 ]
             ])
             . '\'
-            data-text="' . gT('Please type in the new theme name above.') . '"
-            title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
+            data-text="' . gT('Please type in the new theme name above.').'"
+            title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name).'"
             class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
-                ' . gT('Extend') . '
+                ' . gT('Extend').'
             </a>';
 
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
-            $sButtons = $sEditorLink . $OptionLink . $sExtendLink;
+            $sButtons = $sEditorLink.$OptionLink.$sExtendLink;
 
         }
 
@@ -889,7 +889,7 @@ class TemplateConfiguration extends TemplateConfig
             array_shift($dir);
             array_shift($file);
         }
-        return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
+        return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)).implode(DIRECTORY_SEPARATOR, $file);
     }
 
     /**
@@ -914,7 +914,7 @@ class TemplateConfiguration extends TemplateConfig
         return [
             'preview' => $previewFilePath,
             'filepath' => $filePath,
-            'filepathOptions' => $filePath ,
+            'filepathOptions' => $filePath,
             'filename'=>basename($file)
         ];
     }
@@ -934,8 +934,8 @@ class TemplateConfiguration extends TemplateConfig
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         $categoryList = []; // Array with optgroup label and path
-        $categoryList[] = ['group' => gT("Global"),'path' => $this->generalFilesPath];
-        $categoryList[] = ['group' => gT("Theme"),'path' => $this->filesPath];
+        $categoryList[] = ['group' => gT("Global"), 'path' => $this->generalFilesPath];
+        $categoryList[] = ['group' => gT("Theme"), 'path' => $this->filesPath];
         if ($this->sid) {
             $categoryList[] = [
                 'group' => gT("Survey"),
@@ -1180,7 +1180,7 @@ class TemplateConfiguration extends TemplateConfig
                 $this->packages = array_merge($templateToLoadPackages->add, $this->packages);
             }
             if (!empty($templateToLoadPackages->remove)) {
-                $this->packages =  array_diff($this->packages, $templateToLoadPackages->remove);
+                $this->packages = array_diff($this->packages, $templateToLoadPackages->remove);
             }
         }
 
@@ -1350,8 +1350,7 @@ class TemplateConfiguration extends TemplateConfig
                 $oSurvey = Survey::model()->findByPk($this->sid);
                 // set template name from real inherited value
                 $sTemplateName = !empty($oSurvey->oOptions->template) ?
-                    $oSurvey->oOptions->template :
-                    $this->template->name;
+                    $oSurvey->oOptions->template : $this->template->name;
                 $oParentTemplate = Template::getTemplateConfiguration($sTemplateName, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
@@ -1450,7 +1449,7 @@ class TemplateConfiguration extends TemplateConfig
         $sTemplateNames = $this->sTemplateName;
 
         while (!empty($oRTemplate->oMotherTemplate)) {
-            $sTemplateNames .= ' ' . $oRTemplate->template->extends;
+            $sTemplateNames .= ' '.$oRTemplate->template->extends;
             $oRTemplate      = $oRTemplate->oMotherTemplate;
             if (!($oRTemplate instanceof TemplateConfiguration)) {
                 // Throw alert: should not happen
@@ -1482,7 +1481,7 @@ class TemplateConfiguration extends TemplateConfig
         $config = (int) App()->getConfig('showpopups');
         if ($config == 2) {
             if (isset($this->oOptions->showpopups)) {
-                $this->showpopups = (int)$this->oOptions->showpopups;
+                $this->showpopups = (int) $this->oOptions->showpopups;
             } else {
                 $this->showpopups = 1;
             }

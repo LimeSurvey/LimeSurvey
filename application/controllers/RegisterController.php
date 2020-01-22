@@ -131,11 +131,11 @@ class RegisterController extends LSYii_Controller
         if (empty($this->aRegisterErrors) && $iTokenId && $this->sMessage === null) {
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
-                if($event->get('sendRegistrationEmail', false)) {
+                if ($event->get('sendRegistrationEmail', false)) {
                     self::sendRegistrationEmail($iSurveyId, $iTokenId);
                 }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
-                $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
+                $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId, 'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
@@ -284,15 +284,15 @@ class RegisterController extends LSYii_Controller
         $mailer = new \LimeMailer();
         $mailer->setSurvey($iSurveyId);
         $mailer->setToken($oToken->token);
-        $mailer->setTypeWithRaw('register',$sLanguage);
+        $mailer->setTypeWithRaw('register', $sLanguage);
         $mailer->replaceTokenAttributes = true;
         $mailerSent = $mailer->sendMessage();
-        if($mailer->getEventMessage()) {
+        if ($mailer->getEventMessage()) {
             $this->sMailMessage = $mailer->getEventMessage();
         }
         $aMessage = array();
         $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
-        if($mailerSent) {
+        if ($mailerSent) {
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent = $today;
             $oToken->encryptSave();
@@ -434,7 +434,7 @@ class RegisterController extends LSYii_Controller
         $this->aReplacementData['sMessage'] = $this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
-        $aSurveyInfo  =  getsurveyinfo($iSurveyId);
+        $aSurveyInfo = getsurveyinfo($iSurveyId);
 
         if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);

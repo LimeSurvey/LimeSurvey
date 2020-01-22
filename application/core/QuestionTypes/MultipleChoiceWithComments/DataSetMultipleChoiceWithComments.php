@@ -2,4 +2,6 @@
 
 
 
-class DataSetMultipleChoiceWithComments extends QuestionBaseDataSet {}
+class DataSetMultipleChoiceWithComments extends QuestionBaseDataSet
+{
+}

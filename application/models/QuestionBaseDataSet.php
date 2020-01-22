@@ -28,7 +28,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @return array
      * @throws CException
      */
-    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
+    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template = null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
@@ -66,7 +66,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         ];
         
         $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->sQuestionType);
-        if ($userSetting !== null){
+        if ($userSetting !== null) {
             $generalOptions['clear_default'] = $this->getClearDefaultSwitch();
         }
 
@@ -75,17 +75,17 @@ abstract class QuestionBaseDataSet extends StaticModel
         // load visible general settings from config.xml
         $sFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
         $sXmlFilePath = App()->getConfig('rootdir').'/application/views/survey/questions/answer/'.$sFolderName.'/config.xml';
-        if(file_exists($sXmlFilePath)){
+        if(file_exists($sXmlFilePath)) {
             // load xml file
             libxml_disable_entity_loader(false);
             $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), TRUE);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             libxml_disable_entity_loader(true);
 
 
         }
-        foreach ($generalOptions as $key => $generalOption){
-            if ((isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute'])) || !isset($aXmlAttributes['attribute'])){
+        foreach ($generalOptions as $key => $generalOption) {
+            if ((isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute'])) || !isset($aXmlAttributes['attribute'])) {
                 $generalOptionsFiltered[$key] = $generalOption;
             };
         }
@@ -104,7 +104,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @return array
      * @throws CException
      */
-    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null,  $sQuestionTemplate = null)
+    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $sQuestionTemplate = null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
@@ -119,7 +119,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $sQuestionType = $this->sQuestionType;
 
-        if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
+        if ($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
         }
 
@@ -129,7 +129,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $aAdvancedOptionsArray = [];
         if ($iQuestionID == null) {
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
-            if ($userSetting !== null){
+            if ($userSetting !== null) {
                 $aAdvancedOptionsArray = (array) json_decode($userSetting);
             }
         }
@@ -191,7 +191,8 @@ abstract class QuestionBaseDataSet extends StaticModel
         $aGroupOptions = [];
         array_walk(
             $aGroupsToSelect,
-            function ($oQuestionGroup) use (&$aGroupOptions){
+            function ($oQuestionGroup) use (&$aGroupOptions)
+            {
                 $aGroupOptions[] = [
                     'value' => $oQuestionGroup->gid,
                     'text' => $oQuestionGroup->questionGroupL10ns[$this->sLanguage]->group_name,
@@ -373,14 +374,14 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'title' => gT('Condition'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,
-                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
+                'formElementHelp' => (count($this->oQuestion->conditions) > 0 ? '' : gT("A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
                 'inputtype' => 'textarea',
                 'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [
                     'classes' => ['form-control'],
                     'attributes' => [
                         'rows' => 1,
-                        'readonly' => count($this->oQuestion->conditions)>0
+                        'readonly' => count($this->oQuestion->conditions) > 0
                     ],
                     'inputGroup' => [
                         'prefix' => '{',
@@ -427,7 +428,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $aFormElementOptions = $aAttributeArray;
         $aFormElementOptions['classes'] = isset($aFormElementOptions['classes']) ? array_merge($aFormElementOptions['classes'], ['form-control']) : ['form-control'];
 
-        if(!is_array($aFormElementOptions['expression']) && $aFormElementOptions['expression'] == 2) {
+        if (!is_array($aFormElementOptions['expression']) && $aFormElementOptions['expression'] == 2) {
             $aFormElementOptions['inputGroup'] = [
                 'prefix' => '{',
                 'suffix' => '}',

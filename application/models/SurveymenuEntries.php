@@ -544,14 +544,14 @@ class SurveymenuEntries extends LSActiveRecord
     }
 
     public function save($runValidation=true,$attributes=null)
-	{
+    {
         if($this->getIsNewRecord()){
             $this->name = $this->_parseUniqueNameFromTitle();
             $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
             $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
         }
-		parent::save($runValidation,$attributes);
-	}
+        parent::save($runValidation,$attributes);
+    }
 
     /**
      * Returns the static model of the specified AR class.

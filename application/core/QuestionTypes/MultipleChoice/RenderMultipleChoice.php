@@ -73,9 +73,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'title'                   => $oQuestion->title,
                 'question'                => $oQuestion->questionL10ns[$this->sLanguage]->question,
                 'ansrow'                  => array_merge($oQuestion->attributes, $oQuestion->questionL10ns[$this->sLanguage]->attributes),
-                'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'') == 'Y' ? CHECKED : ''),
+                'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '') == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-                'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],''),
+                'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], ''),
                 'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
             );
         }
@@ -138,7 +138,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " ".$sCoreClasses;
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'aRows'            => $this->getRows(),
             'name'             => $this->sSGQA,
             'basename'         => $this->sSGQA,
@@ -154,7 +154,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return array($answer, $this->inputnames);
     }
 
-    protected function getQuestionCount($iScaleId=0)
+    protected function getQuestionCount($iScaleId = 0)
     {
         if (!empty($this->aSubQuestions)) {
             $counter = count($this->aSubQuestions[$iScaleId]);

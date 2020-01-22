@@ -102,7 +102,7 @@ class SurveyObj
                 $fullAnswer = $answerCode;
                 if (trim($fullAnswer) !== '') {
                     // SQL DECIMAL
-                    if($fullAnswer[0] === ".") {
+                    if ($fullAnswer[0] === ".") {
                         $fullAnswer = "0".$fullAnswer;
                     }
                     if (strpos($fullAnswer, ".") !== false) {

@@ -328,8 +328,8 @@ class ParticipantShare extends LSActiveRecord
      */
     public function storeParticipantShare($data, $permission)
     {
-        $hasUpdatePermission = isset($permission['hasUpdatePermission'])? $permission['hasUpdatePermission'] : false;
-        $isSuperAdmin = isset($permission['isSuperAdmin'])? $permission['isSuperAdmin'] : false;
+        $hasUpdatePermission = isset($permission['hasUpdatePermission']) ? $permission['hasUpdatePermission'] : false;
+        $isSuperAdmin = isset($permission['isSuperAdmin']) ? $permission['isSuperAdmin'] : false;
         $userId = App()->user->getId();
         $ownerid = App()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
 

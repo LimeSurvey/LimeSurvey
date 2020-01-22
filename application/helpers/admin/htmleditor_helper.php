@@ -43,7 +43,7 @@
                 $surveyid = $contextarray[2];
 
                 if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
-                    if (Yii::app()->getConfig('uniq_upload_dir')){
+                    if (Yii::app()->getConfig('uniq_upload_dir')) {
                         $surveyid = 'uniq';
                     }
 
@@ -133,7 +133,7 @@
     {
 
         return;
-        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
             $surveyID = 'uniq';
         }
 
@@ -168,7 +168,7 @@
     function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
         return;
-        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
             $surveyID = 'uniq';
         }
 
@@ -195,7 +195,7 @@
     function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
         return;
-        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
             $surveyID = 'uniq';
         }
 

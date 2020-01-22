@@ -67,8 +67,8 @@ class RESTVersionFetcher extends VersionFetcher
 
         // Simple CURL to source to fetch extension information.
         $url = $this->source;
-        $url .= '&extension_name=' . $this->extensionName;
-        $url .= '&extension_type=' . $this->extensionType;
+        $url .= '&extension_name='.$this->extensionName;
+        $url .= '&extension_type='.$this->extensionType;
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $content = json_decode(curl_exec($ch));
@@ -76,7 +76,7 @@ class RESTVersionFetcher extends VersionFetcher
         if ($content && count($content) === 1) {
             $this->curlResult = $content[0];
         } else {
-            throw new \Exception('Could not fetch REST API information for extension ' . $this->extensionName);
+            throw new \Exception('Could not fetch REST API information for extension '.$this->extensionName);
         }
     }
 }

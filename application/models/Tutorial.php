@@ -148,13 +148,14 @@ class Tutorial extends LSActiveRecord
         if (array_key_exists($tutorialName, $defaultTutorials)) {
             $oTutorial = new Tutorial();
 
-            array_walk($defaultTutorials[$tutorialName], function($attribute, $key) use (&$oTutorial) {
+            array_walk($defaultTutorials[$tutorialName], function($attribute, $key) use (&$oTutorial)
+            {
                 $oTutorial->setAttribute($key, $attribute);
             });
 
             return $oTutorial;
         }
-       return $this->find('name=:name', [':name' => $tutorialName]);
+        return $this->find('name=:name', [':name' => $tutorialName]);
     }
 
     public function getDefaultTutorials()

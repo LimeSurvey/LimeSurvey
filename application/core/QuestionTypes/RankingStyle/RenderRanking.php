@@ -41,7 +41,7 @@ class RenderRanking extends QuestionBaseRenderer
                 ($this->iMaxSubquestions < $this->getAnswerCount())
                 ? "min(".trim($this->getQuestionAttribute('max_answers')).",".$this->iMaxSubquestions.")"
                 : trim($this->getQuestionAttribute('max_answers'))
-              )
+                )
             : $this->iMaxSubquestions;
         
         $this->mMinAnswers = $this->setDefaultIfEmpty($this->getQuestionAttribute('min_answers'), 0);
@@ -140,7 +140,7 @@ class RenderRanking extends QuestionBaseRenderer
             $rank_title = gT("Your Ranking", 'js');
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'coreClass'         => $sCoreClasses,
             'sSelects'          => $this->getRows(),
             'thisvalue'         => $this->mSessionValue,

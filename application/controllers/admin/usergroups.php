@@ -75,7 +75,7 @@ class Usergroups extends Survey_Common_Action
                 throw new CHttpException(403);
             }
         } else {
-            $where = array('and', 'a.ugid =' . $ugid, 'uid =' . Yii::app()->session['loginID']);
+            $where = array('and', 'a.ugid ='.$ugid, 'uid ='.Yii::app()->session['loginID']);
             $join = array('where' => "{{user_in_groups}} AS b", 'on' => 'a.ugid = b.ugid');
             $result = UserGroup::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
 
@@ -145,7 +145,7 @@ class Usergroups extends Survey_Common_Action
                         $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
                         Yii::app()->session['flashmessage'] = gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
-                        $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/' . $ugid));
+                        $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                     }
 
                     $this->getController()->redirect(array('admin/usergroups'));
@@ -184,10 +184,10 @@ class Usergroups extends Survey_Common_Action
                 if (UserGroup::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = gT("User group successfully saved!");
                     $aData['ugid'] = $ugid;
-                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/' . $ugid));
+                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                 } else {
                     Yii::app()->session['flashmessage'] = gT("Failed to edit user group!");
-                    $this->getController()->redirect(array('admin/usergroups/sa/edit/ugid/' . $ugid));
+                    $this->getController()->redirect(array('admin/usergroups/sa/edit/ugid/'.$ugid));
                 }
             } else {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
@@ -290,8 +290,8 @@ class Usergroups extends Survey_Common_Action
                     $aData["useradddialog"] = true;
 
                     $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL"]);
-                    $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
-                        return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
+                    $aNewUserListData = CHtml::listData($aUsers, 'uid', function($user) {
+                        return \CHtml::encode($user->users_name)." (".\CHtml::encode($user->full_name).')';
                     });
                     // Remove group owner because an owner is automatically member of a group
                     unset($aNewUserListData[$aUserInGroupsResult->owner_id]);
@@ -340,11 +340,11 @@ class Usergroups extends Survey_Common_Action
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
         }
         if (empty($group)) {
-            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('Group not found.')));
+            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('Group not found.')));
         } else {
             if ($uid > 0 && User::model()->findByPk($uid)) {
                 if ($group->owner_id == $uid) {
-                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('You can not add or remove the group owner from the group.')));
+                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('You can not add or remove the group owner from the group.')));
                 } else {
                     $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
                     $sFlashType = '';
@@ -356,7 +356,7 @@ class Usergroups extends Survey_Common_Action
                                 $sFlashMessage = gT('User added.');
                             } else {
                                 $sFlashType = 'error';
-                                $sFlashMessage = gT('Failed to add user.') . '<br />' . gT('User already exists in the group.');
+                                $sFlashMessage = gT('Failed to add user.').'<br />'.gT('User already exists in the group.');
                             }
                             break;
                         case 'remove':
@@ -365,17 +365,17 @@ class Usergroups extends Survey_Common_Action
                                 $sFlashMessage = gT('User removed.');
                             } else {
                                 $sFlashType = 'error';
-                                $sFlashMessage = gT('Failed to remove user.') . '<br />' . gT('User does not exist in the group.');
+                                $sFlashMessage = gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.');
                             }
                             break;
                     }
                     if (!empty($sFlashType) && !empty($sFlashMessage)) {
                         Yii::app()->user->setFlash($sFlashType, $sFlashMessage);
                     }
-                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/' . $ugid));
+                    $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                 }
             } else {
-                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('User not found.')));
+                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('User not found.')));
             }
         }
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
@@ -391,7 +391,7 @@ class Usergroups extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'users.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'users.js');
         $aData['display']['menu_bars']['user_group'] = true;
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);

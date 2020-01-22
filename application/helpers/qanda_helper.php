@@ -114,8 +114,8 @@ function retrieveAnswers($ia)
     // 2. No tokens
     // 3. Always first time it's shown to one user (and no tokens).
     // 4. No expressions with tokens or time or other dynamic features.
-    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_' . $thissurvey['sid']])) {
-        $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
+    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_'.$thissurvey['sid']])) {
+        $cacheKey = 'retrieveAnswers_'.sha1(implode('_', $ia));
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
@@ -249,7 +249,7 @@ function retrieveAnswers($ia)
     // =====================================================
 
     $qanda = array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1]);
-    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_' . $thissurvey['sid']])) {
+    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_'.$thissurvey['sid']])) {
         EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
     }
     //New Return
@@ -1290,7 +1290,7 @@ function do_ranking($ia)
 
 
     $max_subquestions = intval($aQuestionAttributes['max_subquestions']) > 0 ? intval($aQuestionAttributes['max_subquestions']) : $anscount;
-    $max_subquestions = min($max_subquestions,$anscount); // Can not be upper than current answers #14899
+    $max_subquestions = min($max_subquestions, $anscount); // Can not be upper than current answers #14899
     if (trim($aQuestionAttributes["max_answers"]) != '') {
         $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$max_subquestions.")";
     } else {
@@ -2189,7 +2189,7 @@ function do_multiplenumeric($ia)
                         $sliderWidth = 10;
                     }
                     if (!empty($sliderright)) {
-                        $sliderWidth = $sliderWidth==10 ? 8 : 10 ;
+                        $sliderWidth = $sliderWidth == 10 ? 8 : 10;
                     }
                     $sliders   = true; // What is the usage ?
                 } else {
@@ -2231,9 +2231,9 @@ function do_multiplenumeric($ia)
             }
 
             // Fix the display value : Value is stored as decimal in SQL. Issue when reloading survey
-            if($sValue[0] == ".") {
+            if ($sValue[0] == ".") {
                 // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-                $sValue = "0" . $sValue;
+                $sValue = "0".$sValue;
             }
             if (strpos($sValue, ".")) {
                 $sValue = rtrim(rtrim($sValue, "0"), ".");
@@ -2301,7 +2301,7 @@ function do_multiplenumeric($ia)
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
                     'slider_orientation'     => $slider_orientation,
-                    'slider_value'           => $slider_position !== '' ?  $slider_position : $sUnformatedValue,
+                    'slider_value'           => $slider_position !== '' ? $slider_position : $sUnformatedValue,
                     'slider_step'            => $slider_step,
                     'slider_min'             => $slider_min,
                     'slider_mintext'         => $slider_mintext,
@@ -2576,7 +2576,8 @@ function do_shortfreetext($ia)
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong  = null;
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) { // Quick check if current location is OK
+        if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) {
+// Quick check if current location is OK
             $currentLatLong = explode(';', $currentLocation);
             $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
         } else {
@@ -2587,7 +2588,7 @@ function do_shortfreetext($ia)
             if (empty($currentLatLong)) {
                 $floatLat = "";
                 $floatLng = "";
-                $sDefaultcoordinates=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
+                $sDefaultcoordinates = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true)); /* static var is the last one */
                 if (strlen($sDefaultcoordinates) > 2 && strpos($sDefaultcoordinates, " ")) {
                     $LatLong = explode(" ", $sDefaultcoordinates);
                     if (isset($LatLong[0]) && isset($LatLong[1])) {
@@ -2666,7 +2667,7 @@ function do_shortfreetext($ia)
         // If it's not set : set the center to the default position, but don't set the marker
         if (!$currentLatLong) {
             $currentLatLong = array("", "");
-            $sDefaultcoordinates=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
+            $sDefaultcoordinates = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true)); /* static var is the last one */
             $currentCenter = explode(" ", $sDefaultcoordinates);
             if (count($currentCenter) != 2) {
                 $currentCenter = array("", "");
@@ -4016,7 +4017,7 @@ function do_array_texts($ia)
 
     $aSubquestionsX = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=1', 'params'=>array(':parent_qid'=>$ia[0])));
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
-    $labelans     = [];
+    $labelans = [];
 
     foreach ($aSubquestionsX as $oSubquestion) {
         $labelans[$oSubquestion->title] = $oSubquestion->questionL10ns[$sSurveyLanguage]->question;
@@ -4344,7 +4345,7 @@ function do_array_multiflexi($ia)
 
     if ($numrows = count($labelans)) {
         // There are no "No answer" column
-        $cellwidth  = $columnswidth / $numrows;
+        $cellwidth = $columnswidth / $numrows;
         $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->countByAttributes([], 'parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {

@@ -11,7 +11,7 @@
  * It will execute all the functions
  */
 
-class TwigCommand extends CConsoleCommand  {
+class TwigCommand extends CConsoleCommand {
 
     public $aLogs; // Array of logs
 
@@ -20,17 +20,17 @@ class TwigCommand extends CConsoleCommand  {
      */
     public function init()
     {
-      // Needed helpers for correct rendering
-      Yii::import('application.helpers.surveytranslator_helper', true);
-      Yii::import('application.helpers.common_helper', true);
-      Yii::import('application.helpers.expressions.em_manager_helper', true);
-      Yii::import('application.helpers.admin.htmleditor_helper', true);
+        // Needed helpers for correct rendering
+        Yii::import('application.helpers.surveytranslator_helper', true);
+        Yii::import('application.helpers.common_helper', true);
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.admin.htmleditor_helper', true);
 
-      // Directories where the assets will be created.
-      Yii::app()->assetManager->setBasePath(realpath(__DIR__.'/../../tmp/assets/'));
+        // Directories where the assets will be created.
+        Yii::app()->assetManager->setBasePath(realpath(__DIR__.'/../../tmp/assets/'));
 
-      // This command can be used even with no DB installed. So we force the usage of config.xml rather than DB entries
-      Yii::app()->setConfig('force_xmlsettings_for_survey_rendering', true);
+        // This command can be used even with no DB installed. So we force the usage of config.xml rather than DB entries
+        Yii::app()->setConfig('force_xmlsettings_for_survey_rendering', true);
     }
 
     public function actionIndex()
@@ -51,24 +51,24 @@ class TwigCommand extends CConsoleCommand  {
      */
     public function actionGenerateTwigTmpFiles( $sThemeDir=null, $bGenerateSurveyCache=true, $bGenerateQuestionsCache=true, $bGenerateAdminCache=true, $bShowLogs=false )
     {
-      $this->aLogs = array();
-      $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache $bShowLogs";
-      if ($bGenerateSurveyCache){
+        $this->aLogs = array();
+        $this->aLogs["action"] = "actionGenerateTwigTmpFiles $sThemeDir $bGenerateSurveyCache $bGenerateQuestionsCache $bGenerateAdminCache $bShowLogs";
+        if ($bGenerateSurveyCache){
         $this->actionGenerateSurveyThemesCache($sThemeDir );
-      }
+        }
 
-      if ($bGenerateQuestionsCache){
+        if ($bGenerateQuestionsCache){
         $this->actionGenerateQuestionsCache(null);
-      }
+        }
 
-      if ($bGenerateAdminCache){
+        if ($bGenerateAdminCache){
         $this->actionGenerateAdminCache(null);
-      }
+        }
 
-      // TODO: here add something more complex to create a file log on the server, something that can be return to the CU server at release creation, etc
-      if ($bShowLogs){
+        // TODO: here add something more complex to create a file log on the server, something that can be return to the CU server at release creation, etc
+        if ($bShowLogs){
         var_dump($this->aLogs);
-      }
+        }
     }
 
     /**
@@ -106,17 +106,17 @@ class TwigCommand extends CConsoleCommand  {
     *
     * @param string $sQuestionDir the directory to parse, where to find the answer.twig file.
     */
-    public function actionGenerateQuestionsCache( $sQuestionDir=null )
+    public function actionGenerateQuestionsCache($sQuestionDir = null)
     {
 
       $this->aLogs["action"] = "actionGenerateQuestionsCache $sQuestionDir";
 
       // Generate cache for question theme
-      $sQuestionDir = ($sQuestionDir===null)?dirname(__FILE__).'/../views/survey/questions/answer':$sQuestionDir;
+      $sQuestionDir = ($sQuestionDir === null) ?dirname(__FILE__).'/../views/survey/questions/answer' : $sQuestionDir;
       $oQuestionDir = new DirectoryIterator($sQuestionDir);
 
       foreach ($oQuestionDir as $fileinfo) {
-        if ($fileinfo->getFilename() != ".." && $fileinfo->getFilename() != "." && $fileinfo->getFilename() != "index.html"){
+        if ($fileinfo->getFilename() != ".." && $fileinfo->getFilename() != "." && $fileinfo->getFilename() != "index.html") {
           $sQuestionName = $fileinfo->getFilename();
 
           $sQuestionDirectory = $sQuestionDir.DIRECTORY_SEPARATOR.$sQuestionName;
@@ -136,11 +136,11 @@ class TwigCommand extends CConsoleCommand  {
            */
           $sTwigFile = $sQuestionDirectory.DIRECTORY_SEPARATOR."answer.twig";
           $aQuestionData = array(); // See todo
-          if (file_exists($sTwigFile)){
+          if (file_exists($sTwigFile)) {
             $this->aLogs[$sQuestionName] = "$sTwigFile";
             $line       = file_get_contents($sTwigFile);
             $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line, $aQuestionData);
-          }elseif(is_dir($sQuestionDirectory) && $sQuestionName != "arrays"){
+          }elseif (is_dir($sQuestionDirectory) && $sQuestionName != "arrays") {
             // Recursive step
             $this->actionGenerateQuestionsCache($sQuestionDirectory);
           }
@@ -154,13 +154,13 @@ class TwigCommand extends CConsoleCommand  {
     *
     * @param string $sAdminDir the directory to parse, where to find the twig files.
     */
-    public function actionGenerateAdminCache( $sAdminDir=null )
+    public function actionGenerateAdminCache($sAdminDir = null)
     {
 
       $this->aLogs["action"] = "actionGenerateAdminCache $sAdminDir";
 
       // Generate cache for admin area
-      $sAdminDir = ($sAdminDir===null)?dirname(__FILE__).'/../views/admin':$sAdminDir;
+      $sAdminDir = ($sAdminDir === null) ?dirname(__FILE__).'/../views/admin' : $sAdminDir;
       $oAdminDirectory = new RecursiveDirectoryIterator($sAdminDir);
       $oAdminIterator = new RecursiveIteratorIterator($oAdminDirectory);
       $oAdminRegex = new RegexIterator($oAdminIterator, '/^.+\.twig$/i', RecursiveRegexIterator::GET_MATCH);
@@ -168,7 +168,7 @@ class TwigCommand extends CConsoleCommand  {
       $aAdminData = array();
       foreach ($oAdminRegex as $oTwigFile) {
         $sTwigFile = $oTwigFile[0];
-        if (file_exists($sTwigFile)){
+        if (file_exists($sTwigFile)) {
           $this->aLogs["twig"] = "$sTwigFile";
           $line       = file_get_contents($sTwigFile);
           $sHtml      = Yii::app()->twigRenderer->convertTwigToHtml($line);
@@ -182,26 +182,26 @@ class TwigCommand extends CConsoleCommand  {
      */
     private function renderSurveyTheme($oTemplateForPreview)
     {
-      $thissurvey = $oTemplateForPreview->getDefaultDataForRendering();
-      $thissurvey['templatedir'] = $oTemplateForPreview->sTemplateName; // $templatename;
+        $thissurvey = $oTemplateForPreview->getDefaultDataForRendering();
+        $thissurvey['templatedir'] = $oTemplateForPreview->sTemplateName; // $templatename;
 
-      $aScreenList = $oTemplateForPreview->getScreensDetails();
+        $aScreenList = $oTemplateForPreview->getScreensDetails();
 
-      foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
+        foreach($aScreenList as $sScreenName => $aTitleAndLayouts){
         foreach($aTitleAndLayouts['layouts'] as $sLayout => $sContent){
-          $this->aLogs[$oTemplateForPreview->sTemplateName][$sScreenName][$sLayout] =  $sContent;
-          $sLayoutFile  = $sLayout ;
-          $thissurvey['include_content'] = $sContent;
+            $this->aLogs[$oTemplateForPreview->sTemplateName][$sScreenName][$sLayout] =  $sContent;
+            $sLayoutFile  = $sLayout ;
+            $thissurvey['include_content'] = $sContent;
 
-          $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
                 $sLayoutFile,
                 array(
                     'aSurveyInfo' =>$thissurvey,
-                  ),
-                  $oTemplateForPreview
-          );
+                    ),
+                    $oTemplateForPreview
+            );
         }
-      }
+        }
     }
 
     /**
@@ -210,13 +210,13 @@ class TwigCommand extends CConsoleCommand  {
      */
     private function renderSurveyThemeManifest($oTemplateForPreview)
     {
-      // So the twig string inside the theme manifest will be added to the .po file
-      $aTwigFromXml = $oTemplateForPreview->getTwigStrings();
+        // So the twig string inside the theme manifest will be added to the .po file
+        $aTwigFromXml = $oTemplateForPreview->getTwigStrings();
 
-      foreach($aTwigFromXml as $sTwig){
+        foreach($aTwigFromXml as $sTwig){
         Yii::app()->twigRenderer->convertTwigToHtml($sTwig);
-      }
+        }
 
-      $this->aLogs[$oTemplateForPreview->sTemplateName]['manifest'] =  "done";
+        $this->aLogs[$oTemplateForPreview->sTemplateName]['manifest'] =  "done";
     }
 }

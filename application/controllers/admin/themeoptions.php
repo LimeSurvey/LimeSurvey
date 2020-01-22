@@ -84,7 +84,7 @@ class themeoptions  extends Survey_Common_Action
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
 
-            foreach($aTemplates as $template){
+            foreach ($aTemplates as $template) {
                 $model = $this->loadModel($template, $gridid);
                 if ($gridid == 'questionthemes-grid') {
                     $templatename = $model->name;
@@ -100,12 +100,11 @@ class themeoptions  extends Survey_Common_Action
                 }
             }
             //set Modal table labels
-            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Template id'), gT('Template name'), gT('Status'));
 
             App()->getController()->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
-                array
-                (
+                array(
                     'aResults'     => $aResults,
                     'successLabel' => gT('Has been reset'),
                     'tableLabels'  => $tableLabels
@@ -162,12 +161,11 @@ class themeoptions  extends Survey_Common_Action
                 }
             }
             //set Modal table labels
-            $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Template id'), gT('Template name'), gT('Status'));
 
             App()->getController()->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
-                array
-                (
+                array(
                     'aResults'     => $aResults,
                     'successLabel' => gT('Uninstalled'),
                     'tableLabels'  => $tableLabels
@@ -194,20 +192,20 @@ class themeoptions  extends Survey_Common_Action
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
 
-        foreach($aTemplates as $template){
+        foreach ($aTemplates as $template) {
             $aResults[$template]['title'] = '';
             $model = $this->loadModel($template, $gridid);
 
-            if ($gridid == 'questionthemes-grid'){
+            if ($gridid == 'questionthemes-grid') {
                 $aResults[$template]['title'] = $model->name;
-            } elseif ($gridid == 'themeoptions-grid'){
+            } elseif ($gridid == 'themeoptions-grid') {
                 $aResults[$template]['title'] = $model->template_name;
             }
 
             $aResults[$template]['result'] = gT('Selected');
         }
         //set Modal table labels
-        $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
+        $tableLabels = array(gT('Template id'), gT('Template name'), gT('Status'));
 
         App()->getController()->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
@@ -229,7 +227,7 @@ class themeoptions  extends Survey_Common_Action
     public function update($id)
     {
         $model = $this->loadModel($id);
-        if (Permission::model()->hasTemplatePermission($model->template_name,'update')) {
+        if (Permission::model()->hasTemplatePermission($model->template_name, 'update')) {
 
             // Turn Ajax off as default save it after.
             $model = $this->turnAjaxmodeOffAsDefault($model);
@@ -286,7 +284,7 @@ class themeoptions  extends Survey_Common_Action
     public function updatesurvey($sid)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update') ||
-            Permission::model()->hasSurveyPermission($sid,'surveysettings','update') ) {
+            Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')) {
             // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
             $model = TemplateConfiguration::getInstance(null, null, $sid);
 
@@ -365,20 +363,18 @@ class themeoptions  extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $aData = array();
             $oSurveyTheme = new TemplateConfiguration();
-            $aData['oAdminTheme']  = new AdminTheme();
-            $aData['oQuestionTheme'] =  new QuestionTheme;
+            $aData['oAdminTheme'] = new AdminTheme();
+            $aData['oQuestionTheme'] = new QuestionTheme;
             $canImport = true;
             $importErrorMessage = null;
 
-            if(!is_writable(App()->getConfig('tempdir'))) {
+            if (!is_writable(App()->getConfig('tempdir'))) {
                 $canImport = false;
                 $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
-            }
-            else if (!is_writable(App()->getConfig('userthemerootdir'))) {
+            } else if (!is_writable(App()->getConfig('userthemerootdir'))) {
                 $canImport = false;
                 $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-            }
-            else if (!function_exists("zip_open")) {
+            } else if (!function_exists("zip_open")) {
                 $canImport = false;
                 $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
             }
@@ -387,13 +383,13 @@ class themeoptions  extends Survey_Common_Action
             $filterForm = App()->request->getPost('TemplateConfiguration', false);
             if ($filterForm) {
                 $oSurveyTheme->setAttributes($filterForm, false);
-                if (array_key_exists('template_description', $filterForm)){
+                if (array_key_exists('template_description', $filterForm)) {
                     $oSurveyTheme->template_description = $filterForm['template_description'];
                 }
-                if (array_key_exists('template_type', $filterForm)){
+                if (array_key_exists('template_type', $filterForm)) {
                     $oSurveyTheme->template_type = $filterForm['template_type'];
                 }
-                if (array_key_exists('template_extends', $filterForm)){
+                if (array_key_exists('template_extends', $filterForm)) {
                     $oSurveyTheme->template_extends = $filterForm['template_extends'];
                 }
             }
@@ -401,13 +397,13 @@ class themeoptions  extends Survey_Common_Action
             $filterForm = App()->request->getPost('QuestionTheme', false);
             if ($filterForm) {
                 $aData['oQuestionTheme']->setAttributes($filterForm, false);
-                if (array_key_exists('description', $filterForm)){
+                if (array_key_exists('description', $filterForm)) {
                     $aData['oQuestionTheme']->description = $filterForm['description'];
                 }
-                if (array_key_exists('core_theme', $filterForm)){
+                if (array_key_exists('core_theme', $filterForm)) {
                     $aData['oQuestionTheme']->core_theme = $filterForm['core_theme'] == '1' || $filterForm['core_theme'] == '0' ? intval($filterForm['core_theme']) : '';
                 }
-                if (array_key_exists('extends', $filterForm)){
+                if (array_key_exists('extends', $filterForm)) {
                     $aData['oQuestionTheme']->extends = $filterForm['extends'];
                 }
             }
@@ -418,8 +414,8 @@ class themeoptions  extends Survey_Common_Action
             }
 
             $aData['oSurveyTheme'] = $oSurveyTheme;
-            $aData['canImport']  = $canImport;
-            $aData['importErrorMessage']  = $importErrorMessage;
+            $aData['canImport'] = $canImport;
+            $aData['importErrorMessage'] = $importErrorMessage;
             $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
@@ -462,7 +458,7 @@ class themeoptions  extends Survey_Common_Action
      */
     public function loadModel($id, $gridid = null)
     {
-        if ( $gridid == 'questionthemes-grid') {
+        if ($gridid == 'questionthemes-grid') {
             $model = QuestionTheme::model()->findByPk($id);
         } else {
             $model = TemplateConfiguration::model()->findByPk($id);
@@ -489,7 +485,7 @@ class themeoptions  extends Survey_Common_Action
                 $templateFolder = App()->request->getPost('templatefolder');
                 $questionTheme = new QuestionTheme();
                 $themeName = $questionTheme->importManifest($templateFolder);
-                if (isset($themeName)){
+                if (isset($themeName)) {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" has been sucessfully installed'), "$themeName"), 'success');
                 } else {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');

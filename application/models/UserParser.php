@@ -5,7 +5,7 @@
  * @author Markus Flür <markus.fluer@limesurvey.org>
  * @license GPL3.0
  */
-class UserParser  
+class UserParser
 {
     /**
      * reads an uploaded csv file
@@ -26,10 +26,10 @@ class UserParser
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             Yii::app()->getController()->redirect(array('/admin/usermanagement'));
             Yii::app()->end();
-        } elseif (strtolower($sExtension) == 'csv' ||1==1) {
+        } elseif (strtolower($sExtension) == 'csv' || 1 == 1) {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         } else {
-            Yii::app()->setFlashMessage(gT("This is not a .csv file."). 'It is a '.$sExtension, 'error');
+            Yii::app()->setFlashMessage(gT("This is not a .csv file.").'It is a '.$sExtension, 'error');
             Yii::app()->getController()->redirect(array('/admin/usermanagement'));
             Yii::app()->end();
         }
@@ -41,17 +41,17 @@ class UserParser
             return;
         }
 
-        $delimiter =  self::detectCsvDelimiter($sFilePath);
+        $delimiter = self::detectCsvDelimiter($sFilePath);
         $oCSVFile = fopen($sFilePath, 'r');
         if ($oCSVFile === false) {
             safeDie('File not found.');
         }
 
-        $aFirstLine = fgetcsv($oCSVFile, 0,$delimiter, '"');
+        $aFirstLine = fgetcsv($oCSVFile, 0, $delimiter, '"');
 
         $iHeaderCount = count($aFirstLine);
         $aToBeAddedUsers = [];
-        while (($row = fgetcsv($oCSVFile, 0,$delimiter, '"')) !== false) {
+        while (($row = fgetcsv($oCSVFile, 0, $delimiter, '"')) !== false) {
             $rowarray = array();
             for ($i = 0; $i < $iHeaderCount; ++$i) {
                 $val = (isset($row[$i]) ? $row[$i] : '');
@@ -80,8 +80,8 @@ class UserParser
         $json = file_get_contents($FILES['the_file']['tmp_name']);
         $decoded = json_decode($json, true);
 
-        foreach($decoded as $data){
-            if(!isset($data["email"]) || !isset($data["users_name"]) || !isset($data["full_name"]) || !isset($data["lang"]) || !isset($data["password"])){
+        foreach($decoded as $data) {
+            if(!isset($data["email"]) || !isset($data["users_name"]) || !isset($data["full_name"]) || !isset($data["lang"]) || !isset($data["password"])) {
                 Yii::app()->setFlashMessage(
                     sprintf(gT("Wrong offset definition!!! Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>'),
                     'error'
@@ -95,10 +95,10 @@ class UserParser
     }
 
     /** 
-    *Function to get the delimiter of a Csv file
-    * @param string $csvFile Path to the CSV file
-    * @return string Delimiter
-    */
+     *Function to get the delimiter of a Csv file
+     * @param string $csvFile Path to the CSV file
+     * @return string Delimiter
+     */
     private static function detectCsvDelimiter($csvFile)
     {
         $delimiters = array(

@@ -234,10 +234,10 @@ class InstallerController extends CController
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
         if (!empty(Yii::app()->session['populateerror'])) {
-            if(is_string(Yii::app()->session['populateerror'])) {
+            if (is_string(Yii::app()->session['populateerror'])) {
                 $oModel->addError('dblocation', Yii::app()->session['populateerror']);
             } else {
-                foreach(Yii::app()->session['populateerror'] as $error) {
+                foreach (Yii::app()->session['populateerror'] as $error) {
                     $oModel->addError('dblocation', $error);
                 }
             }
@@ -1003,7 +1003,7 @@ class InstallerController extends CController
      *
      * @return string
      */
-    private function _getRandomString($iTotalChar=64)
+    private function _getRandomString($iTotalChar = 64)
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
@@ -1036,7 +1036,8 @@ class InstallerController extends CController
     /**
      * clear the session from installation information
      */
-    private function clearSession() {
+    private function clearSession()
+    {
         unset(Yii::app()->session['dbtype']);
         unset(Yii::app()->session['dbengine']);
         unset(Yii::app()->session['dbname']);

@@ -115,7 +115,8 @@ abstract class ExtensionUpdater
     public function implodeVersions(array $versions)
     {
         $versions = array_map(
-            function ($version) {
+            function ($version)
+            {
                 return $version['version'];
             },
             $versions
@@ -146,20 +147,20 @@ abstract class ExtensionUpdater
 
         $latestVersion = $this->getLatestVersion($versions);
 
-        $message .= ' ' . sprintf(
+        $message .= ' '.sprintf(
             gT('The latest available version is %s.', 'js'),
             $latestVersion['version']
         );
 
         if (!empty($latestVersion['manualUpdateUrl'])) {
-            $message .= ' ' . sprintf(
+            $message .= ' '.sprintf(
                 gT('Please visit <a href="%s">%s</a> to download the update.', 'js'),
                 $latestVersion['manualUpdateUrl'],
                 $latestVersion['manualUpdateUrl']
             );
         }
 
-        return '<p>' . $message . '</p>';
+        return '<p>'.$message.'</p>';
     }
 
     /**

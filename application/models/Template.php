@@ -101,7 +101,7 @@ class Template extends LSActiveRecord
 
     /**
      * @return array customized attribute labels (name=>label)
-    */
+     */
 
     public function attributeLabels()
     {
@@ -183,8 +183,9 @@ class Template extends LSActiveRecord
             SettingGlobal::setSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = App()->getConfig('defaulttheme');
 
-            if(method_exists(Yii::app(), 'setFlashMessage'))
-                Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+            if(method_exists(Yii::app(), 'setFlashMessage')) {
+                            Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
+            }
 
             self::$aNamesFiltered[$sTemplateName] = $sTemplateName;
             return $sTemplateName;
@@ -316,7 +317,7 @@ class Template extends LSActiveRecord
     {
 
         // First we try to get a confifuration row from DB
-        if (!$bForceXML  ) {
+        if (!$bForceXML) {
             // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
             $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
             $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId, $abstractInstance);
@@ -428,7 +429,7 @@ class Template extends LSActiveRecord
         $oTemplateList->setPagination(false);
 
         foreach ($oTemplateList->getData() as $oTemplate) {
-            $aTemplateList[$oTemplate->template_name] =  (self::isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->template->folder;
+            $aTemplateList[$oTemplate->template_name] = (self::isStandardTemplate($oTemplate->template_name)) ?  Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->template->folder : Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->template->folder;
         }
         return $aTemplateList;
 
@@ -486,8 +487,8 @@ class Template extends LSActiveRecord
     {
 
         if ($bForceXML === null) {
-          // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
-          $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering'))?true:false;
+            // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+            $bForceXML = (App()->getConfig('force_xmlsettings_for_survey_rendering'))?true:false;
 
         }
         // The error page from default template can be called when no survey found with a specific ID.
@@ -501,8 +502,8 @@ class Template extends LSActiveRecord
         }
 
         if ( empty(self::$instance) || ! self::isCorrectInstance($sTemplateName) ) {
-          self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
-          self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
+            self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
         return self::getLastInstance(false);
@@ -515,14 +516,14 @@ class Template extends LSActiveRecord
      */
     public static function getLastInstance($bAutoGenerate=true)
     {
-      if (empty(self::$instance)){
+        if (empty(self::$instance)){
         if ($bAutoGenerate)
-          self::getInstance();
+            self::getInstance();
         else
-          throw new \Exception("No Survey theme was generated", 1);
-      }
+            throw new \Exception("No Survey theme was generated", 1);
+        }
 
-      return self::$instance;
+        return self::$instance;
     }
 
     /**
@@ -532,7 +533,7 @@ class Template extends LSActiveRecord
      */
     public static function isCorrectInstance($sTemplateName = null)
     {
-       return ( $sTemplateName == null || self::$instance->sTemplateName == $sTemplateName);
+        return ( $sTemplateName == null || self::$instance->sTemplateName == $sTemplateName);
     }
 
     /**
@@ -545,10 +546,10 @@ class Template extends LSActiveRecord
     }
 
     /**
-    * Alias function for resetAssetVersion()
-    * Don't delete this one to maintain updgrade compatibilty
-    * @return void
-    */
+     * Alias function for resetAssetVersion()
+     * Don't delete this one to maintain updgrade compatibilty
+     * @return void
+     */
     public function forceAssets()
     {
         $this->resetAssetVersion();
@@ -702,9 +703,9 @@ class Template extends LSActiveRecord
         $usertemplaterootdir     = Yii::app()->getConfig("uploaddir").DIRECTORY_SEPARATOR."templates";
         $aTemplateList = array();
 
-        if ( (is_dir($usertemplaterootdir)) && $usertemplaterootdir && $handle = opendir($usertemplaterootdir)){
-            while (false !== ($file = readdir($handle))){
-                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn"){
+        if ( (is_dir($usertemplaterootdir)) && $usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
+            while (false !== ($file = readdir($handle))) {
+                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn") {
                     $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
                     $aTemplateList[$file]['name']       = $file;
                 }
@@ -730,7 +731,7 @@ class Template extends LSActiveRecord
 
                     try {
                         $oTheme = Template::getTemplateConfiguration($sFileName, null, null, true); // Get the manifest;
-                    }catch (Exception $e) {
+                    } catch (Exception $e) {
                         $aBrokenTemplateList[$sFileName] = $e;
                     }
                 }

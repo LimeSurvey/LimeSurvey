@@ -50,7 +50,7 @@ class remotecontrol_handle
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $session = new Session;
             $session->id = $sSessionKey;
-            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
+            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
             return $sSessionKey;
@@ -462,7 +462,7 @@ class remotecontrol_handle
             $checkHasGroup = checkHasGroup($iSurveyID);
             $checkGroup = checkGroup($iSurveyID);
 
-            if ($checkHasGroup !== false || $checkGroup !== false){
+            if ($checkHasGroup !== false || $checkGroup !== false) {
                 return array('status' => 'Error: Survey does not pass consistency check');
             }
 
@@ -1350,7 +1350,7 @@ class remotecontrol_handle
 
                     // delete defaultvalues and defaultvalueL10ns
                     $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
-                    foreach($oDefaultValues as $defaultvalue){
+                    foreach($oDefaultValues as $defaultvalue) {
                         DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
                         DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
                     }

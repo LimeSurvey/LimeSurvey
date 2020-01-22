@@ -100,7 +100,8 @@ class ParticipantAttribute extends LSActiveRecord
      * Get current surveyId for other model/function
      * @return int
      */
-    public function getSurveyId() {
+    public function getSurveyId()
+    {
         return 0;
     }
 }

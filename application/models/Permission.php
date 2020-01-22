@@ -452,7 +452,7 @@ class Permission extends LSActiveRecord
         if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
             return false;
         }
-        $sCRUD = $sCRUD . '_p';
+        $sCRUD = $sCRUD.'_p';
 
         /* Always return false for guests */
         // TODO: should not be necessary
@@ -560,10 +560,12 @@ class Permission extends LSActiveRecord
         }
         // Get global correspondance for surveys rigth
         $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'create' || $sCRUD == 'import')) {
+// Create and import (token, reponse , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) {
+// Delete (token, reponse , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
@@ -798,7 +800,7 @@ class Permission extends LSActiveRecord
     public static function getPermissionList()
     {
         $aPermissions = array_merge(self::getSurveyBasePermissions(), self::getGlobalBasePermissions());
-        return array_map(function ($aPermission) {
+        return array_map(function($aPermission) {
             return $aPermission['title'];
         }, $aPermissions);
     }

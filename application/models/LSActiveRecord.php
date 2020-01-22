@@ -13,9 +13,9 @@
   *     Extensions to the CActiveRecord class
  */
 
- /**
-  * @method PluginEvent dispatchPluginModelEvent(string $sEventName,CDbCriteria $criteria = null,array $eventParams = array())
-  */
+    /**
+     * @method PluginEvent dispatchPluginModelEvent(string $sEventName,CDbCriteria $criteria = null,array $eventParams = array())
+     */
 
 class LSActiveRecord extends CActiveRecord
 {
@@ -200,40 +200,40 @@ class LSActiveRecord extends CActiveRecord
         $criteria = $builder->createColumnCriteria($table, $attributes, $condition, $params);
         $modelEventName = get_class($this);
         $eventParams = array();
-        if(is_subclass_of($this,'Dynamic')) {
+        if (is_subclass_of($this, 'Dynamic')) {
             /** @scrutinizer ignore-call since we test if exist by subclass */ 
             $eventParams['dynamicId'] = $this->getDynamicId();
             $modelEventName = get_parent_class($this);
         }
-        $this->dispatchPluginModelEvent('before'.$modelEventName.'DeleteMany', $criteria,$eventParams);
-        $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria,$eventParams);
+        $this->dispatchPluginModelEvent('before'.$modelEventName.'DeleteMany', $criteria, $eventParams);
+        $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria, $eventParams);
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 
     /**
      * Overriding of Yii's findByAttributes method to provide encrypted attribute value search 
-	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-	 * An attribute value can be an array which will be used to generate an IN condition.
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+     * An attribute value can be an array which will be used to generate an IN condition.
      * @param mixed $condition query condition or criteria.
-	 * @param array $params parameters to be bound to an SQL statement.
+     * @param array $params parameters to be bound to an SQL statement.
      * @return static|null the record found. Null if none is found.
-	 */
+     */
     public function findByAttributes($attributes, $condition='',$params=array())
-	{
+    {
         $attributes = $this->encryptAttributeValues($attributes);
         return parent::findByAttributes($attributes, $condition, $params);
     }
     
     /**
-	 * Overriding of Yii's findAllByAttributes method to provide encrypted attribute value search 
+     * Overriding of Yii's findAllByAttributes method to provide encrypted attribute value search 
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-	 * An attribute value can be an array which will be used to generate an IN condition.
-	 * @param mixed $condition query condition or criteria.
-	 * @param array $params parameters to be bound to an SQL statement.
-	 * @return static[] the records found. An empty array is returned if none is found.
-	 */
-	public function findAllByAttributes($attributes, $condition='',$params=array())
-	{
+     * An attribute value can be an array which will be used to generate an IN condition.
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return static[] the records found. An empty array is returned if none is found.
+     */
+    public function findAllByAttributes($attributes, $condition='',$params=array())
+    {
         $attributes = $this->encryptAttributeValues($attributes);
         return parent::findAllByAttributes($attributes, $condition, $params);
     }    
@@ -243,17 +243,17 @@ class LSActiveRecord extends CActiveRecord
      * @param string $sClassName
      * @return array
      */
-    public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName){
+    public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName) {
         $aAttributes = array();
-        if ($sClassName == 'ParticipantAttribute'){
+        if ($sClassName == 'ParticipantAttribute') {
             // participants attributes
                 $aAttributes[] = 'value';
         } elseif ($sClassName == 'Participant') {
             // participants
             $aTokenAttributes = Participant::getParticipantsEncryptionOptions();
-            if ($aTokenAttributes['enabled'] = 'Y'){
+            if ($aTokenAttributes['enabled'] = 'Y') {
                 foreach ($aTokenAttributes['columns'] as $attribute => $oColumn) {
-                    if ($oColumn == 'Y'){
+                    if ($oColumn == 'Y') {
                         $aAttributes[] = $attribute;
                     }
                 }
@@ -262,9 +262,9 @@ class LSActiveRecord extends CActiveRecord
             //core token attributes
             $oSurvey = Survey::model()->findByPk($iSurveyId);
             $aTokenAttributes = $oSurvey->getTokenEncryptionOptions();
-            if ($aTokenAttributes['enabled'] = 'Y'){
+            if ($aTokenAttributes['enabled'] = 'Y') {
                 foreach ($aTokenAttributes['columns'] as $attribute => $oColumn) {
-                    if ($oColumn == 'Y'){
+                    if ($oColumn == 'Y') {
                         $aAttributes[] = $attribute;
                     }
                 }
@@ -272,11 +272,11 @@ class LSActiveRecord extends CActiveRecord
             // custom token attributes
             $aCustomAttributes = $oSurvey->tokenAttributes;
             foreach ($aCustomAttributes as $attribute => $value) {
-                if ($value['encrypted'] == 'Y'){
+                if ($value['encrypted'] == 'Y') {
                     $aAttributes[] = $attribute;
                 }
             }
-        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_'.$iSurveyId){
+        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_'.$iSurveyId) {
             // response attributes
             $aAttributes = Response::getEncryptedAttributes($iSurveyId);
         }
@@ -295,7 +295,7 @@ class LSActiveRecord extends CActiveRecord
         // load sodium library
         $sodium = Yii::app()->sodium;
         
-        if (method_exists($this, 'getSurveyId')){
+        if (method_exists($this, 'getSurveyId')) {
             $iSurveyId = $this->getSurveyId();
         } else {
             $iSurveyId = 0;
@@ -303,13 +303,13 @@ class LSActiveRecord extends CActiveRecord
         $class = get_class($this);
         $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
         $attributeCount = count($attributes);
-        foreach($attributes as $key => $attribute){
-            if(in_array($key, $encryptedAttributes)){
-                if ($bReplaceValues){
+        foreach ($attributes as $key => $attribute) {
+            if (in_array($key, $encryptedAttributes)) {
+                if ($bReplaceValues) {
                     $attributes[$key] = $sodium->encrypt($attributes[$key]);
                 }
             } else {
-                if ($bEncryptedOnly){
+                if ($bEncryptedOnly) {
                     unset($attributes[$key]);
                 }
             }
@@ -324,7 +324,7 @@ class LSActiveRecord extends CActiveRecord
     public function decrypt($value = '')
     {        
         // if $sValueSingle is provided, it would decrypt
-        if (!empty($value)){
+        if (!empty($value)) {
             
             // load sodium library
             $sodium = Yii::app()->sodium;
@@ -346,7 +346,7 @@ class LSActiveRecord extends CActiveRecord
     public static function decryptSingle($value = '')
     {        
         // if $value is provided, it would decrypt
-        if (!empty($value)){
+        if (!empty($value)) {
             
             // load sodium library
             $sodium = Yii::app()->sodium;
@@ -362,7 +362,7 @@ class LSActiveRecord extends CActiveRecord
     public static function encryptSingle($value = '')
     {        
         // if $value is provided, it would decrypt
-        if (!empty($value)){
+        if (!empty($value)) {
             
             // load sodium library
             $sodium = Yii::app()->sodium;
@@ -387,11 +387,11 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt values before saving to the database
      */
-    public function encryptSave($runValidation=false)
+    public function encryptSave($runValidation = false)
     {
         // run validation on attribute values before encryption take place, it is impossible to validate encrypted values
-        if ($runValidation){
-            if(!$this->validate()) {
+        if ($runValidation) {
+            if (!$this->validate()) {
                 return false;
             }  
         }
@@ -438,9 +438,9 @@ class LSActiveRecord extends CActiveRecord
     {
         $encryptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");
-        if(isset($encryptedAttributes)){
+        if (isset($encryptedAttributes)) {
             if (in_array($attributeName, $encryptedAttributes)) {
-                return ' <span  data-toggle="tooltip" title="' . $encryptionNotice . '" class="fa fa-key text-success"></span>';
+                return ' <span  data-toggle="tooltip" title="'.$encryptionNotice.'" class="fa fa-key text-success"></span>';
             }
         }
         

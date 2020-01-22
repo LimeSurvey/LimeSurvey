@@ -25,11 +25,11 @@ class RenderDate extends QuestionBaseRenderer
     protected $minDate;
     protected $maxDate;
 
-    public function getMainView(){
+    public function getMainView() {
         return '/survey/questions/answer/date/';
     }
     
-    public function getRows(){
+    public function getRows() {
         return;
     }
 
@@ -52,7 +52,8 @@ class RenderDate extends QuestionBaseRenderer
         parent::registerAssets();
     }
 
-    public function getTranslatorData() {
+    public function getTranslatorData()
+    {
         $data = [];
         $data['dateparts'] = [
             'year' => gT('Year'),
@@ -68,7 +69,7 @@ class RenderDate extends QuestionBaseRenderer
             case 0:
                 $data['montharray'] = array(
                     gT('Jan'), gT('Feb'), gT('Mar'), gT('Apr'), gT('May'), gT('Jun'), 
-                    gT('Jul'),   gT('Aug'), gT('Sep'), gT('Oct'), gT('Nov'), gT('Dec')
+                    gT('Jul'), gT('Aug'), gT('Sep'), gT('Oct'), gT('Nov'), gT('Dec')
                 );
                 break;
             case 1:
@@ -99,7 +100,7 @@ class RenderDate extends QuestionBaseRenderer
         return $data;
     }
 
-    public function setMinDate(){
+    public function setMinDate() {
         // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
         if (trim($this->getQuestionAttribute('date_min')) != '') {
             $date_min      = trim($this->getQuestionAttribute('date_min'));
@@ -120,7 +121,7 @@ class RenderDate extends QuestionBaseRenderer
         }
     }
 
-    public function setMaxDate(){
+    public function setMaxDate() {
         // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
         if (trim($this->getQuestionAttribute('date_max')) != '') {
             $date_max     = trim($this->getQuestionAttribute('date_max'));
@@ -141,7 +142,7 @@ class RenderDate extends QuestionBaseRenderer
         }
     }
 
-    private function getDaySelect($iCurrent){
+    private function getDaySelect($iCurrent) {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/dropdown/rows/day', 
             array('dayId'=>$this->sSGQA, 'currentday'=>$iCurrent), 
@@ -149,7 +150,7 @@ class RenderDate extends QuestionBaseRenderer
         );
     }
 
-    private function getMonthSelect($iCurrent){
+    private function getMonthSelect($iCurrent) {
         
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/dropdown/rows/month', 
@@ -158,7 +159,7 @@ class RenderDate extends QuestionBaseRenderer
         );
     }
 
-    private function getYearSelect($iCurrent){
+    private function getYearSelect($iCurrent) {
         /*
         * yearmin = Minimum year value for dropdown list, if not set default is 1900
         * yearmax = Maximum year value for dropdown list, if not set default is 2187
@@ -205,7 +206,7 @@ class RenderDate extends QuestionBaseRenderer
         );
     }
     
-    private function getHourSelect($iCurrent, $datepart){
+    private function getHourSelect($iCurrent, $datepart) {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/dropdown/rows/hour', 
             array('hourId'=>$this->sSGQA, 'currenthour'=>$iCurrent, 'datepart'=>$datepart), 
@@ -213,7 +214,7 @@ class RenderDate extends QuestionBaseRenderer
         );
     }
 
-    private function getMinuteSelect($iCurrent, $datepart){
+    private function getMinuteSelect($iCurrent, $datepart) {
         return Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/dropdown/rows/minute', 
             array(
@@ -227,7 +228,8 @@ class RenderDate extends QuestionBaseRenderer
     }
 
 
-    public function renderDatepicker($dateoutput, $coreClass) {
+    public function renderDatepicker($dateoutput, $coreClass)
+    {
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
         // "+1" makes room for a trailing space in date/time values
         $iLength = strlen(date($this->aDateformatDetails['phpdate'], mktime(23, 59, 59, 12, 30, 1999))) + 1;
@@ -297,18 +299,19 @@ class RenderDate extends QuestionBaseRenderer
         return $answer;
     }
 
-    public function renderDropdownDates($dateoutput, $coreClass) {
+    public function renderDropdownDates($dateoutput, $coreClass)
+    {
         $coreClass .= " dropdown-item"; // items ?
         if (!empty($this->mSessionValue) && ($this->mSessionValue != 'INVALID')) {
             $datetimeobj   = new Date_Time_Converter($this->mSessionValue, "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
-            $currentday   = $datetimeobj->days;
+            $currentday = $datetimeobj->days;
             $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
         } else {
             // If date is invalid get the POSTED value
-            $currentday   = App()->request->getPost("day{$this->sSGQA}", '');
+            $currentday = App()->request->getPost("day{$this->sSGQA}", '');
             $currentmonth  = App()->request->getPost("month{$this->sSGQA}", '');
             $currentyear   = App()->request->getPost("year{$this->sSGQA}", '');
             $currenthour   = App()->request->getPost("hour{$this->sSGQA}", '');
@@ -371,10 +374,10 @@ class RenderDate extends QuestionBaseRenderer
     }
 
 
-    public function render($sCoreClasses = ''){
+    public function render($sCoreClasses = '') {
         $answer = '';
         $inputnames = [];
-        $this->aDateformatDetails      = getDateFormatDataForQID($this->aQuestionAttributes, $this->oQuestion->sid);
+        $this->aDateformatDetails = getDateFormatDataForQID($this->aQuestionAttributes, $this->oQuestion->sid);
         $coreClass = "ls-answers answer-item date-item ".$sCoreClasses;
         $this->setMinDate();
         $this->setMaxDate();

@@ -82,7 +82,7 @@ $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist 
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
-$config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
+$config['customassetversionnumber']  = 1; // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
@@ -105,13 +105,13 @@ $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can acc
 
 $config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
 
-$config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
+$config['showpopups'] = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
 //  2 = defined by Theme option (default)
 //  1 = Show popup message
 //  0 = Show message on page instead;
 // -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
-$config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$config['maxemails'] = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -682,7 +682,7 @@ $config['adminimageurl']          = $config['styleurl'].$config['admintheme'].'/
 $config['applicationurl']         = $config['publicurl'].'application/';
 $config['extensionsurl']          = $config['applicationurl'].'extensions/';
 $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/'; // Location of button bar files for admin script
-$config['userfontsurl']            = $config['uploadurl'].'/fonts'; // Location of user's fonts
+$config['userfontsurl'] = $config['uploadurl'].'/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
@@ -702,7 +702,7 @@ $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."
 $config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user custom twig extensions
 $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; // The directory containing the user's question themes.
 $config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
-$config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
+$config['userfontsrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
 $config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";
 //Overwrite files with the same name on upload?

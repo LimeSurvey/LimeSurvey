@@ -36,8 +36,7 @@ class LSFileHelper extends CFileHelper
         }
         if(empty($magicFile) && $mimeTypes===null) {
             $mimeTypes=require(Yii::getPathOfAlias('system.utils.fileExtensions').'.php');
-        }
-        elseif($magicFile!==null && !isset($customMimeTypes[$magicFile])) {
+        } elseif($magicFile!==null && !isset($customMimeTypes[$magicFile])) {
             $customMimeTypes[$magicFile]=require($magicFile);
         }
         $mime = self::getMimeType($file);
@@ -59,19 +58,19 @@ class LSFileHelper extends CFileHelper
      * @see https://www.php.net/manual/en/function.finfo-open.php
      * @return string|null string if the MIME type. Null is returned if the MIME type cannot be determined.
      */
-    public static function getMimeType($file,$magicFile=null,$checkExtension=true)
+    public static function getMimeType($file, $magicFile = null, $checkExtension = true)
     {
-        $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
-        if((!empty($magicFile) && $mimeType != "application/octet-stream") || !is_null($magicFile)) {
+        $mimeType = parent::getMimeType($file, $magicFile, $checkExtension);
+        if ((!empty($magicFile) && $mimeType != "application/octet-stream") || !is_null($magicFile)) {
             return $mimeType;
         }
-        if(empty($magicFile) && Yii::app()->getConfig('magic_database')) {
+        if (empty($magicFile) && Yii::app()->getConfig('magic_database')) {
             $magicFile = Yii::app()->getConfig('magic_database');
         }
         // Some PHP version can throw Notice with some files, disable this notice issue #15565
         $iErrorReportingState = error_reporting();
         error_reporting(0);
-        $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
+        $mimeType = parent::getMimeType($file, $magicFile, $checkExtension);
         error_reporting($iErrorReportingState);
         return $mimeType;
     }

@@ -255,7 +255,7 @@ window.addEventListener('message', function(event) {
      */
     public function renderQuestion($sView, $aData)
     {
-        $this->_twig  = parent::getTwig(); // Twig object
+        $this->_twig = parent::getTwig(); // Twig object
 
         // Question template instance has been created at top of qanda_helper::retrieveAnswers()
         $oQuestionTemplate   = QuestionTemplate::getInstance();
@@ -453,7 +453,8 @@ window.addEventListener('message', function(event) {
     {
         App()->clientScript->registerPackage($oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN);
 
-        ob_start(function ($buffer, $phase) {
+        ob_start(function ($buffer, $phase)
+        {
             App()->getClientScript()->render($buffer);
             App()->getClientScript()->reset();
             return $buffer;
@@ -540,7 +541,7 @@ window.addEventListener('message', function(event) {
         $loader->setPaths(array());
         /* Event to add or replace twig views */
 
-        if (! App()->getConfig('force_xmlsettings_for_survey_rendering')) {
+        if (!App()->getConfig('force_xmlsettings_for_survey_rendering')) {
             $oEvent = new PluginEvent('getPluginTwigPath');
             App()->getPluginManager()->dispatchEvent($oEvent);
             $configTwigExtendsAdd = (array) $oEvent->get("add");
@@ -549,7 +550,8 @@ window.addEventListener('message', function(event) {
             /* Forced twig by plugins (used to replace vanilla or core template …
             don't like to force on user template, but else can extend current core twig) */
             foreach ($configTwigExtendsReplace as $configTwigExtendReplace) {
-                if (is_string($configTwigExtendReplace)) { // Need more control ?
+                if (is_string($configTwigExtendReplace)) {
+// Need more control ?
                     $loader->addPath($configTwigExtendReplace);
                 }
             }
@@ -574,7 +576,7 @@ window.addEventListener('message', function(event) {
                 $loader->addPath($extraPath);
             }
         }
-        $oRTemplate   = $oTemplate;
+        $oRTemplate = $oTemplate;
         /* This template */
         $loader->addPath($oRTemplate->viewPath);
         /* Parent template */
@@ -612,7 +614,7 @@ window.addEventListener('message', function(event) {
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
-                isset($_SESSION['survey_' . $surveyid]['srid'])
+                isset($_SESSION['survey_'.$surveyid]['srid'])
                 && isset($aDatas['aSurveyInfo']['active']) && $aDatas['aSurveyInfo']['active'] == 'Y'
                 && isset($aDatas['aSurveyInfo']['include_content']) && $aDatas['aSurveyInfo']['include_content'] !== 'submit'
                 && isset($aDatas['aSurveyInfo']['include_content']) && $aDatas['aSurveyInfo']['include_content'] !== 'submit_preview'
@@ -716,9 +718,10 @@ window.addEventListener('message', function(event) {
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if ( array_key_exists ( $sFileOption ,$aDatas["aSurveyInfo"]["options"]) )
-                if ( empty ($aDatas["aSurveyInfo"]["options"][$sFileOption])  ){
+            if ( array_key_exists ( $sFileOption ,$aDatas["aSurveyInfo"]["options"]) ) {
+                            if ( empty ($aDatas["aSurveyInfo"]["options"][$sFileOption])  ){
                     $aDatas["aSurveyInfo"]["options"][$sOption] = "false";
+            }
                 }
         }
 

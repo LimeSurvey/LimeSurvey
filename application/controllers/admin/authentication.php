@@ -263,11 +263,11 @@ class Authentication extends Survey_Common_Action
      *
      * @param CActiveRecord User 
      */
-    private function _sendPasswordEmail( $arUser)
+    private function _sendPasswordEmail($arUser)
     {
         $mailer = New \LimeMailer;
         $mailer->emailType = 'passwordreminderadminuser';
-        $mailer->addAddress($arUser->email,$arUser->full_name);
+        $mailer->addAddress($arUser->email, $arUser->full_name);
         $mailer->Subject = gT('User data');
         /* Body construct */
         $sNewPass = createPassword();

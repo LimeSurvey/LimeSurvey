@@ -79,7 +79,7 @@ class FileFetcherUploadZip extends FileFetcher
             throw new \Exception(gT('No temporary folder, cannot read configuration file.'));
         }
 
-        $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
+        $configFile = $tempdir.DIRECTORY_SEPARATOR.'config.xml';
 
         if (!file_exists($configFile)) {
             //Check if zip file was unzipped in subfolder
@@ -87,8 +87,8 @@ class FileFetcherUploadZip extends FileFetcher
             if (count($subdirs) == 1) {
                 $configXml = '';
                 foreach ($subdirs as $dir) {
-                    $tempdir = $tempdir . DIRECTORY_SEPARATOR . $dir;
-                    $configXml = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
+                    $tempdir = $tempdir.DIRECTORY_SEPARATOR.$dir;
+                    $configXml = $tempdir.DIRECTORY_SEPARATOR.'config.xml';
                 }
                 if (file_exists($configXml)) {
                     //save new tempDir in the user session
@@ -229,7 +229,7 @@ class FileFetcherUploadZip extends FileFetcher
         if ($aExtractResult === 0) {
             throw new \Exception(
                 gT("This file is not a valid ZIP file archive. Import failed.")
-                . ' ' . $zip->error_string
+                . ' '.$zip->error_string
             );
         } else {
             // All good?

@@ -48,7 +48,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
         $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_'.$this->oQuestion->sid]['s_lang']);
-        if(!$this->sLanguage) {
+        if (!$this->sLanguage) {
                 $this->sLanguage = $this->oQuestion->survey->language;
         }
         
@@ -59,8 +59,8 @@ abstract class QuestionBaseRenderer extends StaticModel
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
         
-        if(!empty($this->oQuestion->questionL10ns[$this->sLanguage]->script)){
-            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionL10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+        if (!empty($this->oQuestion->questionL10ns[$this->sLanguage]->script)) {
+            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionL10ns[$this->sLanguage]->script, $this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
             $this->addScript('QuestionStoredScript-'.$this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
         }
     }
@@ -218,10 +218,10 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $output;
     }
 
-    protected function getQuestionAttribute($key1, $key2=null) {
-        $result =  isset($this->aQuestionAttributes[$key1]) ? $this->aQuestionAttributes[$key1] : null;
-        if($key2 !== null && $result !== null) {
-            $result =  isset($result[$key2]) ? $result[$key2] : null;
+    protected function getQuestionAttribute($key1, $key2 = null) {
+        $result = isset($this->aQuestionAttributes[$key1]) ? $this->aQuestionAttributes[$key1] : null;
+        if ($key2 !== null && $result !== null) {
+            $result = isset($result[$key2]) ? $result[$key2] : null;
         }
         return $result;
     }
@@ -237,17 +237,17 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id);
     }
 
-    protected function getAnswerCount($iScaleId=0)
+    protected function getAnswerCount($iScaleId = 0)
     {
         return count($this->aAnswerOptions[$iScaleId]);
     }
 
-    protected function getQuestionCount($iScaleId=0)
+    protected function getQuestionCount($iScaleId = 0)
     {
         return count($this->aSubQuestions[$iScaleId]);
     }
 
-    protected function getFromSurveySession($sIndex, $default="")
+    protected function getFromSurveySession($sIndex, $default = "")
     {
         return isset($_SESSION['survey_'.$this->oQuestion->sid][$sIndex]) 
             ? $_SESSION['survey_'.$this->oQuestion->sid][$sIndex]
@@ -292,7 +292,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setDefaultIfEmpty($value, $default)
     {
-        if(!$value) {
+        if (!$value) {
             return $default;
         }
         return trim($value) == '' ? $default : $value;
@@ -307,10 +307,10 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-    * Return class of a specific row (hidden by relevance)
-    * @param string $myfname The name of the question/row to test
-    * @return string
-    */
+     * Return class of a specific row (hidden by relevance)
+     * @param string $myfname The name of the question/row to test
+     * @return string
+     */
     public function getCurrentRelevecanceClass($myfname)
     {
         $aSurveySessionArray = $_SESSION["survey_{$this->oQuestion->sid}"];
@@ -334,14 +334,14 @@ abstract class QuestionBaseRenderer extends StaticModel
     
         // Currently null/0/false=> hidden , 1 : disabled
         $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
-        return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
+        return ($filterStyle) ? "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
     }
     /**
-    * Find the label / input width
-    * @param string|int $labelAttributeWidth label width from attribute
-    * @param string|int $inputAttributeWidth input width from attribute
-    * @return array labelWidth as integer,inputWidth as integer,defaultWidth as boolean
-    */
+     * Find the label / input width
+     * @param string|int $labelAttributeWidth label width from attribute
+     * @param string|int $inputAttributeWidth input width from attribute
+     * @return array labelWidth as integer,inputWidth as integer,defaultWidth as boolean
+     */
     public function getLabelInputWidth()
     {
         $labelAttributeWidth = trim($this->getQuestionAttribute('label_input_columns'));
@@ -352,7 +352,7 @@ abstract class QuestionBaseRenderer extends StaticModel
             $attributeInputContainerWidth = null;
         }
 
-        $attributeLabelWidth =  ($labelAttributeWidth === 'hidden')
+        $attributeLabelWidth = ($labelAttributeWidth === 'hidden')
             ? 0
             : (
                 ($labelAttributeWidth < 1 || $labelAttributeWidth > 12)
@@ -391,8 +391,8 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     /**
-    * Include Keypad headers
-    */
+     * Include Keypad headers
+     */
     public function includeKeypad()
     {
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party')."jquery-keypad/jquery.keypad.alt.css");

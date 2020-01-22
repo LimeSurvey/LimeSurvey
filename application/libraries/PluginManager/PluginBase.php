@@ -85,7 +85,7 @@ abstract class PluginBase implements iPlugin
     {
         $dir = $this->getDir();
         if ($dir) {
-            $basePath = $dir . DIRECTORY_SEPARATOR . 'locale';
+            $basePath = $dir.DIRECTORY_SEPARATOR.'locale';
         } else {
             throw new \Exception('Found no dir for locale component');
         }
@@ -410,7 +410,7 @@ abstract class PluginBase implements iPlugin
      */
     public function readConfigFile()
     {
-        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
+        $file = $this->getDir().DIRECTORY_SEPARATOR.'config.xml';
         if (file_exists($file)) {
             libxml_disable_entity_loader(false);
             $this->config = simplexml_load_file(realpath($file));
@@ -535,7 +535,7 @@ abstract class PluginBase implements iPlugin
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
         
-        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;
         if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
@@ -561,7 +561,7 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerCss($relativePathToCss, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
 
         $cssToRegister = null;
         if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {

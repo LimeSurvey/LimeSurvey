@@ -208,7 +208,7 @@ class QuestionAttribute extends LSActiveRecord
     {
         $iQuestionID = (int) $iQuestionID;
 
-        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
+        $cacheKey = 'getQuestionAttributes_'.$iQuestionID.'_'.json_encode($sLanguage);
         if (EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
@@ -266,7 +266,7 @@ class QuestionAttribute extends LSActiveRecord
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
                 // convert empty array to empty string
-                if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+                if (empty($aAttribute['default']) && is_array($aAttribute['default'])) {
                     $aAttribute['default'] = '';
                 }
 
@@ -405,12 +405,12 @@ class QuestionAttribute extends LSActiveRecord
                 return stripos($attribute['types'], $sType) !== false;
             });
             foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
-                      $settings,
-                      array("name"=>$attribute)
-                  );
+                    self::$questionAttributesSettings[$sType][$attribute] = array_merge(
+                        QuestionAttribute::getDefaultSettings(),
+                        array("category"=>gT("Plugins")),
+                        $settings,
+                        array("name"=>$attribute)
+                    );
             }
         }
         return self::$questionAttributesSettings[$sType];
@@ -431,7 +431,7 @@ class QuestionAttribute extends LSActiveRecord
             // load xml file
             libxml_disable_entity_loader(false);
             $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), TRUE);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
             if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))){
                 $aTemp = $aXmlAttributes['attribute'];
@@ -445,20 +445,20 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // set $aAttributes array with attribute data
-        if (!empty($aXmlAttributes['attribute'])){
+        if (!empty($aXmlAttributes['attribute'])) {
             foreach ($aXmlAttributes['attribute'] as $key => $value) {
-                if(empty($value['name'])) {
+                if (empty($value['name'])) {
                     /* Allow comments in attributes */
                     continue;
                 }
                 /* settings the default value */
-                $aAttributes[$value['name']] =self::getDefaultSettings();
+                $aAttributes[$value['name']] = self::getDefaultSettings();
                 /* settings the xml value */
                 foreach ($value as $key2 => $value2) {
-                    if ($key2 === 'options' && !empty($value2)){
+                    if ($key2 === 'options' && !empty($value2)) {
                         foreach ($value2['option'] as $key3 => $value3) {
-                            if (isset($value3['value'])){
-                                $value4 = is_array($value3['value'])?'':$value3['value'];
+                            if (isset($value3['value'])) {
+                                $value4 = is_array($value3['value']) ? '' : $value3['value'];
                                 $aAttributes[$value['name']]['options'][$value4] = $value3['text'];
                             }
                         }
@@ -487,7 +487,7 @@ class QuestionAttribute extends LSActiveRecord
             // load xml file
             libxml_disable_entity_loader(false);
             $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
+            $aXmlAttributes = json_decode(json_encode((array) $xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
             if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
                 $aTemp = $aXmlAttributes['attribute'];

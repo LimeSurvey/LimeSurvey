@@ -16,7 +16,7 @@ function setSeed($surveyid)
         $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
         $seed = $oResponse->seed;
         /* fix empty seed, this allow broken seed (not number) */
-        if(empty($seed)) {
+        if (empty($seed)) {
             $seed = mt_rand();
             $oResponse->seed = $seed;
             $oResponse->save();

@@ -58,7 +58,7 @@ class RenderListDropdown extends QuestionBaseRenderer
         foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
             $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
 
-            $_prefix = $this->bPrefix ? ++$this->iRowNum.') ': '';
+            $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
             
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
                 'name'=> $this->sSGQA,
@@ -203,7 +203,7 @@ class RenderListDropdown extends QuestionBaseRenderer
         
         $sOptions .= $this->getNoAnswerOption();
 
-        $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'sOptions'               => $sOptions,
             'sOther'                 => $sOther,
             'name'                   => $this->sSGQA,

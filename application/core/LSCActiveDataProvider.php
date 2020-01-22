@@ -14,91 +14,91 @@
  *
  */
 
-class LSCActiveDataProvider extends CActiveDataProvider {
+class LSCActiveDataProvider extends CActiveDataProvider
+{
     
     /**
-	 * Fetches the data from the persistent data storage.
+     * Fetches the data from the persistent data storage.
      * 
      * Method content is copied from original CActiveDataProvider class, except for decryption part
+     * @return array list of data items
+     */
+    protected function fetchData()
+    {
+        $criteria=clone $this->getCriteria();
 
-	 * @return array list of data items
-	 */
-	protected function fetchData()
-	{
-		$criteria=clone $this->getCriteria();
+        if(($pagination=$this->getPagination())!==false)
+        {
+            $pagination->setItemCount($this->getTotalItemCount());
+            $pagination->applyLimit($criteria);
+        }
 
-		if(($pagination=$this->getPagination())!==false)
-		{
-			$pagination->setItemCount($this->getTotalItemCount());
-			$pagination->applyLimit($criteria);
-		}
+        $baseCriteria=$this->model->getDbCriteria(false);
 
-		$baseCriteria=$this->model->getDbCriteria(false);
+        if(($sort=$this->getSort())!==false)
+        {
+            // set model criteria so that CSort can use its table alias setting
+            if($baseCriteria!==null)
+            {
+                $c=clone $baseCriteria;
+                $c->mergeWith($criteria);
+                $this->model->setDbCriteria($c);
+            }
+            else
+                $this->model->setDbCriteria($criteria);
+            $sort->applyOrder($criteria);
+        }
 
-		if(($sort=$this->getSort())!==false)
-		{
-			// set model criteria so that CSort can use its table alias setting
-			if($baseCriteria!==null)
-			{
-				$c=clone $baseCriteria;
-				$c->mergeWith($criteria);
-				$this->model->setDbCriteria($c);
-			}
-			else
-				$this->model->setDbCriteria($criteria);
-			$sort->applyOrder($criteria);
-		}
-
-		$this->model->setDbCriteria($baseCriteria!==null ? clone $baseCriteria : null);
+        $this->model->setDbCriteria($baseCriteria!==null ? clone $baseCriteria : null);
         $data=$this->model->findAll($criteria);
         
         // decryption
-        if ($this->model->bEncryption){
-            foreach ($data as $row){
-                if (!empty($row)){
+        if ($this->model->bEncryption) {
+            foreach ($data as $row) {
+                if (!empty($row)) {
                     $row->decrypt();
                 }
 
                 // decrypt all related models
-                foreach ($row->relations() as $key => $related){
-                    if ($row->hasRelated($key) && !is_null($row->$key)){
+                foreach ($row->relations() as $key => $related) {
+                    if ($row->hasRelated($key) && !is_null($row->$key)) {
                         $row->$key->decrypt();
                     }
                 }
             }
         }
 
-		$this->model->setDbCriteria($baseCriteria);  // restore original criteria
-		return $data;
+        $this->model->setDbCriteria($baseCriteria);  // restore original criteria
+        return $data;
     }
     
 
     /**
-	 * Fetches the data item keys from the persistent data storage.
-	 * @return array list of data item keys.
-	 */
-	protected function fetchKeys()
-	{
-		$keys=array();
-		foreach($this->getData() as $i=>$data)
-		{
-			$key=$this->keyAttribute===null ? $data->getPrimaryKey() : $data->{$this->keyAttribute};
-			$keys[$i]=is_array($key) ? implode(',',$key) : $key;
-		}
-		return $keys;
-	}
+     * Fetches the data item keys from the persistent data storage.
+     * @return array list of data item keys.
+     */
+    protected function fetchKeys()
+    {
+        $keys=array();
+        foreach($this->getData() as $i=>$data)
+        {
+            $key=$this->keyAttribute===null ? $data->getPrimaryKey() : $data->{$this->keyAttribute};
+            $keys[$i]=is_array($key) ? implode(',',$key) : $key;
+        }
+        return $keys;
+    }
 
-	/**
-	 * Calculates the total number of data items.
-	 * @return integer the total number of data items.
-	 */
-	protected function calculateTotalItemCount()
-	{
-		$baseCriteria=$this->model->getDbCriteria(false);
-		if($baseCriteria!==null)
-			$baseCriteria=clone $baseCriteria;
-		$count=$this->model->count($this->getCountCriteria());
-		$this->model->setDbCriteria($baseCriteria);
-		return $count;
-	}
+    /**
+     * Calculates the total number of data items.
+     * @return integer the total number of data items.
+     */
+    protected function calculateTotalItemCount()
+    {
+        $baseCriteria=$this->model->getDbCriteria(false);
+        if($baseCriteria!==null)
+            $baseCriteria=clone $baseCriteria;
+        $count=$this->model->count($this->getCountCriteria());
+        $this->model->setDbCriteria($baseCriteria);
+        return $count;
+    }
 }

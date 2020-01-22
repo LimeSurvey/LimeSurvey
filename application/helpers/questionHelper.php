@@ -36,7 +36,6 @@ class questionHelper
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
-
     {
         if (self::$attributes) {
             return self::$attributes;
@@ -501,7 +500,7 @@ class questionHelper
             'category'=>gT('Location'),
             'sortorder'=>101,
             'inputtype'=>'text',
-            'expression'=>1,/* As static */
+            'expression'=>1, /* As static */
             "help"=>gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
             "caption"=>gT('Default position')
         );
@@ -1487,7 +1486,7 @@ class questionHelper
             'sortorder'=>128,
             "inputtype"=>"integer",
             'default'=>10240,
-            "help"=>sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."),getMaximumFileUploadSize()/1024),
+            "help"=>sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."), getMaximumFileUploadSize() / 1024),
             "caption"=>gT("Maximum file size allowed (in KB)")
         );
 
@@ -1607,17 +1606,17 @@ class questionHelper
 
         $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
 
-        $xmlConfigPath = App()->getConfig('rootdir') .'/'. $sCoreTypeXmlPath['xml_path'] . '/config.xml';
+        $xmlConfigPath = App()->getConfig('rootdir').'/'.$sCoreTypeXmlPath['xml_path'].'/config.xml';
         libxml_disable_entity_loader(false);
         $oCoreConfig = simplexml_load_file($xmlConfigPath);
-        $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
+        $aCoreAttributes = json_decode(json_encode((array) $oCoreConfig), true);
         if ($sQuestionThemeName !== null) {
             $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
             if (!empty($questionTheme)) {
-                $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
-                $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+                $xml_config = simplexml_load_file(App()->getConfig('rootdir').'/'.$questionTheme['xml_path'].'/config.xml');
+                $attributes = json_decode(json_encode((array) $xml_config->attributes), true);
             } else {
-                $attributes = json_decode(json_encode((array)$oCoreConfig->attributes), true);
+                $attributes = json_decode(json_encode((array) $oCoreConfig->attributes), true);
             }
         }
         libxml_disable_entity_loader(true);
@@ -1676,11 +1675,11 @@ class questionHelper
      */
     public static function getQuestionThemePreviewUrl($sType = null)
     {
-        if ($sType == '*'){
+        if ($sType == '*') {
             $preview_filename = 'EQUATION.png';
-        } elseif ($sType == ':'){
+        } elseif ($sType == ':') {
             $preview_filename = 'COLON.png';
-        } elseif ($sType == '|'){
+        } elseif ($sType == '|') {
             $preview_filename = 'PIPE.png';
         } elseif (!empty($sType)) {
             $preview_filename = $sType.'.png';

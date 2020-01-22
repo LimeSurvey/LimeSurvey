@@ -26,7 +26,7 @@ class PermissiontemplatesController extends Survey_Common_Action
         // Set page size
         $pageSize = $request->getParam('pageSize', null);
         if ($pageSize != null) {
-            App()->user->setState('pageSize', (int)$pageSize);
+            App()->user->setState('pageSize', (int) $pageSize);
         }
 
         $model = Permissiontemplates::model();
@@ -49,7 +49,7 @@ class PermissiontemplatesController extends Survey_Common_Action
      */
     public function viewrole($ptid)
     {
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
@@ -62,15 +62,15 @@ class PermissiontemplatesController extends Survey_Common_Action
         );
     }
 
-    public function editrolemodal($ptid=null)
+    public function editrolemodal($ptid = null)
     {
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
 
         $model = $this->loadModel($ptid);
-        Yii::app()->getController()->renderPartial( 'permissiontemplates/partials/_form', ['model' => $model]);
+        Yii::app()->getController()->renderPartial('permissiontemplates/partials/_form', ['model' => $model]);
     }
 
     /**
@@ -122,7 +122,8 @@ class PermissiontemplatesController extends Survey_Common_Action
         return (string)$errorDiv;
     }
 
-    public function showImportXML() {
+    public function showImportXML()
+    {
         if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
@@ -131,7 +132,8 @@ class PermissiontemplatesController extends Survey_Common_Action
         Yii::app()->getController()->renderPartial( 'permissiontemplates/partials/_import', []);
     }
 
-    public function importXML() {
+    public function importXML()
+    {
         
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$sRandomFileName;
@@ -144,10 +146,10 @@ class PermissiontemplatesController extends Survey_Common_Action
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             Yii::app()->getController()->redirect(array('/admin/roles'));
             Yii::app()->end();
-        } elseif (strtolower($sExtension) == 'xml' ||1==1) {
+        } elseif (strtolower($sExtension) == 'xml' || 1 == 1) {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         } else {
-            Yii::app()->setFlashMessage(gT("This is not a .xml file."). 'It is a '.$sExtension, 'error');
+            Yii::app()->setFlashMessage(gT("This is not a .xml file.").'It is a '.$sExtension, 'error');
             Yii::app()->getController()->redirect(array('/admin/roles'));
             Yii::app()->end();
         }
@@ -164,7 +166,7 @@ class PermissiontemplatesController extends Survey_Common_Action
         libxml_disable_entity_loader(true);
         
         $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
-        if($oNewRole == false ) {
+        if ($oNewRole == false) {
 
             Yii::app()->setFlashMessage(gT("Error creating role"), 'error');
             Yii::app()->getController()->redirect(array('/admin/roles'));
@@ -181,12 +183,13 @@ class PermissiontemplatesController extends Survey_Common_Action
 
     }
 
-    public function setpermissions() {
+    public function setpermissions()
+    {
         if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             return $this->getController()->renderPartial(
                 '/admin/permissiontemplates/partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
-          );
+            );
         }
 
         $oRequest = Yii::app()->request;
@@ -214,14 +217,16 @@ class PermissiontemplatesController extends Survey_Common_Action
         }
 
         $aAllSurveys = Survey::model()->findAll();
-        $aMySurveys = array_filter($aAllSurveys, function ($oSurvey) {
+        $aMySurveys = array_filter($aAllSurveys, function ($oSurvey)
+        {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 return true;
             }
             if ($oSurvey->owner_id == App()->user->id) {
                 return true;
             }
-            return array_reduce($oSurvey->permissions, function ($coll, $oPermission) {
+            return array_reduce($oSurvey->permissions, function ($coll, $oPermission)
+            {
                 if ($oPermission->permission=='surveysecurity' && $oPermission->update_p == 1 && $oPermission->uid == App()->user->id) {
                     return true;
                 }
@@ -244,7 +249,7 @@ class PermissiontemplatesController extends Survey_Common_Action
             return $this->getController()->renderPartial(
                 '/admin/permissiontemplates/partial/error', 
                 ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
-          );
+            );
         }
 
         $oRequest = Yii::app()->request;
@@ -267,9 +272,9 @@ class PermissiontemplatesController extends Survey_Common_Action
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function edit($ptid=null)
+    public function edit($ptid = null)
     {
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
@@ -295,9 +300,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         );
     }
 
-    public function batchDelete() 
+    public function batchDelete()
     {
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
@@ -326,7 +331,7 @@ class PermissiontemplatesController extends Survey_Common_Action
      */
     public function delete()
     {
-        if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
@@ -340,10 +345,11 @@ class PermissiontemplatesController extends Survey_Common_Action
 
     }
 
-    public function runexport($ptid) {
+    public function runexport($ptid)
+    {
         $oModel = $this->loadModel($ptid);
         $oXML = $oModel->compileExportXML();
-        $filename = preg_replace("/[^a-zA-Z0-9-_]*/",'',$oModel->name);
+        $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name);
 
         header('Content-type: application/xml');
         header('Content-Disposition: attachment; filename="'.$filename.'.xml"');
@@ -351,7 +357,8 @@ class PermissiontemplatesController extends Survey_Common_Action
         Yii::app()->end();
     }
     
-    public function batchExport() {
+    public function batchExport()
+    {
         if(!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
@@ -374,7 +381,7 @@ class PermissiontemplatesController extends Survey_Common_Action
         foreach ($aPtids as $iPtid) {
             $oModel = $this->loadModel($iPtid);
             $oXML = $oModel->compileExportXML();
-            $filename = preg_replace("/[^a-zA-Z0-9-_]*/",'',$oModel->name).'.xml';
+            $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name).'.xml';
 
             file_put_contents($sFilePath.DIRECTORY_SEPARATOR.$filename, $oXML->asXML());
             $filesInArchive[] = $sFilePath.DIRECTORY_SEPARATOR.$filename;
@@ -436,14 +443,14 @@ class PermissiontemplatesController extends Survey_Common_Action
         $aPermissionsCurrently = Permission::model()->deleteAll($oCriteria);
         $results = [];
         //Apply the permission array
-        foreach($aPermissionArray as $sPermissionKey => $aPermissionSettings) {
+        foreach ($aPermissionArray as $sPermissionKey => $aPermissionSettings) {
             $oPermission = new Permission();
             $oPermission->entity = 'role';
             $oPermission->entity_id = $iRoleId;
             $oPermission->uid = 0;
             $oPermission->permission = $sPermissionKey;
 
-            foreach($aPermissionSettings as $sSettingKey => $sSettingValue) {
+            foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
                 $oPermissionDBSettingKey = $sSettingKey.'_p';
                 $oPermission->$oPermissionDBSettingKey = $sSettingValue == 'on' ? 1 : 0;
             }
@@ -469,16 +476,16 @@ class PermissiontemplatesController extends Survey_Common_Action
         $results = [];
         //Apply the permission array
         $aCleanPermissionObject = json_decode(json_encode($oPermissionObject), true);
-        foreach($aCleanPermissionObject as $sPermissionKey => $aPermissionSettings) {
+        foreach ($aCleanPermissionObject as $sPermissionKey => $aPermissionSettings) {
             $oPermission = new Permission();
             $oPermission->entity = 'role';
             $oPermission->entity_id = $iRoleId;
             $oPermission->uid = 0;
             $oPermission->permission = $sPermissionKey;
 
-            foreach($aPermissionSettings as $sSettingKey => $sSettingValue) {
+            foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
                 $oPermissionDBSettingKey = $sSettingKey.'_p';
-                if(isset($oPermission->$oPermissionDBSettingKey)) {
+                if (isset($oPermission->$oPermissionDBSettingKey)) {
                     $oPermission->$oPermissionDBSettingKey = $sSettingValue;
                 }
             }

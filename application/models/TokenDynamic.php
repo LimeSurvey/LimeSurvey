@@ -222,7 +222,7 @@ class TokenDynamic extends LSActiveRecord
         $command->order = 'tid';
 
         $oResult = TokenDynamic::model()->findAll($command);
-        foreach($oResult as $key=>$result){
+        foreach($oResult as $key=>$result) {
             $oResult[$key] = $result->decrypt();
         }
         return $oResult;
@@ -488,7 +488,7 @@ class TokenDynamic extends LSActiveRecord
             ->where('token=:token')
             ->bindParam(':token', $sToken, PDO::PARAM_STR);
 
-        return ((int)$command->queryScalar()>0);
+        return ((int) $command->queryScalar() > 0);
     }
 
     
@@ -678,7 +678,7 @@ class TokenDynamic extends LSActiveRecord
 
 
             array(
-                'header' => gT('First name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
+                'header' => gT('First name').$this->setEncryptedAttributeLabel(self::$sid, 'Token', 'firstname'),
                 'name' => 'firstname',
                 'value' => '$data->firstname',
                 'headerHtmlOptions' => array('class' => 'hidden-xs'),
@@ -686,7 +686,7 @@ class TokenDynamic extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Last name') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
+                'header' => gT('Last name').$this->setEncryptedAttributeLabel(self::$sid, 'Token', 'lastname'),
                 'name' => 'lastname',
                 'value' => '$data->lastname',
                 'headerHtmlOptions' => array('class' => 'hidden-xs'),
@@ -694,7 +694,7 @@ class TokenDynamic extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Email address') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
+                'header' => gT('Email address').$this->setEncryptedAttributeLabel(self::$sid, 'Token', 'email'),
                 'name' => 'email',
                 'type' => 'raw',
                 'value' => '$data->emailFormated',
@@ -703,7 +703,7 @@ class TokenDynamic extends LSActiveRecord
             ),
 
             array(
-                'header' => gT('Email status') . $this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
+                'header' => gT('Email status').$this->setEncryptedAttributeLabel(self::$sid, 'Token', 'emailstatus'),
                 'name' => 'emailstatus',
                 'value' => '$data->emailstatusFormated',
                 'type' => 'raw',
@@ -803,9 +803,9 @@ class TokenDynamic extends LSActiveRecord
         foreach ($aCustomAttributes as $sColName => $oColumn) {
             $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
             $aCustomAttributesCols[] = array(
-                'header' => $desc . $this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
+                'header' => $desc.$this->setEncryptedAttributeLabel(self::$sid, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
                 'name' => $sColName,
-                'value' => '$data->' . $sColName,
+                'value' => '$data->'.$sColName,
                 'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 'htmlOptions' => array('class' => 'hidden-xs'),
             );
@@ -834,7 +834,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("View response details")
             ),
-            'visible'=> $baseView .' && $data->getHasResponses($data->token)',
+            'visible'=> $baseView.' && $data->getHasResponses($data->token)',
         );
         $gridButtons['spacerviewresponse'] = array(
             'label'=>'<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
@@ -845,7 +845,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title'=>''
             ),
-            'visible'=> $baseView .'&& !$data->getHasResponses($data->token)',
+            'visible'=> $baseView.'&& !$data->getHasResponses($data->token)',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* previewsurvey button */
@@ -860,7 +860,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Launch the survey with this participant")
             ),
-            'visible'=> $baseView . ' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+            'visible'=> $baseView.' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['previewsurveyspacer'] = array(
             'label'=>'<span class="fa fa-cog  text-muted" aria-hidden="true"></span>',
@@ -871,14 +871,14 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title'=> ''
             ),
-            'visible'=> $baseView . ' && (empty($data->token) || !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y"))',
+            'visible'=> $baseView.' && (empty($data->token) || !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y"))',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* mail button */
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
         /* mailing mail button */
         $gridButtons['mail'] = array(
-            'label'=>'<span class="sr-only">'.gT("Send email invitation").'</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
+            'label'=>'<span class="sr-only">'.gT("Send email invitation").'</span><span class="icon-invite" aria-hidden="true"></span>', // fa-enveloppe-o
             'imageUrl'=>false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid,));',
             'options' => array(
@@ -886,7 +886,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Send email invitation")
             ),
-            'visible'=> $baseView . ' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+            'visible'=> $baseView.' && !empty($data->token) && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
@@ -898,7 +898,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Send email reminder")
             ),
-            'visible'=> $baseView . ' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+            'visible'=> $baseView.' && !empty($data->token) && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
         );
         $gridButtons['mailspacer'] = array(
             'label'=>'<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
@@ -909,7 +909,7 @@ class TokenDynamic extends LSActiveRecord
                 'disabled' => 'disabled',
                 'title'=> ''
             ),
-            'visible'=> $baseView . ' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->alloweditaftercompletion != "Y")))',
+            'visible'=> $baseView.' && (empty($data->token) || ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->alloweditaftercompletion != "Y")))',
         );
         /* edit button button */
         $gridButtons['edit'] = array(

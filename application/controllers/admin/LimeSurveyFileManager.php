@@ -39,11 +39,12 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @var array
      */
     private $globalDirectories = [
-        'upload' . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'generalfiles',
-        'upload' . DIRECTORY_SEPARATOR . 'global',
+        'upload'.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey'.DIRECTORY_SEPARATOR.'generalfiles',
+        'upload'.DIRECTORY_SEPARATOR.'global',
     ];
 
-    public function getAllowedFileExtensions() {
+    public function getAllowedFileExtensions()
+    {
         return Yii::app()->getConfig('allowedfileuploads');
     }
 
@@ -98,9 +99,9 @@ class LimeSurveyFileManager extends Survey_Common_Action
         if ($surveyid !== null) {
             $oSurvey = Survey::model()->findByPk($surveyid);
             $aData['surveyid'] = $surveyid;
-            $aData['presetFolder'] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid;
+            $aData['presetFolder'] = 'upload'.DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid;
             $aData['surveybar']['buttons']['view'] = true;
-            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
             $aData['subaction'] = gT("File manager");
         }
 
@@ -162,7 +163,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return;
         }
         
-        $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
+        $realFilePath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$file['path'];
         
         //Throw exception if file does not exist
         if (!$this->checkTargetExists($realFilePath)) {
@@ -197,17 +198,17 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
         
-        foreach($files as $file) {
-            $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
-            $fileDestination = realpath($realTargetPath) . DIRECTORY_SEPARATOR . $file['shortName'];
+        foreach ($files as $file) {
+            $realTargetPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folder;
+            $fileDestination = realpath($realTargetPath).DIRECTORY_SEPARATOR.$file['shortName'];
 
-            $realFilePath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $file['path'];
+            $realFilePath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$file['path'];
             $fileSource = realpath($realFilePath);
 
             if ($this->checkTargetExists($fileDestination) && Yii::app()->getConfig('overwritefiles') == 0) {
                 $ext = pathinfo($fileDestination, PATHINFO_EXTENSION);
                 $shorthash = hash('adler32', microtime());
-                $fileDestination = preg_replace("/\." . $ext . "/", "-" . $shorthash . "." . $ext, $fileDestination);
+                $fileDestination = preg_replace("/\.".$ext."/", "-".$shorthash.".".$ext, $fileDestination);
             }
 
             if ($action == 'copy') {
@@ -252,7 +253,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         if (($iSurveyId == 'null' || $iSurveyId == null) && !preg_match("/generalfiles/", $folder)) {
             $iSurveyId = null;
-            $folder = 'upload' . DIRECTORY_SEPARATOR . 'global';
+            $folder = 'upload'.DIRECTORY_SEPARATOR.'global';
         }
 
         $directory = $this->_checkFolder($folder, $iSurveyId);
@@ -287,16 +288,16 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return;
         }
 
-        $destdir = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
+        $destdir = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folder;
 
         $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
-        $fullfilepath = $destdir . DIRECTORY_SEPARATOR . $filename;
+        $fullfilepath = $destdir.DIRECTORY_SEPARATOR.$filename;
         $fullfilepath = preg_replace("%".DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR."%", DIRECTORY_SEPARATOR, $fullfilepath);
 
         if ($this->checkTargetExists($fullfilepath) && Yii::app()->getConfig('overwritefiles') == 0) {
             $ext = pathinfo($fullfilepath, PATHINFO_EXTENSION);
             $shorthash = hash('adler32', microtime());
-            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . ".", $fullfilepath);
+            $fullfilepath = preg_replace("/\.".$ext."/", "-".$shorthash.".", $fullfilepath);
         }
 
         //$fullfilepath = realpath($fullfilepath);
@@ -315,7 +316,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
 
         
-        if($ext == 'zip') {
+        if ($ext == 'zip') {
             App()->loadLibrary('admin.pclzip');
             $zip = new PclZip($_FILES['file']['tmp_name']);
             $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'resourceExtractFilter');
@@ -346,7 +347,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 return;
             }
             $message = sprintf(gT("File %s uploaded"), $filename);
-            $linkToImage = Yii::app()->baseUrl . '/' . $folder . '/' . $filename;
+            $linkToImage = Yii::app()->baseUrl.'/'.$folder.'/'.$filename;
         }
 
         
@@ -363,21 +364,22 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
     }
 
-    public function downloadFiles() {
+    public function downloadFiles()
+    {
         App()->loadLibrary('admin.pclzip');
         
         $folder = basename(Yii::app()->request->getPost('folder', 'global'));
         $files = Yii::app()->request->getPost('files');
 
         $tempdir = Yii::app()->getConfig('tempdir');
-        $randomizedFileName = $folder.'_'.substr(md5(time()),3,13).'.zip';
+        $randomizedFileName = $folder.'_'.substr(md5(time()), 3, 13).'.zip';
         $zipfile = $tempdir.DIRECTORY_SEPARATOR.$randomizedFileName;
-        $arrayOfFiles = array_map( function($file){ return $file['path']; }, $files);
+        $arrayOfFiles = array_map(function($file) { return $file['path']; }, $files);
         $archive = new PclZip($zipfile);
         $checkFileCreate = $archive->create($arrayOfFiles, PCLZIP_OPT_REMOVE_ALL_PATH);
         $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
         $getFileLink = Yii::app()->createUrl('admin/filemanager/sa/getZipFile');
-        if($urlFormat == 'path') {
+        if ($urlFormat == 'path') {
             $getFileLink .= '?path='.$zipfile;
         } else {
             $getFileLink .= '&path='.$zipfile;
@@ -387,12 +389,13 @@ class LimeSurveyFileManager extends Survey_Common_Action
             [
                 'success' => true,
                 'message' => sprintf(gT("Files ready for download in archive %s."), $randomizedFileName),
-                'downloadLink' => $getFileLink ,
+                'downloadLink' => $getFileLink,
             ]
         );
     }
 
-    public function getZipFile($path) {
+    public function getZipFile($path)
+    {
         $filename = basename($path);
 
         // echo "<pre>";
@@ -426,7 +429,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      */
     private function _extensionAllowed($fileExtension, $purpose = 'show')
     {
-        if($purpose == 'upload') {
+        if ($purpose == 'upload') {
             return in_array($fileExtension, $this->allowedFileExtensions) || $fileExtension == 'zip';
         }
 
@@ -447,7 +450,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $inInAllowedFolders = false;
 
         foreach ($aAllowedFolders as $folderName => $folderPath) {
-            $inInAllowedFolders = (preg_match('%/?' . preg_quote($folderPath) . '/?%', $sFolderPath)) || $inInAllowedFolders;
+            $inInAllowedFolders = (preg_match('%/?'.preg_quote($folderPath).'/?%', $sFolderPath)) || $inInAllowedFolders;
         }
 
         if (!$inInAllowedFolders) {
@@ -458,7 +461,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return false;
         }
 
-        $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $sFolderPath;
+        $realPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$sFolderPath;
         if (!is_dir($realPath)) {
             mkdir($realPath);
         }
@@ -476,7 +479,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
     {
         $directoryArray = array();
 
-        $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folderPath;
+        $realPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folderPath;
         if (empty($realPath) || !is_dir($realPath)) {
             return $directoryArray;
         }
@@ -484,18 +487,18 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $files = scandir($realPath);
 
         foreach ($files as $file) {
-            if ($file == '.' || $file == '..') {continue;}
+            if ($file == '.' || $file == '..') {continue; }
 
-            $fileRelativePath = $folderPath . DIRECTORY_SEPARATOR . $file;
-            $fileRealpath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $fileRelativePath;
+            $fileRelativePath = $folderPath.DIRECTORY_SEPARATOR.$file;
+            $fileRealpath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$fileRelativePath;
             $fileIsDirectoy = @is_dir($fileRealpath);
-            $isImage =  @exif_imagetype($fileRealpath) !== false;
+            $isImage = @exif_imagetype($fileRealpath) !== false;
             if ($fileIsDirectoy) {
                 continue;
             } else {
 
                 $fileExt = strtolower(pathinfo($fileRealpath, PATHINFO_EXTENSION));
-                if (!$this->_extensionAllowed($fileExt)) {continue;}
+                if (!$this->_extensionAllowed($fileExt)) {continue; }
 
                 $iconClassArray = LsDefaultDataSets::fileTypeIcons();
                 $size = filesize($fileRealpath);
@@ -509,7 +512,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $sSystemDateFormat = getDateFormatData(Yii::app()->session['dateformat']);
             $iFileTimeDate = filemtime($fileRealpath);
 
-            $linkToImage = Yii::app()->getBaseUrl(true) . '/' . $folderPath . '/' . rawurlencode($file);
+            $linkToImage = Yii::app()->getBaseUrl(true).'/'.$folderPath.'/'.rawurlencode($file);
             $hash = hash_file('md5', $fileRealpath);
 
             $directoryArray[$file] = [
@@ -520,7 +523,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 'path' => $fileRelativePath,
                 'size' => $size,
                 'shortName' => $file,
-                'mod_time' => date($sSystemDateFormat['phpdate'] . ' H:i', $iFileTimeDate),
+                'mod_time' => date($sSystemDateFormat['phpdate'].' H:i', $iFileTimeDate),
             ];
         }
         return $directoryArray;
@@ -538,7 +541,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $folders = $this->globalDirectories;
 
         if ($iSurveyId != null) {
-            $folders[] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId;
+            $folders[] = 'upload'.DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$iSurveyId;
         } else {
             $aSurveyIds = Yii::app()->db->createCommand()->select('sid')->from('{{surveys}}')->queryColumn();
             foreach ($aSurveyIds as $itrtSsurveyId) {
@@ -547,7 +550,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     || Permission::model()->hasGlobalPermission('surveys', 'update')
                     || Permission::model()->hasSurveyPermission($itrtSsurveyId, 'surveylocale', 'update')
                 ) {
-                    $folders[] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $itrtSsurveyId;
+                    $folders[] = 'upload'.DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$itrtSsurveyId;
                 }
 
             }
@@ -567,7 +570,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $folders = $this->globalDirectories;
 
         if ($iSurveyId != null) {
-            $folders[] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId;
+            $folders[] = 'upload'.DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$iSurveyId;
         } else {
             $aSurveyIds = Yii::app()->db->createCommand()->select('sid')->from('{{surveys}}')->queryColumn();
             foreach ($aSurveyIds as $itrtSsurveyId) {
@@ -576,7 +579,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     || Permission::model()->hasGlobalPermission('surveys', 'update')
                     || Permission::model()->hasSurveyPermission($itrtSsurveyId, 'surveylocale', 'update')
                 ) {
-                    $folders[] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $itrtSsurveyId;
+                    $folders[] = 'upload'.DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$itrtSsurveyId;
                 }
 
             }
@@ -600,17 +603,17 @@ class LimeSurveyFileManager extends Survey_Common_Action
      */
     private function __recursiveScandir($folder, &$folderlist, &$filelist)
     {
-        $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
+        $realPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folder;
         if (!file_exists($realPath)) {
             return $folderlist;
         }
 
         $scandirCurrent = scandir($realPath);
         foreach ($scandirCurrent as $fileDescriptor) {
-            if ($fileDescriptor == '.' || $fileDescriptor == '..') {continue;}
+            if ($fileDescriptor == '.' || $fileDescriptor == '..') {continue; }
 
-            $childRelativePath = $folder . DIRECTORY_SEPARATOR . $fileDescriptor;
-            $childRealPath = realpath(Yii::getPathOfAlias('basePath') . $childRelativePath);
+            $childRelativePath = $folder.DIRECTORY_SEPARATOR.$fileDescriptor;
+            $childRealPath = realpath(Yii::getPathOfAlias('basePath').$childRelativePath);
             $childIsDirectoy = is_dir($childRealPath);
 
             if ($childIsDirectoy) {
@@ -644,10 +647,10 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @param string $folder
      * @return array
      */
-    private function _composeFolderArray($folder, $level='0')
+    private function _composeFolderArray($folder, $level = '0')
     {
 
-        $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
+        $realPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folder;
         if (!file_exists($realPath)) {
             $this->_recursiveMkdir($realPath, 0750, true);
         }
@@ -656,15 +659,15 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $childFolders = [];
         foreach ($allFiles as $childFile) {
 
-            if ($childFile == '.' || $childFile == '..') {continue;}
+            if ($childFile == '.' || $childFile == '..') {continue; }
 
-            $childRelativePath = $folder . DIRECTORY_SEPARATOR . $childFile;
-            $childRealPath = realpath(Yii::getPathOfAlias('basePath') . $childRelativePath);
+            $childRelativePath = $folder.DIRECTORY_SEPARATOR.$childFile;
+            $childRealPath = realpath(Yii::getPathOfAlias('basePath').$childRelativePath);
             $childIsDirectoy = is_dir($childRealPath);
 
-            if (!$childIsDirectoy) {continue;}
+            if (!$childIsDirectoy) {continue; }
 
-            $childFolders[] = $this->_composeFolderArray($childRelativePath, ($level+1));
+            $childFolders[] = $this->_composeFolderArray($childRelativePath, ($level + 1));
 
         }
 
@@ -681,11 +684,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
         return $folderArray;
     }
 
-    private function _recursiveMkdir($folder, $rights=0755) {
+    private function _recursiveMkdir($folder, $rights = 0755) {
         $folders = explode(DIRECTORY_SEPARATOR, $folder);
         $curFolder = array_shift($folders).DIRECTORY_SEPARATOR;
         foreach ($folders as $folder) {
-            $curFolder.= DIRECTORY_SEPARATOR.$folder;
+            $curFolder .= DIRECTORY_SEPARATOR.$folder;
             if (!is_dir($curFolder) && strlen($curFolder) > 0 && !preg_match("/^[A-Za-z]:$/", $curFolder)) {
                 mkdir($curFolder, $rights);
             }

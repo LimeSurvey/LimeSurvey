@@ -2,4 +2,6 @@
 
 
 
-class DataSetMultipleShortText extends QuestionBaseDataSet {}
+class DataSetMultipleShortText extends QuestionBaseDataSet
+{
+}

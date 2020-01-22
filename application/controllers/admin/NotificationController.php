@@ -57,7 +57,7 @@ class NotificationController extends Survey_Common_Action
             throw new CHttpException(404, sprintf(gT("Notification %s not found"), $notId));
         }
         // Check if user is allowed to mark this notification as read
-        if ($not->entity=='user' && $not->entity_id<>Yii::app()->user->id) {
+        if ($not->entity == 'user' && $not->entity_id <> Yii::app()->user->id) {
             throw new CHttpException(404, sprintf(gT("Invalid notification id"), $notId));
         }
         

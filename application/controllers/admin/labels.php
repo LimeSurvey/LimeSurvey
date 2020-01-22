@@ -272,7 +272,7 @@ class labels extends Survey_Common_Action
 
             $maxSortOrder = array_reduce(
                 $model->labels, 
-                function ($mixed, $item) {
+                function($mixed, $item) {
                     if (((int) $item->sortorder) > $mixed) {
                         $mixed = (int) $item->sortorder;
                     }
@@ -365,7 +365,8 @@ class labels extends Survey_Common_Action
         }
     }
 
-    public function saveNewLabelSet() {
+    public function saveNewLabelSet()
+    {
         $label_name   = Yii::app()->request->getPost('label_name');
         $languageids  = Yii::app()->request->getPost('languageids');
         $oLabelSet = new LabelSet();
@@ -374,7 +375,7 @@ class labels extends Survey_Common_Action
         if ($oLabelSet->save()) {
             Yii::app()->setFlashMessage(gT("Label set sucessfully created."), 'success');
             $this->getController()->redirect(array("admin/labels/sa/multieditor/lid/".$oLabelSet->lid));
-        } else { 
+        } else {
             Yii::app()->setFlashMessage(gT("Label could not be created."), 'error');
             $this->getController()->redirect(array("admin/labels/sa/view"));
         }
@@ -388,21 +389,21 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        if(!Yii::app()->getRequest()->isPostRequest) {
+        if (!Yii::app()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete label sets.",'unescaped'));
+            throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
         }
         $lid = Yii::app()->getRequest()->getParam('lid');
-        $oLabelsSet = LabelSet::model()->findByPk($lid );
-        if(empty($oLabelsSet)) {
+        $oLabelsSet = LabelSet::model()->findByPk($lid);
+        if (empty($oLabelsSet)) {
             throw new CHttpException(404, gT("Invalid label set."));
         }
-        if($oLabelsSet->deleteLabelSet($lid)) {
-            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."),CHtml::encode($oLabelsSet->label_name)));
+        if ($oLabelsSet->deleteLabelSet($lid)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($oLabelsSet->label_name)));
         } else {
-            Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."),$lid));
+            Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."), $lid));
         }
         $this->getController()->redirect(array("admin/labels/sa/view"));
     }
@@ -486,7 +487,7 @@ class labels extends Survey_Common_Action
         echo ls_json_encode($res);
     }
 
-    public function ajxGetLabelSet($lid=null) {
+    public function ajxGetLabelSet($lid = null) {
         $oLabelSetObject = LabelSet::model()->findByPk($lid);
         if ($oLabelSetObject == null) {
             $oLabelSetObject = new LabelSet();
@@ -498,8 +499,8 @@ class labels extends Survey_Common_Action
         $aLanguageArray = [];
         array_walk(
             $aLanguages,
-            function ($sLanguage) use (&$aLanguageArray, $aAllLanguages) {
-                $aLanguageArray[$sLanguage] =  $aAllLanguages[$sLanguage]['description'];
+            function($sLanguage) use (&$aLanguageArray, $aAllLanguages) {
+                $aLanguageArray[$sLanguage] = $aAllLanguages[$sLanguage]['description'];
             }
         );
 
@@ -507,7 +508,7 @@ class labels extends Survey_Common_Action
         $aLabelCompleteArray = [];
         array_walk(
             $aLabels, 
-            function ($oLabel) use (&$aLabelCompleteArray) {
+            function($oLabel) use (&$aLabelCompleteArray) {
                 $aLabelCompleteArray[] = array_merge($oLabel->attributes, $oLabel->labelL10ns);
             }
         );
@@ -573,7 +574,8 @@ class labels extends Survey_Common_Action
         }
     }
     
-    public function multieditor($lid = null) {
+    public function multieditor($lid = null)
+    {
 
         $aData = [];
 
@@ -612,7 +614,7 @@ class labels extends Survey_Common_Action
         if ($languages != null) {
             array_walk(
                 $languages,
-                function ($lng) use (&$oCriteria) {
+                function($lng) use (&$oCriteria) {
                     $oCriteria->compare('languages', $lng, true, 'OR');
                 }
             );
@@ -623,7 +625,7 @@ class labels extends Survey_Common_Action
         foreach ($aLabelSets as $oLabelSet) {
             $aLabelSet = $oLabelSet->attributes;
             $aLabelSet['labels'] = array_map(
-                function ($oLabel) {
+                function($oLabel) {
                     return array_merge($oLabel->attributes, $oLabel->labelL10ns);
                 },
                 $oLabelSet->labels
@@ -637,7 +639,8 @@ class labels extends Survey_Common_Action
         die();
     }
 
-    public function newLabelSetFromQuestionEditor() {
+    public function newLabelSetFromQuestionEditor()
+    {
         $aLabelSet = Yii::app()->request->getPost('labelSet', []);
         $oLabelSet = new LabelSet();
         $aLabels = $aLabelSet['labels'];
@@ -681,7 +684,8 @@ class labels extends Survey_Common_Action
 
     }
 
-    private function _getLabelI10NObject($labelId, $language) {
+    private function _getLabelI10NObject($labelId, $language)
+    {
         $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);
         if ($oLabelL10n == null) {
             $oLabelL10n = new LabelL10n();
@@ -691,7 +695,8 @@ class labels extends Survey_Common_Action
         return $oLabelL10n;
     }
 
-    private function _getLabelObject($labelId) {
+    private function _getLabelObject($labelId)
+    {
         $oLabel = Label::model()->findByPk($labelId);
         return $oLabel == null ? (new Label()) : $oLabel;
     }

@@ -20,8 +20,8 @@
 */
 function stripTagsFull($string)
 {
-    $string = flattenText($string,false,true); // stripo whole + html_entities
-    $string = str_replace('-oth', '', $string);// Why ?
+    $string = flattenText($string, false, true); // stripo whole + html_entities
+    $string = str_replace('-oth', '', $string); // Why ?
     //The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return $string;
@@ -301,7 +301,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
     if ($field['LStype'] == ':') {
         //Get the labels that could apply!
         if (is_null($qidattributes)) {
-            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"],$language);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"], $language);
         }
 
         if ($qidattributes['multiflexible_checkbox']) {
@@ -364,7 +364,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
 
     if (in_array($field['LStype'], array('N', 'K'))) {
         return array(
-            'size' => numericSize($field['sql_name'],true),
+            'size' => numericSize($field['sql_name'], true),
         );
     }
     if (in_array($field['LStype'], array('Q', 'S', 'T', 'U', ';', '*'))) {
@@ -589,7 +589,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                     $export_scale = $typeMap[$ftype]['Scale'];
                 }
                 //But allow override
-                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid,$sLanguage);
+                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid, $sLanguage);
                 if (isset($aQuestionAttribs['scale_export'])) {
                     $export_scale = $aQuestionAttribs['scale_export'];
                 }
@@ -709,17 +709,17 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     do {
         $result = array();
         // data need to be converted to model to be able to decrypt responses and tokens
-        if ($TableName == 'responses' || $TableName == 'tokens'){
+        if ($TableName == 'responses' || $TableName == 'tokens') {
             $criteria = new CDbCriteria;
             $criteria->limit = $iChunkSize;
             $criteria->offset = $iStart;
-            if ($TableName == 'responses'){
+            if ($TableName == 'responses') {
                 $results = Response::model(Yii::app()->session['LEMsid'])->findAll($criteria);
-            } elseif ($TableName == 'tokens'){
+            } elseif ($TableName == 'tokens') {
                 $results = Token::model(Yii::app()->session['LEMsid'])->findAll($criteria);
             }
             
-            foreach($results as $row){
+            foreach($results as $row) {
                 $result[] = $row->decrypt()->attributes;
             }
 
@@ -1176,11 +1176,11 @@ function quexml_get_lengthth($qid, $attribute, $default, $quexmllang = false)
                 ->from("{{question_attributes}}")
                 ->where(" qid=:qid   AND language=:language AND attribute = :attribute ", array(':qid'=>$qid, ':language'=>$quexmllang, ':attribute' => $attribute))
                 ->queryRow();
-      } else {
+        } else {
         $Row = Yii::app()->db->createCommand()
             ->select('value')
             ->from("{{question_attributes}}")
-            ->where(" qid=:qid     AND attribute = :attribute ", array(':qid'=>$qid,  ':attribute' => $attribute))
+            ->where(" qid=:qid     AND attribute = :attribute ", array(':qid'=>$qid, ':attribute' => $attribute))
             ->queryRow();
     }
 
@@ -1196,7 +1196,7 @@ function quexml_get_lengthth($qid, $attribute, $default, $quexmllang = false)
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap, $scale_id = false, $free = false, $other = false, $yesvalue = "1",$comment=false)
+function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap, $scale_id = false, $free = false, $other = false, $yesvalue = "1", $comment = false)
 {
     global $dom;
     global $quexmllang;
@@ -1242,7 +1242,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
                 $contingentQuestion->appendChild($format);
                 $contingentQuestion->setAttribute("varName", $varname."_".QueXMLCleanUp($Row['title']).'comment');
 
-                quexml_set_default_value($contingentQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row['title'] . "comment");
+                quexml_set_default_value($contingentQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, $Row['title']."comment");
 
                 $category->appendChild($contingentQuestion);
             }
@@ -1532,18 +1532,18 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
     // substitute token placeholders for real token values
     $RowQReplacements = array();
-    if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0){
+    if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0) {
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
-        if (!empty($response)){
+        if (!empty($response)) {
             $token = TokenDynamic::model($iSurveyID)->find(array('condition' => 'token = \'' . $response->token . '\''));
-            if (!empty($token)){
+            if (!empty($token)) {
                 $RowQReplacements['TOKEN'] = $token->token;
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
                 $RowQReplacements['TOKEN:FIRSTNAME'] = $token->firstname;
                 $RowQReplacements['TOKEN:LASTNAME'] = $token->lastname;
                 
                 $customAttributes = $token->getCustom_attributes();
-                foreach($customAttributes as $key => $val){
+                foreach($customAttributes as $key => $val) {
                     $RowQReplacements['TOKEN:' . strtoupper($key)] = $token->$key;
                 }
             }
@@ -1678,7 +1678,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 }
 
             } else if ($type == '1') {
-              //dual scale array need to split into two questions
+                //dual scale array need to split into two questions
                 $QROW = Yii::app()->db->createCommand()
                     ->select('value')
                     ->from("{{question_attributes}}")
@@ -1774,7 +1774,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y");
                         break;
                     case "P": //Multiple choice with comments checkbox + text
-                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y",true);
+                        quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y", true);
                         break;
                     case "Q": //MULTIPLE SHORT TEXT
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
@@ -2138,7 +2138,7 @@ function tokensExport($iSurveyID)
     if ($sEmailFiter != '') {
         // check if email is encrypted field
         $aAttributes = $oSurvey->getTokenEncryptionOptions();
-        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] = 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] = 'Y'){
+        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] = 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] = 'Y') {
             $sEmailFiter = LSActiveRecord::encryptSingle($sEmailFiter);
         }
 
@@ -2166,7 +2166,7 @@ function tokensExport($iSurveyID)
     }
     if ($iTokenStatus == 4 && $bIsNotAnonymous) {
         // create comma-separated string from attribute names to be used in this sql query
-        if (!empty($attrfieldnames)){
+        if (!empty($attrfieldnames)) {
             $sAttributes = ', ' . implode(', ', $attrfieldnames);
         } else {
             $sAttributes = '';
@@ -2175,7 +2175,7 @@ function tokensExport($iSurveyID)
         $oRecordSet->join("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
         $oRecordSet->andWhere("ls.submitdate IS NULL");
         $oRecordSet->andWhere("lt.completed='N'");
-        if ($bIsDateStamped){
+        if ($bIsDateStamped) {
             $oRecordSet->andWhere("ls.startdate IS NOT NULL");
             $oRecordSet->group('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil, ' . $sAttributes);
         }
@@ -2202,11 +2202,11 @@ function tokensExport($iSurveyID)
     $bresult = $oRecordSet->query();
     // fetching all records into array, values need to be decrypted 
     $bresultAll = $bresult->readAll();
-    foreach($bresultAll as $tokenKey => $tokenValue){
+    foreach($bresultAll as $tokenKey => $tokenValue) {
         // creating TokenDynamic object to be able to decrypt easier
         $token = TokenDynamic::model($iSurveyID);
         // populate TokenDynamic object with values
-        foreach($tokenValue as $key=>$value){
+        foreach($tokenValue as $key=>$value) {
             $token->$key = $value;
         }
         // decrypting
@@ -2240,7 +2240,7 @@ function tokensExport($iSurveyID)
     Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
     foreach ($bresultAll as $brow) {
-        if (Yii::app()->request->getPost('maskequations')){
+        if (Yii::app()->request->getPost('maskequations')) {
             $brow=array_map('MaskFormula', $brow);
         }    
         if (trim($brow['validfrom'] != '')) {
@@ -2343,7 +2343,7 @@ function stringSize($sColumn)
  * @param boolean $decimal db type as decimal(30,10)
  * @return string integersize.decimalsize
  **/
-function numericSize($sColumn,$decimal=false)
+function numericSize($sColumn, $decimal = false)
 {
     $sColumn = sanitize_paranoid_string($sColumn);
     // Find the sid
@@ -2362,11 +2362,11 @@ function numericSize($sColumn,$decimal=false)
     /* Get size of integer part */
     $maxIntegerLen = max([$integerMaxLen, $integerMinLen]);
     /* Find the max len of decimal part */
-    if($decimal) {
+    if ($decimal) {
         /* We have a DECIMAL(30,10) then can always take the last 10 digit and inverse */
         /* According to doc : mysql and mssql didn't need cast, only pgsql > 8.4 */
         $castedColumnString = $sColumn;
-        if(Yii::app()->db->driverName == 'pgsql') {
+        if (Yii::app()->db->driverName == 'pgsql') {
             $castedColumnString = "CAST($sColumn as text)";
         }
         $maxDecimal = Yii::app()->db
@@ -2378,22 +2378,22 @@ function numericSize($sColumn,$decimal=false)
         if(Yii::app()->db->driverName == 'pgsql') {
             $castedColumnString = "CAST($sColumn as FLOAT)";
         }
-	/* pgsql */
+    /* pgsql */
         if(Yii::app()->db->driverName == 'pgsql') {
             $maxDecimal = Yii::app()->db
             ->createCommand("SELECT MAX(CAST(nullif(split_part($castedColumnString, '.', 2),'') as integer))
 			    FROM {{survey_".$iSurveyId."}}")	
             ->queryScalar();
-	/* mssql */
-	} elseif (Yii::app()->db->driverName == 'mssql') {
-           $maxDecimal = Yii::app()->db
+    /* mssql */
+    } elseif (Yii::app()->db->driverName == 'mssql') {
+            $maxDecimal = Yii::app()->db
             ->createCommand("SELECT MAX(CASE 
 			     WHEN charindex('.',$castedColumnString) > 0 THEN 
                              CAST(SUBSTRING($castedColumnString ,charindex('.',$castedColumnString)+1 , Datalength($castedColumnString)-charindex('.',$castedColumnString) ) AS INT)
                              ELSE null END)
 			    FROM {{survey_".$iSurveyId."}}")	
             ->queryScalar();			
-	/* mysql */
+    /* mysql */
         } else {
             $maxDecimal = Yii::app()->db
             ->createCommand("SELECT MAX(CASE
@@ -2401,7 +2401,7 @@ function numericSize($sColumn,$decimal=false)
 			     ELSE NULL END)
 			     FROM {{survey_".$iSurveyId."}}")	
             ->queryScalar();
-    	}	
+        }	
 	
     }
     // With integer : Decimal return 00000000000 and float return 0
@@ -2423,7 +2423,8 @@ function numericSize($sColumn,$decimal=false)
  * @param int surveyid
  * @return string
  **/
-function tsvSurveyExport($surveyid){
+function tsvSurveyExport($surveyid)
+{
     // TODO: refactor and simplify this code
     // data loops located on first part should be replaced with one loop which writes all data in one big array
     // $tsv_output arrays should be created automatically, just need to create helper array with mapping column names between xml and tsv formats
@@ -2450,9 +2451,9 @@ function tsvSurveyExport($surveyid){
     $aSurveyLanguages = $survey->getAllLanguages();
 
     // Advanced question attributes : @todo get used question attribute by question in survey ?
-    $aQuestionAttributes=array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
+    $aQuestionAttributes = array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
     sort($aQuestionAttributes);
-    $fields=array_merge($aBaseFields,$aQuestionAttributes);
+    $fields = array_merge($aBaseFields, $aQuestionAttributes);
     // Reusing existing XML function to get data for exporting into TSV format
     // That way the same data source is used for both XML and TSV formats
     $xml = simplexml_load_string(surveyGetXMLData($surveyid), null, LIBXML_NOCDATA);
@@ -2460,13 +2461,15 @@ function tsvSurveyExport($surveyid){
 
     // creating an array where attributes are keys, to be reused for each row
     // flip keys and values, fields becoming keys, values are cleared with array_map function
-    $fields = array_map(function () { return ''; }, array_flip($fields));
+    $fields = array_map(function ()
+    {
+return ''; }, array_flip($fields));
     $out = fopen('php://output', 'w');
     fputcsv($out, array_map('MaskFormula',array_keys($fields)), chr(9));
 
     // DATA PREPARATION
     // survey settings
-    if (array_key_exists('surveys', $xmlData)){
+    if (array_key_exists('surveys', $xmlData)) {
         $surveys_data = $xmlData['surveys']['rows']['row'];
     } else {
         $surveys_data = array();
@@ -2474,9 +2477,9 @@ function tsvSurveyExport($surveyid){
 
     foreach ($surveys_data as $key => $value) {
 
-        if (is_array($value)){
+        if (is_array($value)) {
 
-            if (count($value) === 0){
+            if (count($value) === 0) {
                 $value = '';
             } else {
                 $value = $value;
@@ -2491,24 +2494,25 @@ function tsvSurveyExport($surveyid){
     }
 
     // language settings
-    if (array_key_exists('surveys_languagesettings', $xmlData)){
+    if (array_key_exists('surveys_languagesettings', $xmlData)) {
         $language_data = $xmlData['surveys_languagesettings']['rows']['row'];
-        if (!array_key_exists('0', $language_data)){
+        if (!array_key_exists('0', $language_data)) {
             $language_data = array($language_data);
         }
     } else {
         $language_data = array();
     }
 
-    if (!array_key_exists('surveyls_language', $language_data[0])){
+    if (!array_key_exists('surveyls_language', $language_data[0])) {
         $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
     }
 
-    foreach ($language_data as $key => $language) {  //echo $key.'---'; print_r($language); die;
+    foreach ($language_data as $key => $language) {
+//echo $key.'---'; print_r($language); die;
         $current_language = !empty($language['surveyls_language'])?$language['surveyls_language']:'';
         foreach ((array)$language as $key => $value) {
-            if (is_array($value)){
-                if (count($value) === 0){
+            if (is_array($value)) {
+                if (count($value) === 0) {
                     $value = '';
                 } else {
                     $value = $value[0];
@@ -2524,9 +2528,9 @@ function tsvSurveyExport($surveyid){
     }
 
     // attributes data
-    if (array_key_exists('question_attributes', $xmlData)){
+    if (array_key_exists('question_attributes', $xmlData)) {
         $attributes_data = $xmlData['question_attributes']['rows']['row'];
-        if (!array_key_exists('0', $attributes_data)){
+        if (!array_key_exists('0', $attributes_data)) {
             $attributes_data = array($attributes_data);
         }
     } else {
@@ -2538,9 +2542,9 @@ function tsvSurveyExport($surveyid){
     }
 
     // default values data
-    if (array_key_exists('defaultvalues', $xmlData)){
+    if (array_key_exists('defaultvalues', $xmlData)) {
         $defaultvalues_data = $xmlData['defaultvalues']['rows']['row'];
-        if (!array_key_exists('0', $defaultvalues_data)){
+        if (!array_key_exists('0', $defaultvalues_data)) {
             $defaultvalues_data = array($defaultvalues_data);
         }
     } else {
@@ -2548,7 +2552,7 @@ function tsvSurveyExport($surveyid){
     }
     $defaultvalues = array();
     foreach ($defaultvalues_data as $key => $defaultvalue) {
-        if ($defaultvalue['sqid'] > 0){
+        if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
         } else {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['qid']] = $defaultvalue['defaultvalue'];
@@ -2559,12 +2563,12 @@ function tsvSurveyExport($surveyid){
     $index_languages = 0;
     foreach ($aSurveyLanguages as $key => $language) {
         // groups data
-        if (array_key_exists('groups', $xmlData)){
-            foreach($xmlData['groups']['rows']['row'] as $group){
+        if (array_key_exists('groups', $xmlData)) {
+            foreach($xmlData['groups']['rows']['row'] as $group) {
                 $groups_data[$group['gid']] = $group;
             }
 
-            foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns){
+            foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns) {
                 $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
             }
         } else {
@@ -2572,20 +2576,20 @@ function tsvSurveyExport($surveyid){
         }
         $groups = array();
         foreach ($groups_data as $key => $group) {
-            if ($group['language'] === $language){
+            if ($group['language'] === $language) {
                 $groups[$language][$group['gid']] = $group;
             }
         }
 
         // questions data
-        if (array_key_exists('questions', $xmlData)){
-            foreach($xmlData['questions']['rows']['row'] as $question){
+        if (array_key_exists('questions', $xmlData)) {
+            foreach($xmlData['questions']['rows']['row'] as $question) {
                 $questions_data[$question['qid']] = $question;
             }
 
-            foreach($xmlData['question_l10ns']['rows']['row'] as $question_l10ns){
-                if (array_key_exists($question_l10ns['qid'], $questions_data)){
-                    if ($question_l10ns['language'] === $language){
+            foreach($xmlData['question_l10ns']['rows']['row'] as $question_l10ns) {
+                if (array_key_exists($question_l10ns['qid'], $questions_data)) {
+                    if ($question_l10ns['language'] === $language) {
                         $questions[$language][$questions_data[$question_l10ns['qid']]['gid']][$question_l10ns['qid']] = array_merge($question_l10ns, $questions_data[$question_l10ns['qid']]);
                     }
                 }
@@ -2596,20 +2600,20 @@ function tsvSurveyExport($surveyid){
         }
         $questions = array();
         foreach ($questions_data as $key => $question) {
-            if ($question['language'] === $language){
+            if ($question['language'] === $language) {
                 $questions[$language][$question['gid']][$question['qid']] = $question;
             }
         }
 
         // subquestions data
-        if (array_key_exists('subquestions', $xmlData)){
-            foreach($xmlData['subquestions']['rows']['row'] as $subquestion){
+        if (array_key_exists('subquestions', $xmlData)) {
+            foreach($xmlData['subquestions']['rows']['row'] as $subquestion) {
                 $subquestions_data[$subquestion['qid']] = $subquestion;
             }
 
-            foreach($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns){
-                if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)){
-                    if ($subquestion_l10ns['language'] === $language){
+            foreach($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns) {
+                if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)) {
+                    if ($subquestion_l10ns['language'] === $language) {
                         $subquestions[$language][$subquestions_data[$subquestion_l10ns['qid']]['parent_qid']][] = array_merge($subquestion_l10ns, $subquestions_data[$subquestion_l10ns['qid']]);
                     }
                 }
@@ -2620,20 +2624,20 @@ function tsvSurveyExport($surveyid){
         }
         $subquestions = array();
         foreach ($subquestions_data as $key => $subquestion) {
-            if ($subquestion['language'] === $language){
+            if ($subquestion['language'] === $language) {
                 $subquestions[$language][$subquestion['parent_qid']][] = $subquestion;
             }
         }
 
         // answers data
-        if (array_key_exists('answers', $xmlData)){
-            foreach($xmlData['answers']['rows']['row'] as $answer){
+        if (array_key_exists('answers', $xmlData)) {
+            foreach($xmlData['answers']['rows']['row'] as $answer) {
                 $answers_data[$answer['aid']] = $answer;
             }
 
-            foreach($xmlData['answer_l10ns']['rows']['row'] as $answer_l10ns){
-                if (array_key_exists($answer_l10ns['aid'], $answers_data)){
-                    if ($answer_l10ns['language'] === $language){
+            foreach($xmlData['answer_l10ns']['rows']['row'] as $answer_l10ns) {
+                if (array_key_exists($answer_l10ns['aid'], $answers_data)) {
+                    if ($answer_l10ns['language'] === $language) {
                         $answers[$language][$answers_data[$answer_l10ns['aid']]['qid']][] = array_merge($answer_l10ns, $answers_data[$answer_l10ns['aid']]);
                     }
                 }                
@@ -2643,15 +2647,15 @@ function tsvSurveyExport($surveyid){
         }
         $answers = array();
         foreach ($answers_data as $key => $answer) {
-            if ($answer['language'] === $language){
+            if ($answer['language'] === $language) {
                 $answers[$language][$answer['qid']][] = $answer;
             }
         }
 
         // assessments data
-        if (array_key_exists('assessments', $xmlData)){
+        if (array_key_exists('assessments', $xmlData)) {
             $assessments_data = $xmlData['assessments']['rows']['row'];
-            if (!array_key_exists('0', $assessments_data)){
+            if (!array_key_exists('0', $assessments_data)) {
                 $assessments_data = array($assessments_data);
             }
         } else {
@@ -2663,9 +2667,9 @@ function tsvSurveyExport($surveyid){
         }
 
         // quotas data
-        if (array_key_exists('quota', $xmlData)){
+        if (array_key_exists('quota', $xmlData)) {
             $quotas_data = $xmlData['quota']['rows']['row'];
-            if (!array_key_exists('0', $quotas_data)){
+            if (!array_key_exists('0', $quotas_data)) {
                 $quotas_data = array($quotas_data);
             }
         } else {
@@ -2677,9 +2681,9 @@ function tsvSurveyExport($surveyid){
         }
 
         // quota members data
-        if (array_key_exists('quota_members', $xmlData)){
+        if (array_key_exists('quota_members', $xmlData)) {
             $quota_members_data = $xmlData['quota_members']['rows']['row'];
-            if (!array_key_exists('0', $quota_members_data)){
+            if (!array_key_exists('0', $quota_members_data)) {
                 $quota_members_data = array($quota_members_data);
             }
         } else {
@@ -2691,9 +2695,9 @@ function tsvSurveyExport($surveyid){
         }
 
         // quota language settings data
-        if (array_key_exists('quota_languagesettings', $xmlData)){
+        if (array_key_exists('quota_languagesettings', $xmlData)) {
             $quota_ls_data = $xmlData['quota_languagesettings']['rows']['row'];
-            if (!array_key_exists('0', $quota_ls_data)){
+            if (!array_key_exists('0', $quota_ls_data)) {
                 $quota_ls_data = array($quota_ls_data);
             }
         } else {
@@ -2705,9 +2709,9 @@ function tsvSurveyExport($surveyid){
         }
 
         // conditions
-        if (array_key_exists('conditions', $xmlData)){
+        if (array_key_exists('conditions', $xmlData)) {
             $condition_data = $xmlData['conditions']['rows']['row'];
-            if (!array_key_exists('0', $condition_data)){
+            if (!array_key_exists('0', $condition_data)) {
                 $condition_data = array($condition_data);
             }
         } else {
@@ -2718,7 +2722,7 @@ function tsvSurveyExport($surveyid){
             $conditions[$condition['qid']][] = $condition;
         }
 
-        if (!empty($groups)){
+        if (!empty($groups)) {
             $groups[$language] = sortArrayByColumn($groups[$language], 'group_order');
             foreach ($groups[$language] as $gid => $group) {
                 $tsv_output = $fields;
@@ -2733,7 +2737,7 @@ function tsvSurveyExport($surveyid){
                 fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
 
                 // questions
-                if (array_key_exists($gid, $questions[$language])){
+                if (array_key_exists($gid, $questions[$language])) {
                     $questions[$language][$gid] = sortArrayByColumn($questions[$language][$gid], 'question_order');
                     foreach ($questions[$language][$gid] as $qid => $question) {
                         $tsv_output = $fields;
@@ -2749,16 +2753,16 @@ function tsvSurveyExport($surveyid){
                         $tsv_output['other'] = $question['other'];
                         $tsv_output['same_default'] = $question['same_default'];
 
-                        if (array_key_exists($language, $defaultvalues) && array_key_exists($qid, $defaultvalues[$language])){
+                        if (array_key_exists($language, $defaultvalues) && array_key_exists($qid, $defaultvalues[$language])) {
                             $tsv_output['default'] = $defaultvalues[$language][$qid];
                         }
 
                         // question attributes
-                        if ($index_languages == 0 && array_key_exists($question['qid'], $attributes)){
+                        if ($index_languages == 0 && array_key_exists($question['qid'], $attributes)) {
                             foreach ($attributes[$question['qid']] as $key => $attribute) {
-                                if (in_array($attribute['attribute'], array_keys($fields))){
-                                    if (is_array($attribute['value'])){
-                                        if (safecount($attribute['attribute']) > 0){
+                                if (in_array($attribute['attribute'], array_keys($fields))) {
+                                    if (is_array($attribute['value'])) {
+                                        if (safecount($attribute['attribute']) > 0) {
                                             $tsv_output[$attribute['attribute']] = implode(' ', $attribute['value']);
                                         }
                                     } else {
@@ -2770,7 +2774,7 @@ function tsvSurveyExport($surveyid){
                         fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
                                                 
                         // quota members
-                        if ($index_languages == 0 && !empty($quota_members[$qid])){
+                        if ($index_languages == 0 && !empty($quota_members[$qid])) {
                             foreach ($quota_members[$qid] as $key => $member) {
                                 $tsv_output = $fields;
                                 $tsv_output['id'] = $member['id'];
@@ -2782,7 +2786,7 @@ function tsvSurveyExport($surveyid){
                         }
 
                         // conditions
-                        if ($index_languages == 0 && !empty($conditions[$qid])){
+                        if ($index_languages == 0 && !empty($conditions[$qid])) {
                             foreach ($conditions[$qid] as $key => $condition) {
                                 $tsv_output = $fields;
                                 $tsv_output['id'] = $condition['cid'];
@@ -2797,7 +2801,7 @@ function tsvSurveyExport($surveyid){
                         }
 
                         //subquestions
-                        if (!empty($subquestions[$language][$qid])){
+                        if (!empty($subquestions[$language][$qid])) {
                             $subquestions[$language][$qid] = sortArrayByColumn($subquestions[$language][$qid], 'question_order');
                             foreach ($subquestions[$language][$qid] as $key => $subquestion) {
                                 $tsv_output = $fields;
@@ -2812,7 +2816,7 @@ function tsvSurveyExport($surveyid){
                                 $tsv_output['other'] = $subquestion['other'];
                                 $tsv_output['same_default'] = $subquestion['same_default'];
 
-                                if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])){
+                                if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])) {
                                     $tsv_output['default'] = $defaultvalues[$language][$subquestion['qid']];
                                 }
                                 fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
@@ -2820,7 +2824,7 @@ function tsvSurveyExport($surveyid){
                         }
 
                         // answers
-                        if (!empty($answers[$language][$qid])){
+                        if (!empty($answers[$language][$qid])) {
                             $answers[$language][$qid] = sortArrayByColumn($answers[$language][$qid], 'sortorder');
                             foreach ($answers[$language][$qid] as $key => $answer) {
                                 $tsv_output = $fields;
@@ -2831,7 +2835,7 @@ function tsvSurveyExport($surveyid){
                                 $tsv_output['text'] = $answer['answer'];
                                 $tsv_output['assessment_value'] = $answer['assessment_value'];
                                 $tsv_output['language'] = $answer['language'];
-                                fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
+                                fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
                             }
                         }
                     }
@@ -2842,7 +2846,7 @@ function tsvSurveyExport($surveyid){
     }
 
     // assessments
-    if (!empty($assessments)){
+    if (!empty($assessments)) {
         //$assessments[$gid] = sortArrayByColumn($assessments[$gid], 'other');
         foreach ($assessments as $key => $assessment) {
             $tsv_output = $fields;
@@ -2860,7 +2864,7 @@ function tsvSurveyExport($surveyid){
     }
 
     // quotas
-    if (!empty($quotas)){
+    if (!empty($quotas)) {
         $quotas = sortArrayByColumn($quotas, 'id');
         foreach ($quotas as $key => $quota) {
             $tsv_output = $fields;
@@ -2873,7 +2877,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['same_default'] = $quota['autoload_url'];
             fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
 
-                if (!empty($quota_ls[$quota['id']])){
+                if (!empty($quota_ls[$quota['id']])) {
                 foreach ($quota_ls[$quota['id']] as $key => $language) {
                     foreach ($language as $key => $ls) {
                         $tsv_output = $fields;
@@ -2885,7 +2889,7 @@ function tsvSurveyExport($surveyid){
                         $tsv_output['text'] = !empty($ls['quotals_url']) ? $ls['quotals_url'] : '';
                         $tsv_output['help'] = !empty($ls['quotals_urldescrip']) ? $ls['quotals_urldescrip'] : '';
                         $tsv_output['language'] = $ls['quotals_language'];
-                        fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
+                        fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
                     }
                 }
             }
@@ -2902,7 +2906,8 @@ function tsvSurveyExport($surveyid){
  * @param array $array
  * @param string $column_name
  **/
-function sortArrayByColumn($array, $column_name){
+function sortArrayByColumn($array, $column_name)
+{
     $keys = array_keys($array);
     array_multisort(
         array_column($array, $column_name), SORT_ASC, SORT_NUMERIC, $array, $keys
@@ -2917,32 +2922,33 @@ function sortArrayByColumn($array, $column_name){
 * @param array $aData Associative Data Array
 * @param int $sParentKey parent key
 */
-function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey='') {
+function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey='')
+{
     $bCloseElement = false;
     foreach($aData as $key => $value) {
-        if (!empty($value)){
+        if (!empty($value)) {
             if(is_array($value)) {
 
-                if (is_numeric($key)){
+                if (is_numeric($key)) {
                     $xml->startElement($sParentKey);
                     $bCloseElement = true;
-                } elseif (isAssociativeArray($value)){
+                } elseif (isAssociativeArray($value)) {
                     $xml->startElement($key);
                     $bCloseElement = true;
                 }
 
-                if (is_numeric($key)){
+                if (is_numeric($key)) {
                     writeXmlFromArray($xml, $value, $sParentKey);
                 } else {
                     writeXmlFromArray($xml, $value, $key);
                 }
 
-                if ($bCloseElement === true){
+                if ($bCloseElement === true) {
                     $xml->endElement();
                     $bCloseElement = false;
                 }
                 continue;
-            } elseif (is_numeric($key)){
+            } elseif (is_numeric($key)) {
                 $xml->writeElement($sParentKey, $value);
             } else {
                 $xml->writeElement($key, $value);
@@ -2959,7 +2965,8 @@ function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey='') {
 * @param bool $bInherit should theme configuration be inherited?
 * @param string $sElementName name for XML element
 */
-function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit = false, $sElementName = 'themes'){
+function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit = false, $sElementName = 'themes')
+{
 
     $aThemeData = array();
 
@@ -2970,9 +2977,9 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
 
             foreach ($oConfig as $key => $attribute) {
 
-                if (is_array($attribute)){
+                if (is_array($attribute)) {
                     $attribute = (array)$attribute;
-                } elseif (isJson($attribute)){
+                } elseif (isJson($attribute)) {
                     $attribute = (array)json_decode($attribute);
                 }
                 $aThemeData[$sElementName]['theme'][$iThemeKey][$key] = $attribute;
@@ -2981,7 +2988,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
 
     }
 
-    if ($oXml !== null && !empty($aThemeData)){
+    if ($oXml !== null && !empty($aThemeData)) {
 
         writeXmlFromArray($oXml, $aThemeData);
 
@@ -2990,7 +2997,8 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
 }
 
 
- function MaskFormula ( $sValue  ) {
+ function MaskFormula ( $sValue  )
+ {
      if (isset($sValue[0]) && $sValue[0]=='=') {
         $sValue="'".$sValue;    
      }

@@ -2,4 +2,6 @@
 
 
 
-class DataSetEquation extends QuestionBaseDataSet {}
+class DataSetEquation extends QuestionBaseDataSet
+{
+}

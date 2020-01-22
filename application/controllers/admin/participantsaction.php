@@ -85,7 +85,7 @@ class participantsaction extends Survey_Common_Action
 
         // Add "_view" to urls
         if (is_array($aViewUrls)) {
-            array_walk($aViewUrls, function (&$url) {
+            array_walk($aViewUrls, function(&$url) {
                 $url .= "_view";
             });
         } elseif (is_string($aViewUrls)) {
@@ -214,7 +214,7 @@ class participantsaction extends Survey_Common_Action
                 continue;
             }
 
-            $fields[] = 'a' . $value;
+            $fields[] = 'a'.$value;
             $attributeNames = $oAttributeName->participant_attribute_names_lang;
             $outputarray[0][] = (sizeof($attributeNames) > 0 && !empty($attributeNames[0]['attribute_name'])) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
         }
@@ -224,7 +224,7 @@ class participantsaction extends Survey_Common_Action
         foreach ($query as $field => $aData) {
             $outputarray[] = array_merge($fieldNeededKeys, array_intersect_key($aData, $fieldKeys));
         }
-        CPDBExport($outputarray, "central_" . time());
+        CPDBExport($outputarray, "central_".time());
     }
 
     /**
@@ -277,11 +277,11 @@ class participantsaction extends Survey_Common_Action
         // gets the count of participants, their attributes and other such details
         $aData = array(
             'totalrecords' => $iTotalRecords,
-            'owned' => Participant::model()->count('owner_uid = ' . $iUserID),
+            'owned' => Participant::model()->count('owner_uid = '.$iUserID),
             'shared' => Participant::model()->getParticipantsSharedCount($iUserID),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'attributecount' => ParticipantAttributeName::model()->count(),
-            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
+            'blacklisted' => Participant::model()->count('owner_uid = '.$iUserID.' AND blacklisted = \'Y\'')
         );
 
         $searchstring = Yii::app()->request->getPost('searchstring');
@@ -321,7 +321,8 @@ class participantsaction extends Survey_Common_Action
         $iUserId = App()->user->getId();
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iTotalRecords = Participant::model()->count();
-        } else { // if not only the participants on which he has right on (shared and owned)
+        } else {
+// if not only the participants on which he has right on (shared and owned)
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
@@ -376,7 +377,7 @@ class participantsaction extends Survey_Common_Action
                 'participantpanel' => [
                     'editSharedParticipants' => empty(ParticipantShare::model()->findAllByAttributes(
                         ['share_uid' =>  $iUserId],
-                        ['condition' => 'can_edit = \'0\' OR can_edit = \'\'',]
+                        ['condition' => 'can_edit = \'0\' OR can_edit = \'\'', ]
                     )),
                     'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = :userid', [':userid' => $iUserId]),
                     'isOwner' => isset($participantParam['owner_uid']) && ($participantParam['owner_uid'] === $iUserId) ? true : false
@@ -436,7 +437,7 @@ class participantsaction extends Survey_Common_Action
             $deletedParticipants = Participant::model()->deleteParticipantTokenAnswer($participantIds);
         } else {
             // Internal error
-            throw new InvalidArgumentException('Unknown select option: ' . $selectoption);
+            throw new InvalidArgumentException('Unknown select option: '.$selectoption);
         }
 
         if ($deletedParticipants === 0) {
@@ -530,14 +531,14 @@ class participantsaction extends Survey_Common_Action
         $model = Participant::model()->findByPk($participant_id);
 
         if (empty($model)) {
-            throw new \CException('Found no participant with id \'' . $participant_id . '\'.');
+            throw new \CException('Found no participant with id \''.$participant_id.'\'.');
         }
 
         $surveyModel = SurveyLink::model();
         $surveyModel->participant_id = $participant_id;
 
         // Get all users except myself
-        $users = User::model()->findAll('uid != ' . Yii::app()->user->id);
+        $users = User::model()->findAll('uid != '.Yii::app()->user->id);
 
         $aData = array(
             'model' => $model,
@@ -598,7 +599,7 @@ class participantsaction extends Survey_Common_Action
                 break;
             default:
                 // Internal error
-                assert(false, 'Unknown operation: ' . $operation);
+                assert(false, 'Unknown operation: '.$operation);
                 break;
         }
     }
@@ -747,7 +748,7 @@ class participantsaction extends Survey_Common_Action
 
                 $this->ajaxHelper::outputSuccess(gT("Participant successfully added"));
             } else if (is_string($result)) {
-                $this->ajaxHelper::outputError('Could not add new participant: ' . $result);
+                $this->ajaxHelper::outputError('Could not add new participant: '.$result);
             } else {
                 // "Impossible"
                 safeDie('Could not add participant.');
@@ -784,7 +785,7 @@ class participantsaction extends Survey_Common_Action
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
         }
         $sRandomFileName = randomChars(20);
-        $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
+        $sFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
@@ -829,7 +830,8 @@ class participantsaction extends Survey_Common_Action
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
                 $testvalue = preg_replace('/[^(\x20-\x7F)]*/', '', $value); //Remove invalid characters from string
-                if ($value != strip_tags($value)) { /* see ParticipantAttributeName->rules for defaultname */
+                if ($value != strip_tags($value)) {
+/* see ParticipantAttributeName->rules for defaultname */
                     continue;
                 }
                 if (!in_array(strtolower($testvalue), $regularfields)) {
@@ -850,21 +852,21 @@ class participantsaction extends Survey_Common_Action
             );
             App()->getClientScript()->registerPackage('qTip2');
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapCSV.js');
+            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'attributeMapCSV.js');
 
-            $sAttributeMapJS = "var copyUrl = '" . App()->createUrl("admin/participants/sa/uploadCSV") . "';\n"
-                . "var displayParticipants = '" . App()->createUrl("admin/participants/sa/displayParticipants") . "';\n"
-                . "var mapCSVcancelled = '" . App()->createUrl("admin/participants/sa/mapCSVcancelled") . "';\n"
-                . "var characterset = '" . sanitize_paranoid_string($_POST['characterset']) . "';\n"
-                . "var okBtn = '" . gT("OK") . "';\n"
-                . "var processed = '" . gT("Summary") . "';\n"
-                . "var summary = '" . gT("Upload summary") . "';\n"
-                . "var notPairedErrorTxt = '" . gT("You have to pair this field with an existing attribute.") . "';\n"
-                . "var onlyOnePairedErrorTxt = '" . gT("Only one CSV attribute is mapped with central attribute.") . "';\n"
-                . "var cannotAcceptErrorTxt='" . gT("This list cannot accept survey participant attributes.") . "';\n"
-                . "var separator = '" . sanitize_paranoid_string($_POST['separatorused']) . "';\n"
-                . "var thefilepath = '" . $sRandomFileName . "';\n"
-                . "var filterblankemails = '" . sanitize_paranoid_string($filterblankemails) . "';\n";
+            $sAttributeMapJS = "var copyUrl = '".App()->createUrl("admin/participants/sa/uploadCSV")."';\n"
+                . "var displayParticipants = '".App()->createUrl("admin/participants/sa/displayParticipants")."';\n"
+                . "var mapCSVcancelled = '".App()->createUrl("admin/participants/sa/mapCSVcancelled")."';\n"
+                . "var characterset = '".sanitize_paranoid_string($_POST['characterset'])."';\n"
+                . "var okBtn = '".gT("OK")."';\n"
+                . "var processed = '".gT("Summary")."';\n"
+                . "var summary = '".gT("Upload summary")."';\n"
+                . "var notPairedErrorTxt = '".gT("You have to pair this field with an existing attribute.")."';\n"
+                . "var onlyOnePairedErrorTxt = '".gT("Only one CSV attribute is mapped with central attribute.")."';\n"
+                . "var cannotAcceptErrorTxt='".gT("This list cannot accept survey participant attributes.")."';\n"
+                . "var separator = '".sanitize_paranoid_string($_POST['separatorused'])."';\n"
+                . "var thefilepath = '".$sRandomFileName."';\n"
+                . "var filterblankemails = '".sanitize_paranoid_string($filterblankemails)."';\n";
             App()->getClientScript()->registerScript("sAttributeMapJS", $sAttributeMapJS, CClientScript::POS_BEGIN);
             $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
@@ -882,7 +884,7 @@ class participantsaction extends Survey_Common_Action
         $mappedarray = Yii::app()->request->getPost('mappedarray', false);
         $filterblankemails = Yii::app()->request->getPost('filterbea');
         $overwrite = Yii::app()->request->getPost('overwrite');
-        $sFilePath = Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath'));
+        $sFilePath = Yii::app()->getConfig('tempdir').'/'.basename(Yii::app()->request->getPost('fullfilepath'));
         $errorinupload = "";
         $recordcount = 0;
         $mandatory = 0;
@@ -984,7 +986,7 @@ class participantsaction extends Survey_Common_Action
                 $line = str_getcsv($buffer, $separator, '"');
                 // Discard lines where the number of fields do not match
                 if (count($firstline) != count($line)) {
-                    $invalidformatlist[] = $recordcount . ',' . count($line) . ',' . count($firstline);
+                    $invalidformatlist[] = $recordcount.','.count($line).','.count($firstline);
                     $recordcount++;
                     continue;
                 }
@@ -1006,10 +1008,10 @@ class participantsaction extends Survey_Common_Action
                 //HACK - converting into SQL instead of doing an array search
                 if (in_array('participant_id', $firstline)) {
                     $dupreason = "participant_id";
-                    $aData = "participant_id = " . Yii::app()->db->quoteValue($writearray['participant_id']);
+                    $aData = "participant_id = ".Yii::app()->db->quoteValue($writearray['participant_id']);
                 } else {
                     $dupreason = "nameemail";
-                    $aData = "firstname = " . Yii::app()->db->quoteValue($writearray['firstname']) . " AND lastname = " . Yii::app()->db->quoteValue($writearray['lastname']) . " AND email = " . Yii::app()->db->quoteValue($writearray['email']) . " AND owner_uid = '" . Yii::app()->session['loginID'] . "'";
+                    $aData = "firstname = ".Yii::app()->db->quoteValue($writearray['firstname'])." AND lastname = ".Yii::app()->db->quoteValue($writearray['lastname'])." AND email = ".Yii::app()->db->quoteValue($writearray['email'])." AND owner_uid = '".Yii::app()->session['loginID']."'";
                 }
                 //End of HACK
                 $aData = Participant::model()->checkforDuplicate($aData, "participant_id");
@@ -1048,7 +1050,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
-                    $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                    $duplicatelist[] = $writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
                 }
 
                 //Checking the email address is in a valid format
@@ -1060,7 +1062,7 @@ class participantsaction extends Survey_Common_Action
                     $sEmailaddress = $aEmailAddresses[0];
                     if (!validateEmailAddress($sEmailaddress)) {
                         $invalidemail = true;
-                        $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
+                        $invalidemaillist[] = $line[0]." ".$line[1]." (".$line[2].")";
                     }
                 }
                 if (!$dupfound && !$invalidemail) {
@@ -1160,7 +1162,7 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('import');
 
-        unlink(Yii::app()->getConfig('tempdir') . '/' . basename(Yii::app()->request->getPost('fullfilepath')));
+        unlink(Yii::app()->getConfig('tempdir').'/'.basename(Yii::app()->request->getPost('fullfilepath')));
     }
 
     /**********************************************EXPORT PARTICIPANTS***********************************************/
@@ -1432,7 +1434,7 @@ class participantsaction extends Survey_Common_Action
                         $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
                     }
                     if (!empty($aUpdateData)) {
-                        $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='" . $participant->participant_id . "'");
+                        $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='".$participant->participant_id."'");
                     }
                 }
             } else {
@@ -1446,7 +1448,7 @@ class participantsaction extends Survey_Common_Action
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
-                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $attributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attributeId."' AND participant_id = '".$attribute->participant_id."'");
                     }
                 }
             }
@@ -1498,7 +1500,7 @@ class participantsaction extends Survey_Common_Action
         $allLangDetailArray = getLanguageData(false, Yii::app()->language);
         $aData['languagesForDropdown'][''] = gT("Select language to add");
         foreach ($allLangDetailArray as $key => $languageDetail) {
-            $aData['languagesForDropdown'][$key] = $languageDetail['description'] . " (" . ($languageDetail['nativedescription']) . ")";
+            $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")";
         }
 
         // Default visibility to false
@@ -1591,7 +1593,7 @@ class participantsaction extends Survey_Common_Action
                     $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                 }
                 if (!empty($aUpdateData)) {
-                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='" . $iAttributeId . "' AND participant_id = '" . $attribute->participant_id . "'");
+                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$iAttributeId."' AND participant_id = '".$attribute->participant_id."'");
                 }
             }
 
@@ -1749,14 +1751,14 @@ class participantsaction extends Survey_Common_Action
 
         /* Iterate through each attribute owned by this user */
         foreach ($records as $row) {
-            $outputs[$i] = array("", $row['participant_id'] . "_" . $row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], $row['value']);
+            $outputs[$i] = array("", $row['participant_id']."_".$row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], $row['value']);
             /* Collect allowed values for a DropDown attribute */
             if ($row['attribute_type'] == "DD") {
                 $attvalues = ParticipantAttributeName::model()->getAttributesValues($row['attribute_id']);
                 if (!empty($attvalues)) {
                     $attval = "";
                     foreach ($attvalues as $val) {
-                        $attval .= $val['value'] . ":" . $val['value'];
+                        $attval .= $val['value'].":".$val['value'];
                         $attval .= ";";
                     }
                     $attval = substr($attval, 0, -1);
@@ -1784,13 +1786,13 @@ class participantsaction extends Survey_Common_Action
         /* Go through the empty attributes and build an entry in the output for them */
         $outputs = [];
         foreach ($attributenotdone as $row) {
-            $outputs[$i] = array("", $iParticipantId . "_" . $row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], "");
+            $outputs[$i] = array("", $iParticipantId."_".$row['attribute_id'], $row['attribute_type'], $row['attribute_id'], $row['attribute_name'], "");
             if ($row['attribute_type'] == "DD") {
                 $attvalues = ParticipantAttributeName::model()->getAttributesValues($row['attribute_id']);
                 if (!empty($attvalues)) {
                     $attval = "";
                     foreach ($attvalues as $val) {
-                        $attval .= $val['value'] . ":" . $val['value'];
+                        $attval .= $val['value'].":".$val['value'];
                         $attval .= ";";
                     }
                     $attval = substr($attval, 0, -1);
@@ -1837,7 +1839,7 @@ class participantsaction extends Survey_Common_Action
             'attributevalues' => ParticipantAttributeName::model()->getAttributesValues($iAttributeId),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
         );
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'viewAttribute.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'viewAttribute.js');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
@@ -1887,7 +1889,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getPost('attribute_value_name_1') || Yii::app()->request->getPost('attribute_value_name_1') == "0") {
             $aDatavalues = [];
             $i = 1;
-            $attvaluename = 'attribute_value_name_' . $i;
+            $attvaluename = 'attribute_value_name_'.$i;
             while (array_key_exists($attvaluename, $_POST) && $_POST[$attvaluename] != "") {
                 if ($_POST[$attvaluename] != "") {
                     $aDatavalues[$i] = array(
@@ -1895,7 +1897,7 @@ class participantsaction extends Survey_Common_Action
                         'value' => Yii::app()->request->getPost($attvaluename)
                     );
                 }
-                $attvaluename = 'attribute_value_name_' . ++$i;
+                $attvaluename = 'attribute_value_name_'.++$i;
             };
             ParticipantAttributeName::model()->storeAttributeValues($aDatavalues);
         }
@@ -1919,7 +1921,7 @@ class participantsaction extends Survey_Common_Action
         $iAttributeId = Yii::app()->request->getQuery('aid');
         $iValueId = Yii::app()->request->getQuery('vid');
         ParticipantAttributeName::model()->delAttributeValues($iAttributeId, $iValueId);
-        Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
+        Yii::app()->getController()->redirect(array('/admin/participants/sa/viewAttribute/aid/'.$iAttributeId));
     }
 
     /**
@@ -2006,7 +2008,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 /** @var User $owner */
                 $owner = User::model()->findByPk($row['owner_uid']);
-                $aData->rows[$i]['id'] = $row['participant_id'] . "--" . $row['share_uid']; //This is the unique combination per record
+                $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
                 $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner->full_name, $row['date_added'], $row['can_edit']);
                 $i++;
             }
@@ -2083,7 +2085,7 @@ class participantsaction extends Survey_Common_Action
             if (!Permission::model()->hasSurveyPermission($row['survey_id'], 'tokens', 'read')) {
                 $surveylink = $row['survey_id'];
             } else {
-                $surveylink = '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/sa/browse/surveyid/{$row['survey_id']}") . '>' . $row['survey_id'] . '</a>';
+                $surveylink = '<a href='.Yii::app()->getController()->createUrl("/admin/tokens/sa/browse/surveyid/{$row['survey_id']}").'>'.$row['survey_id'].'</a>';
             }
             $aData->rows[$i]['cell'] = array($surveyname, $surveylink, $row['token_id'], $row['date_created'], $row['date_invited'], $row['date_completed']);
             $i++;
@@ -2114,10 +2116,10 @@ class participantsaction extends Survey_Common_Action
 
             foreach ($query as $key => $value) {
                 if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
+                    $participantid .= ",".$value['participant_id']; // combine the participant id's in an string
                 } else {
                     if (Participant::model()->is_owner($value['participant_id'])) {
-                        $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
+                        $participantid .= ",".$value['participant_id']; // combine the participant id's in an string
                     }
                 }
             }
@@ -2134,7 +2136,7 @@ class participantsaction extends Survey_Common_Action
             }
 
             foreach ($query as $key => $value) {
-                $participantid = $participantid . "," . $value['participant_id']; // combine the participant id's in an string
+                $participantid = $participantid.",".$value['participant_id']; // combine the participant id's in an string
             }
             echo $participantid; //echo the participant id's
         }
@@ -2171,13 +2173,13 @@ class participantsaction extends Survey_Common_Action
         $attid = ParticipantAttributeName::model()->getVisibleAttributes();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'survey', 'language', 'owner_uid');
         foreach ($attid as $key => $value) {
-            array_push($participantfields, 'a' . $value['attribute_id']);
+            array_push($participantfields, 'a'.$value['attribute_id']);
         }
         $sidx = Yii::app()->request->getPost('sidx');
         $sidx = in_array($sidx, $participantfields) ? $sidx : "lastname";
         $sord = Yii::app()->request->getPost('sord');
         $sord = ($sord == 'desc') ? 'desc' : 'asc';
-        $order = $sidx . " " . $sord;
+        $order = $sidx." ".$sord;
 
 
         $aData = new stdClass;
@@ -2451,11 +2453,11 @@ class participantsaction extends Survey_Common_Action
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
 
         echo "<p>";
-        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>&nbsp;");
+        printf(gT("%s participants have been copied to the central participants table"), "<span class='badge alert-success'>".$response['success']."</span>&nbsp;");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>" . $response['duplicate'] . "</span>&nbsp;");
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>".$response['duplicate']."</span>&nbsp;");
             echo "</p>";
         }
         if ($response['overwriteman'] == "true" || $response['overwriteauto']) {
@@ -2523,16 +2525,16 @@ class participantsaction extends Survey_Common_Action
 
         // TODO: This code can't be reached
         echo "<p>";
-        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge alert-success'>" . $response['success'] . "</span>");
+        printf(gT("%s participants have been copied to the survey survey participants table"), "<span class='badge alert-success'>".$response['success']."</span>");
         echo "</p>";
         if ($response['duplicate'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>" . $response['duplicate'] . "</span>");
+            printf(gT("%s entries were not copied because they already existed"), "<span class='badge alert-warning'>".$response['duplicate']."</span>");
             echo "</p>";
         }
         if ($response['blacklistskipped'] > 0) {
             echo "<p>";
-            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge alert-danger'>" . $response['blacklistskipped'] . "</span>");
+            printf(gT("%s entries were skipped because they are blacklisted"), "<span class='badge alert-danger'>".$response['blacklistskipped']."</span>");
             echo "</p>";
         }
         if ($response['overwriteauto'] == "true" || $response['overwriteman'] == "true") {
@@ -2557,7 +2559,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         Yii::app()->loadHelper('common');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMap.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'attributeMap.js');
         App()->getClientScript()->registerPackage('jqueryui');
 
         $redirect = Yii::app()->request->getPost('redirect');
@@ -2623,8 +2625,8 @@ class participantsaction extends Survey_Common_Action
     {
         Yii::app()->loadHelper('common');
         $oAdminTheme = AdminTheme::getInstance();
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapToken.js');
-        App()->getClientScript()->registerCssFile($oAdminTheme->sTemplateUrl . '/css/attributeMapToken.css');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'attributeMapToken.js');
+        App()->getClientScript()->registerCssFile($oAdminTheme->sTemplateUrl.'/css/attributeMapToken.css');
         App()->getClientScript()->registerPackage('jqueryui'); // jqueryui
         $iSurveyID = (int) Yii::app()->request->getQuery('sid');
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
@@ -2632,7 +2634,7 @@ class participantsaction extends Survey_Common_Action
 
         //string of participant IDs which should be added to CPDB, if not set to sessionvar those will not be added!!
         $participants = Yii::app()->request->getPost('itemsid');
-        if(isset($participants) && $participants!==null && $participants!==''){
+        if (isset($participants) && $participants !== null && $participants !== '') {
             unset(Yii::app()->session['participantid']);
             Yii::app()->session['participantid'] = $participants;
         }

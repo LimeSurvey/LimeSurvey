@@ -2,4 +2,6 @@
 
 
 
-class DataSetYesNoRadio extends QuestionBaseDataSet {}
+class DataSetYesNoRadio extends QuestionBaseDataSet
+{
+}

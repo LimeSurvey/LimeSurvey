@@ -40,7 +40,7 @@ class Authdb extends AuthPluginBase
         $oEvent = $this->getEvent();
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
 
-        if(empty($preCollectedUserArray)) {
+        if (empty($preCollectedUserArray)) {
             // Do nothing if the user to be added is not DB type
             if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
                 return;
@@ -162,7 +162,7 @@ class Authdb extends AuthPluginBase
         }
 
 
-        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256',$onepass) == $user->one_time_pw) {
+        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256', $onepass) == $user->one_time_pw) {
             $user->one_time_pw = '';
             $user->save();
             $this->setAuthSuccess($user);

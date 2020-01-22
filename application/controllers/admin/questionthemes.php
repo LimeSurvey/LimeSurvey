@@ -16,7 +16,7 @@ class questionthemes extends Survey_Common_Action
 
         /** @var QuestionTheme $oQuestionTheme */
         foreach ($aQuestionThemes as $oQuestionTheme) {
-            if ($oQuestionTheme->visible == 'Y'){
+            if ($oQuestionTheme->visible == 'Y') {
                 $oQuestionTheme->setAttribute('visible', 'N');
             } else {
                 $oQuestionTheme->setAttribute('visible', 'Y');

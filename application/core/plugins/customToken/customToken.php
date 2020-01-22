@@ -1,5 +1,6 @@
 <?php
-class customToken extends PluginBase {
+class customToken extends PluginBase
+{
 
     protected $storage = 'DbStorage';
     static protected $name = 'customToken';
@@ -28,7 +29,7 @@ class customToken extends PluginBase {
     public function generateCustomToken()
     {
         $event = $this->getEvent();
-        $iSurveyID=$event->get('surveyId');
+        $iSurveyID = $event->get('surveyId');
         $iTokenLength = $event->get('iTokenLength');
         $token = "";
         if ($this->get('customToken', 'Survey', $iSurveyID) == 0) {
@@ -43,8 +44,8 @@ class customToken extends PluginBase {
             // 2 = Without ambiguous characters including 'hard to manually enter'
             // https://github.com/LimeSurvey/LimeSurvey/commit/154e026fbe6e53037e46a8c30f2b837459235acc
             $token = str_replace(
-                array('~','_','0','O','1','l','I'),
-                array('a','z','7','P','8','k','K'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+                array('~', '_', '0', 'O', '1', 'l', 'I'),
+                array('a', 'z', '7', 'P', '8', 'k', 'K'), Yii::app()->securityManager->generateRandomString($iTokenLength));
         }
         else if ($this->get('customToken', 'Survey', $iSurveyID) == 3) {
             // 3 = CAPITALS ONLY
@@ -55,16 +56,16 @@ class customToken extends PluginBase {
                  * Use crypto_rand_secure($min, $max) defined in application/helpers/common_helper.php
                  */
                 $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                for($i=0;$i<$iTokenLength;$i++){
-                    $token .= $codeAlphabet[crypto_rand_secure(0,strlen($codeAlphabet))];
+                for ($i = 0; $i < $iTokenLength; $i++) {
+                    $token .= $codeAlphabet[crypto_rand_secure(0, strlen($codeAlphabet))];
                 }
             } else {
                 /**
                  * Secure enough, although not cryptographically secure
                  * https://www.php.net/manual/en/function.rand.php
                  */
-                for($i=0;$i<$iTokenLength;$i++){
-                    $token .= chr(64+rand(1, 26));
+                for ($i = 0; $i < $iTokenLength; $i++) {
+                    $token .= chr(64 + rand(1, 26));
                 }
             }
         }
@@ -72,16 +73,16 @@ class customToken extends PluginBase {
     }
 
     /**
-    * This event is fired by the administration panel to gather extra settings
-    * available for a survey. Example URL in LS 3.17:
-    * /index.php/admin/survey/sa/rendersidemenulink/subaction/plugins/surveyid/46159
-    */
+     * This event is fired by the administration panel to gather extra settings
+     * available for a survey. Example URL in LS 3.17:
+     * /index.php/admin/survey/sa/rendersidemenulink/subaction/plugins/surveyid/46159
+     */
     public function beforeSurveySettings()
     {
         $pluginsettings = $this->getPluginSettings(true);
 
         $event = $this->getEvent();
-        $iSurveyID=$event->get('iSurveyID');
+        $iSurveyID = $event->get('iSurveyID');
         $event->set("surveysettings.{$iSurveyID}", array(
             'name' => get_class($this),
             'settings' => array(
@@ -107,8 +108,7 @@ class customToken extends PluginBase {
     public function newSurveySettings()
     {
         $event = $this->getEvent();
-        foreach ($event->get('settings') as $name => $value)
-        {
+        foreach ($event->get('settings') as $name => $value) {
                 $this->set($name, $value, 'Survey', $event->get('survey'));
         }
     }

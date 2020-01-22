@@ -637,7 +637,7 @@ class pdf extends TCPDF
      */
     public function addTitle($sTitle, $sSubtitle = "")
     {
-      if (getGlobalSetting('pdfshowsurveytitle') == 'Y') {
+        if (getGlobalSetting('pdfshowsurveytitle') == 'Y') {
         if (!empty($sTitle)) {
             $this->ln(1);
             $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
@@ -653,7 +653,7 @@ class pdf extends TCPDF
             $this->ln(6);
             $this->SetFontSize($this->_ibaseAnswerFontSize);
         }
-      }
+        }
 
     }
 
@@ -690,7 +690,8 @@ class pdf extends TCPDF
         }
     }
 
-    public function Header() {
+    public function Header()
+    {
         if ($this->header_xobjid === false) {
             // start a new XObject Template
             $this->header_xobjid = $this->startTemplate($this->w, $this->tMargin);

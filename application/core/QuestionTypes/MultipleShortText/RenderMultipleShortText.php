@@ -30,7 +30,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
     private $numbersonly = false;
     private $prefix = '';
     private $suffix = '';
-    private $placeholder  = '';
+    private $placeholder = '';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -44,7 +44,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         
 
         if ($this->getQuestionAttribute('numbers_only') == 1) {
-            $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
+            $this->sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
             $this->extraclass   .= " numberonly";
             $this->sCoreClasses .= " number-list ";
         } 
@@ -61,7 +61,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         }
     }
 
-    public function setPrefixAndSuffix(){
+    public function setPrefixAndSuffix() {
         $sPrefix = $this->getQuestionAttribute('prefix', $this->sLanguage);
         if ($sPrefix != '') {
             $this->prefix = $sPrefix;
@@ -75,8 +75,8 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         }
     }
 
-    public function setPlaceholder(){
-        $sPlaceholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+    public function setPlaceholder() {
+        $sPlaceholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         if ($sPlaceholder != '') {
             $this->placeholder = $sPlaceholder;
         }
@@ -103,7 +103,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
 
             $sDisplayStyle = '';
 
-            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '');
             if ($this->numbersonly === true) {
                 $dispVal = str_replace('.', $this->sSeparator, $dispVal);
             }
@@ -165,7 +165,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         $answer = '';
 
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion(
+        $answer .= Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/answer',
             array(
                 'aRows' => $this->getRows(),

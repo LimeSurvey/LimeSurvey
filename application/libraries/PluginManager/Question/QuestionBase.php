@@ -112,7 +112,8 @@ namespace LimeSurvey\PluginManager;
                     'localized' => false,
                     'advanced' => false,
                     'label' => gT('Question group:'),
-                    'options' => function($that) {
+                    'options' => function($that)
+                    {
                         return $that->api->getGroupList($that->get('sid'));
                     }
                 ),

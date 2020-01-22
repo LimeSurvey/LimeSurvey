@@ -130,7 +130,7 @@ class ExtensionConfig
             return false;
         }
 
-        $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
+        $lsVersion = require \Yii::app()->getBasePath().'/config/version.php';
         foreach ($this->xml->compatibility->version as $version) {
             if (substr($lsVersion['versionnumber'], 0, 1) != substr($version, 0, 1)) {
                 // 2 is not compatible with 3, etc.
@@ -188,7 +188,7 @@ class ExtensionConfig
                 $fetchers[] = $service->createVersionFetcher($updaterXml);
             } catch (\Exception $ex) {
                 // Include extension name in error message.
-                throw new \Exception($this->getName() . ': ' . $ex->getMessage(), 0, $ex);
+                throw new \Exception($this->getName().': '.$ex->getMessage(), 0, $ex);
             }
         }
 

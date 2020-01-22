@@ -38,7 +38,7 @@ class VersionFetcherServiceLocator
         // Add RESTVersionFetcher, available by default.
         $this->addVersionFetcherType(
             'rest',
-            function (\SimpleXMLElement $updaterXml) {
+            function(\SimpleXMLElement $updaterXml) {
                 $vf = new RESTVersionFetcher($updaterXml);
                 return $vf;
             }
@@ -47,7 +47,7 @@ class VersionFetcherServiceLocator
         // TODO: Not implemented.
         $this->addVersionFetcherType(
             'git',
-            function (\SimpleXMLElement $updaterXml) {
+            function(\SimpleXMLElement $updaterXml) {
                 return new GitVersionFetcher($updaterXml);
             }
         );
@@ -66,10 +66,10 @@ class VersionFetcherServiceLocator
         $type = (string) $updaterXml->type;
 
         if (isset($this->versionFetcherCreators[$type])) {
-            $versionFetcher =  $this->versionFetcherCreators[$type]($updaterXml);
+            $versionFetcher = $this->versionFetcherCreators[$type]($updaterXml);
             return $versionFetcher;
         } else {
-            throw new \Exception('Did not find version fetcher of type ' . json_encode($type));
+            throw new \Exception('Did not find version fetcher of type '.json_encode($type));
         }
     }
 

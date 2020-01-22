@@ -67,8 +67,8 @@ class LSYii_Application extends CWebApplication
         $baseConfig = require(__DIR__.'/../config/config-defaults.php');
         $configdir = $baseConfig['configdir'];
 
-        if (file_exists( $configdir .  '/config.php')) {
-            $userConfigs = require(  $configdir .'/config.php');
+        if (file_exists($configdir.'/config.php')) {
+            $userConfigs = require($configdir.'/config.php');
             if (is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
@@ -82,7 +82,7 @@ class LSYii_Application extends CWebApplication
 
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
         if (array_key_exists('use_custom_twig_extensions',$baseConfig ) && $baseConfig ['use_custom_twig_extensions'] ){
-          $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
+            $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
         }
 
         /* Construct CWebApplication */
@@ -132,7 +132,8 @@ class LSYii_Application extends CWebApplication
      * Set the LimeSUrvey config array according to files and DB
      * @return void
      */
-    public function setConfigs() {
+    public function setConfigs()
+    {
 
         // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
 
@@ -141,24 +142,24 @@ class LSYii_Application extends CWebApplication
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        $this->config = array_merge($this->config, $coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
-        if (file_exists( $configdir .  '/security.php')) {
-            $securityConfig = require(  $configdir .'/security.php');
+        if (file_exists($configdir.'/security.php')) {
+            $securityConfig = require($configdir.'/security.php');
             if (is_array($securityConfig)) {
                 $this->config = array_merge($this->config, $securityConfig);
             }
         }
-        if (file_exists( $configdir .  '/config.php')) {
-            $userConfigs = require(  $configdir .'/config.php');
+        if (file_exists($configdir.'/config.php')) {
+            $userConfigs = require($configdir.'/config.php');
             if (is_array($userConfigs['config'])) {
                 $this->config = array_merge($this->config, $userConfigs['config']);
             }
         }
 
-        if(!file_exists(__DIR__.'/../config/config.php')) {
+        if (!file_exists(__DIR__.'/../config/config.php')) {
             /* Set up not done : then no other part to update */
             return;
         }
@@ -175,24 +176,24 @@ class LSYii_Application extends CWebApplication
         /* Check DB : let throw error if DB is broken issue #14875 */
         $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
         /* No table settings_global : not installable or updatable */
-        if(empty($settingsTableExist)) {
+        if (empty($settingsTableExist)) {
             /* settings_global was created before 1.80 : not updatable version or not installed (but table exist) */
-            Yii::log("LimeSurvey table settings_global not found in database",'error');
+            Yii::log("LimeSurvey table settings_global not found in database", 'error');
             throw new CDbException("LimeSurvey table settings_global not found in database");
         }
         $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
         $this->config = array_merge($this->config, $dbConfig);
         /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
-        if(!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
+        if (!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
             $this->dbVersion = $dbConfig['DBVersion'];
         }
         /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
             Yii::getVersion().
-            $this->getConfig('assetsversionnumber',0).
-            $this->getConfig('versionnumber',0).
-            $this->getConfig('dbversionnumber',0).
-            $this->getConfig('customassetversionnumber',1)
+            $this->getConfig('assetsversionnumber', 0).
+            $this->getConfig('versionnumber', 0).
+            $this->getConfig('dbversionnumber', 0).
+            $this->getConfig('customassetversionnumber', 1)
         );
 
 }
@@ -383,19 +384,19 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        if(!Yii::app() instanceof CWebApplication) {
+        if (!Yii::app() instanceof CWebApplication) {
             /* Don't update for CLI */
             return;
         }
-        if(defined('PHP_ENV') && PHP_ENV == 'test') {
+        if (defined('PHP_ENV') && PHP_ENV == 'test') {
             // If run from phpunit, die with exception message.
             die($event->exception->getMessage());
         }
-        if(!$this->dbVersion) {
+        if (!$this->dbVersion) {
             /* Not installed or DB broken or to old */
             return;
         }
-        if($this->dbVersion < 200) {
+        if ($this->dbVersion < 200) {
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
@@ -422,25 +423,25 @@ class LSYii_Application extends CWebApplication
      * Throw Exception
      * @return boolean
      */
-    public function is_file($filePath,$baseDir = null,$throwException = null)
+    public function is_file($filePath, $baseDir = null, $throwException = null)
     {
-        if(is_null($baseDir)) {
+        if (is_null($baseDir)) {
             $baseDir = $this->getConfig('uploaddir');
         }
-        if(is_null($throwException)) {
+        if (is_null($throwException)) {
             $throwException = boolval($this->getConfig('debug'));
         }
         $realFilePath = realpath($filePath);
-        if(!is_file($realFilePath)) {
+        if (!is_file($realFilePath)) {
             /* Not existing file */
             Yii::log("Try to read invalid file ".$filePath, 'warning', 'application.security.files.is_file');
             return false;
         }
-        if(substr($realFilePath, 0, strlen($baseDir)) !== $baseDir) {
+        if (substr($realFilePath, 0, strlen($baseDir)) !== $baseDir) {
             /* Security issue */
             Yii::log("Disable access to ".$realFilePath." directory", 'error', 'application.security.files.is_file');
-            if($throwException) {
-                throw new CHttpException(403,"Disable for security reasons.");
+            if ($throwException) {
+                throw new CHttpException(403, "Disable for security reasons.");
             }
             return false;
         }
@@ -454,7 +455,7 @@ class LSYii_Application extends CWebApplication
      * @var string $sUsertwigextensionrootdir $baseConfig['usertwigextensionrootdir']
      * @var array $aApplicationConfig the application configuration
      */
-    public function getTwigCustomExtensionsConfig( $sUsertwigextensionrootdir, $aApplicationConfig )
+    public function getTwigCustomExtensionsConfig($sUsertwigextensionrootdir, $aApplicationConfig)
     {
 
         // First we look for each custom extension manifest.
@@ -470,16 +471,16 @@ class LSYii_Application extends CWebApplication
         }
 
         // Then we read each manifest and add their functions to Twig Component
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
 
         foreach ($CustomTwigExtensionsManifestFiles as $ctemFile) {
-            $sXMLConfigFile = file_get_contents(realpath($ctemFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sXMLConfigFile = file_get_contents(realpath($ctemFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
 
             // Get the functions.
             // TODO: get the tags, filters, etc
-            $aFunctions = (array)$oXMLConfig->xpath("//function");
-            $extensionClass = (string)$oXMLConfig->metadata->name;
+            $aFunctions = (array) $oXMLConfig->xpath("//function");
+            $extensionClass = (string) $oXMLConfig->metadata->name;
 
             if (!empty($aFunctions) && !empty($extensionClass)) {
 
@@ -490,15 +491,15 @@ class LSYii_Application extends CWebApplication
                 // Then we add the functions to the Twig Component and its sandbox
                 // See:  https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/application/config/internal.php#L233-#L398
                 foreach ($aFunctions as $function) {
-                    $functionNameInTwig = (string)$function['twig-name'];
-                    $functionNameInExt = (string)$function['extension-name'];
+                    $functionNameInTwig = (string) $function['twig-name'];
+                    $functionNameInExt = (string) $function['extension-name'];
                     $aApplicationConfig['components']['twigRenderer']['functions'][$functionNameInTwig] = $functionNameInExt;
                     $aApplicationConfig['components']['twigRenderer']['sandboxConfig']['functions'][] = $functionNameInTwig;
                 }
             }
         }
 
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
 
         return $aApplicationConfig;
     }

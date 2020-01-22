@@ -23,7 +23,7 @@ class RenderListComment extends QuestionBaseRenderer
     public $sCoreClass = "ls-answers ";
     
     public $checkconditionFunction = "checkconditions";
-    protected $maxoptionsize          = 35;
+    protected $maxoptionsize = 35;
         
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -122,8 +122,8 @@ class RenderListComment extends QuestionBaseRenderer
         }
 
         $fname2 = $this->sSGQA.'comment';
-        $tarows =  ($this->getAnswerCount() > 8 ? ($this->getAnswerCount() / 1.2) : 4);
-        $tarows =  ($tarows > 15) ? 15 : $tarows;
+        $tarows = ($this->getAnswerCount() > 8 ? ($this->getAnswerCount() / 1.2) : 4);
+        $tarows = ($tarows > 15) ? 15 : $tarows;
 
         $this->maxoptionsize = $this->maxoptionsize * 0.72;
 

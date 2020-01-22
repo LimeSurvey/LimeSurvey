@@ -290,7 +290,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
-    if(isset($thissurvey['sid']) && !empty($_SESSION['survey_'.$thissurvey['sid']])) {
+    if (isset($thissurvey['sid']) && !empty($_SESSION['survey_'.$thissurvey['sid']])) {
         $coreReplacements = getStandardsReplacementFields($thissurvey);
     }
 
@@ -413,9 +413,9 @@ function getStandardsReplacementFields($thissurvey)
         $_datestamp = '-';
     }
     $_assessment_current_total = '';
-    if (!empty($thissurvey['assessments']) && $thissurvey['assessments']=="Y") {
+    if (!empty($thissurvey['assessments']) && $thissurvey['assessments'] == "Y") {
         $assessmentdata = doAssessment($surveyid);
-        $_assessment_current_total = (isset($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("Unkown");
+        $_assessment_current_total = (isset($assessmentdata['datas']['total_score'])) ? $assessmentdata['datas']['total_score'] : gT("Unkown");
     }
 
     $oSurvey = Survey::model()->findByPk($surveyid);

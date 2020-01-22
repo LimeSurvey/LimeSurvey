@@ -49,7 +49,7 @@ class RenderLanguageSelector extends QuestionBaseRenderer
         }
 
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'name'=>$this->sSGQA,
             'basename'=>$this->sSGQA, 
             'checkconditionFunction'=>'checkconditions(this.value, this.name, this.type)',

@@ -134,7 +134,7 @@ class UploaderController extends SurveyController
             }
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
-            if($maxfilesize <= 0 ) {
+            if ($maxfilesize <= 0) {
                 $maxfilesize = getMaximumFileUploadSize() / 1024;
             }
             /* Start to check upload error */
@@ -144,8 +144,8 @@ class UploaderController extends SurveyController
                     "msg" => gT("Sorry, there was an error uploading your file.")
                 );
                 /* Show error code for user forcedSuperAdmin right */
-                if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
-                    $return['msg'] = sprintf(gT("Sorry, there was an error uploading your file, error code : %s."),$_FILES['uploadfile']['error']);
+                if (Permission::isForcedSuperAdmin(Permission::getUserId())) {
+                    $return['msg'] = sprintf(gT("Sorry, there was an error uploading your file, error code : %s."), $_FILES['uploadfile']['error']);
                 }
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -153,7 +153,7 @@ class UploaderController extends SurveyController
             }
             /* Upload error due file size */
             /* and check too $aAttributes['max_filesize'] */
-            if ($size > $maxfilesize || $_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2 ) {
+            if ($size > $maxfilesize || $_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2) {
                 $return = array(
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
@@ -185,23 +185,23 @@ class UploaderController extends SurveyController
             /* extension checked : check mimeType */
             $extByMimeType = LSFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null);
             $disableCheck = false;
-            if(is_null($extByMimeType)) {
+            if (is_null($extByMimeType)) {
                 /* Lack of finfo_open or mime_content_type ? But can be a not found extension too.*/
                 /* Check if can find mime type of favicon.ico , without extension */
                 /* Use CFileHelper because sure it work with included */
-                if(CFileHelper::getExtensionByMimeType(APPPATH."favicon.ico", null) != 'ico') {
+                if (CFileHelper::getExtensionByMimeType(APPPATH."favicon.ico", null) != 'ico') {
                     $disableCheck = true;
-                    Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.",\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
-                    if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+                    Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.", \CLogger::LEVEL_ERROR, 'application.controller.uploader.upload');
+                    if (YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId())) {
                         /* This is a security issue and a server issue : always show at forced super admin */
                         throw new CHttpException(500, "Unable to check mime type of files, please activate FileInfo on server.");
                     }
                 }
             }
-            if(!$disableCheck && empty($extByMimeType)) {
+            if (!$disableCheck && empty($extByMimeType)) {
                 // FileInfo is OK, but can not find the mime type of file …
-                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
-                Yii::log("Unable to extension for mime type ".$realMimeType,\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
+                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null, false);
+                Yii::log("Unable to extension for mime type ".$realMimeType, \CLogger::LEVEL_ERROR, 'application.controller.uploader.upload');
                 $return = array(
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, unable to check extension of this file type %s."), $realMimeType),
@@ -211,10 +211,10 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             if (!$disableCheck && !in_array($extByMimeType, $valid_extensions_array)) {
-                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
+                $realMimeType = LSFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null, false);
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType,$extByMimeType)
+                    "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType, $extByMimeType)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -273,8 +273,8 @@ class UploaderController extends SurveyController
                 "msg" => gT("An unknown error occured")
             );
             /* Add information for for user forcedSuperAdmin right */
-            if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
-                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."),$_FILES['uploadfile']['tmp_name'],$randfileloc);
+            if (Permission::isForcedSuperAdmin(Permission::getUserId())) {
+                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $_FILES['uploadfile']['tmp_name'], $randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);
@@ -320,7 +320,7 @@ class UploaderController extends SurveyController
         ";
 
         $sLangScriptVar = "
-            uploadLang = " . $sLangScript . ";";
+            uploadLang = " . $sLangScript.";";
 
         $oTemplate = Template::model()->getInstance('', $surveyid);
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
@@ -338,7 +338,7 @@ class UploaderController extends SurveyController
         $maxfiles = (int) Yii::app()->request->getParam('maxfiles');
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize'] = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
-        if($qidattributes['max_filesize'] <=0 ) {
+        if ($qidattributes['max_filesize'] <= 0) {
             $qidattributes['max_filesize'] = getMaximumFileUploadSize() / 1024;
         }
         $aData = [

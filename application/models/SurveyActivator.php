@@ -130,7 +130,7 @@ class SurveyActivator
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
                     if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
-                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)" ;
+                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)";
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
                     }
@@ -412,14 +412,15 @@ class SurveyActivator
      * Set the default_storage_engine for mysql DB
      * @param string $dbEngine
      */
-    private function setMySQLDefaultEngine($dbEngine) {
+    private function setMySQLDefaultEngine($dbEngine)
+    {
         /* empty dbEngine : out */
-        if(empty($dbEngine)) {
+        if (empty($dbEngine)) {
             return;
         }
         $db = Yii::app()->db;
         /* not DB : out */
-        if(empty($db)) {
+        if (empty($db)) {
             return;
         }
         /* not mysql : out */

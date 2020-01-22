@@ -300,7 +300,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('repeatheadings', $repeatheadingstemp);
 
         SettingGlobal::setSetting('maxemails', sanitize_int($maxemails));
-        $iSessionExpirationTime = (int) (Yii::app()->getRequest()->getPost('iSessionExpirationTime',7200));
+        $iSessionExpirationTime = (int) (Yii::app()->getRequest()->getPost('iSessionExpirationTime', 7200));
         if ($iSessionExpirationTime == 0) {
             $iSessionExpirationTime = 7200;
         }
@@ -326,7 +326,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
 
-        SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles')== '1' ? 'Y' : 'N');
+        SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles') == '1' ? 'Y' : 'N');
 
         $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60).' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
@@ -426,7 +426,7 @@ class GlobalSettings extends Survey_Common_Action
 
         $aData['oSurvey'] = $oSurvey;
 
-        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('admin/index'));
         }
 

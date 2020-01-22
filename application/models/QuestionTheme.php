@@ -262,12 +262,12 @@ class QuestionTheme extends LSActiveRecord
      */
     public function getManifestButtons()
     {
-        $sLoadLink = CHtml::form(array("/admin/themeoptions/sa/importmanifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
-            "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
+        $sLoadLink = CHtml::form(array("/admin/themeoptions/sa/importmanifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')).
+            "<input type='hidden' name='templatefolder' value='".$this->xml_path."'>
             <input type='hidden' name='theme' value='questiontheme'>
-            <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
+            <button id='template_options_link_" . $this->name."'class='btn btn-default btn-block'>
             <span class='fa fa-download text-warning'></span>
-            " . gT('Install') . "
+            " . gT('Install')."
             </button>
             </form>";
 
@@ -333,7 +333,7 @@ class QuestionTheme extends LSActiveRecord
         if (!empty($aThemes['available_themes'])) {
             if (!empty($questionsInDB)) {
                 foreach ($questionsInDB as $questionInDB) {
-                    if (array_key_exists($questionKey = $questionInDB->name . '_' . $questionInDB->question_type, $aThemes['available_themes'])) {
+                    if (array_key_exists($questionKey = $questionInDB->name.'_'.$questionInDB->question_type, $aThemes['available_themes'])) {
                         unset($aThemes['available_themes'][$questionKey]);
                     }
                 }
@@ -370,7 +370,7 @@ class QuestionTheme extends LSActiveRecord
                 foreach ($questionConfigFilePaths as $questionConfigFilePath) {
                     try {
                         $questionMetaData = self::getQuestionMetaData($questionConfigFilePath);
-                        $questionsMetaData[$questionMetaData['name'] . '_' . $questionMetaData['questionType']] = $questionMetaData;
+                        $questionsMetaData[$questionMetaData['name'].'_'.$questionMetaData['questionType']] = $questionMetaData;
                     } catch (Exception $e) {
                         array_push($aBrokenQuestionThemes, [
                             'path'    => $questionConfigFilePath,
@@ -404,8 +404,8 @@ class QuestionTheme extends LSActiveRecord
 
         $pathToXML = str_replace('\\', '/', $pathToXML);
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $pathToXML . DIRECTORY_SEPARATOR . 'config.xml';
-        $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $sQuestionConfigFilePath = App()->getConfig('rootdir').DIRECTORY_SEPARATOR.$pathToXML.DIRECTORY_SEPARATOR.'config.xml';
+        $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
 
         if (!$sQuestionConfigFile) {
@@ -446,7 +446,7 @@ class QuestionTheme extends LSActiveRecord
         // get custom previewimage if defined
         if (!empty($oQuestionConfig->files->preview->filename)) {
             $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
-            $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $previewFileName;
+            $questionMetaData['image_path'] = $publicurl.$pathToXML.'/assets/'.$previewFileName;
         }
 
         $questionMetaData['xml_path'] = $pathToXML;
@@ -463,7 +463,7 @@ class QuestionTheme extends LSActiveRecord
         // override MetaData depending on directory
         if (substr($pathToXML, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
             $questionMetaData['coreTheme'] = 1;
-            $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
+            $questionMetaData['image_path'] = App()->getConfig("imageurl").'/screenshots/'.self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
             $questionMetaData['coreTheme'] = 1;
@@ -474,8 +474,8 @@ class QuestionTheme extends LSActiveRecord
         }
 
         // get Default Image if undefined
-        if (empty($questionMetaData['image_path']) || !file_exists(App()->getConfig('rootdir') . $questionMetaData['image_path'])) {
-            $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
+        if (empty($questionMetaData['image_path']) || !file_exists(App()->getConfig('rootdir').$questionMetaData['image_path'])) {
+            $questionMetaData['image_path'] = App()->getConfig("imageurl").'/screenshots/'.self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
 
         libxml_disable_entity_loader($bOldEntityLoaderState);
@@ -646,7 +646,7 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $baseQuestion['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir').DIRECTORY_SEPARATOR.$baseQuestion['xml_path'].DIRECTORY_SEPARATOR.'config.xml'); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
@@ -670,7 +670,7 @@ class QuestionTheme extends LSActiveRecord
             $baseQuestion['image_path'] = str_replace(
                 '//',
                 '/',
-                App()->getConfig('publicurl') . $baseQuestion['image_path']
+                App()->getConfig('publicurl').$baseQuestion['image_path']
             );
             $baseQuestionsModified[] = $baseQuestion;
         }
@@ -682,7 +682,7 @@ class QuestionTheme extends LSActiveRecord
 
     public static function getQuestionThemeDirectories()
     {
-        $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
+        $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir').'/survey/questions/answer';
         $questionThemeDirectories['customCoreTheme'] = App()->getConfig('userquestionthemedir');
         $questionThemeDirectories['customUserTheme'] = App()->getConfig('userquestionthemerootdir');
 
@@ -741,7 +741,7 @@ class QuestionTheme extends LSActiveRecord
         } elseif ($sType == '|') {
             $preview_filename = 'PIPE.png';
         } elseif (!empty($sType)) {
-            $preview_filename = $sType . '.png';
+            $preview_filename = $sType.'.png';
         } else {
             $preview_filename = '.png';
         }
@@ -761,7 +761,7 @@ class QuestionTheme extends LSActiveRecord
     {
         // cache the value between function calls
         static $cacheMemo = [];
-        $cacheKey = $name . '_' . $type;
+        $cacheKey = $name.'_'.$type;
         if (isset($cacheMemo[$cacheKey])) {
             return $cacheMemo[$cacheKey];
         }
@@ -776,7 +776,7 @@ class QuestionTheme extends LSActiveRecord
         if (isset($questionTheme['xml_path'])) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
 
-            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir').DIRECTORY_SEPARATOR.$questionTheme['xml_path'].DIRECTORY_SEPARATOR.'config.xml'); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                 // TODO: Check json_last_error.
@@ -802,9 +802,9 @@ class QuestionTheme extends LSActiveRecord
     {
         $aQuestionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
         if (empty($aQuestionTheme)) {
-            throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
+            throw new \CException("The Database definition for Questiontype: ".$type." is missing");
         }
-        $configXMLPath = App()->getConfig('rootdir') . '/' . $aQuestionTheme['xml_path'] . '/config.xml';
+        $configXMLPath = App()->getConfig('rootdir').'/'.$aQuestionTheme['xml_path'].'/config.xml';
 
         return $configXMLPath;
 
@@ -821,13 +821,13 @@ class QuestionTheme extends LSActiveRecord
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
-        $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $sQuestionConfigFilePath = App()->getConfig('rootdir').DIRECTORY_SEPARATOR.$sXMLDirectoryPath.DIRECTORY_SEPARATOR.'config.xml';
+        $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         libxml_disable_entity_loader($bOldEntityLoaderState);
 
         if (!$sQuestionConfigFile) {
             return $aSuccess = [
-                'message' => gT('No Configuration could be found for ' . $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml'),
+                'message' => gT('No Configuration could be found for '.$sXMLDirectoryPath.DIRECTORY_SEPARATOR.'config.xml'),
                 'success' => false
             ];
         }
@@ -840,7 +840,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
 
         $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1));
-        $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sThemeDirectoryName . '/config.xml');
+        $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir').'/application/views/survey/questions/answer/'.$sThemeDirectoryName.'/config.xml');
 
         // get type from core theme
         if (isset($oThemeConfig->metadata->type)) {
@@ -861,12 +861,12 @@ class QuestionTheme extends LSActiveRecord
         // check if core question theme can be found to fill in missing information
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
-                'message' => gT("Question Theme could not be converted to LimeSurvey 4 standard. Reason: No matching core Theme with the name: " . $sThemeDirectoryName . " could be found"),
+                'message' => gT("Question Theme could not be converted to LimeSurvey 4 standard. Reason: No matching core Theme with the name: ".$sThemeDirectoryName." could be found"),
                 'success' => false
             ];
         }
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        $sThemeCoreConfigFile = file_get_contents($sPathToCoreConfigFile);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $sThemeCoreConfigFile = file_get_contents($sPathToCoreConfigFile); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oThemeCoreConfig = simplexml_load_string($sThemeCoreConfigFile);
         libxml_disable_entity_loader($bOldEntityLoaderState);
 

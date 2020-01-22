@@ -69,7 +69,8 @@ class saved extends Survey_Common_Action
      * @param [type] $id
      * @return void
      */
-    public function resend_accesscode($surveyid, $id) {
+    public function resend_accesscode($surveyid, $id)
+    {
 
     }
 
@@ -82,37 +83,37 @@ class saved extends Survey_Common_Action
      */
     public function actionDelete($surveyid)
     {
-        if(!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        if(!Yii::app()->getRequest()->isPostRequest) {
+        if (!Yii::app()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
 
         $iScid = App()->getRequest()->getParam('scid');
-        $oSavedControl = SavedControl::model()->find('scid = :scid',array(':scid'=>$iScid));
-        if(empty($oSavedControl)) {
+        $oSavedControl = SavedControl::model()->find('scid = :scid', array(':scid'=>$iScid));
+        if (empty($oSavedControl)) {
             throw new CHttpException(401, gT("Saved response not found"));
         }
-        if($oSavedControl->delete()) {
+        if ($oSavedControl->delete()) {
             $oReponse = Response::model($surveyid)->findByPk($oSavedControl->srid);
-            if($oReponse) {
+            if ($oReponse) {
                 $oReponse->delete();
             }
         } else {
-            if(Yii::app()->getRequest()->isAjaxRequest) {
+            if (Yii::app()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError(gT('Unable to delete saved response.'));
                 Yii::app()->end();
             }
-            Yii::app()->setFlashMessage(gT('Unable to delete saved response.'),'danger');
+            Yii::app()->setFlashMessage(gT('Unable to delete saved response.'), 'danger');
             $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$surveyid}"));
         }
-        if(Yii::app()->getRequest()->isAjaxRequest) {
+        if (Yii::app()->getRequest()->isAjaxRequest) {
             ls\ajax\AjaxHelper::outputSuccess(gT('Saved response deleted.'));
             Yii::app()->end();
         }
-        Yii::app()->setFlashMessage(gT('Saved response deleted.'),'success');
+        Yii::app()->setFlashMessage(gT('Saved response deleted.'), 'success');
         $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$surveyid}"));
     }
 

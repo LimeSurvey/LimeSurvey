@@ -45,10 +45,10 @@ class SurveyDao
         $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
         $aAnswers = Answer::model()->with('answerL10ns', 'question')->findAll(array('condition'=>'question.sid='.$intId.' AND answerL10ns.language = \''.$lang.'\'', 'order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
-            if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id !='remotecontrol'){
-                $answer=stripTagsFull($aAnswer->answerL10ns[$lang]->answer);
+            if (!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1 && Yii::app()->controller->action->id != 'remotecontrol') {
+                $answer = stripTagsFull($aAnswer->answerL10ns[$lang]->answer);
             } else {
-                $answer=$aAnswer->answerL10ns[$lang]->answer;
+                $answer = $aAnswer->answerL10ns[$lang]->answer;
             }
             $survey->answers[$aAnswer->question->qid][$aAnswer->scale_id][$aAnswer->code] = $answer;
         }
@@ -119,7 +119,7 @@ class SurveyDao
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
-        if ( empty($sResponsesId)) {
+        if (empty($sResponsesId)) {
             $aParams = array(
                 'min'=>$iMinimum,
                 'max'=>$iMaximum

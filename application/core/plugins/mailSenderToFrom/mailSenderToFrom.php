@@ -21,9 +21,9 @@ class mailSenderToFrom extends PluginBase
     
     public function init()
     {
-        $this->subscribe('beforeEmail','beforeEmail');
-        $this->subscribe('beforeSurveyEmail','beforeEmail');
-        $this->subscribe('beforeTokenEmail','beforeEmail');
+        $this->subscribe('beforeEmail', 'beforeEmail');
+        $this->subscribe('beforeSurveyEmail', 'beforeEmail');
+        $this->subscribe('beforeTokenEmail', 'beforeEmail');
     }
 
     /**
@@ -33,7 +33,7 @@ class mailSenderToFrom extends PluginBase
     public function beforeEmail()
     {
         $emailsmtpuser = Yii::app()->getConfig('emailsmtpuser');
-        if(empty($emailsmtpuser)) {
+        if (empty($emailsmtpuser)) {
             return;
         }
         $limeMailer = $this->getEvent()->get('mailer');
@@ -43,6 +43,6 @@ class mailSenderToFrom extends PluginBase
         $updateDisable = $this->getEvent()->get('updateDisable');
         $updateDisable['from'] = true;
         $updateDisable['bounce'] = true;
-        $this->getEvent()->set('updateDisable',$updateDisable);
+        $this->getEvent()->set('updateDisable', $updateDisable);
     }
 }

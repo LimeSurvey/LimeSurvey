@@ -19,7 +19,7 @@ class AdminController extends LSYii_Controller
     public $aAdminModulesClasses = array();
     protected $user_id = 0;
     protected $aOverridenCoreActions = array(); // Contains the list of controller's actions overriden by custom modules
-    protected $currentModuleAction = '';        // Name of the current action overriden by a custom module
+    protected $currentModuleAction = ''; // Name of the current action overriden by a custom module
 
     /**
      * Initialises this controller, does some basic checks and setups
@@ -49,7 +49,7 @@ class AdminController extends LSYii_Controller
         // This line is needed for template editor to work
         $oAdminTheme = AdminTheme::getInstance();
 
-        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
+        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
     }
 
     /**
@@ -172,15 +172,15 @@ class AdminController extends LSYii_Controller
     {
         $aOverridenCoreActions = $this->getOverridenCoreAction();
         if (!empty($aOverridenCoreActions)){
-          if (!empty($aOverridenCoreActions[$action])){
-              $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
+            if (!empty($aOverridenCoreActions[$action])){
+                $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
 
-              // Since module's class has the same name has core class, we need to load the core and module classes with namespace
-              Yii::import('application\\controllers\\admin\\'.$action, true);
-              $sActionModuleClass = 'lsadminmodules\\'.$action.'\controller\\'.$action;
-              Yii::import($sActionModuleClass, true);
-          }
-       }
+                // Since module's class has the same name has core class, we need to load the core and module classes with namespace
+                Yii::import('application\\controllers\\admin\\'.$action, true);
+                $sActionModuleClass = 'lsadminmodules\\'.$action.'\controller\\'.$action;
+                Yii::import($sActionModuleClass, true);
+            }
+        }
     }
 
 
@@ -199,28 +199,28 @@ class AdminController extends LSYii_Controller
      * @see processOutput
      * @see render
      */
-     public function renderPartial($view,$data=null,$return=false,$processOutput=false)
-     {
+        public function renderPartial($view,$data=null,$return=false,$processOutput=false)
+        {
         if (!empty($this->currentModuleAction) ){
-          // Standard: the views are stored in a folder that has the same name as the controler file.
-          // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easely extend any LS Core controller/action/view.
-          $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
-          $sAction = (empty($sParsedView[1]))?'':$sParsedView[1];
+            // Standard: the views are stored in a folder that has the same name as the controler file.
+            // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easely extend any LS Core controller/action/view.
+            $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
+            $sAction = (empty($sParsedView[1]))?'':$sParsedView[1];
 
-          // We allow a module to override only the controller views.
-          if ( $sAction == $this->currentModuleAction ){
+            // We allow a module to override only the controller views.
+            if ( $sAction == $this->currentModuleAction ){
             // Convert the view path to module view alias .
             $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim ( str_replace(DIRECTORY_SEPARATOR, '.',$view), '.'), strlen($sAction)) ;
 
             if ( file_exists ( \Yii::getPathOfAlias($sModulePath) . '.php' )  ){
-              $view = $sModulePath;
+                $view = $sModulePath;
             }
 
-          }
+            }
         }
 
         return parent::renderPartial($view,$data,$return,$processOutput);
-     }
+        }
 
     /**
      * Routes all the actions to their respective places
@@ -242,11 +242,11 @@ class AdminController extends LSYii_Controller
 
         // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (Survey_Common_Action, renderPartial, etc)
         foreach ($aModuleActions as $sAction => $sActionClass) {
-          // Module override existing action
-          if (!empty($aActions[$sAction])){
+            // Module override existing action
+            if (!empty($aActions[$sAction])){
             $this->aOverridenCoreActions[ $sAction ]['core']   =   $aActions[$sAction];
             $this->aOverridenCoreActions[ $sAction ]['module'] =   $aModuleActions[$sAction];
-          }
+            }
         }
 
         $aActions = array_merge( $aActions, $aModuleActions);
@@ -262,16 +262,16 @@ class AdminController extends LSYii_Controller
      */
     public function getModulesActions()
     {
-      $aActions = $this->getAdminModulesActionClasses();
-      $aAdminModulesClasses = array();
+        $aActions = $this->getAdminModulesActionClasses();
+        $aAdminModulesClasses = array();
 
-      // lsadminmodules alias is defined in AdminController::init()
-      // Notice that the file and the directory name must be the same.
-      foreach ($aActions as $action => $class) {
-          $aActions[$action] = 'lsadminmodules\\'.$action.'\controller\\'.$action;
-      }
+        // lsadminmodules alias is defined in AdminController::init()
+        // Notice that the file and the directory name must be the same.
+        foreach ($aActions as $action => $class) {
+            $aActions[$action] = 'lsadminmodules\\'.$action.'\controller\\'.$action;
+        }
 
-      return $aActions;
+        return $aActions;
     }
 
     /**
@@ -280,7 +280,7 @@ class AdminController extends LSYii_Controller
      */
     protected function getOverridenCoreAction()
     {
-        if (empty($this->aOverridenCoreActions)){
+        if (empty($this->aOverridenCoreActions)) {
             $this->actions();
         }
 
@@ -353,8 +353,8 @@ class AdminController extends LSYii_Controller
     public function getAdminModulesActionClasses()
     {
 
-      // This function is called at least twice by page load. Once from AdminController, another one by Survey_Common_Action
-      if (empty($this->aAdminModulesClasses)){
+        // This function is called at least twice by page load. Once from AdminController, another one by Survey_Common_Action
+        if (empty($this->aAdminModulesClasses)){
         $aAdminModulesClasses = array();
         $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
         Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
@@ -366,9 +366,9 @@ class AdminController extends LSYii_Controller
             }
         }
         $this->aAdminModulesClasses = $aAdminModulesClasses;
-      }
+        }
 
-      return $this->aAdminModulesClasses;
+        return $this->aAdminModulesClasses;
     }
 
     /**

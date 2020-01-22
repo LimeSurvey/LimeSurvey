@@ -2081,7 +2081,7 @@ class quexmlpdf extends pdf
                         $ctmp = array();
                         foreach ($r->fixed->category as $c) {
                             $cat = array();
-                            $cat['text'] = current($c->label)!==false ? current($c->label) : '';
+                            $cat['text'] = current($c->label) !== false ? current($c->label) : '';
                             $cat['value'] = current($c->value);
                             if (isset($c->skipTo)) {
                                 $cat['skipto'] = current($c->skipTo);
@@ -3075,7 +3075,7 @@ class quexmlpdf extends pdf
             //Add the box to the layout scheme
             $this->addBox($this->GetX(), $this->GetY(), $this->GetX() + $this->textResponseWidth, $this->GetY() + $this->textResponseHeight);
 
-            $text = mb_substr($string,$j,1,"UTF-8");
+            $text = mb_substr($string, $j, 1, "UTF-8");
 
             //Draw the box
             $this->Cell($this->textResponseWidth, $this->textResponseHeight, $text, $border, 0, '', true, '', 0, false, 'T', 'C');
@@ -3138,7 +3138,7 @@ class quexmlpdf extends pdf
             if ($bgtype != 6) {
                 $string = false;
                 if (isset($s['defaultvalue'])) {
-                    $string = mb_substr($s['defaultvalue'], 0, $width,"UTF-8");
+                    $string = mb_substr($s['defaultvalue'], 0, $width, "UTF-8");
                 }
 
                 //Draw the cells
@@ -3808,11 +3808,11 @@ class quexmlpdf extends pdf
             $this->SetFooterMargin(0);
 
             $oTemplate = Template::model()->getInstance();
-            $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
+            $sLogoFileName = $oTemplate->filesPath.Yii::app()->getConfig('pdflogofile');
             if (file_exists($sLogoFileName)) {
                 $result = LSYii_ImageValidator::validateImage($sLogoFileName);
                 if (isset($result['check']) && $result['check'] == true) {
-                    $sLogo = "@" . file_get_contents($sLogoFileName);
+                    $sLogo = "@".file_get_contents($sLogoFileName);
                     $this->Image($sLogo, 15, 5, 0, 7);
                 }
             }

@@ -38,7 +38,7 @@ class SurveysGroups extends LSActiveRecord
             array('name, sortorder, created_by, title', 'required'),
             array('sortorder, owner_id, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
-            array('name', 'match', 'pattern'=> '/^[A-Za-z0-9_\.]+$/u','message'=> gT('Group name can contain only alphanumeric character, underscore or dot.')),
+            array('name', 'match', 'pattern'=> '/^[A-Za-z0-9_\.]+$/u', 'message'=> gT('Group name can contain only alphanumeric character, underscore or dot.')),
             array('title', 'length', 'max'=>100),
             array('description, created, modified', 'safe'),
             // The following rule is used by search().
@@ -203,7 +203,7 @@ class SurveysGroups extends LSActiveRecord
             $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
-            $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+            $criteriaPerm->compare('t.gsid', '1', false, 'OR'); // "default" survey group
             $criteria->mergeWith($criteriaPerm, 'AND');
         }
 
@@ -251,7 +251,7 @@ class SurveysGroups extends LSActiveRecord
     {
         $aParents = array();
         $oRSurveyGroup = $this;
-        while (!empty($oRSurveyGroup->parent_id)){
+        while (!empty($oRSurveyGroup->parent_id)) {
             $oRSurveyGroup =  SurveysGroups::model()->findByPk($oRSurveyGroup->parent_id);
             $aParents[] = ($bOnlyGsid)?$oRSurveyGroup->gsid:$oRSurveyGroup;
         }
@@ -289,7 +289,7 @@ class SurveysGroups extends LSActiveRecord
 
         if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
             $criteria->compare('t.owner_id', Yii::app()->user->id, false);
-            $criteria->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+            $criteria->compare('t.gsid', '1', false, 'OR'); // "default" survey group
         }
 
         $oSurveyGroups = self::model()->findAll($criteria);
@@ -309,7 +309,7 @@ class SurveysGroups extends LSActiveRecord
 
     public function getParentGroupOptions($gsid = null)
     {
-        if (!empty($gsid)){
+        if (!empty($gsid)) {
             $oSurveysGroups = SurveysGroups::model()->findAll('gsid != :gsid', array(':gsid' => $gsid));
         } else {
             $oSurveysGroups = SurveysGroups::model()->findAll();
@@ -324,7 +324,7 @@ class SurveysGroups extends LSActiveRecord
 
             $aParentsGsid = $oSurveysGroup->getAllParents(true);
 
-            if ( ! in_array( $this->gsid, $aParentsGsid  ) ) {
+            if (!in_array($this->gsid, $aParentsGsid)) {
                 $options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
             }
         }

@@ -150,7 +150,7 @@ JS
                     $messages[] = $updater->getVersionMessage($versions);
                 }
             } catch (\Throwable $ex) {
-                $errors[] = $updater->getExtensionName() . ': ' . $ex->getMessage();
+                $errors[] = $updater->getExtensionName().': '.$ex->getMessage();
             }
         }
 
@@ -179,7 +179,7 @@ JS
             $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
                 . gT('Errors happened during the update check. Please notify the extension authors for support.')
                 . '<ul>'
-                . '<li>' . implode('</li><li>', $errors) . '</li>';
+                . '<li>'.implode('</li><li>', $errors).'</li>';
         }
         UniqueNotification::broadcast(
             [
@@ -201,7 +201,7 @@ JS
             'url' => $this->getCheckUrl(),
             'notificationUpdateUrl' => Notification::getUpdateUrl()
         ];
-        echo $this->api->renderTwig(__DIR__ . '/views/index.twig', $data);
+        echo $this->api->renderTwig(__DIR__.'/views/index.twig', $data);
     }
 
     /**
@@ -224,7 +224,7 @@ JS
      */
     protected function registerMyScript()
     {
-        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets/js');
-        Yii::app()->clientScript->registerScriptFile($assetsUrl . '/updateCheck.js');
+        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__).'/assets/js');
+        Yii::app()->clientScript->registerScriptFile($assetsUrl.'/updateCheck.js');
     }
 }

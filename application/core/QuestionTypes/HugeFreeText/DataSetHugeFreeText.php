@@ -2,4 +2,6 @@
 
 
 
-class DataSetHugeFreeText extends QuestionBaseDataSet {}
+class DataSetHugeFreeText extends QuestionBaseDataSet
+{
+}

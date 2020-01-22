@@ -294,8 +294,8 @@ class ExpressionManager
         $newPackages = (array) $result->get('packages'); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
 
         $this->RegisterFunctions($newValidFunctions); // No validation : plugin dev can break all easily
-        foreach($newPackages as $name => $definition) {
-            $this->addPackageForExpressionManager($name,$definition);
+        foreach ($newPackages as $name => $definition) {
+            $this->addPackageForExpressionManager($name, $definition);
         }
         App()->getClientScript()->registerPackage('expression-extend');
     }
@@ -306,7 +306,8 @@ class ExpressionManager
      * @param array $definition @see https://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
      * @return void
      */
-    public function addPackageForExpressionManager($name,$definition) {
+    public function addPackageForExpressionManager($name,$definition)
+    {
         Yii::app()->clientScript->addPackage($name,$definition);
         array_push(Yii::app()->clientScript->packages['expression-extend']['depends'],$name);
     }
@@ -355,8 +356,8 @@ class ExpressionManager
         $arg1[0] = ($arg1[2] == "NUMBER" && strpos($arg1[0], ".")) ? rtrim(rtrim($arg1[0], "0"), ".") : $arg1[0];
         $arg2[0] = ($arg2[2] == "NUMBER" && strpos($arg2[0], ".")) ? rtrim(rtrim($arg2[0], "0"), ".") : $arg2[0];
         
-        $bNumericArg1 = $arg1[0]!== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
-        $bNumericArg2 = $arg2[0]!== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
+        $bNumericArg1 = $arg1[0] !== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
+        $bNumericArg2 = $arg2[0] !== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg2[0] || !$bNumericArg2;
 
@@ -424,15 +425,15 @@ class ExpressionManager
             case '<':
             case 'lt':
                 if ($bMismatchType) {
-                    if($isForcedString) {
+                    if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
                     $result = array(false, $token[1], 'NUMBER');
-                } elseif(!$bBothNumeric && $bBothString) {
-                    if($isForcedString) {
+                } elseif (!$bBothNumeric && $bBothString) {
+                    if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
-                    $result = array(strcmp($arg1[0],$arg2[0]) < 0, $token[1], 'NUMBER');
+                    $result = array(strcmp($arg1[0], $arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
@@ -440,7 +441,7 @@ class ExpressionManager
             case '<=';
             case 'le':
                 if ($bMismatchType) {
-                    if($isForcedString) {
+                    if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
                     $result = array(false, $token[1], 'NUMBER');
@@ -448,11 +449,11 @@ class ExpressionManager
                     // Need this explicit comparison in order to be in agreement with JavaScript
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(true, $token[1], 'NUMBER');
-                    } elseif(!$bBothNumeric && $bBothString) {
-                        if($isForcedString) {
+                    } elseif (!$bBothNumeric && $bBothString) {
+                        if ($isForcedString) {
                             $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                         }
-                        $result = array(strcmp($arg1[0],$arg2[0]) <= 0, $token[1], 'NUMBER');
+                        $result = array(strcmp($arg1[0], $arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] <= $arg2[0]), $token[1], 'NUMBER');
                     }
@@ -461,7 +462,7 @@ class ExpressionManager
             case '>':
             case 'gt':
                 if ($bMismatchType) {
-                    if($isForcedString) {
+                    if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
                     $result = array(false, $token[1], 'NUMBER');
@@ -469,11 +470,11 @@ class ExpressionManager
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false, $token[1], 'NUMBER');
-                    } elseif(!$bBothNumeric && $bBothString) {
-                        if($isForcedString) {
+                    } elseif (!$bBothNumeric && $bBothString) {
+                        if ($isForcedString) {
                             $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                         }
-                        $result = array(strcmp($arg1[0],$arg2[0]) > 0, $token[1], 'NUMBER');
+                        $result = array(strcmp($arg1[0], $arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] > $arg2[0]), $token[1], 'NUMBER');
                     }
@@ -482,15 +483,15 @@ class ExpressionManager
             case '>=';
             case 'ge':
                 if ($bMismatchType) {
-                    if($isForcedString) {
+                    if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
                     $result = array(false, $token[1], 'NUMBER');
-                } elseif(!$bBothNumeric && $bBothString) {
-                    if($isForcedString) {
+                } elseif (!$bBothNumeric && $bBothString) {
+                    if ($isForcedString) {
                         $this->RDP_AddWarning(new EMWarningInvalidComparison($token));
                     }
-                    $result = array(strcmp($arg1[0],$arg2[0]) >= 0, $token[1], 'NUMBER');
+                    $result = array(strcmp($arg1[0], $arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] >= $arg2[0]), $token[1], 'NUMBER');
                 }
@@ -1246,7 +1247,8 @@ class ExpressionManager
         $staticStringToParse = "";
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i]; // When do these need to be quoted?
-            if(!empty($staticStringToParse)) { /* Currently inside a static function */
+            if(!empty($staticStringToParse)) {
+/* Currently inside a static function */
 
                 switch ($token[2]) {
                     case 'LP':
@@ -1269,7 +1271,8 @@ class ExpressionManager
                         // This set whole string inside function as a static var : must document clearly.
                         $staticStringToParse .= $token[0];
                 }
-                if($bracket == 0) { // Last close bracket : get the static final function and reset
+                if($bracket == 0) {
+// Last close bracket : get the static final function and reset
                     //~ $staticString = LimeExpressionManager::ProcessStepString("{".$staticStringToParse."}",array(),3,true);
                     $staticString = $this->sProcessStringContainingExpressions("{".$staticStringToParse."}",0,3,1,-1,-1,true); // As static : no gseq,qseq etc …
                     $stringParts[] = $staticString;
@@ -1288,7 +1291,7 @@ class ExpressionManager
                         if ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'LP') {
                             // then word is a function name
                             $funcInfo = $this->RDP_ValidFunctions[$token[0]];
-                            if ($funcInfo[1] === null ) {
+                            if ($funcInfo[1] === null) {
                                 /* start a static function */
                                 $staticStringToParse = $token[0]; // The function name
                                 $bracket = 0; // Reset bracket (again)
@@ -1438,7 +1441,7 @@ class ExpressionManager
         }
         $warnings = $this->RDP_warnings;
         $warningsCount = count($warnings);
-        if(!empty($warnings)) {
+        if (!empty($warnings)) {
             usort($warnings, "cmpWarningTokens");
         }
         $stringParts = array();
@@ -1460,7 +1463,8 @@ class ExpressionManager
             $thisTokenHasError = false;
             $errIndex = 0;
             while ($errIndex < $errCount) {
-                if ($errs[$errIndex][1] == $token) { // Error related to this token
+                if ($errs[$errIndex][1] == $token) {
+// Error related to this token
                     $messages[] = $errs[$errIndex][0];
                     $thisTokenHasError = true;
                 }
@@ -1469,7 +1473,8 @@ class ExpressionManager
             $thisTokenHasWarning = false;
             $warningIndex = 0;
             while ($warningIndex < $warningsCount) {
-                if ($warnings[$warningIndex]->getToken() == $token) { // Error related to this token
+                if ($warnings[$warningIndex]->getToken() == $token) {
+// Error related to this token
                     $messages[] = $warnings[$warningIndex]->getMessage();
                     $thisTokenHasWarning = true;
                 }
@@ -1478,22 +1483,22 @@ class ExpressionManager
             if ($thisTokenHasError) {
                 $stringParts[] = "<span class='em-error' title=' ' >";
                 $bHaveError = true;
-            } elseif($thisTokenHasWarning) {
+            } elseif ($thisTokenHasWarning) {
                 $stringParts[] = "<span class='em-warning' title=' '>";
             }
             switch ($token[2]) {
                 case 'DQ_STRING':
                     /* Check $token[0] forced string */
-                    $stringParts[] = CHtml::tag('span',array(
-                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                    $stringParts[] = CHtml::tag('span', array(
+                        'title' => !empty($messages) ? implode('; ', $messages) : null,
                         'class'=> 'em-var-string'
-                    ),"\"".$token[0]."\"");
+                    ), "\"".$token[0]."\"");
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = CHtml::tag('span',array(
-                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                    $stringParts[] = CHtml::tag('span', array(
+                        'title' => !empty($messages) ? implode('; ', $messages) : null,
                         'class'=> 'em-var-string'
-                    ),"'".$token[0]."'");
+                    ), "'".$token[0]."'");
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1607,10 +1612,10 @@ class ExpressionManager
                     }
                     break;
                 case 'ASSIGN':
-                    $stringParts[] = CHtml::tag('span',array(
-                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                    $stringParts[] = CHtml::tag('span', array(
+                        'title' => !empty($messages) ? implode('; ', $messages) : null,
                         'class'=> 'em-assign em-warning'
-                    ),' '.$token[0].' ');
+                    ), ' '.$token[0].' ');
                     break;
                 case 'COMMA':
                     $stringParts[] = $token[0].' ';
@@ -1621,15 +1626,15 @@ class ExpressionManager
                     $stringParts[] = $token[0];
                     break;
                 case 'COMPARE':
-                    $stringParts[] = CHtml::tag('span',array(
-                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
+                    $stringParts[] = CHtml::tag('span', array(
+                        'title' => !empty($messages) ? implode('; ', $messages) : null,
                         'class'=> 'em-compare'
-                    ),' '.$token[0].' ');
+                    ), ' '.$token[0].' ');
                     break;
                 default:
-                    $stringParts[] = CHtml::tag('span',array(
-                        'title' => !empty( $messages) ? implode('; ', $messages) : null,
-                    ),' '.$token[0].' ');
+                    $stringParts[] = CHtml::tag('span', array(
+                        'title' => !empty($messages) ? implode('; ', $messages) : null,
+                    ), ' '.$token[0].' ');
                     break;
             }
             if ($thisTokenHasError || $thisTokenHasWarning) {
@@ -1644,7 +1649,7 @@ class ExpressionManager
         $sClass = 'em-expression';
         $sClass .= ($bHaveError) ? " em-haveerror" : "";
         $title = "";
-        if(!empty($globalErrs)) {
+        if (!empty($globalErrs)) {
             $sClass .= " em-error";
             $title = " title='".CHtml::encode(implode('; ', $globalErrs))."'";
         }
@@ -1769,25 +1774,25 @@ class ExpressionManager
      * @param boolean $static is a static attribute , unused currently since there are no way to create the EM js system
      * @return void
      */
-    public function addRegexpExtraAttributes($extraAttributes,$static=true)
+    public function addRegexpExtraAttributes($extraAttributes, $static = true)
     {
-        if(!$static) {
-            $this->aRDP_regexpVariableAttribute = array_merge($this->aRDP_regexpVariableAttribute,$extraAttributes);
+        if (!$static) {
+            $this->aRDP_regexpVariableAttribute = array_merge($this->aRDP_regexpVariableAttribute, $extraAttributes);
         } else {
-            $this->aRDP_regexpStaticAttribute = array_merge($this->aRDP_regexpStaticAttribute,$extraAttributes);
+            $this->aRDP_regexpStaticAttribute = array_merge($this->aRDP_regexpStaticAttribute, $extraAttributes);
         }
     }
 
     public function getRegexpValidAttributes()
     {
         /* Static var or cache it ? Must control when updated */
-        return implode("|",array_merge($this->aRDP_regexpVariableAttribute,$this->aRDP_regexpStaticAttribute));
+        return implode("|", array_merge($this->aRDP_regexpVariableAttribute, $this->aRDP_regexpStaticAttribute));
     }
 
     public function getRegexpStaticValidAttributes()
     {
         /* Static var or cache it ? Must control when updated */
-        return implode("|",$this->aRDP_regexpStaticAttribute);
+        return implode("|", $this->aRDP_regexpStaticAttribute);
     }
 
     /**
@@ -1896,9 +1901,9 @@ class ExpressionManager
             // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
             $prevResult = $result;
             $result = $this->sProcessStringContainingExpressionsHelper($result, $questionNum, $staticReplacement);
-            if($result === $prevResult) {
+            if ($result === $prevResult) {
                 // No update during process : can exit of iteration
-                if(!$prettyPrintIterationDone) {
+                if (!$prettyPrintIterationDone) {
                     $prettyPrint = $this->prettyPrintSource;
                 }
                 // No need errors : already done
@@ -1989,7 +1994,7 @@ class ExpressionManager
         $setInCache = true;
         /** @var string */
         $expandedVar = "";
-        $tokens = $this->Tokenize($src,1);
+        $tokens = $this->Tokenize($src, 1);
         foreach ($tokens as $token) {
             switch ($token[2]) {
                 case 'SGQA':
@@ -2023,7 +2028,7 @@ class ExpressionManager
                     $expandedVar .= $token[0];
             }
         }
-        if($setInCache) {
+        if ($setInCache) {
             $cache[$src] = $expandedVar;
         }
         return $expandedVar;
@@ -2125,7 +2130,7 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName,$params[0]);
+                                        $result = call_user_func($funcName, $params[0]);
                                         break;
                                 }
                             }
@@ -2141,7 +2146,7 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName,$params[0], $params[1]);
+                                        $result = call_user_func($funcName, $params[0], $params[1]);
                                         $result = $result ? $result : false;
                                         break;
                                 }
@@ -2149,7 +2154,7 @@ class ExpressionManager
                         break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func($funcName,$params[0], $params[1], $params[2]);
+                                $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
                             }
                             break;
                         case 4:
@@ -2158,7 +2163,7 @@ class ExpressionManager
                         default:
                             /* We can accept any fixed numbers of params with call_user_func_array */
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func_array($funcName,$params);
+                                $result = call_user_func_array($funcName, $params);
                             }
                             break;
                     }
@@ -2226,7 +2231,7 @@ class ExpressionManager
             return array();
         }
         // No replacement to do, preg_split get more time than strpos
-        if(strpos($src, "{") === false || $src==="{"  || $src==="}") { 
+        if(strpos($src, "{") === false || $src==="{"  || $src==="}") {
             return array (
                 0 => array ($src,0,'STRING')
             );
@@ -2426,7 +2431,7 @@ class ExpressionManager
      */
     private function RDP_Tokenize($sSource, $bOnEdit = false)
     {
-        $cacheKey = 'RDP_Tokenize_' . $sSource . json_encode($bOnEdit);
+        $cacheKey = 'RDP_Tokenize_'.$sSource.json_encode($bOnEdit);
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
             return $value;
@@ -2504,7 +2509,7 @@ class ExpressionManager
      * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
      * @return string : translated string
      */
-    public static function gT($string, $sEscapeMode  = 'html')
+    public static function gT($string, $sEscapeMode = 'html')
     {
         return gT($string, $sEscapeMode, Yii::app()->session['adminlang']);
     }
@@ -2863,7 +2868,7 @@ function exprmgr_list($args)
  * @param array $args
  * @return string
  */
-function exprmgr_listifop( $args )
+function exprmgr_listifop($args)
 {
     $result = "";
     $cmpAttr = array_shift($args);
@@ -2891,8 +2896,7 @@ function exprmgr_listifop( $args )
             case '<=': case 'le': $match = ($cmpVal <= $value); break;
             case '<' : case 'lt': $match = ($cmpVal < $value);  break;
             case '!=': case 'ne': $match = ($cmpVal != $value); break;
-            case 'RX': try { $match = preg_match( $value, $cmpVal ); }
-            catch ( Exception $ex ) { return "Invalid RegEx"; } break;
+            case 'RX': try { $match = preg_match( $value, $cmpVal ); } catch ( Exception $ex ) { return "Invalid RegEx"; } break;
         }
         
         if ( $match ) {

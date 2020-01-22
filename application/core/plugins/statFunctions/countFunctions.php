@@ -30,14 +30,15 @@ class countFunctions
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
         $column = $questionCodeHelper->getColumnByQCode($qCode);
         if (is_null($column)) {
-            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
+            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) {
+// update ???
                 return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
             }
             return "";
         }
-        $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
+        $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria;
-        $oCriteria->condition= "$sQuotedColumn IS NOT NULL";
+        $oCriteria->condition = "$sQuotedColumn IS NOT NULL";
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
@@ -60,15 +61,16 @@ class countFunctions
         $questionCodeHelper = new \statFunctions\questionCodeHelper($surveyId);
         $column = $questionCodeHelper->getColumnByQCode($qCode);
         if (is_null($column)) {
-            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
+            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) {
+// update ???
                 return sprintf(gT("Invalid question code %s"), CHtml::encode($qCode));
             }
             return "";
         }
 
-        $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
+        $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
         $oCriteria = new CDbCriteria;
-        $oCriteria->condition= "$sQuotedColumn IS NOT NULL and $sQuotedColumn <> ''";
+        $oCriteria->condition = "$sQuotedColumn IS NOT NULL and $sQuotedColumn <> ''";
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }

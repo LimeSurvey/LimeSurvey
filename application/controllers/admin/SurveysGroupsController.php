@@ -85,12 +85,12 @@ class SurveysGroupsController extends Survey_Common_Action
 
 
                 // prevent loop
-                if (!empty($_POST['SurveysGroups']['parent_id'])){
-                    $sgid = $_POST['SurveysGroups']['parent_id'] ;
+                if (!empty($_POST['SurveysGroups']['parent_id'])) {
+                    $sgid = $_POST['SurveysGroups']['parent_id'];
                     $ParentSurveyGroup = $this->loadModel($sgid);
                     $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
 
-                    if ( in_array( $model->gsid, $aParentsGsid  ) ) {
+                    if (in_array($model->gsid, $aParentsGsid)) {
                         Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
                         $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
                     }
@@ -110,7 +110,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
-        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
         }
 
@@ -152,7 +152,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $users = getUserList();
         $aData['users'] = array();
         $inheritOwner = empty($oSurvey['ownerLabel']) ? $oSurvey['owner_id'] : $oSurvey['ownerLabel'];
-        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
+        $aData['users']['-1'] = gT('Inherit').' ['.$inheritOwner.']';
         foreach ($users as $user) {
             $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
         }
@@ -161,7 +161,7 @@ class SurveysGroupsController extends Survey_Common_Action
 
         $aData['oSurvey'] = $oSurvey;
 
-        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
         }
 

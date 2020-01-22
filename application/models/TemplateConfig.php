@@ -285,10 +285,10 @@ class TemplateConfig extends CActiveRecord
 
         // Remove/Replace mother template files
         if (App()->getConfig('force_xmlsettings_for_survey_rendering') ||
-            ($this->template instanceof Template &&  $this->template->extends) ||
+            ($this->template instanceof Template && $this->template->extends) ||
             !empty($this->config->metadata->extends)) {
-              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+                $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+                $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
         // Then we add the direction files if they exist
@@ -419,14 +419,14 @@ class TemplateConfig extends CActiveRecord
      * @throws CException
      * @todo document me
      */
-    public function throwConsoleError($sCustomMessage=null)
+    public function throwConsoleError($sCustomMessage = null)
     {
         $sMessage = "\\n";
         $sMessage .= "\\n";
         $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
         $sMessage .= "\\n";
 
-        if ($sCustomMessage==null) {
+        if ($sCustomMessage == null) {
             $sMessage .= "\\n unknown error";
         } else {
             $sMessage .= $sCustomMessage;
@@ -698,7 +698,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcolrow']       = ' ';
         $aClassAndAttributes['class']['registerformcolrowb']      = '  ';
         $aClassAndAttributes['class']['registerformcolrowc']      = '  ';
-        $aClassAndAttributes['class']['registerformcoladdidtions']= ' register-form-column-additions ';
+        $aClassAndAttributes['class']['registerformcoladdidtions'] = ' register-form-column-additions ';
         $aClassAndAttributes['class']['registerformextras']       = '  ';
         $aClassAndAttributes['class']['registerformcaptcha']      = ' captcha-item ';
         $aClassAndAttributes['class']['registerformcolrowblabel'] = ' ';
@@ -731,7 +731,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['registerformcaptchalabel']  = ' for="loadsecurity"  ';
         $aClassAndAttributes['attr']['registerformcaptchainput']  = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
         $aClassAndAttributes['attr']['registermandatoryinfo']     = ' aria-hidden="true" ';
-        $aClassAndAttributes['attr']['registersavedivbutton']    = ' type="submit" id="register_button" name="register" value="register"';
+        $aClassAndAttributes['attr']['registersavedivbutton'] = ' type="submit" id="register_button" name="register" value="register"';
 
         $aClassAndAttributes['attr']['register']                  = $aClassAndAttributes['attr']['registerrow'] = $aClassAndAttributes['attr']['jumbotron'] = $aClassAndAttributes['attr']['registerrowjumbotrondiv'] = $aClassAndAttributes['attr']['registerulli'] = $aClassAndAttributes['class']['registerformcol'] = '';
         $aClassAndAttributes['attr']['registerformcolrow']        = $aClassAndAttributes['attr']['registerformcolrowb'] = $aClassAndAttributes['attr']['registerformcolrowbdiv'] = $aClassAndAttributes['class']['registerformcolrowc'] = $aClassAndAttributes['class']['registerformcolrowcdiv'] = $aClassAndAttributes['attr']['registerformextras'] = '';
@@ -1064,11 +1064,11 @@ class TemplateConfig extends CActiveRecord
 
             if ($oNewTemplateConfiguration->save()) {
                 // Find all surveys using this theme (if reinstalling) and create an entry on db for them
-                $aSurveysUsingThisTeme  =  Survey::model()->findAll(
+                $aSurveysUsingThisTeme = Survey::model()->findAll(
                     'template=:template', array(':template'=>$sTemplateName)
                 );
                 foreach ($aSurveysUsingThisTeme as $oSurvey) {
-                     TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
+                        TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
                 }
 
                 return true;
@@ -1234,9 +1234,9 @@ class TemplateConfig extends CActiveRecord
                 App()->clientScript->packages[$oRTemplate->sPackageName]["basePath"]
                 ) . DIRECTORY_SEPARATOR . $sFile;
 
-      }while(!file_exists($sFilePath));
+        }while(!file_exists($sFilePath));
 
-      return $oRTemplate;
+        return $oRTemplate;
     }
 
 

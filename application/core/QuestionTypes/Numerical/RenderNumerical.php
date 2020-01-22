@@ -41,11 +41,11 @@ class RenderNumerical extends QuestionBaseRenderer
             $answer .= $this->getTimeSettingRender();
         }
 
-        if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
-            $placeholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+        if (trim($this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
+            $placeholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
+        $answer .= Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'ia'=>$this->aFieldArray,
             'name'=>$this->sSGQA,
             'basename'=>$this->sSGQA, 

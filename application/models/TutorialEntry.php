@@ -63,7 +63,7 @@ class TutorialEntry extends LSActiveRecord
         );
     }
 
-    public function getColumns(){
+    public function getColumns() {
         return [
             [
                 'name' => 'teid',

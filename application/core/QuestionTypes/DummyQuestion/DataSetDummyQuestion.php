@@ -2,4 +2,6 @@
 
 
 
-class DataSetDummyQuestion extends QuestionBaseDataSet {}
+class DataSetDummyQuestion extends QuestionBaseDataSet
+{
+}
