@@ -1,8 +1,10 @@
+import filter from 'lodash/filter';
+
 export default {
     filesSelected: (state) => {
-        return LS.ld.filter(state.fileList, (file) => file.selected );
+        return filter(state.fileList, (file) => file.selected );
     },
     filesInTransit: (state) => {
-        return LS.ld.filter(state.fileList, (file) => file.inTransit );
+        return filter(state.fileList, (file) => file.inTransit );
     },
 };

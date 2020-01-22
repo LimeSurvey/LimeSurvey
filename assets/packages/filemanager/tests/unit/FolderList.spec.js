@@ -51,7 +51,7 @@ describe("it should switch loading", () => {
     });
 
     test("Should have rendered with a with of 4 columns", () => {
-        expect(folderListMount.html()).toContain('<div class="scoped-folder-list col-xs-4">');
+        expect(folderListMount.html()).toContain('<div class="scoped-folder-list col-md-4">');
     });
     
     test("Should emit to change the loading attribute to true", () => {

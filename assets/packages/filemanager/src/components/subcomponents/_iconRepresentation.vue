@@ -4,7 +4,7 @@
       <div
         v-if="!loading"
         class="ls-flex ls-flex-column scoped-file-tile"
-        v-for="file in $store.state.fileList"
+        v-for="file in files"
         :id="'iconRep-' + file.hash"
         :key="file.key"
         :class="fileClass(file)"

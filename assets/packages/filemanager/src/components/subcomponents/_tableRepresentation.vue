@@ -13,7 +13,7 @@
     <div
       v-if="!loading"
       class="ls-flex ls-flex-row row"
-      v-for="file in $store.state.fileList"
+      v-for="file in files"
       :key="file.key"
       :id="'file-row-'+file.hash"
       :class="fileClass(file)"

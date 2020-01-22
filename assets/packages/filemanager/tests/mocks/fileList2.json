@@ -7,7 +7,9 @@
         "path": "upload\/themes\/survey\/generalfiles\/thirdPicture.jpg",
         "size": 240987,
         "shortName": "thirdPicture.jpg",
-        "mod_time": "01.01.2019 13:37"
+        "mod_time": "01.01.2019 13:37",
+        "selected": false,
+        "inTransit": false
     },
     "fourthPicture.jpg": {
         "iconClass": "fa-picture-o",
@@ -17,6 +19,8 @@
         "path": "upload\/themes\/survey\/generalfiles\/fourthPicture.jpg",
         "size": 270593,
         "shortName": "fourthPicture.jpg",
-        "mod_time": "01.02.2019 13:37"
+        "mod_time": "01.02.2019 13:37",
+        "selected": false,
+        "inTransit": false
     }
 }

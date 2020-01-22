@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.14% </span>
+        <span class="strong">6.67% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/14</span>
+        <span class='fraction'>1/15</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.14% </span>
+        <span class="strong">6.67% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/14</span>
+        <span class='fraction'>1/15</span>
       </div>
     </div>
   </div>
@@ -121,7 +121,16 @@
 76
 77
 78
-79</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -143,11 +152,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -157,6 +161,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,6 +178,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -220,6 +238,9 @@ export default {
         };
     },
     methods: {
+        fileAdded(file) {
+            
+        },
         applyFolderAndData(file, xhr, formData){
 <span class="cstat-no" title="statement not covered" >            formData.append(LS.data.csrfTokenName, LS.data.csrfToken);</span>
 <span class="cstat-no" title="statement not covered" >            formData.append('folder', this.$store.state.currentFolder);</span>
@@ -234,7 +255,9 @@ export default {
 <span class="cstat-no" title="statement not covered" >            try {</span>
 <span class="cstat-no" title="statement not covered" >                const jsonResponse = JSON.parse(error.xhr.response);</span>
 <span class="cstat-no" title="statement not covered" >                errorMessage = jsonResponse.message;</span>
-            } catch(e) {}
+            } catch(e) {
+<span class="cstat-no" title="statement not covered" >                this.$log.error(error);</span>
+            }
 <span class="cstat-no" title="statement not covered" >            window.LS.notifyFader(</span>
                 errorMessage,
                 'well-lg bg-danger text-center'
@@ -251,6 +274,8 @@ export default {
     &lt;div class="panel panel-default ls-flex-column fill"&gt;
         &lt;div class="panel-heading"&gt;
             &lt;div class="pagetitle h3"&gt;{{'Upload a file' | translate}} &lt;/div&gt;
+            &lt;div&gt; &lt;b&gt;{{'Allowed file formats' | translate}}&lt;/b&gt;: &lt;/div&gt;
+            &lt;div&gt; {{'File formats' | translate}}. &lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="panel-body ls-flex-column grow-1 fill"&gt;
             &lt;vue-dropzone 
@@ -261,11 +286,13 @@ export default {
                 v-on:vdropzone-complete="onCompleteHandler"
                 :options="dropzoneOptions" 
                 :useCustomSlot="true"
+                :uploadMultiple="true"
                 class="FileUpload--dropzone"
             &gt;
                 &lt;div class="dropzone-custom-content"&gt;
                     &lt;h3&gt;{{"Drag and drop here, or click once to start uploading" | translate}}&lt;/h3&gt;
                     &lt;p&gt;{{"File is uploaded to currently selected folder" | translate}}&lt;/p&gt;
+                    &lt;p&gt;{{"A .zip archive will be automatically unpacked on the server" | translate}}&lt;/p&gt;
                 &lt;/div&gt;
             &lt;/vue-dropzone&gt;
         &lt;/div&gt;
@@ -283,7 +310,7 @@ export default {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 19 2019 12:49:38 GMT+0100 (Central European Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jan 20 2020 18:19:02 GMT+0100 (Central European Standard Time)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

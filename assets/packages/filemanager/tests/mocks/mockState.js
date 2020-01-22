@@ -9,7 +9,7 @@ export default {
     folderList: mockFolderList,
     fileList: mockFileList,
     debug: false,
-    fileInTransit: null,
+    fileInTransit: false,
     transitType: null,
     fileRepresentation: 'tablerep',
     uncollapsedFolders: []
