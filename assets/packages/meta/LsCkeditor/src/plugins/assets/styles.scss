@@ -42,7 +42,11 @@
 .ck.ck-dropdown__panel {
 	max-height: 350px;
 	max-height: 50vh; /* or anything else, more likely ~300px or so */
-	overflow-y: auto;
+	overflow: hidden;
+}
+
+.ck-scrollbar .ck-dropdown__panel {
+    overflow-y: auto;
 }
 
 :root {

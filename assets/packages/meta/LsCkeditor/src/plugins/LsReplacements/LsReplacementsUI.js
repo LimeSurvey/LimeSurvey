@@ -23,13 +23,18 @@ export default class LsReplacementsUI extends Plugin {
                 (reject) => { console.error(reject); }
             );
 
-            dropdownView.set('panelPosition','sw');
+            dropdownView.set( {
+                class: 'ck-scrollbar',
+                panelPosition: 'sw',
+            } );
 
             dropdownView.buttonView.set( {
                 label: t( 'LsExpressions' ),
                 icon: lsIcon,
                 tooltip: true,
             } );
+
+            dropdownView.panelView.set('class','ck-scrollbar');
 
             // Execute the command when the dropdown item is clicked (executed).
             this.listenTo( dropdownView, 'execute', evt => {

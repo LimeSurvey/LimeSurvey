@@ -1105,6 +1105,9 @@ div.panel.disabled a {
 .ck-blurred {
     max-height:35vh;
 }
+.ck-blurred:hover {
+    max-height: initial;
+}
 .ckedit-nocollapse {
     .ck-blurred {
         max-height: initial;
