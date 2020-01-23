@@ -20,7 +20,7 @@ class demoAddEmFunction extends PluginBase
             'doHtmlList' => array(
                 '\demoAddEmFunction\exampleFunctions::doHtmlList', // PHP function, no need Class if function is directly added here
                 'demoAddEmFunction.doHtmlList', // Javascript function
-                $this->gT("Show an html list with elements"), // Description for admin
+                $this->gT("Show a HTML list with elements"), // Description for admin
                 'string doHtmlList(arg1, arg2, ... argN)', // Extra description
                 'https://www.limesurvey.org', // Help url
                 -1, // Number of argument , here any number, no forced

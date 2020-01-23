@@ -8,6 +8,7 @@ import _ from 'lodash';
 
 import TableRepComponent from '../../src/components/subcomponents/_tableRepresentation.vue';
 import VueXMutations from '../../src/storage/mutations.js';
+import VueXGetters from '../../src/storage/getters.js';
 import MockState from '../mocks/mockState.js';
 import MockActions from '../mocks/mockActions.js';
 
@@ -28,12 +29,13 @@ localVue.mixin({
 });
 
 describe("correct display", () => {
-    const actions = _.clone(MockActions);
-    const state = _.clone(MockState);
+    const actions = _.merge({}, MockActions);
+    const state = _.merge({}, MockState);
     const store = new Vuex.Store({
         state,
         mutations: VueXMutations,
-        actions
+        actions,
+        getters: VueXGetters
     });
 
     const tableRepMount = shallowMount(TableRepComponent, {
@@ -52,17 +54,11 @@ describe("correct display", () => {
     }); 
 
     test("Has the correct table head", () => {
-        expect(tableRepMount.html()).toContain(`<div class=\"ls-flex ls-flex-column col-4 cell\">
-        File name
-        </div> <div class=\"ls-flex ls-flex-column col-1 cell\">
-        Type
-        </div> <div class=\"ls-flex ls-flex-column col-2 cell\">
-        Size
-        </div> <div class=\"ls-flex ls-flex-column col-3 cell\">
-        Mod time
-        </div> <div class=\"ls-flex ls-flex-row col-2 cell\">
-        Action
-        </div></div>`);
+        expect(tableRepMount.find('.head-row').html()).toContain('<div class="ls-flex ls-flex-column col-4 cell">File name</div>') 
+        && expect(tableRepMount.find('.head-row').html()).toContain('<div class="ls-flex ls-flex-column col-1 cell">Type</div> ') 
+        && expect(tableRepMount.find('.head-row').html()).toContain('<div class="ls-flex ls-flex-column col-2 cell">Size</div> ') 
+        && expect(tableRepMount.find('.head-row').html()).toContain('<div class="ls-flex ls-flex-column col-3 cell">Mod time</div> ') 
+        && expect(tableRepMount.find('.head-row').html()).toContain('<div class="ls-flex ls-flex-row col-2 cell">Action</div>')
     });
 
     test.each(_.toArray(MockState.fileList))(
@@ -105,18 +101,18 @@ describe("correct display", () => {
 
 describe("File transit actions", () => {
     
-    const actions = _.clone(MockActions);
+    const actions = _.merge({},MockActions);
     const fileInTransit = MockState.fileList['firstPicture.jpg'];
-    const fileNotTransit = MockState.fileList['secondPicture.jpg'];
     
     let tableRepMount;
     beforeEach(() => {
-        const state = _.clone(MockState);
+        const state = _.merge({},MockState);
         
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         tableRepMount = shallowMount(TableRepComponent, {
@@ -133,40 +129,44 @@ describe("File transit actions", () => {
             store,
             localVue
         }); 
+
+        // tableRepMount.vm.$store.commit('setFolderList', MockState.fileList);
     }); 
 
     test("Should start transit after clicking on 'copy'", () => {
         const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
         const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-copy');
         copyButton.trigger('click');
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(true);  
+        expect(tableRepMount.vm.$store.state.fileList['firstPicture.jpg'].inTransit).toBe(true);  
     })
 
     test("Should start transit after clicking on 'move'", () => {
         const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
         const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-move');
         copyButton.trigger('click');
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(true);  
+        expect(tableRepMount.vm.$store.state.fileList['firstPicture.jpg'].inTransit).toBe(true);  
     })
 });
 
 describe("File in transit actions", () => {
     
-    const actions = _.clone(MockActions);
+    const actions = _.merge({},MockActions);
     const fileInTransit = MockState.fileList['firstPicture.jpg'];
     const fileNotTransit = MockState.fileList['secondPicture.jpg'];
-    const state = _.clone(MockState);
-
+    const state = _.merge({},MockState);
+    
+    // actions.getFileList = jest.fn(() => Promise.resolve());
     let tableRepMount;
     beforeEach(() => {
-
-        state.fileInTransit = fileInTransit;
+        
+        state.fileList['firstPicture.jpg'].inTransit = true;
         state.transitType = "move";
 
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         tableRepMount = shallowMount(TableRepComponent, {
@@ -196,19 +196,19 @@ describe("File in transit actions", () => {
     })
 
     test("Should mark in transit file as inTransit", () => {
-        expect(tableRepMount.vm.inTransit(fileInTransit)).toBe(true);
+        expect(tableRepMount.vm.inTransit(tableRepMount.vm.files['firstPicture.jpg'])).toBe(true);
     })
     test("Should mark notInTransitFile as notInTransit", () => {
-        expect(tableRepMount.vm.inTransit(fileNotTransit)).toBe(false);
+        expect(tableRepMount.vm.inTransit(tableRepMount.vm.files['secondPicture.jpg'])).toBe(false);
     })
 
     test("Should have the correct classes for a file in transit", () => {
-        const fileRowClasses = tableRepMount.vm.fileClass(fileInTransit);
-        expect(fileRowClasses).toBe("scoped-file-row file-in-transit move ")
+        const fileRowClasses = tableRepMount.vm.fileClass(tableRepMount.vm.files['firstPicture.jpg']);
+        expect(fileRowClasses).toBe("scoped-file-icon file-in-transit move ")
     })
     test("Should have the correct classes for a file not in transit", () => {
-        const fileRowClasses = tableRepMount.vm.fileClass(fileNotTransit);
-        expect(fileRowClasses).toBe("scoped-file-row ")
+        const fileRowClasses = tableRepMount.vm.fileClass(tableRepMount.vm.files['secondPicture.jpg']);
+        expect(fileRowClasses).toBe("scoped-file-icon ")
     })
 
     
@@ -216,20 +216,21 @@ describe("File in transit actions", () => {
 
 describe('Delete file success', () => {
     const fileToBeDeleted = MockState.fileList['firstPicture.jpg'];
-    const state = _.clone(MockState);
+    const state = _.merge({},MockState);
     const callDialog = jest.fn((txt) => Promise.resolve(txt));
 
     let actions;
     let tableRepMount;
     beforeAll(() => {
 
-        actions = _.clone(MockActions);
+        actions = _.merge({},MockActions);
         actions.deleteFile = jest.fn();
 
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         tableRepMount = shallowMount(TableRepComponent, {
@@ -260,19 +261,20 @@ describe('Delete file success', () => {
 
 describe('Delete file failure', () => {
     const fileToBeDeleted = MockState.fileList['firstPicture.jpg'];
-    const state = _.clone(MockState);
+    const state = _.merge({},MockState);
     const callDialog = jest.fn((txt) => Promise.reject());
     let actions;
     let tableRepMount;
 
     beforeEach(() => {
-        actions = _.clone(MockActions);
+        actions = _.merge({},MockActions);
         actions.deleteFile = jest.fn(() => Promise.resolve());
 
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         tableRepMount = shallowMount(TableRepComponent, {

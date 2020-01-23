@@ -191,7 +191,7 @@ export default {
                     this.$store.state.currentQuestionAnswerOptions, 
                     scale => sortBy(
                         scale, 
-                        answeroption => answeroption.sortorder
+                        answeroption => parseInt(answeroption.sortorder)
                     )
                 );
             },

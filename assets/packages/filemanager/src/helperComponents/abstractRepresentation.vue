@@ -1,6 +1,11 @@
 <script>
 export default {
   data() {},
+  computed: {
+    files() {
+      return this.$store.state.fileList
+    },
+  },
   methods: {
     inTransit(file) {
       return file.inTransit;
@@ -53,7 +58,7 @@ export default {
             });
         })
         .catch(() => {
-          this.$.log.log("Clicked on cancel");
+          this.$log.log("Clicked on cancel");
         });
     },
     copyFile(file) {

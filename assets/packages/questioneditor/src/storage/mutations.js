@@ -132,6 +132,15 @@ export default {
             payload.newValue
         );
     },
+    updateFullQuestionI10NValue: (state, setObject) => {
+        const newCurrentQuestionI10N = state.currentQuestionI10N;
+        
+        keys(state.languages).forEach((lng) => {
+            newCurrentQuestionI10N[lng][setObject.value] = setObject.newValue;
+        });
+
+        state.currentQuestionI10N = newCurrentQuestionI10N;
+    },
     updateCurrentQuestionI10NValue: (state, setObject) => {
         const newCurrentQuestionI10N = state.currentQuestionI10N;
         newCurrentQuestionI10N[state.activeLanguage][setObject.value] = setObject.newValue;

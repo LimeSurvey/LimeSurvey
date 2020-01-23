@@ -1216,6 +1216,7 @@ class questionedit extends Survey_Common_Action
      */
     private function storeAnswerOptions(&$oQuestion, $dataSet, $isCopyProcess = false)
     {
+        $this->cleanAnsweroptions($oQuestion, $dataSet);
         foreach ($dataSet as $aAnswerOptions) {
             foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];

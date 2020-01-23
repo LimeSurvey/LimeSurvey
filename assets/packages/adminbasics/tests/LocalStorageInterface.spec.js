@@ -51,9 +51,9 @@ describe("Creating a save state", () => {
     });
 
     test("Timestamp on state has been updated", () => {
-        const dateBefore = global.LS.localStorageInterface.archive.TESTSTATE.created;
+        const dateBefore = Math.floor(global.LS.localStorageInterface.archive.TESTSTATE.created/10);
         saveState('TESTSTATE', { valueStored: 'TESTVALUE' }, global.localStorage);
-        expect(dateBefore).toBeLessThan(global.LS.localStorageInterface.archive.TESTSTATE.created);
+        expect(dateBefore).toBe(Math.floor(global.LS.localStorageInterface.archive.TESTSTATE.created/10));
     });
 
 });
@@ -91,7 +91,5 @@ describe("Checking that old and faulty values are removed", () => {
         const parsedStoredArchive = JSON.parse(storedArchive);
         expect(parsedStoredArchive).toStrictEqual({});
     });
-
-
 
 });

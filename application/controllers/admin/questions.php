@@ -1284,7 +1284,8 @@ class questions extends Survey_Common_Action
 
             );
 
-            if ($classes != '') {
+            // TODO: Better solution: Hard-code allowed CSS classes.
+            if ($classes != '' && $this->isValidCSSClass($classes)) {
                 $aOptions['classes'] = $classes;
             }
 
@@ -1538,6 +1539,18 @@ class questions extends Survey_Common_Action
         header('Content-type: application/json');
         echo CJSON::encode($questionTemplateList);
         Yii::app()->end();
+    }
+
+    /**
+     * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
+     *
+     * @param string $class
+     * @return boolean
+     */
+    protected function isValidCSSClass($class)
+    {
+        $class = str_replace(['-', '_'], '', $class);
+        return ctype_alnum($class);
     }
 
     /**
