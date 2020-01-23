@@ -144,8 +144,8 @@ $internalConfig = array(
             'excludeFiles' => array("config.xml", "node_modules", "src"),
             'class' => 'application.core.LSYii_AssetManager'
         ),
+        /* Leave default errorhandler : managed in LSYii_Application->onException */
         'errorHandler' => [
-            'errorAction'=>'surveys/error'
         ],
         'request' => array(
             'class'=>'LSHttpRequest',
