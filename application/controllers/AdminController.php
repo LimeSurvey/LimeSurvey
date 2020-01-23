@@ -24,6 +24,8 @@ class AdminController extends LSYii_Controller
     /**
      * Initialises this controller, does some basic checks and setups
      *
+     * REFACTORED ( in LSMainController )
+     *
      * @access protected
      * @return void
      */
@@ -91,6 +93,8 @@ class AdminController extends LSYii_Controller
     /**
      * Load and set session vars
      *
+     * REFACTORED (in LSMainController)
+     *
      * @access protected
      * @return void
      */
@@ -113,6 +117,8 @@ class AdminController extends LSYii_Controller
 
     /**
      * Checks for action specific authorization and then executes an action
+     *
+     * REFACTORED ( in LSMainController)
      *
      * @access public
      * @param string $action
@@ -167,6 +173,9 @@ class AdminController extends LSYii_Controller
 
     /**
      * Starting with LS4, 3rd party developper can extends any of the LimeSurve controllers.
+     *
+     *  REFACTORED ( in LSMainController)
+     *
      */
     protected function runModuleController($action)
     {
@@ -374,6 +383,8 @@ class AdminController extends LSYii_Controller
     /**
      * Prints Admin Header
      *
+     * REFACTORED (in LayoutHelper.php)
+     *
      * @access protected
      * @param bool $meta
      * @param bool $return
@@ -437,6 +448,8 @@ class AdminController extends LSYii_Controller
     /**
      * Prints Admin Footer
      *
+     * REFACTORED (in LayoutHelper)
+     *
      * @access protected
      * @param string $url
      * @param string $explanation
@@ -470,6 +483,8 @@ class AdminController extends LSYii_Controller
     /**
      * Shows a message box
      *
+     * REFACTORED ( in LayoutHelper.php )
+     *
      * @access public
      * @param string $title
      * @param string $message
@@ -486,6 +501,13 @@ class AdminController extends LSYii_Controller
     }
 
 
+    /**
+     *
+     * REFACTORED (in LayoutHelper.php)
+     *
+     * @return bool|string
+     * @throws CException
+     */
     public function _loadEndScripts()
     {
         static $bRendered = false;

@@ -507,19 +507,13 @@ class User extends LSActiveRecord
      */
     public function getManagementButtons()
     {
-        $editUser = "";
-        $deleteUser = "";
-        $setPermissionsUser = "";
-        $setTemplatePermissionUser = "";
-        $changeOwnership = "";
-
-        $detailUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/viewuser', ['userid' => $this->uid]);
-        $editUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/editusermodal', ['userid' => $this->uid]);
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
-        $setRoleUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/addrole', ['userid' => $this->uid]);
-        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
+        $detailUrl = Yii::app()->getController()->createUrl('userManagement/viewuser', ['userid' => $this->uid]);
+        $editUrl = Yii::app()->getController()->createUrl('userManagement/addEditUser', ['userid' => $this->uid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userpermissions', ['userid' => $this->uid]);
+        $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
+        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
-        $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
+        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteconfirm');
         
 
         $userDetail = ""

@@ -5,7 +5,7 @@
 </div>
 <div class="modal-body">
     <div class="container-center">        
-        <?=TbHtml::form(array("admin/usermanagement/sa/applythemepermissions"), 'post', array('name'=>'UserManagement--modalform', 'id'=>'UserManagement--modalform')); ?>
+        <?=TbHtml::form(array("userManagement/saveThemePermissions"), 'post', array('name'=>'UserManagement--modalform', 'id'=>'UserManagement--modalform')); ?>
             <input type="hidden" name="userid" value="<?php echo $oUser->uid;?>" />
             <div class="list-group-item row list-group-item-info">
                 <div class="col-xs-6 text-left">

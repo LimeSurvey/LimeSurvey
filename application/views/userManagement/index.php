@@ -1,5 +1,5 @@
 <?php
-/* @var $this AdminController */
+/* @var $this UserManagementController */
 /* @var $dataProvider CActiveDataProvider */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         </div>
     </div>
 </div>
-<?php App()->getController()->renderPartial('usermanagement/partial/_menubar'); ?>
+<?php $this->renderPartial('partial/_menubar'); ?>
 <div class="pagetitle h3"><?php eT("User control");?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="container-fluid">

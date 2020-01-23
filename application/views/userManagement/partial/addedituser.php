@@ -6,7 +6,7 @@
     <div class="container-center">
         <?php $form = $this->beginWidget('TbActiveForm', array(
             'id' => 'UserManagement--modalform',
-            'action' => App()->createUrl('admin/usermanagement', ['sa' => 'applyedit']),
+            'action' => App()->createUrl('userManagement/applyedit'),
             'enableAjaxValidation'=>false,
             'enableClientValidation'=>false,
         ));?>

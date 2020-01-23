@@ -359,6 +359,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Display the update notification
+     *
+     *
+     * REFACTORED (in LayoutHelper.php)
      */
     protected function _updatenotification()
     {
@@ -381,6 +384,8 @@ class Survey_Common_Action extends CAction
 
     /**
      * Display notifications
+     *
+     * * REFACTORED (in LayoutHelper.php)
      */
     private function _notifications()
     {
@@ -408,6 +413,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Header
+     *
+     * * REFACTORED (in LayoutHelper.php)
+     *
      * @param array $aData
      */
     private function _showHeaders($aData, $sendHTTPHeader = true)

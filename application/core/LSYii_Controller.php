@@ -148,30 +148,6 @@ abstract class LSYii_Controller extends CController
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
 
-        //############################################# comming from adminController
-
-        //parent::_init();
-        App()->getComponent('bootstrap');
-        $this->_sessioncontrol();
-
-        $this->user_id = Yii::app()->user->getId();
-
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
-
-        // This line is needed for template editor to work
-        $oAdminTheme = AdminTheme::getInstance();
-
-        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
-
     }
 
     /**
@@ -209,27 +185,5 @@ abstract class LSYii_Controller extends CController
         return array();
     }
 
-    /**
-     * Load and set session vars
-     *
-     * @access protected
-     * @return void
-     */
-    protected function _sessioncontrol()
-    {
-        // From personal settings
-        if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
-            if (Yii::app()->request->getPost('lang') == 'auto') {
-                $sLanguage = getBrowserLanguage();
-            } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
-            }
-            Yii::app()->session['adminlang'] = $sLanguage;
-        }
-        if (empty(Yii::app()->session['adminlang'])) {
-            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-        }
-        Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
-    }
 
 }

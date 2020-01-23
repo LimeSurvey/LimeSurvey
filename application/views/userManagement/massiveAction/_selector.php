@@ -13,7 +13,7 @@ $aActionsArray = array(
         array(
             'type'          => 'action',
             'action'        => 'delete',
-            'url'           =>  App()->createUrl('/admin/usermanagement/sa/deleteMultiple'),
+            'url'           =>  App()->createUrl('userManagement/deleteMultiple'),
             'iconClasses'   => 'text-danger fa fa-trash',
             'text'          =>  gT('Delete'),
             'grid-reload'   => 'yes',
@@ -21,7 +21,7 @@ $aActionsArray = array(
             'modalType'     => 'yes-no',
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
-            'selectedUrl'   => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
+            'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
             'sModalTitle'   => gT('Delete user'),
             'htmlModalBody' => gT('Are you sure you want to delete the selected user?'),
         ),

@@ -79,6 +79,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Open modal to edit, or create a new user
      *
+     *  REFACTORED (in UserManagementController)
+     *
      * @param integer $userid
      * @return string
      */
@@ -102,7 +104,10 @@ class UserManagement extends Survey_Common_Action
     /**
      * Stores changes to user, or triggers userCreateEvent
      *
+     *  REFACTORED ( in UserManagementController)
+     *
      * @return string | JSON
+     * @throws CException
      */
     public function applyedit()
     {
@@ -161,7 +166,10 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * this method create a new admin user 
+     * this method create a new admin user
+     *
+     * REFACRORED ( in UserManagementController)
+     *
      * @param array a$user
      * @return string
      */
@@ -212,6 +220,8 @@ class UserManagement extends Survey_Common_Action
         }
     }
     /**
+     * REFACTORED (in UserManagementController)
+     *
      * @param array $errors
      *
      * @return string $errorDiv
@@ -230,6 +240,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Show some user detail and statistics
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return string
      */
@@ -271,7 +283,9 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Deletes a user 
+     * Deletes a user
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @param int $uid
      * @param bool $recursive
@@ -334,7 +348,9 @@ class UserManagement extends Survey_Common_Action
 
 
     /**
-     * Deletes a user after  confirmation
+     * Deletes a user after confirmation
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return void
      */
@@ -365,6 +381,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Opens a modal to edit user template permissions
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return string
      */
@@ -400,9 +418,11 @@ class UserManagement extends Survey_Common_Action
     /**
      * Opens a modal to edit user permissions
      *
+     * REFACTOREF (in UserManagementController)
+     *
      * @return string
      */
-    public function userpermissions()
+    public function actionUserpermissions()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->getController()->renderPartial(
@@ -508,6 +528,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Stores the changed permissions
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @return string | JSON
      */
     public function saveuserpermissions()
@@ -536,6 +558,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Opens the modal to add dummy users
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return string
      */
@@ -568,6 +592,7 @@ class UserManagement extends Survey_Common_Action
     /**
      * Apply role to user
      *
+     * REFACTORED (in UserManagementController)
      *
      * @return string
      */
@@ -603,6 +628,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @param integer $id the ID of the model to be loaded
      *
@@ -826,6 +853,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Opens the modal to add dummy users
      *
+     * REFACTORED ( in UserManagementController)
+     *
      * @return string
      */
     public function adddummyuser()
@@ -836,6 +865,7 @@ class UserManagement extends Survey_Common_Action
     /**
      * Creates a batch of dummy users
      *
+     * REFACTORED ( in UserManagementController)
      *
      * @return string | JSON
      */
@@ -909,6 +939,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Creates users from an uploaded CSV / JSON file
+     *
+     * REFACTORED (in UserManagement)
      * 
      * @param string importFormat - format of the imported file - Choice between csv / json
      * @return string
@@ -1001,6 +1033,9 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Export users with specific format (json or csv)
+     *
+     * REFACTORED (in UserManagementController)
+     *
      * @param string $outputFormat json or csv
      * @param int $uid userId
      * @return mixed
@@ -1095,6 +1130,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Create new user
+     *
+     *  REFACTORED (in UserManagementController)
      * 
      * @param array $aUser array with user details
      * @param bool $sendMail - option to send mail to user when created
@@ -1190,6 +1227,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Send the registration email to a new survey administrator
      * @TODO: make this user configurable by TWIG, or similar
+     *
+     *  REFACTORED ( in UserManagementController)
      *
      * @param array $aUser
      * @return boolean if send is successfull

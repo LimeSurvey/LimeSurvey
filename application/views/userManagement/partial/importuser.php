@@ -15,7 +15,7 @@
     <div class="container-center">
     <?=TbHtml::formTb(
         null, 
-        App()->createUrl('admin/usermanagement/sa/importusers',['importFormat' => $importFormat]), 
+        App()->createUrl('userManagement/importUsers',['importFormat' => $importFormat]),
         'post', 
         ["id"=>"UserManagement--modalform--import", 'enctype'=>'multipart/form-data']
     )?>
