@@ -310,6 +310,9 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Delete multiple users selected by massive action
+     *
+     * REFACTORED (in UserManagementController)
+     *
      * @return void
      */
     public function deleteMultiple()
@@ -651,6 +654,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * render selected items for massive action modal
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @return void
      * @throws CHttpException
      * @throws CException
@@ -715,6 +720,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Method to resend a password to selected surveyadministrators (MassAction)
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return String
      */
@@ -1108,6 +1115,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Resets the password for one user
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @param User $oUser User model
      * @param boolean $sendMail Send a mail to the user

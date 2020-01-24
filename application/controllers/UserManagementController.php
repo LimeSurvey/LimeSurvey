@@ -742,6 +742,76 @@ class UserManagementController extends LSMainController
     }
 
     /**
+     * Method to resend a password to selected surveyadministrators (MassAction)
+     *
+     * @return String
+     */
+    public function actionBatchSendAndResetLoginData()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+
+        $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
+
+        //todo REFACTORING do we need the next two lines...?
+        $entity_ids = Yii::app()->request->getPost('entity_ids', []);
+        $permissionclass = Yii::app()->request->getPost('permissionclass');
+
+        $results = [];
+        foreach ($userIds as $userId) {
+            $oUser = User::model()->findByPk($userId);
+            $result[] = $this->resetLoginData($oUser, true);
+            $oUser->modified = date('Y-m-d H:i:s');
+            $result['saved'] = $oUser->save();
+            $results[] = $result;
+        }
+
+        $success = array_reduce($results, function ($coll, $arr) {
+            return $coll = $coll && $arr['saved'];
+        }, true);
+
+
+        return $this->renderPartial(
+            'partial/success',
+            [
+                'sMessage' => gT('Emails successfully sent'),
+                'sDebug' => json_encode($results, JSON_PRETTY_PRINT),
+                'noButton' => true,
+            ]
+        );
+    }
+
+    /**
+     * Stores the permission settings run via MassEdit
+     *
+     * @return string
+     */
+    public function actionBatchPermissions()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $userIds = Yii::app()->request->getPost('userids', []);
+        $aPermissions = Yii::app()->request->getPost('Permission', []);
+        $results = [];
+        foreach ($userIds as $iUserId) {
+            $results[$iUserId] = $this->applyPermissionFromArray($iUserId, $aPermissions);
+            $oUser = User::model()->findByPk($iUserId);
+            $oUser->modified = date('Y-m-d H:i:s');
+            $results[$iUserId]['save'] = $oUser->save();
+        }
+
+        return $this->renderPartial('partial/permissionsuccess', ['results' => $results, "noButton" => true]);
+    }
+
+    /**
      * Deletes a user
      *
      * @param int $uid

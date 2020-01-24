@@ -29,7 +29,7 @@ $aActionsArray = array(
         array(
             'type'          => 'action',
             'action'        => 'resendlogindata',
-            'url'           =>  App()->createUrl('/admin/usermanagement/sa/batchSendAndResetLoginData'),
+            'url'           =>  App()->createUrl('userManagement/batchSendAndResetLoginData'),
             'iconClasses'   => 'text-success fa fa-refresh',
             'text'          =>  gT('Resend login data'),
             'grid-reload'   => 'yes',
@@ -37,7 +37,7 @@ $aActionsArray = array(
             'modalType'     => 'yes-no',
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
-            'selectedUrl'   => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
+            'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
             'sModalTitle'   => gT('Resend login data user'),
             'htmlModalBody' => gT('Are you sure you want to reset and resend selected users login data?'),
         ),
@@ -45,7 +45,7 @@ $aActionsArray = array(
         array(
             'type'              => 'action',
             'action'            => 'batchPermissions',
-            'url'               => App()->createUrl('/admin/usermanagement/sa/batchPermissions'),
+            'url'               => App()->createUrl('userManagement/batchPermissions'),
             'iconClasses'       => 'fa fa-unlock',
             'text'              => gT('Edit Permissions'),
             'grid-reload'       => 'yes',
@@ -54,10 +54,10 @@ $aActionsArray = array(
             'modalType'         => 'yes-no-lg',
             'keepopen'          => 'yes',
             'showSelected'      => 'yes',
-            'selectedUrl'       => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
+            'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
             'sModalTitle'       => gT('Edit permissions'),
             'htmlFooterButtons' => [],
-            'htmlModalBody'     => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updatepermissions', [], true)
+            'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatepermissions', [], true)
         ),
         
     )
