@@ -294,9 +294,9 @@ class Question extends LSActiveRecord
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
         $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
-
+        // Add the questions attributes by plugins : needed for Question editor
+        $aAttributeNames = array_merge($aAttributeNames, QuestionAttribute::getQuestionAttributesPlugins($sQuestionType));
         // If the question has a custom template, we first check if it provides custom attributes
-
         $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
         $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
 

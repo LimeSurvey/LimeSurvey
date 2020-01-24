@@ -233,8 +233,10 @@ class QuestionAttribute extends LSActiveRecord
             if ($sType == null) {
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
-
+            /* default attributes by core question xml*/
             $aAttributeNames = self::getQuestionAttributesSettings($sType);
+            /* plugins attributes */
+            $aAttributeNames = array_merge($aAttributeNames, self::getQuestionAttributesPlugins($sType));
 
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
@@ -378,7 +380,7 @@ class QuestionAttribute extends LSActiveRecord
             "i18n"=> false,
             "readonly" => false,
             "readonly_when_active" => false,
-            "expression"=> null,
+            "expression"=> false,
         );
     }
 
@@ -480,6 +482,7 @@ class QuestionAttribute extends LSActiveRecord
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
+        return null;
         $aXmlAttributes = array();
         $aAttributes = array();
 
@@ -510,6 +513,32 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
         return $aAttributes;
+    }
+
+    /**
+     * Return the question attributes definition from plugins by question type
+     * Difference with previous event :
+     * - must return only attribute for this type
+     * - options->option array
+     * @param $sType: type of question
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionAttributesPlugins($sType)
+    {
+        $event = new \LimeSurvey\PluginManager\PluginEvent('getQuestionAttributes');
+        $event->set('type',$sType);
+        App()->getPluginManager()->dispatchEvent($event);
+        $questionAttributesPlugins = (array) $event->get('questionAttributes');
+
+        foreach ($questionAttributesPlugins as $attribute => $settings) {
+            $questionAttributesPlugins[$attribute] = array_merge(
+                QuestionAttribute::getDefaultSettings(),
+                array("category"=>gT("Plugins")),
+                $settings,
+                array("name"=>$attribute),
+            );
+        }
+        return $questionAttributesPlugins;
     }
 
 }
