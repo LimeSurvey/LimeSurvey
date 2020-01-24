@@ -1012,7 +1012,12 @@ class questionedit extends Survey_Common_Action
      */
     private function copyDefaultAnswers($oQuestion, $oldQid)
     {
+        if (empty($oldQid)) {
+            return false;
+        }
+
         $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAllByAttributes(['qid' => $oldQid]);
+
         $setApplied['defaultValues'] = array_reduce(
             $oOldDefaultValues,
             function ($collector, $oDefaultValue) use ($oQuestion) {
