@@ -24,7 +24,7 @@
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion && !loading">
                     <x-test id="action::addQuestion"></x-test>
-                    {{'Create question'|translate}}
+                    {{ (initCopy ? 'Copy question' : 'Create question') | translate }}
             </template>
             <template v-if="!isCreateQuestion && !loading">
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
@@ -32,10 +32,12 @@
         </div>
         <transition-group name="fade">
             <template v-if="!loading">
-                <div class="row" key="questioncode-block" v-if="initCopy">
+                <div class="row" key="questioncopy-block" v-if="initCopy">
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copySubquestions">{{"Copy subquestions" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copySubquestions"
                             id="copySubquestions"
                             v-model="copySubquestions"
                             :options="switcherOptions"
@@ -44,6 +46,8 @@
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copyAnswerOptions">{{"Copy answer options" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copyAnswerOptions"
                             id="copyAnswerOptions"
                             v-model="copyAnswerOptions"
                             :options="switcherOptions"
@@ -52,6 +56,8 @@
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copyDefaultAnswers">{{"Copy default answers" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copyDefaultAnswers"
                             id="copyDefaultAnswers"
                             v-model="copyDefaultAnswers"
                             :options="switcherOptions"
@@ -60,6 +66,8 @@
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copyAdvancedOptions">{{"Copy advanced options" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copyAdvancedOptions"
                             id="copyAdvancedOptions"
                             v-model="copyAdvancedOptions"
                             :options="switcherOptions"
@@ -69,15 +77,22 @@
                 <div class="row" key="questioncode-block">
                     <div class="form-group col-sm-6">
                         <label for="questionCode">{{'Code' | translate }}</label>
-                        <input
-                           type="text"
-                           class="form-control"
-                           id="questionCode"
-                           :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-                           required="required"
-                           v-model="currentQuestionCode"
-                           @dblclick="setEditQuestion"
-                        />
+                        <div class="scoped-keep-in-line">
+                            <input
+                                text="text"
+                                class="form-control"
+                                id="questionCode"
+                                :maxlength="this.maxQuestionCodeLength"
+                                :required="true"
+                                :readonly="!(editQuestion || isCreateQuestion || initCopy)"
+                                v-model="currentQuestionCode" 
+                                @dblclick="triggerEditQuestion" 
+                            />
+                            <type-counter 
+                                :countable="currentQuestionCode.length"
+                                :max-value="this.maxQuestionCodeLength"
+                            />
+                        </div>
                         <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
                     </div>
                     <div class="form-group col-sm-6 contains-question-selector">
@@ -160,7 +175,15 @@
                         ></generalsettings>
                     </div>
                     <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                        <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+                        <advancedsettings 
+                            :event="event" 
+                            v-on:triggerEvent="triggerEvent" 
+                            v-on:eventSet="eventSet" 
+                            :readonly="!(editQuestion || isCreateQuestion)"
+                            :hide-advanced-options="initCopy && copyAdvancedOptions"
+                            :hide-subquestions="initCopy && copyAdvancedOptions"
+                            :hide-answeroptions="initCopy && copyAdvancedOptions"
+                        />
                     </div>
                 </div>
             </template>
@@ -176,7 +199,8 @@
 import Mousetrap from 'mousetrap';
 import filter from 'lodash/filter';
 
-import BootstrapToggle from 'vue-bootstrap-toggle'
+import BootstrapToggle from './helperComponents/BootstrapToggler.vue'
+import TypeCounter from './helperComponents/TypeCounter.vue'
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
@@ -198,10 +222,14 @@ export default {
         'advancedsettings' : AdvancedSettings,
         'languageselector' : LanguageSelector,
         BootstrapToggle,
+        TypeCounter,
         SimpleQuestionTypeSelector
     },
     data() {
         return {
+            // This is currently fixed in the backend system.
+            // Since a dynamic option may be added in the future, it is easily amendable here
+            maxQuestionCodeLength: 20,
             editQuestion: false,
             loading: true,
             noCodeWarning: false,
@@ -390,24 +418,35 @@ export default {
             }
         },
         checkCanSubmit(){
-            if(!this.$store.getters.hasTitleSet) {
+            if (!this.$store.getters.hasTitleSet) {
                 this.noCodeWarning = true;
                 return false;
             }
-            if(!this.$store.getters.hasIndividualSubquestionTitles) {
+            
+            if (!this.$store.getters.hasIndividualSubquestionTitles) {
                 window.LS.notifyFader(
                     this.translate("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
                     'well-lg bg-danger text-center'
                 );
                 return false;
             }
-            if(!this.$store.getters.hasIndividualAnsweroptionCodes) {
+            
+            if (!this.$store.getters.hasIndividualAnsweroptionCodes) {
                 window.LS.notifyFader(
                     this.translate("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
                     'well-lg bg-danger text-center'
                 );
                 return false;
             }
+            
+            if (this.currentQuestionCode.length > this.maxQuestionCodeLength) {
+                window.LS.notifyFader(
+                    this.translate("Question code cannot be longer than 20 digits."),
+                    'well-lg bg-danger text-center'
+                );
+                return false;
+            }
+
             return true;
         },
         toggleQuestionTypeSelector() {
@@ -433,10 +472,7 @@ export default {
     },
     created(){
         this.initCopy = false;
-        Promise.all([
-            this.$store.dispatch('loadQuestion'),
-            this.$store.dispatch('getQuestionTypes')
-        ]).then(()=>{
+        this.$store.dispatch('loadQuestion').then(()=>{
             this.loading = false;
             this.$store.commit('setInTransfer', false);
             if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
@@ -459,6 +495,7 @@ export default {
         $('#frmeditquestion').on('submit', (e)=>{
             e.preventDefault();
         });
+        LS.EventBus.$emit('doFadeEvent', this.editQuestion);
 
         LS.EventBus.$off('questionTypeChange');
         LS.EventBus.$on('questionTypeChange', (payload) => {
@@ -476,7 +513,9 @@ export default {
             if(this.initCopy) {
                 this.editQuestion = true;
                 LS.EventBus.$emit('doFadeEvent', true);
-                this.currentQuestionCode = this.currentQuestionCode+'Copy';
+                this.currentQuestionCode = this.currentQuestionCode.substring(0,16)+'Copy';
+            } else {
+                this.currentQuestionCode = this.$store.state.questionImmutable.title;
             }
         });
     }
@@ -484,6 +523,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.scoped-keep-in-line {
+    display: block;
+    white-space: nowrap;
+    position: relative;
+}
+
 .scoped-unset-pointer-events {
     pointer-events: none;
 }

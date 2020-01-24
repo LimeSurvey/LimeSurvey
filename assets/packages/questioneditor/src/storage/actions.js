@@ -252,6 +252,18 @@ export default {
                 advancedSettings: context.state.currentQuestionAdvancedSettings,
             }}, window.LS.data.csrfTokenData);
 
+            if (context.state.initCopy == true) {
+                transferObject.questionCopy = true;
+                transferObject.copySettings = {
+                    copySubquestions: context.state.copySubquestions ? 1 : 0,
+                    copyAnswerOptions: context.state.copyAnswerOptions ? 1 : 0,
+                    copyDefaultAnswers: context.state.copyDefaultAnswers ? 1 : 0,
+                    copyAdvancedOptions: context.state.copyAdvancedOptions ? 1 : 0
+                };
+            }
+
+            
+
             LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
 
             const postUrl = LS.createUrl(

@@ -79,6 +79,7 @@ class questionedit extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $aData['oSurvey'] = $oSurvey;
         $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+        $aData['aQuestionTypeStateList'] = QuestionType::modelsAttributes();
         $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($oQuestion->type);
         $aData['gid'] = $gid;
         $aData['qid'] = $oQuestion->qid;
@@ -211,6 +212,7 @@ class questionedit extends Survey_Common_Action
         $isNewQuestion = false;
         $questionCopy = (boolean) App()->request->getPost('questionCopy');
         $questionCopySettings = App()->request->getPost('copySettings', []);
+        $questionCopySettings = array_map( function($value) {return !!$value;}, $questionCopySettings);
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
@@ -816,8 +818,8 @@ class questionedit extends Survey_Common_Action
         if ($saved == false) {
             throw new LSJsonException(
                 500,
-                "Object creation failed, couldn't save.\n ERRORS:"
-                . implode(", ", $oQuestion->getErrors()),
+                "Object creation failed, couldn't save.\n ERRORS:\n"
+                . print_r($oQuestion->getErrors(), true),
                 0,
                 null,
                 true

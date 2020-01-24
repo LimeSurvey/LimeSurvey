@@ -25,9 +25,8 @@ export default {
 
     hasTitleSet: (state) => {
         const isNotEmpty = !isEmpty(state.currentQuestion.title);
-        const startingWithALetter = /^[a-z]/i.test(state.currentQuestion.title);
-        const onlyLettersAndNumbers = /^[a-z0-9]+$/i.test(state.currentQuestion.title);
-        return isNotEmpty && startingWithALetter && onlyLettersAndNumbers;
+        const onlyLettersAndNumbersAndStartingWithALetter = /^[a-z][a-z0-9]*$/i.test(state.currentQuestion.title);
+        return isNotEmpty && onlyLettersAndNumbersAndStartingWithALetter;
     },
     hasIndividualSubquestionTitles: (state) => {
         return reduce(

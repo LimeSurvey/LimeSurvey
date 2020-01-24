@@ -14,6 +14,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.1",
     "@ckeditor/ckeditor5-theme-lark": "^13.0.1",
+    "bootstrap-toggle": "^2.2.2",
     "core-js": "^2.6.5",
     "lodash": "^4.17.4",
     "mousetrap": "^1.6.2",
