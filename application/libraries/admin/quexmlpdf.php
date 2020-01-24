@@ -2703,7 +2703,6 @@ class quexmlpdf extends pdf
      */
     protected function drawMatrixBarcode($subquestions, $type)
     {
-        var_dump('HERE I AM'); exit;
         $c = count($subquestions);
 
         for ($i = 0; $i < $c; $i++) {
