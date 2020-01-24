@@ -798,7 +798,9 @@ class UserManagementController extends LSMainController
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
-        $userIds = Yii::app()->request->getPost('userids', []);
+       // $userIds = Yii::app()->request->getPost('userids', []);
+
+        $userIds = json_decode(Yii::app()->request->getPost('sItems', "[]"));
         $aPermissions = Yii::app()->request->getPost('Permission', []);
         $results = [];
         foreach ($userIds as $iUserId) {
@@ -809,6 +811,50 @@ class UserManagementController extends LSMainController
         }
 
         return $this->renderPartial('partial/permissionsuccess', ['results' => $results, "noButton" => true]);
+    }
+
+    /**
+     * Mass edition apply roles
+     *
+     *
+     * @return string
+     */
+    public function actionBatchAddGroup()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
+        $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
+        $aResults = [];
+
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+
+            if (!$oUserGroup->hasUser($sItem)) {
+                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+            } else {
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('User is already a part of the group');
+            }
+        }
+
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Usergroup updated'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
     }
 
     /**

@@ -766,6 +766,7 @@ class UserManagement extends Survey_Common_Action
     /**
      * Mass edition apply roles
      *
+     * REFACTORED (in UserManagementController)
      *
      * @return string
      */
