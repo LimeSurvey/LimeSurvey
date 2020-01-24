@@ -643,28 +643,31 @@ class UserAction extends Survey_Common_Action
                     $error = $oUserModel->checkPasswordStrength($newPassword);
                     if ($error) {
                         Yii::app()->setFlashMessage(gT($error), 'error');
-                        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                        return $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                     }
-                } elseif (!$oUserModel->checkPassword($oldPassword)) {
+                }
+                if (!$oUserModel->checkPassword($oldPassword)) {
                     // Always check password
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                } elseif (trim($oldPassword) === trim($newPassword)) {
+                    return $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+                if (trim($oldPassword) === trim($newPassword)) {
                     //First test if old and new password are identical => no need to save it (or ?)
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                } elseif (trim($newPassword) !== trim($repeatPassword)) {
+                    return $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+                if (trim($newPassword) !== trim($repeatPassword)) {
                     //Then test the new password and the repeat password for identity
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                    return $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 //Now check if the old password matches the old password saved
-                } elseif (empty(trim($newPassword))) {
-                    Yii::app()->setFlashMessage(gT("The password can't be empty."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                } else {
-                    // We can update
-                    $oUserModel->setPassword($newPassword);
                 }
+                if (empty(trim($newPassword))) {
+                    Yii::app()->setFlashMessage(gT("The password can't be empty."), 'error');
+                    return $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+                // We can update
+                $oUserModel->setPassword($newPassword);
             }
 
             $uresult = $oUserModel->save();
