@@ -235,9 +235,6 @@ class QuestionAttribute extends LSActiveRecord
             }
             /* default attributes by core question xml*/
             $aAttributeNames = self::getQuestionAttributesSettings($sType);
-            /* plugins attributes */
-            $aAttributeNames = array_merge($aAttributeNames, self::getQuestionAttributesPlugins($sType));
-
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
 
@@ -250,6 +247,11 @@ class QuestionAttribute extends LSActiveRecord
                 }
             }
 
+            /* plugins attributes :
+             * - needed when save (don't know why)
+             * - and in public survey : qanda : QuestionAttribute::model()->getQuestionAttributes
+             **/
+            $aAttributeNames = array_merge($aAttributeNames, self::getQuestionAttributesPlugins($sType));
 
             $aAttributeValues = array();
             foreach ($oAttributeValues as $oAttributeValue) {
@@ -482,7 +484,6 @@ class QuestionAttribute extends LSActiveRecord
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
-        return null;
         $aXmlAttributes = array();
         $aAttributes = array();
 
