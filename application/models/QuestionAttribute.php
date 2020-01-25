@@ -536,7 +536,7 @@ class QuestionAttribute extends LSActiveRecord
                 QuestionAttribute::getDefaultSettings(),
                 array("category"=>gT("Plugins")),
                 $settings,
-                array("name"=>$attribute),
+                array("name"=>$attribute)
             );
         }
         return $questionAttributesPlugins;
