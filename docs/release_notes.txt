@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.21.6 (build 200121) to 3.22.0 (build 200127) January 27, 2020
++New feature #15706: Support PHP 7.4 (Olle Haerstedt)
+-Fixed issue: [Security] Login attempts brute-force prevention (Carsten Schmitz)
+-Fixed issue [security] #15736: Reflected Cross-Site Scripting in assessments (Maxime Roy) (Jessica Höck)
+
+
 Changes from 3.21.5 (build 200115) to 3.21.6 (build 200121) January 21, 2020
 -Fixed issue [security] #15720: Reflected Cross-Site Scripting in position widget (Maxime Roy) (Olle Haerstedt)
 -Fixed issue #15733: Survey administrator can receive invalid mail about error (#1371) (Denis Chenu)
