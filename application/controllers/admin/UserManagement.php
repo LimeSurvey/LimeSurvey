@@ -490,6 +490,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Stores the changed permissions
      *
+     * REFACTORE (in UserManagementcontroller actionSaveThemePermissions)
+     *
      * @return string | JSON
      */
     public function applythemepermissions()
@@ -698,6 +700,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Stores the permission settings run via MassEdit
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return string
      */
@@ -923,6 +927,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Calls up a modal to import users via csv/json file
+     *
+     * REFACTORED (in UserManagementController)
      *
      *@param string $importFormat - Importformat (csv/json) to render 
      *@return string
@@ -1213,6 +1219,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Update admin-user
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @param array $aUser array with user details
      * @return object user - updated user object
      */
@@ -1323,6 +1331,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Creates a random string
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @return string
      */
     protected function getRandomString()
@@ -1340,6 +1350,8 @@ class UserManagement extends Survey_Common_Action
      *
      * Prüft ob der Name einzigartig ist
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @param string $prefix der Präfix
      * @return string
      */
@@ -1356,6 +1368,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Creates a random password through the core plugin
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @param integer $length Length of the password
      * @return string
      */
@@ -1371,6 +1385,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Adds permission to a users
      * Needs an array in the form of [PERMISSIONID][PERMISSION]
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @param int $iUserId
      * @param array $aPermissionArray

@@ -8,14 +8,14 @@ class LayoutHelper
      *
      * @param array $aData
      */
-    public static function showHeaders($aData, $sendHTTPHeader = true)
+    public function showHeaders($aData, $sendHTTPHeader = true)
     {
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
             if ($sendHTTPHeader) {
                 header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             }
-            self::getAdminHeader();
+            $this->getAdminHeader();
         }
     }
 
@@ -29,7 +29,7 @@ class LayoutHelper
      * @return string|null
      * @throws CException
      */
-    public static function getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false)
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -94,7 +94,7 @@ class LayoutHelper
      * @global int $surveyid
      * @global string $homedir
      */
-    public static function showadminmenu($aData)
+    public function showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
@@ -143,7 +143,7 @@ class LayoutHelper
             $aData['showupdate'] = Yii::app()->getConfig('updatable') && $updateNotification->result && !$updateNotification->unstable_update;
 
             // Fetch extra menus from plugins, e.g. last visited surveys
-            $aData['extraMenus'] = self::fetchExtraMenus($aData);
+            $aData['extraMenus'] = $this->fetchExtraMenus($aData);
 
            // $aData['extraMenus'] = ''; //todo extraMenu should work
 
@@ -163,7 +163,7 @@ class LayoutHelper
      * @param array $aData
      * @return array<ExtraMenu>
      */
-    protected static function fetchExtraMenus(array $aData)
+    protected function fetchExtraMenus(array $aData)
     {
         //todo this is different from Survey_Common_Action (no second parameter $this ...) correct usage?
         $event = new PluginEvent('beforeAdminMenuRender');
@@ -189,7 +189,7 @@ class LayoutHelper
      * @return void
      * @throws CException
      */
-    public static function userGroupBar(array $aData)
+    public function userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0;
         if (!empty($aData['display']['menu_bars']['user_group'])) {
@@ -225,7 +225,7 @@ class LayoutHelper
      * @param $aData
      * @throws CException
      */
-    public static function fullpagebar($aData)
+    public function fullpagebar($aData)
     {
         if ((isset($aData['fullpagebar']))) {
             if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
@@ -239,7 +239,7 @@ class LayoutHelper
     /**
      * Display the update notification
      */
-    public static function updatenotification()
+    public function updatenotification()
     {
         /**
          *  OLD $this was Survey_Common_Action ....
@@ -274,7 +274,7 @@ class LayoutHelper
     /**
      * Display notifications
      */
-    public static function notifications()
+    public function notifications()
     {
         $aMessage = App()->session['arrayNotificationMessages'];
         if (!is_array($aMessage)) {
@@ -290,7 +290,7 @@ class LayoutHelper
      * @return bool|string|string[]|null
      * @throws CException
      */
-    public static function loadEndScripts()
+    public function loadEndScripts()
     {
         static $bRendered = false;
         if ($bRendered) {
@@ -317,7 +317,7 @@ class LayoutHelper
      * @return string|null
      * @throws CException
      */
-    public static function getAdminFooter($url, $explanation, $return = false)
+    public function getAdminFooter($url, $explanation, $return = false)
     {
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
@@ -352,7 +352,7 @@ class LayoutHelper
      * @return string|null
      * @throws CException
      */
-    public static function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
+    public function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
     {
         $aData['title'] = $title;
         $aData['message'] = $message;

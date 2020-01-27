@@ -335,7 +335,9 @@ class Survey_Common_Action extends CAction
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
 
         if ($sRenderFile == false) {
+
             if (!empty($aData['surveyid'])) {
+                //todo REFACTORING this whole part should go into new SurveyAdminController !!! (now its only important for surveyadmin.php
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
                 // Needed to evaluate EM expressions in question summary
@@ -347,6 +349,8 @@ class Survey_Common_Action extends CAction
             } else {
                 $renderFile = $basePath.'/layout_main.php';
             }
+
+
         } else {
             $renderFile = $basePath.'/'.$sRenderFile;
         }
@@ -431,6 +435,8 @@ class Survey_Common_Action extends CAction
 
     /**
      * _showadminmenu() function returns html text for the administration button bar
+     *
+     * REFACTORED (in LayoutHelper.php)
      *
      * @access public
      * @param $aData
@@ -1176,6 +1182,10 @@ class Survey_Common_Action extends CAction
 
     /**
      * Browse Menu Bar
+     *
+     * DEPRECATED ??? Never used...
+     *
+     *
      * @param array $aData
      */
     public function _browsemenubar(array $aData)

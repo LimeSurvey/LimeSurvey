@@ -222,6 +222,7 @@ class UserManagementController extends LSMainController
         }
 
         $oUser = User::model()->findByPk($userId);
+        //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
         Yii::app()->setFlashMessage(gT("User successfully deleted."), 'success');
         $this->redirect('index');
@@ -989,6 +990,8 @@ class UserManagementController extends LSMainController
     /**
      * Update admin-user
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @param array $aUser array with user details
      * @return object user - updated user object
      * @throws CException
@@ -1269,7 +1272,7 @@ class UserManagementController extends LSMainController
     /**
      * Creates a random string
      *
-     * todo this should be moved to model user ...see getRandomUsername
+     * todo REFACTORING this should be moved to model user ...see getRandomUsername
      *
      * @return string
      */
