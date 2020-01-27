@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="typeCounter--container" 
+        class="typeCounter--container"
         :style="{width: size+'px', height: size+'px'}"
     >
         <svg :height="size" :width="size" >
@@ -16,7 +16,7 @@
             />
         </svg>
         <div class="typeCounter--innerCircle">
-            {{maxValue - countable}}
+            {{valid ? (maxValue - countable) : 'X'}}
         </div>
   </div>
 </template>
@@ -25,6 +25,7 @@
 export default {
     name: "type-counter",
     props: {
+        valid: {type: Boolean, required: true},
         countable: {type: Number, required: true},
         maxValue: {type: Number, required: true},
         size: {type: Number, default: 32},
@@ -43,12 +44,12 @@ export default {
             return Math.ceil((this.size-4)*Math.PI);
         },
         gradiantValue() {
-            return {
-                'stroke-dashoffset': (this.circumference-((this.countable/this.maxValue)*this.circumference))
-            };
+            return this.countable > 0 && this.valid
+              ? {'stroke-dashoffset': (this.circumference-((this.countable/this.maxValue)*this.circumference))}
+              : {'stroke-dashoffset': 0};
         },
         strokeColor() {
-            if (this.countable == this.maxValue || this.countable == 0) {
+            if (this.countable == this.maxValue || this.countable == 0 || !this.valid) {
                 return this.mainDangerColor;
             }
 

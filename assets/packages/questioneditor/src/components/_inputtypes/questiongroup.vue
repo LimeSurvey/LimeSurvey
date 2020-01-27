@@ -1,15 +1,39 @@
 <script>
-    import empty from 'lodash/isEmpty';
-
-    import inputTypeMixin from '../../mixins/inputTypeMixin';
+    import abstractBaseType from '../abstracts/_abstractInputType';
 
     export default {
         name: 'setting-questiongroup',
-        mixins: [inputTypeMixin],
-        data(){
-            return {
-                triggerShowHelp: false
-            };
+        extends: abstractBaseType,
+        /*
+        Abstract base provides props: 
+         - elId
+         - elName
+         - elLabel
+         - elHelp
+         - currentValue
+         - elOptions
+         - readonly
+         - debug
+        */
+        /*
+        Abstract base provides data: 
+         - triggerShowHelp
+        */
+        computed: {
+            /*
+            Abstract base provides computed values: 
+             - curValue
+             - getClasses
+             - showHelp
+             - hasPrefix
+             - hasSuffix
+            */
+            curValue: {
+                get() { return this.currentValue },
+                set(newValue) { 
+                    this.$emit('change', newValue);
+                },
+            },
         },
         methods: {
             simpleValue(value) {
@@ -18,23 +42,6 @@
                 }
                 return value;
             },
-        },
-        computed: {
-            curValue: {
-                get() { return this.currentValue },
-                set(newValue) { 
-                    this.$emit('change', newValue);
-                },
-            },
-            showHelp(){
-                return this.triggerShowHelp && (this.elHelp.length>0);
-            },
-            getClasses() {
-                if(!empty(this.elOptions.classes)) {
-                    return this.elOptions.classes.join(' ');
-                }
-                return '';
-            }
         },
         mounted() {
             if(this.curValue == 0) {

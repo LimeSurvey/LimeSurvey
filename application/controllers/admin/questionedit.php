@@ -157,6 +157,10 @@ class questionedit extends Survey_Common_Action
                     . " If you do not have the correct permissions, this will be ignored"),
                 "noCodeWarning" =>
                 gT("Please put in a valid code. Only letters and numbers are allowed and it has to start with a letter. For example [Question1]"),
+                "alreadyTaken" =>
+                gT("This code is already taken. Duplicate codes are not allowed."),
+                "codeTooLong" =>
+                gT("Question code cannot be longer than 20 digits."),
                 "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes." =>
                 gT("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
                 "Question cannot be stored. Please check the answer option for duplicates or empty titles." =>
@@ -416,6 +420,7 @@ class questionedit extends Survey_Common_Action
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
 
         $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
+        $surveyInfo = $this->getCompiledSurveyInfo($oQuestion);
 
         $aLanguages = [];
         $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
@@ -431,6 +436,7 @@ class questionedit extends Survey_Common_Action
             array_merge(
                 $aQuestionInformationObject,
                 [
+                    'surveyInfo' => $surveyInfo,
                     'languages' => $aLanguages,
                     'mainLanguage' => $oQuestion->survey->language,
                 ]
@@ -1313,6 +1319,27 @@ class questionedit extends Survey_Common_Action
             'subquestions' => $aScaledSubquestions,
             'answerOptions' => $aScaledAnswerOptions,
         ];
+    }
+
+    private function getCompiledSurveyInfo(&$oQuestion) {
+        $oSurvey = $oQuestion->survey;
+        $aQuestionTitles = $oCommand = Yii::app()->db->createCommand()
+            ->select('title')
+            ->from('{{questions}}')
+            ->where('sid=:sid', [':sid'=>$oSurvey->sid])
+            ->where('parent_qid=0')
+            ->queryColumn();
+        $isActive = $oSurvey->isActive;
+        $questionCount = safecount($aQuestionTitles);
+        $groupCount = safecount($oSurvey->groups);
+
+        return [
+            "aQuestionTitles" => $aQuestionTitles,
+            "isActive" => $isActive,
+            "questionCount" => $questionCount,
+            "groupCount" => $groupCount,
+        ];
+
     }
 
     /**

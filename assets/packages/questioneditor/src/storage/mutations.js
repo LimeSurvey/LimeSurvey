@@ -56,7 +56,6 @@ export default {
     },
 
     //Immutables
-
     unsetQuestionImmutable : (state) => {
         state.questionImmutable = {};
     },
@@ -116,9 +115,6 @@ export default {
         Vue.set(state.currentQuestion, 'type', newValue);
     },
     setQuestionGeneralSetting : (state, payload) => {
-        //const newCurrentQuestionGeneralSettings = state.currentQuestionGeneralSettings;
-        //newCurrentQuestionGeneralSettings[payload.settingName]['formElementValue'] = payload.newValue;
-        //state.currentQuestionGeneralSettings = newCurrentQuestionGeneralSettings;
         Vue.set(
             state.currentQuestionGeneralSettings[payload.settingName],
             'formElementValue',
@@ -177,8 +173,8 @@ export default {
             state.activeLanguage = keyList[currentIndex-1];
         }
     },
-    setSurvey : (state, newValue) => {
-        state.survey = newValue;
+    setSurveyInfo : (state, newValue) => {
+        state.surveyInfo = newValue;
     },
     setQuestionTypeList : (state, newValue) => {
         state.questionTypes = newValue;
@@ -192,6 +188,7 @@ export default {
     setStoredEvent: (state, newEvent) => {
         state.storedEvent = newEvent;
     },
+
     //Copy question states
     setInitCopy(state, nV) { state.initCopy = nV; },
     setCopySubquestions(state, nV) { state.copySubquestions = nV; },

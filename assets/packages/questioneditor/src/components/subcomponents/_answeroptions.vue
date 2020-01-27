@@ -157,13 +157,20 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/forEach';
 
-import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
-import eventChild from '../../mixins/eventChild.js';
+import AbstractSubQuestionAndAnswerBase from '../abstracts/_abstractSubquestionAndAnswers'
 
 export default {
     name: 'answeroptions',
-    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
+    extends: AbstractSubQuestionAndAnswerBase,
     data(){
+        /*
+        Abstract base provides data: 
+         - uniqueSelector
+         - type
+         - orderAttribute
+         - typeDefininition
+         - typeDefininitionKey
+        */
         return {
             uniqueSelector: 'aid',
             type: 'answeroptions',
@@ -175,6 +182,10 @@ export default {
         };
     },
     computed: {
+            /*
+            Abstract base provides computed values: 
+             - surveyActive
+            */
         baseNonNumericPart() { return window.QuestionEditData.baseSQACode.answeroptions},
         answeroptionscales(){
             if(this.$store.state.currentQuestion.typeInformation.answerscales == 1) {
@@ -201,6 +212,27 @@ export default {
         },
     },
     methods: {
+        /*
+        Abstract base provides methods: 
+         - getLength
+         - getNewTitleFromCurrent
+         - getRandomId
+         - deleteThisDataSet
+         - duplicateThisDataSet
+         - addDataSet
+         - openLabelSets
+         - openQuickAdd
+         - openPopUpEditor
+         - switchinput
+         - replaceFromQuickAdd
+         - addToFromQuickAdd
+         - replaceFromLabelSets
+         - addToFromLabelSets
+         - saveAsLabelSet
+         - editFromSimplePopupEditor
+         - reorder
+         - preventDisallowedCursor
+        */
         getTemplate(scaleId = 0){
             let randomId = this.getRandomId();
 
