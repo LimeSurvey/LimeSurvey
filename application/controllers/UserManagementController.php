@@ -858,6 +858,75 @@ class UserManagementController extends LSMainController
     }
 
     /**
+     * Mass edition apply roles
+     *
+     * @return string
+     * @throws CException
+     */
+    public function actionBatchApplyRoles()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $aUserRoleIds = Yii::app()->request->getPost('roleselector');
+       // $results = [];
+        $aResults = [];
+
+        foreach ($aItems as $sItem) {
+            $aResults[$sItem]['title'] = '';
+            $model = $this->loadModel($sItem);
+            $aResults[$sItem]['title'] = $model->users_name;
+
+            //check if user is admin otherwhise change the role
+            if (intval($sItem) == 1) {  //todo REFACTORING is admin id always 1?? is there another possibility to chek for admin user?
+                $aResults[$sItem]['result'] = false;
+                $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
+            } else {
+
+                foreach ($aUserRoleIds as $iUserRoleId) {
+
+                    $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
+                }
+            }
+        }
+
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Role updated'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
+    }
+
+    /**
+     * Takes ownership on user after confirmation
+     *
+     * @return void
+     */
+    public function actionTakeOwnership()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $userId = Yii::app()->request->getPost('userid');
+        $oUser = User::model()->findByPk($userId);
+        $oUser->parent_id = Yii::app()->user->id;
+        $oUser->save();
+        $this->redirect(Yii::app()->createUrl("userManagement/index") );
+    }
+
+    /**
      * Deletes a user
      *
      * @param int $uid
@@ -867,8 +936,8 @@ class UserManagementController extends LSMainController
     public function deleteUser(int $uid, bool $recursive = true)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
-            return $this->getController()->renderPartial(
-                '/admin/usermanagement/partial/error',
+            return $this->renderPartial(
+                'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }

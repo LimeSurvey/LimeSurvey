@@ -88,7 +88,7 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
     $aActionsArray['aActions'][] = array(
         'type'              => 'action',
         'action'            => 'batchaddrole',
-        'url'               => App()->createUrl('/admin/usermanagement/sa/batchApplyRoles'),
+        'url'               => App()->createUrl('userManagement/batchApplyRoles'),
         'iconClasses'       => 'fa fa-address-card-o',
         'text'              => gT('Add role'),
         'grid-reload'       => 'yes',
@@ -97,10 +97,10 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         'modalType'         => 'yes-no-lg',
         'keepopen'          => 'yes',
         'showSelected'      => 'yes',
-        'selectedUrl'       => App()->createUrl('/admin/usermanagement/sa/renderSelectedItems/'),
+        'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
         'sModalTitle'       => gT('Add role'),
         'htmlFooterButtons' => [],
-        'htmlModalBody'     => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updaterole', [], true)
+        'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updaterole', [], true)
     );
 }
 

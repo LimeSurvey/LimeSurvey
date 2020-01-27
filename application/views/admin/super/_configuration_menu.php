@@ -200,7 +200,7 @@
                 <!-- Manage survey administrators -->
                 <?php if(Permission::model()->hasGlobalPermission('users','read')): ?>
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/usermanagement/sa/view"); ?>">
+                        <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
                             <?php eT("Manage survey administrators");?>
                         </a>
                     </li>

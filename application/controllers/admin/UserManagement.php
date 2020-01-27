@@ -42,6 +42,9 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Basic view method
+     *
+     * REFACTORED (in UserManagementController )
+     *
      */
     public function view()
     {
@@ -264,6 +267,8 @@ class UserManagement extends Survey_Common_Action
 
     /**
      * Takes ownership on user after confirmation
+     *
+     * REFACTORED (in UserManagementController)
      *
      * @return void
      */
@@ -811,6 +816,8 @@ class UserManagement extends Survey_Common_Action
     /**
      * Mass edition apply roles
      *
+     * REFACTORED (in UserManagementController)
+     *
      * @return string
      * @throws CException
      */
@@ -844,7 +851,6 @@ class UserManagement extends Survey_Common_Action
                 }
             }
         }
-
 
         $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
 
