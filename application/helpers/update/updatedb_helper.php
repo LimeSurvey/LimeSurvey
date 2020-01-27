@@ -1291,7 +1291,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         // LS 2.5 table start at 250
         if ($iOldDBVersion < 250) {
             $oTransaction = $oDB->beginTransaction();
-            createBoxes250();
+            if (!tableExists('boxes')) {
+                createBoxes250();
+            }
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>250), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -2408,7 +2410,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>358], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 359) {
             $oTransaction = $oDB->beginTransaction();
             alterColumn('{{notifications}}','message',"text",false);
@@ -2430,7 +2432,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{user_groups}}','description',"text",false);
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>359], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }        
+        }
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
