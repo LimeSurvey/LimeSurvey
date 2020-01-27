@@ -4062,7 +4062,7 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
         }
     } else {
         $sqlstring = trim($sqlstring);
-        if ($sqlstring{strlen($sqlstring) - 1} != ";") {
+        if ($sqlstring[strlen($sqlstring) - 1] != ";") {
             $sqlstring .= ";"; // add it in if it's not there.
         }
         $lines[] = $sqlstring;
