@@ -46,11 +46,7 @@ var bindAction = function(){
                 $.each(responseData.editData, function(key, value){
                     var itemToChange = $('#assessmentsform').find('[name='+key+']');
                     if(!itemToChange.is('input[type=checkbox]') && !itemToChange.is('input[type=radio]')) {
-                        if (CKEDITOR.instances[key]) {
-                            CKEDITOR.instances[key].setData(value);
-                        } else {
-                            itemToChange.val(value).trigger('change');
-                        }
+                        itemToChange.val(value).trigger('change');
                     } else {
                         $('#assessmentsform').find('[name='+key+'][value='+value+']').prop('checked',true).trigger('change');
                     }
@@ -64,17 +60,17 @@ var bindAction = function(){
     });
 
     $('#selector__assessment-add-new').on('click.assessments', function(){
+        var editAddForm = $('#assesements-edit-add');
 
-        // Clear all fields.
-        $.each(CKEDITOR.instances, function(name, instance) {
-            instance.setData('');
+        editAddForm.modal('show');
+        editAddForm.on('shown.bs.modal',  function removeValues(){
+            // We clear only visible input to keep the CSRF token
+            $('#assessmentsform input:visible:not([type=radio]):not([type=checkbox])').val('');
+            $('#assessmentsform textarea:visible').val('');
+            $(this).off('shown.bs.modal', removeValues);
         });
-
-        // We clear only visible input to keep the CSRF token
-        $('#assessmentsform input:visible').val('');
         // TODO: Clear <select> and radio buttons?
 
-        $('#assesements-edit-add').modal('show');
     });
 
     $('#assessmentsdeleteform').on('submit', function(e){
