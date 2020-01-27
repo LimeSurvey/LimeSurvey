@@ -51,9 +51,9 @@ describe("Creating a save state", () => {
     });
 
     test("Timestamp on state has been updated", () => {
-        const dateBefore = Math.floor(global.LS.localStorageInterface.archive.TESTSTATE.created/10);
+        const dateBefore = Math.floor(global.LS.localStorageInterface.archive.TESTSTATE.created/100);
         saveState('TESTSTATE', { valueStored: 'TESTVALUE' }, global.localStorage);
-        expect(dateBefore).toBe(Math.floor(global.LS.localStorageInterface.archive.TESTSTATE.created/10));
+        expect(dateBefore).toBe(Math.floor(global.LS.localStorageInterface.archive.TESTSTATE.created/100));
     });
 
 });
