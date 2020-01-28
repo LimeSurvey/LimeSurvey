@@ -775,10 +775,12 @@ class SurveyDynamic extends LSActiveRecord
 
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
-        if (
-            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
-            || $attributes['hidden'] === 1
-        ) {
+        /* Question is irrelevant , check printanswershonorsconditions */
+        if ($bHonorConditions && !LimeExpressionManager::QuestionIsRelevant($oQuestion->qid)) {
+            return false;
+        }
+        /* Question is hideen to participant : never show */
+        if ($attributes['hidden']) {
             return false;
         }
 
