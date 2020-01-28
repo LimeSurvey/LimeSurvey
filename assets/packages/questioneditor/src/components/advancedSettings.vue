@@ -113,7 +113,6 @@ export default {
                                 <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
                             </li>
                         </ul>
-                        <span class="scope-divider">|</span>
                     </template>
                     <!-- Advanced settings tabs -->
                     <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
