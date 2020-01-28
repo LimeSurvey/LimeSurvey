@@ -11,7 +11,7 @@
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'surveyPreview_require_Auth',
             'id'=>'surveyPreview_require_Auth',
-            'value' => getGlobalSetting('surveyPreview_require_Auth'),
+            'value' => Yii::app()->getConfig('surveyPreview_require_Auth'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')));
         ?>
@@ -24,16 +24,34 @@
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'filterxsshtml',
             'id'=>'filterxsshtml',
-            'value' => getGlobalSetting('filterxsshtml'),
+            'value' => Yii::app()->getConfig('filterxsshtml'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')
             ));
         ?>
     </div>
-    <div class="">
-        <span class='hint'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
+    <div class="help-block">
+        <span class='text-success'><?php eT("Note: XSS filtering is always disabled for the superadministrator."); ?></span>
     </div>
 </div>
+
+<div class="form-group">
+    <label class=" control-label"  for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
+    <div class="">
+        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'filterxsshtml',
+            'id'=>'filterxsshtml',
+            'value' => Yii::app()->getConfig('disablescriptwithxss'),
+            'onLabel'=>gT('On'),
+            'offLabel' => gT('Off')
+            ));
+        ?>
+    </div>
+    <div class="help-block">
+        <span class='text-warning'><?php eT("If you disable this option : user with XSS restriction still can add script. This allow user to add cross-site scripting javascript system."); ?></span>
+    </div>
+</div>
+
 
 <div class="form-group">
     <label class=" control-label"  for='usercontrolSameGroupPolicy'><?php eT("Group member can only see own group:"); ?></label>
@@ -41,7 +59,7 @@
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'usercontrolSameGroupPolicy',
             'id'=>'usercontrolSameGroupPolicy',
-            'value' => getGlobalSetting('usercontrolSameGroupPolicy'),
+            'value' => Yii::app()->getConfig('usercontrolSameGroupPolicy'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')));
         ?>
@@ -57,7 +75,7 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'x_frame_options',
-            'value'=> getGlobalSetting('x_frame_options'),
+            'value'=> Yii::app()->getConfig('x_frame_options'),
             'selectOptions'=>array(
                 "allow"=>gT("Allow",'unescaped'),
                 "sameorigin"=>gT("Same origin",'unescaped')
@@ -75,7 +93,7 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'force_ssl',
-            'value'=> getGlobalSetting('force_ssl'),
+            'value'=> Yii::app()->getConfig('force_ssl'),
             'selectOptions'=>array(
                 "on"=>gT("On",'unescaped'),
                 "off"=>gT("Off",'unescaped')
