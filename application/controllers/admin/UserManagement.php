@@ -1106,7 +1106,7 @@ class UserManagement extends Survey_Common_Action
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors'  => gT("You do not have permissionfor this action."),
+                    'errors'  => gT("You do not have permission for this action."),
                 ]
             ]);
         }
