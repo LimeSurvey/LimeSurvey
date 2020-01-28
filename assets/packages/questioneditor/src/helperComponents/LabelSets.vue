@@ -91,7 +91,7 @@ export default {
             </div>
         </div>
         <div class="panel-body">
-            <div class="container-fluid" v-if="currentLabelSet!=null">
+            <div class="container-fluid scoped-max-height-and-scrollabel" v-if="currentLabelSet!=null">
                 <div class="row">
                     <div class="col-xs-12">
                         <h4> {{currentLabelSet.label_name }} </h4>
@@ -149,5 +149,8 @@ export default {
 </template>
 
 <style>
-
+    .scoped-max-height-and-scrollabel {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
 </style>
