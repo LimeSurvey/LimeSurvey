@@ -34,6 +34,51 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.0.1 (build 200120) to 4.1.0 (build 200128) January 28, 2020
++New feature: question code live validation (lacrioque)
++New feature #15706: Support PHP 7.4 (Olle Haerstedt)
++New feature #15693: Allow simple user to update script with XSS enable (#1372) (Denis Chenu)
++New feature #15246: Allow fixed function (only PHP) in expression manager (Denis Chenu)
++New feature #13175: Ability to show calculated values based on all users (Denis Chenu)
+-Fixed issue: [Security] Login attempts brute-force prevention (Carsten Schmitz)
+-Fixed issue: Top bar not changing back after entering edit mode (lacrioque)
+-Fixed issue: The word copy was reapplied to the end of the question code on every click (lacrioque)
+-Fixed issue: The copy functions weren't working (lacrioque)
+-Fixed issue: On copy the old question was altered (lacrioque)
+-Fixed issue: Jest-Test in FileManager (lacrioque)
+-Fixed issue: Design issue on multiple clicks on 'Copy' (lacrioque)
+-Fixed issue [security] #15782: Remote Code Execution (RCE) in emplate options  file uploader. Thanks to Maxime Roy (lacrioque)
+-Fixed issue [security] #15736: Reflected Cross-Site Scripting in assessments (Maxime Roy) (Jessica Höck)
+-Fixed issue [security] #15720: Reflected Cross-Site Scripting in position widget (Maxime Roy) (Olle Haerstedt)
+-Fixed issue #15786: No groupdata is shown for the selector in the assessments modal (Patrick Teichmann)
+-Fixed issue #15757: 403 error when deleting questions (Marc Leonhardt)
+-Fixed issue #15741: Unable to create assessments (Patrick Teichmann)
+-Fixed issue #15735: Questions can't be saved on postgres (Olle Haerstedt)
+-Fixed issue #15730: The "Script" input element does not change with language (lacrioque)
+-Fixed issue #15728: Additional languages not displayed when using Sourcecode editor (lacrioque)
+-Fixed issue #15726: localized question attributes not displayed correctly in the questioneditor (Patrick Teichmann)
+-Fixed issue #15722: Answers not sorted correctly in list-radio question (lacrioque)
+-Fixed issue #15719: Unable to edit question title if survey is active (Jessica Höck)
+-Fixed issue #15710: text edition move when click inside (Marc Leonhardt)
+-Fixed issue #15705: Button 'delete current user group' not working (Jessica Höck)
+-Fixed issue #15598: intval : broken interpretation of string start by integer in JS (#1367) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Italian by mirkoclaus, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann, c_schmitz
+#Updated translation: French (France) by b00z00
+#Updated translation: Dutch by c_schmitz, Han, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Danish by Mikkel
+#Updated translation: Czech by VBraun, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by c_schmitz, qualitatuvic
+
+
 Changes from 4.0.0 (build 200116) to 4.0.1 (build 200120) January 20, 2020
 +New feature #15693: Allow simple user to update script with XSS enable (Denis Chenu)
 -Fixed issue: Inherit option not editable on survey edit and in survey create view (lacrioque)
