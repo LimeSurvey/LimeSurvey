@@ -215,10 +215,10 @@ class themes extends Survey_Common_Action
                 if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
                     $message = $checkImageContent['check'] === false 
                         ? $checkImageContent['uploadresult'] 
-                        : $checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null;
+                        : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
                     $debug = $checkImageContent['check'] === false 
-                    ? $checkImageContent['debug'] 
-                    : $checkImageFilename['check'] === false ? $checkImageFilename['debug']: null;
+                        ? $checkImageContent['debug'] 
+                        : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson',
                         array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
