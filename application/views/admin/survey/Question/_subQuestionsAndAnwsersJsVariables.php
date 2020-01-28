@@ -52,6 +52,7 @@ if ($viewType=='subQuestions') {
     ";
 }
 
+Yii::app()->getClientScript()->registerCssFile( Yii::app()->getConfig('publicstyleurl').'subquetionandansweroptions.css');
 Yii::app()->getClientScript()->registerScript('SubquestionandAnswers-variables',  $scriptVariables, LSYii_ClientScript::POS_BEGIN );
 
 echo PrepareEditorScript(true, $this);
