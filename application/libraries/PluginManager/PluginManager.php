@@ -109,7 +109,7 @@ class PluginManager extends \CApplicationComponent
         $configFile = $destdir . '/config.xml';
         $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
         if (empty($extensionConfig)) {
-            return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
+            return [false, gT('Could not parse the plugin config.xml into a configuration object')];
         } else {
             return $this->installPlugin($extensionConfig, 'upload');
         }
