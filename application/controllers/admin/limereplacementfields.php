@@ -446,16 +446,16 @@ class limereplacementfields extends Survey_Common_Action
         if ($gid != null && $qid == null) {
             $oGroup = QuestionGroup::model()->findByPk($gid);
             $oCriteria->with = ['group'];
-            $oCriteria->compare('group_order', $oGroup->group_order, false, '<=');
+            $oCriteria->compare('group_order', '<='.$oGroup->group_order,);
         }
 
         if ($qid != null) {
             $oCriteria->with = ['group'];
-            $oCriteria->compare('group_order', $oCurrentQuestion->group->group_order, false, '<=');
+            $oCriteria->compare('group_order', '<='.$oCurrentQuestion->group->group_order);
             if ($oCurrentQuestion->parent_qid != 0) {
-                $oCriteria->compare('question_order', $oCurrentQuestion->parent->question_order, false, '<');
+                $oCriteria->compare('question_order', '<'.$oCurrentQuestion->parent->question_order);
             } else {
-                $oCriteria->compare('question_order', $oCurrentQuestion->question_order, false, '<');
+                $oCriteria->compare('question_order', '<'.$oCurrentQuestion->question_order );
             }
         }
 
