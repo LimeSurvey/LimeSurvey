@@ -57,6 +57,8 @@ class AdminController extends LSYii_Controller
     /**
      * Shows a nice error message to the world
      *
+     * todo REFACTORING is this still in use? can't find any call in an action or a view ...
+     *
      * @access public
      * @param string $message The error message
      * @return void
@@ -234,6 +236,8 @@ class AdminController extends LSYii_Controller
     /**
      * Routes all the actions to their respective places
      *
+     * todo REFACTORING we don't have to refactore this method ...
+     *
      * @access public
      * @return array
      */
@@ -266,6 +270,8 @@ class AdminController extends LSYii_Controller
      * This function is very similiar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
+     * todo REFACTORING we don't have to refactore this method ...
+     *
      * @access public
      * @return array
      */
@@ -285,6 +291,9 @@ class AdminController extends LSYii_Controller
 
     /**
      * Return the list of overriden actions from modules, and generate it if needed
+     *
+     * REFACTORED ( in LSYiiController)
+     *
      * @return array
      */
     protected function getOverridenCoreAction()

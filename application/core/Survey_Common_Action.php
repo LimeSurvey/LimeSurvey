@@ -337,7 +337,7 @@ class Survey_Common_Action extends CAction
         if ($sRenderFile == false) {
 
             if (!empty($aData['surveyid'])) {
-                //todo REFACTORING this whole part should go into new SurveyAdminController !!! (now its only important for surveyadmin.php
+                //todo REFACTORING this should be moved into LSMainController->beforeRender()
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
                 // Needed to evaluate EM expressions in question summary

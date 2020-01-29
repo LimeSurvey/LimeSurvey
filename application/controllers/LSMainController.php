@@ -12,10 +12,10 @@ class LSMainController extends LSYii_Controller
 
     public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
     public $layout = false;
-    public $aAdminModulesClasses = array();
+    //public $aAdminModulesClasses = array();
     protected $user_id = 0;
-    protected $aOverridenCoreActions = array(); // Contains the list of controller's actions overriden by custom modules
-    protected $currentModuleAction = '';        // Name of the current action overriden by a custom module
+    //protected $aOverridenCoreActions = array(); // Contains the list of controller's actions overriden by custom modules
+   // protected $currentModuleAction = '';        // Name of the current action overriden by a custom module
 
     // import for all new controllers/actions (REFACTORING) to pass data before rendering the content
     public $aData = [];
@@ -31,7 +31,7 @@ class LSMainController extends LSYii_Controller
     {
         parent::_init();
 
-        //REFACTORING we have to set the main layout here (it's in /view/layouts/main
+        //REFACTORING we have to set the main layout here (it's in /view/layouts/main)
         $this->layout = 'main';
 
         App()->getComponent('bootstrap');
@@ -54,6 +54,33 @@ class LSMainController extends LSYii_Controller
         $oAdminTheme = AdminTheme::getInstance();
 
         Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
+    }
+
+    /**
+     * This part comes from _renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
+     *
+     * todo REFACTORING find all actions that set $aData['surveyid'] and change the layout directly in the action
+     *
+     * @param string $view
+     * @return bool
+     */
+    protected function beforeRender($view)
+    {
+        //this lines come from _renderWarppedTemplate
+        if (!empty($aData['surveyid'])) {
+            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+
+            // Needed to evaluate EM expressions in question summary
+            // See bug #11845
+            LimeExpressionManager::SetSurveyId($aData['surveyid']);
+            LimeExpressionManager::StartProcessingPage(false, true);
+
+            $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
+            //$renderFile = $basePath.'/layout_insurvey.php';
+            $this->layout = $basePath.'/layout_insurvey.php';
+        }
+
+        return parent::beforeRender($view);
     }
 
     /**
@@ -106,10 +133,9 @@ class LSMainController extends LSYii_Controller
             }
         }
 
-        $this->runModuleController($action);
-
-        //no return needed ...
-        //return parent::run($action);
+        //todo REFACTORING why do we need this here ...it's for modules created by external developers to write modules
+        // ...and modules should be written also the normal yii-way after refactoring all controllers
+     //   $this->runModuleController($action);
 
         parent::run($action);
     }
@@ -117,12 +143,16 @@ class LSMainController extends LSYii_Controller
     /**
      * Load and set session vars
      *
+     * todo REFACTORING see comments in mehtod
+     *
      * @access protected
      * @return void
      */
     protected function _sessioncontrol()
     {
         // From personal settings
+
+        //todo this should go into specific controller action (atm /admin/user/sa/personalsettings)
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
@@ -131,18 +161,21 @@ class LSMainController extends LSYii_Controller
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
+        //todo end
+
+        //todo this should be done only once per session and not everytime calling an action ...
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
+        //todo end
     }
 
     /**
-     * Starting with LS4, 3rd party developper can extends any of the LimeSurve controllers.
-     *
-     *  REFACTORED ( in LSYiiController)
+     * Starting with LS4, 3rd party developper can extends any of the LimeSurvey controllers.
      *
      */
+    /*
     protected function runModuleController($action)
     {
         $aOverridenCoreActions = $this->getOverridenCoreAction();
@@ -156,12 +189,13 @@ class LSMainController extends LSYii_Controller
                 Yii::import($sActionModuleClass, true);
             }
         }
-    }
+    }*/
 
     /**
      * Return the list of overriden actions from modules, and generate it if needed
      * @return array
      */
+    /*
     protected function getOverridenCoreAction()
     {
         if (empty($this->aOverridenCoreActions)){
@@ -169,6 +203,6 @@ class LSMainController extends LSYii_Controller
         }
 
         return $this->aOverridenCoreActions;
-    }
+    }*/
 
 }

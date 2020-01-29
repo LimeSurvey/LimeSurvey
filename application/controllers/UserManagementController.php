@@ -26,7 +26,7 @@ class UserManagementController extends LSMainController
 
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
-                '/admin/usermanagement/partial/error',
+                'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
@@ -43,7 +43,7 @@ class UserManagementController extends LSMainController
 
         $aData['columnDefinition'] = $model->managementColums;
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $aData['formUrl'] = App()->createUrl('usermanagement/index');
+        $aData['formUrl'] = $this->createUrl('userManagement/index');
 
         $aData['massiveAction'] = $this->renderPartial('massiveAction/_selector',
             [],
