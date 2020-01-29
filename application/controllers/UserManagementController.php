@@ -1192,7 +1192,7 @@ class UserManagementController extends LSMainController
                 break;
         }
 
-        $body = Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/usernotificationemail', $renderArray, true);
+        $body = Yii::app()->getController()->renderPartial('partial/usernotificationemail', $renderArray, true);
 
         $oCurrentlyLoggedInUser = User::model()->findByPk(Yii::app()->user->id);
 
@@ -1327,4 +1327,91 @@ class UserManagementController extends LSMainController
         }
         return $results;
     }
+
+    /**
+     * CURRENTLY UNUSED
+     * Add a tenplated permission to a users
+     *
+     * @param User $oUser
+     * @param string $permissionclass
+     * @param array $entity_ids
+     * @return array
+     */
+    /*
+    protected function applyPermissionTemplate($oUser, $permissionclass, $entity_ids = [])
+    {
+        if ($permissionclass == 'Gruppenmanager' && empty($entity_ids)) {
+            return [
+                "success" => false,
+                "error" => "Keine Umfrage für Berechtigung ausgewählt",
+            ];
+        }
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('uid', $oUser->uid);
+        //Kill all Permissions
+        $aPermissionsCurrently = Permission::model()->deleteAll($oCriteria);
+
+        //Allow Login again
+        Permission::model()->setGlobalPermission($oUser->uid, 'auth_db');
+
+        $result = false;
+        if (in_array($permissionclass, ['Befragungsmanager', 'Wissenschaftler', 'combo'])) {
+            $result = $this->applyGlobalPermissionTemplate($oUser, $permissionclass);
+            $this->applyCorrectUsergroup($oUser->uid, ($permissionclass == 'combo' ? ['Befragungsmanager', 'Wissenschaftler'] : [$permissionclass]));
+        } elseif ($permissionclass == 'Gruppenmanager') {
+            $result = $this->applySurveyPermissionTemplate($oUser, $permissionclass, $entity_ids);
+            $this->applyCorrectUsergroup($oUser->uid, [$permissionclass]);
+        }
+        return $result;
+    }*/
+
+    /**
+     * CURRENTLY UNUSED
+     * Apply global permission from template
+     *
+     * @param User $oUser
+     * @param string $permissionclass
+     * @return array
+     */
+    /*
+    protected function applyGlobalPermissionTemplate($oUser, $permissionclass)
+    {
+        $permissionTemplate = []; //PermissionTemplates::getPermissionTemplateBlock($permissionclass, $oUser->uid);
+        $check = [];
+        foreach ($permissionTemplate as $permission) {
+            $oPermission = new Permission();
+            array_walk($permission, function ($val, $key) use (&$oPermission) {
+                $oPermission->$key = $val;
+            });
+            $check[$permission['permission']] = $oPermission->save(false);
+        }
+        return $check;
+    }*/
+
+    /**
+     * CURRENTLY UNUSED
+     * Add survey specific permissions by template
+     *
+     * @param User $oUser
+     * @param string $permissionclass
+     * @param array $entity_ids
+     * @return array
+     */
+    /*
+    protected function applySurveyPermissionTemplate($oUser, $permissionclass, $entity_ids)
+    {
+        $permissionTemplate = []; //PermissionTemplates::getPermissionTemplateBlock($permissionclass, $oUser->uid);
+        $check = [];
+        foreach ($permissionTemplate as $permission) {
+            array_walk($entity_ids, function ($entity_id) use ($permission, &$check) {
+                $oPermission = new Permission();
+                $permission['entity_id'] = $entity_id;
+                array_walk($permission, function ($val, $key) use (&$oPermission) {
+                    $oPermission->$key = $val;
+                });
+                $check[$permission['permission'] . '/' . $entity_id] = $oPermission->save(false);
+            });
+        }
+        return $check;
+    }*/
 }
