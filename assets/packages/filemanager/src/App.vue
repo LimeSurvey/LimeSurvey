@@ -30,7 +30,7 @@ export default {
         FileList
     },
     props: {
-        presetFolder: {type: String|null, default: null}
+        presetFolder: {type: String, default: null}
     },
     data() {
         return {
@@ -51,7 +51,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch("getFolderList").then(result => {
-            
+            this.getFolderListResult = result;
             if(this.presetFolder != null) {
                 this.$store.commit(
                     "setCurrentFolder",
