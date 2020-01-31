@@ -40,7 +40,8 @@ describe("correct display", () => {
 
     const tableRepMount = shallowMount(TableRepComponent, {
         propsData: { 
-            loading: false
+            loading: false,
+            currentPage: 0
         },
         mocks: {
             $dialog: {
@@ -62,11 +63,12 @@ describe("correct display", () => {
     });
 
     test.each(_.toArray(MockState.fileList))(
-        "Has an image block for every file rendered", 
+        "Has an image block for every file rendered",
         (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
-    });
+            const tableRowContainer = tableRepMount.find('#file-row-' + file.hash);
+            expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
+        }
+    );
 
     test.each(_.toArray(MockState.fileList))(
         "Has an image block for every file rendered", 
@@ -117,7 +119,8 @@ describe("File transit actions", () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -171,7 +174,8 @@ describe("File in transit actions", () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -235,7 +239,8 @@ describe('Delete file success', () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -279,7 +284,8 @@ describe('Delete file failure', () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
