@@ -24,7 +24,7 @@
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion && !loading">
                     <x-test id="action::addQuestion"></x-test>
-                    {{'Create question'|translate}}
+                    {{ (initCopy ? 'Copy question' : 'Create question') | translate }}
             </template>
             <template v-if="!isCreateQuestion && !loading">
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
@@ -32,10 +32,12 @@
         </div>
         <transition-group name="fade">
             <template v-if="!loading">
-                <div class="row" key="questioncode-block" v-if="initCopy">
+                <div class="row" key="questioncopy-block" v-if="initCopy">
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copySubquestions">{{"Copy subquestions" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copySubquestions"
                             id="copySubquestions"
                             v-model="copySubquestions"
                             :options="switcherOptions"
@@ -44,6 +46,8 @@
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copyAnswerOptions">{{"Copy answer options" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copyAnswerOptions"
                             id="copyAnswerOptions"
                             v-model="copyAnswerOptions"
                             :options="switcherOptions"
@@ -52,6 +56,8 @@
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copyDefaultAnswers">{{"Copy default answers" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copyDefaultAnswers"
                             id="copyDefaultAnswers"
                             v-model="copyDefaultAnswers"
                             :options="switcherOptions"
@@ -60,6 +66,8 @@
                     <div class="form-group col-lg-3 col-sm-6">
                         <label class="ls-space margin right-5" for="copyAdvancedOptions">{{"Copy advanced options" | translate}}</label>
                         <bootstrap-toggle
+                            v-if="initCopy"
+                            key="el-copyAdvancedOptions"
                             id="copyAdvancedOptions"
                             v-model="copyAdvancedOptions"
                             :options="switcherOptions"
@@ -67,25 +75,26 @@
                     </div>
                 </div>
                 <div class="row" key="questioncode-block">
-                    <div class="form-group col-sm-6">
+                    <div class="form-group col-sm-6 scoped-responsive-fix-height">
                         <label for="questionCode">{{'Code' | translate }}</label>
-                        <input v-if="$store.getters.surveyObject.active === 'Y'"
-                               text="text"
-                               class="form-control"
-                               id="questionCode"
-                               :required="required"
-                               readonly="(editQuestion && useModalSelector && $store.getters.surveyObject.active === 'Y')"
-                               v-model="currentQuestionCode" />
-                        <input v-else
-                               type="text"
-                               class="form-control"
-                               id="questionCode"
-                               :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-                               required="required"
-                               v-model="currentQuestionCode"
-                               @dblclick="setEditQuestion"
-                        />
-                        <p class="alert alert-warning" v-if="noCodeWarning">{{"noCodeWarning" | translate}}</p>
+                        <div class="scoped-keep-in-line">
+                            <input
+                                text="text"
+                                class="form-control"
+                                id="questionCode"
+                                :maxlength="this.maxQuestionCodeLength"
+                                :required="true"
+                                :readonly="!(editQuestion || isCreateQuestion || initCopy)"
+                                v-model="currentQuestionCode" 
+                                @dblclick="triggerEditQuestion" 
+                            />
+                            <type-counter 
+                                :countable="currentQuestionCode.length"
+                                :max-value="this.maxQuestionCodeLength"
+                                :valid="inputValid"
+                            />
+                        </div>
+                        <p class="well bg-warning scoped-highten-z" v-if="noCodeWarning!=null">{{noCodeWarning}}</p>
                     </div>
                     <div class="form-group col-sm-6 contains-question-selector">
                         <label for="questionCode">{{'Question type' | translate }}</label>
@@ -167,7 +176,15 @@
                         ></generalsettings>
                     </div>
                     <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                        <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+                        <advancedsettings 
+                            :event="event" 
+                            v-on:triggerEvent="triggerEvent" 
+                            v-on:eventSet="eventSet" 
+                            :readonly="!(editQuestion || isCreateQuestion)"
+                            :hide-advanced-options="initCopy && copyAdvancedOptions"
+                            :hide-subquestions="initCopy && copyAdvancedOptions"
+                            :hide-answeroptions="initCopy && copyAdvancedOptions"
+                        />
                     </div>
                 </div>
             </template>
@@ -181,9 +198,11 @@
 
 <script>
 import Mousetrap from 'mousetrap';
+import every from 'lodash/every';
 import filter from 'lodash/filter';
 
-import BootstrapToggle from 'vue-bootstrap-toggle'
+import BootstrapToggle from './helperComponents/BootstrapToggler.vue'
+import TypeCounter from './helperComponents/TypeCounter.vue'
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
@@ -205,13 +224,16 @@ export default {
         'advancedsettings' : AdvancedSettings,
         'languageselector' : LanguageSelector,
         BootstrapToggle,
+        TypeCounter,
         SimpleQuestionTypeSelector
     },
     data() {
         return {
+            // This is currently fixed in the backend system.
+            // Since a dynamic option may be added in the future, it is easily amendable here
+            maxQuestionCodeLength: 20,
             editQuestion: false,
             loading: true,
-            noCodeWarning: false,
             switcherOptions: {
                 onstyle:"primary",
                 offstyle:"warning",
@@ -222,6 +244,7 @@ export default {
         }
     },
     computed: {
+        //Simple getters
         showAlerts() {
             return this.$store.state.alerts.length > 0;
         },
@@ -231,18 +254,8 @@ export default {
         questionGroupWithId(){
             return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;
         },
-        currentQuestionCode: {
-            get() {return this.$store.state.currentQuestion.title;},
-            set(newValue) {
-                this.$store.commit('updateCurrentQuestionTitle', newValue);
-            }
-        },
         allowSwitchEditing(){
             return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
-        },
-        currentAlerts: {
-            get() {return this.$store.state.alerts;},
-            set(tmpAlerts) { this.$store.commit('setAlerts', tmpAlerts); }
         },
         storedEvent() {
             return this.$store.state.storedEvent;
@@ -260,6 +273,29 @@ export default {
         },
         containsMultipleLanguages() {
             return (this.getLanguageCount > 1);
+        },
+        currentQuestionTypeDescription (){
+            if (this.$store.state.questionTypes[this.$store.state.currentQuestion.type]) {
+                return this.$store.state.questionTypes[this.$store.state.currentQuestion.type].description
+            } else {
+                // TODO: This happens in the SaveDualScaleAnswerOptionsTest, for some reason.
+                return 'Error: questionTypes not initialised';
+            }
+        },
+        useModalSelector() {
+            return window.QuestionEditData.questionSelectorType == 'full'
+                    || window.QuestionEditData.questionSelectorType == 'default';
+        },
+        //Getter setter combinations
+        currentQuestionCode: {
+            get() {return this.$store.state.currentQuestion.title;},
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionTitle', newValue);
+            }
+        },
+        currentAlerts: {
+            get() {return this.$store.state.alerts;},
+            set(tmpAlerts) { this.$store.commit('setAlerts', tmpAlerts); }
         },
         initCopy: {
             get() { return this.$store.state.initCopy; },
@@ -281,18 +317,35 @@ export default {
             get() { return this.$store.state.copyAdvancedOptions; },
             set(nV) { this.$store.commit('setCopyAdvancedOptions', nV); }
         },
-        currentQuestionTypeDescription (){
-            if (this.$store.state.questionTypes[this.$store.state.currentQuestion.type]) {
-                return this.$store.state.questionTypes[this.$store.state.currentQuestion.type].description
-            } else {
-                // TODO: This happens in the SaveDualScaleAnswerOptionsTest, for some reason.
-                return 'Error: questionTypes not initialised';
-            }
+        // Utilities
+        codeAlreadyTaken(){
+            const otherTitle = filter(
+                this.$store.state.surveyInfo.aQuestionTitles, 
+                title => this.$store.state.questionImmutable.title != title 
+            );
+            return !every(
+                otherTitle, 
+                (title) => this.$store.state.currentQuestion.title != title
+            );
         },
-        useModalSelector() {
-            return window.QuestionEditData.questionSelectorType == 'full'
-                    || window.QuestionEditData.questionSelectorType == 'default';
-        }
+        noCodeWarning() {
+            if (!this.$store.getters.hasTitleSet) {
+                return this.translate("noCodeWarning");
+            }
+
+            if (this.currentQuestionCode.length > this.maxQuestionCodeLength) {
+                return this.translate("codeTooLong");
+            }
+            if(this.codeAlreadyTaken) {
+                return this.translate("alreadyTaken");
+            }
+            return null;
+        },
+        inputValid() {
+            return this.$store.getters.hasIndividualSubquestionTitles
+                && this.$store.getters.hasIndividualAnsweroptionCodes
+                && this.noCodeWarning == null
+        },
     },
     watch: {
         storedEvent(newValue) {
@@ -303,6 +356,23 @@ export default {
         }
     },
     methods: {
+        // Methods for event management, either external, or internal
+        jqueryTriggered(event, data){
+            //this.$log.log('data', data);
+            this.event = JSON.parse(data.emitter);
+        },
+        setModalEvent(payload) {
+            this.$log.log('New event set', payload);
+            this.event = payload;
+        },
+        triggerEvent(payload) {
+            this.$log.log('New event set', payload);
+            this.event = payload;
+        },
+        eventSet(eventRoot=false) {
+            this.event = null;
+        },
+        // Triggers 
         triggerEditQuestion(force = null){
             if(force === null) {
                 this.editQuestion = !this.editQuestion;
@@ -327,12 +397,46 @@ export default {
                 LS.EventBus.$emit('doFadeEvent', true);
             }
         },
-        applyHotkeys() {
-            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
-            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
-            Mousetrap.bind('ctrl+s', this.submitCurrentState);
-            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});
+        toggleQuestionTypeSelector() {
+            this.$modal.show(QuestionTypeSelector, {
+                id: "QuestionSelect-"+this.$store.state.currentQuestion.qid,
+                title: this.translate("Select question type"),
+                debug: true// window.debugState.backend
+            }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+                resizable: false
+              },
+              {
+                'trigger-event': this.triggerEvent
+              }
+            )
         },
+        selectLanguage(sLanguage) {
+            this.$log.log('LANGUAGE CHANGED', sLanguage);
+            this.$store.commit('setActiveLanguage', sLanguage);
+        },
+        canSubmit(){
+            if (!this.$store.getters.hasIndividualSubquestionTitles) {
+                window.LS.notifyFader(
+                    this.translate("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
+                    'well-lg bg-danger text-center'
+                );
+                return false;
+            }
+            
+            if (!this.$store.getters.hasIndividualAnsweroptionCodes) {
+                window.LS.notifyFader(
+                    this.translate("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
+                    'well-lg bg-danger text-center'
+                );
+                return false;
+            }
+
+            return true;
+        },
+        // Event actions
         chooseNextLanguage() {
             this.$log.log('HOTKEY', 'chooseNextLanguage');
             this.$store.commit('nextLanguage');
@@ -341,25 +445,9 @@ export default {
             this.$log.log('HOTKEY', 'choosePreviousLanguage');
             this.$store.commit('previousLanguage');
         },
-        jqueryTriggered(event, data){
-            //this.$log.log('data', data);
-            this.event = JSON.parse(data.emitter);
-        },
-        setModalEvent(payload) {
-            this.$log.log('New event set', payload);
-            this.event = payload;
-        },
-        triggerEvent(payload) {
-            this.$log.log('New event set', payload);
-            this.event = payload;
-        },
-        eventSet(eventRoot=false) {
-            this.event = null;
-        },
         submitCurrentState(redirect = false, redirectUrl = false) {
-            if(this.checkCanSubmit()) {
+            if(this.canSubmit()) {
                 this.loading = true;
-                this.noCodeWarning = false;
                 this.$store.dispatch('saveQuestionData').then(
                     (result) => {
                         if(result === false) {
@@ -396,54 +484,19 @@ export default {
                 window.setTimeout(() => { LS.EventBus.$emit('loadingFinished') }, 250);
             }
         },
-        checkCanSubmit(){
-            if(!this.$store.getters.hasTitleSet) {
-                this.noCodeWarning = true;
-                return false;
-            }
-            if(!this.$store.getters.hasIndividualSubquestionTitles) {
-                window.LS.notifyFader(
-                    this.translate("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
-                    'well-lg bg-danger text-center'
-                );
-                return false;
-            }
-            if(!this.$store.getters.hasIndividualAnsweroptionCodes) {
-                window.LS.notifyFader(
-                    this.translate("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
-                    'well-lg bg-danger text-center'
-                );
-                return false;
-            }
-            return true;
-        },
-        toggleQuestionTypeSelector() {
-            this.$modal.show(QuestionTypeSelector, {
-                id: "QuestionSelect-"+this.$store.state.currentQuestion.qid,
-                title: this.translate("Select question type"),
-                debug: true// window.debugState.backend
-            }, {
-                width: '75%',
-                height: '75%',
-                scrollable: true,
-                resizable: false
-              },
-              {
-                'trigger-event': this.triggerEvent
-              }
-            )
-        },
-        selectLanguage(sLanguage) {
-            this.$log.log('LANGUAGE CHANGED', sLanguage);
-            this.$store.commit('setActiveLanguage', sLanguage);
-        },
+        // on Mounted methods 
+        applyHotkeys() {
+            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
+            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
+            Mousetrap.bind('ctrl+s', this.submitCurrentState);
+            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});
+        },       
     },
     created(){
+        // Close any open copy state
         this.initCopy = false;
-        Promise.all([
-            this.$store.dispatch('loadQuestion'),
-            this.$store.dispatch('getQuestionTypes')
-        ]).then(()=>{
+        // Get question data and populate the state
+        this.$store.dispatch('loadQuestion').then(()=>{
             this.loading = false;
             this.$store.commit('setInTransfer', false);
             if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
@@ -452,6 +505,7 @@ export default {
         }).catch((e) => {
             this.$log.error(e);
         });
+        // Listen to necessary global events
         LS.EventBus.$on('questionTypeChanged', (payload) => {
             this.$log.log("questiontype changed to -> ", payload.content.value);
             this.$log.log("with data -> ", payload.content.options);
@@ -459,31 +513,40 @@ export default {
     },
 
     mounted() {
+        // Bind event listener for jQuery events
+        // @TODO Remove jQuery events
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
-
+        // Create keydown listeners 
         this.applyHotkeys();
 
+        //Prevent regular form submission
         $('#frmeditquestion').on('submit', (e)=>{
             e.preventDefault();
         });
 
-        LS.EventBus.$off('questionTypeChange');
+        //Unset edit mode if it was enabled
+        LS.EventBus.$emit('doFadeEvent', this.editQuestion);
+
+        // Listen to necessary global events
+        LS.EventBus.$off('questionTypeChange'); //Full rebind
         LS.EventBus.$on('questionTypeChange', (payload) => {
             this.$store.dispatch('questionTypeChange', payload);
         });
 
-        LS.EventBus.$off('componentFormSubmit');
+        LS.EventBus.$off('componentFormSubmit'); //Full rebind
         LS.EventBus.$on('componentFormSubmit', (payload) => {
             this.submitCurrentState((payload.id == '#save-and-close-button'), payload.url != '#' ? payload.url : false);
         });
 
-        LS.EventBus.$off('copyQuestion');
+        LS.EventBus.$off('copyQuestion'); //Full rebind
         LS.EventBus.$on('copyQuestion', (payload) => {
             this.initCopy = !this.initCopy;
             if(this.initCopy) {
                 this.editQuestion = true;
                 LS.EventBus.$emit('doFadeEvent', true);
-                this.currentQuestionCode = this.currentQuestionCode+'Copy';
+                this.currentQuestionCode = this.currentQuestionCode.substring(0,16)+'Copy';
+            } else {
+                this.currentQuestionCode = this.$store.state.questionImmutable.title;
             }
         });
     }
@@ -491,6 +554,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+@media screen and (min-width: 769px) {
+    .scoped-responsive-fix-height {
+            max-height: 59px;
+            margin-bottom: 8px;
+            .scoped-highten-z {
+                z-index: 150;
+                position: relative;
+            }
+    }
+}
+
+.scoped-keep-in-line {
+    display: block;
+    white-space: nowrap;
+    position: relative;
+}
+
 .scoped-unset-pointer-events {
     pointer-events: none;
 }

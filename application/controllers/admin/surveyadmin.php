@@ -2091,8 +2091,8 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
             $aReturner["surveyTitle"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_title;
-            $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
-            $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
+            $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
+            $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
             $aReturner["endText"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_endtext;
             $aReturner["endUrl"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_url;
             $aReturner["endUrlDescription"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_urldescription;

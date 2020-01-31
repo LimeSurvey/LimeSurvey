@@ -1,3 +1,4 @@
+<script>
 import max from 'lodash/max';
 import keys from 'lodash/keys';
 import merge from 'lodash/merge';
@@ -10,15 +11,27 @@ import findIndex from 'lodash/findIndex';
 import isArrayLike from 'lodash/isArrayLike';
 import isObjectLike from 'lodash/isObjectLike';
 
-import QuickEdit from '../helperComponents/QuickEdit.vue';
-import LabelSets from '../helperComponents/LabelSets.vue';
-import SaveLabelSet from '../helperComponents/SaveLabelSet.vue';
-import SimplePopUpEditor from '../helperComponents/SimplePopUpEditor.vue';
+import QuickEdit from '../../helperComponents/QuickEdit.vue';
+import LabelSets from '../../helperComponents/LabelSets.vue';
+import SaveLabelSet from '../../helperComponents/SaveLabelSet.vue';
+import SimplePopUpEditor from '../../helperComponents/SimplePopUpEditor.vue';
+
+import EventChild from '../../mixins/eventChild.js';
 
 export default {
     components: {QuickEdit, SimplePopUpEditor, LabelSets},
+    mixins: [EventChild],
     props: {
         readonly : {type: Boolean, default: false}
+    },
+    data(){
+        return {
+            uniqueSelector: 'id',
+            type: 'xxx',
+            orderAttribute: 'sortorder',
+            typeDefininition: 'xx',
+            typeDefininitionKey: 'xx',
+        };
     },
     computed: {
         surveyActive() {
@@ -257,3 +270,4 @@ export default {
         }
     }
 }
+</script>

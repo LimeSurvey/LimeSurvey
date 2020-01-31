@@ -9,9 +9,10 @@ services:
 php:
     - 7.2
     - 7.3
+    - 7.4
 env:
-  - DBENGINE=MYISAM
-  - DBENGINE=INNODB
+    - DBENGINE=MYISAM
+    - DBENGINE=INNODB
 services:
     - mysql
 notifications:
@@ -107,5 +108,5 @@ before_script:
 script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit
-    # yarn --cwd ./assets/packages/filemanager run test
+    - yarn --cwd ./assets/packages/filemanager run test
     - yarn --cwd ./assets/packages/adminbasics run test

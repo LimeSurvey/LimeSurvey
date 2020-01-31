@@ -218,7 +218,7 @@ class QuestionAttribute extends LSActiveRecord
 
         // Limit the size of the attribute cache due to memory usage
         $aQuestionAttributes = array();
-        $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
+        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
 
         if ($oQuestion) {
             if ($sLanguage) {
@@ -237,7 +237,7 @@ class QuestionAttribute extends LSActiveRecord
             $aAttributeNames = self::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
-            $oAttributeValues = self::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
+            $oAttributeValues = self::model()->resetScope()->findAll("qid=:qid", ['qid' => $iQuestionID]);
 
             // insert additional attributes from an extended question theme
             foreach ($oAttributeValues as $oAttributeValue) {

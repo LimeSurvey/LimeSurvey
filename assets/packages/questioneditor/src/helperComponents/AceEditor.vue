@@ -32,6 +32,9 @@ export default {
             contentBackup: "",
         };
     },
+    computed: {
+        currentLanguage() { return this.$store.state.currentLanguage; }
+    },
     methods: {
         toggleDarkMode(){
             if(this.darkMode) {
@@ -41,10 +44,6 @@ export default {
             }
             this.darkMode = !this.darkMode;
         },
-        resizeEditor(){
-            event.target.innerHeight
-            this.editor.resize();
-        }
     },
     watch: {
         lang: function(newLang) {
@@ -52,6 +51,11 @@ export default {
                 this.editor.getSession().setMode("ace/mode/" + newLang);
             }
         },
+        value(newVal, oldVal){
+            if(this.contentBackup !== newVal) {
+                this.editor.setValue(newVal);
+            }
+        }
     },
     beforeDestroy: function() {
         this.editor.destroy();
@@ -74,8 +78,8 @@ export default {
 
         this.editor.on("change", () => {
             let content = this.editor.getValue();
-            this.$emit("input", content);
             this.contentBackup = content;
+            this.$emit("input", content);
         });
 
         if (this.options != null) {

@@ -228,17 +228,18 @@ class themes extends Survey_Common_Action
         // Redirect back at file size error.
         $this->checkFileSizeError();
 
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
-        if ($checkImage['check'] === false) {
-            return App()->getController()->renderPartial(
+        $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
+        $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
+        if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
+            $message = $checkImageContent['check'] === false 
+                ? $checkImageContent['uploadresult'] 
+                : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
+            $debug = $checkImageContent['check'] === false 
+                ? $checkImageContent['debug'] 
+                : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
+            return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => $checkImage['uploadresult'],
-                        'debug' => $checkImage['debug']
-                    ]
-                ),
+                array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
                 false,
                 false
             );

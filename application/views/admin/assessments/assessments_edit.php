@@ -115,7 +115,8 @@
                       <div class='col-sm-12'>
                         <div class="htmleditor input-group">
                           <textarea name='assessmentmessage_<?=$assessmentlang?>' class="form-control" id='assessmentmessage_<?=$assessmentlang?>' rows='10' ><?php echo $message;?></textarea>
-                          <?php echo getEditor("assessment-text","assessmentmessage_".$assessmentlang, "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
+                            <?php // todo implement new ekeditor 1580136051118 ?>
+                            <?php //echo getEditor("assessment-text","assessmentmessage_".$assessmentlang, "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
                         </div>
                       </div>
                     </div>

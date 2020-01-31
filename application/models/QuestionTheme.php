@@ -228,8 +228,8 @@ class QuestionTheme extends LSActiveRecord
             } catch (Exception $e) {
                 //TODO: flashmessage for users
                 echo $e->getMessage();
-                var_dump($e->getTrace());
-                var_dump($missingQuestionThemeAttributes);
+                // var_dump($e->getTrace());
+                // var_dump($missingQuestionThemeAttributes);
                 if ($bUseTransaction) {
                     $transaction->rollback();
                 }
@@ -823,11 +823,14 @@ class QuestionTheme extends LSActiveRecord
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
         $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-        libxml_disable_entity_loader($bOldEntityLoaderState);
 
         if (!$sQuestionConfigFile) {
+            libxml_disable_entity_loader($bOldEntityLoaderState);
             return $aSuccess = [
-                'message' => gT('No Configuration could be found for ' . $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml'),
+                'message' => sprintf(
+                    gT('No Configuration could be found for %s/config.xml'),
+                    $sXMLDirectoryPath
+                ),
                 'success' => false
             ];
         }
@@ -838,6 +841,7 @@ class QuestionTheme extends LSActiveRecord
             $sQuestionConfigFile = preg_replace('/<\/custom_attributes>/', '</attributes>', $sQuestionConfigFile);
         };
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
+        libxml_disable_entity_loader($bOldEntityLoaderState);
 
         $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1));
         $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sThemeDirectoryName . '/config.xml');
@@ -861,7 +865,10 @@ class QuestionTheme extends LSActiveRecord
         // check if core question theme can be found to fill in missing information
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
-                'message' => gT("Question Theme could not be converted to LimeSurvey 4 standard. Reason: No matching core Theme with the name: " . $sThemeDirectoryName . " could be found"),
+                'message' => sprintf(
+                    gT("Question theme could not be converted to LimeSurvey 4 standard. Reason: No matching core theme with the name %s could be found"),
+                    $sThemeDirectoryName
+                ),
                 'success' => false
             ];
         }

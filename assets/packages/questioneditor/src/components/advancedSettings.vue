@@ -1,5 +1,5 @@
 <script>
-
+import Vue from 'vue';
 import keys from 'lodash/keys';
 import foreach from 'lodash/forEach';
 import reduce from 'lodash/reduce';
@@ -13,6 +13,8 @@ import Answeroptions from './subcomponents/_answeroptions.vue';
 
 import eventChild from '../mixins/eventChild.js';
 
+const Stub = Vue.component('stub', {template: '<span></span>'});
+
 export default {
     name: 'AdvancedSettings',
     mixins: [eventChild],
@@ -20,9 +22,13 @@ export default {
         "settings-tab" : SettingsTab,
         "subquestions" : Subquestions,
         "Answeroptions" : Answeroptions,
+        Stub
     },
     props: {
-        readonly : {type: Boolean, default: false}
+        readonly : {type: Boolean, default: false},
+        hideAdvancedOptions: { type: Boolean, default: false },
+        hideSubquestions: { type: Boolean, default: false },
+        hideAnsweroptions: { type: Boolean, default: false },
     },
     data() {
         return {
@@ -40,6 +46,21 @@ export default {
         };
     },
     computed: {
+        currentTabComponentComputed() {
+            return this.hideAdvancedOptions 
+                ? (this.showSubquestionEdit && !hideSubquestions
+                    ? 'subquestions'
+                    : (this.showAnswerOptionEdit && !hideAnsweroptions
+                        ? 'answeroptions'
+                        : 'stub')
+                )
+                : this.currentTabComponent;
+        },
+        showAdvancedOptions() {
+            return  (this.showSubquestionEdit && !this.hideSubquestions) 
+                    || (this.showAnswerOptionEdit && !this.hideAnsweroptions)
+                    || !this.hideAdvancedOptions;
+        },
         tabs(){
             if(this.readonly == false) {
                 return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
@@ -57,10 +78,10 @@ export default {
             
         },
         showSubquestionEdit(){
-            return this.$store.state.currentQuestion.typeInformation.subquestions >= 1;
+            return !this.hideSubquestions && this.$store.state.currentQuestion.typeInformation.subquestions >= 1;
         },
         showAnswerOptionEdit(){
-            return this.$store.state.currentQuestion.typeInformation.answerscales >= 1;
+            return !this.hideAnsweroptions && this.$store.state.currentQuestion.typeInformation.answerscales >= 1;
         },
     },
     methods: {
@@ -96,7 +117,7 @@ export default {
 <template>
     <div class="col-12 scope-apply-base-style scope-min-height">
         <transition name="slide-fade">
-            <div class="container-fluid" v-if="!loading" id="advanced-options-container">
+            <div class="container-fluid" v-if="!loading && showAdvancedOptions" id="advanced-options-container">
                 <div class="row scoped-tablist-container">
                     <template v-if="showSubquestionEdit || showAnswerOptionEdit">
                         <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
@@ -113,10 +134,9 @@ export default {
                                 <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
                             </li>
                         </ul>
-                        <span class="scope-divider">|</span>
                     </template>
                     <!-- Advanced settings tabs -->
-                    <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
+                    <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist" v-if="!hideAdvancedOptions">
                         <li 
                             v-for="advancedSettingCategory in tabs"
                             :key="'tablist-'+advancedSettingCategory"
@@ -128,11 +148,11 @@ export default {
                 </div>
                 <div class="row scope-border-open-top">
                     <component 
-                    v-bind:is="currentTabComponent" 
-                    :event="event"
-                    v-on:eventSet="eventSet"
-                    v-on:triggerEvent="triggerEvent"
-                    :readonly="readonly"
+                        v-bind:is="currentTabComponentComputed" 
+                        :event="event"
+                        v-on:eventSet="eventSet"
+                        v-on:triggerEvent="triggerEvent"
+                        :readonly="readonly"
                     />
                 </div>    
             </div>

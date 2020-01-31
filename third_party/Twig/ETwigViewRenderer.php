@@ -92,7 +92,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
 
         //$loader = new Twig_Loader_Filesystem($this->_paths);
         // LSHack
-        $loader = new Twig_Loader_Filesystem();
+        $loader = new Twig\Loader\FilesystemLoader();
 
         $defaultOptions = array(
             'autoescape' => false, // false because other way Twig escapes all HTML in templates
@@ -110,7 +110,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
 
         // Adding global 'void' function (usage: {{void(App.clientScript.registerScriptFile(...))}})
         // (@see ETwigViewRendererVoidFunction below for details)
-        $this->_twig->addFunction(new Twig_SimpleFunction('void', 'ETwigViewRendererVoidFunction'));
+        $this->_twig->addFunction(new Twig\TwigFunction('void', 'ETwigViewRendererVoidFunction'));
 
         // Adding custom globals (objects or static classes)
         if (!empty($this->globals)) {
@@ -255,7 +255,12 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
      */
     private function _addCustom($classType, $elements)
     {
-        $classFunction = 'Twig_Simple' . $classType;
+        if ($classType === 'Function') {
+            $classFunction = 'Twig_Simple' . $classType;
+        } elseif ($classType === 'Filter') {
+            $classFunction = '\Twig\TwigFilter';
+        }
+        // Twig_SimpleFilter
 
         foreach ($elements as $name => $func) {
             $twigElement = null;
@@ -264,19 +269,22 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
                 // Just a name of function
                 case is_string($func):
                     $twigElement = new $classFunction($name, $func);
-                break;
+                    break;
                 // Name of function + options array
                 case is_array($func) && is_string($func[0]) && isset($func[1]) && is_array($func[1]):
                     $twigElement = new $classFunction($name, $func[0], $func[1]);
-                break;
+                    break;
             }
 
             if ($twigElement !== null) {
+                //if ($classType == 'Filter') {
+                    //echo '<pre>'; var_dump($twigElement); echo '</pre>';die;
+                //}
                 $this->_twig->{'add'.$classType}($twigElement);
             } else {
                 throw new CException(Yii::t('yiiext',
-                                             'Incorrect options for "{classType}" [{name}]',
-                                             array('{classType}'=>$classType, '{name}'=>$name)));
+                    'Incorrect options for "{classType}" [{name}]',
+                    array('{classType}'=>$classType, '{name}'=>$name)));
             }
         }
     }

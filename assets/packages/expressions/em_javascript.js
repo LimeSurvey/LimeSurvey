@@ -393,12 +393,37 @@ function LEMsum()
     return result.toString();
 }
 
-function LEMintval(a)
+/**
+ * return interger value of mixedVar (near like PHP floatval)
+ * @param mixed mixedVar
+ * @return integer
+ * @see: https://locutus.io/php/var/intval
+ * original by: Kevin van Zonneveld (https://kvz.io)
+ * improved by: stensi
+ * adapated for LimeSurvey by Denis Chenu
+ *   example 1: intval('150.03LimeSurvey')
+ *   returns 1: 150
+ *   example 2: intval('LimeSurvey: 10')
+ *   returns 2: 0
+ *   example 3: intval('-50.1 + 8')
+ *   returns 3: -50
+ *   example 4: intval(1 > 0)
+ *   returns 4: 1
+ */
+function LEMintval(mixedVar)
 {
-    if (isNaN(a)) {
-        return NaN;
+    var type = typeof mixedVar
+    if (type === 'boolean') {
+        return +mixedVar;
+    } 
+    if (type === 'string') {
+        tmp = parseInt(mixedVar, 10)
+        return (isNaN(tmp) || !isFinite(tmp)) ? 0 : tmp;
     }
-    return Math.floor(+a);
+    if (type === 'number' && isFinite(mixedVar)) {
+        return mixedVar < 0 ? Math.ceil(mixedVar) : Math.floor(mixedVar);
+    }
+    return 0;
 }
 
 function LEMis_null(a)
@@ -500,17 +525,24 @@ function LEMconvert_value( fValueToReplace, iStrict, sTranslateFromList, sTransl
  * @return float
  * @see: https://locutus.io/php/floatval/
  * original by: Michael White (https://getsprink.com)
+ * updated for LimeSurvey by Denis Chenu
  *      note 1: The native parseFloat() method of JavaScript returns NaN
  *      note 1: when it encounters a string before an int or float value.
- *   example 1: floatval('150.03_page-section')
+ *   example 1: floatval('150.03LimeSurvey')
  *   returns 1: 150.03
- *   example 2: floatval('page: 3')
+ *   example 2: floatval('LimeSurvey: 10')
  *   returns 2: 0
- *   example 3: floatval('-50 + 8')
- *   returns 3: -50
+ *   example 3: floatval('-50.1 + 8')
+ *   returns 3: -50.1
+ *   example 4: floatval(1 > 0)
+ *   returns 4: 1
  */
 function LEMfloatval(mixedVar)
 {
+    var type = typeof mixedVar;
+    if (type === 'boolean') {
+        return +mixedVar
+    }
     return (parseFloat(mixedVar) || 0)
 }
 /**
