@@ -11,6 +11,7 @@ top of things.
 
 * Make sure you have a [LimeSurvey account](https://www.limesurvey.org)
 * Make sure you have a [GitHub account](https://github.com/signup/free)
+* Read the [manual entry about contributions](https://manual.limesurvey.org/How_to_contribute_new_features)
 * Submit a ticket at https://bugs.limesurvey.org for your issue, assuming one does not already exist.
   * Clearly describe the issue including steps to reproduce when it is a bug.
   * Make sure you fill in the earliest version that you know has the issue.
