@@ -53,7 +53,6 @@ export default {
         fileAdded(file) {
             if (file !== null) {
                 this.queue.push(file);
-                console.log('File added: ', file);
             }
         },
         onErrorHandler(error) {
