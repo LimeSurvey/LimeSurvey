@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-01-29 13:18:04+00:00\n"
+"POT-Creation-Date: 2020-02-03 16:29:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7186,7 +7186,7 @@ msgstr ""
 msgid "Usage of processString without a string in your template"
 msgstr ""
 
-#: application/core/LimeMailer.php:545 application/core/LimeMailer.php:588
+#: application/core/LimeMailer.php:555 application/core/LimeMailer.php:598
 msgid "Email was not sent because demo-mode is activated."
 msgstr ""
 
@@ -8802,11 +8802,11 @@ msgstr ""
 msgid "Error creating LDAP connection"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:532
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:533
 msgid "Valid username but not authorized by group restriction"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:558
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:559
 msgid "Credentials are valid but we failed to create a user"
 msgstr ""
 
