@@ -84,8 +84,8 @@ $config['userideditable']            = 'N'; // Allow editing of user IDs
 $config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
-$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
-
+// Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
+$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
