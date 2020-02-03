@@ -196,6 +196,20 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function init()
     {
+        $this->debug = [];
+        $this->ContentType = self::CONTENT_TYPE_PLAINTEXT;
+        $this->clearCustomHeaders();
+        $this->clearAddresses();
+        $this->clearAttachments();
+        $this->oToken = null;
+        $this->Subject = "";
+        $this->Body = "";
+        $this->AltBody = "";
+        $this->rawSubject = "";
+        $this->rawBody = "";
+        $this->AltBody = "";
+        $this->MIMEBody = "";
+        $this->MIMEHeader = "";
         $this->setFrom(Yii::app()->getConfig('siteadminemail'),Yii::app()->getConfig('siteadminname'));
         /* set default return path */
         if(!empty(Yii::app()->getConfig('siteadminbounce'))) {
@@ -219,14 +233,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         /* Some part must be always resetted */
         if ($reset) {
-            self::$instance->clearAddresses(); // Unset only $this->to recepient
-            self::$instance->clearAttachments(); // Unset attachments (maybe only under condition ?)
-            self::$instance->oToken = null;
-            self::$instance->eventName = 'beforeEmail';
+            self::$instance->init();
             if(self::$instance->surveyId) {
-                self::$instance->eventName = 'beforeSurveyEmail';
+                self::$instance->setSurvey(self::$instance->surveyId);
             }
-            self::$instance->debug = [];
         }
         
         return self::$instance;
