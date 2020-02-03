@@ -18,3 +18,11 @@ RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
+
+# XSS protection
+<IfModule mod_headers.c>
+	Header set X-XSS-Protection "1; mode=block"
+    <FilesMatch "\.(svgz?)$">
+        Header set Content-Security-Policy "default-src 'none'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline'"
+    </FilesMatch>
+</IfModule>
