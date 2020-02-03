@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.1 (build 200129) to 3.22.2 (build 200204) February 4, 2020
+-Fixed issue #15791: Can't load a lengthy label set, buttons not visible (lacrioque)
+
+
 Changes from 3.22.0 (build 200127) to 3.22.1 (build 200129) January 29, 2020
 -Fixed issue [security] #15782: Remote Code Execution (RCE) in emplate options  file uploader. Thanks to Maxime Roy (lacrioque)
 -Fixed issue #15529: Print answer wrongly includes hidden questions (#1378) (Denis Chenu)
