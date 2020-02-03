@@ -13,12 +13,11 @@ import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
-
 Vue.config.productionTip = true;
+Vue.config.devtools = false;
 
 Vue.use(VuejsDialog);
 Vue.use(VModal, { dynamic: true });
-
 Vue.use( PluginLog );
 
 Vue.component('loader-widget', Loader);
