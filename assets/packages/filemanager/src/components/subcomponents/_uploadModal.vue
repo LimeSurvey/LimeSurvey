@@ -7,13 +7,14 @@
             <div> {{'File formats' | translate}}. </div>
         </div>
         <div class="panel-body ls-flex-column grow-1 fill">
-            <vue-dropzone 
-                ref="fileUploaderDropzone" 
-                id="FileUploader--dropzone" 
-                v-on:vdropzone-sending="applyFolderAndData" 
+            <vue-dropzone
+                ref="fileUploaderDropzone"
+                id="FileUploader--dropzone"
+                v-on:vdropzone-file-added="fileAdded"
+                v-on:vdropzone-sending="sendFile"
                 v-on:vdropzone-error="onErrorHandler"
                 v-on:vdropzone-complete="onCompleteHandler"
-                :options="dropzoneOptions" 
+                :options="dropzoneOptions"
                 :useCustomSlot="true"
                 :uploadMultiple="true"
                 class="FileUpload--dropzone"
@@ -25,10 +26,9 @@
                 </div>
             </vue-dropzone>
         </div>
-    </div>    
+    </div>
 </template>
 <script>
-
 import vue2Dropzone from 'vue2-dropzone'
 
 export default {
@@ -39,6 +39,9 @@ export default {
     props: {},
     data(){
         return {
+            queue: [],
+            url: '',
+            formData: {},
             dropzoneOptions: {
                 url: window.FileManager.baseUrl+'uploadFile',
                 thumbnailWidth: 200,
@@ -48,14 +51,9 @@ export default {
     },
     methods: {
         fileAdded(file) {
-            
-        },
-        applyFolderAndData(file, xhr, formData){
-            formData.append(LS.data.csrfTokenName, LS.data.csrfToken);
-            formData.append('folder', this.$store.state.currentFolder);
-            const surveyId = LS.reparsedParameters().combined.surveyid;
-            if(surveyId != undefined) {
-                formData.append('surveyid', surveyId);
+            if (file !== null) {
+                this.queue.push(file);
+                console.log('File added: ', file);
             }
         },
         onErrorHandler(error) {
@@ -72,9 +70,42 @@ export default {
                 'well-lg bg-danger text-center'
             );
         },
-        onCompleteHandler(response) {
-            this.$emit('close');
-        }
+        onCompleteHandler() {
+            let queueLength = this.queue.length;
+
+            if (queueLength > 1) {
+                let success = this.sendFiles(this.queue);
+                if (success) {
+                    this.$emit('close');
+                }
+            } else {
+                this.$emit('close');
+            }
+        },
+        sendFile(file, xhr, formData) {
+            let success = false;
+            this.formData = formData;
+            this.url = xhr;
+
+            try {
+                formData.append(LS.data.csrfTokenName, LS.data.csrfToken);
+                formData.append('folder', this.$store.state.currentFolder);
+                const surveyId = LS.reparsedParameters().combined.surveyid;
+                if(surveyId !== undefined) {
+                    formData.append('surveyid', surveyId);
+                }
+            } catch(e) {
+                this.log.error('Error: ', e.message);
+            }
+            return success;
+        },
+        sendFiles(items) {
+            let success = false;
+            for (let item in items) {
+                success = this.sendFile(item, this.url, this.formData);
+            }
+            return success;
+        },
     }
 }
 </script>
