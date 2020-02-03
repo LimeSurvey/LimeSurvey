@@ -1,4 +1,32 @@
 
+<template>
+    <div class="panel panel-default ls-flex-column fill">
+        <div class="panel-heading">
+            <div class="pagetitle h3">{{'Upload a file' | translate}} </div>
+            <div> <b>{{'Allowed file formats' | translate}}</b>: </div>
+            <div> {{'File formats' | translate}}. </div>
+        </div>
+        <div class="panel-body ls-flex-column grow-1 fill">
+            <vue-dropzone 
+                ref="fileUploaderDropzone" 
+                id="FileUploader--dropzone" 
+                v-on:vdropzone-sending="applyFolderAndData" 
+                v-on:vdropzone-error="onErrorHandler"
+                v-on:vdropzone-complete="onCompleteHandler"
+                :options="dropzoneOptions" 
+                :useCustomSlot="true"
+                :uploadMultiple="true"
+                class="FileUpload--dropzone"
+            >
+                <div class="dropzone-custom-content">
+                    <h3>{{"Drag and drop here, or click once to start uploading" | translate}}</h3>
+                    <p>{{"File is uploaded to currently selected folder" | translate}}</p>
+                    <p>{{"A .zip archive will be automatically unpacked on the server" | translate}}</p>
+                </div>
+            </vue-dropzone>
+        </div>
+    </div>    
+</template>
 <script>
 
 import vue2Dropzone from 'vue2-dropzone'
@@ -50,36 +78,6 @@ export default {
     }
 }
 </script>
-
-<template>
-    <div class="panel panel-default ls-flex-column fill">
-        <div class="panel-heading">
-            <div class="pagetitle h3">{{'Upload a file' | translate}} </div>
-            <div> <b>{{'Allowed file formats' | translate}}</b>: </div>
-            <div> {{'File formats' | translate}}. </div>
-        </div>
-        <div class="panel-body ls-flex-column grow-1 fill">
-            <vue-dropzone 
-                ref="fileUploaderDropzone" 
-                id="FileUploader--dropzone" 
-                v-on:vdropzone-sending="applyFolderAndData" 
-                v-on:vdropzone-error="onErrorHandler"
-                v-on:vdropzone-complete="onCompleteHandler"
-                :options="dropzoneOptions" 
-                :useCustomSlot="true"
-                :uploadMultiple="true"
-                class="FileUpload--dropzone"
-            >
-                <div class="dropzone-custom-content">
-                    <h3>{{"Drag and drop here, or click once to start uploading" | translate}}</h3>
-                    <p>{{"File is uploaded to currently selected folder" | translate}}</p>
-                    <p>{{"A .zip archive will be automatically unpacked on the server" | translate}}</p>
-                </div>
-            </vue-dropzone>
-        </div>
-    </div>    
-</template>
-
 <style scoped>
     .FileUpload--dropzone {
         height: 100%;
