@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-04 19:03:21+00:00\n"
+"POT-Creation-Date: 2020-02-04 20:08:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2488,7 +2488,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:252
 #: application/models/Question.php:622 application/models/Survey.php:1007
 #: application/models/Survey.php:1015
-#: application/models/TemplateConfiguration.php:1545
+#: application/models/TemplateConfiguration.php:1544
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:623
@@ -2665,8 +2665,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:252
 #: application/models/Question.php:622 application/models/Survey.php:1007
 #: application/models/Survey.php:1015
-#: application/models/TemplateConfiguration.php:1529
-#: application/models/TemplateConfiguration.php:1546
+#: application/models/TemplateConfiguration.php:1528
+#: application/models/TemplateConfiguration.php:1545
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:624
 #: application/views/admin/dataentry/content_view.php:693
@@ -3870,7 +3870,7 @@ msgid "Questions"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:62
-msgid "Surveyformat"
+msgid "Survey format"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:218
@@ -3908,6 +3908,7 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:305
 #: application/controllers/admin/limereplacementfields.php:324
 #: application/controllers/admin/limereplacementfields.php:344
+#: application/controllers/admin/surveyadmin.php:87
 #: application/controllers/admin/surveyadmin.php:1548
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:13
 #: application/views/admin/token/massive_actions/_delete_results.php:11
@@ -4603,7 +4604,20 @@ msgid "Scale"
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:153
-msgid "Save and Close"
+#: application/extensions/SettingsWidget/SettingsWidget.php:243
+#: application/views/admin/conditions/conditionshead_view.php:73
+#: application/views/admin/emailtemplates/emailtemplates_view.php:63
+#: application/views/admin/super/fullpagebar_view.php:29
+#: application/views/admin/survey/Question/editQuestion_view.php:459
+#: application/views/admin/survey/Question/editQuestion_view.php:465
+#: application/views/admin/survey/Question/neditQuestion_view.php:392
+#: application/views/admin/survey/Question/neditQuestion_view.php:398
+#: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:128
+#: application/views/admin/survey/Question/question_subviews/_tabs.php:128
+#: application/views/admin/survey/Question/questionbar_view.php:203
+#: application/views/admin/survey/Question/questionbar_view.php:251
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:255
+msgid "Save and close"
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:154
@@ -4982,7 +4996,8 @@ msgid "Question ID"
 msgstr ""
 
 #: application/controllers/admin/questions.php:1619
-msgid "Question Title"
+#: application/views/admin/survey/Question/massive_actions/_delete_results.php:11
+msgid "Question title"
 msgstr ""
 
 #: application/controllers/admin/quotas.php:123
@@ -5228,10 +5243,6 @@ msgstr ""
 msgid "Statistics"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:87
-msgid "Survey Title"
-msgstr ""
-
 #: application/controllers/admin/surveyadmin.php:135
 msgid "You can't update question code for an active survey."
 msgstr ""
@@ -5348,7 +5359,7 @@ msgstr ""
 #: application/models/SurveysGroupsettings.php:367
 #: application/models/SurveysGroupsettings.php:372
 #: application/models/SurveysGroupsettings.php:391
-#: application/models/TemplateConfiguration.php:1538
+#: application/models/TemplateConfiguration.php:1537
 #: application/views/admin/export/exportresult_panels/_headings.php:36
 #: application/views/admin/export/exportresult_panels/_headings.php:52
 #: application/views/admin/export/exportresult_panels/_headings.php:68
@@ -8176,12 +8187,12 @@ msgid "Show popups"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2076
-#: application/models/TemplateConfiguration.php:1527
+#: application/models/TemplateConfiguration.php:1526
 msgid "Popup"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:2077
-#: application/models/TemplateConfiguration.php:1528
+#: application/models/TemplateConfiguration.php:1527
 msgid "On page"
 msgstr ""
 
@@ -9008,22 +9019,6 @@ msgstr ""
 
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:61
 msgid "Unknown box ID!"
-msgstr ""
-
-#: application/extensions/SettingsWidget/SettingsWidget.php:243
-#: application/views/admin/conditions/conditionshead_view.php:73
-#: application/views/admin/emailtemplates/emailtemplates_view.php:63
-#: application/views/admin/super/fullpagebar_view.php:29
-#: application/views/admin/survey/Question/editQuestion_view.php:459
-#: application/views/admin/survey/Question/editQuestion_view.php:465
-#: application/views/admin/survey/Question/neditQuestion_view.php:392
-#: application/views/admin/survey/Question/neditQuestion_view.php:398
-#: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:128
-#: application/views/admin/survey/Question/question_subviews/_tabs.php:128
-#: application/views/admin/survey/Question/questionbar_view.php:203
-#: application/views/admin/survey/Question/questionbar_view.php:251
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:255
-msgid "Save and close"
 msgstr ""
 
 #: application/extensions/admin/TextDisplaySwitch/views/default.php:11
@@ -14778,28 +14773,26 @@ msgid "Theme"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:1076
-msgid ""
-"Error: Malformed JSON: Field %s must be either a JSON array or the string \n"
-"                        \"inherit\". Found \"%s\"."
+msgid "Error: Malformed JSON - field %s must be either a JSON array or the string \"inherit\". Found \"%s\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1149
+#: application/models/TemplateConfiguration.php:1148
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1536
+#: application/models/TemplateConfiguration.php:1535
 msgid "Always on"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1537
+#: application/models/TemplateConfiguration.php:1536
 msgid "Small screens"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1547
+#: application/models/TemplateConfiguration.php:1546
 msgid "Top"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:1548
+#: application/models/TemplateConfiguration.php:1547
 msgid "Bottom"
 msgstr ""
 
@@ -15125,7 +15118,7 @@ msgid "Take ownership"
 msgstr ""
 
 #: application/models/User.php:528
-msgid "User detail"
+msgid "User details"
 msgstr ""
 
 #: application/models/User.php:541
@@ -15137,7 +15130,8 @@ msgid "Template permissions"
 msgstr ""
 
 #: application/models/User.php:553
-msgid "Edit User"
+#: application/views/admin/usermanagement/partial/addedituser.php:3
+msgid "Edit user"
 msgstr ""
 
 #: application/models/User.php:567
@@ -19430,10 +19424,6 @@ msgstr ""
 msgid "No questions found."
 msgstr ""
 
-#: application/views/admin/survey/Question/massive_actions/_delete_results.php:11
-msgid "Question title"
-msgstr ""
-
 #: application/views/admin/survey/Question/massive_actions/_selector.php:49
 msgid "Delete question(s)"
 msgstr ""
@@ -21176,6 +21166,7 @@ msgid "Export current group"
 msgstr ""
 
 #: application/views/admin/survey/topbar/question_group_topbar.php:265
+#: application/views/admin/survey/topbar/question_topbar.php:378
 msgid "Save and add group"
 msgstr ""
 
@@ -21195,10 +21186,6 @@ msgstr ""
 
 #: application/views/admin/survey/topbar/question_topbar.php:345
 msgid "Edit default anwers"
-msgstr ""
-
-#: application/views/admin/survey/topbar/question_topbar.php:378
-msgid "Save and add page"
 msgstr ""
 
 #: application/views/admin/survey/topbar/question_topbar.php:422
@@ -23491,10 +23478,6 @@ msgstr ""
 
 #: application/views/admin/usermanagement/partial/adddummyuser.php:21
 msgid "Email address to use"
-msgstr ""
-
-#: application/views/admin/usermanagement/partial/addedituser.php:3
-msgid "Edit user"
 msgstr ""
 
 #: application/views/admin/usermanagement/partial/addedituser.php:44
