@@ -788,6 +788,14 @@ class questionedit extends Survey_Common_Action
             App()->getConfig('preselectquestiontype')
         );
 
+        if(isset($aQuestionData['same_default'])){
+            if($aQuestionData['same_default'] == 1){
+                $aQuestionData['same_default'] =0;
+            }else{
+                $aQuestionData['same_default'] =1;
+            }
+        }
+
         $aQuestionData = array_merge([
             'sid' => $iSurveyId,
             'gid' => App()->request->getParam('gid'),
@@ -857,6 +865,16 @@ class questionedit extends Survey_Common_Action
      */
     private function updateQuestionData(&$oQuestion, $aQuestionData)
     {
+        //todo something wrong in frontend ...
+
+        if(isset($aQuestionData['same_default'])){
+            if($aQuestionData['same_default'] == 1){
+                $aQuestionData['same_default'] =0;
+            }else{
+                $aQuestionData['same_default'] =1;
+            }
+        }
+
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new LSJsonException(

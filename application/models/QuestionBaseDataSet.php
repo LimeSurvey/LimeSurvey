@@ -230,12 +230,12 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
+                            ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
                             ],
                         ]
                     ],
@@ -289,13 +289,14 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
                             ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
+                            ],
+
                         ]
                     ],
                 ],
@@ -312,18 +313,18 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementName' => false,
                 'formElementHelp' => gT('All attribute values for this question type will be saved as default'),
                 'inputtype' => 'switch',
-                'formElementValue' => '',
+                'formElementValue' => ($this->oQuestion->same_default == 1) ? 'Y' : 'N',
                 'formElementOptions' => [
                     'classes' => [],
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
+                            ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
                             ],
                         ]
                     ],
@@ -346,12 +347,12 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
+                            ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
                             ],
                         ]
                     ],
