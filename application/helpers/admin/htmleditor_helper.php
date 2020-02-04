@@ -151,7 +151,7 @@
         } else {
             $htmleditormode = $session['htmleditormode'];
         }
-        if ($surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype, 0, 6) === "email_") {
+        if ($surveyID && getEmailFormat($surveyID) != 'html' && (substr($fieldtype, 0, 6) === "email_" || substr($fieldtype, 0, 6) === "email-" )) {
             // email but survey as text email
             return '';
         }
