@@ -1,6 +1,6 @@
 <template>
     <div class="scoped-folder-list" :class="'col-md-'+cols">
-        <div><input v-model="search" @input="setPage(0)" class="form-control"/></div>
+        <div><input v-model="search" @input="setPage(0)" class="form-control folder-search-bar"/></div>
         <treeview
                 key="root-folder"
                 :folders="filteredCurrentPageFileList"
