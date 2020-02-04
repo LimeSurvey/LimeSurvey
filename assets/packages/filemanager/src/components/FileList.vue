@@ -2,7 +2,7 @@
     <div :class="'col-md-'+cols">
         <div class="ls-flex ls-flex-row align-items-flex-end align-content-flex-end ls-space margin bottom-10">
             <div class="ls-space margin right-5">
-                <input v-model="search" @input="setPage(0)" class="form-control" :class="fileviz=='iconrep' ? 'hidden' : ''"/>
+                <input v-model="search" @input="setPage(0)" class="form-control file-search-bar" :class="fileviz=='iconrep' ? 'hidden' : ''"/>
             </div>
             <div class="btn-group" role="group">
                 <button type="button" id="FileManager--change-filewiz-to-tablerep" class="btn"
