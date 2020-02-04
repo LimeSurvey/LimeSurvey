@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-04 17:04:41+00:00\n"
+"POT-Creation-Date: 2020-02-04 19:03:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15894,7 +15894,7 @@ msgid "Iterate survey"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:7
-msgid "Answers and participants have been re-opened."
+msgid "Responses and participants have been re-opened."
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:9
@@ -15906,11 +15906,11 @@ msgid "Click on the following button if you want to"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:12
-msgid "Delete all incomplete answers that correspond to a participant for which a completed answers is already recorded"
+msgid "Delete all incomplete responses that correspond to a participant for which a completed response is already recorded"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:13
-msgid "Reset the completed answers to the incomplete state"
+msgid "Reset completed responses to the incomplete state"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:14
@@ -15918,7 +15918,7 @@ msgid "Reset all your participants to the 'not used' state"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:17
-msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and participants?"
+msgid "Are you really sure you want to delete incomplete responses and reset the completed state of both, response and participant?"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:17
@@ -20792,7 +20792,7 @@ msgid "Use HTML format for participant emails:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:165
-msgid "If you buttongroup email mode, you'll have to review your email templates to fit the new format"
+msgid "If you change the email format, you'll have to review your email templates to fit the new format"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:174
@@ -20800,7 +20800,7 @@ msgid "Send confirmation emails:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:192
-msgid "You can't use Anonymized responses when participant-based answer persistence is enabled."
+msgid "You can't use 'Anonymized responses' when participant-based response persistence is enabled."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:198
@@ -22213,7 +22213,7 @@ msgstr ""
 
 #: application/views/admin/token/invite.php:48
 #: application/views/admin/token/remind.php:41
-msgid "Bypass participant with failing email addresses:"
+msgid "Bypass participants with failing email addresses:"
 msgstr ""
 
 #: application/views/admin/token/invite.php:65
@@ -23915,13 +23915,11 @@ msgid "To participate in this restricted survey, you need a valid access code."
 msgstr ""
 
 #: application/views/survey/frontpage/tokenForm/message.php:9
-#: tmp/runtime/twig_cache/fb/fb2981fc2b959e42284c81f5498c13ec594334e93e91edd5bc1526383bae29b5.php:88
-msgid "If you have been issued an access code, please enter it in the box below and click continue."
+msgid "If you have been issued an access code, please enter it in the box below and click 'Continue'."
 msgstr ""
 
 #: application/views/survey/frontpage/tokenForm/message.php:11
-#: tmp/runtime/twig_cache/fb/fb2981fc2b959e42284c81f5498c13ec594334e93e91edd5bc1526383bae29b5.php:94
-msgid "Please confirm the access code by answering the security question below and click continue."
+msgid "Please confirm the access code by answering the security question below and click 'Continue'."
 msgstr ""
 
 #: application/views/survey/questions/answer/file_upload/modal-container.php:18
@@ -24347,4 +24345,12 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/f1/f119897e4caddb6f57022d2965608b940f440ac9e72dc64b990967939fce5079.php:108
 msgid "Change the language"
+msgstr ""
+
+#: tmp/runtime/twig_cache/fb/fb2981fc2b959e42284c81f5498c13ec594334e93e91edd5bc1526383bae29b5.php:88
+msgid "If you have been issued an access code, please enter it in the box below and click continue."
+msgstr ""
+
+#: tmp/runtime/twig_cache/fb/fb2981fc2b959e42284c81f5498c13ec594334e93e91edd5bc1526383bae29b5.php:94
+msgid "Please confirm the access code by answering the security question below and click continue."
 msgstr ""
