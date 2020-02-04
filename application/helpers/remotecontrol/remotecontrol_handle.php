@@ -1191,19 +1191,31 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iGroupID Id of the group to get properties of
      * @param array  $aGroupSettings The properties to get
+     * @param string $sLanguage Optional parameter language for multilingual groups
      * @return array in case of success the requested values in array
      */
-    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null)
+    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questionGroupL10ns')->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
-                            return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID');
             }
 
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read')) {
+                $iSurveyID = $oGroup->sid;
+                if (is_null($sLanguage)) {
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                }
+
+                if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
+                    return array('status' => 'Error: Invalid language');
+                }
+
                 $aBasicDestinationFields = QuestionGroup::model()->tableSchema->columnNames;
+                array_push($aBasicDestinationFields, 'group_name');
+                array_push($aBasicDestinationFields, 'description');
                 if (!empty($aGroupSettings)) {
                     $aGroupSettings = array_intersect($aGroupSettings, $aBasicDestinationFields);
                 } else {
@@ -1211,18 +1223,23 @@ class remotecontrol_handle
                 }
 
                 if (empty($aGroupSettings)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
 
                 foreach ($aGroupSettings as $sGroupSetting) {
-                    $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
+                    if (isset($oGroup->$sGroupSetting)) {
+                        $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
+                    } elseif (isset($oGroup->questionGroupL10ns[$sLanguage])
+                        && isset($oGroup->questionGroupL10ns[$sLanguage]->$sGroupSetting)) {
+                        $aResult[$sGroupSetting] = $oGroup->questionGroupL10ns[$sLanguage]->$sGroupSetting;
+                    }
                 }
                 return $aResult;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
