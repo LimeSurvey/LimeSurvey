@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-04 20:08:45+00:00\n"
+"POT-Creation-Date: 2020-02-04 20:53:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7824,7 +7824,7 @@ msgid "In LimeSurvey a survey is organized in groups and questions. To begin cre
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:533
-msgid "Click on the 'Add page' button"
+msgid "Click on the 'Add group' button"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:550
@@ -8904,7 +8904,7 @@ msgid "Not Selected"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:47
-msgid "The password does require at least one number"
+msgid "The password does require at least one digit"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:53
@@ -8912,15 +8912,15 @@ msgid "The password does require at least one uppercase character"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:59
-msgid "The password does require at least one none alphanumeric character"
+msgid "The password does require at least one special character"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:65
-msgid "The password does not reach the minimum size of %s"
+msgid "The password does not reach the minimum length of %s characters"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:95
-msgid "Require at least a number"
+msgid "Require at least one digit"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:100
@@ -8932,11 +8932,11 @@ msgid "Require at least one special character"
 msgstr ""
 
 #: application/core/plugins/PasswordRequirement/PasswordRequirement.php:110
-msgid "Minimum size of the password"
+msgid "Minimum password length"
 msgstr ""
 
 #: application/core/plugins/UpdateCheck/UpdateCheck.php:100
-msgid "Check updates"
+msgid "Find updates"
 msgstr ""
 
 #: application/core/plugins/UpdateCheck/UpdateCheck.php:101
@@ -9151,7 +9151,14 @@ msgid "Closed group"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:38
-msgid "Error!!!"
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:19
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:25
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:38
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:44
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:50
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:56
+#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:68
+msgid "Error!"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:8
@@ -13300,16 +13307,6 @@ msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:196
 msgid "Unzipped file is superior to upload_max_filesize or to post_max_size"
-msgstr ""
-
-#: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:218
-msgid "No filter name is set, can't unzip."
-msgstr ""
-
-#: application/libraries/ExtensionInstaller/PluginInstaller.php:28
-#: application/libraries/ExtensionInstaller/PluginInstaller.php:43
-#: application/libraries/ExtensionInstaller/PluginInstaller.php:71
-msgid "fileFetcher is not set"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/VersionFetcherServiceLocator.php:100
@@ -22552,16 +22549,6 @@ msgstr ""
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:109
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable.php:111
 msgid "Download"
-msgstr ""
-
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:19
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:25
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:38
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:44
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:50
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:56
-#: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:68
-msgid "Error!"
 msgstr ""
 
 #: application/views/admin/update/check_updates/update_buttons/_updatesavailable_error.php:20
