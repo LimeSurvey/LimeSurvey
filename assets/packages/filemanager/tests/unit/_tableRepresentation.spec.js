@@ -304,4 +304,52 @@ describe('Delete file failure', () => {
         expect(actions.deleteFile).not.toHaveBeenCalled()
     });
     
+    describe('Pagination', () => {
+        const state = _.merge({},MockState);
+        const callDialog = jest.fn((txt) => Promise.reject());
+        let actions;
+        let tableRepMount;
+
+        beforeEach(() => {
+            actions = _.merge({},MockActions);
+            actions.deleteFile = jest.fn(() => Promise.resolve());
+
+            const store = new Vuex.Store({
+                state,
+                mutations: VueXMutations,
+                actions,
+                getters: VueXGetters
+            });
+
+            tableRepMount = shallowMount(TableRepComponent, {
+                propsData: { 
+                    loading: false,
+                    currentPage: 0
+                },
+                mocks: {
+                    $dialog: {
+                        confirm: callDialog
+                    },
+                    $log: {log: ()=>{}, error: ()=>{}}
+                },
+                store,
+                localVue
+            });
+        });
+
+        it('should contain pagination', () => {
+            let files = [];
+            for (let index = 0; index > 50; i++) {
+                files.push('test_'+index+'.txt');
+            }
+            if (tableRepMount !== null) {
+                tableRepMount.computed.files = files;
+                expect(tableRepMount.computed.files.length).toBe(50);
+                let pagination = tableRepMount.find('#ls-ba pager');
+                expect(pagination).toBeDefined;
+            } else {
+                console.log('TableRepMount is null!');
+            }
+        });
+    });
 })
