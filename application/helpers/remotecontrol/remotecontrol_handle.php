@@ -1993,32 +1993,42 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey containing the groups
+     * @param string $sLanguage Optional parameter language for multilingual groups
      * @return array in case of success the list of groups
      */
-    public function list_groups($sSessionKey, $iSurveyID)
+    public function list_groups($sSessionKey, $iSurveyID, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID');
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                $oGroupList = QuestionGroup::model()->findAllByAttributes(array("sid"=>$iSurveyID));
+                $oGroupList = QuestionGroup::model()->with('questionGroupL10ns')->findAllByAttributes(array("sid"=>$iSurveyID));
                 if (count($oGroupList) == 0) {
-                                    return array('status' => 'No groups found');
+                    return array('status' => 'No groups found');
+                }
+
+                if (is_null($sLanguage)) {
+                    $sLanguage = $oSurvey->language;
                 }
 
                 foreach ($oGroupList as $oGroup) {
-                    $aData[] = array('id'=>$oGroup->primaryKey) + $oGroup->attributes;
+                    $L10ns = $oGroup->questionGroupL10ns[$sLanguage];
+                    $tmp = array('id'=>$oGroup->primaryKey) + $oGroup->attributes;
+                    $tmp['group_name'] = $L10ns['group_name'];
+                    $tmp['description'] = $L10ns['description'];
+                    $tmp['language'] = $sLanguage;
+                    $aData[] = $tmp;
                 }
                 return $aData;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid S ession Key');
+            return array('status' => 'Invalid S ession Key');
         }
     }
 
