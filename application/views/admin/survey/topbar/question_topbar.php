@@ -414,7 +414,7 @@ if ($ownsImportButton) {
             'class' => 'btn-default',
             'id' => 'import-button',
             'icon' => 'icon-import',
-            'name' => gT('Import Question'),
+            'name' => gT('Import question'),
         ];
     } else {
         // survey active
@@ -423,7 +423,7 @@ if ($ownsImportButton) {
             'class' => 'btn-default readonly',
             'id' => 'import-button',
             'icon' => 'icon-import',
-            'name' => gT('Import Question'),
+            'name' => gT('Import question'),
         ];
     }
     array_push($topbar['alignment']['left']['buttons'], $buttons['import']);

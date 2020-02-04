@@ -75,7 +75,7 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $oQuestion->type,
     'debug' => YII_DEBUG,
-    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
+    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid question'),
     'optionArray' => [
         'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
         'onUpdate' => [
@@ -250,7 +250,7 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default" disabled aria-haspopup="true" aria-expanded="false">
                                                 <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?= $selectedQuestion['title'] ?? gT('Invalid Question'); ?>
+                                                    <?= $selectedQuestion['title'] ?? gT('Invalid question'); ?>
                                                     <?php if (YII_DEBUG): ?>
                                                         <em class="small">
                                                             Type code: <?php echo $oQuestion->type; ?>

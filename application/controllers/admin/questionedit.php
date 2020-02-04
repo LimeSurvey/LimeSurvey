@@ -158,9 +158,9 @@ class questionedit extends Survey_Common_Action
                 "noCodeWarning" =>
                 gT("Please put in a valid code. Only letters and numbers are allowed and it has to start with a letter. For example [Question1]"),
                 "alreadyTaken" =>
-                gT("This code is already taken. Duplicate codes are not allowed."),
+                gT("This code is already used - duplicate codes are not allowed."),
                 "codeTooLong" =>
-                gT("Question code cannot be longer than 20 digits."),
+                gT("A question code cannot be longer than 20 characters."),
                 "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes." =>
                 gT("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
                 "Question cannot be stored. Please check the answer option for duplicates or empty titles." =>
