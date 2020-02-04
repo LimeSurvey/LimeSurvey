@@ -530,7 +530,7 @@ class LsDefaultDataSets
                 'title' => gT("Let's add a question group"),
                 'content' => gT("What good would your survey be without questions?").'<br/>'
                 .gT('In LimeSurvey a survey is organized in groups and questions. To begin creating questions, we first need a question group.')
-                .'<p class="alert bg-warning">'.gT("Click on the 'Add page' button").'</p>',
+                .'<p class="alert bg-warning">'.gT("Click on the 'Add group' button").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],

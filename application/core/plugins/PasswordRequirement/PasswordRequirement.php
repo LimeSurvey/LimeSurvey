@@ -9,12 +9,12 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
 
     protected $settings = [
         'needsNumber' => array(
-            'label' => 'Require at least a number',
+            'label' => 'Require at least one digit',
             'type' => 'checkbox',
             'default' => false,
         ),
         'needsUppercase' => array(
-            'label' => 'Require at least one uppercase letter',
+            'label' => 'Require at least one uppercase character',
             'type' => 'checkbox',
             'default' => false,
         ),
@@ -24,8 +24,8 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
             'default' => false,
         ),
         'minimumSize' => array(
-            'label' => 'Require at least one special character',
-            'type' => 'text',
+            'label' => 'Minimum password length',
+            'type' => 'int',
             'default' => '8',
         ),
     ];
@@ -44,7 +44,7 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
 
         if($this->get('needsNumber',null,null,false) && ctype_alpha($password)){
             $oEvent->set('passwordOk', false);
-            $oEvent->set('passwordError', gT('The password does require at least one number'));
+            $oEvent->set('passwordError', gT('The password does require at least one digit'));
             return;
         }
 
@@ -56,13 +56,13 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
 
         if($this->get('needsNonAlphanumeric',null,null,false) && ctype_alnum($password)){
             $oEvent->set('passwordOk', false);
-            $oEvent->set('passwordError', gT('The password does require at least one none alphanumeric character'));
+            $oEvent->set('passwordError', gT('The password does require at least one special character'));
             return;
         }
 
         if(strlen($password) < $this->get('minimumSize',null,null,8)){
             $oEvent->set('passwordOk', false);
-            $oEvent->set('passwordError', sprintf(gT('The password does not reach the minimum size of %s'), $this->get('minimumSize',null,null,8)));
+            $oEvent->set('passwordError', sprintf(gT('The password does not reach the minimum length of %s characters'), $this->get('minimumSize',null,null,8)));
             return;
         }
     }
@@ -92,7 +92,7 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
         $settings = parent::getPluginSettings();
         $settings = [
             'needsNumber' => array(
-                'label' => gT('Require at least a number'),
+                'label' => gT('Require at least one digit'),
                 'type' => 'checkbox',
                 'default' => false,
             ),
@@ -107,7 +107,7 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
                 'default' => false,
             ),
             'minimumSize' => array(
-                'label' => gT('Minimum size of the password'),
+                'label' => gT('Minimum password length'),
                 'type' => 'int',
                 'default' => '8',
                 'value' => 8
