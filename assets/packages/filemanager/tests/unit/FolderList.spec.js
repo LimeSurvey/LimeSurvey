@@ -65,5 +65,10 @@ describe("it should switch loading", () => {
         //This is somehow how this method workd it always wraps stuff in arrays
         expect(folderListMount.emitted().setLoading[0][0]).toBe(false);
     });
+
+    it('should contains search bar', () => {
+        let searchBar = folderListMount.find('#folder-search-bar');
+        expect(searchBar).toBeDefined;
+    });
 })
 
