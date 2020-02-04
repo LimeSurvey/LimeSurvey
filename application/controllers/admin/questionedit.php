@@ -150,7 +150,7 @@ class questionedit extends Survey_Common_Action
                 'Tab' => gT('Tab'),
                 'New rows' => gT('New rows'),
                 'Scale' => gT('Scale'),
-                'Save and Close' => gT('Save and Close'),
+                'Save and Close' => gT('Save and close'),
                 'Script' => gT('Script'),
                 '__SCRIPTHELP' => gT("This optional script field will be wrapped,"
                     . " so that the script is correctly executed after the question is on the screen."

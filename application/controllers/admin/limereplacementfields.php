@@ -59,7 +59,7 @@ class limereplacementfields extends Survey_Common_Action
             $data['replacements'][gT('Questions')] = $childQuestions;
         }
         if (isset($surveyformat)) {
-            $data['replacements'][gT('Surveyformat')] = $surveyformat;
+            $data['replacements'][gT('Survey format')] = $surveyformat;
         }
 
         $this->getController()->renderPartial('/admin/super/_renderJson', ['data' => $data]);

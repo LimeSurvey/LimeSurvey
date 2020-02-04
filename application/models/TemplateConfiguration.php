@@ -1073,8 +1073,7 @@ class TemplateConfiguration extends TemplateConfig
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
-                        gT('Error: Malformed JSON: Field %s must be either a JSON array or the string 
-                        "inherit". Found "%s".'),
+                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "%s".'),
                         $sField,
                         $oFiles
                     ),

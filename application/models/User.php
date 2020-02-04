@@ -525,7 +525,7 @@ class User extends LSActiveRecord
         $userDetail = ""
             ."<button 
                 data-toggle='tooltip' 
-                title='".gT("User detail")."'    
+                title='".gT("User details")."'    
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
 
@@ -550,7 +550,7 @@ class User extends LSActiveRecord
         $editUserButton = ""
             ."<button 
                 data-toggle='tooltip' 
-                title='".gT("Edit User")."'
+                title='".gT("Edit user")."'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""

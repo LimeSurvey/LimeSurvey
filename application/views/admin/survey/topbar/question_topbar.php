@@ -375,7 +375,7 @@ if ($qid == 0) {
 
     $button_save_and_add_question_group = [
         'id' => 'save-and-new-button',
-        'name' => gT('Save and add page'),
+        'name' => gT('Save and add group'),
         'icon' => 'fa fa-plus-square',
         'url' => $saveAndNewLink,
         'isSaveButton' => true,
