@@ -207,6 +207,9 @@ class Usergroups extends Survey_Common_Action
 
     /**
      * Load viewing of a user group screen.
+     *
+     * REFACTORED (in UserGroupController)
+     *
      * @param bool $ugid
      * @param array|bool $header (type=success, warning)(message=localized message)
      * @return array
@@ -383,6 +386,8 @@ class Usergroups extends Survey_Common_Action
 
     /**
      * Renders template(s) wrapped in header and footer
+     *
+     * REFACTORED (in UserGroupController beforeRender())
      *
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)

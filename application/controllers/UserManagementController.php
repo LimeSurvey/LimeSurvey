@@ -15,7 +15,7 @@ class UserManagementController extends LSMainController
             ),
             array(
                 'allow',
-                'actions'=>array('index', 'addEditUser', 'applyedit'),
+                'actions'=>array('index', 'addEditUser', 'applyedit','adddummyuser'),
                 'users'=>array('@'), //only login users
             ),
             array('deny'),

@@ -181,42 +181,17 @@ class LayoutHelper
     }
 
     /**
-     * Load menu bar of user group controller.
+     * This is for rendering a particular Menubar (e.g. the userGroupBar)
      *
-     * todo: (REFACTORING) this should be moved to the new UserGroupController and it's actions ...
-     *
-     * @param array $aData
-     * @return void
+     * @param $viewPathName
+     * @param $data
      * @throws CException
      */
-    public function userGroupBar(array $aData)
-    {
-        $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0;
-        if (!empty($aData['display']['menu_bars']['user_group'])) {
-            $data = $aData;
-            Yii::app()->loadHelper('database');
-
-            if (!empty($ugid)) {
-                $userGroup = UserGroup::model()->findByPk($ugid);
-                $uid = Yii::app()->session['loginID'];
-                if ($userGroup && $userGroup->hasUser($uid)) {
-                    $data['userGroup'] = $userGroup;
-                } else {
-                    $data['userGroup'] = null;
-                }
-            }
-
-            $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
-
-            if (isset($aData['usergroupbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            Yii::app()->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
+    public function renderMenuBar($aData){
+        if(isset($aData['menubar_pathname']) ){
+            Yii::app()->getController()->renderPartial($aData['menubar_pathname'], $aData);
         }
     }
-
 
     /**
      * Renders specific button bar with buttons like (saveBtn, saveAndCloseBtn, closeBtn)

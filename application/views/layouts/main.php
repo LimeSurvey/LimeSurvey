@@ -10,7 +10,6 @@ $layoutHelper = new LayoutHelper();
 
 // ###################################################  HEADER #####################################################
 $layoutHelper->showHeaders($aData);
-//LayoutHelper::showHeaders($aData);
 //################################################# END HEADER #######################################################
 
 
@@ -19,23 +18,18 @@ $layoutHelper->showHeaders($aData);
 //$this->_showadminmenu($aData);
 //################################################## ADMIN MENU #####################################################
 $layoutHelper->showadminmenu($aData);
-//LayoutHelper::showadminmenu($aData);
 
 // Generated through /admin/usergroup/usergroupbar_view
 
-//todo it should be moved to new UserGroupController and it's actions
-//$layoutHelper->userGroupBar($aData);
+$layoutHelper->renderMenuBar($aData);
 
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
 $layoutHelper->fullpagebar($aData);
-//LayoutHelper::fullpagebar($aData);
 
 $layoutHelper->updatenotification();
-//LayoutHelper::updatenotification();
 
 $layoutHelper->notifications();
-//LayoutHelper::notifications();
 
     
     //The load indicator for pjax
@@ -53,12 +47,10 @@ $layoutHelper->notifications();
 // Footer
 if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
     $layoutHelper->loadEndScripts();
-    //LayoutHelper::loadEndScripts();
 }
 
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-        //LayoutHelper::getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
         $layoutHelper->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
     }
 } else {
