@@ -339,7 +339,7 @@ describe('Delete file failure', () => {
 
         // TODO: WIP: Mock file as new filelist.json
         // TODO: WIP: Test abstract representation.vue!
-        it('should contain pagination', () => {
+        it.skip('should contain pagination', () => {
             let files = [];
             for (let index = 0; index > 50; i++) {
                 files.push('test_'+index+'.txt');
@@ -352,6 +352,14 @@ describe('Delete file failure', () => {
             } else {
                 console.log('TableRepMount is null!');
             }
+        });
+
+        it.skip('should contains 2 pages', () => {
+            // TODO: Set up dependencies for current test.
+        });
+
+        it.skip('should select page 2', () => {
+            // TODO: Set up dependencies for current test.
         });
     });
 })
