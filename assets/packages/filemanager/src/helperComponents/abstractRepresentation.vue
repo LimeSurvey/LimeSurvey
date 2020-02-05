@@ -1,6 +1,9 @@
+<template>
+</template>
 <script>
 export default {
-  data() {},
+  name: 'AbstractRepresentation',
+  data() {return {}},
   computed: {
     files() {
       return this.$store.state.fileList
@@ -20,10 +23,10 @@ export default {
       }
       if (this.inTransit(file) === true ) {
         htmlClasses += "file-in-transit ";
-        if (this.$store.state.transitType == "move") {
+        if (this.$store.state.transitType === "move") {
           htmlClasses += "move ";
         }
-        if (this.$store.state.transitType == "copy") {
+        if (this.$store.state.transitType === "copy") {
           htmlClasses += "copy ";
         }
       }
@@ -33,7 +36,7 @@ export default {
       return htmlClasses;
     },
     inDeletion(file) {
-      return this.fileInDeletion == file.path;
+      return this.fileInDeletion === file.path;
     },
     deleteFile(file) {
       this.$dialog
@@ -64,16 +67,14 @@ export default {
     copyFile(file) {
       this.$store.commit("copyFiles");
       this.$set(file, 'inTransit', true);
-      //file.inTransit = true;
     },
     moveFile(file) {
       this.$store.commit("moveFiles");
       this.$set(file, 'inTransit', true);
-      //file.inTransit = true;
     },
     cancelTransit(file) {
       this.$set(file, 'inTransit', false);
-      if( this.$store.getters.filesInTransit.length == 0 ) {
+      if (this.$store.getters.filesInTransit.length === 0) {
         this.$store.commit('noTransit');
       }
     }
