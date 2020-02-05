@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.0 (build 200128) to 4.1.1 (build 200203) February 3, 2020
+-Fixed issue #15808: Images in mailing not converted to CID (#1381) (Denis Chenu)
+-Fixed issue #15794: Question in LS Expression (replacementfields) show question from next group (#1379) (Denis Chenu)
+-Fixed issue #15791: Can't load a lengthy label set, buttons not visible (lacrioque)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by eddylackmann
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Dutch by c_schmitz, Han, kpadm
+#Updated translation: Dutch (Informal) by c_schmitz, Han, coeneisma
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.1 (build 200120) to 4.1.0 (build 200128) January 28, 2020
 +New feature: question code live validation (lacrioque)
 +New feature #15706: Support PHP 7.4 (Olle Haerstedt)

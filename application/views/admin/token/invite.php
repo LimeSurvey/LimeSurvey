@@ -45,7 +45,7 @@
                         <div class="col-sm-4">
                             <div class='form-group'>
 
-                                <label class='control-label ' for='bypassbademails'><?php eT("Bypass participant with failing email addresses:"); ?></label>
+                                <label class='control-label ' for='bypassbademails'><?php eT("Bypass participants with failing email addresses:"); ?></label>
                                 <div class=''>
                                     <?php
                                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(

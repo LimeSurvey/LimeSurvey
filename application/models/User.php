@@ -109,14 +109,14 @@ class User extends LSActiveRecord
             'users_name' => gT('Username'),
             'password' => gT('Password'),
             'full_name' => gT('Full name'),
-            'parent_id' => gT('Parent User'),
+            'parent_id' => gT('Parent user'),
             'lang' => gT('Language'),
             'email' => gT('Email'),
-            'htmleditormode' => gT('Editormode'),
+            'htmleditormode' => gT('Editor mode'),
             'templateeditormode' => gT('Template editor mode'),
             'questionselectormode' => gT('Question selector mode'),
-            'one_time_pw' => gT('One time password'),
-            'dateformat' => gT('Dateformat'),
+            'one_time_pw' => gT('One-time password'),
+            'dateformat' => gT('Date format'),
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'lastLogin' => gT('Last recorded login'),
@@ -525,7 +525,7 @@ class User extends LSActiveRecord
         $userDetail = ""
             ."<button 
                 data-toggle='tooltip' 
-                title='".gT("User detail")."'    
+                title='".gT("User details")."'    
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
 
@@ -550,7 +550,7 @@ class User extends LSActiveRecord
         $editUserButton = ""
             ."<button 
                 data-toggle='tooltip' 
-                title='".gT("Edit User")."'
+                title='".gT("Edit user")."'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""

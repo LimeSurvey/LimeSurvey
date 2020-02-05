@@ -66,8 +66,12 @@
                     ),
                     'onLabel'=>gT('Yes'),
                     'offLabel'=>gT('No'),
+                    /*
                     'onColor'=> 'warning',
                     'offColor'=> 'primary'
+                    */
+                    'onColor'=> 'primary',
+                    'offColor'=> 'warning'
                 )
             );
             ?>

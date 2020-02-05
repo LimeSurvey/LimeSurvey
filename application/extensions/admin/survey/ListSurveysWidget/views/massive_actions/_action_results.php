@@ -35,7 +35,7 @@ if (!isset($tableLabels)) {
                             if(isset($result['error'])){
                                 echo $result['error'] ;
                             }else{
-                                eT('Error!!!');
+                                eT('Error!');
                             }
                         ; ?>
                     </td>

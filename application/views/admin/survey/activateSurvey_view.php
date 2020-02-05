@@ -36,7 +36,7 @@
                 </p>
 
                 <p>
-                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Solve all issues")?></button>
+                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
                         <?php eT("Return to survey"); ?>
                     </a>

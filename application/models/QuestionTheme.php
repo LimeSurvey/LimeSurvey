@@ -820,16 +820,17 @@ class QuestionTheme extends LSActiveRecord
     public static function convertLS3toLS4($sXMLDirectoryPath)
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
+        $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
+        $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sConfigPath;
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         if (!$sQuestionConfigFile) {
             libxml_disable_entity_loader($bOldEntityLoaderState);
             return $aSuccess = [
                 'message' => sprintf(
-                    gT('No Configuration could be found for %s/config.xml'),
-                    $sXMLDirectoryPath
+                    gT('Configuration file %s could not be found or read.'),
+                    $sConfigPath
                 ),
                 'success' => false
             ];

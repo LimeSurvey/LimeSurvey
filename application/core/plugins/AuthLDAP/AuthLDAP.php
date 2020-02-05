@@ -504,6 +504,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 $usersearchfilter = "($searchuserattribute=$username)";
             }
             // Search for the user
+            $userentry = false;
             foreach (explode(";", $usersearchbase) as $usb) {
                 $dnsearchres = ldap_search($ldapconn, $usb, $usersearchfilter, array($searchuserattribute));
                 $rescount = ldap_count_entries($ldapconn, $dnsearchres);

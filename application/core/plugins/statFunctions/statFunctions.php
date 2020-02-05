@@ -20,7 +20,7 @@
  */
 class statFunctions extends PluginBase
 {
-    protected static $description = 'Add some function in expression manager to get count from other responses';
+    protected static $description = 'Add some function in Expression Manager to get count from other responses';
     protected static $name = 'statCountFunctions';
 
     public function init()
@@ -35,7 +35,7 @@ class statFunctions extends PluginBase
             'statCountIf' => array(
                 '\statFunctions\countFunctions::statCountIf',
                 null, // No javascript function : set as static function
-                $this->gT("Count the response done with value equal to a specific value"), // Description for admin
+                $this->gT("Count the number of complete responses  with a value equal to a specific value"), // Description for admin
                 'integer statCountIf(QuestionCode.sgqa, value[, submitted = true])', // Extra description
                 'https://www.limesurvey.org', // Help url
                 2, // Number of argument unsure it work here … , minimum 2, allow 3
@@ -44,7 +44,7 @@ class statFunctions extends PluginBase
             'statCount' => array(
                 '\statFunctions\countFunctions::statCount',
                 null, // No javascript function : set as static function
-                $this->gT("Count previous response done not empty"), // Description for admin
+                $this->gT("Count the number of complete responses which are not empty"), // Description for admin
                 'integer statCount(QuestionCode.sgqa[, submitted = true])', // Extra description
                 'https://www.limesurvey.org', // Help url
                 1, // Number of argument (time to make a good description of EM …) minimum 1, allow 2

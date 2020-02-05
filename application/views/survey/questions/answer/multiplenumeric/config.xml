@@ -184,12 +184,12 @@
             <sortorder>101</sortorder>
             <options>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
                     <value>0</value>
                     <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
                 </option>
             </options>
             <help>Display a chart in the statistics?</help>

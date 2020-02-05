@@ -215,7 +215,7 @@ class FileFetcherUploadZip extends FileFetcher
         }
 
         if (empty($this->filterName)) {
-            throw new \Exception(gT("No filter name is set, can't unzip."));
+            throw new \Exception("No filter name is set, can't unzip.");
         }
 
         $zip = new \PclZip($_FILES['the_file']['tmp_name']);

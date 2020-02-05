@@ -63,7 +63,7 @@ function checkDbEngine(){
         <div id="InstallerConfigForm_dbengine_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbengine'); ?>
             <?= CHtml::activeDropDownList($model, 'dbengine', $model->dbEngines, array('prompt'=>gT("Select"), 'autocomplete'=>'off', 'class' => 'form-control')); ?>
-            <div class="alert alert-warning"><?= gT('Warning! Using InnoDb instead of MyIsam will reduce the possible maximum number of questions in your surveys. Please read more about MyIsam vs InnoDB table column limitations in our manual before selecting InnoDB.'); ?></div>
+            <div class="alert alert-warning"><?= gT('Warning! Using InnoDB instead of MyISAM will reduce the possible maximum number of questions in your surveys. Please read more about MyISAM vs InnoDB table column limitations in our manual before selecting InnoDB.'); ?></div>
         </div>
 
         <div id="InstallerConfigForm_dblocation_row" class="form-group">

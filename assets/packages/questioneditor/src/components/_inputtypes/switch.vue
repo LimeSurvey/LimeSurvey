@@ -68,16 +68,16 @@
                 return merge(curSwitchOptions, this.dataAttributes);
             },
             onText() {
-                return this.elOptions.options.option[0].text;
-            },
-            onValue() {
-                return this.elOptions.options.option[0].value;
-            },
-            offText() {
                 return this.elOptions.options.option[1].text;
             },
-            offValue() {
+            onValue() {
                 return this.elOptions.options.option[1].value;
+            },
+            offText() {
+                return this.elOptions.options.option[0].text;
+            },
+            offValue() {
+                return this.elOptions.options.option[0].value;
             },
         },
     };
