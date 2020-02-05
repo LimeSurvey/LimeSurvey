@@ -245,7 +245,7 @@ abstract class Token extends Dynamic
     {
         $token = Yii::app()->securityManager->generateRandomString($iTokenLength);
         if ($token === false) {
-            throw new CHttpException(500, 'Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.');
+            throw new CHttpException(500, gT('Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.'));
         }
         $token = str_replace(array('~', '_'), array('a', 'z'), $token);
         $event = new PluginEvent('afterGenerateToken');
