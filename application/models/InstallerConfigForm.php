@@ -272,10 +272,10 @@ class InstallerConfigForm extends CFormModel
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
             if (!$this->isInnoDbLargeFilePrefixEnabled()) {
-                $this->addError($attribute, Yii::t('app', 'You need to enable large_file_prefix setting in your database configuration in order to use InooDb engine for LimeSurvey!'));
+                $this->addError($attribute, Yii::t('app', 'You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!'));
             }
             if (!$this->isInnoDbBarracudaFileFormat()) {
-                $this->addError($attribute, Yii::t('app', 'Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InooDb engine for LimeSurvey!'));
+                $this->addError($attribute, Yii::t('app', 'Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!'));
             }
         }
     }
