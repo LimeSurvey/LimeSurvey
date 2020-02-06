@@ -21,7 +21,7 @@
 !.eslintrc.json
 !.eslintrc
 !.env-cmdrc
-
+!.eslintignore
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*
