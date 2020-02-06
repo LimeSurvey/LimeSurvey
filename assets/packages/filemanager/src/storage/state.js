@@ -2,7 +2,7 @@ export default {
     currentFolder : null,
     currentSurveyId: null,
     folderList: [],
-    fileList: {},
+    fileList: [],
     selectedFiles: [],
     inTransitFiles: [],
     debug: false,
@@ -10,4 +10,4 @@ export default {
     fileRepresentation: 'tablerep',
     uncollapsedFolders: [],
     renewIterator: 0
-}
+};
