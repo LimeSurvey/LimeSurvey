@@ -243,7 +243,11 @@ abstract class Token extends Dynamic
      */
     private function _generateRandomToken($iTokenLength)
     {
-        $token = str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        $token = Yii::app()->securityManager->generateRandomString($iTokenLength);
+        if ($token === false) {
+            throw new CHttpException(500, gT('Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.'));
+        }
+        $token = str_replace(array('~', '_'), array('a', 'z'), $token);
         $event = new PluginEvent('afterGenerateToken');
         $event->set('surveyId', $this->getSurveyId());
         $event->set('iTokenLength', $iTokenLength);
