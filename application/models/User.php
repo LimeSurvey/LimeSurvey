@@ -566,6 +566,11 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            //Prevent users to modify original superadmin. Super admin can change his password on his account setting!
+            if ($this->uid == 1) {
+                $editUserButton = "";
+            }
+
             // and Except deleting themselves and changing permissions when they are forced superadmin
             if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
                 return join("",[$userDetail, $editUserButton]);
