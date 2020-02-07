@@ -1594,7 +1594,7 @@ function UpdateGroupList($surveyid, $language)
 
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
 
-    $result = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
+    $result = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid], ['order' => 'group_order ASC']);
     $groupList = array();
     foreach ($result as $row) {
         $group = array(
