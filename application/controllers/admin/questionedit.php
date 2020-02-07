@@ -210,6 +210,11 @@ class questionedit extends Survey_Common_Action
      */
     public function saveQuestionData($sid)
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $questionData = App()->request->getPost('questionData', []);
         $iSurveyId = (int) $sid;
         // TODO: Unused variable
