@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.2 (build 200204) to 3.22.3 (build 200211) February 11, 2020
+-Fixed issue: Missing translation file (Carsten Schmitz)
+-Fixed issue: HTML editor shows on invite (not in email templates) eventhough text format was activated for survey invitations/reminders (Carsten Schmitz)
+-Fixed issue: DB update issues when updating from old Limesurvey versions (#1377) (Marko Bischof)
+#Updated translation: Portuguese (Portugal) by algarvio
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.22.1 (build 200129) to 3.22.2 (build 200204) February 4, 2020
 -Fixed issue #15791: Can't load a lengthy label set, buttons not visible (lacrioque)
 
