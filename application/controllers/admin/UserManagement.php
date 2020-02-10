@@ -737,7 +737,7 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Mass edition apply roles
+     * Mass edition apply group
      *
      *
      * @return string
@@ -750,21 +750,34 @@ class UserManagement extends Survey_Common_Action
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
+
         $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
         $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
-        $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
-        $aResults = [];
 
-        foreach ($aItems as $sItem) {
-            $aResults[$sItem]['title'] = '';
-            $model = $this->loadModel($sItem);
-            $aResults[$sItem]['title'] = $model->users_name;
+        if ($iUserGroupId) {
+            $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
+            $aResults = [];
 
-            if (!$oUserGroup->hasUser($sItem)) {
-                $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
-            } else {
+            foreach ($aItems as $sItem) {
+                $aResults[$sItem]['title'] = '';
+                $model = $this->loadModel($sItem);
+                $aResults[$sItem]['title'] = $model->users_name;
+
+                if (!$oUserGroup->hasUser($sItem)) {
+                    $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
+                } else {
+                    $aResults[$sItem]['result'] = false;
+                    $aResults[$sItem]['error'] = gT('User is already a part of the group.');
+                }
+            }
+        } else {
+
+            foreach ($aItems as $sItem) {
+                $aResults[$sItem]['title'] = '';
+                $model = $this->loadModel($sItem);
+                $aResults[$sItem]['title'] = $model->users_name;
                 $aResults[$sItem]['result'] = false;
-                $aResults[$sItem]['error'] = gT('User is already a part of the group');
+                $aResults[$sItem]['error'] = gT('No user group selected.');
             }
         }
 
@@ -774,7 +787,7 @@ class UserManagement extends Survey_Common_Action
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Usergroup updated'),
+                'successLabel' => gT('User group updated.'),
                 'tableLabels' =>  $tableLabels
             )
         );
