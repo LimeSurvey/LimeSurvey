@@ -34,6 +34,32 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.1 (build 200203) to 4.1.2 (build 200210) February 10, 2020
+-Fixed issue: Throw exception at empty token value (#1383) (Brendan Kidwell)
+-Fixed issue: Missing translation file (Carsten Schmitz)
+-Fixed issue: InnoDB typo (SpazzMarticus)
+-Fixed issue: HTML editor shows on invite (not in email templates) eventhough text format was activated for survey invitations/reminders (Carsten Schmitz)
+-Fixed issue: Avoid undefined variable in AuthLDAP.php (#1380) (orionmcg)
+-Fixed issue #15834: Missing permission check in PHP when saving question data (Olle Haerstedt)
+-Fixed issue #15816: Order groups when loading them in UpdateGroupList. (#1385) (Jelle Sebreghts)
+-Fixed issue #15813: Group name not accessible anymore via RemoteControl (Olle Haerstedt)
+-Fixed issue #15756: Debug mode and error : difficult to analyse page (#1374) (Denis Chenu)
+-Fixed issue #15341: color switches yes/no on/off are wrong (Patricia Stelling)
+#Updated translation: Spanish (Spain) by jmlopez
+#Updated translation: Spanish (Argentina) by MeryKilicMeT19
+#Updated translation: Spanish (Argentina) (Informal) by MeryKilicMeT19
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: German by nietzschean, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Croatian by c_schmitz, Apach3, rovinj, dominikvitt
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.1.0 (build 200128) to 4.1.1 (build 200203) February 3, 2020
 -Fixed issue #15808: Images in mailing not converted to CID (#1381) (Denis Chenu)
 -Fixed issue #15794: Question in LS Expression (replacementfields) show question from next group (#1379) (Denis Chenu)
