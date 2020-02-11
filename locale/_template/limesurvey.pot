@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 19:45:51+00:00\n"
+"POT-Creation-Date: 2020-02-11 19:58:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -787,9 +787,10 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:217
 #: application/controllers/admin/limereplacementfields.php:239
 #: application/controllers/admin/limereplacementfields.php:299
+#: application/controllers/admin/limereplacementfields.php:343
 #: application/controllers/admin/limereplacementfields.php:376
 #: application/controllers/admin/limereplacementfields.php:393
-msgid "Email from the participant"
+msgid "Email address of the participant"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:182
@@ -801,9 +802,10 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:279
 #: application/controllers/admin/limereplacementfields.php:303
 #: application/controllers/admin/limereplacementfields.php:322
+#: application/controllers/admin/limereplacementfields.php:341
 #: application/controllers/admin/limereplacementfields.php:374
 #: application/controllers/admin/limereplacementfields.php:391
-msgid "First name from participant"
+msgid "First name of the participant"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:183
@@ -815,9 +817,10 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:280
 #: application/controllers/admin/limereplacementfields.php:304
 #: application/controllers/admin/limereplacementfields.php:323
+#: application/controllers/admin/limereplacementfields.php:342
 #: application/controllers/admin/limereplacementfields.php:375
 #: application/controllers/admin/limereplacementfields.php:392
-msgid "Last name from participant"
+msgid "Last name of the participant"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:185
@@ -881,7 +884,7 @@ msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:222
 #: application/controllers/admin/limereplacementfields.php:277
-msgid "Answers from this response"
+msgid "Answers in this response"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:226
@@ -1160,7 +1163,7 @@ msgid "Error creating role"
 msgstr ""
 
 #: application/controllers/admin/PermissiontemplatesController.php:177
-msgid "Sucessfully imported role"
+msgid "Role was successfully imported."
 msgstr ""
 
 #: application/controllers/admin/PermissiontemplatesController.php:188
@@ -1709,7 +1712,7 @@ msgstr ""
 
 #: application/controllers/admin/UserManagement.php:187
 #: application/controllers/admin/useraction.php:169
-msgid "Username : %s - Email : %s."
+msgid "Username: %s - Email: %s"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:188
@@ -3925,18 +3928,6 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:326
 #: application/controllers/admin/limereplacementfields.php:346
 msgid "Survey description"
-msgstr ""
-
-#: application/controllers/admin/limereplacementfields.php:341
-msgid "First name of the participant"
-msgstr ""
-
-#: application/controllers/admin/limereplacementfields.php:342
-msgid "Last name of the participant"
-msgstr ""
-
-#: application/controllers/admin/limereplacementfields.php:343
-msgid "Email address of the participant"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:377
@@ -13347,10 +13338,6 @@ msgstr ""
 
 #: application/libraries/PluginManager/PluginManager.php:137
 msgid "Extension \"%s\" is already installed."
-msgstr ""
-
-#: application/libraries/PluginManager/PluginManager.php:629
-msgid "N/A"
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:101
