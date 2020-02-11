@@ -482,7 +482,6 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
 
         $files = scandir($realPath);
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
         foreach ($files as $file) {
             if ($file == '.' || $file == '..') {continue;}
@@ -490,7 +489,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $fileRelativePath = $folderPath . DIRECTORY_SEPARATOR . $file;
             $fileRealpath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $fileRelativePath;
             $fileIsDirectoy = @is_dir($fileRealpath);
-            $isImage = strpos(finfo_file($finfo, $fileRealpath), 'image') !== false;
+            $isImage =  @exif_imagetype($fileRealpath) !== false;
             if ($fileIsDirectoy) {
                 continue;
             } else {
