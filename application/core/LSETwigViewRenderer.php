@@ -71,9 +71,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             if ($templateDbConf->config->metadata->version != $oTemplate->template->version) {
                 throw new WrongTemplateVersionException(
                     sprintf(
-                        gT("Can't render layout %s for template %s. 
-                        Template version in database is %s, but in config.xml it's %s. 
-                        Please re-install the template."),
+                        gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
                         $sLayout,
                         $oTemplate->template_name,
                         $oTemplate->template->version,

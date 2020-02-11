@@ -109,8 +109,7 @@ class LSSodium {
             if (!empty($sEncryptedString) && $sEncryptedString != 'null'){
                 $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
                 if ($plaintext === false){
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Here is a link to the manual page: 
-                    %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
                 } else {
                     return $plaintext;
                 }

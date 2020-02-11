@@ -2914,7 +2914,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'name' =>  "listSurveyGroups",
                     'title' =>  gT('Group list','unescaped'),
                     'menu_title' =>  gT('Group list','unescaped'),
-                    'menu_description' =>  gT('List question group','unescaped'),
+                    'menu_description' =>  gT('List question groups','unescaped'),
                 ],
                 'name=\'listQuestionGroups\''
             );
