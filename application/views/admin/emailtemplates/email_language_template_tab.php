@@ -35,7 +35,7 @@ $script = array();
             <label class=' control-label'><?php et('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-default' id="validate_expression_<?=$grouplang?>_<?=$tab?>" data-parent-element="#in_survey_common" data-target="modal" data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" data-footer="false" data-modal-title="<?=$details['title']?>" > 
-                    <?=gT("Validate expressions")?> 
+                    <?=gT("Validate ExpressionScript")?> 
                 </a> 
                 <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;

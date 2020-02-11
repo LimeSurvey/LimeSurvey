@@ -556,7 +556,7 @@ class labels extends Survey_Common_Action
                 '/admin/super/_renderJson', [
                     'data' => [
                         'success' => $result,
-                        'message' => $result ? gT('Label set sucessfully saved.') : gT("Label set couldn't be saved")
+                        'message' => $result ? gT('Label set successfully saved.') : gT("Label set couldn't be saved")
                     ]
                 ]
             );
