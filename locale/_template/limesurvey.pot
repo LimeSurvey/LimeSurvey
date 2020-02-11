@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 16:48:04+00:00\n"
+"POT-Creation-Date: 2020-02-11 18:14:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -801,7 +801,6 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:279
 #: application/controllers/admin/limereplacementfields.php:303
 #: application/controllers/admin/limereplacementfields.php:322
-#: application/controllers/admin/limereplacementfields.php:341
 #: application/controllers/admin/limereplacementfields.php:374
 #: application/controllers/admin/limereplacementfields.php:391
 msgid "First name from participant"
@@ -816,7 +815,6 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:280
 #: application/controllers/admin/limereplacementfields.php:304
 #: application/controllers/admin/limereplacementfields.php:323
-#: application/controllers/admin/limereplacementfields.php:342
 #: application/controllers/admin/limereplacementfields.php:375
 #: application/controllers/admin/limereplacementfields.php:392
 msgid "Last name from participant"
@@ -1720,6 +1718,7 @@ msgid "An email with a generated password was sent to the user."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:319
+#: application/controllers/admin/UserManagement.php:352
 msgid "You cannot delete yourself."
 msgstr ""
 
@@ -1778,26 +1777,19 @@ msgstr ""
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/admin/UserManagement.php:352
-msgid "you cannot elete yourself."
-msgstr ""
-
 #: application/controllers/admin/UserManagement.php:361
 msgid "User successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:647
+#: application/controllers/admin/UserManagement.php:656
 #: application/controllers/admin/questions.php:1639
+#: application/controllers/admin/surveyadmin.php:100
 #: application/controllers/admin/themeoptions.php:207
+#: application/controllers/admin/themeoptions.php:216
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/admin/themeoptions/index.php:203
 msgid "Selected"
-msgstr ""
-
-#: application/controllers/admin/UserManagement.php:656
-#: application/controllers/admin/surveyadmin.php:100
-#: application/controllers/admin/themeoptions.php:216
-msgid "Seleted"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:725
@@ -3935,8 +3927,16 @@ msgstr ""
 msgid "Survey description"
 msgstr ""
 
+#: application/controllers/admin/limereplacementfields.php:341
+msgid "First name of the participant"
+msgstr ""
+
+#: application/controllers/admin/limereplacementfields.php:342
+msgid "Last name of the participant"
+msgstr ""
+
 #: application/controllers/admin/limereplacementfields.php:343
-msgid "Email from participant"
+msgid "Email address of the participant"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:377
@@ -6750,7 +6750,7 @@ msgstr ""
 #: application/views/admin/survey/subview/_create_survey_text.php:105
 #: application/views/admin/usergroup/addUserGroup_view.php:24
 #: application/views/admin/usergroup/editUserGroup_view.php:15
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:79
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:79
 msgid "Description:"
 msgstr ""
 
@@ -6764,7 +6764,7 @@ msgstr ""
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: application/views/admin/survey/subview/_create_survey_text.php:196
 #: application/views/admin/survey/subview/_create_survey_text.php:201
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:126
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:126
 msgid "End message:"
 msgstr ""
 
@@ -7225,7 +7225,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:17
 #: application/models/Permission.php:709
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:64
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:64
 msgid "Survey text elements"
 msgstr ""
 
@@ -10971,7 +10971,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9719
 #: application/views/admin/survey/editLocalSettings_view.php:120
 #: application/views/admin/survey/subview/_create_survey_text.php:187
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:102
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:102
 msgid "Welcome:"
 msgstr ""
 
@@ -24200,6 +24200,22 @@ msgstr ""
 msgid "This action need to be confirmed."
 msgstr ""
 
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:60
+msgid "Text elements:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:153
+msgid "Privacy policy text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:176
+msgid "Privacy policy error text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:200
+msgid "Privacy policy label text:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/a6/a6bb1e6110af4ba03634cf711d120bbe6baabe523cc23be4d473e9b098a8f883.php:55
 msgid "Show Policy"
 msgstr ""
@@ -24309,22 +24325,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/f1/f119897e4caddb6f57022d2965608b940f440ac9e72dc64b990967939fce5079.php:108
 msgid "Change the language"
-msgstr ""
-
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:60
-msgid "Text elements:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:153
-msgid "Privacy policy text:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:176
-msgid "Privacy policy error:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:200
-msgid "Privacy policy label:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/fb/fb2981fc2b959e42284c81f5498c13ec594334e93e91edd5bc1526383bae29b5.php:88
