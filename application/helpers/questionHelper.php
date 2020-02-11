@@ -1150,7 +1150,7 @@ class questionHelper
             12=>'100%'
         ),
         "help"=>gT('Relative width of the labels'),
-        "caption"=>gT('Label wrapper width'));
+        "caption"=>gT('Label wrapping width'));
 
         /* Same than label_input_columns for multiple choice*/
         self::$attributes["choice_input_columns"] = array(
