@@ -245,13 +245,13 @@ abstract class ExtensionUpdater
     {
         switch ($type) {
             case 'p':
-                return gT('plugin');
+                return gT('Plugin');
             case 't':
-                return gT('theme');
+                return gT('Theme');
             case 's':
-                return gT('survey template');
+                return gT('Survey template');
             case 'q':
-                return gT('question template');
+                return gT('Question template');
             default:
                 throw new \Exception();
         }
