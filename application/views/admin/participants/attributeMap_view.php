@@ -21,7 +21,7 @@
 
 <div class='header ui-widget-header'>
     <div class='pagetitle h3'>
-        <?php eT("Map your central participant attributes to an existing survey participant attribute or create a new one"); ?>
+        <?php eT("Map your central participant attributes to existing survey participant attributes or create new ones"); ?>
     </div>
 </div>
 <?php

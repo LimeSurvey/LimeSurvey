@@ -43,7 +43,7 @@ $optionsOnOff = array(
                 <div id="pjax-content" class="tab-content col-md-10">
                     <div class="row">
                         <div class="alert alert-info controls col-sm-12" role="alert">
-                            <?php eT('All changes of global survey settings will have immediate effect on all related survey groups and surveys that use inherited values.'); ?>
+                            <?php eT('All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values.'); ?>
                         </div>
                     </div>
                     <?php if($partial == '_generaloptions_panel') { ?> 
