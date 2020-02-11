@@ -320,42 +320,22 @@ class User extends LSActiveRecord
     }
 
     public function getPasswordHelpText(){
-        $settings = Yii::app()->getConfig("passwordValidationRules");
-        $txt = '';
-        $txt2 = '';
-        if((int) $settings['min'] > 0) $txt = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
-        if((int) $settings['max'] > 0) $txt = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+        $settings =  Yii::app()->getConfig("passwordValidationRules");
+        $txt = gT('A password must meet the following requirements: ');
+        if((int) $settings['min'] > 0) $txt .= sprintf(ngT('At least %d character long.|At least %d characters long.', $settings['min']), $settings['min']).' ';
+        if((int) $settings['max'] > 0) $txt .= sprintf(ngT('At most %d character long.|At most %d characters long.', $settings['max']), $settings['max']).' ';
         if((int) $settings['min'] > 0 && (int) $settings['max'] > 0){
           if($settings['min'] == $settings['max']){
-            $txt = sprintf(ngT('Password must be exactly %d character in length|Password must be exactly %d characters in length', $settings['min']), $settings['min']);
+            $txt .= sprintf(ngT('Exactly %d character long.|Exactly %d characters long.', $settings['min']), $settings['min']).' ';
           } else
           if($settings['min'] < $settings['max']){
-            $txt = sprintf(gT('Password must be between %d - %d characters in length'), $settings['min'], $settings['max']);
+            $txt .= sprintf(gT('Between %d - %d characters long.'), $settings['min'], $settings['max']).' ';
           }
         }
-
-        $txt1 = array();
-        if((int) $settings['lower'] > 0) $txt1[] = ' '.sprintf(ngT('%d lower case letter|%d lower case letters', $settings['lower']), $settings['lower']);
-        if((int) $settings['upper'] > 0) $txt1[] = ' '.sprintf(ngT('%d upper case letter|%d upper case letters', $settings['upper']), $settings['upper']);
-        if((int) $settings['numeric'] > 0) $txt1[] = ' '.sprintf(ngT('%d number|%d numbers', $settings['numeric']), $settings['numeric']);
-        if((int) $settings['symbol'] > 0) $txt1[] = ' '.sprintf(ngT('%d special character|%d special characters', $settings['symbol']), $settings['symbol']);
-        if(!empty($txt1)){
-          foreach($txt1 as $i => $tmp){
-            if($i == (count($txt1)-1)){
-              if($txt2) $txt2 .= ' '.gT("and").' ';
-            } else {
-              if($txt2) $txt2 .= ", ";
-            }
-            $txt2 .= $tmp;
-          }
-        }
-
-        if($txt && $txt2){
-          $txt = $txt.' '. gT('and must include at least').' '.$txt2.'.';
-        } else
-        if($txt2){
-          $txt = gT('Password must include at least').' '.$txt2.'.';
-        }
+        if((int) $settings['lower'] > 0)  $txt .= sprintf(ngT('At least %d lower case letter.|At least %d lower case letters.', $settings['lower']), $settings['lower']).' ';
+        if((int) $settings['upper'] > 0)  $txt .= sprintf(ngT('At least %d upper case letter.|At least %d upper case letters.', $settings['upper']), $settings['upper']).' ';
+        if((int) $settings['numeric'] > 0) $txt .= sprintf(ngT('At least %d number.|At least %d numbers.', $settings['numeric']), $settings['numeric']).' ';
+        if((int) $settings['symbol'] > 0) $txt .= sprintf(ngT('At least %d special character.|At least %d special characters.', $settings['symbol']), $settings['symbol']).' ';
         return($txt);
     }
 
