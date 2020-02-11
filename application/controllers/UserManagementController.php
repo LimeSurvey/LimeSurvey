@@ -22,8 +22,12 @@ class UserManagementController extends LSMainController
         );
     }
 
-    public function actionIndex(){
-
+    /**
+     * @return string|string[]|null
+     * @throws CException
+     */
+    public function actionIndex()
+    {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
                 'partial/error',
@@ -45,11 +49,12 @@ class UserManagementController extends LSMainController
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
-        $aData['massiveAction'] = $this->renderPartial('massiveAction/_selector',
+        $aData['massiveAction'] = $this->renderPartial(
+            'massiveAction/_selector',
             [],
             true,
             false
-            );
+        );
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -66,12 +71,12 @@ class UserManagementController extends LSMainController
     /**
      * Open modal to edit, or create a new user
      *
-     * @param integer $userid
+     * @param int $userid
      * @return string
      * @throws CException
      */
-    public function actionAddEditUser($userid = null){
-
+    public function actionAddEditUser($userid = null)
+    {
         if (($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
             || ($userid !== null && !Permission::model()->hasGlobalPermission('users', 'update'))){
             return $this->renderPartial(
@@ -105,7 +110,6 @@ class UserManagementController extends LSMainController
         $aUser = Yii::app()->request->getParam('User');
         $passwordTest = Yii::app()->request->getParam('password_repeat', false);
         if (!empty($passwordTest)) {
-
             if ($passwordTest !== $aUser['password']) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
                     'success' => false,
@@ -128,7 +132,6 @@ class UserManagementController extends LSMainController
         }
 
         if (isset($aUser['uid']) && $aUser['uid']) {
-
             $oUser = $this->updateAdminUser($aUser);
             if ($oUser->hasErrors()) {
                 return App()->getController()->renderPartial('/admin/super/_renderJson', [
@@ -153,6 +156,7 @@ class UserManagementController extends LSMainController
      * Opens the modal to add dummy users
      *
      * @return string
+     * @throws CException
      */
     public function actionAdddummyuser()
     {
@@ -162,8 +166,8 @@ class UserManagementController extends LSMainController
     /**
      * Creates a batch of dummy users
      *
-     *
      * @return string | JSON
+     * @throws CException
      */
     public function actionRunadddummyuser()
     {
@@ -206,6 +210,7 @@ class UserManagementController extends LSMainController
      * Deletes a user after  confirmation
      *
      * @return void|string
+     * @throws CException
      */
     public function actionDeleteconfirm()
     {
@@ -216,7 +221,6 @@ class UserManagementController extends LSMainController
         }
         $userId = Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
-
             Yii::app()->setFlashMessage(gT("you cannot delete yourself."), 'error');
             $this->redirect('index');
         }
@@ -232,7 +236,9 @@ class UserManagementController extends LSMainController
     /**
      * Show some user detail and statistics
      *
+     * @param $userid int
      * @return string
+     * @throws CException
      */
     public function actionViewuser($userid)
     {
@@ -255,6 +261,7 @@ class UserManagementController extends LSMainController
      * Opens a modal to edit user permissions
      *
      * @return string
+     * @throws CException
      */
     public function actionUserpermissions()
     {
@@ -303,7 +310,9 @@ class UserManagementController extends LSMainController
                 return true;
             }
             return array_reduce($oSurvey->permissions, function ($coll, $oPermission) {
-                if ($oPermission->permission == 'surveysecurity' && $oPermission->update_p == 1 && $oPermission->uid == App()->user->id) {
+                if ($oPermission->permission == 'surveysecurity' &&
+                    $oPermission->update_p == 1 &&
+                    $oPermission->uid == App()->user->id) {
                     return true;
                 }
                 return $coll;
@@ -323,6 +332,7 @@ class UserManagementController extends LSMainController
      * Stores the changed permissions
      *
      * @return string | JSON
+     * @throws CException
      */
     public function actionSaveuserpermissions()
     {
@@ -352,6 +362,7 @@ class UserManagementController extends LSMainController
      * Opens a modal to edit user template permissions
      *
      * @return string
+     * @throws CException
      */
     public function actionUserTemplatePermissions()
     {
@@ -386,10 +397,12 @@ class UserManagementController extends LSMainController
      * Stores the changed permissions
      *
      * @return string | JSON
+     * @throws CException
      */
     public function actionSaveThemePermissions()
     {
-        if (!(Permission::model()->hasGlobalPermission('users', 'update') && Permission::model()->hasGlobalPermission('templates', 'update'))) {
+        if (!(Permission::model()->hasGlobalPermission('users', 'update') &&
+            Permission::model()->hasGlobalPermission('templates', 'update'))) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -413,6 +426,7 @@ class UserManagementController extends LSMainController
      * Opens the modal to add dummy users
      *
      * @return string
+     * @throws CException
      */
     public function actionAddRole()
     {
@@ -444,6 +458,7 @@ class UserManagementController extends LSMainController
      * Save role of user
      *
      * @return string
+     * @throws CException
      */
     public function actionSaveRole()
     {
@@ -478,8 +493,9 @@ class UserManagementController extends LSMainController
     /**
      * Calls up a modal to import users via csv/json file
      *
-     *@param string $importFormat - Importformat (csv/json) to render
-     *@return string
+     * @param string $importFormat - Importformat (csv/json) to render
+     * @return string
+     * @throws CException
      */
     public function actionRenderUserImport(string $importFormat = 'csv')
     {
@@ -510,6 +526,7 @@ class UserManagementController extends LSMainController
      *
      * @param string importFormat - format of the imported file - Choice between csv / json
      * @return string
+     * @throws CException
      */
     public function actionImportUsers(string $importFormat = 'csv')
     {
@@ -539,12 +556,10 @@ class UserManagementController extends LSMainController
         $updated = [];
 
         foreach ($aNewUsers as $aNewUser) {
-
             $oUser = User::model()->findByAttributes(['users_name' => $aNewUser['users_name']]);
 
             if ($oUser  !== null) {
                 if ($overwriteUsers) {
-
                     $oUser->full_name = $aNewUser['full_name'];
                     $oUser->email = $aNewUser['email'];
                     $oUser->parent_id = App()->user->id;
@@ -563,7 +578,6 @@ class UserManagementController extends LSMainController
                     }
                 }
             } else {
-
                 $password = $this->getRandomPassword(8);
                 $passwordText = $password;
                 if ($aNewUser['password'] != ' ') {
@@ -596,9 +610,11 @@ class UserManagementController extends LSMainController
 
     /**
      * Export users with specific format (json or csv)
+     *
      * @param string $outputFormat json or csv
      * @param int $uid userId
      * @return mixed
+     * @throws CException
      */
     public function actionExportUser(string $outputFormat, int $uid = 0)
     {
@@ -668,7 +684,10 @@ class UserManagementController extends LSMainController
 
     /**
      * Delete multiple users selected by massive action
+     *
      * @return void|string
+     * @throws CException
+     * @throws CHttpException
      */
     public function actionDeleteMultiple()
     {
@@ -711,10 +730,8 @@ class UserManagementController extends LSMainController
      * @throws CHttpException
      * @throws CException
      */
-
     public function actionRenderSelectedItems()
     {
-
         $aUsers = json_decode(App()->request->getPost('$oCheckedItems'));
         $aResults = [];
         $gridid = App()->request->getParam('$grididvalue');
@@ -746,6 +763,8 @@ class UserManagementController extends LSMainController
      * Method to resend a password to selected surveyadministrators (MassAction)
      *
      * @return String
+     * @throws CException
+     * @throws \PHPMailer\PHPMailer\Exception
      */
     public function actionBatchSendAndResetLoginData()
     {
@@ -790,6 +809,7 @@ class UserManagementController extends LSMainController
      * Stores the permission settings run via MassEdit
      *
      * @return string
+     * @throws CException
      */
     public function actionBatchPermissions()
     {
@@ -817,8 +837,9 @@ class UserManagementController extends LSMainController
     /**
      * Mass edition apply roles
      *
-     *
      * @return string
+     * @throws CException
+     * @throws CHttpException
      */
     public function actionBatchAddGroup()
     {
@@ -887,9 +908,7 @@ class UserManagementController extends LSMainController
                 $aResults[$sItem]['result'] = false;
                 $aResults[$sItem]['error'] = gT('The superadmin role cannot be changed.');
             } else {
-
                 foreach ($aUserRoleIds as $iUserRoleId) {
-
                     $aResults[$sItem]['result'] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
                 }
             }
@@ -911,6 +930,7 @@ class UserManagementController extends LSMainController
      * Takes ownership on user after confirmation
      *
      * @return void
+     * @throws CException
      */
     public function actionTakeOwnership()
     {
@@ -933,6 +953,7 @@ class UserManagementController extends LSMainController
      * @param int $uid
      * @param bool $recursive
      * @return boolean
+     * @throws CException
      */
     public function deleteUser(int $uid, bool $recursive = true)
     {
@@ -955,14 +976,13 @@ class UserManagementController extends LSMainController
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      *
-     * @param integer $id the ID of the model to be loaded
+     * @param int $id the ID of the model to be loaded
      *
      * @return User|null  object
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-
         $model = User::model()->findByPk($id);
 
         if ($model === null) {
@@ -975,7 +995,7 @@ class UserManagementController extends LSMainController
     /**
      * Creates a random password through the core plugin
      *
-     * @param integer $length Length of the password
+     * @param int $length Length of the password
      * @return string
      */
     protected function getRandomPassword($length = 8)
@@ -1002,8 +1022,7 @@ class UserManagementController extends LSMainController
         //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
         //Therefore we need to make sure no non-superadmin can modify superadmin accounts
         //Since this should NEVER be the case without hacking the software, this will silently just do nothing.
-        if (
-            !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
             && Permission::model()->hasGlobalPermission('superadmin', 'read', $oUser->uid)
         ) {
             throw new CException("This action is not allowed, and should never happen", 500);
@@ -1153,7 +1172,6 @@ class UserManagementController extends LSMainController
      */
     public function _sendAdminMail($aUser, $type = 'registration', $newPassword = null)
     {
-
         switch ($type) {
             case "resetPassword":
                 $renderArray = [
@@ -1211,7 +1229,7 @@ class UserManagementController extends LSMainController
      * Resets the password for one user
      *
      * @param User $oUser User model
-     * @param boolean $sendMail Send a mail to the user
+     * @param bool $sendMail Send a mail to the user
      * @return array [success, uid, username, password]
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
