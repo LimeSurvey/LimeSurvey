@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-04 20:53:34+00:00\n"
+"POT-Creation-Date: 2020-02-11 15:30:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1417,6 +1417,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:312
 #: application/controllers/admin/SurveymenuEntryController.php:350
 #: application/controllers/admin/participantsaction.php:617
+#: application/controllers/admin/questionedit.php:215
 #: application/controllers/admin/questiongroups.php:45
 #: application/controllers/admin/questiongroups.php:150
 #: application/controllers/admin/questiongroups.php:227
@@ -1726,7 +1727,9 @@ msgstr ""
 #: application/controllers/admin/UserManagement.php:650
 #: application/controllers/admin/UserManagement.php:764
 #: application/controllers/admin/UserManagement.php:814
-msgid "User id"
+#: application/models/User.php:108 application/models/User.php:723
+#: application/models/User.php:783
+msgid "User ID"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:323
@@ -4644,46 +4647,46 @@ msgstr ""
 msgid "Question cannot be stored. Please check the answer option for duplicates or empty titles."
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:294
+#: application/controllers/admin/questionedit.php:299
 msgid "Question has been stored, but an error happened: "
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:327
+#: application/controllers/admin/questionedit.php:332
 msgid "Question successfully copied"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:328
+#: application/controllers/admin/questionedit.php:333
 msgid "Question successfully stored"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:824
+#: application/controllers/admin/questionedit.php:829
 msgid "Question creation failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:882
+#: application/controllers/admin/questionedit.php:887
 msgid "Question update failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:927
-#: application/controllers/admin/questionedit.php:933
+#: application/controllers/admin/questionedit.php:932
+#: application/controllers/admin/questionedit.php:938
 msgid "Could not store general options"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:978
-#: application/controllers/admin/questionedit.php:990
-#: application/controllers/admin/questionedit.php:998
+#: application/controllers/admin/questionedit.php:983
+#: application/controllers/admin/questionedit.php:995
+#: application/controllers/admin/questionedit.php:1003
 msgid "Could not store advanced options"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:1023
+#: application/controllers/admin/questionedit.php:1028
 msgid "Could not store translation"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:1103
+#: application/controllers/admin/questionedit.php:1108
 msgid "Could not store translation for subquestion"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:1136
+#: application/controllers/admin/questionedit.php:1141
 msgid "Could not store translation for answer option"
 msgstr ""
 
@@ -10687,6 +10690,10 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
+#: application/helpers/expressions/em_core_helper.php:2086
+msgid "Function must have at least %s argument|Function must have at least %s arguments"
+msgstr ""
+
 #: application/helpers/expressions/em_core_helper.php:2167
 msgid "Function does not support %s arguments"
 msgstr ""
@@ -10931,7 +10938,7 @@ msgid "This response was already submitted."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:5679
-msgid "An error happen when try to submit your response."
+msgid "An error happened when trying to submit your response."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:6670
@@ -11503,7 +11510,7 @@ msgid "Comment only when"
 msgstr ""
 
 #: application/helpers/questionHelper.php:185
-msgid "Use javascript function to remove text and uncheck checkbox (or use Expression Manager only)."
+msgid "Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only)."
 msgstr ""
 
 #: application/helpers/questionHelper.php:186
@@ -13574,6 +13581,18 @@ msgstr ""
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
 msgstr ""
 
+#: application/models/InstallerConfigForm.php:270
+msgid "The database engine type must be set for MySQL"
+msgstr ""
+
+#: application/models/InstallerConfigForm.php:275
+msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
+msgstr ""
+
+#: application/models/InstallerConfigForm.php:278
+msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
+msgstr ""
+
 #: application/models/InstallerConfigForm.php:423
 msgid "Try again! Connection with database failed."
 msgstr ""
@@ -14062,7 +14081,7 @@ msgid "Note: You can't edit the condition because there are currently conditions
 msgstr ""
 
 #: application/models/QuestionBaseDataSet.php:377
-msgid "A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."
+msgid "A condition can be used to add branching logic using ExpressionScript. Either add it directly here or use the Condition designer."
 msgstr ""
 
 #: application/models/QuestionBaseDataSet.php:398
@@ -14927,6 +14946,10 @@ msgstr ""
 msgid "Valid until"
 msgstr ""
 
+#: application/models/Token.php:248
+msgid "Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled."
+msgstr ""
+
 #: application/models/TokenDynamic.php:616
 msgid "Quota out"
 msgstr ""
@@ -14995,11 +15018,6 @@ msgstr ""
 #: application/views/admin/super/_configuration_menu.php:256
 #: application/views/admin/super/sidemenu.php:62
 msgid "Settings"
-msgstr ""
-
-#: application/models/User.php:108 application/models/User.php:723
-#: application/models/User.php:783
-msgid "User ID"
 msgstr ""
 
 #: application/models/User.php:112
@@ -16093,7 +16111,7 @@ msgid "Text abbreviated:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:76
-msgid "Use Expression Manager code:"
+msgid "Use Expression Engine code:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:91
@@ -18809,11 +18827,11 @@ msgid "ComfortUpdate key"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:68
-msgid "Expression Manager"
+msgid "Expression Engine"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:74
-msgid "Expression Manager descriptions"
+msgid "Expression Engine descriptions"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:81
@@ -18825,15 +18843,15 @@ msgid "Unit tests of expressions within strings"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:95
-msgid "Unit test dynamic relevance processing"
+msgid "Unit test dynamic ExpressionScript processing"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:102
-msgid "Preview conversion of conditions to relevance"
+msgid "Preview conversion of conditions to ExpressionScript"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:109
-msgid "Bulk convert conditions to relevance"
+msgid "Bulk convert conditions to ExpressionScript"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:116
@@ -19322,7 +19340,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:388
 #: application/views/admin/survey/Question/neditQuestion_view.php:336
-msgid "More on relevance and the Expression Manager."
+msgid "More on relevance and the ExpressionScript Engine."
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:399
@@ -19901,6 +19919,10 @@ msgstr ""
 
 #: application/views/admin/survey/activateSurvey_view.php:223
 msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr ""
+
+#: application/views/admin/survey/activateSurvey_view.php:229
+msgid "Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation."
 msgstr ""
 
 #: application/views/admin/survey/activateSurvey_view.php:237
