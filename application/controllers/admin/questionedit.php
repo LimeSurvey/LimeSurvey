@@ -826,7 +826,7 @@ class questionedit extends Survey_Common_Action
         if ($oQuestion == null) {
             throw new LSJsonException(
                 500,
-                gT("Question creation failed, input array malformed or invalid"),
+                gT("Question creation failed - input was malformed or invalid"),
                 0,
                 null,
                 true

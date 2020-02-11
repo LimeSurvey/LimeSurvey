@@ -57,8 +57,8 @@ class emailtemplates extends Survey_Common_Action
                 'Subject' => gT('Subject'),
                 'Message' => gT('Message'),
                 'Validate Expressions' => gT('Validate ExpressionScript'),
-                'Reset current' => gT('Reset current'),
-                'Add file to current' => gT('Add file to current'),
+                'Reset to default' => gT('Reset to default'),
+                'Add attachment to template' => gT('Add attachment to template'),
                ]
         ];
         $this->_renderWrappedTemplate('emailtemplates', 'emailtemplatescomponent', $aData);

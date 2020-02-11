@@ -182,7 +182,7 @@ class questionHelper
                 "1"=>gT('Yes'),
                 ),
             'default' => "1",
-            'help'=>gT('Use Javascript functions to remove text and uncheck checkbox (or use only ExpressionScript engine).'),
+            'help'=>gT('Use JavaScript functions to remove text and uncheck checkbox (or use only the ExpressionScript engine).'),
             'caption'=>gT('Remove text or uncheck checkbox automatically')
         );
 

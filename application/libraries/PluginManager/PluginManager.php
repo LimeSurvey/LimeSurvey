@@ -599,7 +599,7 @@ class PluginManager extends \CApplicationComponent
         }
 
         if (empty($desc)) {
-            $desc = gT('N/A');
+            $desc = '-';
         }
 
         return $desc;
