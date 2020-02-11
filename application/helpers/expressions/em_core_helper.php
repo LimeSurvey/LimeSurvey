@@ -2083,7 +2083,7 @@ class ExpressionManager
                 if ($numArgsAllowed[0] < 0) {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs) {
-                        $this->RDP_AddError(sprintf(Yii::t("Function must have at least %s argument|Function must have at least %s arguments", $minArgs), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf(gT("Function must have at least %s argument|Function must have at least %s arguments", $minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
