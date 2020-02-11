@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 18:14:48+00:00\n"
+"POT-Creation-Date: 2020-02-11 18:34:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13262,23 +13262,25 @@ msgid "Please visit <a href=\"%s\">%s</a> to download the update."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:248
-msgid "plugin"
+#: application/views/admin/pluginmanager/index.php:118
+msgid "Plugin"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:250
-msgid "theme"
+#: application/models/TemplateConfiguration.php:938
+msgid "Theme"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:252
-msgid "survey template"
+msgid "Survey template"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:254
-msgid "question template"
+msgid "Question template"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:53
-msgid "No temporary folder set, cannot move files."
+msgid "Temporary folder cannot be determined."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:57
@@ -13299,6 +13301,7 @@ msgid "Configuration file config.xml does not exist."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:109
+#: application/libraries/PluginManager/PluginManager.php:112
 msgid "Could not parse config.xml file."
 msgstr ""
 
@@ -13307,7 +13310,7 @@ msgid "Found no file"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:196
-msgid "Unzipped file is superior to upload_max_filesize or to post_max_size"
+msgid "Unzipped file is too big."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/VersionFetcherServiceLocator.php:100
@@ -13342,10 +13345,6 @@ msgstr ""
 
 #: application/libraries/PluginManager/PluginBase.php:495
 msgid "Config file is malformed or null."
-msgstr ""
-
-#: application/libraries/PluginManager/PluginManager.php:112
-msgid "Could not parse the plugin config.xml into a configuration object"
 msgstr ""
 
 #: application/libraries/PluginManager/PluginManager.php:127
@@ -14778,10 +14777,6 @@ msgstr ""
 
 #: application/models/TemplateConfiguration.php:937
 msgid "Global"
-msgstr ""
-
-#: application/models/TemplateConfiguration.php:938
-msgid "Theme"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:1076
@@ -18290,10 +18285,6 @@ msgstr ""
 
 #: application/views/admin/pluginmanager/index.php:72
 msgid "Scan files"
-msgstr ""
-
-#: application/views/admin/pluginmanager/index.php:118
-msgid "Plugin"
 msgstr ""
 
 #: application/views/admin/pluginmanager/overview.php:14
