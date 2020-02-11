@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 18:54:26+00:00\n"
+"POT-Creation-Date: 2020-02-11 19:45:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1018,7 +1018,7 @@ msgid "Move file"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:84
-msgid "Allowed file formats"
+msgid "Allowed file extensions"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:104
@@ -3450,11 +3450,11 @@ msgid "Validate ExpressionScript"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:60
-msgid "Reset current"
+msgid "Reset to default"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:61
-msgid "Add file to current"
+msgid "Add attachment to template"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:120
@@ -4654,7 +4654,7 @@ msgid "Question successfully stored"
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:829
-msgid "Question creation failed, input array malformed or invalid"
+msgid "Question creation failed - input was malformed or invalid"
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:887
@@ -11497,7 +11497,7 @@ msgid "Comment only when"
 msgstr ""
 
 #: application/helpers/questionHelper.php:185
-msgid "Use Javascript functions to remove text and uncheck checkbox (or use only ExpressionScript engine)."
+msgid "Use JavaScript functions to remove text and uncheck checkbox (or use only the ExpressionScript engine)."
 msgstr ""
 
 #: application/helpers/questionHelper.php:186
@@ -13235,11 +13235,11 @@ msgid "Survey %s"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:136
-msgid "There are <b>security updates</b> available for %s <b>%s</b>."
+msgid "There are security updates available for %s (type: %s)."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:138
-msgid "There are updates available for %s <b>%s</b>."
+msgid "There are updates available for %s (type: %s)."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:150
@@ -13247,24 +13247,24 @@ msgid "The latest available version is %s."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:156
-msgid "Please visit <a href=\"%s\">%s</a> to download the update."
+msgid "Please visit %s to download the update."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:248
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:247
 #: application/views/admin/pluginmanager/index.php:118
 msgid "Plugin"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:250
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:249
 #: application/models/TemplateConfiguration.php:938
 msgid "Theme"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:252
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:251
 msgid "Survey template"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:254
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:253
 msgid "Question template"
 msgstr ""
 
@@ -13349,7 +13349,6 @@ msgstr ""
 msgid "Extension \"%s\" is already installed."
 msgstr ""
 
-#: application/libraries/PluginManager/PluginManager.php:602
 #: application/libraries/PluginManager/PluginManager.php:629
 msgid "N/A"
 msgstr ""
