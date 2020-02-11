@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.3 (build 200211) to 3.22.4 (build 200212) February 12, 2020
+-Fixed issues [security] #14379: Stored XSS through SVG file upload. (Thanks to Denis Chenu and Maxime Roy) (Marc Leonhardt)
+-Fixed issues [security] #14380: Stored XSS through SVG file upload. 
+-Fixed issues [security] #15796: Stored XSS through SVG file upload.
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kinyarwanda by c_schmitz
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by eddylackmann
+#Updated translation: French (France) by jayce, eddylackmann
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.22.2 (build 200204) to 3.22.3 (build 200211) February 11, 2020
 -Fixed issue: Missing translation file (Carsten Schmitz)
 -Fixed issue: HTML editor shows on invite (not in email templates) eventhough text format was activated for survey invitations/reminders (Carsten Schmitz)
