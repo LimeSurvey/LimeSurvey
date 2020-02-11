@@ -329,7 +329,7 @@ class User extends LSActiveRecord
             $txt .= sprintf(ngT('Exactly %d character long.|Exactly %d characters long.', $settings['min']), $settings['min']).' ';
           } else
           if($settings['min'] < $settings['max']){
-            $txt .= sprintf(gT('Between %d - %d characters long.'), $settings['min'], $settings['max']).' ';
+            $txt .= sprintf(gT('Between %d and %d characters long.'), $settings['min'], $settings['max']).' ';
           }
         }
         if((int) $settings['lower'] > 0)  $txt .= sprintf(ngT('At least %d lower case letter.|At least %d lower case letters.', $settings['lower']), $settings['lower']).' ';
