@@ -166,7 +166,7 @@ class UserAction extends Survey_Common_Action
                 $mailer->isHtml(true);
                 $mailer->emailType = "addadminuser";
                 if ($mailer->sendMessage()) {
-                    $extra = CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $new_user, $new_email));
+                    $extra = CHtml::tag("p", array(), sprintf(gT("Username: %s - Email: %s"), $new_user, $new_email));
                     $extra .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                     $classMsg = 'text-success';
                     $sHeader = gT("Success");

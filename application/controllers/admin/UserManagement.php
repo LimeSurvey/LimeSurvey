@@ -184,7 +184,7 @@ class UserManagement extends Survey_Common_Action
                 } else {
                     // has to be sent again or no other way
                     $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));;
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
+                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username: %s - Email: %s"), $newUser['users_name'], $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
             }
