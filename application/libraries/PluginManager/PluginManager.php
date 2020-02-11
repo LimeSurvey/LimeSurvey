@@ -626,7 +626,7 @@ class PluginManager extends \CApplicationComponent
         }
 
         if (empty($name)) {
-            $name = gT('N/A');
+            $name = '-';
         }
 
         return $name;

@@ -212,9 +212,9 @@ class limereplacementfields extends Survey_Common_Action
 
         // The only time no survey id is necessary is in the global settings
         if ($fieldtype === 'globalSurveySettings') {
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
-            $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
+            $replFields['TOKEN:EMAIL'] = gT("Email address of the participant");
             $replFields['EXPIRY'] = gT("Survey expiration date");
             $replFields['ADMINNAME'] = gT("Name of the survey administrator");
             $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
@@ -234,9 +234,9 @@ class limereplacementfields extends Survey_Common_Action
             || strpos($fieldtype, 'editend') !== false
         ) { // for translation
 
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
-            $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
+            $replFields['TOKEN:EMAIL'] = gT("Email address of the participant");
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
@@ -255,8 +255,8 @@ class limereplacementfields extends Survey_Common_Action
             $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
             $replFields['STATISTICSURL'] = gT("Statistics URL");
             $replFields['TOKEN'] = gT("Access code for this participant");
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -274,10 +274,10 @@ class limereplacementfields extends Survey_Common_Action
             $replFields['VIEWRESPONSEURL'] = gT("View response URL");
             $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
             $replFields['STATISTICSURL'] = gT("Statistics URL");
-            $replFields['ANSWERTABLE'] = gT("Answers from this response");
+            $replFields['ANSWERTABLE'] = gT("Answers in this response");
             $replFields['TOKEN'] = gT("Access code for this participant");
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -296,12 +296,12 @@ class limereplacementfields extends Survey_Common_Action
         ) {
             // these 2 fields are supported by email-inv and email-rem
             // but not email-reg for the moment
-            $replFields['EMAIL'] = gT("Email from the participant");
+            $replFields['EMAIL'] = gT("Email address of the participant");
             $replFields['TOKEN'] = gT("Access code for this participant");
             $replFields['OPTOUTURL'] = gT("URL for a respondent to opt-out of this survey");
             $replFields['OPTINURL'] = gT("URL for a respondent to opt-in to this survey");
-            $replFields['FIRSTNAME'] = gT("First name from participant");
-            $replFields['LASTNAME'] = gT("Last name from participant");
+            $replFields['FIRSTNAME'] = gT("First name of the participant");
+            $replFields['LASTNAME'] = gT("Last name of the participant");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -319,8 +319,8 @@ class limereplacementfields extends Survey_Common_Action
 
             // $replFields['SID']= gT("Survey ID");
         } elseif (strpos($fieldtype, 'email_registration') !== false) {
-            $replFields['FIRSTNAME'] = gT("First name from participant");
-            $replFields['LASTNAME'] = gT("Last name from participant");
+            $replFields['FIRSTNAME'] = gT("First name of the participant");
+            $replFields['LASTNAME'] = gT("Last name of the participant");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -371,9 +371,9 @@ class limereplacementfields extends Survey_Common_Action
             || strpos($fieldtype, 'editquestion') !== false             // for translation
             || strpos($fieldtype, 'editquestion_help') !== false        // for translation
         ) { 
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
-            $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
+            $replFields['TOKEN:EMAIL'] = gT("Email address of the participant");
             $replFields['SID'] = gT("This question's survey ID number");
             $replFields['GID'] = gT("This question's group ID number");
             $replFields['QID'] = gT("This question's question ID number");
@@ -388,9 +388,9 @@ class limereplacementfields extends Survey_Common_Action
             return array($replFields, true);
 
         } elseif (strpos($fieldtype, 'editanswer') !== false) {
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name from participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name from participant");
-            $replFields['TOKEN:EMAIL'] = gT("Email from the participant");
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
+            $replFields['TOKEN:EMAIL'] = gT("Email address of the participant");
             $replFields['SID'] = gT("This question's survey ID number");
             $replFields['GID'] = gT("This question's group ID number");
             $replFields['QID'] = gT("This question's question ID number");
