@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 15:53:12+00:00\n"
+"POT-Creation-Date: 2020-02-11 16:09:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3763,7 +3763,7 @@ msgid "Save changes"
 msgstr ""
 
 #: application/controllers/admin/labels.php:345
-msgid "Label set properties sucessfully updated."
+msgid "Label set successfully saved."
 msgstr ""
 
 #: application/controllers/admin/labels.php:356
@@ -3812,12 +3812,12 @@ msgid "Export multiple label sets"
 msgstr ""
 
 #: application/controllers/admin/labels.php:559
-msgid "Successfully stored labelset"
+msgid "Label set sucessfully saved."
 msgstr ""
 
 #: application/controllers/admin/labels.php:559
 #: application/controllers/admin/labels.php:569
-msgid "Labelset couldn't be stored"
+msgid "Label set couldn't be saved"
 msgstr ""
 
 #: application/controllers/admin/labels.php:600
@@ -3852,7 +3852,7 @@ msgid "Subquestions"
 msgstr ""
 
 #: application/controllers/admin/labels.php:677
-msgid "Label set successfully stored"
+msgid "Label set successfully saved"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:56
@@ -15092,7 +15092,7 @@ msgid "Exactly %d character long.|Exactly %d characters long."
 msgstr ""
 
 #: application/models/User.php:332
-msgid "Between %d - %d characters long."
+msgid "Between %d and %d characters long."
 msgstr ""
 
 #: application/models/User.php:335
