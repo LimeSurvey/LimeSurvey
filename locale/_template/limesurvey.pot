@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 16:30:46+00:00\n"
+"POT-Creation-Date: 2020-02-11 16:48:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3453,7 +3453,8 @@ msgid "Message"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:59
-msgid "Validate Expressions"
+#: application/views/admin/emailtemplates/email_language_template_tab.php:38
+msgid "Validate ExpressionScript"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:60
@@ -3465,9 +3466,6 @@ msgid "Add file to current"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:120
-msgid "Email tempplates successfully saved"
-msgstr ""
-
 #: application/controllers/admin/emailtemplates.php:250
 msgid "Email templates successfully saved."
 msgstr ""
@@ -3763,6 +3761,7 @@ msgid "Save changes"
 msgstr ""
 
 #: application/controllers/admin/labels.php:345
+#: application/controllers/admin/labels.php:559
 msgid "Label set successfully saved."
 msgstr ""
 
@@ -3809,10 +3808,6 @@ msgstr ""
 #: application/views/admin/labels/labelsetsbar_view.php:28
 #: application/views/admin/labels/labelsetsbar_view.php:36
 msgid "Export multiple label sets"
-msgstr ""
-
-#: application/controllers/admin/labels.php:559
-msgid "Label set sucessfully saved."
 msgstr ""
 
 #: application/controllers/admin/labels.php:559
@@ -4643,7 +4638,7 @@ msgid "Question cannot be stored. Please check the subquestion codes for duplica
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:167
-msgid "Question cannot be stored. Please check the answer option for duplicates or empty titles."
+msgid "Question cannot be stored. Please check the answer options for duplicates or empty codes."
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:299
@@ -5679,11 +5674,11 @@ msgid "Error in storing survey texts"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2279
-msgid "Successfully stored data security texts"
+msgid "Successfully saved privacy policy text"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2279
-msgid "Error in storing data security texts"
+msgid "Error saving privacy policy text"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2303
@@ -6755,7 +6750,7 @@ msgstr ""
 #: application/views/admin/survey/subview/_create_survey_text.php:105
 #: application/views/admin/usergroup/addUserGroup_view.php:24
 #: application/views/admin/usergroup/editUserGroup_view.php:15
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:79
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:79
 msgid "Description:"
 msgstr ""
 
@@ -6769,7 +6764,7 @@ msgstr ""
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: application/views/admin/survey/subview/_create_survey_text.php:196
 #: application/views/admin/survey/subview/_create_survey_text.php:201
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:126
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:126
 msgid "End message:"
 msgstr ""
 
@@ -7230,7 +7225,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:17
 #: application/models/Permission.php:709
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:64
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:64
 msgid "Survey text elements"
 msgstr ""
 
@@ -10976,7 +10971,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9719
 #: application/views/admin/survey/editLocalSettings_view.php:120
 #: application/views/admin/survey/subview/_create_survey_text.php:187
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:102
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:102
 msgid "Welcome:"
 msgstr ""
 
@@ -16003,10 +15998,6 @@ msgstr ""
 
 #: application/views/admin/emailtemplates/email_language_template_tab.php:35
 msgid "Actions:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_template_tab.php:38
-msgid "Validate expressions"
 msgstr ""
 
 #: application/views/admin/emailtemplates/email_language_template_tab.php:42
@@ -24003,22 +23994,6 @@ msgstr ""
 msgid "Say hello"
 msgstr ""
 
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:60
-msgid "Text elements:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:153
-msgid "Data security notice:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:176
-msgid "Data security notice error:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:200
-msgid "Data security notice label:"
-msgstr ""
-
 #: tmp/runtime/twig_cache/05/05c10c2a30148dec3579f08a0bdbc97db979fdeef40c3168bbe3d09fd7d4ff3a.php:62
 msgid "Thank you for registering. You will receive an email shortly."
 msgstr ""
@@ -24269,16 +24244,16 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+#: tmp/runtime/twig_cache/ba/bac9b01405b24bb5da8ad7b1c0c280dc8337eae6747ae9be04576cb9942cdd20.php:55
+msgid "Your Privacy policy text is shown here."
+msgstr ""
+
 #: tmp/runtime/twig_cache/cb/cbe60b3d09d583ace5f4ef566e25dca426f4cc4a479314e719a478095e72fa37.php:296
 msgid "Insert a new subquestion after this one"
 msgstr ""
 
 #: tmp/runtime/twig_cache/cb/cbe60b3d09d583ace5f4ef566e25dca426f4cc4a479314e719a478095e72fa37.php:300
 msgid "Delete this subquestion"
-msgstr ""
-
-#: tmp/runtime/twig_cache/da/dae400251be2c97f0931bc0338a57f10c486c0091250af5b3b913999ad9dbc25.php:55
-msgid "Here your data security notice"
 msgstr ""
 
 #: tmp/runtime/twig_cache/e1/e1398d6fecc4c3026fa0769ec0c47d5ef2bb64e899e152f7d56972264cec8ad1.php:59
@@ -24334,6 +24309,22 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/f1/f119897e4caddb6f57022d2965608b940f440ac9e72dc64b990967939fce5079.php:108
 msgid "Change the language"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:60
+msgid "Text elements:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:153
+msgid "Privacy policy text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:176
+msgid "Privacy policy error:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/f6/f6464fb80b7d6bfc87b25120ffd627c86a9b7665906fb232169f00eb82f64331.php:200
+msgid "Privacy policy label:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/fb/fb2981fc2b959e42284c81f5498c13ec594334e93e91edd5bc1526383bae29b5.php:88
