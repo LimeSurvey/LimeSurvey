@@ -14,7 +14,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using participants or notifications emails you need to set an administrator email address.",'js')."'
+    var sAdminEmailAddressNeeded = '".gT("If you are using participants or notification emails you need to set an administrator email address.",'js')."'
     var sURLParameters = '';
     var sAddParam = '';
     
