@@ -349,7 +349,7 @@ class UserManagement extends Survey_Common_Action
         $userId = Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
 
-            Yii::app()->setFlashMessage(gT("you cannot elete yourself."), 'error');
+            Yii::app()->setFlashMessage(gT("You cannot delete yourself."), 'error');
             Yii::app()->getController()->redirect(
                 Yii::app()->createUrl('admin/usermanagement/sa/view')
             );
@@ -653,7 +653,7 @@ class UserManagement extends Survey_Common_Action
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
             )
         );

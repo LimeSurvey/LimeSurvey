@@ -338,9 +338,9 @@ class limereplacementfields extends Survey_Common_Action
 
         } elseif (strpos($fieldtype, 'email_confirmation') !== false) {
             $replFields['TOKEN'] = gT("Access code for this participant");
-            $replFields['FIRSTNAME'] = gT("First name from participant");
-            $replFields['LASTNAME'] = gT("Last name from participant");
-            $replFields['EMAIL'] = gT("Email from participant");
+            $replFields['FIRSTNAME'] = gT("First name of the participant");
+            $replFields['LASTNAME'] = gT("Last name of the participant");
+            $replFields['EMAIL'] = gT("Email address of the participant");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");

@@ -97,7 +97,7 @@ class SurveyAdmin extends Survey_Common_Action
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels
             )
         );

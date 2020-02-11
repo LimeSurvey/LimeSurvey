@@ -82,13 +82,13 @@
                         </label>
                         <div class="col-sm-4">
                             <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default <?php echo ($vvversionseleted == 2 ? "active" : ""); ?>">
-                                    <input name="vvversion" value="2" type="radio" id="vvversion-last" <?php echo ($vvversionseleted == 2 ? "checked='checked'" : ""); ?> />
+                                <label class="btn btn-default <?php echo ($vvversionselected == 2 ? "active" : ""); ?>">
+                                    <input name="vvversion" value="2" type="radio" id="vvversion-last" <?php echo ($vvversionselected == 2 ? "checked='checked'" : ""); ?> />
                                     <?php eT("Last VV version"); ?>
                                 </label>
 
-                                <label class="btn btn-default <?php echo ($vvversionseleted == 1 ? "active" : ""); ?>">
-                                    <input name="vvversion" value="1" type="radio" id="vvversion-old" <?php echo ($vvversionseleted == 1 ? "checked='checked'" : ""); ?> />
+                                <label class="btn btn-default <?php echo ($vvversionselected == 1 ? "active" : ""); ?>">
+                                    <input name="vvversion" value="1" type="radio" id="vvversion-old" <?php echo ($vvversionselected == 1 ? "checked='checked'" : ""); ?> />
                                     <?php eT("Old VV version"); ?>
                                 </label>
                             </div>

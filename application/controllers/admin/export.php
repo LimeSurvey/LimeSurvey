@@ -616,7 +616,7 @@ class export extends Survey_Common_Action
                 $fieldcode[] = viewHelper::getFieldCode($fielddata, array("LEMcompat" => true));
             }
             $aData['uniquefieldcode'] = (count(array_unique($fieldcode)) == count($fieldcode)); // Did we need more control ?
-            $aData['vvversionseleted'] = ($aData['uniquefieldcode']) ? 2 : 1;
+            $aData['vvversionselected'] = ($aData['uniquefieldcode']) ? 2 : 1;
 
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
