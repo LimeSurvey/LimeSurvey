@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 16:09:22+00:00\n"
+"POT-Creation-Date: 2020-02-11 16:30:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14080,7 +14080,9 @@ msgid "Note: You can't edit the condition because there are currently conditions
 msgstr ""
 
 #: application/models/QuestionBaseDataSet.php:377
-msgid "A condition can be used to add branching logic using ExpressionScript. Either add it directly here or use the Condition designer."
+#: application/views/admin/survey/Question/editQuestion_view.php:387
+#: application/views/admin/survey/Question/neditQuestion_view.php:335
+msgid "A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer."
 msgstr ""
 
 #: application/models/QuestionBaseDataSet.php:398
@@ -15199,7 +15201,7 @@ msgid "Delete user group"
 msgstr ""
 
 #: application/models/UserParser.php:86
-msgid "Wrong offset definition!!! Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"
+msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s' as well as '%s' , '%s' , '%s' and  '%s'"
 msgstr ""
 
 #: application/views/admin/assessments/assessments_delete.php:12
@@ -17056,7 +17058,7 @@ msgid "Global survey settings"
 msgstr ""
 
 #: application/views/admin/globalsettings/surveySettings.php:46
-msgid "All changes of global survey settings will have immediate effect on all related survey groups and surveys that use inherited values."
+msgid "All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values."
 msgstr ""
 
 #: application/views/admin/homepagesettings/_form.php:17
@@ -17580,7 +17582,7 @@ msgid "Only one central attribute is mapped with participant attribute"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:24
-msgid "Map your central participant attributes to an existing survey participant attribute or create a new one"
+msgid "Map your central participant attributes to existing survey participant attributes or create new ones"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:43
@@ -18205,7 +18207,7 @@ msgid "Are you sure you want to delete the selected role(s)?"
 msgstr ""
 
 #: application/views/admin/permissiontemplates/massiveAction/_selector.php:31
-msgid "Batch export roles"
+msgid "Bulk export roles"
 msgstr ""
 
 #: application/views/admin/permissiontemplates/massiveAction/_updaterole.php:7
@@ -19336,14 +19338,9 @@ msgstr ""
 msgid "Relevance equation:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:387
-#: application/views/admin/survey/Question/neditQuestion_view.php:335
-msgid "The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."
-msgstr ""
-
 #: application/views/admin/survey/Question/editQuestion_view.php:388
 #: application/views/admin/survey/Question/neditQuestion_view.php:336
-msgid "More on relevance and the ExpressionScript Engine."
+msgid "More about conditions and the ExpressionScript engine."
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:399
