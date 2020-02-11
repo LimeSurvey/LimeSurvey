@@ -70,10 +70,10 @@
       </div>
     </div>
 
-    <!-- Use Expression Manager code-->
+    <!-- Use ExpressionScript Engine code-->
     <div class="form-group row">
       <label class="col-sm-12 control-label" for='emcode'>
-        <?php eT("Use Expression Manager code:"); ?>
+        <?php eT("Use Expression Engine code:"); ?>
       </label>
       <div class='col-sm-12'>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(

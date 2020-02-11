@@ -182,7 +182,7 @@ class Question extends LSActiveRecord
                 return $aRules;
             }
         }
-        /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “Expression Manager” issue. */
+        /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “ExpressionScript Engine” issue. */
         if (!$this->parent_qid) { // 0 or empty
             /* Unicity for ExpressionManager */
             $aRules[] = array('title', 'unique', 'caseSensitive'=>true,

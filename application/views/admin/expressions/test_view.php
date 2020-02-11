@@ -16,11 +16,11 @@ echo viewHelper::getViewTestTag('expressionsTest');
     <tbody>
         <tr>
             <td><a href="<?php echo $this->createUrl('admin/expressions/sa/functions'); ?>">Available Functions</a></td>
-            <td>Show the list of functions available within Expression Manager.</td>
+            <td>Show the list of functions available within ExpressionScript Engine.</td>
         </tr>
         <tr>
             <td><a href="<?php echo $this->createUrl('admin/expressions/sa/strings_with_expressions'); ?>">Unit Tests of Expressions Within Strings</a></td>
-            <td>Test how Expression Manager can process strings containing one or more variable, token, or expression replacements surrounded by curly braces.</td>
+            <td>Test how ExpressionScript Engine can process strings containing one or more variable, token, or expression replacements surrounded by curly braces.</td>
         </tr>
         <tr>
             <td><a href="<?php echo $this->createUrl('admin/expressions/sa/relevance'); ?>">Unit Test Dynamic Relevance Processing</a></td>

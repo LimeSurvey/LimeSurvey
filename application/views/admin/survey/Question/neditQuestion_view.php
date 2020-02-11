@@ -333,7 +333,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                     <div class="help-block collapse" id="help_relevance">
                                         <p>
                                             <?php eT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."); ?><br>
-                                            <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More on relevance and the Expression Manager."); ?></a>
+                                            <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More on relevance and the ExpressionScript Engine."); ?></a>
                                         </p>
                                     </div> 
                                         <div class="input-group">

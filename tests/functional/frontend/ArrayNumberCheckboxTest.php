@@ -13,7 +13,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class ArrayNumberCheckboxTest extends TestBaseClassWeb
 {
     /**
-     * Check array number Expression Manager system
+     * Check array number ExpressionScript Engine system
      */
     public function testArrayCheckboxExpression()
     {

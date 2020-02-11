@@ -276,7 +276,7 @@ class database extends Survey_Common_Action
             }
         }
         Yii::app()->session['flashmessage'] = gT("Default value settings were successfully saved.");
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
 
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
@@ -376,7 +376,7 @@ class database extends Survey_Common_Action
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }
 
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         $this->_resetEM();
@@ -551,7 +551,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         $this->_resetEM();
@@ -821,7 +821,7 @@ class database extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("Question could not be updated"), 'error');
             }
         }
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         $this->_resetEM();
@@ -1075,7 +1075,7 @@ class database extends Survey_Common_Action
                 $param->save();
             }
         }
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
         $this->_resetEM();
 
@@ -1183,7 +1183,7 @@ class database extends Survey_Common_Action
         cleanLanguagesFromSurvey($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
         fixLanguageConsistency($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
 
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
         $this->_resetEM();
 
@@ -1518,7 +1518,7 @@ class database extends Survey_Common_Action
             }
 
         }
-        //This is SUPER important! Recalculating the Expression Manager state!
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
         if (Yii::app()->request->getPost('saveandnew', '') != '') {

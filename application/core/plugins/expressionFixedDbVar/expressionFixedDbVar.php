@@ -23,7 +23,7 @@
 class expressionFixedDbVar extends PluginBase
 {
     protected $storage = 'DbStorage';
-    static protected $description = 'Add SEED and other DB var in Expression Manager.';
+    static protected $description = 'Add SEED and other DB var in ExpressionScript Engine.';
     static protected $name = 'expressionFixedDbVar';
 
     /**

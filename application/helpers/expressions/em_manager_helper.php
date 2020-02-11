@@ -737,7 +737,7 @@
         }
 
         /**
-        * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
+        * Tells ExpressionScript Engine that something has changed enough that needs to eliminate internal caching
         * @return void
         */
         public static function SetDirtyFlag()
@@ -769,7 +769,7 @@
         }
 
         /**
-        * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
+        * Sets the language for ExpressionScript Engine.  If the language has changed, then EM cache must be invalidated and refreshed
         * @param string|null $lang
         * @return void
         */

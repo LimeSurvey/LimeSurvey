@@ -719,7 +719,7 @@ $config['plugindir']               = 'webroot.plugins';
 
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;
-// (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
 $config['bNumRealValue'] = 0;
 
 // Home page default Settings
