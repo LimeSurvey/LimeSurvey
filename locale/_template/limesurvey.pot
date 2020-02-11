@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 18:34:50+00:00\n"
+"POT-Creation-Date: 2020-02-11 18:54:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -257,7 +257,7 @@ msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
 #: application/controllers/InstallerController.php:994
-#: application/core/LSSodium.php:169
+#: application/core/LSSodium.php:168
 msgid "Configuration directory is not writable"
 msgstr ""
 
@@ -5666,11 +5666,11 @@ msgid "Your new survey was created."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2169
-msgid "Successfully stored survey texts"
+msgid "Survey texts were saved successfully."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2169
-msgid "Error in storing survey texts"
+msgid "Error saving survey texts"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2279
@@ -7113,37 +7113,29 @@ msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
 #: application/core/LSETwigViewRenderer.php:74
-msgid ""
-"Can't render layout %s for template %s. \n"
-"                        Template version in database is %s, but in config.xml it's %s. \n"
-"                        Please re-install the template."
-msgstr ""
-
-#: application/core/LSETwigViewRenderer.php:87
-#: application/core/LSETwigViewRenderer.php:192
-msgid "Can't render layout %s for template %s. Please try to re-install the template."
-msgstr ""
-
-#: application/core/LSETwigViewRenderer.php:181
+#: application/core/LSETwigViewRenderer.php:179
 msgid "Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:236
+#: application/core/LSETwigViewRenderer.php:85
+#: application/core/LSETwigViewRenderer.php:190
+msgid "Can't render layout %s for template %s. Please try to re-install the template."
+msgstr ""
+
+#: application/core/LSETwigViewRenderer.php:234
 msgid "Can't render layout %s. Please check that the view exists or contact your admin."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:413
+#: application/core/LSETwigViewRenderer.php:411
 msgid "%s not found!"
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:433
+#: application/core/LSETwigViewRenderer.php:431
 msgid "Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. "
 msgstr ""
 
 #: application/core/LSSodium.php:112
-msgid ""
-"Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Here is a link to the manual page: \n"
-"                    %s"
+msgid "Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s."
 msgstr ""
 
 #: application/core/LSUserIdentity.php:59
@@ -7308,6 +7300,7 @@ msgid "Group list"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:25
+#: application/helpers/update/updatedb_helper.php:2917
 msgid "List question groups"
 msgstr ""
 
@@ -11128,11 +11121,11 @@ msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
 #: application/helpers/frontend_helper.php:529
-msgid "Basic admin notification could not be sent with error: %s"
+msgid "Basic admin notification could not be sent because of error: %s"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:543
-msgid "Detailed admin notification could not be sent with error: %s"
+msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:570
@@ -12310,7 +12303,7 @@ msgid "Relative width of the labels"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1153
-msgid "Label wrapper width"
+msgid "Label wrapping width"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1177
@@ -13191,10 +13184,6 @@ msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:280
 msgid "Moving user templates to new location at %s..."
-msgstr ""
-
-#: application/helpers/update/updatedb_helper.php:2917
-msgid "List question group"
 msgstr ""
 
 #: application/helpers/update/updatedb_helper.php:3076
