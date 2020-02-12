@@ -57,21 +57,21 @@
             <?php endif; ?>
         </li>
 
-        <!-- Expression Manager -->
+        <!-- ExpressionScript Engine -->
         <li class="col-sm-3">
             <?php if(YII_DEBUG):?>
                 <ul>
 
-                    <!-- Expression Manager -->
+                    <!-- ExpressionScript Engine -->
                     <li class="dropdown-header">
                         <span class="icon-expression" ></span>
-                        <?php eT("Expression Manager");?>
+                        <?php eT("Expression Engine");?>
                     </li>
 
-                    <!-- Expression Manager Descriptions -->
+                    <!-- ExpressionScript Engine Descriptions -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/expressions"); ?>">
-                            <?php eT("Expression Manager descriptions");?>
+                            <?php eT("Expression Engine descriptions");?>
                         </a>
                     </li>
 
@@ -92,21 +92,21 @@
                     <!-- Unit Test Dynamic Relevance Processing -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl('admin/expressions/sa/relevance'); ?>">
-                            <?php eT("Unit test dynamic relevance processing");?>
+                            <?php eT("Unit test dynamic ExpressionScript processing");?>
                         </a>
                     </li>
 
                     <!-- Preview Conversion of Conditions to Relevance -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl('admin/expressions/sa/conditions2relevance'); ?>">
-                            <?php eT("Preview conversion of conditions to relevance");?>
+                            <?php eT("Preview conversion of conditions to ExpressionScript");?>
                         </a>
                     </li>
 
                     <!-- Bulk Convert Conditions to Relevance -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>">
-                            <?php eT("Bulk convert conditions to relevance");?>
+                            <?php eT("Bulk convert conditions to ExpressionScript");?>
                         </a>
                     </li>
 

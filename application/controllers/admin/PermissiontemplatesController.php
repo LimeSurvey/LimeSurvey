@@ -174,7 +174,7 @@ class PermissiontemplatesController extends Survey_Common_Action
 
         $applyPermissions = $this->applyPermissionFromXML($oNewRole->ptid, $oRoleDefinition->permissions);
         
-        Yii::app()->setFlashMessage(gT("Sucessfully imported role"), 'success');
+        Yii::app()->setFlashMessage(gT("Role was successfully imported."), 'success');
         Yii::app()->getController()->redirect(array('/admin/roles'));
         Yii::app()->end();
         return;

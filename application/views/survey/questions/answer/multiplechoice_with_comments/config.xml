@@ -413,7 +413,7 @@
                 </option>
             </options>
             <default>1</default>
-            <help>Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).</help>
+            <help>Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).</help>
             <caption>Remove text or uncheck checkbox automatically</caption>
             <i18n></i18n>
             <readonly></readonly>

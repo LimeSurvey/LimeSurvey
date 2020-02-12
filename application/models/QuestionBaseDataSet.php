@@ -374,7 +374,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'title' => gT('Condition'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,
-                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
+                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer.")),
                 'inputtype' => 'textarea',
                 'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [

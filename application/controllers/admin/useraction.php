@@ -142,7 +142,7 @@ class UserAction extends Survey_Common_Action
                 // send Mail
                 /* @todo : must move this to Plugin (or sendMail as boolean in plugin event) */
                 $body = sprintf(gT("Hello %s,"), $new_full_name)."<br /><br />\n";
-                $body .= sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename"))."<br /><br />\n";
+                $body .= sprintf(gT("This is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename"))."<br /><br />\n";
                 $body .= gT("You can use now the following credentials to log into the site:")."<br />\n";
                 $body .= gT("Username").": ".htmlspecialchars($new_user)."<br />\n";
                 // authent is not delegated to web server or LDAP server
@@ -166,7 +166,7 @@ class UserAction extends Survey_Common_Action
                 $mailer->isHtml(true);
                 $mailer->emailType = "addadminuser";
                 if ($mailer->sendMessage()) {
-                    $extra = CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $new_user, $new_email));
+                    $extra = CHtml::tag("p", array(), sprintf(gT("Username: %s - Email: %s"), $new_user, $new_email));
                     $extra .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                     $classMsg = 'text-success';
                     $sHeader = gT("Success");

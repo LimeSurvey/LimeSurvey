@@ -83,7 +83,7 @@ class UserParser
         foreach($decoded as $data){
             if(!isset($data["email"]) || !isset($data["users_name"]) || !isset($data["full_name"]) || !isset($data["lang"]) || !isset($data["password"])){
                 Yii::app()->setFlashMessage(
-                    sprintf(gT("Wrong offset definition!!! Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>'),
+                    sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>'),
                     'error'
                     );
                 Yii::app()->getController()->redirect(array('/admin/usermanagement'));

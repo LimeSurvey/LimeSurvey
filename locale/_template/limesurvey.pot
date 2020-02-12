@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-04 20:53:34+00:00\n"
+"POT-Creation-Date: 2020-02-11 16:30:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -996,8 +996,8 @@ msgstr ""
 #: application/models/Surveymenu.php:386
 #: application/models/SurveymenuEntries.php:194
 #: application/models/SurveymenuEntries.php:207
-#: application/models/TokenDynamic.php:665 application/models/User.php:717
-#: application/models/User.php:779
+#: application/models/TokenDynamic.php:665 application/models/User.php:697
+#: application/models/User.php:759
 #: application/views/admin/emailtemplates/email_language_template_tab.php:80
 #: application/views/admin/labels/_labelviewtabcontent_view.php:21
 #: application/views/admin/pluginmanager/index.php:129
@@ -1417,6 +1417,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:312
 #: application/controllers/admin/SurveymenuEntryController.php:350
 #: application/controllers/admin/participantsaction.php:617
+#: application/controllers/admin/questionedit.php:215
 #: application/controllers/admin/questiongroups.php:45
 #: application/controllers/admin/questiongroups.php:150
 #: application/controllers/admin/questiongroups.php:227
@@ -1726,7 +1727,9 @@ msgstr ""
 #: application/controllers/admin/UserManagement.php:650
 #: application/controllers/admin/UserManagement.php:764
 #: application/controllers/admin/UserManagement.php:814
-msgid "User id"
+#: application/models/User.php:108 application/models/User.php:703
+#: application/models/User.php:763
+msgid "User ID"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:323
@@ -1738,8 +1741,8 @@ msgstr ""
 #: application/controllers/admin/useraction.php:147
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:365
 #: application/core/plugins/Authdb/Authdb.php:124
-#: application/models/User.php:109 application/models/User.php:727
-#: application/models/User.php:787
+#: application/models/User.php:109 application/models/User.php:707
+#: application/models/User.php:767
 #: application/views/admin/user/modifyuser.php:24
 #: application/views/admin/usergroup/viewUserGroup_view.php:42
 #: application/views/admin/usermanagement/partial/createdrandoms.php:26
@@ -2237,7 +2240,6 @@ msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:431
 #: application/controllers/admin/printablesurvey.php:223
-#: application/models/User.php:345
 #: application/views/admin/survey/copySurvey_view.php:55
 msgid "and"
 msgstr ""
@@ -3761,7 +3763,7 @@ msgid "Save changes"
 msgstr ""
 
 #: application/controllers/admin/labels.php:345
-msgid "Label set properties sucessfully updated."
+msgid "Label set successfully saved."
 msgstr ""
 
 #: application/controllers/admin/labels.php:356
@@ -3810,12 +3812,12 @@ msgid "Export multiple label sets"
 msgstr ""
 
 #: application/controllers/admin/labels.php:559
-msgid "Successfully stored labelset"
+msgid "Label set sucessfully saved."
 msgstr ""
 
 #: application/controllers/admin/labels.php:559
 #: application/controllers/admin/labels.php:569
-msgid "Labelset couldn't be stored"
+msgid "Label set couldn't be saved"
 msgstr ""
 
 #: application/controllers/admin/labels.php:600
@@ -3850,7 +3852,7 @@ msgid "Subquestions"
 msgstr ""
 
 #: application/controllers/admin/labels.php:677
-msgid "Label set successfully stored"
+msgid "Label set successfully saved"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:56
@@ -4644,46 +4646,46 @@ msgstr ""
 msgid "Question cannot be stored. Please check the answer option for duplicates or empty titles."
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:294
+#: application/controllers/admin/questionedit.php:299
 msgid "Question has been stored, but an error happened: "
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:327
+#: application/controllers/admin/questionedit.php:332
 msgid "Question successfully copied"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:328
+#: application/controllers/admin/questionedit.php:333
 msgid "Question successfully stored"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:824
+#: application/controllers/admin/questionedit.php:829
 msgid "Question creation failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:882
+#: application/controllers/admin/questionedit.php:887
 msgid "Question update failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:927
-#: application/controllers/admin/questionedit.php:933
+#: application/controllers/admin/questionedit.php:932
+#: application/controllers/admin/questionedit.php:938
 msgid "Could not store general options"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:978
-#: application/controllers/admin/questionedit.php:990
-#: application/controllers/admin/questionedit.php:998
+#: application/controllers/admin/questionedit.php:983
+#: application/controllers/admin/questionedit.php:995
+#: application/controllers/admin/questionedit.php:1003
 msgid "Could not store advanced options"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:1023
+#: application/controllers/admin/questionedit.php:1028
 msgid "Could not store translation"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:1103
+#: application/controllers/admin/questionedit.php:1108
 msgid "Could not store translation for subquestion"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:1136
+#: application/controllers/admin/questionedit.php:1141
 msgid "Could not store translation for answer option"
 msgstr ""
 
@@ -5093,8 +5095,8 @@ msgid "Last name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:204
-#: application/models/User.php:114 application/models/User.php:731
-#: application/models/User.php:791
+#: application/models/User.php:114 application/models/User.php:711
+#: application/models/User.php:771
 #: application/views/admin/authentication/forgotpassword.php:38
 #: application/views/admin/responses/listResponses_view.php:169
 #: application/views/admin/responses/listResponses_view.php:177
@@ -5749,14 +5751,14 @@ msgid "User group"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:69
-#: application/models/User.php:111 application/models/User.php:735
-#: application/models/User.php:795
+#: application/models/User.php:111 application/models/User.php:715
+#: application/models/User.php:775
 #: application/views/admin/user/modifyuser.php:43
 msgid "Full name"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:118
-#: application/models/User.php:535
+#: application/models/User.php:515
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:24
 #: application/views/admin/permissiontemplates/partials/_permissions.php:3
 #: application/views/admin/usermanagement/massiveAction/_selector.php:50
@@ -10687,6 +10689,10 @@ msgstr ""
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
+#: application/helpers/expressions/em_core_helper.php:2086
+msgid "Function must have at least %s argument|Function must have at least %s arguments"
+msgstr ""
+
 #: application/helpers/expressions/em_core_helper.php:2167
 msgid "Function does not support %s arguments"
 msgstr ""
@@ -10931,7 +10937,7 @@ msgid "This response was already submitted."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:5679
-msgid "An error happen when try to submit your response."
+msgid "An error happened when trying to submit your response."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:6670
@@ -11503,7 +11509,7 @@ msgid "Comment only when"
 msgstr ""
 
 #: application/helpers/questionHelper.php:185
-msgid "Use javascript function to remove text and uncheck checkbox (or use Expression Manager only)."
+msgid "Use Javascript functions to remove text and uncheck checkbox (or use only ExpressionScript engine)."
 msgstr ""
 
 #: application/helpers/questionHelper.php:186
@@ -13574,6 +13580,18 @@ msgstr ""
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
 msgstr ""
 
+#: application/models/InstallerConfigForm.php:270
+msgid "The database engine type must be set for MySQL"
+msgstr ""
+
+#: application/models/InstallerConfigForm.php:275
+msgid "You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!"
+msgstr ""
+
+#: application/models/InstallerConfigForm.php:278
+msgid "Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!"
+msgstr ""
+
 #: application/models/InstallerConfigForm.php:423
 msgid "Try again! Connection with database failed."
 msgstr ""
@@ -13662,8 +13680,8 @@ msgstr ""
 #: application/models/Permissiontemplates.php:214
 #: application/models/Surveymenu.php:336
 #: application/models/SurveymenuEntries.php:205
-#: application/models/SurveysGroups.php:76 application/models/User.php:739
-#: application/models/User.php:812
+#: application/models/SurveysGroups.php:76 application/models/User.php:719
+#: application/models/User.php:792
 msgid "Created on"
 msgstr ""
 
@@ -14062,7 +14080,9 @@ msgid "Note: You can't edit the condition because there are currently conditions
 msgstr ""
 
 #: application/models/QuestionBaseDataSet.php:377
-msgid "A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."
+#: application/views/admin/survey/Question/editQuestion_view.php:387
+#: application/views/admin/survey/Question/neditQuestion_view.php:335
+msgid "A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer."
 msgstr ""
 
 #: application/models/QuestionBaseDataSet.php:398
@@ -14514,8 +14534,8 @@ msgstr ""
 
 #: application/models/Surveymenu.php:337
 #: application/models/SurveymenuEntries.php:206
-#: application/models/SurveysGroups.php:78 application/models/User.php:744
-#: application/models/User.php:807
+#: application/models/SurveysGroups.php:78 application/models/User.php:724
+#: application/models/User.php:787
 #: application/views/admin/usermanagement/partial/showuser.php:11
 msgid "Created by"
 msgstr ""
@@ -14927,6 +14947,10 @@ msgstr ""
 msgid "Valid until"
 msgstr ""
 
+#: application/models/Token.php:248
+msgid "Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled."
+msgstr ""
+
 #: application/models/TokenDynamic.php:616
 msgid "Quota out"
 msgstr ""
@@ -14997,11 +15021,6 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: application/models/User.php:108 application/models/User.php:723
-#: application/models/User.php:783
-msgid "User ID"
-msgstr ""
-
 #: application/models/User.php:112
 msgid "Parent user"
 msgstr ""
@@ -15034,11 +15053,11 @@ msgstr ""
 msgid "Last recorded login"
 msgstr ""
 
-#: application/models/User.php:301 application/models/User.php:326
+#: application/models/User.php:301
 msgid "Password must be at least %d character long|Password must be at least %d characters long"
 msgstr ""
 
-#: application/models/User.php:304 application/models/User.php:327
+#: application/models/User.php:304
 msgid "Password must be at most %d character long|Password must be at most %d characters long"
 msgstr ""
 
@@ -15058,96 +15077,100 @@ msgstr ""
 msgid "Password must include at least %d special character|Password must include at least %d special characters"
 msgstr ""
 
-#: application/models/User.php:330
-msgid "Password must be exactly %d character in length|Password must be exactly %d characters in length"
+#: application/models/User.php:324
+msgid "A password must meet the following requirements: "
 msgstr ""
 
-#: application/models/User.php:333
-msgid "Password must be between %d - %d characters in length"
+#: application/models/User.php:325
+msgid "At least %d character long.|At least %d characters long."
+msgstr ""
+
+#: application/models/User.php:326
+msgid "At most %d character long.|At most %d characters long."
+msgstr ""
+
+#: application/models/User.php:329
+msgid "Exactly %d character long.|Exactly %d characters long."
+msgstr ""
+
+#: application/models/User.php:332
+msgid "Between %d and %d characters long."
+msgstr ""
+
+#: application/models/User.php:335
+msgid "At least %d lower case letter.|At least %d lower case letters."
+msgstr ""
+
+#: application/models/User.php:336
+msgid "At least %d upper case letter.|At least %d upper case letters."
+msgstr ""
+
+#: application/models/User.php:337
+msgid "At least %d number.|At least %d numbers."
 msgstr ""
 
 #: application/models/User.php:338
-msgid "%d lower case letter|%d lower case letters"
+msgid "At least %d special character.|At least %d special characters."
 msgstr ""
 
-#: application/models/User.php:339
-msgid "%d upper case letter|%d upper case letters"
-msgstr ""
-
-#: application/models/User.php:340
-msgid "%d number|%d numbers"
-msgstr ""
-
-#: application/models/User.php:341
-msgid "%d special character|%d special characters"
-msgstr ""
-
-#: application/models/User.php:354
-msgid "and must include at least"
-msgstr ""
-
-#: application/models/User.php:357
-msgid "Password must include at least"
-msgstr ""
-
-#: application/models/User.php:431 application/models/User.php:446
+#: application/models/User.php:411 application/models/User.php:426
 msgid "Edit this user"
 msgstr ""
 
-#: application/models/User.php:454
+#: application/models/User.php:434
 msgid "Set global permissions for this user"
 msgstr ""
 
-#: application/models/User.php:460
+#: application/models/User.php:440
 msgid "Set template permissions for this user"
 msgstr ""
 
-#: application/models/User.php:472
+#: application/models/User.php:452
 msgid "Delete this user"
 msgstr ""
 
-#: application/models/User.php:482 application/models/User.php:581
+#: application/models/User.php:462 application/models/User.php:561
 msgid "Do you want to delete this user?"
 msgstr ""
 
-#: application/models/User.php:492
+#: application/models/User.php:472
 msgid "Take ownership"
 msgstr ""
 
-#: application/models/User.php:528
+#: application/models/User.php:508
 msgid "User details"
 msgstr ""
 
-#: application/models/User.php:541
+#: application/models/User.php:521
 msgid "User role"
 msgstr ""
 
-#: application/models/User.php:547
+#: application/models/User.php:527
 msgid "Template permissions"
 msgstr ""
 
-#: application/models/User.php:553
+#: application/models/User.php:533
 #: application/views/admin/usermanagement/partial/addedituser.php:3
 msgid "Edit user"
 msgstr ""
 
-#: application/models/User.php:567
+#: application/models/User.php:547
 msgid "Do you want to take ownerschip of this user?"
 msgstr ""
 
-#: application/models/User.php:582 application/views/admin/user/deluser.php:30
+#: application/models/User.php:562 application/views/admin/user/deluser.php:30
 msgid "Delete User"
 msgstr ""
 
-#: application/models/User.php:751 application/models/User.php:801
+#: application/models/User.php:731 application/models/User.php:781
 msgid "No of surveys"
 msgstr ""
 
-#: application/models/User.php:756
+#: application/models/User.php:736
 msgid "Usergroups"
 msgstr ""
 
-#: application/models/User.php:761
+#: application/models/User.php:741
 msgid "Applied role"
 msgstr ""
 
@@ -15178,7 +15201,7 @@ msgid "Delete user group"
 msgstr ""
 
 #: application/models/UserParser.php:86
-msgid "Wrong offset definition!!! Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"
+msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s' as well as '%s' , '%s' , '%s' and  '%s'"
 msgstr ""
 
 #: application/views/admin/assessments/assessments_delete.php:12
@@ -16093,7 +16116,7 @@ msgid "Text abbreviated:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:76
-msgid "Use Expression Manager code:"
+msgid "Use ExpressionScript code:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:91
@@ -17035,7 +17058,7 @@ msgid "Global survey settings"
 msgstr ""
 
 #: application/views/admin/globalsettings/surveySettings.php:46
-msgid "All changes of global survey settings will have immediate effect on all related survey groups and surveys that use inherited values."
+msgid "All changes of global survey settings will immediately affect all related survey groups and surveys that use inherited values."
 msgstr ""
 
 #: application/views/admin/homepagesettings/_form.php:17
@@ -17559,7 +17582,7 @@ msgid "Only one central attribute is mapped with participant attribute"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:24
-msgid "Map your central participant attributes to an existing survey participant attribute or create a new one"
+msgid "Map your central participant attributes to existing survey participant attributes or create new ones"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:43
@@ -18184,7 +18207,7 @@ msgid "Are you sure you want to delete the selected role(s)?"
 msgstr ""
 
 #: application/views/admin/permissiontemplates/massiveAction/_selector.php:31
-msgid "Batch export roles"
+msgid "Bulk export roles"
 msgstr ""
 
 #: application/views/admin/permissiontemplates/massiveAction/_updaterole.php:7
@@ -18809,11 +18832,11 @@ msgid "ComfortUpdate key"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:68
-msgid "Expression Manager"
+msgid "Expression Engine"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:74
-msgid "Expression Manager descriptions"
+msgid "Expression Engine descriptions"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:81
@@ -18825,15 +18848,15 @@ msgid "Unit tests of expressions within strings"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:95
-msgid "Unit test dynamic relevance processing"
+msgid "Unit test dynamic ExpressionScript processing"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:102
-msgid "Preview conversion of conditions to relevance"
+msgid "Preview conversion of conditions to ExpressionScript"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:109
-msgid "Bulk convert conditions to relevance"
+msgid "Bulk convert conditions to ExpressionScript"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:116
@@ -19315,14 +19338,9 @@ msgstr ""
 msgid "Relevance equation:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:387
-#: application/views/admin/survey/Question/neditQuestion_view.php:335
-msgid "The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."
-msgstr ""
-
 #: application/views/admin/survey/Question/editQuestion_view.php:388
 #: application/views/admin/survey/Question/neditQuestion_view.php:336
-msgid "More on relevance and the Expression Manager."
+msgid "More about conditions and the ExpressionScript engine."
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:399
@@ -19903,6 +19921,10 @@ msgstr ""
 msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr ""
 
+#: application/views/admin/survey/activateSurvey_view.php:229
+msgid "Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation."
+msgstr ""
+
 #: application/views/admin/survey/activateSurvey_view.php:237
 msgid "Save & activate survey"
 msgstr ""
@@ -20386,6 +20408,7 @@ msgid "Reset now"
 msgstr ""
 
 #: application/views/admin/survey/subview/_create_survey_text.php:11
+#: application/views/admin/survey/subview/accordion/_tokens_panel.php:17
 msgid "If you are using participants or notification emails you need to set an administrator email address."
 msgstr ""
 
@@ -20736,10 +20759,6 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:170
 msgid "The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_tokens_panel.php:17
-msgid "If you are using participants or notifications emails you need to set an administrator email address."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:44

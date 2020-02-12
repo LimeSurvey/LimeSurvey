@@ -50,7 +50,7 @@ class FileFetcherUploadZip extends FileFetcher
 
         $tempdir = $this->getTempdir();
         if (empty($tempdir)) {
-            throw new \Exception(gT('No temporary folder set, cannot move files.'));
+            throw new \Exception(gT('Temporary folder cannot be determined.'));
         }
 
         if (!file_exists($tempdir)) {
@@ -62,7 +62,7 @@ class FileFetcherUploadZip extends FileFetcher
         }
 
         if (file_exists($destdir) && !rmdirr($destdir)) {
-            throw new \Exception('Could not clear old files.');
+            throw new \Exception('Could not remove old files.');
         }
 
         return @rename($tempdir, $destdir);
@@ -193,7 +193,7 @@ class FileFetcherUploadZip extends FileFetcher
         // Check zip bomb.
         \Yii::import('application.helpers.common_helper', true);
         if (isZipBomb($_FILES['the_file']['name'])) {
-            throw new \Exception(gT('Unzipped file is superior to upload_max_filesize or to post_max_size'));
+            throw new \Exception(gT('Unzipped file is too big.'));
         }
     }
 

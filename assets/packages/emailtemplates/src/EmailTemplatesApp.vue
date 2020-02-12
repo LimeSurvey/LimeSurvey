@@ -51,9 +51,9 @@
                         </div>
                         <div class="row ls-space margin top-15">
                             <div class="ls-flex-row col-12">
-                                <button id="EmailTemplates--actionbutton-validateCurrentContent" class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate Expressions"}} </button>
+                                <button id="EmailTemplates--actionbutton-validateCurrentContent" class="btn btn-default" @click.prevent="validateCurrentContent"> {{"Validate ExpressionScript"}} </button>
                                 <button id="EmailTemplates--actionbutton-resetCurrentContent" class="btn btn-default" @click.prevent="resetCurrentContent"> {{"Reset to default"}} </button>
-                                <button id="EmailTemplates--actionbutton-addFileToCurrent" class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add attachment to templates"}} </button>
+                                <button id="EmailTemplates--actionbutton-addFileToCurrent" class="btn btn-default" @click.prevent="addFileToCurrent"> {{"Add attachment to template"}} </button>
                             </div>
                         </div>
                         <div class="row ls-space margin top-15" v-if="hasAttachments">

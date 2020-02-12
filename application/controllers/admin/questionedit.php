@@ -163,8 +163,8 @@ class questionedit extends Survey_Common_Action
                 gT("A question code cannot be longer than 20 characters."),
                 "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes." =>
                 gT("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
-                "Question cannot be stored. Please check the answer option for duplicates or empty titles." =>
-                gT("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
+                "Question cannot be stored. Please check the answer options for duplicates or empty codes." =>
+                gT("Question cannot be stored. Please check the answer options for duplicates or empty codes."),
             ],
         ];
 
@@ -826,7 +826,7 @@ class questionedit extends Survey_Common_Action
         if ($oQuestion == null) {
             throw new LSJsonException(
                 500,
-                gT("Question creation failed, input array malformed or invalid"),
+                gT("Question creation failed - input was malformed or invalid"),
                 0,
                 null,
                 true

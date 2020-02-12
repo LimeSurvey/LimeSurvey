@@ -526,7 +526,7 @@ function sendSubmitNotifications($surveyid)
             if (!$mailer->SendMessage()) {
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Basic admin notification could not be sent with error: %s"),$mailer->getError()));
+                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Basic admin notification could not be sent because of error: %s"),$mailer->getError()));
                 }
             }
         }
@@ -540,7 +540,7 @@ function sendSubmitNotifications($surveyid)
             if (!$mailer->SendMessage()) {
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Detailed admin notification could not be sent with error: %s"),$mailer->getError()));
+                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Detailed admin notification could not be sent because of error: %s"),$mailer->getError()));
                 }
             }
         }

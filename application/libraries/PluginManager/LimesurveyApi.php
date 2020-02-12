@@ -151,7 +151,7 @@ class LimesurveyApi
     }
 
     /**
-     * Evaluates an expression via Expression Manager
+     * Evaluates an expression via ExpressionScript Engine
      * Uses the current context.
      * @param string $expression
      * @return string

@@ -97,7 +97,7 @@ class SurveyAdmin extends Survey_Common_Action
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels
             )
         );
@@ -2166,7 +2166,7 @@ class SurveyAdmin extends Survey_Common_Action
             '/admin/super/_renderJson',
             ['data' => [
                 "success" => $success,
-                "message" => ($success ? gT("Successfully stored survey texts") : gT("Error in storing survey texts"))
+                "message" => ($success ? gT("Survey texts were saved successfully.") : gT("Error saving survey texts"))
                 ]
             ],
             false,
@@ -2276,7 +2276,7 @@ class SurveyAdmin extends Survey_Common_Action
             '/admin/super/_renderJson',
             ['data' => [
                 "success" => $success,
-                "message" => ($success ? gT("Successfully stored data security texts") : gT("Error in storing data security texts"))
+                "message" => ($success ? gT("Successfully saved privacy policy text") : gT("Error saving privacy policy text"))
                 ]
             ],
             false,

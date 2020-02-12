@@ -384,8 +384,8 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
                                     </label>
                                     <div class="help-block collapse" id="help_relevance">
                                         <p>
-                                            <?php eT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."); ?><br>
-                                            <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More on relevance and the Expression Manager."); ?></a>
+                                            <?php eT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer."); ?><br>
+                                            <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More about conditions and the ExpressionScript engine."); ?></a>
                                         </p>
                                     </div>
                                     <div class="input-group">

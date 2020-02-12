@@ -69,7 +69,7 @@ class SurveyRuntimeHelper
     private $LEMsessid = null;
 
     /**
-     * customizable debugging for Lime Expression Manager ; LEM_DEBUG_TIMING;
+     * customizable debugging for Lime ExpressionScript Engine ; LEM_DEBUG_TIMING;
      * (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
      * @var int
      */
@@ -525,7 +525,7 @@ class SurveyRuntimeHelper
         }
 
         /**
-         *  Expression Manager Scrips and inputs
+         *  ExpressionScript Engine Scrips and inputs
          */
         $step = isset($_SESSION[$this->LEMsessid]['step']) ? $_SESSION[$this->LEMsessid]['step'] : '';
         $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = "<!-- emScriptsAndHiddenInputs -->";

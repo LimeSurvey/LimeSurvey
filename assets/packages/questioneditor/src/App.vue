@@ -428,7 +428,7 @@ export default {
             
             if (!this.$store.getters.hasIndividualAnsweroptionCodes) {
                 window.LS.notifyFader(
-                    this.translate("Question cannot be stored. Please check the answer option for duplicates or empty titles."),
+                    this.translate("Question cannot be stored. Please check the answer options for duplicates or empty codes."),
                     'well-lg bg-danger text-center'
                 );
                 return false;

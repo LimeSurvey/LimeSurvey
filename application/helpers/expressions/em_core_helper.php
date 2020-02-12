@@ -20,7 +20,7 @@
  *   (b) Expressions (things surrounded by curly braces) are evaluated - thereby doing LimeReplacementField substitution and/or more complex calculations
  *   (c) Non-expressions are left intact
  *   (d) The array of stringParts are re-joined to create the desired final string.
- * (3) The core of Expression Manager is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
+ * (3) The core of ExpressionScript Engine is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
  *   (a) Functions that start with RDP_ should not be touched unless you really understand compiler design.
  *
  * @author LimeSurvey Team (limesurvey.org)
@@ -2083,7 +2083,7 @@ class ExpressionManager
                 if ($numArgsAllowed[0] < 0) {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs) {
-                        $this->RDP_AddError(sprintf(Yii::t("Function must have at least %s argument|Function must have at least %s arguments", $minArgs), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf(gT("Function must have at least %s argument|Function must have at least %s arguments", $minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2465,13 +2465,13 @@ class ExpressionManager
     }
 
     /**
-     * Show a table of allowable Expression Manager functions
+     * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
     static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
-        $output = "<div class='h3'>Functions Available within Expression Manager</div>\n";
+        $output = "<div class='h3'>Functions Available within ExpressionScript Engine</div>\n";
         $output .= "<table border='1' class='table'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
         foreach ($em->RDP_ValidFunctions as $name => $func) {
             $output .= "<thead><tr><th>".$name."</th><th>".$func[2]."</th><th>".$func[3]."</th><th>";
@@ -2488,7 +2488,7 @@ class ExpressionManager
     }
 
     /**
-     * Show a table of allowable Expression Manager functions
+     * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
     static function GetAllowableFunctions()

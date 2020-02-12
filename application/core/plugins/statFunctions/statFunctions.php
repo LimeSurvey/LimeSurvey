@@ -20,7 +20,7 @@
  */
 class statFunctions extends PluginBase
 {
-    protected static $description = 'Add some function in Expression Manager to get count from other responses';
+    protected static $description = 'Add some function in ExpressionScript Engine to get count from other responses';
     protected static $name = 'statCountFunctions';
 
     public function init()

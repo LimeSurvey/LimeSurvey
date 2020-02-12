@@ -3,7 +3,7 @@
     <div class="panel panel-default ls-flex-column fill">
         <div class="panel-heading">
             <div class="pagetitle h3">{{'Upload a file' | translate}} </div>
-            <div> <b>{{'Allowed file formats' | translate}}</b>: </div>
+            <div> <b>{{'Allowed file extensions' | translate}}</b>: </div>
             <div> {{'File formats' | translate}}. </div>
         </div>
         <div class="panel-body ls-flex-column grow-1 fill">

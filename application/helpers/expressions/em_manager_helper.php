@@ -737,7 +737,7 @@
         }
 
         /**
-        * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
+        * Tells ExpressionScript Engine that something has changed enough that needs to eliminate internal caching
         * @return void
         */
         public static function SetDirtyFlag()
@@ -769,7 +769,7 @@
         }
 
         /**
-        * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
+        * Sets the language for ExpressionScript Engine.  If the language has changed, then EM cache must be invalidated and refreshed
         * @param string|null $lang
         * @return void
         */
@@ -5676,7 +5676,7 @@
                                 $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
                             if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
-                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happen when try to submit your response.'), $this->sid);
+                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
                             }
                         }
                     }
