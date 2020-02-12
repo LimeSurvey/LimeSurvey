@@ -1879,7 +1879,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
                         $fieldmap[$fieldname]['question'] = $arow['question'];
-                        $fieldmap[$fieldname]['subquestion'] = gT('Comment');
+                        $fieldmap[$fieldname]['subquestion1'] = gT('Comment');
+                        $fieldmap[$fieldname]['subquestion'] =$abrow['question'];
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
