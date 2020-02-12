@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.3 (build 200213) to 4.1.4 (build 200214) February 14, 2020
+-Fixed issue [security] #15848: Check that filename is not changed before moving/copying (Olle Haerstedt)
+
+
 Changes from 4.1.2 (build 200210) to 4.1.3 (build 200213) February 13, 2020
 -Fixed issue [security] #14379: Stored XSS through SVG file upload. (Thanks to Denis Chenu and Maxime Roy) (Marc Leonhardt)
 -Fixed issue [security] #14380: Stored XSS through SVG file upload. 
