@@ -386,7 +386,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $this->_printJsonResponse(
             [
                 'success' => true,
-                'message' => sprintf(gT("Files ready for download in archive %s."), $randomizedFileName),
+                'message' => sprintf(gT("Files are ready for download in archive %s."), $randomizedFileName),
                 'downloadLink' => $getFileLink ,
             ]
         );
