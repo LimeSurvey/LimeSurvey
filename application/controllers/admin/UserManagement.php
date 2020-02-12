@@ -892,11 +892,11 @@ class UserManagement extends Survey_Common_Action
             );
         }
 
-        $importNote = sprintf(gT("Please make sure that your CSV contains the columns '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+        $importNote = sprintf(gT("Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
         $allowFileType = ".csv";
 
         if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
+            $importNote = sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
             $allowFileType = ".json,application/json";
         }
 
@@ -1201,8 +1201,8 @@ class UserManagement extends Survey_Common_Action
                 $renderArray = [
                     'surveyapplicationname' => Yii::app()->getConfig("sitename"),
                     'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
-                        . sprintf(gT("this is an automated email to notify that your login credentials for '%s' have been reset."), Yii::app()->getConfig("sitename")),
-                    'credentialsText' => gT("Here are you're new credentials."),
+                        . sprintf(gT("This is an automated email to notify you that your login credentials for '%s' have been reset."), Yii::app()->getConfig("sitename")),
+                    'credentialsText' => gT("Here are your new credentials."),
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
                     'username' => $aUser['users_name'],
@@ -1219,7 +1219,7 @@ class UserManagement extends Survey_Common_Action
                 $renderArray = [
                     'surveyapplicationname' => Yii::app()->getConfig("sitename"),
                     'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
-                        . sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'.."), Yii::app()->getConfig("sitename")),
+                        . sprintf(gT("This is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")),
                     'credentialsText' => gT("You can use now the following credentials to log into the site:"),
                     'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $this->getController()->createAbsoluteUrl("/admin"),
@@ -1364,10 +1364,10 @@ class UserManagement extends Survey_Common_Action
      */
     protected function applyPermissionTemplate($oUser, $permissionclass, $entity_ids = [])
     {
-        if ($permissionclass == 'Gruppenmanager' && empty($entity_ids)) {
+        if ($permissionclass == 'Group manager' && empty($entity_ids)) {
             return [
                 "success" => false,
-                "error" => "Keine Umfrage für Berechtigung ausgewählt",
+                "error" => "No survey selected for permissions",
             ];
         }
         $oCriteria = new CDbCriteria();
@@ -1379,10 +1379,10 @@ class UserManagement extends Survey_Common_Action
         Permission::model()->setGlobalPermission($oUser->uid, 'auth_db');
 
         $result = false;
-        if (in_array($permissionclass, ['Befragungsmanager', 'Wissenschaftler', 'combo'])) {
+        if (in_array($permissionclass, ['Survey manager', 'Scientist', 'combo'])) {
             $result = $this->applyGlobalPermissionTemplate($oUser, $permissionclass);
-            $this->applyCorrectUsergroup($oUser->uid, ($permissionclass == 'combo' ? ['Befragungsmanager', 'Wissenschaftler'] : [$permissionclass]));
-        } elseif ($permissionclass == 'Gruppenmanager') {
+            $this->applyCorrectUsergroup($oUser->uid, ($permissionclass == 'combo' ? ['Survey manager', 'Scientist'] : [$permissionclass]));
+        } elseif ($permissionclass == 'Group manager') {
             $result = $this->applySurveyPermissionTemplate($oUser, $permissionclass, $entity_ids);
             $this->applyCorrectUsergroup($oUser->uid, [$permissionclass]);
         }

@@ -1712,7 +1712,7 @@ class dataentry extends Survey_Common_Action
                                 if ($mailer->sendMessage()) {
                                     $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
                                 } else {
-                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey with error %s."),$mailer->getError()));
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey (Error: %s)."),$mailer->getError()));
                                 }
                             }
                         }

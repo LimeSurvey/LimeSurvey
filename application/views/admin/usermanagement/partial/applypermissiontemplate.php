@@ -9,16 +9,16 @@
             <input type='hidden' name='userid' value='<?php echo $oUser->uid;?>' />
             <div class="row ls-space margin top-5">
                 <div class="col-sm-12">
-                    Benutzer eine Berechtigungsstufe zuweisen:
+                    Assign permission level to user:
                 </div>
             </div>
             <div class="row form-group ls-space margin top-5 bottom-5">
                 <label class="control-label">
-                    Stufe wählen: 
+                    Permission level: 
                 </label>
                 <select class="form-control" name="permissionclass" id="smk--selector--permissionclass">
-                    <option value="surveymanager">Befragungsmanager</option>
-                    <option value="classmanager">Gruppenmanager</option>
+                    <option value="surveymanager">Survey manager</option>
+                    <option value="classmanager">Group manager</option>
                 </select>
             </div>
             <div class="row form-group ls-space margin top-5 bottom-5" id="smk--selector--surveypermission" style="display:none;">
