@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-12 06:06:13+00:00\n"
+"POT-Creation-Date: 2020-02-12 06:16:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1102,7 +1102,7 @@ msgid "File %s uploaded"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:389
-msgid "Files ready for download in archive %s."
+msgid "Files are ready for download in archive %s."
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:454
