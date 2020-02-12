@@ -198,6 +198,8 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
         
         foreach($files as $file) {
+            $this->checkChangedFilename($file);
+
             $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
             $fileDestination = realpath($realTargetPath) . DIRECTORY_SEPARATOR . $file['shortName'];
 
@@ -739,6 +741,29 @@ class LimeSurveyFileManager extends Survey_Common_Action
             .$this->oError->message,
             0
         );
+    }
+
+    /**
+     * Throw exception if src and dest filename is different.
+     *
+     * @param array $file
+     * @return void
+     * @throws \Exception
+     */
+    private function checkChangedFilename(array $file)
+    {
+        /** @var string[] */
+        $pathParts = explode('/', $file['path']);
+        /** @var string */
+        $lastPart = $pathParts[count($pathParts) - 1];
+
+        if ($lastPart !== $file['shortName']) {
+            $this->_setError(
+                "FILENAME_CHANGED",
+                gT("The destination file name is not the same as the source file name")
+            );
+            $this->throwError();
+        }
     }
 }
 
