@@ -225,6 +225,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                         'MOVE_FAILED',
                         gT("Your file could not be moved")
                     );
+                    $this->throwError();
                     return;
                 }
             }
