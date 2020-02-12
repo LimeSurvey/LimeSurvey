@@ -556,6 +556,8 @@ class SurveyRuntimeHelper
     private function setArgs()
     {
         if ($this->sMove == "movesubmit") {
+            $aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+            $this->aSurveyInfo = $aSurveyInfo;
 
             if ($this->aSurveyInfo['refurl'] == "Y") {
                 //Only add this if it doesn't already exist
@@ -563,12 +565,7 @@ class SurveyRuntimeHelper
                     $_SESSION[$this->LEMsessid]['insertarray'][] = "refurl";
                 }
             }
-
             resetTimers();
-
-            // TODO: Why is $this->aSurveyInfo empty here?
-            $aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
-            $this->aSurveyInfo = $aSurveyInfo;
 
             //Before doing the "templatereplace()" function, check the $this->aSurveyInfo['url']
             //field for limereplace stuff, and do transformations!
