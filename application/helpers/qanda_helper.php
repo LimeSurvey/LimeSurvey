@@ -4857,7 +4857,7 @@ function do_array_dual($ia)
                 }
 
                 $trbc = alternation($trbc, 'row');
-                $answertext = $aQuestionRow{'question'};
+                $answertext = $aQuestionRow['question'];
 
                 // right and center answertext: not explode for ? Why not
                 if (strpos($answertext, '|') !== false) {

@@ -505,7 +505,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                 break;
             case 'token';
                 $fieldtype = 'A';
-                $val_size = $survey->tokenlength;
+                $val_size = Token::MAX_LENGTH;
                 break;
             case 'id';
                 $fieldtype = 'F';
