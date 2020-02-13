@@ -167,7 +167,7 @@ abstract class Token extends Dynamic
             'lastname' => 'text',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(".self::MAX_LENGTH."}) {$sCollation}",
+            'token' => "string(" . self::MAX_LENGTH . ") {$sCollation}",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
