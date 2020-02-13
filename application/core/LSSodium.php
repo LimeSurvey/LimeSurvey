@@ -101,15 +101,19 @@ class LSSodium {
 	 * 
 	 * Decrypt encrypted string.
 	 * @param string $sEncryptedString Encrypted string to decrypt
-	 * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-	 * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
+	 * @param bool $bReturnInputIfError FALSE by default. If TRUE, return given $sEncryptedString in case of error (bad input/password/salt). Else, throw exception in case of error (bad input/password/salt).
+	 * @return string Return decrypted value (string or unsezialized object) if suceeded. Throw exception if an error occurs (bad input/password/salt) or given $sEncryptedString
 	 */
-	public function decrypt($sEncryptedString, $bReturnFalseIfError=false){ 	
+	public function decrypt($sEncryptedString, $bReturnInputIfError=false){ 	
         if ($this->bLibraryExists === true){
             if (!empty($sEncryptedString) && $sEncryptedString != 'null'){
                 $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
                 if ($plaintext === false){
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                    if ($bReturnInputIfError === false){
+                        throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                    } else {
+                        return $sEncryptedString;
+                    }
                 } else {
                     return $plaintext;
                 }

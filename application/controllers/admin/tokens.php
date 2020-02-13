@@ -411,11 +411,10 @@ class tokens extends Survey_Common_Action
 
                 // Email
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
-                    if ($isValid) {
-                        $aData['email'] = Yii::app()->request->getPost('email');
+                    if (trim(Yii::app()->request->getPost('email')) == '') {
+                        $aData['email'] = null;
                     } else {
-                        $aData['email'] = 'lskeep';
+                        $aData['email'] = trim(Yii::app()->request->getPost('email'));
                     }
                 }
 
@@ -1950,7 +1949,6 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
-        $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokensimport.js');
         $aEncodings = aEncodingsArray();
