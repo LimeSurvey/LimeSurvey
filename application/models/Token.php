@@ -58,6 +58,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  */
 abstract class Token extends Dynamic
 {
+    /** @var int Maximum token length */
+    const MAX_LENGTH = 36;
 
     /**
      * Set defaults
@@ -165,7 +167,7 @@ abstract class Token extends Dynamic
             'lastname' => 'text',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(36) {$sCollation}",
+            'token' => "string(".self::MAX_LENGTH."}) {$sCollation}",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",

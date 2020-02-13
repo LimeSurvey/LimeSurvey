@@ -403,7 +403,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 }
                 break;
             case "token":
-                $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$sCollation;
+                $aTableDefinition[$aRow['fieldname']] = 'string('.Token::MAX_LENGTH.')'.$sCollation;
                 break;
             case '*': // Equation
                 $aTableDefinition[$aRow['fieldname']] = "text";
