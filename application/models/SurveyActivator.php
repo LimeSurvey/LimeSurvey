@@ -173,7 +173,7 @@ class SurveyActivator
                     }
                     break;
                 case "token":
-                    $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$this->collation;
+                    $aTableDefinition[$aRow['fieldname']] = 'string(' . Token::MAX_LENGTH . ')'.$this->collation;
                     break;
                 case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
@@ -208,7 +208,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)";
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
-                $aTableDefinition['token'] = 'string(35)'.$this->collation;
+                $aTableDefinition['token'] = 'string('.Token::MAX_LENGTH.')'.$this->collation;
             }
         }
         $this->tableDefinition = $aTableDefinition;
