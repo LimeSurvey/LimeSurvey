@@ -4359,9 +4359,6 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    if (is_string($content)) {
-        $content = stripslashes($content);
-    }
     $ans = json_encode($content);
     $ans = str_replace(array('{', '}'), array('{ ', ' }'), $ans);
     return $ans;
