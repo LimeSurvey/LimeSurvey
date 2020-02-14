@@ -512,7 +512,8 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userpermissions', ['userid' => $this->uid]);
         $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
-        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
+        //$changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteconfirm');
         
 
@@ -557,9 +558,11 @@ class User extends LSActiveRecord
                 data-userid='".$this->uid."' 
                 data-user='".$this->full_name."' 
                 data-action='deluser' 
-                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\"))()' 
+                data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\")' 
                 data-message='".gt('Do you want to take ownerschip of this user?')."'>
+                <span data-toggle='tooltip' title='".gT("Take ownership")."'>
                     <i class='fa fa-hand-rock-o'></i>
+                </span>    
               </button>";
         $deleteUserButton = ""
             ."<button 
@@ -580,6 +583,11 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            //Prevent users to modify original superadmin. Super admin can change his password on his account setting!
+            if ($this->uid == 1) {
+                $editUserButton = "";
+            }
+
             // and Except deleting themselves and changing permissions when they are forced superadmin
             if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
                 return join("",[$userDetail, $editUserButton]);
