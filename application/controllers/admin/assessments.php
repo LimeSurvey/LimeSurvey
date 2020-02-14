@@ -254,10 +254,14 @@ class Assessments extends Survey_Common_Action
     private function _collectGroupData($oSurvey, &$aData = array())
     {
         $aGroups = [];
+        $db = Yii::app()->db;
+        $quotedQGL10ns = $db->quoteTableName('questionGroupL10ns');
+        $quotedLanguage = $db->quoteColumnName('language');
+
         $groups = QuestionGroup::model()->with(
             [
                 'questionGroupL10ns' => [
-                    'condition' => 'questionGroupL10ns.language = :language',
+                    'condition' => $quotedQGL10ns . '.' . $quotedLanguage . ' = :language',
                     'params' => array(':language' => $oSurvey->language)
                 ]
             ]
