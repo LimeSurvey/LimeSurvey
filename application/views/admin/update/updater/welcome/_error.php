@@ -74,7 +74,7 @@ switch ($serverAnswer->error)
             <?php eT("Buy a new key"); ?>
         </a>
 
-        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
             <?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
