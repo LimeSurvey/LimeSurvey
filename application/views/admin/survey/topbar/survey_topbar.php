@@ -207,7 +207,6 @@ if ($hasSurveyContentPermission) {
     }
 }
 
-// TODO: extraToolsMenuItems Plugin?
 // TODO: menues from database
 
 if ($hasSurveyReadPermission) {
