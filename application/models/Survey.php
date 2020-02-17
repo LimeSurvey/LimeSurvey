@@ -283,7 +283,7 @@ class Survey extends LSActiveRecord
             $oCriteria = new CDbCriteria();
             $oCriteria->compare('stg_name', 'last_question_%', true, 'OR', false);
             if (Yii::app()->db->getDriverName() == 'pgsql') {
-                $oCriteria->addInCondition('CAST(stg_value as '.App()->db->schema->getColumnType("integer").')', $aQuestionId);
+                $oCriteria->addInCondition('CAST(NULLIF(stg_value, \'\') AS '.App()->db->schema->getColumnType("integer").')', $aQuestionId);
             } else {
                 $oCriteria->addInCondition('stg_value', $aQuestionId);
             }

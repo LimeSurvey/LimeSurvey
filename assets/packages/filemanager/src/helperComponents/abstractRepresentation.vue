@@ -67,15 +67,20 @@ export default {
     copyFile(file) {
       this.$store.commit("copyFiles");
       this.$set(file, 'inTransit', true);
+       $('[data-toggle="tooltip"]').tooltip('hide');
+      //file.inTransit = true;
     },
     moveFile(file) {
       this.$store.commit("moveFiles");
       this.$set(file, 'inTransit', true);
+      $('[data-toggle="tooltip"]').tooltip('hide');
+      //file.inTransit = true;
     },
     cancelTransit(file) {
       this.$set(file, 'inTransit', false);
       if (this.$store.getters.filesInTransit.length === 0) {
         this.$store.commit('noTransit');
+        $('[data-toggle="tooltip"]').tooltip('hide');
       }
     }
   }

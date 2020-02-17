@@ -493,7 +493,18 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid)
     {
-        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group.group_order DESC, question_order'));
+        $db                  = Yii::app()->db;
+        $quotedGroup         = $db->quoteTableName('group');
+        $quotedGrouporder    = $db->quoteColumnName('group_order');
+        $quotedQuestionorder = $db->quoteColumnName('question_order');
+        return Question::model()
+            ->with('group')
+            ->findAll(
+                array(
+                    'condition' => 't.sid='.$surveyid,
+                    'order'     => $quotedGroup .  '.' . $quotedGrouporder . ' DESC, ' . $quotedQuestionorder
+                )
+            );
     }
 
     /**
@@ -827,8 +838,10 @@ class Question extends LSActiveRecord
         );
         return $this;
     }*/
-    public function getQuestionListColumns(){
-    return array(
+
+    public function getQuestionListColumns()
+    {
+        return array(
             array(
                 'id'=>'id',
                 'class'=>'CCheckBoxColumn',
@@ -909,21 +922,21 @@ class Question extends LSActiveRecord
                 'desc'=>'t.qid desc',
             ),
             'question_order'=>array(
-                'asc'=>'group.group_order asc, t.question_order asc',
-                'desc'=>'group.group_order desc,t.question_order desc',
+                'asc' =>'g.group_order asc, t.question_order asc',
+                'desc'=>'g.group_order desc,t.question_order desc',
             ),
             'title'=>array(
                 'asc'=>'t.title asc',
                 'desc'=>'t.title desc',
             ),
             'question'=>array(
-                'asc'=>'questionL10ns.question asc',
-                'desc'=>'questionL10ns.question desc',
+                'asc'=>'ql10n.question asc',
+                'desc'=>'ql10n.question desc',
             ),
 
             'group'=>array(
-                'asc'=>'group.gid asc',
-                'desc'=>'group.gid desc',
+                'asc'=>'g.gid asc',
+                'desc'=>'g.gid desc',
             ),
 
             'mandatory'=>array(
@@ -950,7 +963,7 @@ class Question extends LSActiveRecord
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
-        $criteria->with = array('group', 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
+        $criteria->with = array('group' => array('alias' => 'g'), 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria;
