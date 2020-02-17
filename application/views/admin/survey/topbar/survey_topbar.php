@@ -303,6 +303,36 @@ if (!$isActive && $hasSurveyContentPermission) {
 
     array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['by_question_group']);
 }
+
+if (!empty($extraToolsMenuItems)) {
+    foreach ($extraToolsMenuItems as $i => $menuItem) {
+        if ($menuItem->isDivider()) {
+            // Divider
+            $buttons['divider' . $i] = [
+                'role' => 'seperator',
+                'class' => 'divider',
+                'id' => 'divider---1' . $i
+            ];
+            array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['divider' . $i]);
+        } elseif ($menuItem->isSmallText()) {
+            // Regenerate question codes
+            $buttons['smalltext' . $i] = [
+                'class' => 'dropdown-header',
+                'name' => $menuItem->getLabel()
+            ];
+            array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['smalltext' . $i]);
+        } else {
+            $buttons['plugin_button' . $i] = [
+                'url' => $menuItem->getHref(),
+                'icon' => $menuItem->getIconClass(),
+                'name' => $menuItem->getLabel(),
+                'id' => 'plugin_button' . $i
+            ];
+            array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['plugin_button' . $i]);
+        }
+    }
+}
+
 array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);
 
 // Token
