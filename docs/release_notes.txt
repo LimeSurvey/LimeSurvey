@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.4 (build 200212) to 3.22.5 (build 200218) February 18, 2020
+-Fixed issue: Notice on survey completion (Carsten Schmitz)
+-Fixed issue: Incomplete headers when exporting 'Multiple choice with comment' questions (Carsten Schmitz)
+
+
 Changes from 3.22.3 (build 200211) to 3.22.4 (build 200212) February 12, 2020
 -Fixed issues [security] #14379: Stored XSS through SVG file upload. (Thanks to Denis Chenu and Maxime Roy) (Marc Leonhardt)
 -Fixed issues [security] #14380: Stored XSS through SVG file upload. 
