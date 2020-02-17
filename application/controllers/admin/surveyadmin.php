@@ -2523,6 +2523,12 @@ class SurveyAdmin extends Survey_Common_Action
         App()->getPluginManager()->dispatchEvent($event);
         $extraToolsMenuItems = $event->get('menuItems');
 
+        // Add new menus in survey bar
+        $event = new PluginEvent('beforeSurveyBarRender', $this);
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $beforeSurveyBarRender = $event->get('menus');
+
         return Yii::app()->getController()->renderPartial(
             '/admin/survey/topbar/survey_topbar',
             array(
@@ -2548,7 +2554,8 @@ class SurveyAdmin extends Survey_Common_Action
                 'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
                 'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
                 'addSaveButton'  => $saveButton,
-                'extraToolsMenuItems' => $extraToolsMenuItems
+                'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
+                'beforeSurveyBarRender' => $beforeSurveyBarRender ?? []
             ),
             false,
             false

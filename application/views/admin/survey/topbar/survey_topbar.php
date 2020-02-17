@@ -420,6 +420,67 @@ if ($isActive) {
     array_push($topbar['alignment']['left']['buttons'], $button_statistics);
 }
 
+if (!empty($beforeSurveyBarRender)) {
+    foreach ($beforeSurveyBarRender as $i => $menu) {
+        if ($menu->isDropDown()) {
+            $dropdown = [
+                'class' => 'btn-group hidden-xs',
+                'id' => 'plugin_dropdown' . $i,
+                'main_button' => [
+                    'class' => 'dropdown-toggle',
+                    'datatoggle' => 'dropdown',
+                    'ariahaspopup' => 'true',
+                    'ariaexpanded' => 'false',
+                    'icon' => $menu->getIconClass(),
+                    'name' => $menu->getLabel(),
+                    'iconclass' => 'caret',
+                    'id' => 'plugin_dropdown' . $i
+                ],
+                'dropdown' => [
+                    'class' => 'dropdown-menu',
+                    'arialabelledby' => 'plugin_dropdown' . $i,
+                    'items' => [],
+                ],
+            ];
+            foreach ($menu->getMenuItems() as $j => $item) {
+                // TODO: Code duplication.
+                if ($item->isDivider()) {
+                    // Divider
+                    $item = [
+                        'role' => 'seperator',
+                        'class' => 'divider',
+                        'id' => 'divider---1' . $i
+                    ];
+                } elseif ($item->isSmallText()) {
+                    // Regenerate question codes
+                    $item = [
+                        'class' => 'dropdown-header',
+                        'name' => $item->getLabel()
+                    ];
+                } else {
+                    $item = [
+                        'url' => $item->getHref(),
+                        'icon' => $item->getIconClass(),
+                        'name' => $item->getLabel(),
+                        'id' => 'plugin_button' . $i
+                    ];
+                }
+                array_push($dropdown['dropdown']['items'], $item);
+            }
+            array_push($topbar['alignment']['left']['buttons'], $dropdown);
+        } else {
+            $button = [
+                'class' => 'pjax',
+                'id' => 'plugin_menu' . $i,
+                'url' => $menu->getHref(),
+                'name' => $menu->getLabel(),
+                'icon' => $menu->getIconClass()
+            ];
+            array_push($topbar['alignment']['left']['buttons'], $button);
+        }
+    }
+}
+
 $buttons['save'] = [
     'name' => gT('Save'),
     'id' => 'save-button',
