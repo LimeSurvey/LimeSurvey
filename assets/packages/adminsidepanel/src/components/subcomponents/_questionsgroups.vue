@@ -26,7 +26,7 @@ export default {
             return LS.ld.orderBy(
                 this.$store.state.questiongroups,
                 a => {
-                    return parseInt(a.group_order || 999999);
+                    return parseInt(a.group_order >= 0 && a.group_order !== null ? a.group_order : 999999);
                 },
                 ["asc"]
             );
