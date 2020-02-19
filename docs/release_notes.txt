@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.5 (build 200218) to 3.22.6 (build 200219) February 19, 2020
+-Fixed issue: Wrong redirection to enter new key  in Comfort update (Eddy Lackmann)
+-Fixed issue: Empty comfort update key can be submitted (Eddy Lackmann)
+-Fixed issue [security] #15818: Reflected XSS (Denis Chenu)
+-Fixed issue #13677: Sorting of groups and questions are wrong (Olle Haerstedt)
+
+
 Changes from 3.22.4 (build 200212) to 3.22.5 (build 200218) February 18, 2020
 -Fixed issue: Notice on survey completion (Carsten Schmitz)
 -Fixed issue: Incomplete headers when exporting 'Multiple choice with comment' questions (Carsten Schmitz)
