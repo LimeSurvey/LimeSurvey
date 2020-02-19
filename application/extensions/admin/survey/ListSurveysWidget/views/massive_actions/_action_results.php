@@ -7,7 +7,7 @@
  * @var $aResults   The array containing the result of each survey deletion
  */
 if (!isset($tableLabels)) {
-    $tableLabels = array('ID','Title','Status');
+    $tableLabels = array(gT('ID'), gT('Title'), gT('Status'));
 }
 ?>
 <table class="table table-striped">

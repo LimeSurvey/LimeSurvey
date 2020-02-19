@@ -446,7 +446,7 @@ class limereplacementfields extends Survey_Common_Action
         if ($gid != null && $qid == null) {
             $oGroup = QuestionGroup::model()->findByPk($gid);
             $oCriteria->with = ['group'];
-            $oCriteria->compare('group_order', '<='.$oGroup->group_order,);
+            $oCriteria->compare('group_order', '<='.$oGroup->group_order);
         }
 
         if ($qid != null) {

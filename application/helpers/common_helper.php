@@ -1752,7 +1752,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
                         $fieldmap[$fieldname]['question'] = $arow['question'];
-                        $fieldmap[$fieldname]['subquestion'] = gT('Comment');
+                        $fieldmap[$fieldname]['subquestion1'] = gT('Comment');
+                        $fieldmap[$fieldname]['subquestion'] =$abrow['question'];
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
                         $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
@@ -4358,9 +4359,6 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() && is_string($content)) {
-        $content = stripslashes($content);
-    }
     $ans = json_encode($content);
     $ans = str_replace(array('{', '}'), array('{ ', ' }'), $ans);
     return $ans;

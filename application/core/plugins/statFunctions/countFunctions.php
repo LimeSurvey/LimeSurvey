@@ -1,6 +1,7 @@
 <?php
 /**
  * This file is part of statFunctions plugin
+ * @version 0.1.1
  */
 namespace statFunctions;
 
@@ -66,9 +67,12 @@ class countFunctions
             return "";
         }
 
-        $sQuotedColumn=Yii::app()->db->quoteColumnName($column);
+        $sCastedColumn = $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
+        if(Yii::app()->db->driverName == 'pgsql') {
+            $sCastedColumn = "CAST($sQuotedColumn as text)";
+        }
         $oCriteria = new CDbCriteria;
-        $oCriteria->condition= "$sQuotedColumn IS NOT NULL and $sQuotedColumn <> ''";
+        $oCriteria->condition = "$sQuotedColumn IS NOT NULL and $sCastedColumn <> ''";
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }

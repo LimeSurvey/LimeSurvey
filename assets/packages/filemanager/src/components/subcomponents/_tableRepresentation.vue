@@ -38,7 +38,7 @@
             <i class="fa fa-trash-o text-danger"></i>
           </button>
           <button
-            v-show="$store.state.transitType == 'copy' || $store.state.transitType == null"
+            v-show="$store.state.transitType == 'copy'|| $store.state.transitType == null"
             class="FileManager--file-action-startTransit-copy btn btn-default"
             data-toggle="tooltip"
             :title="translate('Copy file')"

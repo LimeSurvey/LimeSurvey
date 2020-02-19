@@ -156,9 +156,11 @@ class statistics extends Survey_Common_Action
          * b) "groups" -> group_name + group_order *
          */
 
-        //store all the data in $rows
-        $rows = Question::model()->with('group')->findAll(array('condition' => 'parent_qid = 0 AND group.sid=' . $surveyid, 'order' => 'group_order,question_order'));
 
+        $rows = Question::model()
+            ->with(array('group' => array('alias' => 'g')))
+            ->findAll(array('condition' => 'parent_qid = 0 AND g.sid=' . $surveyid, 'order' => 'group_order,question_order'));
+      
         //SORT IN NATURAL ORDER!
         usort($rows, 'groupOrderThenQuestionOrder');
 

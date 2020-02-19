@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.4 (build 200214) to 4.1.5 (build 200217) February 17, 2020
+-Fixed issue: Notice on survey completion (Carsten Schmitz)
+-Fixed issue: Incomplete headers when exporting 'Multiple choice with comment' questions (Carsten Schmitz)
+-Fixed issue: #15780: File manager tooltips are wrong (Jessica Höck)
+-Fixed issue #15866: Condition designer doesn't work in postgres (Olle Haerstedt)
+-Fixed issue #15861: Stat function tests break on postgres  (Denis Chenu)
+-Fixed issue #15859: Token can be truncated in SPSS export  (Tõnis Ormisson)
+-Fixed issue #15778: User managment grid view action "take ownership" changes owner immediatly (Eddy Lackmann)
+-Fixed issue #15771: Adding users to group using massive action of user management panel exception (Eddy Lackmann)
+-Fixed issue #15769: Password has not been saved (Patricia Stelling)
+-Fixed issue #15767: Users (super admin user) could change pw using massive action (Eddy Lackmann)
+-Fixed issue #15752: 500 error when accessing staticstics on a survey (Eddy Lackmann)
+
+
+Changes from 4.1.3 (build 200213) to 4.1.4 (build 200214) February 14, 2020
+-Fixed issue [security] #15848: Check that filename is not changed before moving/copying (Olle Haerstedt)
+
+
 Changes from 4.1.2 (build 200210) to 4.1.3 (build 200213) February 13, 2020
 -Fixed issue [security] #14379: Stored XSS through SVG file upload. (Thanks to Denis Chenu and Maxime Roy) (Marc Leonhardt)
 -Fixed issue [security] #14380: Stored XSS through SVG file upload. 

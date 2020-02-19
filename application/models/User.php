@@ -319,6 +319,45 @@ class User extends LSActiveRecord
         return($error);
     }
 
+    /**
+     * Checks if
+     *  -- password strength
+     *  -- oldpassword is correct
+     *  -- oldpassword and newpassword are identical
+     *  -- newpassword and repeatpassword are identical
+     *  -- newpassword is not empty
+     *
+     * @param $newPassword
+     * @param $oldPassword
+     * @param $repeatPassword
+     * @return string empty string means everything is ok, otherwise error message is returned
+     */
+    public function validateNewPassword($newPassword, $oldPassword,$repeatPassword){
+        $errorMsg = '';
+
+        if (!empty($newPassword)) {
+            $errorMsg = $this->checkPasswordStrength($newPassword);
+        }
+
+        if($errorMsg === '') {
+            if (!$this->checkPassword($oldPassword)) {
+                // Always check password
+                $errorMsg = gT("Your new password was not saved because the old password was wrong.");
+            } elseif (trim($oldPassword) === trim($newPassword)) {
+                //First test if old and new password are identical => no need to save it (or ?)
+                $errorMsg = gT("Your new password was not saved because it matches the old password.");
+            } elseif (trim($newPassword) !== trim($repeatPassword)) {
+                //Then test the new password and the repeat password for identity
+                $errorMsg = gT("Your new password was not saved because the passwords did not match.");
+                //Now check if the old password matches the old password saved
+            } elseif (empty(trim($newPassword))) {
+                $errorMsg = gT("The new password can not be empty.");
+            }
+        }
+
+        return $errorMsg;
+    }
+
     public function getPasswordHelpText(){
         $settings =  Yii::app()->getConfig("passwordValidationRules");
         $txt = gT('A password must meet the following requirements: ');
@@ -543,9 +582,11 @@ class User extends LSActiveRecord
                 data-userid='".$this->uid."' 
                 data-user='".$this->full_name."' 
                 data-action='deluser' 
-                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\"))()' 
-                data-message='".gt('Do you want to take ownerschip of this user?')."'>
-                    <i class='fa fa-hand-rock-o'></i>
+                data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\")' 
+                data-message='".gt('Do you want to take ownership of this user?')."'>
+                    <span data-toggle='tooltip' title='".gT("Take ownership")."'>
+                        <i class='fa fa-hand-rock-o'></i>
+                    </span>
               </button>";
         $deleteUserButton = ""
             ."<button 
@@ -566,6 +607,11 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            //Prevent users to modify original superadmin. Original superadmin can change his password on his account setting!
+            if ($this->uid == 1) {
+                $editUserButton = "";
+            }
+
             // and Except deleting themselves and changing permissions when they are forced superadmin
             if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
                 return join("",[$userDetail, $editUserButton]);
