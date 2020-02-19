@@ -36,7 +36,7 @@ if( isset($serverAnswer->html) )
         ?>
         <div class='col-sm-2'>
             <?php
-            echo CHtml::textField('keyid', '', array("id"=>"inputKey",'class'=>'form-control'));
+            echo CHtml::textField('keyid', '', array("id"=>"inputKey",'class'=>'form-control','required' => true));
             ?>
         </div>
     </div>
