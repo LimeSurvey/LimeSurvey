@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-02-11 16:30:46+00:00\n"
+"POT-Creation-Date: 2020-02-12 06:16:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -257,7 +257,7 @@ msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
 #: application/controllers/InstallerController.php:994
-#: application/core/LSSodium.php:169
+#: application/core/LSSodium.php:168
 msgid "Configuration directory is not writable"
 msgstr ""
 
@@ -787,9 +787,10 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:217
 #: application/controllers/admin/limereplacementfields.php:239
 #: application/controllers/admin/limereplacementfields.php:299
+#: application/controllers/admin/limereplacementfields.php:343
 #: application/controllers/admin/limereplacementfields.php:376
 #: application/controllers/admin/limereplacementfields.php:393
-msgid "Email from the participant"
+msgid "Email address of the participant"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:182
@@ -804,7 +805,7 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:341
 #: application/controllers/admin/limereplacementfields.php:374
 #: application/controllers/admin/limereplacementfields.php:391
-msgid "First name from participant"
+msgid "First name of the participant"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:183
@@ -819,7 +820,7 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:342
 #: application/controllers/admin/limereplacementfields.php:375
 #: application/controllers/admin/limereplacementfields.php:392
-msgid "Last name from participant"
+msgid "Last name of the participant"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:185
@@ -883,7 +884,7 @@ msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:222
 #: application/controllers/admin/limereplacementfields.php:277
-msgid "Answers from this response"
+msgid "Answers in this response"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:226
@@ -1020,7 +1021,7 @@ msgid "Move file"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:84
-msgid "Allowed file formats"
+msgid "Allowed file extensions"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:104
@@ -1101,7 +1102,7 @@ msgid "File %s uploaded"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:389
-msgid "Files ready for download in archive %s."
+msgid "Files are ready for download in archive %s."
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:454
@@ -1162,7 +1163,7 @@ msgid "Error creating role"
 msgstr ""
 
 #: application/controllers/admin/PermissiontemplatesController.php:177
-msgid "Sucessfully imported role"
+msgid "Role was successfully imported."
 msgstr ""
 
 #: application/controllers/admin/PermissiontemplatesController.php:188
@@ -1711,7 +1712,7 @@ msgstr ""
 
 #: application/controllers/admin/UserManagement.php:187
 #: application/controllers/admin/useraction.php:169
-msgid "Username : %s - Email : %s."
+msgid "Username: %s - Email: %s"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:188
@@ -1720,6 +1721,7 @@ msgid "An email with a generated password was sent to the user."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:319
+#: application/controllers/admin/UserManagement.php:352
 msgid "You cannot delete yourself."
 msgstr ""
 
@@ -1778,26 +1780,19 @@ msgstr ""
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/admin/UserManagement.php:352
-msgid "you cannot elete yourself."
-msgstr ""
-
 #: application/controllers/admin/UserManagement.php:361
 msgid "User successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:647
+#: application/controllers/admin/UserManagement.php:656
 #: application/controllers/admin/questions.php:1639
+#: application/controllers/admin/surveyadmin.php:100
 #: application/controllers/admin/themeoptions.php:207
+#: application/controllers/admin/themeoptions.php:216
 #: application/extensions/admin/grid/MassiveActionsWidget/views/_selected_items.php:31
 #: application/views/admin/themeoptions/index.php:203
 msgid "Selected"
-msgstr ""
-
-#: application/controllers/admin/UserManagement.php:656
-#: application/controllers/admin/surveyadmin.php:100
-#: application/controllers/admin/themeoptions.php:216
-msgid "Seleted"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:725
@@ -1821,11 +1816,12 @@ msgid "Role updated"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:895
-msgid "Please make sure that your CSV contains the columns '%s' as well as '%s' , '%s' , '%s' and  '%s'"
+msgid "Please make sure that your CSV contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:899
-msgid "Please make sure that your JSON Arrays contains the offsets '%s' as well as '%s' , '%s' , '%s' and  '%s'"
+#: application/models/UserParser.php:86
+msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:994
@@ -1868,11 +1864,11 @@ msgid "Hello %s,"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:1204
-msgid "this is an automated email to notify that your login credentials for '%s' have been reset."
+msgid "This is an automated email to notify you that your login credentials for '%s' have been reset."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:1205
-msgid "Here are you're new credentials."
+msgid "Here are your new credentials."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:1214
@@ -1880,7 +1876,8 @@ msgid "Your login credentials have been reset"
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:1222
-msgid "this is an automated email to notify that a user has been created for you on the site '%s'.."
+#: application/controllers/admin/useraction.php:145
+msgid "This is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:1223
@@ -3399,7 +3396,7 @@ msgid "An email has been sent with details about your saved survey"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1715
-msgid "Unable to send email about your saved survey with error %s."
+msgid "Unable to send email about your saved survey (Error: %s)."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1822
@@ -3453,21 +3450,19 @@ msgid "Message"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:59
-msgid "Validate Expressions"
+#: application/views/admin/emailtemplates/email_language_template_tab.php:38
+msgid "Validate ExpressionScript"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:60
-msgid "Reset current"
+msgid "Reset to default"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:61
-msgid "Add file to current"
+msgid "Add attachment to template"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:120
-msgid "Email tempplates successfully saved"
-msgstr ""
-
 #: application/controllers/admin/emailtemplates.php:250
 msgid "Email templates successfully saved."
 msgstr ""
@@ -3763,6 +3758,7 @@ msgid "Save changes"
 msgstr ""
 
 #: application/controllers/admin/labels.php:345
+#: application/controllers/admin/labels.php:559
 msgid "Label set successfully saved."
 msgstr ""
 
@@ -3809,10 +3805,6 @@ msgstr ""
 #: application/views/admin/labels/labelsetsbar_view.php:28
 #: application/views/admin/labels/labelsetsbar_view.php:36
 msgid "Export multiple label sets"
-msgstr ""
-
-#: application/controllers/admin/labels.php:559
-msgid "Label set sucessfully saved."
 msgstr ""
 
 #: application/controllers/admin/labels.php:559
@@ -3938,10 +3930,6 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:326
 #: application/controllers/admin/limereplacementfields.php:346
 msgid "Survey description"
-msgstr ""
-
-#: application/controllers/admin/limereplacementfields.php:343
-msgid "Email from participant"
 msgstr ""
 
 #: application/controllers/admin/limereplacementfields.php:377
@@ -4643,7 +4631,7 @@ msgid "Question cannot be stored. Please check the subquestion codes for duplica
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:167
-msgid "Question cannot be stored. Please check the answer option for duplicates or empty titles."
+msgid "Question cannot be stored. Please check the answer options for duplicates or empty codes."
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:299
@@ -4659,7 +4647,7 @@ msgid "Question successfully stored"
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:829
-msgid "Question creation failed, input array malformed or invalid"
+msgid "Question creation failed - input was malformed or invalid"
 msgstr ""
 
 #: application/controllers/admin/questionedit.php:887
@@ -5671,19 +5659,19 @@ msgid "Your new survey was created."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2169
-msgid "Successfully stored survey texts"
+msgid "Survey texts were saved successfully."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2169
-msgid "Error in storing survey texts"
+msgid "Error saving survey texts"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2279
-msgid "Successfully stored data security texts"
+msgid "Successfully saved privacy policy text"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2279
-msgid "Error in storing data security texts"
+msgid "Error saving privacy policy text"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2303
@@ -6755,7 +6743,7 @@ msgstr ""
 #: application/views/admin/survey/subview/_create_survey_text.php:105
 #: application/views/admin/usergroup/addUserGroup_view.php:24
 #: application/views/admin/usergroup/editUserGroup_view.php:15
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:79
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:79
 msgid "Description:"
 msgstr ""
 
@@ -6769,7 +6757,7 @@ msgstr ""
 #: application/views/admin/survey/editLocalSettings_view.php:132
 #: application/views/admin/survey/subview/_create_survey_text.php:196
 #: application/views/admin/survey/subview/_create_survey_text.php:201
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:126
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:126
 msgid "End message:"
 msgstr ""
 
@@ -6820,10 +6808,6 @@ msgstr ""
 
 #: application/controllers/admin/useraction.php:117
 msgid "The username already exists."
-msgstr ""
-
-#: application/controllers/admin/useraction.php:145
-msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:154
@@ -7118,37 +7102,29 @@ msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
 #: application/core/LSETwigViewRenderer.php:74
-msgid ""
-"Can't render layout %s for template %s. \n"
-"                        Template version in database is %s, but in config.xml it's %s. \n"
-"                        Please re-install the template."
-msgstr ""
-
-#: application/core/LSETwigViewRenderer.php:87
-#: application/core/LSETwigViewRenderer.php:192
-msgid "Can't render layout %s for template %s. Please try to re-install the template."
-msgstr ""
-
-#: application/core/LSETwigViewRenderer.php:181
+#: application/core/LSETwigViewRenderer.php:179
 msgid "Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:236
+#: application/core/LSETwigViewRenderer.php:85
+#: application/core/LSETwigViewRenderer.php:190
+msgid "Can't render layout %s for template %s. Please try to re-install the template."
+msgstr ""
+
+#: application/core/LSETwigViewRenderer.php:234
 msgid "Can't render layout %s. Please check that the view exists or contact your admin."
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:413
+#: application/core/LSETwigViewRenderer.php:411
 msgid "%s not found!"
 msgstr ""
 
-#: application/core/LSETwigViewRenderer.php:433
+#: application/core/LSETwigViewRenderer.php:431
 msgid "Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. "
 msgstr ""
 
 #: application/core/LSSodium.php:112
-msgid ""
-"Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Here is a link to the manual page: \n"
-"                    %s"
+msgid "Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s."
 msgstr ""
 
 #: application/core/LSUserIdentity.php:59
@@ -7230,7 +7206,7 @@ msgstr ""
 
 #: application/core/LsDefaultDataSets.php:17
 #: application/models/Permission.php:709
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:64
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:64
 msgid "Survey text elements"
 msgstr ""
 
@@ -7313,6 +7289,7 @@ msgid "Group list"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:25
+#: application/helpers/update/updatedb_helper.php:2917
 msgid "List question groups"
 msgstr ""
 
@@ -10976,7 +10953,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:9719
 #: application/views/admin/survey/editLocalSettings_view.php:120
 #: application/views/admin/survey/subview/_create_survey_text.php:187
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:102
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:102
 msgid "Welcome:"
 msgstr ""
 
@@ -11133,11 +11110,11 @@ msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
 #: application/helpers/frontend_helper.php:529
-msgid "Basic admin notification could not be sent with error: %s"
+msgid "Basic admin notification could not be sent because of error: %s"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:543
-msgid "Detailed admin notification could not be sent with error: %s"
+msgid "Detailed admin notification could not be sent because of error: %s"
 msgstr ""
 
 #: application/helpers/frontend_helper.php:570
@@ -11509,7 +11486,7 @@ msgid "Comment only when"
 msgstr ""
 
 #: application/helpers/questionHelper.php:185
-msgid "Use Javascript functions to remove text and uncheck checkbox (or use only ExpressionScript engine)."
+msgid "Use JavaScript functions to remove text and uncheck checkbox (or use only the ExpressionScript engine)."
 msgstr ""
 
 #: application/helpers/questionHelper.php:186
@@ -12315,7 +12292,7 @@ msgid "Relative width of the labels"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1153
-msgid "Label wrapper width"
+msgid "Label wrapping width"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1177
@@ -13198,10 +13175,6 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2917
-msgid "List question group"
-msgstr ""
-
 #: application/helpers/update/updatedb_helper.php:3076
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
@@ -13251,11 +13224,11 @@ msgid "Survey %s"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:136
-msgid "There are <b>security updates</b> available for %s <b>%s</b>."
+msgid "There are security updates available for %s (type: %s)."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:138
-msgid "There are updates available for %s <b>%s</b>."
+msgid "There are updates available for %s (type: %s)."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:150
@@ -13263,27 +13236,29 @@ msgid "The latest available version is %s."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/ExtensionUpdater.php:156
-msgid "Please visit <a href=\"%s\">%s</a> to download the update."
+msgid "Please visit %s to download the update."
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:248
-msgid "plugin"
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:247
+#: application/views/admin/pluginmanager/index.php:118
+msgid "Plugin"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:250
-msgid "theme"
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:249
+#: application/models/TemplateConfiguration.php:938
+msgid "Theme"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:252
-msgid "survey template"
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:251
+msgid "Survey template"
 msgstr ""
 
-#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:254
-msgid "question template"
+#: application/libraries/ExtensionInstaller/ExtensionUpdater.php:253
+msgid "Question template"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:53
-msgid "No temporary folder set, cannot move files."
+msgid "Temporary folder cannot be determined."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:57
@@ -13304,6 +13279,7 @@ msgid "Configuration file config.xml does not exist."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:109
+#: application/libraries/PluginManager/PluginManager.php:112
 msgid "Could not parse config.xml file."
 msgstr ""
 
@@ -13312,7 +13288,7 @@ msgid "Found no file"
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:196
-msgid "Unzipped file is superior to upload_max_filesize or to post_max_size"
+msgid "Unzipped file is too big."
 msgstr ""
 
 #: application/libraries/ExtensionInstaller/VersionFetcherServiceLocator.php:100
@@ -13349,10 +13325,6 @@ msgstr ""
 msgid "Config file is malformed or null."
 msgstr ""
 
-#: application/libraries/PluginManager/PluginManager.php:112
-msgid "Could not parse the plugin config.xml into a configuration object"
-msgstr ""
-
 #: application/libraries/PluginManager/PluginManager.php:127
 #: application/models/QuestionTheme.php:418
 msgid "Extension configuration file is not valid."
@@ -13364,11 +13336,6 @@ msgstr ""
 
 #: application/libraries/PluginManager/PluginManager.php:137
 msgid "Extension \"%s\" is already installed."
-msgstr ""
-
-#: application/libraries/PluginManager/PluginManager.php:602
-#: application/libraries/PluginManager/PluginManager.php:629
-msgid "N/A"
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:101
@@ -14785,10 +14752,6 @@ msgstr ""
 msgid "Global"
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:938
-msgid "Theme"
-msgstr ""
-
 #: application/models/TemplateConfiguration.php:1076
 msgid "Error: Malformed JSON - field %s must be either a JSON array or the string \"inherit\". Found \"%s\"."
 msgstr ""
@@ -15198,10 +15161,6 @@ msgstr ""
 
 #: application/models/UserGroup.php:327
 msgid "Delete user group"
-msgstr ""
-
-#: application/models/UserParser.php:86
-msgid "Wrong definition! Please make sure that your JSON arrays contains the fields '%s' as well as '%s' , '%s' , '%s' and  '%s'"
 msgstr ""
 
 #: application/views/admin/assessments/assessments_delete.php:12
@@ -16003,10 +15962,6 @@ msgstr ""
 
 #: application/views/admin/emailtemplates/email_language_template_tab.php:35
 msgid "Actions:"
-msgstr ""
-
-#: application/views/admin/emailtemplates/email_language_template_tab.php:38
-msgid "Validate expressions"
 msgstr ""
 
 #: application/views/admin/emailtemplates/email_language_template_tab.php:42
@@ -18299,10 +18254,6 @@ msgstr ""
 
 #: application/views/admin/pluginmanager/index.php:72
 msgid "Scan files"
-msgstr ""
-
-#: application/views/admin/pluginmanager/index.php:118
-msgid "Plugin"
 msgstr ""
 
 #: application/views/admin/pluginmanager/overview.php:14
@@ -24003,22 +23954,6 @@ msgstr ""
 msgid "Say hello"
 msgstr ""
 
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:60
-msgid "Text elements:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:153
-msgid "Data security notice:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:176
-msgid "Data security notice error:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/00/0032f7fd58706759b45224d1c90bad82aac5350730569af66ac6ab6778670160.php:200
-msgid "Data security notice label:"
-msgstr ""
-
 #: tmp/runtime/twig_cache/05/05c10c2a30148dec3579f08a0bdbc97db979fdeef40c3168bbe3d09fd7d4ff3a.php:62
 msgid "Thank you for registering. You will receive an email shortly."
 msgstr ""
@@ -24225,6 +24160,22 @@ msgstr ""
 msgid "This action need to be confirmed."
 msgstr ""
 
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:60
+msgid "Text elements:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:153
+msgid "Privacy policy text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:176
+msgid "Privacy policy error text:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/a6/a65fa74226965aa440c6df52ac0c6abb4f228c1adf240f258d3d1909292991cc.php:200
+msgid "Privacy policy label text:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/a6/a6bb1e6110af4ba03634cf711d120bbe6baabe523cc23be4d473e9b098a8f883.php:55
 msgid "Show Policy"
 msgstr ""
@@ -24269,16 +24220,16 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+#: tmp/runtime/twig_cache/ba/bac9b01405b24bb5da8ad7b1c0c280dc8337eae6747ae9be04576cb9942cdd20.php:55
+msgid "Your Privacy policy text is shown here."
+msgstr ""
+
 #: tmp/runtime/twig_cache/cb/cbe60b3d09d583ace5f4ef566e25dca426f4cc4a479314e719a478095e72fa37.php:296
 msgid "Insert a new subquestion after this one"
 msgstr ""
 
 #: tmp/runtime/twig_cache/cb/cbe60b3d09d583ace5f4ef566e25dca426f4cc4a479314e719a478095e72fa37.php:300
 msgid "Delete this subquestion"
-msgstr ""
-
-#: tmp/runtime/twig_cache/da/dae400251be2c97f0931bc0338a57f10c486c0091250af5b3b913999ad9dbc25.php:55
-msgid "Here your data security notice"
 msgstr ""
 
 #: tmp/runtime/twig_cache/e1/e1398d6fecc4c3026fa0769ec0c47d5ef2bb64e899e152f7d56972264cec8ad1.php:59
