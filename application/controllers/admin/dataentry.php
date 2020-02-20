@@ -1391,8 +1391,6 @@ class dataentry extends Survey_Common_Action
                         } else {
                             $thisvalue = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
-                        //need to check if library get initialized with new value of constructor or not.
-                        $aFieldAttributes[$fieldname] = $dateoutput;
                     }
                 case 'startdate':
                 case 'datestamp':
