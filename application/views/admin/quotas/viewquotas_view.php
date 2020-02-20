@@ -14,18 +14,7 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyQuotas');
-
-Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change', "
-    $('#pageSize').on('change', function()
-    {
-        $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
-    });
-", LSYii_ClientScript::POS_POSTSCRIPT);
-
 ?>
-
-<!-- To update grid when pageSize is changed -->
-
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -49,13 +38,18 @@ Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change',
                         'dataProvider' => $oDataProvider,
                         'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',
                                     $iGridPageSize,
                                     Yii::app()->params['pageSizeOptions'],
-                                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
+                                    array(
+                                        'class'    => 'changePageSize form-control',
+                                        'style'    => 'display: inline; width: auto',
+                                        'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
+                                    )
+                                )
+                            ),
                         'columns' => array(
                             array(
                                 'id'=>'id',
