@@ -1229,6 +1229,7 @@ class dataentry extends Survey_Common_Action
             $aData['menu']['edition'] = true;
             $aData['menu']['save'] = true;
             $aData['menu']['close'] = true;
+            $aData['topBar']['showSaveButton'] = true;
             //$aData['menu']['savebutton'] = 'frmeditgroup';
             $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
@@ -1419,16 +1420,14 @@ class dataentry extends Survey_Common_Action
                 default:
                     $oReponse->$fieldname = $thisvalue;
             }
-
-            $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
-            $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
-            $beforeDataEntryUpdate->set('iResponseID', $id);
-            App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
-
-            $arResponse = Response::model($surveyid)->findByPk($id);
-            $arResponse->setAttributes($aFieldAttributes, false);
-            $arResponse->encryptSave();
-
+        }
+        $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
+        $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
+        $beforeDataEntryUpdate->set('iResponseID', $id);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
+        if (!$oReponse->encryptSave()) {
+            Yii::app()->setFlashMessage(CHtml::errorSummary($oReponse), 'error');
+        } else {
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
         if (Yii::app()->request->getPost('close-after-save') == 'true') {
