@@ -1563,7 +1563,7 @@ class questionHelper
         );
 
         self::$attributes["question_template"] = array(
-            "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+            "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*",
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'question_template',
