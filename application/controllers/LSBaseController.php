@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Class LSMainController
+ * Class LSBaseController
  *
  * this controller will have all the necessary methods from the old AdminController
  *
  *
  */
-class LSMainController extends LSYii_Controller
+class LSBaseController extends LSYii_Controller
 {
 
     public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
@@ -67,6 +67,7 @@ class LSMainController extends LSYii_Controller
     protected function beforeRender($view)
     {
         //this lines come from _renderWarppedTemplate
+        //todo: this should be moved to the new questioneditor controller when it is being refactored
         if (!empty($aData['surveyid'])) {
             $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
@@ -76,7 +77,6 @@ class LSMainController extends LSYii_Controller
             LimeExpressionManager::StartProcessingPage(false, true);
 
             $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
-            //$renderFile = $basePath.'/layout_insurvey.php';
             $this->layout = $basePath.'/layout_insurvey.php';
         }
 

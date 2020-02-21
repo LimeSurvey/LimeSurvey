@@ -209,7 +209,7 @@
 
                     <!-- Create/edit user groups -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/usergroups/sa/index"); ?>">
+                        <a href="<?php echo $this->createUrl("userGroup/index"); ?>">
                             <?php eT("Create/edit user groups");?>
                         </a>
                     </li>

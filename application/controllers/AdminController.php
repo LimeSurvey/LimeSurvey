@@ -24,7 +24,7 @@ class AdminController extends LSYii_Controller
     /**
      * Initialises this controller, does some basic checks and setups
      *
-     * REFACTORED ( in LSMainController )
+     * REFACTORED ( in LSBaseController )
      *
      * @access protected
      * @return void
@@ -95,7 +95,7 @@ class AdminController extends LSYii_Controller
     /**
      * Load and set session vars
      *
-     * REFACTORED (in LSMainController)
+     * REFACTORED (in LSBaseController)
      *
      * @access protected
      * @return void
@@ -120,7 +120,7 @@ class AdminController extends LSYii_Controller
     /**
      * Checks for action specific authorization and then executes an action
      *
-     * REFACTORED ( in LSMainController)
+     * REFACTORED ( in LSBaseController)
      *
      * @access public
      * @param string $action
@@ -176,7 +176,7 @@ class AdminController extends LSYii_Controller
     /**
      * Starting with LS4, 3rd party developper can extends any of the LimeSurve controllers.
      *
-     *  REFACTORED ( in LSMainController)
+     *  REFACTORED ( in LSBaseController)
      *
      */
     protected function runModuleController($action)

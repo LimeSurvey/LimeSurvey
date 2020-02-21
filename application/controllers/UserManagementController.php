@@ -2,7 +2,7 @@
 
 
 //LSYii_Controller
-class UserManagementController extends LSMainController
+class UserManagementController extends LSBaseController
 {
 
     public function accessRules()
@@ -105,7 +105,6 @@ class UserManagementController extends LSMainController
             ]]);
         }
 
-        $test = $this->createAbsoluteUrl("/admin");
 
         $aUser = Yii::app()->request->getParam('User');
         $passwordTest = Yii::app()->request->getParam('password_repeat', false);
@@ -865,7 +864,6 @@ class UserManagementController extends LSMainController
                 $aResults[$sItem]['title'] = '';
                 $model = $this->loadModel($sItem);
                 $aResults[$sItem]['title'] = $model->users_name;
-
                 if (!$oUserGroup->hasUser($sItem)) {
                     $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
                 } else {

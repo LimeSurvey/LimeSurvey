@@ -29,6 +29,9 @@ class Usergroups extends Survey_Common_Action
     /**
      * Usergroups::mail()
      * Function responsible to send an e-mail to a user group.
+     *
+     * REFACTORED (in UserGroupController)
+     *
      * @param mixed $ugid
      * @return void
      */
@@ -93,6 +96,9 @@ class Usergroups extends Survey_Common_Action
     /**
      * Usergroups::delete()
      * Function responsible to delete a user group.
+     *
+     * *  * REFACTORED (in UserGroupController)
+     *
      * @return void
      */
     public function delete()
@@ -120,11 +126,11 @@ class Usergroups extends Survey_Common_Action
         $this->getController()->redirect($this->getController()->createUrl('/admin/usergroups/sa/view'));
     }
 
-
+    /**
+     *  * REFACTORED (in UserGroupController)
+     */
     public function add()
     {
-
-
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
@@ -166,6 +172,9 @@ class Usergroups extends Survey_Common_Action
     /**
      * Usergroups::edit()
      * Load edit user group screen.
+     *
+     * REFACTORED (in UserGroupController)
+     *
      * @param mixed $ugid
      * @return void
      */
@@ -329,6 +338,9 @@ class Usergroups extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED (in UserGroupController)
+     *
+     *
      * @todo Doc
      */
     function user($ugid, $action = 'add')

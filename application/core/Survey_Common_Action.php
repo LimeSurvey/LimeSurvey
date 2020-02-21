@@ -337,7 +337,7 @@ class Survey_Common_Action extends CAction
         if ($sRenderFile == false) {
 
             if (!empty($aData['surveyid'])) {
-                //todo REFACTORING this should be moved into LSMainController->beforeRender()
+                //todo REFACTORING this should be moved into LSBaseController->beforeRender()
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
                 // Needed to evaluate EM expressions in question summary
@@ -1207,6 +1207,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Load menu bar of user group controller.
+     *
+     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
+     *
      * @param array $aData
      * @return void
      */

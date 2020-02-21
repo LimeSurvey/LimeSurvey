@@ -52,7 +52,7 @@
                             <?php
                             if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true && $currentuser["userid"] != '1')
                             { ?>
-                                <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/remove"), 'post'); ?>
+                                <?php echo CHtml::form(array("userGroup/DeleteUserFromGroup/ugid/{$ugid}/"), 'post'); ?>
                                     <button  data-toggle="tooltip" data-placement="bottom" title="<?php eT('Delete');?>" type="submit" onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' class="btn btn-default btn-xs ">
                                         <span class="fa fa-trash text-warning"></span>
                                     </button>
@@ -82,7 +82,7 @@
             if (!empty($useradddialog))
             {
                 ?>
-                    <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/add"), 'post'); ?>
+                    <?php echo CHtml::form(array("userGroup/AddUserToGroup/ugid/{$ugid}"), 'post'); ?>
                         <table class='users'>
                             <tbody>
                                 <tr>
