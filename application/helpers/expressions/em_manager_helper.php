@@ -5578,6 +5578,12 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                    if (empty($oResponse)) {
+                        // This can happen if admin deletes incomple response while survey is running.
+                        $message = submitfailed('', $this->gT('Error on response update'));
+                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                        return;
+                    }
                     //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $iCountUpdated = Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
