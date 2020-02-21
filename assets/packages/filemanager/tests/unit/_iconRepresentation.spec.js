@@ -16,7 +16,8 @@ global.LS = {
 global.$ = jest.fn(() => {
     return {
         on: ()=>{},
-        trigger: ()=>{}
+        trigger: ()=>{},
+        tooltip: ()=>{},
     }
 });
 
