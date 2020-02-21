@@ -37,17 +37,16 @@ class expressionQuestionHelp extends PluginBase
      */
     public function addQuestionHelp()
     {
-        $knownVars = $this->event->get('knownVars');
+        $knownVars = $this->pluginManager->getApi()->EMgetKnowVars();
         $language = $this->event->get('language');
         foreach($knownVars as $var => $values) {
             if(isset($values['question']) && isset($values['qid'])) {
                 $oQuestionL10n = QuestionL10n::model()->find('qid = :qid and language = :language',array(":qid"=>$values['qid'],":language"=>$language));
-                if($oQuestionL10n) {
-                    $knownVars[$var]['help'] = $oQuestionL10n->help;
+                if ($oQuestionL10n) {
+                    $this->pluginManager->getApi()->EMupdateKnowVar($var, array('help'=>$oQuestionL10n->help));
                 }
             }
         }
-        $this->event->set('knownVars',$knownVars);
         $this->event->append('newExpressionSuffixes',['help']);
     }
 }

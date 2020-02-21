@@ -176,6 +176,26 @@ class LimesurveyApi
     }
 
     /**
+     * Update or set an existing know var for Expression
+     * @param string $var
+     * @param string[] $varsValue
+     * @return @void
+     */
+    public function EMupdateKnowVar($var,$varsValue)
+    {
+        \LimeExpressionManager::updateKnowVar($var,$varsValue);
+    }
+
+    /**
+     * Get the current knowVars from Expression
+     * @return string[]
+     */
+    public function EMgetKnowVars()
+    {
+        return \LimeExpressionManager::getKnowVars();
+    }
+
+    /**
      * Get the current request object
      *
      * @return \LSHttpRequest

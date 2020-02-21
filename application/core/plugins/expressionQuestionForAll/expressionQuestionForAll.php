@@ -37,7 +37,6 @@ class expressionQuestionForAll extends PluginBase
      */
     public function addQuestionAll()
     {
-        $knownVars = $this->event->get('knownVars');
         $language = $this->event->get('language');
         $surveyId =  $this->event->get('surveyId');
 
@@ -61,18 +60,13 @@ class expressionQuestionForAll extends PluginBase
         $criteria->addInCondition('type',$aQuestionManaged);
         $aoQuestions = \Question::model()->findAll($criteria);
         
-        $newKnownVars = array();
         foreach($aoQuestions as $oQuestion) {
             $oQuestionL10n = \QuestionL10n::model()->find("qid = :qid and language = :language", array(":qid"=>$oQuestion->qid,":language" => $language));
-            $newKnownVars[$oQuestion->title] = array(
-                'code' => '',
-                'jsName_on' => '',
-                'jsName' => '',
-                'readWrite' => 'N',
+            $newKnowVar = array(
                 'qid' => $oQuestion->qid,
                 'question' => $oQuestionL10n->question,
             );
+            $this->pluginManager->getApi()->EMupdateKnowVar($oQuestion->title,$newKnowVar);
         }
-        $this->event->append('knownVars', $newKnownVars);
     }
 }

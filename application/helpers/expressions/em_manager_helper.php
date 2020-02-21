@@ -4413,9 +4413,6 @@
             if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
                 $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
             }
-            /* Put in manual : offer updating this part must be done with care. And can broke without API version update */
-            $this->knownVars = $result->get('knownVars');
-            $this->questionSeq2relevance = $result->get('questionSeq2relevance');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
@@ -8361,6 +8358,7 @@
          * Helper function to update a Read only value
          * @param string $var
          * @param string $value
+         * @return @void
          */
         public static function setValueToKnowVar($var,$value)
         {
@@ -8374,6 +8372,36 @@
                 );
             }
             $LEM->knownVars[$var]['code'] = $value;
+        }
+
+        /**
+         * Update or set an existing know var, used for API
+         * @param string $var
+         * @param string[] $varsValue
+         * @return @void
+         */
+        public static function updateKnowVar($var,$varsValue)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            if(empty($LEM->knownVars[$var])) {
+                $LEM->knownVars[$var] = array(
+                    'code' => '',
+                    'jsName_on' => '',
+                    'jsName' => '',
+                    'readWrite' => 'N',
+                );
+            }
+            $LEM->knownVars[$var] = array_merge($LEM->knownVars[$var],$varsValue);
+        }
+
+        /**
+         * Get the current knowVars : used by API
+         * @return string[]
+         */
+        public static function getKnowVars()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            return $LEM->knownVars;
         }
 
         /**
