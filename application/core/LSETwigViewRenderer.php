@@ -124,7 +124,7 @@ window.addEventListener('message', function(event) {
     event.source.postMessage({msg: 'EVENT COLLECTED', event: event.data}, '*');
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + '//' + getUrl.host + '/' + getUrl.pathname.split('/')[1];
-    
+
     if (baseUrl.match(event.origin) && event.data.run == 'trigger::pjax:scriptcomplete' ) {
         console.log('runScriptcomplete');
         jQuery(document).trigger('pjax:scriptcomplete');
@@ -135,7 +135,7 @@ window.addEventListener('message', function(event) {
         jQuery('#questionPreview--content').text('');
         jQuery('#questionPreview--content').html(event.data.content);
     }
-}, false);  
+}, false);
 ";
             App()->getClientScript()->registerScript(
                 'postMessageScripts',
@@ -155,7 +155,7 @@ window.addEventListener('message', function(event) {
             }
 
             $sHtml     = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-            
+
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -451,6 +451,12 @@ window.addEventListener('message', function(event) {
     {
         App()->clientScript->registerPackage($oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN);
 
+        $event = new PluginEvent('TwigRendererRenderHtmlPage');
+        $event->set('content', $sHtml);
+        $event->set('template', $oTemplate);
+        App()->getPluginManager()->dispatchEvent($event);
+        $sHtml = $event->get('content');
+
         ob_start(function ($buffer, $phase) {
             App()->getClientScript()->render($buffer);
             App()->getClientScript()->reset();
@@ -493,6 +499,13 @@ window.addEventListener('message', function(event) {
             // Plugin for blocks replacement
             list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
         }
+
+        $event = new PluginEvent('TwigRendererConvertTwigToHtml');
+        $event->set('aDatas', $aDatas);
+        $event->set('sString', $sString);
+        App()->getPluginManager()->dispatchEvent($event);
+        $aDatas = $event->get('aDatas');
+        $sString = $event->get('sString');
 
         // Twig rendering
         $oTwigTemplate = $twig->createTemplate($sString);
