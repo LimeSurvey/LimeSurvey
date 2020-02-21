@@ -154,12 +154,25 @@ class LimesurveyApi
      * Evaluates an expression via ExpressionScript Engine
      * Uses the current context.
      * @param string $expression
+     * @param string[] $replacementFields
+     * @param boolean $static
+     * @param integer $numRecursionLevels
      * @return string
      */
-    public function EMevaluateExpression($expression)
+    public function EMevaluateExpression($expression, $replacementFields=array(), $static=false, $numRecursionLevels=3)
     {
-        $result = \LimeExpressionManager::ProcessString($expression);
-        return $result;
+        return \LimeExpressionManager::ProcessStepString($expression, $replacementFields, $numRecursionLevels, $static);
+    }
+
+    /**
+     * Set a static (readonly) value for Expression
+     * @param string $var
+     * @param string $value
+     * @return @void
+     */
+    public function EMsetValueToKnowVar($var,$value)
+    {
+        \LimeExpressionManager::setValueToKnowVar($var,$value);
     }
 
     /**

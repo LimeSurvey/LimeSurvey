@@ -104,14 +104,8 @@ class expressionFixedDbVar extends PluginBase
         }
         $newKnowVars = array();
         foreach($knownVarsToCreate as $var) {
-            $newKnowVars[$var] = array(
-                'code'=>"", // We don't have it if we don't have Response
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
-            );
+            $this->pluginManager->getApi()->EMsetValueToKnowVar($var,"");/* Unsure to be inside active survey, response can be not started, create as empty */
         }
-        $this->getEvent()->append('knownVars', $newKnowVars);
     }
 
     /**
@@ -139,7 +133,7 @@ class expressionFixedDbVar extends PluginBase
         foreach($knownVarsToCreate as $var) {
             $column = $this->settings[$var]['column'];
             if(isset($oResponse->$column)) {
-                LimeExpressionManager::setValueToKnowVar($var,$oResponse->$column);
+                $this->pluginManager->getApi()->EMsetValueToKnowVar($var,$oResponse->$column);
             }
         }
     }
