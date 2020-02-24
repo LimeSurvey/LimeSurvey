@@ -16,7 +16,7 @@
         <?php else : ?>
             <?php
             echo "<p>" . gT("No user groups found.") . "</p>";
-            echo CHtml::link('<i class="fa fa-plus-circle text-success"></i> ' . gT('Add new user group'), array('admin/usergroups/sa/add'), array('class' => 'btn btn-default'));
+            echo CHtml::link('<i class="fa fa-plus-circle text-success"></i> ' . gT('Add new user group'), array('userGroup/addGroup'), array('class' => 'btn btn-default'));
             ?>
         <?php endif; ?>
     </div>

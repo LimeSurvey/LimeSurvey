@@ -512,7 +512,6 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userpermissions', ['userid' => $this->uid]);
         $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
-        //$changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteconfirm');
         

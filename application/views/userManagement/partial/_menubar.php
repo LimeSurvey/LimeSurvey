@@ -46,7 +46,7 @@
                 <?php } ?>
             <?php } else {
                 ?>
-            <a class="btn btn-default" href="<?php echo $this->createUrl('admin/usermanagement/sa/view'); ?>" role="button">
+            <a class="btn btn-default" href="<?php echo $this->createUrl('userManagement/index'); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;
                     <?php eT('Return to main view'); ?>
