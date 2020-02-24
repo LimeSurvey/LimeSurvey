@@ -78,11 +78,8 @@ class customToken extends PluginBase {
     */
     public function beforeSurveySettings()
     {
-        $pluginsettings = $this->getPluginSettings(true);
-
         $event = $this->getEvent();
-        $iSurveyID=$event->get('iSurveyID');
-        $event->set("surveysettings.{$iSurveyID}", array(
+        $event->set("surveysettings.{$this->id}", array(
             'name' => get_class($this),
             'settings' => array(
                 'customToken' => array(

@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.5 (build 200217) to 4.1.6 (build 200220) February 20, 2020
+-Fixed issue: Wrong redirection to enter new key in Comfort update (eddylackmann)
+-Fixed issue: Empty comfort update key can be submitted (eddylackmann)
+-Fixed issue [security] #15818: Reflected XSS (Denis Chenu)
+-Fixed issue #15875: Broken template editor (kclingerman)
+#Updated translation: Russian by vipgroup
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by ulysse68
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.1.4 (build 200214) to 4.1.5 (build 200217) February 17, 2020
 -Fixed issue: Notice on survey completion (Carsten Schmitz)
 -Fixed issue: Incomplete headers when exporting 'Multiple choice with comment' questions (Carsten Schmitz)
