@@ -5624,7 +5624,7 @@
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                     if (empty($oResponse)) {
                         // This can happen if admin deletes incomple response while survey is running.
-                        $message = submitfailed('', $this->gT('Error on response update'));
+                        $message = submitfailed($this->gT('The data could not be saved because the reponse does not exist in the database.'));
                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
                         return;
                     }
