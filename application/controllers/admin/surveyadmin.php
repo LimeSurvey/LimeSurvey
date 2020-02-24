@@ -30,9 +30,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Initiates the survey action, checks for superadmin permission
      *
+     * @param CController $controller Controller
+     * @param string      $id         ID
+     * 
      * @access public
-     * @param CController $controller
-     * @param string $id
      */
     public function __construct($controller, $id)
     {
@@ -52,6 +53,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Delete multiple survey
+     * 
      * @return void
      */
     public function deleteMultiple()
@@ -75,11 +77,11 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
-     /**
-     * render selected items for massive action
+    /**
+     * Render selected items for massive action
+     * 
      * @return void
      */
-
     public function renderItemsSelected()
     {
         $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
@@ -104,7 +106,9 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * List Surveys.
+     * 
+     * @return void
      */
     public function listsurveys()
     {
@@ -122,7 +126,13 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * 
+     * @param int    $iSurveyID  Given Survey ID
+     * @param string $sSubAction Given Subaction
+     * 
+     * @return void
+     *
+     * @todo Add TypeDoc.
      */
     public function regenquestioncodes($iSurveyID, $sSubAction)
     {
@@ -171,6 +181,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * This function prepares the view for a new survey
+     * 
+     * @return void
      */
     public function newsurvey()
     {
@@ -227,7 +239,9 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo Document me
+     * 
+     * @return void
+     * @todo   Document me
      */
     public function fakebrowser()
     {
@@ -317,6 +331,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Change survey theme for multiple survey at once.
      * Called from survey list massive actions
+     * 
+     * @return void
      */
     public function changeMultipleTheme()
     {
@@ -336,6 +352,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Change survey group for multiple survey at once.
      * Called from survey list massive actions
+     * 
+     * @return void
      */
     public function changeMultipleSurveyGroup()
     {
@@ -356,18 +374,19 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Update the theme of a survey
-    *
-    * @access public
-    * @param int     $iSurveyID
-    * @param string  $template      the survey theme name
-    * @param array   $aResults      if the method is called from changeMultipleTheme(), it will update its array of results
-    * @param boolean $bReturn       should the method update and return aResults
-    * @return mixed                 null or array
+     * Update the theme of a survey
+     *
+     * @param int     $iSurveyID Survey ID
+     * @param string  $template  The survey theme name
+     * @param array   $aResults  If the method is called from changeMultipleTheme(), it will update its array of results
+     * @param boolean $bReturn   Should the method update and return aResults
+     * 
+     * @return mixed                 null or array
+     * 
+     * @access public
      */
     public function changetemplate($iSurveyID, $template, $aResults = null, $bReturn = false)
     {
-
         $iSurveyID  = sanitize_int($iSurveyID);
         $sTemplate  = sanitize_dirname($template);
 
@@ -404,14 +423,15 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * Toggles Quick action.
+     * 
+     * @return void
      */
     public function togglequickaction()
     {
         $quickactionstate = (int) SettingsUser::getUserSettingValue('quickaction_state');
 
         switch ($quickactionstate) {
-            //
             case null:
                 $save = SettingsUser::setUserSetting('quickaction_state', 1);
                 break;
@@ -438,11 +458,13 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load complete view of survey properties and actions specified by $iSurveyID
      *
-     * @access public
-     * @param mixed $iSurveyID
-     * @param mixed $gid
-     * @param mixed $qid
+     * @param mixed $iSurveyID Given Survey ID
+     * @param mixed $gid       Given Group ID
+     * @param mixed $qid       Given Question ID
+     * 
      * @return void
+     * 
+     * @access public
      */
     public function view($iSurveyID, $gid = null, $qid = null)
     {
@@ -512,7 +534,10 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get questiongroup with containing questions
-     * @todo
+     * 
+     * @param int $surveyid Given Survey ID
+     * 
+     * @return void
      */
     public function getAjaxQuestionGroupArray($surveyid)
     {
@@ -586,7 +611,11 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get MenuItems with containing questions
-     * @todo
+     * 
+     * @param int    $surveyid Given Survey ID
+     * @param string $position Given Position
+     * 
+     * @return void
      */
     public function getAjaxMenuArray($surveyid, $position = '')
     {
@@ -613,9 +642,11 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load list question groups view for a specified by $iSurveyID
      *
-     * @access public
-     * @param mixed $surveyid The survey ID
+     * @param int $surveyid The survey ID
+     * 
      * @return void
+     * 
+     * @access public
      */
     public function listquestiongroups($surveyid)
     {
@@ -656,14 +687,14 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
-
     /**
      * Load list questions view for a specified survey by $surveyid
      *
-     * @access public
-     * @param mixed $surveyid
+     * @param int $surveyid Goven Survey ID
+     * 
      * @return string
-     * @todo php warning (Missing return statement)
+     * @access public
+     * @todo   php warning (Missing return statement)
      */
     public function listquestions($surveyid)
     {
@@ -704,9 +735,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to deactivate a survey.
      *
-     * @access public
-     * @param int $iSurveyID
+     * @param int $iSurveyID Given Survey ID
+     * 
      * @return void
+     * @access public
      */
     public function deactivate($iSurveyID = null)
     {
@@ -828,9 +860,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to activate survey.
      *
-     * @access public
-     * @param int $iSurveyID
+     * @param int $iSurveyID Given Survey ID
+     * 
      * @return void
+     * @access public
      */
     public function activate($iSurveyID)
     {
@@ -922,9 +955,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to delete a survey.
      *
-     * @access public
-     * @param int $iSurveyID
+     * @param int $iSurveyID Given Survey ID
+     * 
      * @return string
+     * @access public
      */
     public function delete($iSurveyID)
     {
@@ -960,7 +994,9 @@ class SurveyAdmin extends Survey_Common_Action
      * Remove files not deleted properly.
      * Purge is only available for surveys that were already deleted but for some reason
      * left files behind.
-     * @param int $purge_sid
+     * 
+     * @param int $purge_sid Given ID
+     * 
      * @return void
      */
     public function purge($purge_sid)
@@ -993,6 +1029,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Takes the edit call from the detailed survey view, which either deletes the survey information
+     * 
+     * @return void
      */
     public function editSurvey_json()
     {
@@ -1012,6 +1050,11 @@ class SurveyAdmin extends Survey_Common_Action
      * New system of rendering content
      * Based on yii submenu rendering
      *
+     * @param int    $iSurveyID Given Survey ID
+     * @param string $subaction Given Subaction
+     * 
+     * @return void
+     * 
      * @uses self::_generalTabEditSurvey()
      * @uses self::_pluginTabSurvey()
      * @uses self::_tabPresentationNavigation()
@@ -1020,10 +1063,6 @@ class SurveyAdmin extends Survey_Common_Action
      * @uses self::_tabTokens()
      * @uses self::_tabPanelIntegration()
      * @uses self::_tabResourceManagement()
-     *
-     * @param int $iSurveyID
-     * @param string $subaction
-     * @return void
      */
     public function rendersidemenulink($iSurveyID, $subaction)
     {
@@ -1254,10 +1293,11 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * questiongroup::organize()
      * Load ordering of question group screen.
+     * questiongroup::organize()
      *
-     * @param int $iSurveyID
+     * @param int $iSurveyID Given Survey ID
+     * 
      * @return void
      */
     public function organize($iSurveyID)
@@ -1291,7 +1331,12 @@ class SurveyAdmin extends Survey_Common_Action
 
 
     /**
-     * Called via ajax request from survey summary quick action "Show questions group by group"
+     * Called via ajax request from survey summary quick action "Show questions group by group".
+     * 
+     * @param int    $iSurveyID Given Survey ID
+     * @param string $format    Given Format
+     * 
+     * @return void
      */
     public function changeFormat($iSurveyID, $format)
     {
@@ -1308,9 +1353,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Show the form for Organize question groups/questions
      *
-     * @todo Change function name to _showOrganizeGroupsAndQuestions?
-     * @param int $iSurveyID
+     * @param int $iSurveyID Given Survey ID
+     * 
      * @return void
+     * @todo   Change function name to _showOrganizeGroupsAndQuestions?
      */
     private function _showReorderForm($iSurveyID)
     {
@@ -1365,7 +1411,9 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Reorder groups and questions
-     * @param int $iSurveyID
+     * 
+     * @param int $iSurveyID Given Survey ID
+     * 
      * @return void
      */
     private function _reorderGroup($iSurveyID)
@@ -1403,6 +1451,7 @@ class SurveyAdmin extends Survey_Common_Action
      * Get the new question organization from the post data.
      * This function replaces parse_str, since parse_str
      * is bound by max_input_vars.
+     * 
      * @return array
      */
     protected function getOrgdata()
@@ -1422,12 +1471,15 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * survey::_fetchSurveyInfo()
      * Load survey information based on $action.
-     * @param string $action
-     * @param mixed $iSurveyID
+     * survey::_fetchSurveyInfo()
+     * 
+     * @param string $action    Given Action
+     * @param int    $iSurveyID Given Survey ID
+     * 
+     * @return void
+     * 
      * @deprecated use Survey objects instead
-     * @return
      */
     private function _fetchSurveyInfo($action, $iSurveyID = null)
     {
@@ -1445,8 +1497,9 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * survey::_generalTabNewSurvey()
      * Load "General" tab of new survey screen.
+     * survey::_generalTabNewSurvey()
+     *
      * @return array
      */
     private function _generalTabNewSurvey()
@@ -1479,7 +1532,10 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @param integer $iSurveyID
+     * Returns Data for general template.
+     * 
+     * @param integer $iSurveyID Given Survey ID
+     *
      * @return array
      */
     private function _getGeneralTemplateData($iSurveyID)
@@ -1504,15 +1560,18 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @param Survey $survey
-     * @return array
+     * Returns Date for Data Security Edit.
      * tab_edit_view_datasecurity
      * editDataSecurityLocalSettings_view
+     * 
+     * @param Survey $survey Given Survey
+     * 
+     * @return array
      */
     private function _getDataSecurityEditData($survey)
     {
-
-        Yii::app()->getClientScript()->registerScript("DataSecTextEditDataGlobal",
+        Yii::app()->getClientScript()->registerScript(
+            "DataSecTextEditDataGlobal",
             "window.DataSecTextEditData = {
                 connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey', ['sid' => $survey->sid, 'sa' => ''])."',
                 isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
@@ -1527,20 +1586,27 @@ class SurveyAdmin extends Survey_Common_Action
                     'Deactivated' : '".gT('Deactivated')."',
                     'Activated' : '".gT('Activated')."'
                 }
-            };", LSYii_ClientScript::POS_BEGIN);
+            };",
+            LSYii_ClientScript::POS_BEGIN
+        );
 
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('datasectextelements');
         $aData = $aTabTitles = $aTabContents = array();
         return $aData;
     }
+
     /**
-     * @param Survey $survey
+     * Returns data for text edit.
+     *
+     * @param Survey $survey Given Survey.
+     * 
      * @return array
      */
     private function _getTextEditData($survey)
     {
-        Yii::app()->getClientScript()->registerScript("TextEditDataGlobal",
+        Yii::app()->getClientScript()->registerScript(
+            "TextEditDataGlobal",
             "window.TextEditData = {
                 connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
                 isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
@@ -1563,9 +1629,12 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Returns Data for Tab General Edit Survey.
      * survey::_generalTabEditSurvey()
      * Load "General" tab of edit survey screen.
-     * @param Survey $survey
+     * 
+     * @param Survey $survey Given Survey
+     * 
      * @return mixed
      */
     private function _generalTabEditSurvey($survey)
@@ -1575,11 +1644,13 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     *
+     * Returns Data for Plugin tab.
      * survey::_pluginTabSurvey()
      * Load "Simple Plugin" page in specific survey.
-     * @param Survey $survey
-     * @return mixed
+     * 
+     * @param Survey $survey Given Survey
+     *
+     * @return array
      *
      * This method is called via call_user_func in self::rendersidemenulink()
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
@@ -1594,9 +1665,12 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
     /**
+     * Returns data for tab Presentation navigation.
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
-     * @param mixed $esrow
+     *
+     * @param mixed $esrow ?
+     * 
      * @return array
      */
     private function _tabPresentationNavigation($esrow)
@@ -1607,10 +1681,13 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Returns the data for Tab Publication Access control.
      * survey::_tabPublicationAccess()
      * Load "Publication * access control" tab.
-     * @param Survey $survey
-     * @return
+     * 
+     * @param Survey $survey Given Survey
+     * 
+     * @return array
      */
     private function _tabPublicationAccess($survey)
     {
@@ -1622,9 +1699,12 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Returns the data for Tab Notification and Data Management.
      * survey::_tabNotificationDataManagement()
      * Load "Notification & data management" tab.
-     * @param mixed $esrow
+     * 
+     * @param mixed $esrow ?
+     * 
      * @return array
      */
     private function _tabNotificationDataManagement($esrow)
@@ -1635,9 +1715,12 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Returns the data for Tab Tokens.
      * survey::_tabTokens()
      * Load "Tokens" tab.
-     * @param mixed $esrow
+     * 
+     * @param mixed $esrow ?
+     * 
      * @return array
      */
     private function _tabTokens($esrow)
@@ -1648,7 +1731,11 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @param Survey $survey
+     * Returns the data for Tab Panel Integration.
+     * 
+     * @param Survey $survey Given Survey
+     * @param string $sLang  Given Language
+     * 
      * @return array
      */
     private function _tabPanelIntegration($survey, $sLang = null)
@@ -1691,10 +1778,13 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Returns data for Tab Resourves.
      * survey::_tabResourceManagement()
      * Load "Resources" tab.
-     * @param Survey $survey survey
-     * @return mixed
+     * 
+     * @param Survey $oSurvey Given Survey
+     * 
+     * @return array
      */
     private function _tabResourceManagement($oSurvey)
     {
@@ -1725,7 +1815,11 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * 
+     * @param int $iSurveyID Given Survey ID
+     * 
+     * @return void
+     * @todo   Add TypeDoc.
      */
     public function expire($iSurveyID)
     {
@@ -1740,7 +1834,10 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * 
+     * @return void
+     * 
+     * @todo Add TypeDoc.
      */
     public function datetimesettings()
     {
@@ -1755,7 +1852,9 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * Action to set expiry date to multiple surveys
+     * Action to set expiry date to multiple surveys.
+     * 
+     * @return void
      */
     public function expireMultipleSurveys()
     {
@@ -1786,7 +1885,10 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * @param int $iSurveyID Given Survey ID.
+     * 
+     * @return void
+     * @todo   Add TypeDoc.
      */
     public function getUrlParamsJSON($iSurveyID)
     {
@@ -1828,13 +1930,14 @@ class SurveyAdmin extends Survey_Common_Action
     {
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
-
     }
 
     /**
      * Saves the new survey after the creation screen is submitted
      *
-     * @param integer $iSurveyID The survey id to be used for the new survey. If already taken a new random one will be used.
+     * @param int $iSurveyID The survey id to be used for the new survey.
+     *                       If already taken a new random one will be used.
+     * 
      * @return string
      */
     public function insert($iSurveyID = null)
@@ -2012,19 +2115,21 @@ class SurveyAdmin extends Survey_Common_Action
             );
         }
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
-
     }
     
     /**
-     * This method will return the url for the current survey and set the direction for 
-     * the sidemenue. 
+     * This method will return the url for the current survey and set 
+     * the direction for the sidemenue. 
      * 
-     * @param integer $sid 
-     * @param integer $gid  
-     * @param integer $qid 
+     * @param integer $sid               Given Survey ID
+     * @param integer $gid               Given Group ID
+     * @param integer $qid               Given Question ID
+     * @param string  $landOnSideMenuTab Given SideMenuTab
+     * 
      * @return string
      */
-    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab) {
+    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab)
+    {
         $url = 'admin/questioneditor/sa/view/';
         $params = [
             'surveyid' => $sid, 
@@ -2037,16 +2142,18 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function to call current Editor Values by Ajax
      *
-     * @param integer $sid
+     * @param integer $sid Given Survey ID
+     *
      * @return JSON
      */
-    public function getCurrentEditorValues($sid){
+    public function getCurrentEditorValues($sid)
+    {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $updatePermission = $oSurvey == null
             ? Permission::model()->hasGlobalPermission('surveys', 'create')
-            : Permission::model()->hasSurveyPermission($iSurveyId,'surveylocale','update');
+            : Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
 
         $aLanguages = [];
         $aReturner = [
@@ -2114,16 +2221,25 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Method to call current date information by ajax
      *
-     * @param [type] $sid
+     * @param int $sid Given Survey ID
+     *
      * @return JSON
      */
-    public function getDateFormatOptions($sid){
+    public function getDateFormatOptions($sid)
+    {
         $iSurveyId = (int) $sid;
         $aRawDateFormats = getDateFormatData();
 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
-            ['data' => array_map(function($aDateFormats) {return $aDateFormats['dateformat']; }, $aRawDateFormats)],
+            [
+                'data' => array_map(
+                    function ($aDateFormats) {
+                        return $aDateFormats['dateformat'];
+                    },
+                    $aRawDateFormats
+                )
+            ],
             false,
             false
         );
@@ -2132,16 +2248,18 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Method to store data edited in the the text editor component
      *
-     * @param integer $sid
+     * @param integer $sid Survey ID
+     * 
      * @return JSON
      */
-    public function saveTextData($sid){
+    public function saveTextData($sid)
+    {
         $iSurveyId = (int) $sid;
         $changes = Yii::app()->request->getPost('changes');
         $aSuccess = [];
         foreach ($changes as $sLanguage => $contentChange) {
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(["surveyls_survey_id" => $iSurveyId, "surveyls_language" => $sLanguage]);
-            if($oSurveyLanguageSetting == null) {
+            if ($oSurveyLanguageSetting == null) {
                 $oSurveyLanguageSetting = new SurveyLanguageSetting();
                 $oSurveyLanguageSetting->surveyls_survey_id = $iSurveyId;
                 $oSurveyLanguageSetting->surveyls_language = $sLanguage;
@@ -2177,10 +2295,12 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Collect the data necessary for the data security settings and return a JSON document
      *
-     * @param integer $sid
+     * @param integer $sid Survey ID
+     * 
      * @return JSON
      */
-    public function getDataSecTextSettings($sid=null) {
+    public function getDataSecTextSettings($sid = null)
+    {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -2241,10 +2361,12 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Method to store data edited in the the data security text editor component
      *
-     * @param integer $sid
+     * @param integer $sid Survey ID
+     * 
      * @return JSON
      */
-    public function saveDataSecTextData($sid){
+    public function saveDataSecTextData($sid)
+    {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $changes = Yii::app()->request->getPost('changes', []);
@@ -2287,7 +2409,9 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * This private function creates a sample group
      *
-     * @param integer $iSurveyID  The survey ID that the sample group will belong to
+     * @param int $iSurveyID The survey ID that the sample group will belong to
+     * 
+     * @return int
      */
     private function _createSampleGroup($iSurveyID)
     {
@@ -2310,8 +2434,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * This private function creates a sample question
      *
-     * @param integer $iSurveyID  The survey ID that the sample question will belong to
-     * @param mixed $iGroupID  The group ID that the sample question will belong to
+     * @param int $iSurveyID The survey ID that the sample question will belong to
+     * @param int $iGroupID  The group ID that the sample question will belong to
+     * 
+     * @return int
      */
     private function _createSampleQuestion($iSurveyID, $iGroupID)
     {
@@ -2338,9 +2464,12 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param string       $sAction     Current action, the folder to fetch views from
+     * @param string|array $aViewUrls   View url(s)
+     * @param array        $aData       Data to be passed on. Optional.
+     * @param bool         $sRenderFile Renders File
+     * 
+     * @return void
      */
     protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
@@ -2350,7 +2479,9 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Apply current theme options for imported survey theme
      *
-     * @param integer $iSurveyID  The survey ID of imported survey
+     * @param integer $iSurveyID The survey ID of imported survey
+     * 
+     * @return void
      */
     public function applythemeoptions($iSurveyID = 0)
     {
@@ -2377,6 +2508,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Upload an image in directory
+     * 
      * @return json
      */
     public function uploadimagefile()
@@ -2455,30 +2587,39 @@ class SurveyAdmin extends Survey_Common_Action
             false,
             false
         );
-
-
-
     }
 
-    public function getTokenTopBar($sid, $onlyclose = false) {
+    /**
+     * Returns JSON Data for Token Top Bar.
+     * 
+     * @param int  $sid       Given Survey ID
+     * @param bool $onlyclose Close
+     * 
+     * @return void
+     */
+    public function getTokenTopBar($sid, $onlyclose = false)
+    {
         $oSurvey   = Survey::model()->findByPk($sid);
 
         return Yii::app()->getController()->renderPartial(
-                '/admin/survey/topbar/token_bar',
-                array(
+            '/admin/survey/topbar/token_bar',
+            array(
                 'oSurvey'     => $oSurvey,
                 'sid'     => $sid,
                 'onlyclose' => !$oSurvey->hasTokensTable
             ),
             false,
             false
-      );
+        );
     }
 
     /**
-     * This Method is returning the Data for Survey Top Bar Component for Vue JS as JSON.
-     * @param $sid
-     * @param bool $saveButton
+     * This Method is returning the Data for Survey Top Bar Component
+     * for Vue JS as JSON.
+     * 
+     * @param int  $sid        Given Survey ID
+     * @param bool $saveButton Renders Save Button
+     * 
      * @return string|string[]|null
      * @throws CException
      */
