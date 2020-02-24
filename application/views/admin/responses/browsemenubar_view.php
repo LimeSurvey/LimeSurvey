@@ -156,7 +156,7 @@
                     data-use-ajax="true"
                     data-grid-id="responses-grid"
                     data-grid-reload="true"
-                    data-text="<?php eT('Enter a list of response IDs that are to be deleted, separated by comma.')?>"
+                    data-text="<?php eT('Enter a list of response IDs that are to be deleted, separated by comma.')?><br/><?= gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.'); ?>"
                     title="<?php eT('Batch deletion')?>"
                     class="btn btn-default selector--ConfirmModal">
 
