@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.6 (build 200220) to 4.1.7 (build 200224) February 24, 2020
+-Fixed issue #15911: Double checkconditions with array_text quetsion type (Denis Chenu)
+-Fixed issue #15909: customToken delete settings by other plugin (Denis Chenu)
+-Fixed issue #15889: Quota names not displayed in overview (Patrick Teichmann)
+-Fixed issue #15888: Importing quotas deletes the answers that have been set to the respective quota (Patrick Teichmann)
+-Fixed issue #15879: Plugin menu events not implemented in V4 (Olle Haerstedt)
+-Fixed issue #15781: File manager - copy file buttons are not disappearing (Jessica Höck)
+-Fixed issue #15466: Pagination not working after updating the grid (Patrick Teichmann)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by b00z00
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 4.1.5 (build 200217) to 4.1.6 (build 200220) February 20, 2020
 -Fixed issue: Wrong redirection to enter new key in Comfort update (eddylackmann)
 -Fixed issue: Empty comfort update key can be submitted (eddylackmann)
