@@ -2,6 +2,7 @@
 import empty from 'lodash/isEmpty';
 
 export default {
+    name: 'AbstractInputType',
     props: {
         elId: {type: String, required: true},
         elName: {type: [String, Boolean], default: ''},

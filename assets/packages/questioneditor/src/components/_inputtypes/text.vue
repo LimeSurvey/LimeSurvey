@@ -1,6 +1,34 @@
+<template>
+    <div class="form-row">
+        <i class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly" 
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
+        />
+        <label class="form-label" :for="elId"> {{elLabel}} </label>
+            <div class="input-group col-12">
+                <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
+                <input 
+                    type="text" 
+                    v-model="curValue" 
+                    :pattern="elOptions.elInputPattern" 
+                    :class="getClasses" 
+                    :name="elName || elId" 
+                    :id="elId" 
+                    :readonly="readonly"/>
+                <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
+            </div>
+        <div 
+            class="question-option-help well"
+            :id="'help-'+(elName || elId)"
+            v-show="showHelp"
+            v-html="elHelp"
+        />
+    </div>
+</template>
 <script>
     import empty from 'lodash/isEmpty';
-
     import abstractBaseType from '../abstracts/_abstractInputType';
 
     export default {
@@ -50,35 +78,3 @@
         }
     };
 </script>
-
-<template>
-    <div class="form-row">
-        <i 
-            class="fa fa-question pull-right" 
-            @click="triggerShowHelp=!triggerShowHelp" 
-            v-if="(elHelp.length>0) && !readonly" 
-            :aria-expanded="!triggerShowHelp" 
-            :aria-controls="'help-'+(elName || elId)"
-        />
-        <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group col-12">
-                <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
-                <input 
-                    type="text" 
-                    v-model="curValue" 
-                    :pattern="elOptions.elInputPattern" 
-                    :class="getClasses" 
-                    :name="elName || elId" 
-                    :id="elId" 
-                    :readonly="readonly"
-                />
-                <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
-            </div>
-        <div 
-            class="question-option-help well"
-            :id="'help-'+(elName || elId)"
-            v-show="showHelp"
-            v-html="elHelp"
-        />
-    </div>
-</template>
