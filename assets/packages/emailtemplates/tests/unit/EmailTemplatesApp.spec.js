@@ -61,7 +61,6 @@ global.$ = jest.fn(() => {
     }
 });
 
-
 describe("EmailTemplates basic behaviour", () => {
     let store;
     let wrapper;
@@ -71,7 +70,6 @@ describe("EmailTemplates basic behaviour", () => {
     };
     let mutations = realMutations;
    
-    //console.log("State ->", mockState);
     beforeEach(() => {    
         global.LS.EventBus = new Vue();
 
@@ -121,7 +119,6 @@ describe("EmailTemplates hotkeys", () => {
     };
     let mutations;
    
-    //console.log("State ->", mockState);
     beforeEach(() => {
         global.LS.EventBus = new Vue();
 
@@ -233,8 +230,6 @@ to see the change myself`);
     });
 });
 
-
-
 describe("UI interaction testing", ()=>{
     let store;
     let wrapper;
@@ -244,7 +239,6 @@ describe("UI interaction testing", ()=>{
     };
     let mutations;
    
-    //console.log("State ->", mockState);
     beforeEach(() => {
         global.LS.EventBus = new Vue();
 
@@ -291,7 +285,6 @@ describe("UI interaction testing", ()=>{
         wrapper.find("#EmailTemplates--actionbutton-addFileToCurrent").trigger('click');
         expect(wrapper.vm.addFileToCurrent).toHaveBeenCalled();
     });
-    
 });
 
 describe("Failing ajax calls", ()=>{
@@ -339,11 +332,8 @@ describe("Failing ajax calls", ()=>{
     });
 
     test("should submit on sendEvent (failure)", () => {
-        
         global.LS.EventBus.$emit('componentFormSubmit');
         expect(actions.saveData).toHaveBeenCalled()
         && expect(wrapper.vm.$log.error).toHaveBeenCalled();
     });
-
-
 })

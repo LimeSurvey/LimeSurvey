@@ -365,6 +365,7 @@ class quotas extends Survey_Common_Action
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId; // Close button
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['topBar']['showSaveButton'] = true;
 
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);

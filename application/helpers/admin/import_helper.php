@@ -2141,7 +2141,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
             unset($insertdata['id']);
             // now translate any links
-            $quotaMember->attributes = $insertdata;
+            $quotaMember->setAttributes($insertdata, false);
             if (!$quotaMember->save()) {
                 safeDie(gT("Error").": Failed to insert data[13]<br />");
             }
@@ -2163,7 +2163,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['quotals_quota_id'] = $aQuotaReplacements[(int) $insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
             $quotaLanguagesSetting = new QuotaLanguageSetting();
-            $quotaLanguagesSetting->attributes = $insertdata;
+            $quotaLanguagesSetting->setAttributes($insertdata, false);
             if (!$quotaLanguagesSetting->save()) {
                 safeDie(gT("Error").": Failed to insert data<br />");
             }

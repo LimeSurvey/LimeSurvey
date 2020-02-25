@@ -71,10 +71,12 @@ ${error.data.message}`,
       )
     },
     cancelTransit() {
+      this.emitIsBlocked(false);
       this.$store.commit('cancelTransit');
       this.$emit('forceRedraw');
     },
     runTransit() {
+      this.emitIsBlocked(true);
       this.loadingState = true;
       let transitType = this.$store.state.transitType+'';
       this.$store.dispatch('applyTransition').then(
@@ -82,12 +84,17 @@ ${error.data.message}`,
         (error) => {
           this.$log.error(error);
         }
-      ).finally(() => { this.loadingState = false; });
+      ).finally(() => {
+        this.loadingState = false;
+        this.emitIsBlocked(false);
+      });
+    },
+    emitIsBlocked(blocked) {
+      LS.EventBus.$emit('isBlocked', blocked);
     }
   }
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .scoped-navbar-fixes {
         .navbar-nav > li > a {
