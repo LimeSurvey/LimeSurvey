@@ -1,4 +1,5 @@
 import {shallowMount, createLocalVue} from '@vue/test-utils';
+import Vue from 'vue';
 import Vuex from 'vuex';
 import _ from 'lodash';
 import AbstractRepresentation from '../../src/helperComponents/abstractRepresentation.vue';
@@ -9,7 +10,9 @@ import MockActions from '../mocks/mockActions.js';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-
+global.LS = {
+	EventBus: new Vue(),
+};
 localVue.mixin({
     methods: {
         translate(value) {
