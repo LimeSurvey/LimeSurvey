@@ -42,7 +42,7 @@ class UserGroupController extends LSBaseController
     }
 
     /**
-     * Load main usergroup screen, showing all existing usergroups in a gridview.
+     * Load main user group screen, showing all existing userGroups in a gridview.
      *
      * @return array
      */
@@ -297,19 +297,18 @@ class UserGroupController extends LSBaseController
     public function actionDeleteGroup(){
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $ugid = Yii::app()->request->getPost("ugid");
-
-            if($ugid === null){
+            $userGroupId = Yii::app()->request->getPost("userGroupId");
+            if($userGroupId === null){
                 //try to get it from get request
-                $ugid = Yii::app()->request->getQuery("ugid");
+                $userGroupId = Yii::app()->request->getQuery("userGroupId");
             }
 
             if(Permission::model()->hasGlobalPermission('superadmin', 'read')){
                 //superadmin can delete
-                $model = UserGroup::model()->findByAttributes(['ugid'     => (int)$ugid]);
+                $model = UserGroup::model()->findByAttributes(['userGroupId'     => (int)$userGroupId]);
             }else {
                 //user is owner
-                $model = UserGroup::model()->findByAttributes(['ugid'     => (int)$ugid,
+                $model = UserGroup::model()->findByAttributes(['userGroupId'     => (int)$userGroupId,
                                                                'owner_id' => Yii::app()->user->id
                 ]);
             }
@@ -325,7 +324,7 @@ class UserGroupController extends LSBaseController
     }
 
     /**
-     *
+     * Adds a user to a group
      *
      * @param $ugid
      */
@@ -358,25 +357,25 @@ class UserGroupController extends LSBaseController
      *  todo: could be moved to model
      *
      * @param $uid    -- userID
-     * @param $ugid   -- userGroupID
+     * @param $userGroupId   -- userGroupID
      *
      * @return array if empty everything is ok, else
      *                  ['errorMsg']
      *                  ['redirectPath']
      */
-    private function checkBeforeAddDeleteUser($uid, $ugid){
+    private function checkBeforeAddDeleteUser($uid, $userGroupId){
         $aRet = [];
 
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
             $aRet['errorMsg'] = gt('Access denied');
-            $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $ugid;
+            $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }
 
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
+            $group = UserGroup::model()->findByAttributes(array('ugid' => $userGroupId));
         } else {
-            $group = UserGroup::model()->findByAttributes(array('ugid'     => $ugid,
+            $group = UserGroup::model()->findByAttributes(array('ugid'     => $userGroupId,
                                                                 'owner_id' => Yii::app()->session['loginID']
             ));
         }
@@ -389,14 +388,14 @@ class UserGroupController extends LSBaseController
 
         if ($group->owner_id == $uid) {
             $aRet['errorMsg'] = gt('You can not add or remove the group owner from the group.');
-            $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $ugid;
+            $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }
 
         $userToAdd = User::model()->findByPk($uid);
         if ($userToAdd === null) {
             $aRet['errorMsg'] = gt('Unknown user. You have to select a user.');
-            $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $ugid;
+            $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
         }
 
         return $aRet;
@@ -429,6 +428,11 @@ class UserGroupController extends LSBaseController
 
     }
 
+    /**
+     *  Sends email to all users in a group
+     *
+     * @param $ugid
+     */
     public function actionMailToAllUsersInGroup($ugid){
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");

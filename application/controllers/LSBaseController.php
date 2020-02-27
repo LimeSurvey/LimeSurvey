@@ -9,16 +9,15 @@
  */
 class LSBaseController extends LSYii_Controller
 {
+    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here ...
+    /** @var null  this is needed for the preview rendering inside the questioneditor */
+    public $sTemplate = null;
 
-    public $sTemplate = null; // this is needed for the preview rendering inside the questioneditor
-    public $layout = false;
-    //public $aAdminModulesClasses = array();
-    protected $user_id = 0;
-    //protected $aOverridenCoreActions = array(); // Contains the list of controller's actions overriden by custom modules
-   // protected $currentModuleAction = '';        // Name of the current action overriden by a custom module
-
-    // import for all new controllers/actions (REFACTORING) to pass data before rendering the content
+    /** @var array  import for all new controllers/actions (REFACTORING) to pass data before rendering the content*/
     public $aData = [];
+
+    /** @var int userId of the logged in user */
+    protected $user_id = 0; //todo: do we really need this here ?? why?
 
     /**
      * Initialises this controller, does some basic checks and setups
@@ -35,7 +34,7 @@ class LSBaseController extends LSYii_Controller
         $this->layout = 'main';
 
         App()->getComponent('bootstrap');
-        $this->_sessioncontrol();
+        $this->sessionControl();
 
         $this->user_id = Yii::app()->user->getId();
 
@@ -133,10 +132,6 @@ class LSBaseController extends LSYii_Controller
             }
         }
 
-        //todo REFACTORING why do we need this here ...it's for modules created by external developers to write modules
-        // ...and modules should be written also the normal yii-way after refactoring all controllers
-     //   $this->runModuleController($action);
-
         parent::run($action);
     }
 
@@ -148,7 +143,7 @@ class LSBaseController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _sessioncontrol()
+    protected function sessionControl()
     {
         // From personal settings
 
@@ -170,39 +165,5 @@ class LSBaseController extends LSYii_Controller
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         //todo end
     }
-
-    /**
-     * Starting with LS4, 3rd party developper can extends any of the LimeSurvey controllers.
-     *
-     */
-    /*
-    protected function runModuleController($action)
-    {
-        $aOverridenCoreActions = $this->getOverridenCoreAction();
-        if (!empty($aOverridenCoreActions)){
-            if (!empty($aOverridenCoreActions[$action])){
-                $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
-
-                // Since module's class has the same name has core class, we need to load the core and module classes with namespace
-                Yii::import('application\\controllers\\admin\\'.$action, true);
-                $sActionModuleClass = 'lsadminmodules\\'.$action.'\controller\\'.$action;
-                Yii::import($sActionModuleClass, true);
-            }
-        }
-    }*/
-
-    /**
-     * Return the list of overriden actions from modules, and generate it if needed
-     * @return array
-     */
-    /*
-    protected function getOverridenCoreAction()
-    {
-        if (empty($this->aOverridenCoreActions)){
-            $this->actions();
-        }
-
-        return $this->aOverridenCoreActions;
-    }*/
 
 }

@@ -5,7 +5,7 @@
 </div>
 <div class="modal-body selector--edit-permissions-container">
     <div class="container-center">        
-        <?=TbHtml::formTb(null, App()->createUrl('userManagement/saveuserpermissions'), 'post', ["id"=>"UserManagement--modalform"])?>
+        <?=TbHtml::formTb(null, App()->createUrl('userManagement/saveUserPermissions'), 'post', ["id"=>"UserManagement--modalform"])?>
             <input type='hidden' name='userid' value='<?php echo (isset($oUser) ? $oUser->uid : '');?>' />
             <table id='UserManagement--userpermissions-table' class='activecell table table-striped'>
                 <thead>

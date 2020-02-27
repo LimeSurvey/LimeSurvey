@@ -13,7 +13,7 @@
                              class="btn btn-default UserManagement--action--openmodal">
                         <i class="fa fa-plus-circle text-success"></i> <?php eT("Add user"); ?>
                     </button>
-                    <button  data-href="<?=$this->createUrl("userManagement/adddummyuser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>"
+                    <button  data-href="<?=$this->createUrl("userManagement/addDummyUser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>"
                              class="btn btn-default UserManagement--action--openmodal">
                         <i class="fa fa-plus-square text-success"></i> <?=gT('Add dummy user')?>
                     </button>

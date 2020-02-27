@@ -507,13 +507,13 @@ class User extends LSActiveRecord
      */
     public function getManagementButtons()
     {
-        $detailUrl = Yii::app()->getController()->createUrl('userManagement/viewuser', ['userid' => $this->uid]);
+        $detailUrl = Yii::app()->getController()->createUrl('userManagement/viewUser', ['userid' => $this->uid]);
         $editUrl = Yii::app()->getController()->createUrl('userManagement/addEditUser', ['userid' => $this->uid]);
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userpermissions', ['userid' => $this->uid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $this->uid]);
         $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
-        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteconfirm');
+        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm');
         
 
         $userDetail = ""

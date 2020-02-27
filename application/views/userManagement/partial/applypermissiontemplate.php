@@ -1,3 +1,7 @@
+<?php
+    //todo REFACTORING this modal view is nerver rendered (even not partial), could we remove it??
+?>
+
 <div class="modal-header">
     <h3>
         <?php eT("Edit permissions");?>
@@ -5,7 +9,7 @@
 </div>
 <div class="modal-body">
     <div class="container-center">        
-        <?=TbHtml::formTb(null, App()->createUrl('admin/usermanagement', ['sa' => 'saveuserpermissions']), 'post', ["id"=>"UserManagement--modalform"])?>
+        <?=TbHtml::formTb(null, App()->createUrl('admin/usermanagement', ['sa' => 'saveUserPermissions']), 'post', ["id"=>"UserManagement--modalform"])?>
             <input type='hidden' name='userid' value='<?php echo $oUser->uid;?>' />
             <div class="row ls-space margin top-5">
                 <div class="col-sm-12">
