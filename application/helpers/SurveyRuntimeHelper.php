@@ -559,7 +559,7 @@ class SurveyRuntimeHelper
 
             if ($this->aSurveyInfo['refurl'] == "Y") {
                 //Only add this if it doesn't already exist
-                if (!in_array("refurl", $_SESSION[$this->LEMsessid]['insertarray'])) {
+                if ($this->LEMsessid && !in_array("refurl", $_SESSION[$this->LEMsessid]['insertarray'])) {
                     $_SESSION[$this->LEMsessid]['insertarray'][] = "refurl";
                 }
             }
@@ -1279,6 +1279,7 @@ class SurveyRuntimeHelper
         $this->LEMskipReprocessing    = isset($LEMskipReprocessing) ? $LEMskipReprocessing : null;
         $this->thissurvey             = isset($thissurvey) ? $thissurvey : null;
         $this->iSurveyid              = isset($surveyid) ? $surveyid : null;
+        $this->LEMsessid              = $this->iSurveyid ? 'survey_'.$this->iSurveyid: null;
         $this->aSurveyOptions         = isset($surveyOptions) ? $surveyOptions : null;
         $this->aMoveResult            = isset($moveResult) ? $moveResult : null;
         $this->sMove                  = isset($move) ? $move : null;
@@ -1576,18 +1577,18 @@ class SurveyRuntimeHelper
      * This method will set survey values in public property of the class
      * So, any value here set as $this->xxx will be available as $xxx after :
      * eg: $this->LEMsessid
-     *
+     * @param integer $surveyid;
+     * @param array $args;
      */
     private function setSurveySettings($surveyid, $args)
     {
-        $this->setVarFromArgs($args); // Set the private variable from $args
+        $this->setVarFromArgs(array_merge($args, array('surveyid' => $surveyid))); // Set the private variable from $args, be sure to set surveyid
         $this->initTemplate(); // Template settings
         $this->setJavascriptVar();
         $this->setArgs();
 
         extract($args);
 
-        $this->LEMsessid = 'survey_'.$this->iSurveyid;
         $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid, App()->getLanguage());
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index", array("sid"=>$this->iSurveyid));
 
