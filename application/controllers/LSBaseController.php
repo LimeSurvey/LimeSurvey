@@ -17,7 +17,7 @@ class LSBaseController extends LSYii_Controller
     public $aData = [];
 
     /** @var int userId of the logged in user */
-    protected $user_id = 0; //todo: do we really need this here ?? why?
+    protected $userId = 0; //todo: do we really need this here ?? why?
 
     /**
      * Initialises this controller, does some basic checks and setups
@@ -36,7 +36,7 @@ class LSBaseController extends LSYii_Controller
         App()->getComponent('bootstrap');
         $this->sessionControl();
 
-        $this->user_id = Yii::app()->user->getId();
+        $this->userId = Yii::app()->user->getId();
 
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
@@ -106,7 +106,7 @@ class LSBaseController extends LSYii_Controller
         }
 
         if ($action != "databaseupdate" && $action != "db") {
-            if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
+            if (empty($this->userId) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
                 }
@@ -122,7 +122,7 @@ class LSBaseController extends LSYii_Controller
                 }
 
                 $this->redirect(array('/admin/authentication/sa/login'));
-            } elseif (!empty($this->user_id) && $action != "remotecontrol") {
+            } elseif (!empty($this->userId) && $action != "remotecontrol") {
                 /** @var LSUserIdentity */
                 $user = Yii::app()->user;
                 /** @var string */
