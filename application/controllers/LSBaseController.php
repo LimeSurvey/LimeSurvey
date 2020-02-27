@@ -123,8 +123,11 @@ class LSBaseController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
-                if (Yii::app()->session['session_hash'] != hash('sha256',
-                        getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId())) {
+                /** @var LSUserIdentity */
+                $user = Yii::app()->user;
+                /** @var string */
+                $hash = hash('sha256', getGlobalSetting('SessionName') . $user->getName() . $user->getId());
+                if (Yii::app()->session['session_hash'] != $hash) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
@@ -165,5 +168,4 @@ class LSBaseController extends LSYii_Controller
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         //todo end
     }
-
 }
