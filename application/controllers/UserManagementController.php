@@ -82,7 +82,7 @@ class UserManagementController extends LSBaseController
     public function actionAddEditUser($userid = null)
     {
         if (($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
-            || ($userid !== null && !Permission::model()->hasGlobalPermission('users', 'update'))){
+            || ($userid !== null && !Permission::model()->hasGlobalPermission('users', 'update'))) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")]]
@@ -217,7 +217,8 @@ class UserManagementController extends LSBaseController
     public function actionDeleteConfirm()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
-            return $this->renderPartial('partial/error',
+            return $this->renderPartial(
+                'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
             );
         }
@@ -853,8 +854,7 @@ class UserManagementController extends LSBaseController
                     $aResults[$sItem]['error'] = gT('User is already a part of the group');
                 }
             }
-        }else {
-
+        } else {
             foreach ($aItems as $sItem) {
                 $aResults[$sItem]['title'] = '';
                 $model = $this->loadModel($sItem);
@@ -940,7 +940,7 @@ class UserManagementController extends LSBaseController
         $oUser = User::model()->findByPk($userId);
         $oUser->parent_id = Yii::app()->user->id;
         $oUser->save();
-        $this->redirect(Yii::app()->createUrl("userManagement/index") );
+        $this->redirect(Yii::app()->createUrl("userManagement/index"));
     }
 
     /**
@@ -1051,7 +1051,7 @@ class UserManagementController extends LSBaseController
             $success = true;
 
             if ($sendMail) {
-                $mailer = $this->sendAdminMail($aUser,'registration');
+                $mailer = $this->sendAdminMail($aUser, 'registration');
 
                 if ($mailer->getError()) {
                     $sReturnMessage = CHtml::tag("h4", array(), gT("Error"));
@@ -1060,7 +1060,7 @@ class UserManagementController extends LSBaseController
                     $success = false;
                 } else {
                     // has to be sent again or no other way
-                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));;
+                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));
                     $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
@@ -1094,6 +1094,7 @@ class UserManagementController extends LSBaseController
      * @param bool $sendMail - option to send mail to user when created
      * @return array returns all attributes from model user as an array
      * @throws CException
+     * @todo $sendMail is not used - remove?
      */
     public function createNewUser($aUser, $sendMail = true)
     {
@@ -1162,6 +1163,7 @@ class UserManagementController extends LSBaseController
      * @return LimeMailer if send is successfull
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
+     * @todo $newPassword is not used
      */
     public function sendAdminMail($aUser, $type = 'registration', $newPassword = null)
     {
