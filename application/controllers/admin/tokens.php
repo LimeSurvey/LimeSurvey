@@ -2615,7 +2615,7 @@ class tokens extends Survey_Common_Action
         if ($request->getPost('bypassbademails') == '1') {
             return "emailstatus = 'OK'";
         } else {
-            return "emailstatus <> 'OptOut'";
+            return "emailstatus <> 'OptOut' OR emailstatus IS NULL";
         }
     }
 
