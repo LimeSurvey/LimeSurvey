@@ -56,7 +56,6 @@ class UserGroupController extends LSBaseController
         $aData = [];
 
         if (Yii::app()->session['loginID']) {
-
             $model = UserGroup::model();
         }
 
@@ -83,7 +82,7 @@ class UserGroupController extends LSBaseController
      * @param $ugid
      * @param bool $header
      */
-    public function actionViewGroup($ugid, $header=false)
+    public function actionViewGroup($ugid, $header = false)
     {
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
@@ -207,7 +206,6 @@ class UserGroupController extends LSBaseController
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             if ($action == "editusergroupindb") {
-
                 $ugid = (int) $_POST['ugid'];
 
                 $groupName = $_POST['name'];
@@ -225,7 +223,7 @@ class UserGroupController extends LSBaseController
                 $aData['model'] = $result;
                 $aData['ugid'] = $result->ugid;
             }
-        }else{
+        } else {
             Yii::app()->session['flashmessage'] = gT("You don't have permission to edit a usergroup");
             $this->redirect(App()->createUrl("/admin"));
         }
@@ -246,37 +244,35 @@ class UserGroupController extends LSBaseController
      * Adds a user to usergroup if action is set to "saveusergroup"
      *
      */
-    public function actionAddGroup(){
-
+    public function actionAddGroup()
+    {
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
         if (Permission::model()->hasGlobalPermission('usergroups', 'create')) {
-
             if ($action == "saveusergroup") {
-
                 //try to save the normal yii-way (validation rules must be implement in UserGroup()->rules(...)
                 $model = new UserGroup();
-                $model->name = flattenText($_POST['group_name'], false, true, 'UTF-8', true);;
+                $model->name = flattenText($_POST['group_name'], false, true, 'UTF-8', true);
                 $model->description = flattenText($_POST['group_description']);
                 $model->owner_id = Yii::app()->user->id;
 
-                if($model->save()){
+                if ($model->save()) {
                     //everythiong ok, go back to index
                     Yii::app()->user->setFlash('success', gT("User group successfully added!"));
                     $this->redirect(array('userGroup/index'));
-                }else{
+                } else {
                     //show error msg
                     $errors= $model->getErrors();
                     //show only the first error, so the user could fix them one by one ...
-                    foreach ($errors as $key => $value){
+                    foreach ($errors as $key => $value) {
                         $firstError = $key;
                         break;
                     }
                     Yii::app()->user->setFlash('error', $errors[$firstError][0]);
                 }
             }
-        }else{
+        } else {
             $this->redirect('index');
         }
 
@@ -294,28 +290,28 @@ class UserGroupController extends LSBaseController
      *  Deletes a usergroup and all entries in UserInGroup related to that group
      *
      */
-    public function actionDeleteGroup(){
-
+    public function actionDeleteGroup()
+    {
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
             $userGroupId = Yii::app()->request->getPost("userGroupId");
-            if($userGroupId === null){
+            if ($userGroupId === null) {
                 //try to get it from get request
                 $userGroupId = Yii::app()->request->getQuery("userGroupId");
             }
 
-            if(Permission::model()->hasGlobalPermission('superadmin', 'read')){
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 //superadmin can delete
                 $model = UserGroup::model()->findByAttributes(['userGroupId'     => (int)$userGroupId]);
-            }else {
+            } else {
                 //user is owner
                 $model = UserGroup::model()->findByAttributes(['userGroupId'     => (int)$userGroupId,
                                                                'owner_id' => Yii::app()->user->id
                 ]);
             }
 
-            if($model!==null && $model->delete()){
+            if ($model!==null && $model->delete()) {
                 Yii::app()->user->setFlash("success", gT("Successfully deleted user group."));
-            }else{
+            } else {
                 Yii::app()->user->setFlash("error", gT("Could not delete user group."));
             }
         }
@@ -328,11 +324,11 @@ class UserGroupController extends LSBaseController
      *
      * @param $ugid
      */
-    public function actionAddUserToGroup($ugid){
-
+    public function actionAddUserToGroup($ugid)
+    {
         $uid = (int) Yii::app()->request->getPost('uid');
         $checkPermissionsUserGroupExists = $this->checkBeforeAddDeleteUser($uid, $ugid);
-        if(count($checkPermissionsUserGroupExists) > 0 ){
+        if (count($checkPermissionsUserGroupExists) > 0) {
             Yii::app()->user->setFlash('error', $checkPermissionsUserGroupExists['errorMsg']);
             $this->redirect(array($checkPermissionsUserGroupExists['redirectPath']));
         }
@@ -347,7 +343,6 @@ class UserGroupController extends LSBaseController
             Yii::app()->user->setFlash('error', gt('User could not be added.'));
         }
         $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-
     }
 
     /**
@@ -363,7 +358,8 @@ class UserGroupController extends LSBaseController
      *                  ['errorMsg']
      *                  ['redirectPath']
      */
-    private function checkBeforeAddDeleteUser($uid, $userGroupId){
+    private function checkBeforeAddDeleteUser($uid, $userGroupId)
+    {
         $aRet = [];
 
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
@@ -407,11 +403,11 @@ class UserGroupController extends LSBaseController
      * @param $ugid
      * @throws CDbException
      */
-    public function actionDeleteUserFromGroup($ugid){
-
+    public function actionDeleteUserFromGroup($ugid)
+    {
         $uid = (int) Yii::app()->request->getPost('uid');
         $checkOK = $this->checkBeforeAddDeleteUser($uid, $ugid);
-        if(count($checkOK) > 0 ){
+        if (count($checkOK) > 0) {
             Yii::app()->user->setFlash('error', $checkOK['errorMsg']);
             $this->redirect(array($checkOK['redirectPath']));
         }
@@ -425,7 +421,6 @@ class UserGroupController extends LSBaseController
             Yii::app()->user->setFlash('error', gt('Failed to remove user.'));
         }
         $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-
     }
 
     /**
@@ -433,29 +428,31 @@ class UserGroupController extends LSBaseController
      *
      * @param $ugid
      */
-    public function actionMailToAllUsersInGroup($ugid){
+    public function actionMailToAllUsersInGroup($ugid)
+    {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");
 
         if ($action == "mailsendusergroup") {
-
             // user must be in user group or superadmin
-            if($ugid === null){
+            if ($ugid === null) {
                 $ugid = (int) Yii::app()->request->getPost('ugid');
             }
             $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
             if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 try {
                     $sendCopy = Yii::app()->getRequest()->getPost('copymail')==1 ? 1 :0;
-                    $emailSendingResults = UserGroup::model()->sendUserEmails($ugid,
+                    $emailSendingResults = UserGroup::model()->sendUserEmails(
+                        $ugid,
                         Yii::app()->getRequest()->getPost('subject'),
                         Yii::app()->getRequest()->getPost('body'),
                         $sendCopy
-                        );
+                    );
 
                     Yii::app()->user->setFlash('success', $emailSendingResults);
                     $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
-                }catch (Exception $e){
+                } catch (Exception $e) {
+                    // TODO: Show error message?
                     Yii::app()->user->setFlash('error', gt("Error: no email has been send."));
                     $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
                 }
@@ -471,9 +468,8 @@ class UserGroupController extends LSBaseController
 
         $this->aData = $aData;
 
-        $this->render('mailUserGroup_view',[
+        $this->render('mailUserGroup_view', [
             'ugid' => $aData['ugid']
         ]);
     }
-
 }
