@@ -56,9 +56,9 @@ class emailtemplates extends Survey_Common_Action
             'i10N' => [
                 'Subject' => gT('Subject'),
                 'Message' => gT('Message'),
-                'Validate Expressions' => gT('Validate Expressions'),
-                'Reset current' => gT('Reset current'),
-                'Add file to current' => gT('Add file to current'),
+                'Validate Expressions' => gT('Validate ExpressionScript'),
+                'Reset to default' => gT('Reset to default'),
+                'Add attachment to template' => gT('Add attachment to template'),
                ]
         ];
         $this->_renderWrappedTemplate('emailtemplates', 'emailtemplatescomponent', $aData);
@@ -117,7 +117,7 @@ class emailtemplates extends Survey_Common_Action
         $this->renderJSON([
             'success' => $success,
             'detailedSuccess' => $detailedSuccess,
-            'message' => gT('Email tempplates successfully saved'),
+            'message' => gT('Email templates successfully saved.'),
             'reload' => true
         ]);
         Yii::app()->close();

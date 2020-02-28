@@ -3,8 +3,8 @@
         "es6": true
     },
     "globals": {
-        "LS" : "on",
-        "$" : "on"
+        "LS" : "writable",
+        "$" : "readonly"
     },
     "rules": {
         "semi": ["warn", "always"],

@@ -20,7 +20,7 @@
  *   (b) Expressions (things surrounded by curly braces) are evaluated - thereby doing LimeReplacementField substitution and/or more complex calculations
  *   (c) Non-expressions are left intact
  *   (d) The array of stringParts are re-joined to create the desired final string.
- * (3) The core of Expression Manager is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
+ * (3) The core of ExpressionScript Engine is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
  *   (a) Functions that start with RDP_ should not be touched unless you really understand compiler design.
  *
  * @author LimeSurvey Team (limesurvey.org)
@@ -1240,70 +1240,106 @@ class ExpressionManager
         $tokens = $this->RDP_tokens;
         $stringParts = array();
         $numTokens = count($tokens);
-        for ($i = 0; $i < $numTokens; ++$i) {
-            $token = $tokens[$i];
-            // When do these need to be quoted?
 
-            switch ($token[2]) {
-                case 'DQ_STRING':
-                    $stringParts[] = '"'.addcslashes($token[0], '\"').'"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
-                    break;
-                case 'SQ_STRING':
-                    $stringParts[] = "'".addcslashes($token[0], "\'")."'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
-                    break;
-                case 'SGQA':
-                case 'WORD':
-                    if ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'LP') {
-                        // then word is a function name
-                        $funcInfo = $this->RDP_ValidFunctions[$token[0]];
-                        if ($funcInfo[1] == 'NA') {
-                            return ''; // to indicate that this is trying to use a undefined function.  Need more graceful solution
-                        }
-                        $stringParts[] = $funcInfo[1]; // the PHP function name
-                    } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
-                        $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                        $stringParts[] = "document.getElementById('".$jsName."').value";
-                        if ($tokens[$i + 1][0] == '+=') {
-                            // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                            $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                            $stringParts[] = " = LEMval('".$varName."') + ";
-                            ++$i;
-                        }
-                    } else {
-                        $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
-                        $code = $this->GetVarAttribute($token[0], 'code', '');
-                        if ($jsName != '') {
-                            $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
-                            $stringParts[] = "LEMval('".$varName."') ";
+        /* Static function management */
+        $bracket = 0;
+        $staticStringToParse = "";
+        for ($i = 0; $i < $numTokens; ++$i) {
+            $token = $tokens[$i]; // When do these need to be quoted?
+            if(!empty($staticStringToParse)) { /* Currently inside a static function */
+
+                switch ($token[2]) {
+                    case 'LP':
+                        $staticStringToParse .= $token[0];
+                        $bracket ++;
+                        break;
+                    case 'RP':
+                        $staticStringToParse .= $token[0];
+                        $bracket --;
+                        break;
+                    case 'DQ_STRING':
+                        // A string inside double quote : add double quote again
+                        $staticStringToParse .= '"'.$token[0].'"';
+                        break;
+                    case 'SQ_STRING':
+                        // A string inside single quote : add single quote again
+                        $staticStringToParse .= "'".$token[0]."'";
+                        break;
+                    default:
+                        // This set whole string inside function as a static var : must document clearly.
+                        $staticStringToParse .= $token[0];
+                }
+                if($bracket == 0) { // Last close bracket : get the static final function and reset
+                    //~ $staticString = LimeExpressionManager::ProcessStepString("{".$staticStringToParse."}",array(),3,true);
+                    $staticString = $this->sProcessStringContainingExpressions("{".$staticStringToParse."}",0,3,1,-1,-1,true); // As static : no gseq,qseq etc …
+                    $stringParts[] = $staticString;
+                    $staticStringToParse = "";
+                }
+            } else {
+                switch ($token[2]) {
+                    case 'DQ_STRING':
+                        $stringParts[] = '"'.addcslashes($token[0], '\"').'"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                        break;
+                    case 'SQ_STRING':
+                        $stringParts[] = "'".addcslashes($token[0], "\'")."'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                        break;
+                    case 'SGQA':
+                    case 'WORD':
+                        if ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'LP') {
+                            // then word is a function name
+                            $funcInfo = $this->RDP_ValidFunctions[$token[0]];
+                            if ($funcInfo[1] === null ) {
+                                /* start a static function */
+                                $staticStringToParse = $token[0]; // The function name
+                                $bracket = 0; // Reset bracket (again)
+                            } else {
+                                $stringParts[] = $funcInfo[1]; // the PHP function name
+                            }
+                        } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN') {
+                            $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
+                            $stringParts[] = "document.getElementById('".$jsName."').value";
+                            if ($tokens[$i + 1][0] == '+=') {
+                                // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                $stringParts[] = " = LEMval('".$varName."') + ";
+                                ++$i;
+                            }
                         } else {
-                            $stringParts[] = "'".addcslashes($code, "'")."'";
+                            $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
+                            $code = $this->GetVarAttribute($token[0], 'code', '');
+                            if ($jsName != '') {
+                                $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
+                                $stringParts[] = "LEMval('".$varName."') ";
+                            } else {
+                                $stringParts[] = "'".addcslashes($code, "'")."'";
+                            }
                         }
-                    }
-                    break;
-                case 'LP':
-                case 'RP':
-                    $stringParts[] = $token[0];
-                    break;
-                case 'NUMBER':
-                    $stringParts[] = is_numeric($token[0]) ? $token[0] : ("'".$token[0]."'");
-                    break;
-                case 'COMMA':
-                    $stringParts[] = $token[0].' ';
-                    break;
-                default:
-                    // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
-                    switch (strtolower($token[0])) {
-                        case 'and': $stringParts[] = ' && '; break;
-                        case 'or':  $stringParts[] = ' || '; break;
-                        case 'lt':  $stringParts[] = ' < '; break;
-                        case 'le':  $stringParts[] = ' <= '; break;
-                        case 'gt':  $stringParts[] = ' > '; break;
-                        case 'ge':  $stringParts[] = ' >= '; break;
-                        case 'eq':  case '==': $stringParts[] = ' == '; break;
-                        case 'ne':  case '!=': $stringParts[] = ' != '; break;
-                        default:    $stringParts[] = ' '.$token[0].' '; break;
-                    }
-                    break;
+                        break;
+                    case 'LP':
+                    case 'RP':
+                        $stringParts[] = $token[0];
+                        break;
+                    case 'NUMBER':
+                        $stringParts[] = is_numeric($token[0]) ? $token[0] : ("'".$token[0]."'");
+                        break;
+                    case 'COMMA':
+                        $stringParts[] = $token[0].' ';
+                        break;
+                    default:
+                        // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
+                        switch (strtolower($token[0])) {
+                            case 'and': $stringParts[] = ' && '; break;
+                            case 'or':  $stringParts[] = ' || '; break;
+                            case 'lt':  $stringParts[] = ' < '; break;
+                            case 'le':  $stringParts[] = ' <= '; break;
+                            case 'gt':  $stringParts[] = ' > '; break;
+                            case 'ge':  $stringParts[] = ' >= '; break;
+                            case 'eq':  case '==': $stringParts[] = ' == '; break;
+                            case 'ne':  case '!=': $stringParts[] = ' != '; break;
+                            default:    $stringParts[] = ' '.$token[0].' '; break;
+                        }
+                        break;
+                }
             }
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
@@ -2047,7 +2083,7 @@ class ExpressionManager
                 if ($numArgsAllowed[0] < 0) {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs) {
-                        $this->RDP_AddError(sprintf(Yii::t("Function must have at least %s argument|Function must have at least %s arguments", $minArgs), $minArgs), $funcNameToken);
+                        $this->RDP_AddError(sprintf(gT("Function must have at least %s argument|Function must have at least %s arguments", $minArgs), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2429,13 +2465,13 @@ class ExpressionManager
     }
 
     /**
-     * Show a table of allowable Expression Manager functions
+     * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
     static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
-        $output = "<div class='h3'>Functions Available within Expression Manager</div>\n";
+        $output = "<div class='h3'>Functions Available within ExpressionScript Engine</div>\n";
         $output .= "<table border='1' class='table'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
         foreach ($em->RDP_ValidFunctions as $name => $func) {
             $output .= "<thead><tr><th>".$name."</th><th>".$func[2]."</th><th>".$func[3]."</th><th>";
@@ -2452,7 +2488,7 @@ class ExpressionManager
     }
 
     /**
-     * Show a table of allowable Expression Manager functions
+     * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
     static function GetAllowableFunctions()

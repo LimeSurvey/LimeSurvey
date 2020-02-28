@@ -49,7 +49,7 @@
             $this->widget('ext.LimeGridView.LimeGridView', array(
                 'id' => 'question-group-grid',
                 'dataProvider' => $model->search(),
-                'emptyText'=>gT('No survey apges found.'),
+                'emptyText'=>gT('No question groups found.'),
                 'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
                         'pageSize',

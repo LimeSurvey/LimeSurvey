@@ -30,7 +30,7 @@ export default {
         FileList
     },
     props: {
-        presetFolder: {type: String|null, default: null}
+        presetFolder: {type: String, default: ''}
     },
     data() {
         return {
@@ -44,14 +44,12 @@ export default {
             this.loading = nV;
         },
         triggerForceRedraw() {
-            // this.loading=true;
             this.$forceUpdate();
-            // window.setTimeout(()=>{this.loading=false}, 250);
         }
     },
     mounted() {
         this.$store.dispatch("getFolderList").then(result => {
-            
+            this.getFolderListResult = result;
             if(this.presetFolder != null) {
                 this.$store.commit(
                     "setCurrentFolder",
@@ -69,7 +67,7 @@ export default {
             .catch(error => {
                 window.LS.notifyFader(
                     `${this.translate("An error has occured and the file list could not be loaded:")}
-Error: 
+Error:
 ${error.data.message}`,
                     'well-lg bg-danger text-center'
                 );
@@ -84,7 +82,7 @@ ${error.data.message}`,
             this.hasError = true;
             window.LS.notifyFader(
                 `${this.translate("An error has occured and the folders could not be loaded:")}
-Error: 
+Error:
 ${error.data.message}`,
                 'well-lg bg-danger text-center'
             );

@@ -43,7 +43,7 @@
                 'action'      => 'Uninstall',
                 'url'         =>  App()->createUrl('/admin/themeoptions/sa/uninstallMultiple/'),
                 'iconClasses' => '',
-                'text'        =>  gT('uninstall'),
+                'text'        =>  gT('Uninstall'),
                 'grid-reload' => 'yes',
 
                 // modal

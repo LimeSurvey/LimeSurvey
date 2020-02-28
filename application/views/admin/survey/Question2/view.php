@@ -47,49 +47,15 @@ foreach ($aQuestionTypeList as $questionType) {
     }
         $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
 }
-
-// $oQuestionSelector = $this->beginWidget(
-//     'ext.admin.PreviewModalWidget.PreviewModalWidget', 
-//     array(
-//         'widgetsJsName' => "questionTypeSelector",
-//         'renderType' => (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
-//         'modalTitle' => "Select question type",
-//         'groupTitleKey' => "questionGroupName",
-//         'groupItemsKey' => "questionTypes",
-//         'debugKeyCheck' => "Type: ",
-//         'previewWindowTitle' => gT("Preview question type"),
-//         'groupStructureArray' => $aQuestionTypeGroups,
-//         'value' => $oQuestion->type,
-//         'debug' => YII_DEBUG,
-//         'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
-//         'buttonClasses' => ['btn-primary'],
-//         'optionArray' => [
-//             'secondaryInputElement' => '#question_type',
-//             'onUpdate' => [
-//                 'value',
-//                 'options',
-//                 "console.ls.log(value);"
-//                 . "$('#question_type').val(value);"
-//                 . "LS.EventBus.\$emit('questionTypeChanged', {"
-//                 . "target: 'lsnextquestioneditor',"
-//                 . "method: 'questionTypeChangeTriggered',"
-//                 . "content: {value: value, options: options}"
-//                 . "})"
-//             ],
-//             'onReady' => [
-//                 'self',
-//                 'LS.EventBus.$off("setQuestionType"); '
-//                 . "LS.EventBus.\$on('setQuestionType', function(value){ "
-//                 . "     var valueItem = self.preSelectFromValue(value); "
-//                 . "     self.selectItem(valueItem.data('itemValue'));"
-//                 . "});"
-//             ],
-//         ]
-//     )
-// );
-// $oQuestionSelector->getModal();
-// ?>
-<?php $this->renderPartial("./survey/Question2/_jsVariables", ['data' => $jsData, 'aStructureArray' => $aQuestionTypeGroups]); ?>
+?>
+<?php $this->renderPartial(
+    "./survey/Question2/_jsVariables",
+    [
+        'data' => $jsData,
+        'aStructureArray' => $aQuestionTypeGroups,
+        'aQuestionTypes' => $aQuestionTypeStateList
+    ]
+); ?>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">

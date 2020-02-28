@@ -25,7 +25,7 @@ class PluginInstaller extends ExtensionInstaller
     public function fetchFiles()
     {
         if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException(gT('fileFetcher is not set'));
+            throw new \InvalidArgumentException('fileFetcher is not set');
         }
 
         $this->fileFetcher->fetch();
@@ -40,7 +40,7 @@ class PluginInstaller extends ExtensionInstaller
     public function install()
     {
         if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException(gT('fileFetcher is not set'));
+            throw new \InvalidArgumentException('fileFetcher is not set');
         }
 
         $config = $this->getConfig();
@@ -68,7 +68,7 @@ class PluginInstaller extends ExtensionInstaller
     public function update()
     {
         if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException(gT('fileFetcher is not set'));
+            throw new \InvalidArgumentException('fileFetcher is not set');
         }
         
         $config = $this->getConfig();

@@ -228,17 +228,18 @@ class themes extends Survey_Common_Action
         // Redirect back at file size error.
         $this->checkFileSizeError();
 
-        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
-        if ($checkImage['check'] === false) {
-            return App()->getController()->renderPartial(
+        $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
+        $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
+        if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
+            $message = $checkImageContent['check'] === false 
+                ? $checkImageContent['uploadresult'] 
+                : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
+            $debug = $checkImageContent['check'] === false 
+                ? $checkImageContent['debug'] 
+                : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
+            return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
-                array(
-                    'data' => [
-                        'success' => $success,
-                        'message' => $checkImage['uploadresult'],
-                        'debug' => $checkImage['debug']
-                    ]
-                ),
+                array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
                 false,
                 false
             );
@@ -517,8 +518,6 @@ class themes extends Survey_Common_Action
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
-
-
 
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
@@ -809,7 +808,7 @@ class themes extends Survey_Common_Action
             if (returnGlobal('changes')) {
                 $changedtext = returnGlobal('changes');
                 $changedtext = str_replace('<?', '', $changedtext);
-                if (get_magic_quotes_gpc()) {
+                if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
                     $changedtext = stripslashes($changedtext);
                 }
             }
@@ -817,7 +816,7 @@ class themes extends Survey_Common_Action
             if (returnGlobal('changes_cp')) {
                 $changedtext = returnGlobal('changes_cp');
                 $changedtext = str_replace('<?', '', $changedtext);
-                if (get_magic_quotes_gpc()) {
+                if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
                     $changedtext = stripslashes($changedtext);
                 }
             }
@@ -1024,12 +1023,10 @@ class themes extends Survey_Common_Action
      */
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
-
-
         // LimeSurvey style
         $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 
-            //App()->getClientScript()->reset();
+        //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
 
@@ -1037,10 +1034,8 @@ class themes extends Survey_Common_Action
         $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
         $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
         $cssfiles     = $oEditedTemplate->getValidScreenFiles("css");
-        $jsfiles     = $oEditedTemplate->getValidScreenFiles("js");
+        $jsfiles      = $oEditedTemplate->getValidScreenFiles("js");
         $editfile     = (empty($editfile) || ! ( in_array($editfile, $files) || in_array( $editfile ,$cssfiles) || in_array( $editfile ,$jsfiles)  )) ? $sLayoutFile : $editfile;
-
-
 
         // Standard screens
         $screens = $oEditedTemplate->getScreensList();
@@ -1073,7 +1068,7 @@ class themes extends Survey_Common_Action
         $normalfiles = $normalfiles + $files + $cssfiles;
         // Some global data
         $aData['sitename'] = Yii::app()->getConfig('sitename');
-        $siteadminname = Yii::app()->getConfig('siteadminname');
+        $siteadminname  = Yii::app()->getConfig('siteadminname');
         $siteadminemail = Yii::app()->getConfig('siteadminemail');
 
         // NB: Used by answer print PDF layout.
@@ -1086,19 +1081,15 @@ class themes extends Survey_Common_Action
         // Save these variables in an array
         // TODO: check if this aData is still used
         $aData['thissurvey']       = $thissurvey;
-
-
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
 
 
         switch ($screenname) {
             case 'welcome':
-
                 break;
 
             case 'question':
-
               // NOTE: this seems not to be used anymore
               // TODO: try if it can be removed
                 $aReplacements = array(
@@ -1122,14 +1113,12 @@ class themes extends Survey_Common_Action
                 break;
 
             case 'register':
-
                 break;
 
             case 'completed':
                 break;
 
             case 'assessments':
-
                 break;
 
             case 'printablesurvey':
@@ -1270,7 +1259,7 @@ class themes extends Survey_Common_Action
     }
 
     /**
-     * First time user visits template editor on 3.0, show
+     * First time user visits template editor, show
      * a notification about manual and forum.
      * @return void
      */
@@ -1279,12 +1268,12 @@ class themes extends Survey_Common_Action
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $not = new UniqueNotification(array(
             'user_id'    => $user->uid,
-            'title'      => gT('LimeSurvey 3.0 theme editor'),
+            'title'      => gT('LimeSurvey theme editor'),
             'markAsNew'  => false,
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
-                gT('Welcome to the new theme editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
-                '<a target="_blank" href="https://manual.limesurvey.org/New_Template_System_in_LS3.x">', '</a>',
+                gT('Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                '<a target="_blank" href="https://manualv4.limesurvey.org/LimeSurvey_Manual">', '</a>',
                 '<a target="_blank" href="https://www.limesurvey.org/community/forums">', '</a>'
             )
         ));

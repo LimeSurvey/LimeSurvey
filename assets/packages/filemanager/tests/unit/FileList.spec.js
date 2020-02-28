@@ -26,41 +26,6 @@ localVue.mixin({
     }
 });
 
-describe("loading state", () => {
-    const  actions = MockActions;
-    const state = Object.assign({}, MockState);
-    const store = new Vuex.Store({
-        state,
-        mutations: VueXMutations,
-        actions
-    });
-
-    const fileListMount = shallowMount(FileListComponent, {
-        stubs: {
-            ModalsContainer: '<div class="stubbed" />',
-            LoaderWidget: '<div id="filemanager-loader-widget" />'
-        },
-        propsData: { 
-            cols: 8,
-            loading: true
-        },
-        mocks: {
-            $log: {log: jest.fn()}
-        },
-        store,
-        localVue
-    }); 
-
-    test("Should be loading on startup", () => {
-        expect(fileListMount.find('#filemanager-loader-widget').exists()).toBe(true);
-    })
-
-    test("Should stop loading on prop change", () => {
-        fileListMount.setProps({loading: false});
-        expect(fileListMount.find('#filemanager-loader-widget').exists()).toBe(false);
-    })
-});
-
 describe("file representation changes", () => {
     let fileListMount;
     let state = Object.assign({}, MockState);
@@ -104,4 +69,8 @@ describe("file representation changes", () => {
        expect(fileListMount.vm.fileviz).toBe('tablerep');
     })
 
+    it('should contain search bar', () => {
+        let searchBar = fileListMount.find('#file-search-bar');
+        expect(searchBar).toBeDefined;
+    });
 });

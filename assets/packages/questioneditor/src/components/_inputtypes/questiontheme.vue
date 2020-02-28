@@ -1,25 +1,33 @@
 <script>
-    import empty from 'lodash/isEmpty';
-
-    import inputTypeMixin from '../../mixins/inputTypeMixin';
+    import abstractBaseType from '../abstracts/_abstractInputType';
 
     export default {
         name: 'setting-questiontheme',
-        mixins: [inputTypeMixin],
-        data(){
-            return {
-                triggerShowHelp: false
-            };
-        },
-        methods: {
-            simpleValue(value) {
-                if(value == []) {
-                    return null;
-                }
-                return value;
-            },
-        },
+        extends: abstractBaseType,
+        /*
+        Abstract base provides props: 
+         - elId
+         - elName
+         - elLabel
+         - elHelp
+         - currentValue
+         - elOptions
+         - readonly
+         - debug
+        */
+        /*
+        Abstract base provides data: 
+         - triggerShowHelp
+        */
         computed: {
+            /*
+            Abstract base provides computed values: 
+             - curValue
+             - getClasses
+             - showHelp
+             - hasPrefix
+             - hasSuffix
+            */
             curValue: {
                 get() { return this.currentValue },
                 set(newValue) { 
@@ -33,15 +41,14 @@
                     });
                 },
             },
-            showHelp(){
-                return this.triggerShowHelp && (this.elHelp.length>0);
-            },
-            getClasses() {
-                if(!empty(this.elOptions.classes)) {
-                    return this.elOptions.classes.join(' ');
+        },
+        methods: {
+            simpleValue(value) {
+                if(value == []) {
+                    return null;
                 }
-                return '';
-            }
+                return value;
+            },
         }
     };
 </script>

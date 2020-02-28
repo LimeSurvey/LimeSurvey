@@ -9,7 +9,7 @@
         <authorUrl>https://www.sondages.pro</authorUrl>
         <version>1.0.0</version>
         <license>GPL</license>
-        <description><![CDATA[Add SEED and other DB var in Expression Manager.]]></description>
+        <description><![CDATA[Add SEED and other DB var in ExpressionScript Engine.]]></description>
     </metadata>
 
     <compatibility>

@@ -25,7 +25,9 @@
             'modalType'     => 'yes-no',
             'keepopen'      => 'no',
             'sModalTitle'   => gT('Delete responses'),
-            'htmlModalBody' => gT('Are you sure you want to delete the selected responses?'),
+            'htmlModalBody' => gT('Are you sure you want to delete the selected responses?')
+                . '<br/>'
+                . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.'),
             'aCustomDatas'  => array(
                 array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
             ),

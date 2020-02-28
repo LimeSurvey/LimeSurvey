@@ -237,7 +237,7 @@ class SurveyObj
             case Question::QT_F_ARRAY_FLEXIBLE_ROW:
             case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                 $answers = $this->getAnswers($questionId, 0);
-                $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode]->answerL10ns[$sLanguageCode]->answer : "";
+                $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode] : "";
                 break;
 
             default:

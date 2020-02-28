@@ -95,7 +95,7 @@ class questionHelper
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
-            "help"=>gT('Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
+            "help"=>gT('Repeat headers every n-th subquestions (Set to 0 to deactivate).'),
             "caption"=>gT('Repeat headers')
         );
 
@@ -182,7 +182,7 @@ class questionHelper
                 "1"=>gT('Yes'),
                 ),
             'default' => "1",
-            'help'=>gT('Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).'),
+            'help'=>gT('Use JavaScript functions to remove text and uncheck checkbox (or use only the ExpressionScript engine).'),
             'caption'=>gT('Remove text or uncheck checkbox automatically')
         );
 
@@ -827,7 +827,7 @@ class questionHelper
             'expression'=>1, // Must control if yes
             'i18n'=>true,
             'default'=>"",
-            "help"=>gT('In the printable version replace the condition with this explanation text.'),
+            "help"=>gT('In the printable version the condition is being replaced with this explanation text.'),
             "caption"=>gT("Condition replacement text for printable survey")
         );
 
@@ -1150,7 +1150,7 @@ class questionHelper
             12=>'100%'
         ),
         "help"=>gT('Relative width of the labels'),
-        "caption"=>gT('Label wrapper width'));
+        "caption"=>gT('Label wrapping width'));
 
         /* Same than label_input_columns for multiple choice*/
         self::$attributes["choice_input_columns"] = array(

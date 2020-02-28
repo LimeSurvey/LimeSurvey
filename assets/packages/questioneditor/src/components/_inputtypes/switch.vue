@@ -4,30 +4,49 @@
     import filter from 'lodash/filter';
     import BootstrapToggle from 'vue-bootstrap-toggle'
 
-    import inputTypeMixin from '../../mixins/inputTypeMixin';
+    import abstractBaseType from '../abstracts/_abstractInputType';
 
     export default {
         name: 'setting-checkboxswitch',
-        mixins: [inputTypeMixin],
+        extends: abstractBaseType,
         components: {BootstrapToggle},
         props: {
+            /*
+            Abstract base provides props: 
+             - elId
+             - elName
+             - elLabel
+             - elHelp
+             - currentValue
+             - elOptions
+             - readonly
+             - debug
+            */
             disabled: {type: Boolean, default: false},
         },
         data(){
+            /*
+            Abstract base provides data: 
+             - triggerShowHelp
+            */
             return {
-                triggerShowHelp: false,
                 defaults: {},
             };
         },
         computed: {
+            /*
+            Abstract base provides computed values: 
+             - curValue
+             - getClasses
+             - showHelp
+             - hasPrefix
+             - hasSuffix
+            */
             curValue: {
                 get() { return this.currentValue == this.onValue },
                 set(newValue) { 
                     this.$emit('change', (newValue ? this.onValue : this.offValue));
                 },
-            },
-            showHelp(){
-                return this.triggerShowHelp && (this.elHelp.length>0);
             },
             getClasses() {
                 if(!empty(this.elOptions.classes)) {
@@ -49,16 +68,16 @@
                 return merge(curSwitchOptions, this.dataAttributes);
             },
             onText() {
-                return this.elOptions.options.option[0].text;
-            },
-            onValue() {
-                return this.elOptions.options.option[0].value;
-            },
-            offText() {
                 return this.elOptions.options.option[1].text;
             },
-            offValue() {
+            onValue() {
                 return this.elOptions.options.option[1].value;
+            },
+            offText() {
+                return this.elOptions.options.option[0].text;
+            },
+            offValue() {
+                return this.elOptions.options.option[0].value;
             },
         },
     };

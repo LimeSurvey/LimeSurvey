@@ -1,3 +1,18 @@
+<template>
+  <div class="navbar navbar-default scoped-navbar-fixes">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <span class="navbar-brand">{{$store.state.currentFolder}}</span>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li id="FileManager--button-fileInTransit--cancel" v-if="fileInTransit"><a href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
+        <li id="FileManager--button-fileInTransit--submit" v-if="fileInTransit"><a href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
+        <li id="FileManager--button-download"><a href="#" @click.prevent="downloadFiles">{{ 'Download' | translate }}</a></li>
+        <li><a id="FileManager--button-upload" href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
+      </ul>
+    </div>
+  </div>
+</template>
 <script>
 import UploadModal from './subcomponents/_uploadModal';
 import applyLoader from '../mixins/applyLoader';
@@ -45,7 +60,7 @@ export default {
         this.$log.error(e);
         window.LS.notifyFader(
                     `${this.translate("An error has occured and the selected files ycould not be downloaded.")}
-Error: 
+Error:
 ${error.data.message}`,
                     'well-lg bg-danger text-center'
         );
@@ -56,10 +71,12 @@ ${error.data.message}`,
       )
     },
     cancelTransit() {
+      this.emitIsBlocked(false);
       this.$store.commit('cancelTransit');
       this.$emit('forceRedraw');
     },
     runTransit() {
+      this.emitIsBlocked(true);
       this.loadingState = true;
       let transitType = this.$store.state.transitType+'';
       this.$store.dispatch('applyTransition').then(
@@ -67,29 +84,17 @@ ${error.data.message}`,
         (error) => {
           this.$log.error(error);
         }
-      ).finally(() => { this.loadingState = false; });
+      ).finally(() => {
+        this.loadingState = false;
+        this.emitIsBlocked(false);
+      });
+    },
+    emitIsBlocked(blocked) {
+      LS.EventBus.$emit('isBlocked', blocked);
     }
   }
 }
 </script>
-
-<template>
-  <div class="navbar navbar-default scoped-navbar-fixes">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <span class="navbar-brand">{{$store.state.currentFolder}}</span>
-      </div>
-      <ul class="nav navbar-nav navbar-right">
-        <li id="FileManager--button-fileInTransit--cancel" v-if="fileInTransit"><a href="#" @click.prevent="cancelTransit">{{'Cancel '+transitType | translate}}</a></li>
-        <li id="FileManager--button-fileInTransit--submit" v-if="fileInTransit"><a href="#" @click.prevent="runTransit">{{ transitType | translate }}</a></li>
-        <li id="FileManager--button-download"><a href="#" @click.prevent="downloadFiles">{{ 'Download' | translate }}</a></li>
-        <li><a id="FileManager--button-upload" href="#" @click.prevent="openUploadModal">{{'Upload'|translate}}</a></li>
-      </ul>
-    </div>
-  </div>
-</template>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .scoped-navbar-fixes {
         .navbar-nav > li > a {
@@ -97,7 +102,7 @@ ${error.data.message}`,
             background: linear-gradient(to right, transparent 50.03%,  #989898 50%);
             background: linear-gradient(to right, transparent 50.03%,  var(--LS-admintheme-hovercolor) 50%);
             background-size: 200%;
-            background-position: 0;    
+            background-position: 0;
             transition: all 0.3s;
             &:hover,
             &:active,

@@ -133,15 +133,15 @@ abstract class ExtensionUpdater
         $extensionName = $this->getExtensionName();
         $extensionType = $this->getExtensionType();
         if ($this->foundSecurityVersion($versions)) {
-            $message = gT('There are <b>security updates</b> available for %s <b>%s</b>.', 'js');
+            $message = '<b>'.gT('There are security updates available for %s (type: %s).', 'js').'</b>';
         } else {
-            $message = gT('There are updates available for %s <b>%s</b>.', 'js');
+            $message = gT('There are updates available for %s (type: %s).', 'js');
         }
 
         $message = sprintf(
             $message,
-            $this->convertExtensionType($extensionType),
-            $extensionName
+            $extensionName,
+            $this->convertExtensionType($extensionType)
         );
 
         $latestVersion = $this->getLatestVersion($versions);
@@ -153,9 +153,8 @@ abstract class ExtensionUpdater
 
         if (!empty($latestVersion['manualUpdateUrl'])) {
             $message .= ' ' . sprintf(
-                gT('Please visit <a href="%s">%s</a> to download the update.', 'js'),
-                $latestVersion['manualUpdateUrl'],
-                $latestVersion['manualUpdateUrl']
+                gT('Please visit %s to download the update.', 'js'),
+                '<a href="'.$latestVersion['manualUpdateUrl'].'">'.$latestVersion['manualUpdateUrl'].'</a>'
             );
         }
 
@@ -245,13 +244,13 @@ abstract class ExtensionUpdater
     {
         switch ($type) {
             case 'p':
-                return gT('plugin');
+                return gT('Plugin');
             case 't':
-                return gT('theme');
+                return gT('Theme');
             case 's':
-                return gT('survey template');
+                return gT('Survey template');
             case 'q':
-                return gT('question template');
+                return gT('Question template');
             default:
                 throw new \Exception();
         }

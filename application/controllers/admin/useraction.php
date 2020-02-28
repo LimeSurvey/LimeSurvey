@@ -142,7 +142,7 @@ class UserAction extends Survey_Common_Action
                 // send Mail
                 /* @todo : must move this to Plugin (or sendMail as boolean in plugin event) */
                 $body = sprintf(gT("Hello %s,"), $new_full_name)."<br /><br />\n";
-                $body .= sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename"))."<br /><br />\n";
+                $body .= sprintf(gT("This is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename"))."<br /><br />\n";
                 $body .= gT("You can use now the following credentials to log into the site:")."<br />\n";
                 $body .= gT("Username").": ".htmlspecialchars($new_user)."<br />\n";
                 // authent is not delegated to web server or LDAP server
@@ -166,7 +166,7 @@ class UserAction extends Survey_Common_Action
                 $mailer->isHtml(true);
                 $mailer->emailType = "addadminuser";
                 if ($mailer->sendMessage()) {
-                    $extra = CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $new_user, $new_email));
+                    $extra = CHtml::tag("p", array(), sprintf(gT("Username: %s - Email: %s"), $new_user, $new_email));
                     $extra .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                     $classMsg = 'text-success';
                     $sHeader = gT("Success");
@@ -639,29 +639,12 @@ class UserAction extends Survey_Common_Action
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
-                if (!empty($newPassword)) {
-                    $error = $oUserModel->checkPasswordStrength($newPassword);
-                    if ($error) {
-                        Yii::app()->setFlashMessage(gT($error), 'error');
-                        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                    }
-                } elseif (!$oUserModel->checkPassword($oldPassword)) {
-                    // Always check password
-                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
+                $error = $oUserModel->validateNewPassword($newPassword, $oldPassword, $repeatPassword);
+
+                if($error !== '') {
+                    Yii::app()->setFlashMessage(gT($error), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                } elseif (trim($oldPassword) === trim($newPassword)) {
-                    //First test if old and new password are identical => no need to save it (or ?)
-                    Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                } elseif (trim($newPassword) !== trim($repeatPassword)) {
-                    //Then test the new password and the repeat password for identity
-                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                //Now check if the old password matches the old password saved
-                } elseif (empty(trim($newPassword))) {
-                    Yii::app()->setFlashMessage(gT("The password can't be empty."), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
-                } else {
+                }else {
                     // We can update
                     $oUserModel->setPassword($newPassword);
                 }

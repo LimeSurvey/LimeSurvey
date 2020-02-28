@@ -9,7 +9,7 @@ $aFunctions = ExpressionManager::GetAllowableFunctions();
 <div class="container container-center">
     <div class="row">
         <div class="col-sm-12">
-            <h3>Functions available within Expression Manager</h3>
+            <h3>Functions available within ExpressionScript Engine</h3>
         </div>
     </div>
     <div class="row">

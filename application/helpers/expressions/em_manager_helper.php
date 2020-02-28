@@ -737,7 +737,7 @@
         }
 
         /**
-        * Tells Expression Manager that something has changed enough that needs to eliminate internal caching
+        * Tells ExpressionScript Engine that something has changed enough that needs to eliminate internal caching
         * @return void
         */
         public static function SetDirtyFlag()
@@ -769,7 +769,7 @@
         }
 
         /**
-        * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
+        * Sets the language for ExpressionScript Engine.  If the language has changed, then EM cache must be invalidated and refreshed
         * @param string|null $lang
         * @return void
         */
@@ -865,13 +865,13 @@
         * @return array
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
-                $LEM =& LimeExpressionManager::singleton();
-                $LEM->SetSurveyId($iSurveyId); // This update session only if needed
-                if( !in_array(Yii::app()->session['LEMlang'],Survey::model()->findByPk($iSurveyId)->getAllLanguages()) ) {
-                    $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
-                }
-                $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
-                return $LEM->qcode2sgqa;
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->SetSurveyId($iSurveyId); // This update session only if needed
+            if( !in_array(Yii::app()->session['LEMlang'],Survey::model()->findByPk($iSurveyId)->getAllLanguages()) ) {
+                $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
+            }
+            $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
+            return $LEM->qcode2sgqa;
         }
 
         /**
@@ -4406,13 +4406,16 @@
             $event->set('surveyId',$surveyid);
             $event->set('language',self::getEMlanguage());
             $event->set('knownVars',$this->knownVars);
+            $event->set('questionSeq2relevance',$this->questionSeq2relevance);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
             $newExpressionSuffixes = $event->get('newExpressionSuffixes');
             if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
                 $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
             }
+            /* Put in manual : offer updating this part must be done with care. And can broke without API version update */
             $this->knownVars = $result->get('knownVars');
+            $this->questionSeq2relevance = $result->get('questionSeq2relevance');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
@@ -5622,6 +5625,12 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                    if (empty($oResponse)) {
+                        // This can happen if admin deletes incomple response while survey is running.
+                        $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
+                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                        return;
+                    }
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $oResponse->setAttributes($aResponseAttributes, false);
                         if (!$oResponse->encryptSave())
@@ -5676,7 +5685,7 @@
                                 $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
                             if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
-                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happen when try to submit your response.'), $this->sid);
+                                LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
                             }
                         }
                     }
@@ -8178,18 +8187,12 @@
                     $neededCanonicalAttr[] = $LEM->varNameAttr[$nc];
                 }
                 $neededAliases = array_unique($neededAliases);
-                if (count($neededAliases) > 0)
-                {
-                    $jsParts[] = "var LEMalias2varName = {\n";
-                    $jsParts[] = implode(",\n",$neededAliases);
-                    $jsParts[] = "};\n";
-                }
-                if (count($neededCanonicalAttr) > 0)
-                {
-                    $jsParts[] = "var LEMvarNameAttr = {\n";
-                    $jsParts[] = implode(",\n",$neededCanonicalAttr);
-                    $jsParts[] = "};\n";
-                }
+                $jsParts[] = "var LEMalias2varName = {\n";
+                $jsParts[] = implode(",\n",$neededAliases);
+                $jsParts[] = "};\n";
+                $jsParts[] = "var LEMvarNameAttr = {\n";
+                $jsParts[] = implode(",\n",$neededCanonicalAttr);
+                $jsParts[] = "};\n";
             }
 
             if (!$bReturnArray){
@@ -8568,7 +8571,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             foreach(explode("\n",$tests) as $test)
             {
                 $args = explode("~",$test);
-                $type = (($args[1]=='expr') ? Question::QT_ASTERISK_EQUATION : ($args[1]=='message') ? Question::QT_X_BOILERPLATE_QUESTION : Question::QT_S_SHORT_FREE_TEXT);
+                $type = $args[1]=='expr' ? Question::QT_ASTERISK_EQUATION : ($args[1]=='message' ? Question::QT_X_BOILERPLATE_QUESTION : Question::QT_S_SHORT_FREE_TEXT);
                 $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
                 $varSeq[] = $args[0];
                 $testArgs[] = $args;
@@ -9385,7 +9388,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     || ($this->surveyMode=='group' && $gseq != -1 && isset($var['gseq']) && $gseq == $var['gseq'])
                     || ($this->surveyMode=='question' && $qseq != -1 && isset($var['qseq']) && $qseq == $var['qseq']))
                     {
-                        return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
+                        // TODO: jsName_on will never be returned?
+                        return (isset($var['jsName_on']) ? $var['jsName_on'] : isset($var['jsName'])) ? $var['jsName'] : $default;
                     }
                     else {
                         return (isset($var['jsName']) ? $var['jsName'] : $default);

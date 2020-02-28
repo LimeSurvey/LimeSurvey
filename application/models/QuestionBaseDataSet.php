@@ -115,7 +115,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
-        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
+        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
         
         $sQuestionType = $this->sQuestionType;
 
@@ -230,12 +230,12 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
+                            ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
                             ],
                         ]
                     ],
@@ -289,13 +289,14 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
                             ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
+                            ],
+
                         ]
                     ],
                 ],
@@ -312,18 +313,18 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementName' => false,
                 'formElementHelp' => gT('All attribute values for this question type will be saved as default'),
                 'inputtype' => 'switch',
-                'formElementValue' => '',
+                'formElementValue' => ($this->oQuestion->same_default == 1) ? 'Y' : 'N',
                 'formElementOptions' => [
                     'classes' => [],
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
+                            ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
                             ],
                         ]
                     ],
@@ -346,12 +347,12 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'options' => [
                         'option' => [
                             [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                            [
                                 'text' => gT("Off"),
                                 'value' => 'N'
+                            ],
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
                             ],
                         ]
                     ],
@@ -373,7 +374,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'title' => gT('Condition'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,
-                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
+                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer.")),
                 'inputtype' => 'textarea',
                 'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [

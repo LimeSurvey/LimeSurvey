@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v3.x!
+Welcome to LimeSurvey v4.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -15,7 +15,7 @@ HOW TO INSTALL
 This release does have the following requirements:
 
 *MySQL 5.5.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 5.5.9 or later with the following modules/libraries enabled:
+*PHP 7.0.0 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
 
@@ -34,6 +34,234 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.6 (build 200220) to 4.1.7 (build 200224) February 24, 2020
+-Fixed issue #15911: Double checkconditions with array_text quetsion type (Denis Chenu)
+-Fixed issue #15909: customToken delete settings by other plugin (Denis Chenu)
+-Fixed issue #15889: Quota names not displayed in overview (Patrick Teichmann)
+-Fixed issue #15888: Importing quotas deletes the answers that have been set to the respective quota (Patrick Teichmann)
+-Fixed issue #15879: Plugin menu events not implemented in V4 (Olle Haerstedt)
+-Fixed issue #15781: File manager - copy file buttons are not disappearing (Jessica Höck)
+-Fixed issue #15466: Pagination not working after updating the grid (Patrick Teichmann)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by b00z00
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 4.1.5 (build 200217) to 4.1.6 (build 200220) February 20, 2020
+-Fixed issue: Wrong redirection to enter new key in Comfort update (eddylackmann)
+-Fixed issue: Empty comfort update key can be submitted (eddylackmann)
+-Fixed issue [security] #15818: Reflected XSS (Denis Chenu)
+-Fixed issue #15875: Broken template editor (kclingerman)
+#Updated translation: Russian by vipgroup
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by ulysse68
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.1.4 (build 200214) to 4.1.5 (build 200217) February 17, 2020
+-Fixed issue: Notice on survey completion (Carsten Schmitz)
+-Fixed issue: Incomplete headers when exporting 'Multiple choice with comment' questions (Carsten Schmitz)
+-Fixed issue: #15780: File manager tooltips are wrong (Jessica Höck)
+-Fixed issue #15866: Condition designer doesn't work in postgres (Olle Haerstedt)
+-Fixed issue #15861: Stat function tests break on postgres  (Denis Chenu)
+-Fixed issue #15859: Token can be truncated in SPSS export  (Tõnis Ormisson)
+-Fixed issue #15778: User managment grid view action "take ownership" changes owner immediatly (Eddy Lackmann)
+-Fixed issue #15771: Adding users to group using massive action of user management panel exception (Eddy Lackmann)
+-Fixed issue #15769: Password has not been saved (Patricia Stelling)
+-Fixed issue #15767: Users (super admin user) could change pw using massive action (Eddy Lackmann)
+-Fixed issue #15752: 500 error when accessing staticstics on a survey (Eddy Lackmann)
+
+
+Changes from 4.1.3 (build 200213) to 4.1.4 (build 200214) February 14, 2020
+-Fixed issue [security] #15848: Check that filename is not changed before moving/copying (Olle Haerstedt)
+
+
+Changes from 4.1.2 (build 200210) to 4.1.3 (build 200213) February 13, 2020
+-Fixed issue [security] #14379: Stored XSS through SVG file upload. (Thanks to Denis Chenu and Maxime Roy) (Marc Leonhardt)
+-Fixed issue [security] #14380: Stored XSS through SVG file upload. 
+-Fixed issue [security] #15796: Stored XSS through SVG file upload.
+-Fixed issue #15835: Answers were already translated when loading them for export. (#1386) (Jelle Sebreghts)
+#Updated translation: German by nietzschean, eddylackmann
+#Updated translation: German by eddylackmann
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Croatian by dominikvitt, rovinj
+
+
+Changes from 4.1.1 (build 200203) to 4.1.2 (build 200210) February 10, 2020
+-Fixed issue: Throw exception at empty token value (#1383) (Brendan Kidwell)
+-Fixed issue: Missing translation file (Carsten Schmitz)
+-Fixed issue: InnoDB typo (SpazzMarticus)
+-Fixed issue: HTML editor shows on invite (not in email templates) eventhough text format was activated for survey invitations/reminders (Carsten Schmitz)
+-Fixed issue: Avoid undefined variable in AuthLDAP.php (#1380) (orionmcg)
+-Fixed issue #15834: Missing permission check in PHP when saving question data (Olle Haerstedt)
+-Fixed issue #15816: Order groups when loading them in UpdateGroupList. (#1385) (Jelle Sebreghts)
+-Fixed issue #15813: Group name not accessible anymore via RemoteControl (Olle Haerstedt)
+-Fixed issue #15756: Debug mode and error : difficult to analyse page (#1374) (Denis Chenu)
+-Fixed issue #15341: color switches yes/no on/off are wrong (Patricia Stelling)
+#Updated translation: Spanish (Spain) by jmlopez
+#Updated translation: Spanish (Argentina) by MeryKilicMeT19
+#Updated translation: Spanish (Argentina) (Informal) by MeryKilicMeT19
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by c_schmitz, lfanfoni
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni
+#Updated translation: German by nietzschean, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Croatian by c_schmitz, Apach3, rovinj, dominikvitt
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.1.0 (build 200128) to 4.1.1 (build 200203) February 3, 2020
+-Fixed issue #15808: Images in mailing not converted to CID (#1381) (Denis Chenu)
+-Fixed issue #15794: Question in LS Expression (replacementfields) show question from next group (#1379) (Denis Chenu)
+-Fixed issue #15791: Can't load a lengthy label set, buttons not visible (lacrioque)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by eddylackmann
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Dutch by c_schmitz, Han, kpadm
+#Updated translation: Dutch (Informal) by c_schmitz, Han, coeneisma
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.0.1 (build 200120) to 4.1.0 (build 200128) January 28, 2020
++New feature: question code live validation (lacrioque)
++New feature #15706: Support PHP 7.4 (Olle Haerstedt)
++New feature #15693: Allow simple user to update script with XSS enable (#1372) (Denis Chenu)
++New feature #15246: Allow fixed function (only PHP) in expression manager (Denis Chenu)
++New feature #13175: Ability to show calculated values based on all users (Denis Chenu)
+-Fixed issue: [Security] Login attempts brute-force prevention (Carsten Schmitz)
+-Fixed issue: Top bar not changing back after entering edit mode (lacrioque)
+-Fixed issue: The word copy was reapplied to the end of the question code on every click (lacrioque)
+-Fixed issue: The copy functions weren't working (lacrioque)
+-Fixed issue: On copy the old question was altered (lacrioque)
+-Fixed issue: Jest-Test in FileManager (lacrioque)
+-Fixed issue: Design issue on multiple clicks on 'Copy' (lacrioque)
+-Fixed issue [security] #15782: Remote Code Execution (RCE) in emplate options  file uploader. Thanks to Maxime Roy (lacrioque)
+-Fixed issue [security] #15736: Reflected Cross-Site Scripting in assessments (Maxime Roy) (Jessica Höck)
+-Fixed issue [security] #15720: Reflected Cross-Site Scripting in position widget (Maxime Roy) (Olle Haerstedt)
+-Fixed issue #15786: No groupdata is shown for the selector in the assessments modal (Patrick Teichmann)
+-Fixed issue #15757: 403 error when deleting questions (Marc Leonhardt)
+-Fixed issue #15741: Unable to create assessments (Patrick Teichmann)
+-Fixed issue #15735: Questions can't be saved on postgres (Olle Haerstedt)
+-Fixed issue #15730: The "Script" input element does not change with language (lacrioque)
+-Fixed issue #15728: Additional languages not displayed when using Sourcecode editor (lacrioque)
+-Fixed issue #15726: localized question attributes not displayed correctly in the questioneditor (Patrick Teichmann)
+-Fixed issue #15722: Answers not sorted correctly in list-radio question (lacrioque)
+-Fixed issue #15719: Unable to edit question title if survey is active (Jessica Höck)
+-Fixed issue #15710: text edition move when click inside (Marc Leonhardt)
+-Fixed issue #15705: Button 'delete current user group' not working (Jessica Höck)
+-Fixed issue #15598: intval : broken interpretation of string start by integer in JS (#1367) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Italian by mirkoclaus, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann, c_schmitz
+#Updated translation: French (France) by b00z00
+#Updated translation: Dutch by c_schmitz, Han, L191
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Danish by Mikkel
+#Updated translation: Czech by VBraun, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by c_schmitz, qualitatuvic
+
+
+Changes from 4.0.0 (build 200116) to 4.0.1 (build 200120) January 20, 2020
++New feature #15693: Allow simple user to update script with XSS enable (Denis Chenu)
+-Fixed issue: Inherit option not editable on survey edit and in survey create view (lacrioque)
+-Fixed issue #15738: Welcome and Description texts are mixed up for survey texts (Patrick Teichmann)
+-Fixed issue #15727: Question text translations not displayed in the front end (Patrick Teichmann)
+-Fixed issue #15699: "File metadata" tab should be removed in gender (Patrick Teichmann)
+-Fixed issue #15585: Custom question attributes not available (Patrick Teichmann)
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Swedish by eddylackmann
+#Updated translation: Spanish (Spain) by larjona
+#Updated translation: Spanish (Argentina) (Informal) by MeryKilicMeT19
+#Updated translation: Portuguese (Brazil) by lucaspcs
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Korean by zist21
+#Updated translation: Hungarian by vargazsoltivan
+#Updated translation: German by Joffm
+#Updated translation: Finnish by Jmantysalo, aleksius369
+#Updated translation: Dutch by L191, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.0.0-RC14 (build 200109) to 4.0.0 (build 200116) January 16, 2020
++New feature: Converting LS3 question themes to LS4 (Patrick Teichmann)
+-Fixed issue: cannot create label sets (lacrioque)
+-Fixed issue: Tooltips are not showing in hosting top bar (Eddy Lackmann)
+-Fixed issue: Proper error message when you save a question with wrong code (Marc Leonhardt)
+-Fixed issue: Proper error mesage when you save a question with wrong code (lacrioque)
+-Fixed issue: Potential lost responses on first page (Denis Chenu)
+-Fixed issue: Notice for filter search in encrypted values (Token - Survey participant gridview) (Eddy Lackmann)
+-Fixed issue: Notice for filter search in encrypted values (Response gridview) (Eddy Lackmann)
+-Fixed issue: Notice for filter search in encrypted values (Participant gridview) (Eddy Lackmann)
+-Fixed issue: List questions defunct gridview on firstload from sidepanel (Marc Leonhardt)
+-Fixed issue: Can't upload plugin zip file (Eddy Lackmann)
+-Fixed issue: 15715: Adjust text theme editor (Jessica Höck)
+-Fixed issue: #15697 Quick add and predefined label sets should be greted out when survey is active (they will not be rendered when survey is not active) (Jessica Höck)
+-Fixed issue #15715: Adjust message theme editor (Jessica Höck)
+-Fixed issue #15696: Multiple email addresses in token are not working (lacrioque)
+-Fixed issue #15696: Multiple email addresses in token are not working (Denis Chenu)
+-Fixed issue #15696: Multiple email addresses in token are not working (#1368) (Denis Chenu)
+-Fixed issue #15692: where-clause in reorderMenu (Marko Bischof)
+-Fixed issue #15690: User with XSS enable can add/update scripts (#1364) (Denis Chenu)
+-Fixed issue #15685: Issue when exporting decimal value in MSSQL (Denis Chenu)
+-Fixed issue #15684: When reloading decimal value with 0 with MSSQL : 0 disappear (#1360) (Denis Chenu)
+-Fixed issue #15684: MSSQL issue reloading decimal value (Denis Chenu)
+-Fixed issue #15681: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue #15680: LimeSurvey 3.21.1 Cross Site Scripting Stored (lacrioque)
+-Fixed issue #15672: LimeSurvey 3.21.1 Cross Site Scripting (lacrioque)
+-Fixed issue #15665: Filemanager is missing a download and mass download function (lacrioque)
+-Fixed issue #15651: delete_participant fails to delete and gives no error back (Adam Zammit)
+-Fixed issue #15644: Unable to translate theme options (Patrick Teichmann)
+-Fixed issue #15622: Theme Options are not available for translation (Patrick Teichmann)
+-Fixed issue #15584: Error when adding list-radio answer with code "0" (lacrioque)
+-Fixed issue #15570: Column filter gets stuck after selecting once and does not filter certain columns (Patrick Teichmann)
+-Fixed issue #14129: Translation missing in subquestion panel (Marc Leonhardt)
+-Fixed issue #15690: User with XSS enable can add/update scripts (Denis Chenu)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by eddylackmann
+#Updated translation: Russian by kmaksat
+#Updated translation: Luxembourgish by c_schmitz
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Korean by zist21
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Hungarian by kkd
+#Updated translation: German by eddylackmann
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by riqcles
+#Updated translation: Danish by Mikkel
+#Updated translation: Croatian by dominikvitt, rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.0.0-RC13 (build 191223) to 4.0.0-RC14 (build 200109) January 9, 2020
 -Fixed issue: Tooltips are not showing in admin top bar (Eddy Lackmann)
 -Fixed issue: CPDB attributes gridview pagination/ajax not working (Patricia Stelling)
@@ -1211,6 +1439,21 @@ Changes from 4.0.0-beta (build 190509) to 4.0.0-RC1 (build 190509) May 09, 2019
 Changes from 4.0.0-alpha (build 190408) to 4.0.0-beta (build 190509) May 09, 2019
 -Fixed issue #14698: Expression manager must not treat user entered value in expression (Denis Chenu)
 -New feature: add dbengine to InstallerConfigurationForm (Tõnis Ormisson)
+
+Changes from 3.21.4 (build 200108) to 3.21.5 (build 200115) January 15, 2020
+-Fixed issue #15696: Multiple email addresses in token are not working (#1368) (Denis Chenu)
+-Fixed issue #15692: where-clause in reorderMenu (Marko Bischof)
+-Fixed issue #15685: Issue when exporting decimal value in MSSQL (Denis Chenu)
+-Fixed issue #15684: When reloading decimal value with 0 with MSSQL : 0 disappear (#1360) (Denis Chenu)
+-Fixed issue #15684: MSSQL issue reloading decimal value (Denis Chenu)
+-Fixed issue #15570: Column filter gets stuck after selecting once and does not filter certain columns (Patrick Teichmann)
+
+
+Changes from 3.21.3 (build 191219) to 3.21.4 (build 200108) January 8, 2020
+-Fixed issue: Tooltips are not showing in hosting top bar (Eddy Lackmann)
+-Fixed issue: Potential lost responses on first page (Denis Chenu)
+-Fixed issue #15651: delete_participant fails to delete and gives no error back (Adam Zammit)
+
 
 Changes from 3.21.2 (build 191216) to 3.21.3 (build 191219) December 19, 2019
 +New translation: Kurdish (Kurmanji) (Carsten Schmitz)

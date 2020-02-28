@@ -65,7 +65,7 @@
             <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
-            <help>Repeat headers every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).</help>
+            <help>Repeat headers every n-th subquestions (Set to 0 to deactivate).</help>
             <caption>Repeat headers</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -442,12 +442,12 @@
             <sortorder>101</sortorder>
             <options>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
                     <value>0</value>
                     <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
                 </option>
             </options>
             <help>Display a chart in the statistics?</help>

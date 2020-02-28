@@ -75,7 +75,7 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $oQuestion->type,
     'debug' => YII_DEBUG,
-    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid Question'),
+    'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid question'),
     'optionArray' => [
         'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
         'onUpdate' => [
@@ -250,7 +250,7 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default" disabled aria-haspopup="true" aria-expanded="false">
                                                 <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?= $selectedQuestion['title'] ?? gT('Invalid Question'); ?>
+                                                    <?= $selectedQuestion['title'] ?? gT('Invalid question'); ?>
                                                     <?php if (YII_DEBUG): ?>
                                                         <em class="small">
                                                             Type code: <?php echo $oQuestion->type; ?>
@@ -384,8 +384,8 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
                                     </label>
                                     <div class="help-block collapse" id="help_relevance">
                                         <p>
-                                            <?php eT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."); ?><br>
-                                            <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More on relevance and the Expression Manager."); ?></a>
+                                            <?php eT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer."); ?><br>
+                                            <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More about conditions and the ExpressionScript engine."); ?></a>
                                         </p>
                                     </div>
                                     <div class="input-group">

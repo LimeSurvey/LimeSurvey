@@ -267,15 +267,15 @@ class InstallerConfigForm extends CFormModel
     {
         if ($this->isMysql
             && ($this->dbengine === null or !in_array($this->dbengine, array_keys($this->dbEngines)))) {
-            $this->addError($attribute, Yii::t('app', 'The database engine type must be set for MySQL'));
+            $this->addError($attribute, gT('The database engine type must be set for MySQL'));
         }
 
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
             if (!$this->isInnoDbLargeFilePrefixEnabled()) {
-                $this->addError($attribute, Yii::t('app', 'You need to enable large_file_prefix setting in your database configuration in order to use InooDb engine for LimeSurvey!'));
+                $this->addError($attribute, gT('You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!'));
             }
             if (!$this->isInnoDbBarracudaFileFormat()) {
-                $this->addError($attribute, Yii::t('app', 'Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InooDb engine for LimeSurvey!'));
+                $this->addError($attribute, gT('Your database configuration needs to have innodb_file_format and innodb_file_format_max set to use the Barracuda format in order to use InnoDB engine for LimeSurvey!'));
             }
         }
     }
@@ -382,8 +382,8 @@ class InstallerConfigForm extends CFormModel
      */
     public function getDbEngines() {
         return [
-            self::ENGINE_TYPE_MYISAM => Yii::t('app', 'MyISAM'),
-            self::ENGINE_TYPE_INNODB => Yii::t('app', 'InnoDB'),
+            self::ENGINE_TYPE_MYISAM => 'MyISAM',
+            self::ENGINE_TYPE_INNODB => 'InnoDB'
         ];
     }
 

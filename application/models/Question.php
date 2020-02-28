@@ -182,7 +182,7 @@ class Question extends LSActiveRecord
                 return $aRules;
             }
         }
-        /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “Expression Manager” issue. */
+        /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “ExpressionScript Engine” issue. */
         if (!$this->parent_qid) { // 0 or empty
             /* Unicity for ExpressionManager */
             $aRules[] = array('title', 'unique', 'caseSensitive'=>true,
@@ -335,7 +335,7 @@ class Question extends LSActiveRecord
                 $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
-                    foreach ($oQuestionTemplate->oConfig->attributes as $attribute) {
+                    foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
                         $sAttributeName = (string) $attribute->name;
                         $sInputType = (string)$attribute->inputtype;
                         // remove attribute if inputtype is empty
@@ -493,7 +493,18 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid)
     {
-        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group.group_order DESC, question_order'));
+        $db                  = Yii::app()->db;
+        $quotedGroup         = $db->quoteTableName('group');
+        $quotedGrouporder    = $db->quoteColumnName('group_order');
+        $quotedQuestionorder = $db->quoteColumnName('question_order');
+        return Question::model()
+            ->with('group')
+            ->findAll(
+                array(
+                    'condition' => 't.sid='.$surveyid,
+                    'order'     => $quotedGroup .  '.' . $quotedGrouporder . ' DESC, ' . $quotedQuestionorder
+                )
+            );
     }
 
     /**
@@ -650,37 +661,55 @@ class Question extends LSActiveRecord
 
         // Random order
         if ($this->getQuestionAttribute('random_order') == 1){
-          $keys = array_keys($aAnswerOptions[0]);
-          shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+            foreach($aAnswerOptions as $scaleId => $aScaleArray) {
+                $keys = array_keys($aScaleArray);
+                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
+      
+                $aNew = array();
+                foreach($keys as $key) {
+                    $aNew[$key] = $aScaleArray[$key];
+                }
+                $aAnswerOptions[$scaleId] = $aNew;
+            }
 
-          $aNew = array();
-          foreach($keys as $key) {
-              $aNew[$key] = $aAnswerOptions[0][$key];
-          }
-          $aAnswerOptions[0] = $aNew;
+            return $aAnswerOptions;
         }
 
         // Alphabetic ordrer
-        if ($this->getQuestionAttribute('alphasort')){
+        $alphasort = $this->getQuestionAttribute('alphasort');
+        if ($alphasort == 1) {
+            foreach($aAnswerOptions as $scaleId => $aScaleArray) {
+                $aSorted = array();
 
-          $aSorted = array();
+                // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
+                foreach($aScaleArray as $iKey => $oAnswer){
+                    $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+                }
 
-          // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
-          foreach($aAnswerOptions[0] as $iKey => $oAnswer){
-              $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
-          }
+                ksort($aSorted);
 
-          ksort($aSorted);
+                // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
+                $aNew = array();
+                foreach($aSorted as $sAnswer => $iKey) {
+                    $aNew[] = $aScaleArray[$iKey];
+                }
+                $aAnswerOptions[$scaleId] = $aNew;
 
-          // Now, we create a new array that store the old values of $aAnswerOptions in the order of $aSorted
-          $aNew = array();
-          foreach($aSorted as $sAnswer => $iKey) {
-              $aNew[] = $aAnswerOptions[0][$iKey];
-          }
-          $aAnswerOptions[0] = $aNew;
+                
+            }
+            return $aAnswerOptions;
         }
 
+        foreach($aAnswerOptions as $scaleId => $aScaleArray) {
+            usort($aScaleArray, function($a, $b){
+                return $a->sortorder > $b->sortorder
+                    ? 1 
+                    : ($a->sortorder < $b->sortorder ? -1 : 0);
+            });
+            $aAnswerOptions[$scaleId] = $aScaleArray;
+        }
         return $aAnswerOptions;
+
     }
 
     /**
@@ -809,8 +838,10 @@ class Question extends LSActiveRecord
         );
         return $this;
     }*/
-    public function getQuestionListColumns(){
-    return array(
+
+    public function getQuestionListColumns()
+    {
+        return array(
             array(
                 'id'=>'id',
                 'class'=>'CCheckBoxColumn',
@@ -891,21 +922,21 @@ class Question extends LSActiveRecord
                 'desc'=>'t.qid desc',
             ),
             'question_order'=>array(
-                'asc'=>'group.group_order asc, t.question_order asc',
-                'desc'=>'group.group_order desc,t.question_order desc',
+                'asc' =>'g.group_order asc, t.question_order asc',
+                'desc'=>'g.group_order desc,t.question_order desc',
             ),
             'title'=>array(
                 'asc'=>'t.title asc',
                 'desc'=>'t.title desc',
             ),
             'question'=>array(
-                'asc'=>'questionL10ns.question asc',
-                'desc'=>'questionL10ns.question desc',
+                'asc'=>'ql10n.question asc',
+                'desc'=>'ql10n.question desc',
             ),
 
             'group'=>array(
-                'asc'=>'group.gid asc',
-                'desc'=>'group.gid desc',
+                'asc'=>'g.gid asc',
+                'desc'=>'g.gid desc',
             ),
 
             'mandatory'=>array(
@@ -932,7 +963,7 @@ class Question extends LSActiveRecord
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
-        $criteria->with = array('group', 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
+        $criteria->with = array('group' => array('alias' => 'g'), 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria;

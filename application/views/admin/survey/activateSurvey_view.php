@@ -36,7 +36,7 @@
                 </p>
 
                 <p>
-                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Solve all issues")?></button>
+                    <button class="btn btn-default" id="ajaxAllConsistency"><?=gT("Resolve all issues")?></button>
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
                         <?php eT("Return to survey"); ?>
                     </a>
@@ -226,7 +226,7 @@
         <div class="row">
             <div class='col-sm-7 col-sm-offset-2'>
 
-                <div class="alert alert-warning"><?= Yii::t('app', 'Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.')?><div>
+                <div class="alert alert-warning"><?php eT('Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation.')?><div>
             </div>
 
         </div>

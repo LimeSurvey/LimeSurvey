@@ -229,7 +229,7 @@
             <expression>1</expression>
             <i18n>1</i18n>
             <default></default>
-            <help>In the printable version replace the condition with this explanation text.</help>
+            <help>In the printable version the condition is being replaced with this explanation text.</help>
             <caption>Relevance help for printable survey</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -413,7 +413,7 @@
                 </option>
             </options>
             <default>1</default>
-            <help>Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).</help>
+            <help>Use javascript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).</help>
             <caption>Remove text or uncheck checkbox automatically</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -493,12 +493,12 @@
             <inputtype>switch</inputtype>
             <options>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
                     <value>0</value>
                     <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
                 </option>
             </options>
             <default>0</default>
@@ -646,12 +646,12 @@
             <sortorder>101</sortorder>
             <options>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-                <option>
                     <value>0</value>
                     <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
                 </option>
             </options>
             <help>Display a chart in the statistics?</help>

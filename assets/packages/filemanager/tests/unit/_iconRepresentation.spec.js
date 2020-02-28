@@ -1,19 +1,27 @@
-import {
-    shallowMount,
-    createLocalVue
-} from '@vue/test-utils';
-
+import { shallowMount, createLocalVue } from '@vue/test-utils';
+import Vue from 'vue';
 import Vuex from 'vuex';
 import _ from 'lodash';
 
 import IconRepComponent from '../../src/components/subcomponents/_iconRepresentation.vue';
 import VueXMutations from '../../src/storage/mutations.js';
+import VueXGetters from '../../src/storage/getters.js';
 import MockState from '../mocks/mockState.js';
 import MockActions from '../mocks/mockActions.js';
 
 const localVue = createLocalVue();
-localVue.use(Vuex);
+global.LS = {
+    EventBus: new Vue(),
+};
+global.$ = jest.fn(() => {
+    return {
+        on: ()=>{},
+        trigger: ()=>{},
+        tooltip: ()=>{},
+    }
+});
 
+localVue.use(Vuex);
 localVue.mixin({
     methods: {
         translate(value) {
@@ -27,14 +35,14 @@ localVue.mixin({
     }
 });
 
-
 describe("correct display", () => {
-    const actions = _.clone(MockActions);
-    const state = _.clone(MockState);
+    const actions = _.merge({}, MockActions);
+    const state = _.merge({}, MockState);
     const store = new Vuex.Store({
         state,
         mutations: VueXMutations,
-        actions
+        actions,
+        getters: VueXGetters
     });
 
     const iconRepMount = shallowMount(IconRepComponent, {
@@ -98,25 +106,27 @@ describe("correct display", () => {
         && expect(shouldBeMB).toBe('1 MB');
     });
 
-    test("has correct max height set", () => {
-
-    })
+    test.skip("has correct max height set", () => {
+    });
 }); 
 
 describe("File transit actions", () => {
-    
-    const actions = _.clone(MockActions);
+    const actions = _.merge({}, MockActions);
     const fileInTransit = MockState.fileList['firstPicture.jpg'];
     const fileNotTransit = MockState.fileList['secondPicture.jpg'];
     
     let iconRepMount;
+    let iconRepContainer;
+
     beforeEach(() => {
-        const state = _.clone(MockState);
-        
+        iconRepMount = null;
+
+        const state = _.merge({}, MockState);
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         iconRepMount = shallowMount(IconRepComponent, {
@@ -133,40 +143,38 @@ describe("File transit actions", () => {
             store,
             localVue
         }); 
+        iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
     }); 
 
     test("Should start transit after clicking on 'copy'", () => {
-        const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
         const copyButton = iconRepContainer.find('.FileManager--file-action-startTransit-copy');
         copyButton.trigger('click');
+        const fileInTransit = iconRepMount.vm.files['firstPicture.jpg'];
         expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(true);  
-    })
+    });
 
     test("Should start transit after clicking on 'move'", () => {
-        const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
         const copyButton = iconRepContainer.find('.FileManager--file-action-startTransit-move');
         copyButton.trigger('click');
+        const fileInTransit = iconRepMount.vm.files['firstPicture.jpg'];
         expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(true);  
-    })
+    });
 });
 
 describe("File in transit actions", () => {
-    
-    const actions = _.clone(MockActions);
-    const fileInTransit = MockState.fileList['firstPicture.jpg'];
-    const fileNotTransit = MockState.fileList['secondPicture.jpg'];
-    const state = _.clone(MockState);
+    const actions = _.merge({}, MockActions);
+    const state = _.merge({}, MockState);
 
     let iconRepMount;
     beforeEach(() => {
-
-        state.fileInTransit = fileInTransit;
+        state.fileList['firstPicture.jpg'].inTransit = true;
         state.transitType = "move";
 
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         iconRepMount = shallowMount(IconRepComponent, {
@@ -186,50 +194,59 @@ describe("File in transit actions", () => {
     }); 
 
     test("Should show cancel transit button when a transit starts", () => {
+        const fileInTransit = iconRepMount.vm.files['firstPicture.jpg'];
         const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
         expect(iconRepContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(true);
     });
-    test("Should cancel the transit after clickong 'cancelTransit'", () => {
+    test("Should cancel the transit after click on 'cancelTransit'", () => {
+        const fileInTransit = iconRepMount.vm.files['firstPicture.jpg'];
+        iconRepMount.vm.$data.isBlocked = true;
+
+        expect(iconRepMount.vm.$data.isBlocked).toBe(true);
+
         const iconRepContainer = iconRepMount.find("#iconRep-" + fileInTransit.hash);
         iconRepContainer.find('.FileManager--file-action-cancelTransit').trigger('click');
-        expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(false);
-    })
 
-    test("Should mark in transit file as inTransit", () => {
+        expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(false);
+    });
+
+    test("Should mark in transit file as inTransit", () => {    
+        const fileInTransit = iconRepMount.vm.files['firstPicture.jpg'];
         expect(iconRepMount.vm.inTransit(fileInTransit)).toBe(true);
-    })
-    test("Should mark notInTransitFile as notInTransit", () => {
+    });
+    test("Should mark notInTransitFile as notInTransit", () => {    
+        const fileNotTransit = iconRepMount.vm.files['secondPicture.jpg'];
         expect(iconRepMount.vm.inTransit(fileNotTransit)).toBe(false);
-    })
+    });
 
     test("Should have the correct classes for a file in transit", () => {
+        const fileInTransit = iconRepMount.vm.files['firstPicture.jpg'];
         const fileRowClasses = iconRepMount.vm.fileClass(fileInTransit);
         expect(fileRowClasses).toBe("scoped-file-icon file-in-transit move ")
-    })
+    });
     test("Should have the correct classes for a file not in transit", () => {
+        const fileNotTransit = iconRepMount.vm.files['secondPicture.jpg'];
         const fileRowClasses = iconRepMount.vm.fileClass(fileNotTransit);
         expect(fileRowClasses).toBe("scoped-file-icon ")
-    })
-
-    
+    });
 });
 
 describe('Delete file success', () => {
     const fileToBeDeleted = MockState.fileList['firstPicture.jpg'];
-    const state = _.clone(MockState);
+    const state = _.merge({}, MockState);
     const callDialog = jest.fn((txt) => Promise.resolve(txt));
 
     let actions;
     let iconRepMount;
     beforeAll(() => {
-
-        actions = _.clone(MockActions);
+        actions = _.merge({}, MockActions);
         actions.deleteFile = jest.fn();
 
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         iconRepMount = shallowMount(IconRepComponent, {
@@ -255,24 +272,24 @@ describe('Delete file success', () => {
     test("Should have called the delete action after clicking delete", () => {
         expect(actions.deleteFile).toHaveBeenCalled()
     });
-    
-})
+});
 
 describe('Delete file failure', () => {
     const fileToBeDeleted = MockState.fileList['firstPicture.jpg'];
-    const state = _.clone(MockState);
+    const state = _.merge({}, MockState);
     const callDialog = jest.fn((txt) => Promise.reject());
     let actions;
     let iconRepMount;
 
     beforeEach(() => {
-        actions = _.clone(MockActions);
+        actions = _.merge({}, MockActions);
         actions.deleteFile = jest.fn(() => Promise.resolve());
 
         const store = new Vuex.Store({
             state,
             mutations: VueXMutations,
-            actions
+            actions,
+            getters: VueXGetters
         });
 
         iconRepMount = shallowMount(IconRepComponent, {

@@ -526,7 +526,7 @@ function sendSubmitNotifications($surveyid)
             if (!$mailer->SendMessage()) {
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Basic admin notification could not be sent with error: %s"),$mailer->getError()));
+                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Basic admin notification could not be sent because of error: %s"),$mailer->getError()));
                 }
             }
         }
@@ -540,7 +540,7 @@ function sendSubmitNotifications($surveyid)
             if (!$mailer->SendMessage()) {
                 if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
                     /* Find a better way to show email error … */
-                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Detailed admin notification could not be sent with error: %s"),$mailer->getError()));
+                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Detailed admin notification could not be sent because of error: %s"),$mailer->getError()));
                 }
             }
         }
@@ -1594,7 +1594,7 @@ function UpdateGroupList($surveyid, $language)
 
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
 
-    $result = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid]);
+    $result = QuestionGroup::model()->findAllByAttributes(['sid'=>$surveyid], ['order' => 'group_order ASC']);
     $groupList = array();
     foreach ($result as $row) {
         $group = array(
@@ -1890,7 +1890,6 @@ function display_first_page($thissurvey, $aSurveyInfo)
 
     $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
-
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid); // start on welcome page
 
@@ -1899,17 +1898,17 @@ function display_first_page($thissurvey, $aSurveyInfo)
 
     $loadsecurity = returnGlobal('loadsecurity', true);
 
-    $thissurvey['EM']['ScriptsAndHiddenInputs']  = "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
-    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "<input type='hidden' name='LEMpostKey' value='{$_SESSION['survey_'.$surveyid]['LEMpostKey']}' id='LEMpostKey' />\n";
-    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
+    $thissurvey['EM']['ScriptsAndHiddenInputs']  = \CHtml::hiddenField('sid', $surveyid, array('id'=>'sid'));
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('lastgroupname', '_WELCOME_SCREEN_', array('id'=>'lastgroupname')); //This is to ensure consistency with mandatory checks, and new group test
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('LEMpostKey', $_SESSION['survey_'.$surveyid]['LEMpostKey'], array('id'=>'LEMpostKey'));
+    $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('thisstep', 0, array('id'=>'thisstep'));
 
-    if (isset($token) && !empty($token)) {
-        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "\n<input type='hidden' name='token' value='$token' id='token' />\n";
+    if (!empty($_SESSION['survey_'.$surveyid]['token'])) {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_'.$surveyid]['token'], array('id'=>'token'));
     }
 
-    if (isset($loadsecurity)) {
-        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
+    if (!empty($loadsecurity)) {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('loadsecurity', $loadsecurity, array('id'=>'loadsecurity'));
     }
 
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();

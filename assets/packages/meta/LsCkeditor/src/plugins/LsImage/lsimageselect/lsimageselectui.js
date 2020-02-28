@@ -23,8 +23,11 @@ export default class ImageSelectUI extends Plugin {
                 (reject) => { console.error(reject); }
 			);
 
-            dropdownView.set('panelPosition','sw');
-			
+            dropdownView.set( {
+                class: 'ck-scrollbar',
+                panelPosition: 'sw',
+            } );
+            			
             dropdownView.buttonView.set( {
                 label: t( 'Select Image from server' ),
                 icon: selectImageIcon,

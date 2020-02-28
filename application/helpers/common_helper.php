@@ -1381,7 +1381,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     .' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
     .' JOIN {{question_l10ns}} qls on qls.qid=q.qid '
     ." LEFT JOIN {{question_attributes}} qa ON qa.qid=q.qid AND qa.attribute='question_template' "
-    ." WHERE qls.language='{$baseLanguage}' and gls.language='{$baseLanguage}' AND"
+    ." WHERE qls.language='{$sLanguage}' and gls.language='{$sLanguage}' AND"
     ." g.sid={$surveyid} AND"
     ." q.parent_qid=0";
     if ($questionid !== false) {
@@ -1752,7 +1752,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     if ($style == "full") {
                         $fieldmap[$fieldname]['title'] = $arow['title'];
                         $fieldmap[$fieldname]['question'] = $arow['question'];
-                        $fieldmap[$fieldname]['subquestion'] = gT('Comment');
+                        $fieldmap[$fieldname]['subquestion1'] = gT('Comment');
+                        $fieldmap[$fieldname]['subquestion'] =$abrow['question'];
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
                         $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
@@ -2643,7 +2644,7 @@ function randomChars($length, $pattern = "23456789abcdefghijkmnpqrstuvwxyz")
     $patternlength = strlen($pattern) - 1;
     $key = '';
     for ($i = 0; $i < $length; $i++) {
-        $key .= $pattern{mt_rand(0, $patternlength)};
+        $key .= $pattern[mt_rand(0, $patternlength)];
     }
     return $key;
 }
@@ -4062,7 +4063,7 @@ function modifyDatabase($sqlfile = '', $sqlstring = '')
         }
     } else {
         $sqlstring = trim($sqlstring);
-        if ($sqlstring{strlen($sqlstring) - 1} != ";") {
+        if ($sqlstring[strlen($sqlstring) - 1] != ";") {
             $sqlstring .= ";"; // add it in if it's not there.
         }
         $lines[] = $sqlstring;
@@ -4358,9 +4359,6 @@ function fixSubquestions()
 */
 function ls_json_encode($content)
 {
-    if (is_string($content) && get_magic_quotes_gpc()) {
-        $content = stripslashes($content);
-    }
     $ans = json_encode($content);
     $ans = str_replace(array('{', '}'), array('{ ', ' }'), $ans);
     return $ans;

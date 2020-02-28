@@ -15,15 +15,9 @@ export default {
     questionSubquestionsImmutable: {},
     questionAnswerOptionsImmutable: {},
     languages: [],
-    survey: {},
+    surveyInfo: {},
     debugMode: false,
-    questionTypes: [
-        {
-            code : '',
-            type : '',
-            title : ''
-        }
-    ],
+    questionTypes: window.aQuestionTypes,
     questionAdvancedSettingsCategory: '',
     collapsedGeneralSettings: false,
     activeLanguage: '',

@@ -3,56 +3,124 @@
     <div class="ls-flex grow-2">
         <transition name="slide-fade">
             <div class="col-12" v-show="!loading">
-                <div class="panel panel-default col-12 question-option-general-container" key="mainPanel">
-                    <div class="panel-heading">
-                        {{"Text elements" | translate }}
-                    </div>
+                <div
+                    class="panel panel-default col-12 question-option-general-container"
+                    key="mainPanel"
+                >
+                    <div class="panel-heading">{{"Text elements" | translate }}</div>
                     <div class="panel-body">
-                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
+                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
                             <div class="ls-flex-row">
                                 <div class="ls-flex-item grow-2 text-left">
                                     <label class="col-sm-12">{{ 'Question' | translate }}:</label>
                                 </div>
                                 <div class="ls-flex-item text-right">
-                                    <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditQuestion"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                    <button
+                                        class="btn btn-default btn-xs"
+                                        @click.prevent="toggleSourceEditQuestion"
+                                    >
+                                        <i class="fa fa-file-code-o"></i>
+                                        {{'Toggle source mode'|translate}}
+                                    </button>
                                 </div>
                             </div>
-                            <lsckeditor v-if="!questionEditSource" :editor="editorQuestionObject" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></lsckeditor>
-                            <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange"> </aceeditor>
+                            <lsckeditor
+                                v-if="!questionEditSource"
+                                v-model="currentQuestionQuestion"
+                                :editor="editorQuestionObject"
+                                :config="editorQuestionConfig"
+                                v-on:input="runDebouncedChange"
+                            ></lsckeditor>
+                            <aceeditor
+                                v-else
+                                v-model="currentQuestionQuestion"
+                                :showLangSelector="false"
+                                :thisId="'questionEditSource'"
+                                v-on:input="runDebouncedChange"
+                            ></aceeditor>
                         </div>
-                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
+                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
                             <div class="ls-flex-row">
                                 <div class="ls-flex-item grow-2 text-left">
                                     <label class="col-sm-12">{{ 'Help' | translate }}:</label>
                                 </div>
                                 <div class="ls-flex-item text-right">
-                                    <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditHelp"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                    <button
+                                        class="btn btn-default btn-xs"
+                                        @click.prevent="toggleSourceEditHelp"
+                                    >
+                                        <i class="fa fa-file-code-o"></i>
+                                        {{'Toggle source mode'|translate}}
+                                    </button>
                                 </div>
                             </div>
-                            <lsckeditor v-if="!helpEditSource" :editor="editorHelpObject" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></lsckeditor>
-                            <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp" v-on:input="runDebouncedChange"> </aceeditor>
+                            <lsckeditor
+                                v-if="!helpEditSource"
+                                :editor="editorHelpObject"
+                                v-model="currentQuestionHelp"
+                                v-on:input="runDebouncedChange"
+                                :config="editorHelpConfig"
+                            ></lsckeditor>
+                            <aceeditor
+                                v-else
+                                v-model="currentQuestionHelp"
+                                :showLangSelector="false"
+                                :thisId="'helpEditSource'"
+                                v-on:input="runDebouncedChange"
+                            ></aceeditor>
                         </div>
-                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">
-                            <label class="col-sm-12">{{ 'Script' | translate }}:</label>
-                            <aceeditor :thisId="'helpEditScript'" :showLangSelector="true" v-model="currentQuestionScript" v-on:input="runDebouncedChange" base-lang="javascript" > </aceeditor>
+                        <div
+                            class="col-12 ls-space margin all-5 scope-contains-ckeditor"
+                            v-if="!!$store.state.currentQuestionPermissions.script"
+                        >
+                            <label class="col-sm-6">
+                                    {{ 'Script' | translate }}:
+                            </label>
+                            <div class="col-sm-6 text-right">
+                                <input 
+                                    type="checkbox" 
+                                    name="selector--scriptForAllLanguages" 
+                                    id="selector--scriptForAllLanguages"
+                                    v-model="scriptForAllLanugages"
+                                />&nbsp;
+                                <label for="selector--scriptForAllLanguages">
+                                    {{ 'Set for all languages' | translate }}
+                                </label>
+                            </div>
+                            <aceeditor
+                                v-model="currentQuestionScript"
+                                :show-lang-selector="false"
+                                base-lang="javascript"
+                                :thisId="'helpEditScript'"
+                                :showLangSelector="true"
+                                v-on:input="runDebouncedChange"
+                            ></aceeditor>
                             <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="row" key="divideRow">
-                    <div class="col-sm-12 ls-space margin top-5 bottom-5" >
-                        <hr/>
+                    <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                        <hr />
                     </div>
                 </div>
-                <div class="row"  v-if="$store.state.currentQuestion.qid != null" key="previewFrame">
+                <div class="row" v-if="$store.state.currentQuestion.qid != null" key="previewFrame">
                     <div class="col-sm-12 ls-space margin bottom-5">
-                        <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
-                            {{previewActive ? "Hide Preview" : "Show Preview"}}
-                        </button>
+                        <button
+                            class="btn btn-default pull-right"
+                            @click.prevent="triggerPreview"
+                        >{{previewActive ? "Hide Preview" : "Show Preview"}}</button>
                     </div>
                     <div class="col-sm-12 ls-space margin top-5 bottom-5">
                         <div class="scope-preview" v-show="previewActive">
-                            <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :firstStart="firstStart" @ready="setPreviewReady" :loading="previewLoading" />
+                            <PreviewFrame
+                                :id="'previewFrame'"
+                                :content="previewContent"
+                                :root-url="previewRootUrl"
+                                :firstStart="firstStart"
+                                :loading="previewLoading"
+                                @ready="setPreviewReady"
+                            />
                         </div>
                     </div>
                 </div>
@@ -67,163 +135,224 @@
 </template>
 
 <script>
+import debounce from "lodash/debounce";
+import isEqual from "lodash/isEqual";
+import merge from "lodash/merge";
 
-import debounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
+import ClassicEditor from "../../../meta/LsCkeditor/src/LsCkEditorClassic.js";
+import Aceeditor from "../helperComponents/AceEditor";
 
-import ClassicEditor from '../../../meta/LsCkeditor/src/LsCkEditorClassic.js';
-import Aceeditor from '../helperComponents/AceEditor';
-
-import PreviewFrame from './subcomponents/_previewFrame';
-import runAjax from '../mixins/runAjax';
-import eventChild from '../mixins/eventChild';
+import PreviewFrame from "./subcomponents/_previewFrame";
+import runAjax from "../mixins/runAjax";
+import eventChild from "../mixins/eventChild";
 
 export default {
-    name: 'MainEditor',
+    name: "MainEditor",
     mixins: [runAjax, eventChild],
-    components: {PreviewFrame, Aceeditor},
+    components: { PreviewFrame, Aceeditor },
     props: {
-        loading: {type: Boolean, default: false},
+        loading: { type: Boolean, default: false }
     },
     data() {
         return {
             editorQuestionObject: ClassicEditor,
-            editorQuestionData: '',
+            editorQuestionData: "",
             editorQuestionConfig: {
-                'lsExtension:fieldtype': 'editquestion', 
-                'lsExtension:ajaxOptions': {
-                    surveyid: this.$store.getters.surveyid, 
-                    qid: window.QuestionEditData.qid, 
+                "lsExtension:fieldtype": "editquestion",
+                "lsExtension:ajaxOptions": {
+                    surveyid: this.$store.getters.surveyid,
+                    qid: window.QuestionEditData.qid,
                     gid: window.QuestionEditData.gid,
-                    action: this.$store.state.currentQuestion.qid == null ? 'addquestion' : 'editquestion',
+                    action:
+                        this.$store.state.currentQuestion.qid == null
+                            ? "addquestion"
+                            : "editquestion"
                 },
-                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+                "lsExtension:currentFolder":
+                    "upload/surveys/" + this.$store.getters.surveyid + "/"
             },
             editorHelpObject: ClassicEditor,
-            editorHelpData: '',
+            editorHelpData: "",
             editorHelpConfig: {
-                'lsExtension:fieldtype': 'editquestion_help', 
-                'lsExtension:ajaxOptions': {
-                    surveyid: this.$store.getters.surveyid, 
-                    qid: window.QuestionEditData.qid, 
+                "lsExtension:fieldtype": "editquestion_help",
+                "lsExtension:ajaxOptions": {
+                    surveyid: this.$store.getters.surveyid,
+                    qid: window.QuestionEditData.qid,
                     gid: window.QuestionEditData.gid,
-                    action: this.$store.state.currentQuestion.qid == null ? 'addquestion' : 'editquestion',
+                    action:
+                        this.$store.state.currentQuestion.qid == null
+                            ? "addquestion"
+                            : "editquestion"
                 },
-                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+                "lsExtension:currentFolder":
+                    "upload/surveys/" + this.$store.getters.surveyid + "/"
             },
-            previewContent: ' ',
+            previewContent: " ",
             questionEditSource: false,
+            scriptForAllLanugages: false,
             helpEditSource: false,
             previewLoading: false,
             previewActive: true,
             debug: false,
             firstStart: true,
-            changeTriggered: debounce((content,event) => {
-                this.$log.log('Debounced load triggered',{content,event});
+            changeTriggered: debounce((content, event) => {
+                this.$log.log("Debounced load triggered", { content, event });
                 this.getQuestionPreview();
-            }, 3000),
+            }, 3000)
         };
     },
     computed: {
         previewRootUrl() {
             return window.QuestionEditData.qid != null
-            ? LS.createUrl(
-                window.QuestionEditData.connectorBaseUrl,
-                {
-                    sa: 'getRenderedPreview',
-                    sid: this.$store.getters.surveyid,
-                    iQuestionId: window.QuestionEditData.qid,
-                    root: (this.firstStart ? '1' : ''),
-                    sLanguage: this.$store.state.activeLanguage
-                }
-            )
-            : 'about:blank';
+                ? LS.createUrl(window.QuestionEditData.connectorBaseUrl, {
+                      sa: "getRenderedPreview",
+                      sid: this.$store.getters.surveyid,
+                      iQuestionId: window.QuestionEditData.qid,
+                      root: this.firstStart ? "1" : "",
+                      sLanguage: this.$store.state.activeLanguage
+                  })
+                : "about:blank";
         },
-        currentQuestionQuestion: { 
-            get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question; },
+        currentQuestionQuestion: {
+            get() {
+                return this.$store.state.currentQuestionI10N[
+                    this.$store.state.activeLanguage
+                ].question;
+            },
             set(newValue) {
-                this.$store.commit('updateCurrentQuestionI10NValue', {value:'question', newValue});
-            } 
+                this.$store.commit("updateCurrentQuestionI10NValue", {
+                    value: "question",
+                    newValue
+                });
+            }
         },
         currentQuestionHelp: {
-            get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help },
+            get() {
+                return this.$store.state.currentQuestionI10N[
+                    this.$store.state.activeLanguage
+                ].help;
+            },
             set(newValue) {
-                this.$store.commit('updateCurrentQuestionI10NValue', {value:'help', newValue})
-            } 
+                this.$store.commit("updateCurrentQuestionI10NValue", {
+                    value: "help",
+                    newValue
+                });
+            }
         },
         currentQuestionScript: {
-            get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script },
+            get() {
+                return this.$store.state.currentQuestionI10N[
+                    this.$store.state.activeLanguage
+                ].script;
+            },
             set(newValue) {
-                this.$store.commit('updateCurrentQuestionI10NValue', {value:'script', newValue})
-            } 
+                if(this.scriptForAllLanugages === true) {
+                    this.$store.commit("updateFullQuestionI10NValue", {
+                        value: "script",
+                        newValue
+                    });
+                    return;
+                }
+
+                this.$store.commit("updateCurrentQuestionI10NValue", {
+                    value: "script",
+                    newValue
+                });
+            }
         },
         currentQuestionI10N() {
-            return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage];
+            return this.$store.state.currentQuestionI10N[
+                this.$store.state.activeLanguage
+            ];
         },
         questionImmutableI10NQuestion() {
-            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage].question;
+            return this.$store.state.questionImmutableI10N[
+                this.$store.state.activeLanguage
+            ].question;
         },
         questionImmutableI10NHelp() {
-            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage].help;
-        },
+            return this.$store.state.questionImmutableI10N[
+                this.$store.state.activeLanguage
+            ].help;
+        }
     },
     methods: {
         changedParts() {
             let changed = {};
-            this.$log.log('CHANGE!',{
+            this.$log.log("CHANGE!", {
                 currentQuestionQuestion: this.currentQuestionQuestion,
-                questionImmutableI10NQuestion: this.questionImmutableI10NQuestion,
+                questionImmutableI10NQuestion: this
+                    .questionImmutableI10NQuestion,
                 currentQuestionHelp: this.currentQuestionHelp,
                 questionImmutableI10NHelp: this.questionImmutableI10NHelp,
-                'questionEqal' : isEqual(this.currentQuestionQuestion, this.questionImmutableI10NQuestion),
-                'helpEqual' : isEqual(this.currentQuestionHelp, this.questionImmutableI10NHelp)
+                questionEqal: isEqual(
+                    this.currentQuestionQuestion,
+                    this.questionImmutableI10NQuestion
+                ),
+                helpEqual: isEqual(
+                    this.currentQuestionHelp,
+                    this.questionImmutableI10NHelp
+                )
             });
-            if(!(
-                isEqual(this.currentQuestionQuestion, this.questionImmutableI10NQuestion)
-                && isEqual(this.currentQuestionHelp, this.questionImmutableI10NHelp)
-            )) {
-                changed['changedText'] = this.currentQuestionI10N;
+            if (
+                !(
+                    isEqual(
+                        this.currentQuestionQuestion,
+                        this.questionImmutableI10NQuestion
+                    ) &&
+                    isEqual(
+                        this.currentQuestionHelp,
+                        this.questionImmutableI10NHelp
+                    )
+                )
+            ) {
+                changed["changedText"] = this.currentQuestionI10N;
             }
-            if(!isEqual(this.$store.state.currentQuestion.type, this.$store.state.questionImmutable.type)) {
-                changed['changedType'] = this.$store.state.currentQuestion.type;
+            if (
+                !isEqual(
+                    this.$store.state.currentQuestion.type,
+                    this.$store.state.questionImmutable.type
+                )
+            ) {
+                changed["changedType"] = this.$store.state.currentQuestion.type;
             }
-            this.$log.log('CHANGEOBJECT',changed);
-            
+            this.$log.log("CHANGEOBJECT", changed);
+
             return merge(changed, window.LS.data.csrfTokenData);
         },
-        runDebouncedChange(content,event){
-            this.changeTriggered(content,event);
+        runDebouncedChange(content, event) {
+            this.changeTriggered(content, event);
         },
-        triggerPreview(){
-            this.previewActive=!this.previewActive
-            if(this.previewActive) {
+        triggerPreview() {
+            this.previewActive = !this.previewActive;
+            if (this.previewActive) {
                 this.getQuestionPreview();
             }
         },
-        getQuestionPreview(){
-            this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
-            if(!window.QuestionEditData.qid) {
-                this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
+        getQuestionPreview() {
+            this.$log.log(
+                "window.QuestionEditData.qid",
+                window.QuestionEditData.qid
+            );
+            if (!window.QuestionEditData.qid) {
+                this.previewContent = `<div><h3>${this.translate(
+                    "No preview available"
+                )}</h3></div>`;
                 this.previewLoading = false;
                 return;
             }
-            if(this.previewLoading === true) {
+            if (this.previewLoading === true) {
                 return;
             }
             this.firstStart = false;
             this.previewLoading = true;
-            this.$_load(
-                this.previewRootUrl, 
-                this.changedParts(),
-                'POST'
-            ).then(
-                (result) => {
+            this.$_load(this.previewRootUrl, this.changedParts(), "POST").then(
+                result => {
                     this.previewContent = result.data;
                     this.previewLoading = false;
-                }, 
-                (error) => {
-                    this.$log.error('Error loading preview', error);
+                },
+                error => {
+                    this.$log.error("Error loading preview", error);
                     this.previewLoading = false;
                 }
             );
@@ -232,23 +361,26 @@ export default {
             this.previewLoading = false;
             this.firstStart = false;
         },
-        toggleSourceEditQuestion(){
-            this.questionEditSource = !this.questionEditSource
+        toggleSourceEditQuestion() {
+            this.questionEditSource = !this.questionEditSource;
         },
-        toggleSourceEditHelp(){
-            this.helpEditSource = !this.helpEditSource
-        },
+        toggleSourceEditHelp() {
+            this.helpEditSource = !this.helpEditSource;
+        }
     },
-    created(){
-        if(this.$store.state.currentQuestionPermissions.editorpreset == 'source') {
+    created() {
+        if (
+            this.$store.state.currentQuestionPermissions.editorpreset ==
+            "source"
+        ) {
             this.questionEditSource = true;
             this.helpEditSource = true;
         }
     },
-    mounted(){
+    mounted() {
         this.previewLoading = true;
-    },
-}
+    }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -260,7 +392,7 @@ export default {
 }
 .scope-overflow-scroll {
     overflow: scroll;
-    height:100%;
+    height: 100%;
     width: 100%;
 }
 .scope-preview {

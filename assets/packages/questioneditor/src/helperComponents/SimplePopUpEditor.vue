@@ -72,7 +72,7 @@ export default {
             <div class="ls-flex-row wrap">
                 <div class="ls-flex-item text-right">
                     <button class="btn btn-danger ls-space margin right-5" @click="close" type="button">{{'Cancel' | translate}}</button>
-                    <button class="btn btn-primary ls-space margin left-5" @click="saveAndClose" type="button">{{'Save and Close' | translate}}</button>
+                    <button class="btn btn-primary ls-space margin left-5" @click="saveAndClose" type="button">{{'Save and close' | translate}}</button>
                 </div>
             </div>
         </div>

@@ -35,6 +35,6 @@ export default {
 };
 </script>
 
-<scoped style>
+<style scoped>
 
 </style>

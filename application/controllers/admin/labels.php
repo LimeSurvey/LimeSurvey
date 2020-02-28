@@ -342,7 +342,7 @@ class labels extends Survey_Common_Action
 
         if ($action == "updateset" && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             updateset($lid);
-            Yii::app()->setFlashMessage(gT("Label set properties sucessfully updated."), 'success');
+            Yii::app()->setFlashMessage(gT("Label set successfully saved."), 'success');
         }
         if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
                     $oLabelSet = insertlabelset();
@@ -556,7 +556,7 @@ class labels extends Survey_Common_Action
                 '/admin/super/_renderJson', [
                     'data' => [
                         'success' => $result,
-                        'message' => $result ? gT('Successfully stored labelset') : gT("Labelset couldn't be stored")
+                        'message' => $result ? gT('Label set successfully saved.') : gT("Label set couldn't be saved")
                     ]
                 ]
             );
@@ -566,7 +566,7 @@ class labels extends Survey_Common_Action
                 '/admin/super/_renderJson', [
                     'data' => [
                         'success' => false,
-                        'message' => gT("Labelset couldn't be stored")
+                        'message' => gT("Label set couldn't be saved")
                     ]
                 ]
             );
@@ -674,7 +674,7 @@ class labels extends Survey_Common_Action
         Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson', ['data' => [
                 'success' => $result,
-                'message' => gT('Label set successfully stored')
+                'message' => gT('Label set successfully saved')
             ]]
         );
         die();

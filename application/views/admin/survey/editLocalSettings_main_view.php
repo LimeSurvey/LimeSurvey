@@ -64,8 +64,8 @@ echo $scripts;
   </div>
   <!-- END editLocalSettings -->
   <?php
-Yii::app()->getClientScript()->registerScript( "editLocalSettings_submit_".$entryData['name'], "
 
+Yii::app()->getClientScript()->registerScript( "editLocalSettings_submit_".$entryData['name'], "
 window.LS.unrenderBootstrapSwitch();
 window.LS.renderBootstrapSwitch();
 
@@ -99,6 +99,7 @@ $('.text-option-inherit').on('change', function(e){
     var parent = $(this).parent().parent();
     var inheritValue = parent.find('.inherit-edit').data('inherit-value');
     var savedValue = parent.find('.inherit-edit').data('saved-value');
+
     if (newValue == 'Y'){
         parent.find('.inherit-edit').addClass('hide').removeClass('show').val(inheritValue);
         parent.find('.inherit-readonly').addClass('show').removeClass('hide');

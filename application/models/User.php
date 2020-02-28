@@ -109,14 +109,14 @@ class User extends LSActiveRecord
             'users_name' => gT('Username'),
             'password' => gT('Password'),
             'full_name' => gT('Full name'),
-            'parent_id' => gT('Parent User'),
+            'parent_id' => gT('Parent user'),
             'lang' => gT('Language'),
             'email' => gT('Email'),
-            'htmleditormode' => gT('Editormode'),
+            'htmleditormode' => gT('Editor mode'),
             'templateeditormode' => gT('Template editor mode'),
             'questionselectormode' => gT('Question selector mode'),
-            'one_time_pw' => gT('One time password'),
-            'dateformat' => gT('Dateformat'),
+            'one_time_pw' => gT('One-time password'),
+            'dateformat' => gT('Date format'),
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
             'lastLogin' => gT('Last recorded login'),
@@ -319,43 +319,62 @@ class User extends LSActiveRecord
         return($error);
     }
 
+    /**
+     * Checks if
+     *  -- password strength
+     *  -- oldpassword is correct
+     *  -- oldpassword and newpassword are identical
+     *  -- newpassword and repeatpassword are identical
+     *  -- newpassword is not empty
+     *
+     * @param $newPassword
+     * @param $oldPassword
+     * @param $repeatPassword
+     * @return string empty string means everything is ok, otherwise error message is returned
+     */
+    public function validateNewPassword($newPassword, $oldPassword,$repeatPassword){
+        $errorMsg = '';
+
+        if (!empty($newPassword)) {
+            $errorMsg = $this->checkPasswordStrength($newPassword);
+        }
+
+        if($errorMsg === '') {
+            if (!$this->checkPassword($oldPassword)) {
+                // Always check password
+                $errorMsg = gT("Your new password was not saved because the old password was wrong.");
+            } elseif (trim($oldPassword) === trim($newPassword)) {
+                //First test if old and new password are identical => no need to save it (or ?)
+                $errorMsg = gT("Your new password was not saved because it matches the old password.");
+            } elseif (trim($newPassword) !== trim($repeatPassword)) {
+                //Then test the new password and the repeat password for identity
+                $errorMsg = gT("Your new password was not saved because the passwords did not match.");
+                //Now check if the old password matches the old password saved
+            } elseif (empty(trim($newPassword))) {
+                $errorMsg = gT("The new password can not be empty.");
+            }
+        }
+
+        return $errorMsg;
+    }
+
     public function getPasswordHelpText(){
-        $settings = Yii::app()->getConfig("passwordValidationRules");
-        $txt = '';
-        $txt2 = '';
-        if((int) $settings['min'] > 0) $txt = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
-        if((int) $settings['max'] > 0) $txt = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+        $settings =  Yii::app()->getConfig("passwordValidationRules");
+        $txt = gT('A password must meet the following requirements: ');
+        if((int) $settings['min'] > 0) $txt .= sprintf(ngT('At least %d character long.|At least %d characters long.', $settings['min']), $settings['min']).' ';
+        if((int) $settings['max'] > 0) $txt .= sprintf(ngT('At most %d character long.|At most %d characters long.', $settings['max']), $settings['max']).' ';
         if((int) $settings['min'] > 0 && (int) $settings['max'] > 0){
           if($settings['min'] == $settings['max']){
-            $txt = sprintf(ngT('Password must be exactly %d character in length|Password must be exactly %d characters in length', $settings['min']), $settings['min']);
+            $txt .= sprintf(ngT('Exactly %d character long.|Exactly %d characters long.', $settings['min']), $settings['min']).' ';
           } else
           if($settings['min'] < $settings['max']){
-            $txt = sprintf(gT('Password must be between %d - %d characters in length'), $settings['min'], $settings['max']);
+            $txt .= sprintf(gT('Between %d and %d characters long.'), $settings['min'], $settings['max']).' ';
           }
         }
-
-        $txt1 = array();
-        if((int) $settings['lower'] > 0) $txt1[] = ' '.sprintf(ngT('%d lower case letter|%d lower case letters', $settings['lower']), $settings['lower']);
-        if((int) $settings['upper'] > 0) $txt1[] = ' '.sprintf(ngT('%d upper case letter|%d upper case letters', $settings['upper']), $settings['upper']);
-        if((int) $settings['numeric'] > 0) $txt1[] = ' '.sprintf(ngT('%d number|%d numbers', $settings['numeric']), $settings['numeric']);
-        if((int) $settings['symbol'] > 0) $txt1[] = ' '.sprintf(ngT('%d special character|%d special characters', $settings['symbol']), $settings['symbol']);
-        if(!empty($txt1)){
-          foreach($txt1 as $i => $tmp){
-            if($i == (count($txt1)-1)){
-              if($txt2) $txt2 .= ' '.gT("and").' ';
-            } else {
-              if($txt2) $txt2 .= ", ";
-            }
-            $txt2 .= $tmp;
-          }
-        }
-
-        if($txt && $txt2){
-          $txt = $txt.' '. gT('and must include at least').' '.$txt2.'.';
-        } else
-        if($txt2){
-          $txt = gT('Password must include at least').' '.$txt2.'.';
-        }
+        if((int) $settings['lower'] > 0)  $txt .= sprintf(ngT('At least %d lower case letter.|At least %d lower case letters.', $settings['lower']), $settings['lower']).' ';
+        if((int) $settings['upper'] > 0)  $txt .= sprintf(ngT('At least %d upper case letter.|At least %d upper case letters.', $settings['upper']), $settings['upper']).' ';
+        if((int) $settings['numeric'] > 0) $txt .= sprintf(ngT('At least %d number.|At least %d numbers.', $settings['numeric']), $settings['numeric']).' ';
+        if((int) $settings['symbol'] > 0) $txt .= sprintf(ngT('At least %d special character.|At least %d special characters.', $settings['symbol']), $settings['symbol']).' ';
         return($txt);
     }
 
@@ -519,7 +538,7 @@ class User extends LSActiveRecord
         $userDetail = ""
             ."<button 
                 data-toggle='tooltip' 
-                title='".gT("User detail")."'    
+                title='".gT("User details")."'    
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
 
@@ -544,7 +563,7 @@ class User extends LSActiveRecord
         $editUserButton = ""
             ."<button 
                 data-toggle='tooltip' 
-                title='".gT("Edit User")."'
+                title='".gT("Edit user")."'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""
@@ -582,7 +601,7 @@ class User extends LSActiveRecord
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            //Prevent users to modify original superadmin. Super admin can change his password on his account setting!
+            //Prevent users to modify original superadmin. Original superadmin can change his password on his account setting!
             if ($this->uid == 1) {
                 $editUserButton = "";
             }

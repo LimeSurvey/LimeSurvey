@@ -28,7 +28,7 @@ $aActionsArray = array(
             'action' => 'batchExport',
             'url' => App()->createUrl('/admin/roles/sa/batchExport/sItems').'/',
             'iconClasses' => 'fa fa-download',
-            'text' => gT('Batch export roles'),
+            'text' => gT('Bulk export roles'),
             'grid-reload' => 'no',
             'actionType'    => 'window-location-href',
         ),

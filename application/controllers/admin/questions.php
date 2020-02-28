@@ -1116,19 +1116,19 @@ class questions extends Survey_Common_Action
             ];
         }
 
-        $redirectUrl = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
+        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [
                     'status'=>true,
                     'message'=>$sMessage,
-                    'redirectUrl' => $redirectUrl
+                    'redirect' => $redirect
                 ]
             );
             return;
         }
         Yii::app()->session['flashmessage'] = $sMessage;
-        $this->getController()->redirect($redirectUrl);
+        $this->getController()->redirect($redirect);
     }
 
 
@@ -1284,7 +1284,8 @@ class questions extends Survey_Common_Action
 
             );
 
-            if ($classes != '') {
+            // TODO: Better solution: Hard-code allowed CSS classes.
+            if ($classes != '' && $this->isValidCSSClass($classes)) {
                 $aOptions['classes'] = $classes;
             }
 
@@ -1541,6 +1542,18 @@ class questions extends Survey_Common_Action
     }
 
     /**
+     * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
+     *
+     * @param string $class
+     * @return boolean
+     */
+    protected function isValidCSSClass($class)
+    {
+        $class = str_replace(['-', '_'], '', $class);
+        return ctype_alnum($class);
+    }
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
@@ -1603,7 +1616,7 @@ class questions extends Survey_Common_Action
 
         $aQidsAndLang = json_decode(Yii::app()->request->getPost('$oCheckedItems')); ;
         $aResults     = [];
-        $tableLabels  = array(gT('Question ID'),gT('Question Title') ,gT('Status'));
+        $tableLabels  = array(gT('Question ID'),gT('Question title') ,gT('Status'));
 
         foreach ($aQidsAndLang as $sQidAndLang) {
             $aQidAndLang = explode(',', $sQidAndLang);

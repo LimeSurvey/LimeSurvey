@@ -49,7 +49,7 @@ class FormattingOptions
     public $headingTextLength;
 
     /**
-     * Indicates whether to use Expression Manager code
+     * Indicates whether to use ExpressionScript Engine code
      *
      * @var boolean
      */

@@ -58,6 +58,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  */
 abstract class Token extends Dynamic
 {
+    /** @var int Maximum token length */
+    const MAX_LENGTH = 36;
 
     /**
      * Set defaults
@@ -165,7 +167,7 @@ abstract class Token extends Dynamic
             'lastname' => 'text',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(36) {$sCollation}",
+            'token' => "string(" . self::MAX_LENGTH . ") {$sCollation}",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
@@ -243,7 +245,11 @@ abstract class Token extends Dynamic
      */
     private function _generateRandomToken($iTokenLength)
     {
-        $token = str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        $token = Yii::app()->securityManager->generateRandomString($iTokenLength);
+        if ($token === false) {
+            throw new CHttpException(500, gT('Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled.'));
+        }
+        $token = str_replace(array('~', '_'), array('a', 'z'), $token);
         $event = new PluginEvent('afterGenerateToken');
         $event->set('surveyId', $this->getSurveyId());
         $event->set('iTokenLength', $iTokenLength);

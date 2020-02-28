@@ -81,7 +81,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'Delete file' => gT('Delete file'),
             'Copy file' => gT('Copy file'),
             'Move file' => gT('Move file'),
-            'Allowed file formats' => gT('Allowed file formats'),
+            'Allowed file extensions' => gT('Allowed file extensions'),
             'File formats' => '.'.gT(implode(", .", $this->allowedFileExtensions)) 
         ];
 
@@ -198,6 +198,8 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
         
         foreach($files as $file) {
+            $this->checkChangedFilename($file);
+
             $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
             $fileDestination = realpath($realTargetPath) . DIRECTORY_SEPARATOR . $file['shortName'];
 
@@ -225,6 +227,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                         'MOVE_FAILED',
                         gT("Your file could not be moved")
                     );
+                    $this->throwError();
                     return;
                 }
             }
@@ -386,7 +389,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $this->_printJsonResponse(
             [
                 'success' => true,
-                'message' => sprintf(gT("Files ready for download in archive %s."), $randomizedFileName),
+                'message' => sprintf(gT("Files are ready for download in archive %s."), $randomizedFileName),
                 'downloadLink' => $getFileLink ,
             ]
         );
@@ -482,6 +485,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
 
         $files = scandir($realPath);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
         foreach ($files as $file) {
             if ($file == '.' || $file == '..') {continue;}
@@ -489,7 +493,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $fileRelativePath = $folderPath . DIRECTORY_SEPARATOR . $file;
             $fileRealpath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $fileRelativePath;
             $fileIsDirectoy = @is_dir($fileRealpath);
-            $isImage =  @exif_imagetype($fileRealpath) !== false;
+            $isImage = strpos(finfo_file($finfo, $fileRealpath), 'image') !== false;
             if ($fileIsDirectoy) {
                 continue;
             } else {
@@ -737,6 +741,29 @@ class LimeSurveyFileManager extends Survey_Common_Action
             .$this->oError->message,
             0
         );
+    }
+
+    /**
+     * Throw exception if src and dest filename is different.
+     *
+     * @param array $file
+     * @return void
+     * @throws \Exception
+     */
+    private function checkChangedFilename(array $file)
+    {
+        /** @var string[] */
+        $pathParts = explode('/', $file['path']);
+        /** @var string */
+        $lastPart = $pathParts[count($pathParts) - 1];
+
+        if ($lastPart !== $file['shortName']) {
+            $this->_setError(
+                "FILENAME_CHANGED",
+                gT("The destination file name is not the same as the source file name")
+            );
+            $this->throwError();
+        }
     }
 }
 

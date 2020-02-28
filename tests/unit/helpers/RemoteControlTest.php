@@ -102,4 +102,113 @@ class RemoteControlTest extends TestBaseClass
         self::$testSurvey->delete();
         self::$testSurvey = null;
     }
+
+    /**
+     * @see https://bugs.limesurvey.org/view.php?id=15813
+     */
+    public function testListGroups()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+        $dbo = \Yii::app()->getDb();
+
+        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = 'Authdb';
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+        // Clear login attempts.
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
+        $dbo->createCommand($query)->execute();
+
+
+        $filename = self::$surveysFolder . '/limesurvey_survey_remote_api_group_language.lss';
+        self::importSurvey($filename);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        // Fetch English group text.
+        $result = $handler->list_groups($sessionKey, self::$surveyId);
+        $this->assertCount(1, $result);
+        $this->assertEquals('My first question group', $result[0]['group_name']);
+
+        // Fetch German group text.
+        $result = $handler->list_groups($sessionKey, self::$surveyId, 'de');
+        $this->assertCount(1, $result);
+        $this->assertEquals('Das Deutsch title', $result[0]['group_name']);
+
+        // Fetch French group text (does not exist).
+        $result = $handler->list_groups($sessionKey, self::$surveyId, 'fr');
+        $this->assertCount(1, $result);
+        $this->assertEquals(null, $result[0]['group_name']);
+    }
+
+    /**
+     * @see https://bugs.limesurvey.org/view.php?id=15813
+     */
+    public function testGetGroupProperties()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+        $dbo = \Yii::app()->getDb();
+
+        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = 'Authdb';
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+        // Clear login attempts.
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
+        $dbo->createCommand($query)->execute();
+
+
+        $filename = self::$surveysFolder . '/limesurvey_survey_remote_api_group_language.lss';
+        self::importSurvey($filename);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $group = $survey->groups[0];
+
+        // Fetch English group text.
+        $result = $handler->get_group_properties($sessionKey, $group->gid, ['group_name'], 'en');
+        $this->assertEquals('My first question group', $result['group_name']);
+
+        $result = $handler->get_group_properties($sessionKey, $group->gid, ['group_name'], 'de');
+        $this->assertEquals('Das Deutsch title', $result['group_name']);
+    }
 }

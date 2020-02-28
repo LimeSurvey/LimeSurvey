@@ -403,7 +403,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 }
                 break;
             case "token":
-                $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$sCollation;
+                $aTableDefinition[$aRow['fieldname']] = 'string('.Token::MAX_LENGTH.')'.$sCollation;
                 break;
             case '*': // Equation
                 $aTableDefinition[$aRow['fieldname']] = "text";
@@ -438,7 +438,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $aTableDefinition[$aRow['fieldname']] = "string(5)";
         }
         if ($oSurvey->anonymized == 'N' && !array_key_exists('token', $aTableDefinition)) {
-            $aTableDefinition['token'] = 'string(35)'.$sCollation;
+            $aTableDefinition['token'] = 'string('.Token::MAX_LENGTH.')'.$sCollation;
         }
         if ($simulate) {
             $tempTrim = trim($aTableDefinition);
