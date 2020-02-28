@@ -27,13 +27,13 @@
                     <?php foreach ($results as $type => $result) { ?>
                         <?php /*<?='<pre>'.print_r([$type,$result],true).'</pre>';?> */ ?>
                         <li class="list-group-item">
-                            <?php if (is_array($result)): ?>
+                            <?php if (is_array($result)){ ?>
                                 <?= ($result['descriptionData']['title'] ?? $type) ?> :
                                 <?= ($result['success'] ? 'OK' : 'FEHLER') ?>
-                            <?php else: ?>
+                            <?php }else{ ?>
                                 <?= $type ?> :
                                 <?= ($result ? 'OK' : 'FEHLER') ?>
-                            <?php endif ?>
+                            <?php } ?>
                         </li>
                     <?php } ?>
                 </ul>

@@ -293,18 +293,18 @@ class UserGroupController extends LSBaseController
     public function actionDeleteGroup()
     {
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $userGroupId = Yii::app()->request->getPost("userGroupId");
+            $userGroupId = Yii::app()->request->getPost("ugid");
             if ($userGroupId === null) {
                 //try to get it from get request
-                $userGroupId = Yii::app()->request->getQuery("userGroupId");
+                $userGroupId = Yii::app()->request->getQuery("ugid");
             }
 
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 //superadmin can delete
-                $model = UserGroup::model()->findByAttributes(['userGroupId'     => (int)$userGroupId]);
+                $model = UserGroup::model()->findByAttributes(['ugid'     => (int)$userGroupId]);
             } else {
                 //user is owner
-                $model = UserGroup::model()->findByAttributes(['userGroupId'     => (int)$userGroupId,
+                $model = UserGroup::model()->findByAttributes(['ugid'     => (int)$userGroupId,
                                                                'owner_id' => Yii::app()->user->id
                 ]);
             }
