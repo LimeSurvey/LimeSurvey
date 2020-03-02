@@ -1116,7 +1116,7 @@ class questions extends Survey_Common_Action
             ];
         }
 
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
+        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [

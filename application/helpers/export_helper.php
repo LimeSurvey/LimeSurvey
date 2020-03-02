@@ -81,6 +81,7 @@ function strSplitUnicode($str, $l = 0)
 function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = false, $sLanguage = '')
 {
 
+    $survey = Survey::model()->findByPk($iSurveyID);
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
     // Now see if we have parameters for from (offset) & num (limit)
@@ -96,15 +97,17 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
 
     foreach ($result as $row) {
         // prepare the data for decryption
-        $oToken = Token::model($iSurveyID);
-        $oToken->setAttributes($row, false);
-        $oToken->decrypt();
-
         $oResponse = Response::model($iSurveyID);
         $oResponse->setAttributes($row, false);
         $oResponse->decrypt();
+        $row = $oResponse->attributes;
 
-        $row = array_merge($oToken->attributes, $oResponse->attributes);
+        if ($survey->hasTokensTable) {
+            $oToken = Token::model($iSurveyID);
+            $oToken->setAttributes($row, false);
+            $oToken->decrypt();
+            $row = array_merge($oToken->attributes, $oResponse->attributes);
+        } 
 
         $rownr++;
         if ($rownr == 1) {
