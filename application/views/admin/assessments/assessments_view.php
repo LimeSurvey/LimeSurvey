@@ -6,12 +6,18 @@
 // todo implement new ekeditor 1580136051118
 //echo PrepareEditorScript(true, $this);
 Yii::app()->getClientScript()->registerScript(
-"AssessmentsVariables",
-"var strnogroup = '".gT("There are no groups available.", "js")."',\n
-loadEditUrl = '".$this->createUrl("admin/assessments/sa/index/", ["surveyid" => $surveyid, 'action' => 'assessmentopenedit'])."',\n
-deleteUrl = '".$this->createUrl("admin/assessments/sa/index/", ["surveyid" => $surveyid, 'action' => 'assessmentdelete'])."';",
-LSYii_ClientScript::POS_BEGIN
+    "AssessmentsVariables",
+    "var strnogroup = '".gT("There are no groups available.", "js")."',\n
+    loadEditUrl = '".$this->createUrl("admin/assessments/sa/index/", ["surveyid" => $surveyid, 'action' => 'assessmentopenedit'])."',\n
+    deleteUrl = '".$this->createUrl("admin/assessments/sa/index/", ["surveyid" => $surveyid, 'action' => 'assessmentdelete'])."';",
+    LSYii_ClientScript::POS_BEGIN
 );
+
+$pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
+
+var_dump($_POST);
+
+var_dump($pageSize);
 
 ?>
   <div class="side-body <?=getSideBodyClass(false)?>">
@@ -46,7 +52,7 @@ LSYii_ClientScript::POS_BEGIN
                         . sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSizeAsessements',
-                                $pageSizeAsessements,
+                                $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
                             )
@@ -95,3 +101,12 @@ LSYii_ClientScript::POS_BEGIN
     };
     ?>
 </div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    // To update rows per page via ajax
+    $(document).on("change", '#pageSizeAsessements', function() {
+        $.fn.yiiGridView.update('assessments-grid', {data:{pageSize: $(this).val()}});
+    });
+});
+</script>
