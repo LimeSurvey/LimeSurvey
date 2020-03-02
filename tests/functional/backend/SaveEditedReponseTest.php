@@ -89,7 +89,7 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         $oNotifCOntainer = $this->waitForElementShim($web, '#notif-container', 20);
         $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($oNotifCOntainer));
 
-        $question = Response::model(self::$surveyId)->findAllByAttributes([], 'id = :id', [':id' => $reponseID]);
+        $question = \Response::model(self::$surveyId)->findAllByAttributes([], 'id = :id', [':id' => $reponseID]);
         $this->assertEquals('de', $question[0]->startlanguage);
     }
 
