@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.7 (build 200224) to 4.1.8 (build 200302) March 2, 2020
+-Fixed issue #15920: PHP notice when submit a survey with refurl (Denis Chenu)
+-Fixed issue #15905: Delete question internal server error (Eddy Lackmann)
+#Updated translation: Tajik by Iskandar_r
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: English by englisheducationum
+#Updated translation: Danish by c_schmitz, Mikkel
+#Updated translation: Croatian by rovinj
+
+
 Changes from 4.1.6 (build 200220) to 4.1.7 (build 200224) February 24, 2020
 -Fixed issue #15911: Double checkconditions with array_text quetsion type (Denis Chenu)
 -Fixed issue #15909: customToken delete settings by other plugin (Denis Chenu)
