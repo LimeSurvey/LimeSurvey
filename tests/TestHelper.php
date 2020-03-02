@@ -412,6 +412,7 @@ class TestHelper extends TestCase
             try {
                 $address = getenv('WEBDRIVERHOST') ?? 'localhost';
                 $host = 'http://' . $address . ':' . TestBaseClassWeb::$webPort . '/wd/hub'; // this is the default
+                var_dump($host);
                 $capabilities = DesiredCapabilities::firefox();
                 $profile = new FirefoxProfile();
                 $profile->setPreference(FirefoxPreferences::READER_PARSE_ON_LOAD_ENABLED, false);
