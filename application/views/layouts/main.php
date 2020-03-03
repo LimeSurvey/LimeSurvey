@@ -51,7 +51,7 @@ if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !
 
 if (!Yii::app()->user->isGuest) {
     if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
-        $layoutHelper->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        $layoutHelper->getAdminFooter('http://manual.limesurvey.org');
     }
 } else {
     echo '</body>

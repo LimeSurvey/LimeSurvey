@@ -817,8 +817,8 @@ class Permission extends LSActiveRecord
     /**
      * Saves the updated values of a users themepermissions.
      *
-     * @param $userId     -- this user themepermission values should be updated
-     * @param $aTemplatePermissions -- permissions to be set
+     * @param $userId   integer  -- this user themepermission values should be updated
+     * @param $aTemplatePermissions array -- permissions to be set
      * @return array
      */
     public static function editThemePermissionsUser($userId, $aTemplatePermissions){

@@ -55,9 +55,7 @@ class UserGroupController extends LSBaseController
 
         $aData = [];
 
-        if (Yii::app()->session['loginID']) {
-            $model = UserGroup::model();
-        }
+        $model = UserGroup::model();
 
         $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
         $aData['usergroupbar']['returnbutton']['text'] = gT('Return to admin home');
@@ -89,6 +87,7 @@ class UserGroupController extends LSBaseController
             $this->redirect(App()->createUrl("/admin"));
         }
 
+        $aData = [];
         if (!empty($header)) {
             $aData['headercfg'] = $header;
         } else {
@@ -203,6 +202,7 @@ class UserGroupController extends LSBaseController
     {
         $ugid = (int) $ugid;
 
+        $aData = [];
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             if ($action == "editusergroupindb") {
@@ -228,7 +228,7 @@ class UserGroupController extends LSBaseController
             $this->redirect(App()->createUrl("/admin"));
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('userGroup/index'));
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT("Update user group");
 
@@ -253,7 +253,7 @@ class UserGroupController extends LSBaseController
             if ($action == "saveusergroup") {
                 //try to save the normal yii-way (validation rules must be implement in UserGroup()->rules(...)
                 $model = new UserGroup();
-                $model->name = flattenText($_POST['group_name'], false, true, 'UTF-8', true);
+                $model->name = flattenText($_POST['group_name'], false, true, 'UTF-8');
                 $model->description = flattenText($_POST['group_description']);
                 $model->owner_id = Yii::app()->user->id;
 
@@ -278,7 +278,7 @@ class UserGroupController extends LSBaseController
 
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('userGroup/index'));
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
         $aData['usergroupbar']['add'] = 'admin/usergroups';
 
         $this->aData = $aData;
@@ -327,7 +327,7 @@ class UserGroupController extends LSBaseController
     public function actionAddUserToGroup($ugid)
     {
         $uid = (int) Yii::app()->request->getPost('uid');
-        $checkPermissionsUserGroupExists = $this->checkBeforeAddDeleteUser($uid, $ugid);
+        $checkPermissionsUserGroupExists = $this->checkBeforeAddDeleteUser($uid, (int)$ugid);
         if (count($checkPermissionsUserGroupExists) > 0) {
             Yii::app()->user->setFlash('error', $checkPermissionsUserGroupExists['errorMsg']);
             $this->redirect(array($checkPermissionsUserGroupExists['redirectPath']));
@@ -351,8 +351,8 @@ class UserGroupController extends LSBaseController
      *
      *  todo: could be moved to model
      *
-     * @param $uid    -- userID
-     * @param $userGroupId   -- userGroupID
+     * @param $uid   integer  userID
+     * @param $userGroupId   integer userGroupID
      *
      * @return array if empty everything is ok, else
      *                  ['errorMsg']
@@ -406,7 +406,7 @@ class UserGroupController extends LSBaseController
     public function actionDeleteUserFromGroup($ugid)
     {
         $uid = (int) Yii::app()->request->getPost('uid');
-        $checkOK = $this->checkBeforeAddDeleteUser($uid, $ugid);
+        $checkOK = $this->checkBeforeAddDeleteUser($uid, (int)$ugid);
         if (count($checkOK) > 0) {
             Yii::app()->user->setFlash('error', $checkOK['errorMsg']);
             $this->redirect(array($checkOK['redirectPath']));
@@ -432,13 +432,14 @@ class UserGroupController extends LSBaseController
     {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");
+        $aData = [];
 
         if ($action == "mailsendusergroup") {
             // user must be in user group or superadmin
             if ($ugid === null) {
                 $ugid = (int) Yii::app()->request->getPost('ugid');
             }
-            $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
+            $result = UserInGroup::model()->findAllByPk(array('ugid' => (int)$ugid, 'uid' => Yii::app()->session['loginID']));
             if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 try {
                     $sendCopy = Yii::app()->getRequest()->getPost('copymail')==1 ? 1 :0;
@@ -464,7 +465,7 @@ class UserGroupController extends LSBaseController
             $aData['ugid'] = $ugid;
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('userGroup/index')); // Close button, UrlReferrer
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
 
         $this->aData = $aData;
 

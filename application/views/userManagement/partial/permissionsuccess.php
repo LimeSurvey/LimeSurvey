@@ -29,10 +29,16 @@
                         <li class="list-group-item">
                             <?php if (is_array($result)){ ?>
                                 <?= ($result['descriptionData']['title'] ?? $type) ?> :
-                                <?= ($result['success'] ? 'OK' : 'FEHLER') ?>
+                                <?php
+                                if(isset($result['success'])) {
+                                    echo ($result['success'] ? 'OK' : 'error');
+                                }else{
+                                    echo 'error';
+                                }
+                                ?>
                             <?php }else{ ?>
                                 <?= $type ?> :
-                                <?= ($result ? 'OK' : 'FEHLER') ?>
+                                <?= ($result ? 'OK' : 'error') ?>
                             <?php } ?>
                         </li>
                     <?php } ?>

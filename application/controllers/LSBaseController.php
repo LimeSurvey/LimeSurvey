@@ -67,12 +67,12 @@ class LSBaseController extends LSYii_Controller
     {
         //this lines come from _renderWarppedTemplate
         //todo: this should be moved to the new questioneditor controller when it is being refactored
-        if (!empty($aData['surveyid'])) {
-            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+        if (isset($this->aData['surveyid'])) {
+            $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
 
             // Needed to evaluate EM expressions in question summary
             // See bug #11845
-            LimeExpressionManager::SetSurveyId($aData['surveyid']);
+            LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
             LimeExpressionManager::StartProcessingPage(false, true);
 
             $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
@@ -85,6 +85,8 @@ class LSBaseController extends LSYii_Controller
     /**
      * Checks for action specific authorization and then executes an action
      *
+     * TODO: check the dbupdate mechanism, do we really want to check db update before every action??
+     *
      * @access public
      * @param string $action
      * @return void
@@ -94,9 +96,8 @@ class LSBaseController extends LSYii_Controller
     public function run($action)
     {
         // Check if the DB is up to date
-        if (Yii::app()->db->schema->getTable('{{surveys}}')) {
-            $sDBVersion = getGlobalSetting('DBVersion');
-        }
+        $sDBVersion = getGlobalSetting('DBVersion');
+
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
             Yii::app()->loadHelper('update/updatedb');

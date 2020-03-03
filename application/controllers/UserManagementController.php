@@ -48,8 +48,7 @@ class UserManagementController extends LSBaseController
         $model = new User('search');
         $model->setAttributes(Yii::app()->getRequest()->getParam('User'), false);
         $aData['model'] = $model;
-
-        $aData['columnDefinition'] = $model->managementColums;
+        $aData['columnDefinition'] = $model->getManagementColums();
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['formUrl'] = $this->createUrl('userManagement/index');
 
@@ -527,12 +526,12 @@ class UserManagementController extends LSBaseController
         }
 
         switch ($importFormat) {
-            case "csv":
-                $aNewUsers = UserParser::getDataFromCSV($_FILES);
-                break;
             case "json":
                 $aNewUsers = UserParser::getDataFromJSON($_FILES);
                 break;
+            case "csv":
+            default:
+                $aNewUsers = UserParser::getDataFromCSV($_FILES); //importFormat default is csv ...
         }
 
         $created = [];
@@ -573,7 +572,7 @@ class UserManagementController extends LSBaseController
                     'password' => $password,
                     'email' => $aNewUser['email'],
                     'lang' => $aNewUser['lang'],
-                ], false);
+                ]);
 
                 if ($save) {
                     $created[] = [
@@ -1038,7 +1037,7 @@ class UserManagementController extends LSBaseController
     /**
      * this method creates a new admin user
      *
-     * @param array a$user
+     * @param array $aUser
      * @return string
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
@@ -1092,12 +1091,10 @@ class UserManagementController extends LSBaseController
      * Create new user
      *
      * @param array $aUser array with user details
-     * @param bool $sendMail - option to send mail to user when created
      * @return array returns all attributes from model user as an array
      * @throws CException
-     * @todo $sendMail is not used - remove?
      */
-    public function createNewUser($aUser, $sendMail = true)
+    public function createNewUser($aUser)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
@@ -1147,7 +1144,7 @@ class UserManagementController extends LSBaseController
         }
         $iNewUID = $event->get('newUserID');
         // add default template to template rights for user
-        Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
+        Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => App()->getConfig('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
         // add default usersettings to the user
         SettingsUser::applyBaseSettings($iNewUID);
 
@@ -1162,11 +1159,9 @@ class UserManagementController extends LSBaseController
      * @param array $aUser
      * @param null $newPassword
      * @return LimeMailer if send is successfull
-     * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
-     * @todo $newPassword is not used
      */
-    public function sendAdminMail($aUser, $type = 'registration', $newPassword = null)
+    public function sendAdminMail($aUser, $type = 'registration')
     {
         switch ($type) {
             case "resetPassword":
@@ -1235,10 +1230,10 @@ class UserManagementController extends LSBaseController
         $newPassword = $this->getRandomPassword(8);
         $oUser->setPassword($newPassword);
         $success = true;
-        if ($sendMail == true) {
+        if ($sendMail === true) {
             $aUser = $oUser->attributes;
             $aUser['rawPassword'] = $newPassword;
-            $success = $this->sendAdminMail($aUser, 'resetPassword', $newPassword);
+            $success = $this->sendAdminMail($aUser, 'resetPassword');
         }
         return [
             'success' => $success, 'uid' => $oUser->uid, 'username' => $oUser->users_name, 'password' => $newPassword,

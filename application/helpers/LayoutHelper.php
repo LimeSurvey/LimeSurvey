@@ -287,12 +287,10 @@ class LayoutHelper
      *
      * @access protected
      * @param string $url
-     * @param string $explanation
      * @param bool $return
      * @return string|null
-     * @throws CException
      */
-    public function getAdminFooter($url, $explanation, $return = false)
+    public function getAdminFooter($url, $return = false)
     {
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
