@@ -15,10 +15,6 @@ Yii::app()->getClientScript()->registerScript(
 
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
-var_dump($_POST);
-
-var_dump($pageSize);
-
 ?>
   <div class="side-body <?=getSideBodyClass(false)?>">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
@@ -51,13 +47,13 @@ var_dump($pageSize);
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '
                         . sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
-                                'pageSizeAsessements',
+                                'pageSize',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
                             )
                         ),
-                        'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
+                        //'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
                         'htmlOptions' => array('class'=> 'table-responsive'),
                         'itemsCssClass' => 'table table-responsive table-striped',
                         'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
@@ -105,7 +101,7 @@ var_dump($pageSize);
 <script type="text/javascript">
 jQuery(function($) {
     // To update rows per page via ajax
-    $(document).on("change", '#pageSizeAsessements', function() {
+    $(document).on("change", '#pageSize', function() {
         $.fn.yiiGridView.update('assessments-grid', {data:{pageSize: $(this).val()}});
     });
 });
