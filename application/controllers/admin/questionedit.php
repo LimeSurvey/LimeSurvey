@@ -1349,9 +1349,8 @@ class questionedit extends Survey_Common_Action
         $aQuestionTitles = $oCommand = Yii::app()->db->createCommand()
             ->select('title')
             ->from('{{questions}}')
-            ->where('sid=:sid', [':sid'=>$oSurvey->sid])
-            ->where('parent_qid=0')
-            ->queryColumn();
+            ->where('sid=:sid and parent_qid=0')
+            ->queryColumn([':sid'=>$oSurvey->sid]);
         $isActive = $oSurvey->isActive;
         $questionCount = safecount($aQuestionTitles);
         $groupCount = safecount($oSurvey->groups);
