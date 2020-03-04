@@ -7,27 +7,15 @@ namespace Composer\Autoload;
 class ComposerStaticInitddb1a145e450f862353420acc5153e40
 {
     public static $prefixLengthsPsr4 = array (
-        'S' => 
-        array (
-            'Symfony\\Component\\Process\\' => 26,
-        ),
         'L' => 
         array (
             'LimeSurvey\\PluginManager\\' => 25,
             'LimeSurvey\\Menu\\' => 16,
             'LimeSurvey\\Helpers\\' => 19,
         ),
-        'F' => 
-        array (
-            'Facebook\\WebDriver\\' => 19,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Symfony\\Component\\Process\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/process',
-        ),
         'LimeSurvey\\PluginManager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/PluginManager',
@@ -40,10 +28,6 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
-        ),
-        'Facebook\\WebDriver\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/facebook/webdriver/lib',
         ),
     );
 
