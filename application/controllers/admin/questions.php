@@ -228,7 +228,8 @@ class questions extends Survey_Common_Action
                     $sFullFilepath,
                     $iSurveyID,
                     $gid,
-                    ['autorename' =>App()->request->getPost('autorename') == '1']
+                    ['autorename' =>App()->request->getPost('autorename') == '1',
+                    'translinkfields' =>App()->request->getPost('autorename') == '1']
                 );
             } else {
                 $this->getController()->error(gT('Unknown file extension'));

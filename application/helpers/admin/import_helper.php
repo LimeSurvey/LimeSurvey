@@ -597,8 +597,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 * @param integer $iNewSID The new survey id
 * @param mixed $newgid The new question group id -the question will always be added after the last question in the group
 */
-function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('autorename'=>false))
+function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename'=>false,'translinkfields'=>true))
 {
+    debugbreak();
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -637,7 +638,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
     // then for subquestions (because we need to determine the new qids for the main questions first)
 
 
-    $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$newgid";
+    $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$iNewGID";
     $res = Yii::app()->db->createCommand($query)->query();
     $resrow = $res->read();
     $newquestionorder = $resrow['maxqo'] + 1;
@@ -661,7 +662,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
 
         $iOldSID = $insertdata['sid'];
         $insertdata['sid'] = $iNewSID;
-        $insertdata['gid'] = $newgid;
+        $insertdata['gid'] = $iNewGID;
         $insertdata['question_order'] = $newquestionorder;
         $iOldQID = $insertdata['qid']; // save the old qid
         unset($insertdata['qid']);
@@ -705,21 +706,21 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                     unset($sOldTitle);
                 }
             }
-        }
-        if (isset($insertdata['qid'])) {
-            switchMSSQLIdentityInsert('questions', true);
-        }
-        
-        if (!$oQuestion->save()) {
-            $results['fatalerror'] = CHtml::errorSummary(
-                $oQuestion,
-                gT("The question could not be imported for the following reasons:")
-            );
-            return $results;
-        }
+            if (isset($insertdata['qid'])) {
+                switchMSSQLIdentityInsert('questions', true);
+            }
+            
+            if (!$oQuestion->save()) {
+                $results['fatalerror'] = CHtml::errorSummary(
+                    $oQuestion,
+                    gT("The question could not be imported for the following reasons:")
+                );
+                return $results;
+            }
 
-        switchMSSQLIdentityInsert('questions', false);
-        $aQIDReplacements[$iOldQID] = $oQuestion->qid;
+            switchMSSQLIdentityInsert('questions', false);
+            $aQIDReplacements[$iOldQID] = $oQuestion->qid;
+        }
         
         $results['questions'] = isset($results['questions']) ? $results['questions']+1 : 1;
         $newqid = $oQuestion->qid;
@@ -752,8 +753,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             }
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
-            // TODO: $aGIDReplacements: undefined variable.
-            $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']];
+            $insertdata['gid'] = $iNewGID;
             $iOldQID = (int) $insertdata['qid'];
             unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
@@ -761,8 +761,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 $insertdata['help'] = '';
             }            // now translate any links
             if (!isset($xml->question_l10ns->rows->row)) {
-                // TODO: $bTranslateInsertansTags: undefined variable
-                if ($bTranslateInsertansTags) {
+                if ($options['translinkfields']) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
                 }
@@ -774,8 +773,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 unset($insertdata['help']);
                 unset($insertdata['language']);
             }
-            // TODO: $bConvertInvalidQuestionCodes: undefined variable
-            if (!$bConvertInvalidQuestionCodes) {
+            if (!$options['autorename']) {
                 $sScenario = 'archiveimport';
             } else {
                 $sScenario = 'import';
@@ -884,7 +882,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
-                if ($bTranslateInsertansTags) {
+                if ($options['translinkfields']) {
                     $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
                 }
                 $oAnswerL10n = new AnswerL10n();
