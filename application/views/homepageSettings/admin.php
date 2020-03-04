@@ -1,6 +1,6 @@
 <?php
-/* @var $this BoxesController */
-/* @var $model Boxes */
+/* @var $this HomepageSettingsController */
+/* @var $model Box */
 
 $this->breadcrumbs=array(
     'Boxes'=>array('index'),

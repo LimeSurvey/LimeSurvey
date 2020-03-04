@@ -267,7 +267,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <!-- Home page settings -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/homepagesettings"); ?>">
+                        <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
                             <?php eT("Home page settings");?>
                         </a>
                     </li>

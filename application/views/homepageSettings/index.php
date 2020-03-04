@@ -18,11 +18,11 @@ LS.renderBootstrapSwitch();
 
 <div class="col-lg-12 list-surveys">
 
-    <?php $this->renderPartial('super/fullpagebar_view', array(
+    <?php $this->renderPartial('//admin/super/fullpagebar_view', array(
         'fullpagebar' => array(
             'boxbuttons'=>true,
             'returnbutton'=>array(
-                'url'=>'index',
+                'url'=>'admin/index',
                 'text'=>gT('Close'),
             ),
         )
@@ -35,13 +35,13 @@ LS.renderBootstrapSwitch();
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_logo', 'id'=>'show_logo', 'value'=>$bShowLogo, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
 
-            <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLogoStatus');?>" />
+            <input type="hidden" id="show_logo-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLogoStatus');?>" />
         </div>
 
         <label class="col-sm-2 control-label"><?php eT("Show last visited survey and question:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_last_survey_and_question', 'id'=>'show_last_survey_and_question', 'value'=>$bShowLastSurveyAndQuestion, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
-            <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowLastSurveyAndQuestion');?>" />
+            <input type="hidden" id="show_last_survey_and_question-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowLastSurveyAndQuestion');?>" />
         </div>
 
         <br/><br/>
@@ -51,13 +51,13 @@ LS.renderBootstrapSwitch();
         <label class="col-sm-2 control-label"><?php eT("Show survey list:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_survey_list', 'id'=>'show_survey_list', 'value'=>$bShowSurveyList, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
-            <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowSurveyList');?>" />
+            <input type="hidden" id="show_survey_list-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyList');?>" />
         </div>
 
         <label class="col-sm-2 control-label"><?php eT("Show search box on survey list:");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'show_survey_list_search', 'id'=>'show_survey_list_search', 'value'=>$bShowSurveyListSearch, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
-            <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/toggleShowSurveyListSearch');?>" />
+            <input type="hidden" id="show_survey_list_search-url" data-url="<?php echo App()->createUrl('homepageSettings/toggleShowSurveyListSearch');?>" />
         </div>
 
         <br/><br/>
@@ -67,7 +67,7 @@ LS.renderBootstrapSwitch();
         <label class="col-sm-2 control-label"><?php eT("Wrap container around boxes");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'boxes_in_container', 'id'=>'boxes_in_container', 'value'=>$bBoxesInContainer, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
-            <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/changeBoxesInContainer');?>" />
+            <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('homepageSettings/changeBoxesInContainer');?>" />
         </div>
         <br/><br/>
         <br/><br/>
@@ -88,7 +88,7 @@ LS.renderBootstrapSwitch();
         </div>
         <div class="col-sm-3">
             <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!');?>" />
-            <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/setBoxesSettings');?>"><?php eT('Save boxes settings');?></button>
+            <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('homepageSettings/updateBoxesSettings');?>"><?php eT('Save boxes settings');?></button>
         </div>
         <br/><br/><br/><br/>
     </div>
@@ -100,7 +100,7 @@ LS.renderBootstrapSwitch();
         <div class="col-sm-12 content-right">
 
             <?php $this->widget('bootstrap.widgets.TbGridView', array(
-                'dataProvider'=>$dataProvider,
+                'dataProvider'=>$dataProviderBox,
                 'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).'),
                 'columns' => array(
                     array(
