@@ -72,7 +72,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'An error has occured and the file list could not be loaded:' => gT('An error has occured and the file list could not be loaded:'),
             'An error has occured and the folders could not be loaded:' => gT('An error has occured and the folders could not be loaded:'),
             'An error has occured and the file(s) could not be uploaded:' => gT('An error has occured and the folders could not be loaded:'),
-            'An error has occured and the selected files ycould not be downloaded.' => gT('An error has occured and the selected files ycould not be downloaded.'),
+            'An error has occured and the selected files could not be downloaded.' => gT('An error has occured and the selected files could not be downloaded.'),
             'File name' => gT('File name'),
             'Type' => gT('Type'),
             'Size' => gT('Size'),
