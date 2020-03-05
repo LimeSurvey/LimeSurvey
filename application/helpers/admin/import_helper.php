@@ -599,7 +599,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename'=>false,'translinkfields'=>true))
 {
-    debugbreak();
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
