@@ -3,14 +3,14 @@ import forEach from 'lodash/forEach';
 import LOG from '../components/lslog';
 
 const SaveController = () => {
-    
+
        let formSubmitting = false;
 
         // Attach this <input> tag to form to check for closing after save
         const closeAfterSaveInput = $("<input>")
             .attr("type", "hidden")
             .attr("name", "close-after-save");
-    
+
 
 
     /**
@@ -33,15 +33,18 @@ const SaveController = () => {
 
         return form;
     },
-    displayLoadingState = (el) => {
-        const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
-        $(el).prop('disabled', true).append(loadingSpinner);
-    },
-    stopDisplayLoadingState = () => {
-        LOG.log('StopLoadingIconAnimation');
-        LS.EventBus.$emit('loadingFinished');
-        // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
-    },
+        displayLoadingState = (el) => {
+            const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
+            $(el).prop('disabled', true).append(loadingSpinner);
+        },
+        stopDisplayLoadingState = () => {
+            LOG.log('StopLoadingIconAnimation');
+            $('.lsLoadingStateIndicator').each((i, item) => {
+                $(item).parent().prop('disabled', false);
+                $(item).remove();
+            });
+            LS.EventBus.$emit('loadingFinished');
+        },
     //###########PRIVATE
     checks = () => {
         return {
@@ -51,13 +54,13 @@ const SaveController = () => {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
-                    
+
                     try {
                         for (let instanceName in CKEDITOR.instances) {
                             CKEDITOR.instances[instanceName].updateElement();
                         }
                     } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
-                    
+
                     $form.find('[type="submit"]').first().trigger('click');
                 },
                 on: 'click'
@@ -75,9 +78,9 @@ const SaveController = () => {
                             CKEDITOR.instances[instanceName].updateElement();
                         }
                     } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
-            
-                    $form.find('[type="submit"]').first().trigger('click');
+
                     displayLoadingState(this);
+                    $form.find('[type="submit"]').first().trigger('click');
                 },
                 on: 'click'
             },
@@ -89,8 +92,8 @@ const SaveController = () => {
                         formid = '#' + $(this).attr('data-form-id'),
                         $form = $(formid);
                     //alert($form.find('[type="submit"]').attr('id'));
-                    $form.find('[type="submit"]').trigger('click');
                     displayLoadingState(this);
+                    $form.find('[type="submit"]').trigger('click');
                     return false;
                 },
                 on: 'click'
@@ -110,8 +113,8 @@ const SaveController = () => {
                         }
                     } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
 
-                    $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);
+                    $form.find('[type="submit"]').first().trigger('click');
 
                 },
                 on: 'click'
@@ -125,8 +128,8 @@ const SaveController = () => {
                     closeAfterSaveInput.val("true");
                     $form.append(closeAfterSaveInput);
                     formSubmitting = true;
-                    $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);
+                    $form.find('[type="submit"]').first().trigger('click');
                 },
                 on: 'click'
             },
@@ -145,8 +148,8 @@ const SaveController = () => {
                     }).appendTo($form);
 
 
-                    $form.find('[type="submit"]').trigger('click');
                     displayLoadingState(this);
+                    $form.find('[type="submit"]').trigger('click');
                     return false;
                 },
                 on: 'click'
@@ -165,8 +168,8 @@ const SaveController = () => {
                         }
                     } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
 
-                    $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);
+                    $form.find('[type="submit"]').first().trigger('click');
                 },
                 on: 'click'
             },

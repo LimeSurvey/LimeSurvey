@@ -193,11 +193,13 @@ var QuestionFunctions = function() {
     };
 };
 
-$(document).on("ready  pjax:scriptcomplete", function() {
-    window.questionFunctions =
-        window.questionFunctions || new QuestionFunctions();
+$(document).on("ready  pjax:scriptcomplete", function () {
+    window.questionFunctions = window.questionFunctions || new QuestionFunctions();
     window.questionFunctions.init();
     window.LS.fixAccordionPosition();
+    $("#frmeditquestion input").on("invalid", function(event) {
+        $('#in_survey_common').trigger("lsStopLoading");
+    });
 });
 
 function updatequestionattributes(question_template_name, oldQuestionTemplate) {

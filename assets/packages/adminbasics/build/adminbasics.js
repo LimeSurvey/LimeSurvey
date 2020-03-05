@@ -29120,7 +29120,11 @@
 	  },
 	      stopDisplayLoadingState = function stopDisplayLoadingState() {
 	    adminCoreLSConsole.log('StopLoadingIconAnimation');
-	    LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
+	    $('.lsLoadingStateIndicator').each(function (i, item) {
+	      $(item).parent().prop('disabled', false);
+	      $(item).remove();
+	    });
+	    LS.EventBus.$emit('loadingFinished');
 	  },
 	      //###########PRIVATE
 	  checks = function checks() {
@@ -29157,8 +29161,8 @@
 	            console.ls.log('Seems no CKEDITOR4 is loaded');
 	          }
 
-	          $form.find('[type="submit"]').first().trigger('click');
 	          displayLoadingState(this);
+	          $form.find('[type="submit"]').first().trigger('click');
 	        },
 	        on: 'click'
 	      },
@@ -29169,8 +29173,8 @@
 	          var formid = '#' + $(this).attr('data-form-id'),
 	              $form = $(formid); //alert($form.find('[type="submit"]').attr('id'));
 
-	          $form.find('[type="submit"]').trigger('click');
 	          displayLoadingState(this);
+	          $form.find('[type="submit"]').trigger('click');
 	          return false;
 	        },
 	        on: 'click'
@@ -29190,8 +29194,8 @@
 	            console.ls.log('Seems no CKEDITOR4 is loaded');
 	          }
 
-	          $form.find('[type="submit"]').first().trigger('click');
 	          displayLoadingState(this);
+	          $form.find('[type="submit"]').first().trigger('click');
 	        },
 	        on: 'click'
 	      },
@@ -29202,8 +29206,8 @@
 	          var $form = getForm(this);
 	          closeAfterSaveInput.val("true");
 	          $form.append(closeAfterSaveInput);
-	          $form.find('[type="submit"]').first().trigger('click');
 	          displayLoadingState(this);
+	          $form.find('[type="submit"]').first().trigger('click');
 	        },
 	        on: 'click'
 	      },
@@ -29219,8 +29223,8 @@
 	            name: 'saveandclose',
 	            value: '1'
 	          }).appendTo($form);
-	          $form.find('[type="submit"]').trigger('click');
 	          displayLoadingState(this);
+	          $form.find('[type="submit"]').trigger('click');
 	          return false;
 	        },
 	        on: 'click'
@@ -29240,8 +29244,8 @@
 	            console.ls.log('Seems no CKEDITOR4 is loaded');
 	          }
 
-	          $form.find('[type="submit"]').first().trigger('click');
 	          displayLoadingState(this);
+	          $form.find('[type="submit"]').first().trigger('click');
 	        },
 	        on: 'click'
 	      },
