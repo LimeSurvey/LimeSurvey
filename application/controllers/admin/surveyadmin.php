@@ -2517,6 +2517,18 @@ class SurveyAdmin extends Survey_Common_Action
         $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
         $oneLanguage     = (count($oSurvey->allLanguages) == 1);
 
+        // Put menu items in tools menu
+        $event = new PluginEvent('beforeToolsMenuRender', $this);
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $extraToolsMenuItems = $event->get('menuItems');
+
+        // Add new menus in survey bar
+        $event = new PluginEvent('beforeSurveyBarRender', $this);
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $beforeSurveyBarRender = $event->get('menus');
+
         return Yii::app()->getController()->renderPartial(
             '/admin/survey/topbar/survey_topbar',
             array(
@@ -2542,6 +2554,8 @@ class SurveyAdmin extends Survey_Common_Action
                 'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
                 'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
                 'addSaveButton'  => $saveButton,
+                'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
+                'beforeSurveyBarRender' => $beforeSurveyBarRender ?? []
             ),
             false,
             false

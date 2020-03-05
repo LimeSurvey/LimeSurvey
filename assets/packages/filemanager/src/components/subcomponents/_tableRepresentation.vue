@@ -101,7 +101,7 @@ export default {
         return Math.round((value / (1024 * 1024)) * 100) / 100 + " MB";
       }
     }
-  },
+  }
 };
 </script>
 

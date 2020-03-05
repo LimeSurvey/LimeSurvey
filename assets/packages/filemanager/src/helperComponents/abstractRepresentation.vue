@@ -1,10 +1,19 @@
 <script>
 export default {
-  data() {},
+  data() {
+    return {
+      isBlocked: false,
+    }
+  },
   computed: {
     files() {
       return this.$store.state.fileList
     },
+  },
+  mounted() {
+    LS.EventBus.$on('isBlocked', (blocked) => {
+      this.onIsBlocked(blocked);
+    });
   },
   methods: {
     inTransit(file) {
@@ -36,50 +45,66 @@ export default {
       return this.fileInDeletion == file.path;
     },
     deleteFile(file) {
-      this.$dialog
-        .confirm(
-          this.translate("You are sure you want to delete %s").replace(
-            "%s",
-            file.shortName
-          )
-        )
-        .then(dialog => {
-          this.loadingState = true;
-          this.$store
-            .dispatch("deleteFile", file)
-            .then(
-              result => {},
-              error => {
-                this.$log.error(error);
-              }
+      if (!this.isBlocked) {
+        this.$dialog
+          .confirm(
+            this.translate("You are sure you want to delete %s").replace(
+              "%s",
+              file.shortName
             )
-            .finally(() => {
-              this.loadingState = false;
-            });
-        })
-        .catch(() => {
-          this.$log.log("Clicked on cancel");
-        });
+          )
+          .then(dialog => {
+              this.loadingState = true;
+              this.$store
+                .dispatch("deleteFile", file)
+                    .then(
+                      result => {},
+                      error => {
+                        this.$log.error(error);
+                      }
+                    )
+                    .finally(() => {
+                      this.loadingState = false;
+                    });
+                })
+                .catch(() => {
+                  this.$log.log("Clicked on cancel");
+                });
+      }
+
     },
     copyFile(file) {
-      this.$store.commit("copyFiles");
-      this.$set(file, 'inTransit', true);
-       $('[data-toggle="tooltip"]').tooltip('hide');
-      //file.inTransit = true;
+      if (!this.isBlocked) {
+        this.$store.commit("copyFiles");
+        this.$set(file, 'inTransit', true);
+        this.isBlocked = true;
+        this.hideTooltip();
+      }
     },
     moveFile(file) {
-      this.$store.commit("moveFiles");
-      this.$set(file, 'inTransit', true);
-      $('[data-toggle="tooltip"]').tooltip('hide');
-      //file.inTransit = true;
+      if (!this.isBlocked) {
+        this.$store.commit("moveFiles");
+        this.$set(file, 'inTransit', true);
+        this.isBlocked = true;
+        this.hideTooltip();
+      }
     },
     cancelTransit(file) {
-      this.$set(file, 'inTransit', false);
-      if( this.$store.getters.filesInTransit.length == 0 ) {
-        this.$store.commit('noTransit');
-        $('[data-toggle="tooltip"]').tooltip('hide');
+      if (this.isBlocked) {
+        this.$set(file, 'inTransit', false);
+        this.isBlocked = false;
+        if (this.$store.getters.filesInTransit.length == 0) {
+          this.$store.commit('noTransit');
+          this.hideTooltip();
+        }
       }
+    },
+    onIsBlocked(blocked) {
+      this.isBlocked = blocked;
+    },
+    hideTooltip() {
+      $('[data-toggle="tooltip"]').tooltip('hide');
     }
-  }
+  },
 };
 </script>

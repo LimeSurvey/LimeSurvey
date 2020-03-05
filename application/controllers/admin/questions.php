@@ -228,7 +228,8 @@ class questions extends Survey_Common_Action
                     $sFullFilepath,
                     $iSurveyID,
                     $gid,
-                    ['autorename' =>App()->request->getPost('autorename') == '1']
+                    ['autorename' =>App()->request->getPost('autorename') == '1',
+                    'translinkfields' =>App()->request->getPost('autorename') == '1']
                 );
             } else {
                 $this->getController()->error(gT('Unknown file extension'));
@@ -1116,7 +1117,7 @@ class questions extends Survey_Common_Action
             ];
         }
 
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
+        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [

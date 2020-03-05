@@ -1,9 +1,6 @@
-import {
-    shallowMount,
-    createLocalVue
-} from '@vue/test-utils';
-
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
+import Vue from 'vue';
 import _ from 'lodash';
 
 import TableRepComponent from '../../src/components/subcomponents/_tableRepresentation.vue';
@@ -14,7 +11,16 @@ import MockActions from '../mocks/mockActions.js';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-
+global.LS = {
+    EventBus: new Vue(),
+};
+global.$ = jest.fn(() => {
+    return {
+        on: ()=>{},
+        trigger: ()=>{},
+        tooltip: ()=>{},
+    }
+});
 localVue.mixin({
     methods: {
         translate(value) {
@@ -98,7 +104,6 @@ describe("correct display", () => {
 
 });
 
-
 describe("File transit actions", () => {
     
     const actions = _.merge({},MockActions);
@@ -130,7 +135,6 @@ describe("File transit actions", () => {
             localVue
         }); 
 
-        // tableRepMount.vm.$store.commit('setFolderList', MockState.fileList);
     }); 
 
     test("Should start transit after clicking on 'copy'", () => {
@@ -138,14 +142,14 @@ describe("File transit actions", () => {
         const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-copy');
         copyButton.trigger('click');
         expect(tableRepMount.vm.$store.state.fileList['firstPicture.jpg'].inTransit).toBe(true);  
-    })
+    });
 
     test("Should start transit after clicking on 'move'", () => {
         const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
         const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-move');
         copyButton.trigger('click');
         expect(tableRepMount.vm.$store.state.fileList['firstPicture.jpg'].inTransit).toBe(true);  
-    })
+    });
 });
 
 describe("File in transit actions", () => {
@@ -155,7 +159,6 @@ describe("File in transit actions", () => {
     const fileNotTransit = MockState.fileList['secondPicture.jpg'];
     const state = _.merge({},MockState);
     
-    // actions.getFileList = jest.fn(() => Promise.resolve());
     let tableRepMount;
     beforeEach(() => {
         
@@ -210,8 +213,6 @@ describe("File in transit actions", () => {
         const fileRowClasses = tableRepMount.vm.fileClass(tableRepMount.vm.files['secondPicture.jpg']);
         expect(fileRowClasses).toBe("scoped-file-icon ")
     })
-
-    
 });
 
 describe('Delete file success', () => {
@@ -255,9 +256,8 @@ describe('Delete file success', () => {
     });
     test("Should have called the delete action after clicking delete", () => {
         expect(actions.deleteFile).toHaveBeenCalled()
-    });
-    
-})
+    }); 
+});
 
 describe('Delete file failure', () => {
     const fileToBeDeleted = MockState.fileList['firstPicture.jpg'];
@@ -297,5 +297,4 @@ describe('Delete file failure', () => {
         fileRowWrapper.find('.FileManager--file-action-delete').trigger('click');
         expect(actions.deleteFile).not.toHaveBeenCalled()
     });
-    
-})
+});

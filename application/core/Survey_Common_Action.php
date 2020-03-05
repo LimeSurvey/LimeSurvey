@@ -710,7 +710,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Shows admin menu for surveys
-     * @param int Survey id
+     *
+     * @param array $aData
+     * @deprecated
      */
     function _surveybar($aData)
     {

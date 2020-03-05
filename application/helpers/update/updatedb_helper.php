@@ -2955,11 +2955,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
             $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
-            switchMSSQLIdentityInsert('question_themes', true);
             foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
                 $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
             }
-            switchMSSQLIdentityInsert('question_themes', false);
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>421),"stg_name='DBVersion'");
             $oTransaction->commit();
