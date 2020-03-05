@@ -104,7 +104,12 @@ class TestBaseClassWeb extends TestBaseClass
     {
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-        $url = $urlMan->createUrl('admin/' . $view['route']);
+        //this is for testing new controllers (REFACTORING Controllers)
+        if(isset($view['noAdminInFront']) && $view['noAdminInFront']){
+            $url = $urlMan->createUrl($view['route']);
+        }else {
+            $url = $urlMan->createUrl('admin/' . $view['route']);
+        }
         return $url;
     }
 
