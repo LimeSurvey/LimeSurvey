@@ -105,10 +105,10 @@ $config['maxemails']          = 50; // The maximum number of emails to send in o
 // filterout_incomplete_answers
 //  * default behaviour of LimeS regarding answer records with no submitdate
 //  * can be overwritten by module parameters choose one of the following://
-//		* filter: 		Show only complete answers
-//		* show: 		Show both complete and incomplete answers
+//		* complete: 		Show only complete answers
+//		* all: 		Show both complete and incomplete answers
 //		* incomplete: 	Show only incomplete answers
-$config['filterout_incomplete_answers'] = 'show';
+$config['filterout_incomplete_answers'] = 'all';
 
 // strip_query_from_referer_url (default is false)
 //  * default behaviour is to record the full referer url when requested
