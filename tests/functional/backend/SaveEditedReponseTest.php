@@ -92,5 +92,4 @@ class SaveEditedReponseTest extends TestBaseClassWeb
         $question = \Response::model(self::$surveyId)->findAllByAttributes([], 'id = :id', [':id' => $reponseID]);
         $this->assertEquals('de', $question[0]->startlanguage);
     }
-
 }
