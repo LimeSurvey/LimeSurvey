@@ -1,8 +1,10 @@
 <?php
 
-
 class HomepageSettingsController extends LSBaseController
 {
+    /**
+     * @return array
+     */
     public function accessRules()
     {
         return array(
@@ -34,8 +36,11 @@ class HomepageSettingsController extends LSBaseController
 
     /**
      * Renders the index view (boxes gridView and settings switchers
+     *
+     * @return void
      */
-    public function actionIndex(){
+    public function actionIndex()
+    {
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
             $this->redirect($this->createUrl("/admin"));
@@ -58,9 +63,12 @@ class HomepageSettingsController extends LSBaseController
     }
 
     /**
-     *  Renders the form view and create/save new box
+     * Renders the form view and create/save new box
+     *
+     * @return void
      */
-    public function actionCreateBox(){
+    public function actionCreateBox()
+    {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
             $this->redirect($this->createUrl("/homepageSettings/index"));
@@ -85,18 +93,23 @@ class HomepageSettingsController extends LSBaseController
             }
         }
 
-        $this->render('create',[
-            'model' => $model
-        ]);
+        $this->render(
+            'create',
+            [
+                'model' => $model
+            ]
+        );
     }
 
     /**
      * Update a box.
      *
-     * @param $id
+     * @param int $id Box id
+     * @return void
      * @throws CHttpException
      */
-    public function actionUpdateBox($id){
+    public function actionUpdateBox($id)
+    {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->setFlashMessage(gT('Access denied!'), 'error');
             $this->redirect(array('homepageSettings/index'));
@@ -132,12 +145,14 @@ class HomepageSettingsController extends LSBaseController
     /**
      * Deletes a box
      *
-     * @param $id
+     * @param int $id
+     * @return void
      * @throws CDbException
      * @throws CHttpException
      */
-    public function actionDeleteBox($id=null){
-        $id = App()->request->getPost('id',$id);
+    public function actionDeleteBox($id = null)
+    {
+        $id = App()->request->getPost('id', $id);
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->redirect(array('homepageSettings/index'));
@@ -148,9 +163,9 @@ class HomepageSettingsController extends LSBaseController
         }
 
         $model = $this->loadModel($id);
-        if($model->delete()) {
+        if ($model->delete()) {
             Yii::app()->user->setFlash('success', gT('Box deleted'));
-        }else{
+        } else {
             Yii::app()->user->setFlash('error', gT('Could not delete Box'));
         }
 
@@ -163,6 +178,7 @@ class HomepageSettingsController extends LSBaseController
     /**
      * Restores the default boxes entries and redirects to index
      *
+     * @return void
      */
     public function actionResetAllBoxes()
     {
@@ -194,8 +210,8 @@ class HomepageSettingsController extends LSBaseController
     /**
      * Performs the AJAX update of box settings
      *
-     * @param $boxesbyrow
-     * @param $boxesoffset
+     * @param int $boxesbyrow
+     * @param int $boxesoffset
      * @return bool
      */
     public function actionUpdateBoxesSettings($boxesbyrow, $boxesoffset)
@@ -229,6 +245,8 @@ class HomepageSettingsController extends LSBaseController
 
     /**
      * Performs the AJAX toggle of show_last_survey_and_question setting
+     *
+     * @return void
      */
     public function actionToggleShowLastSurveyAndQuestion()
     {
@@ -245,6 +263,8 @@ class HomepageSettingsController extends LSBaseController
 
     /**
      * Performs the AJAX toggle of show_survey_list
+     *
+     * @return void
      */
     public function actionToggleShowSurveyList()
     {
@@ -279,6 +299,8 @@ class HomepageSettingsController extends LSBaseController
 
     /**
      * Performs the AJAX toggle of show_survey_list_search
+     *
+     * @return void
      */
     public function actionChangeBoxesInContainer()
     {
@@ -321,6 +343,7 @@ class HomepageSettingsController extends LSBaseController
      * Performs the AJAX validation.
      *
      * @param Box $model the model to be validated
+     * @return void
      */
     protected function performAjaxValidation($model)
     {
