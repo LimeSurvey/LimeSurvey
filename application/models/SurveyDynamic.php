@@ -351,6 +351,9 @@ class SurveyDynamic extends LSActiveRecord
                 'class' => "btn btn-default btn-xs btn-delete",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete this response"),
+                'data-confirm-text' => gT('Do you want to delete this response?')
+                . '<br/>'
+                . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.')
             ),
             'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
