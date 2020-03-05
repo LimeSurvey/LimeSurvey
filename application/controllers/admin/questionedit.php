@@ -1350,7 +1350,7 @@ class questionedit extends Survey_Common_Action
             ->select('title')
             ->from('{{questions}}')
             ->where('sid=:sid', [':sid'=>$oSurvey->sid])
-            ->where('parent_qid=0')
+            ->andWhere('parent_qid=0')
             ->queryColumn();
         $isActive = $oSurvey->isActive;
         $questionCount = safecount($aQuestionTitles);
