@@ -476,7 +476,7 @@ export default {
                         this.loading = false;
                         this.$log.error(rejected);
                         if(rejected.data != undefined) {
-                            window.LS.notifyFader(rejected.data.message, 'well-lg bg-danger text-center', undefined, {timeout: 5500});
+                            window.LS.notifyFader(rejected.data, 'well-lg bg-danger text-center', undefined, {timeout: 5500});
                         }
                     }
                 )

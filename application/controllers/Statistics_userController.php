@@ -167,7 +167,7 @@ class Statistics_userController extends SurveyController
         $query = "SELECT count(*) FROM " . $survey->responsesTableName;
         //if incompleted answers should be filtert submitdate has to be not null
         //this setting is taken from config-defaults.php
-        if (Yii::app()->getConfig("filterout_incomplete_answers") == true) {
+        if (Yii::app()->getConfig("filterout_incomplete_answers") == 'complete') {
             $query .= " WHERE " . $survey->responsesTableName . ".submitdate is not null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
