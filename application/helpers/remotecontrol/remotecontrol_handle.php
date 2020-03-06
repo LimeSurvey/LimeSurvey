@@ -1575,10 +1575,10 @@ class remotecontrol_handle
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
                                 if ($sPropertyName == 'available_answers') {
-                                    $aData[$oSubQuestion['title']] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['title']] = array_key_exists($sLanguage, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
                                 } else {
                                     $aData[$oSubQuestion['qid']]['title'] = $oSubQuestion['title'];
-                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($sLanguage, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
                                     $aData[$oSubQuestion['qid']]['scale_id'] = $oSubQuestion['scale_id'];
                                 }
 
@@ -1622,7 +1622,7 @@ class remotecontrol_handle
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['code']]['answer'] = array_key_exists($language, $oAttribute->answerL10ns) ? $oAttribute->answerL10ns[$sLanguage]->answer : '';
+                                $aData[$oAttribute['code']]['answer'] = array_key_exists($sLanguage, $oAttribute->answerL10ns) ? $oAttribute->answerL10ns[$sLanguage]->answer : '';
                                 $aData[$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];
