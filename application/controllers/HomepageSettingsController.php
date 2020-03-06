@@ -15,7 +15,9 @@ class HomepageSettingsController extends LSBaseController
             ),
             array(
                 'allow',
-                'actions' => array('index',  'updateBox'),
+                'actions' => array('index',  'changeBoxesInContainer', 'createBox',
+                    'deleteBox','resetAllBoxes' ,'toggleShowLastSurveyAndQuestion' ,
+                    'updateBox', 'toggleShowLogoStatus', ''),
                 'users' => array('@'), //only login users
             ),
             array('deny'),
