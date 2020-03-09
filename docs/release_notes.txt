@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.7 (build 200225) to 3.22.8 (build 200309) March 9, 2020
+-Fixed issue: Save button in Questioneditor keeps loading (Patrick Teichmann)
+-Fixed issue: Language selector overlaps other elements when resizing screen at survey creation (Carsten Schmitz)
+-Fixed issue #15920: PHP notice when submit a survey with refurl (#1394) (Denis Chenu)
+-Fixed issue #12131: Config parameter filterout_incomplete_answers does not seem to work anymore (Carsten Schmitz)
+
+
 Changes from 3.22.6 (build 200219) to 3.22.7 (build 200225) February 24, 2020
 -Fixed issue #15900: unable set a question theme for Equation question type (Denis Chenu)
 -Fixed issue #15889: Quota names not displayed in overview (Patrick Teichmann)
