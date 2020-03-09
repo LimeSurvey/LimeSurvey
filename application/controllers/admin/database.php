@@ -1347,7 +1347,7 @@ class database extends Survey_Common_Action
                                     $aInsertData['parent_qid'] = $this->iQuestionID;
                                     if (Question::model()->insertRecords($aInsertData)){
                                         if ($sLanguageIndex == 0){ // main language
-                                            $aSubquestionIds[$sSubquestionIndex] = Yii::app()->db->getLastInsertID(); // save qid into the array
+                                            $aSubquestionIds[$sSubquestionIndex] = getLastInsertID('{{questions}}'); // save qid into the array
                                         }
                                     }
                                 }
