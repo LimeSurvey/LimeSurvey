@@ -88,10 +88,13 @@ class conditionsaction extends Survey_Common_Action
     }
 
     /**
-     * @param string $subaction
-     * @param int $iSurveyID
-     * @param int $gid
-     * @param int $qid
+     * Main Entry Method.
+     * 
+     * @param string $subaction Given Subaction
+     * @param int    $iSurveyID Given Survey ID
+     * @param int    $gid       Given Group ID
+     * @param int    $qid       Given Question ID
+     * 
      * @return void
      */
     public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
@@ -136,9 +139,15 @@ class conditionsaction extends Survey_Common_Action
         }
 
         //BEGIN Sanitizing POSTed data
-        if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
-        if (!isset($qid)) { $qid = returnGlobal('qid'); }
-        if (!isset($gid)) { $gid = returnGlobal('gid'); }
+        if (!isset($iSurveyID)) {
+            $iSurveyID = returnGlobal('sid');
+        }
+        if (!isset($qid)) {
+            $qid = returnGlobal('qid');
+        }
+        if (!isset($gid)) {
+            $gid = returnGlobal('gid');
+        }
         $gid = (int) $gid;
         $qid = (int) $qid;
 
@@ -1209,9 +1218,10 @@ class conditionsaction extends Survey_Common_Action
             $result = Question::model()->with(array(
                 'group' => array(
                     'condition' => 'questionGroupL10ns.language = :lang',
-                    'params' => array(':lang' => $this->language)
+                    'params' => array(':lang' => $this->language),
+                    'alias'  => 'group',
                 ),
-                'group.questionGroupL10ns',
+                'group.questionGroupL10ns' => array('alias' =>'questiongroupl10ns' ),
                 'questionL10ns'
             ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
 
@@ -1391,8 +1401,9 @@ class conditionsaction extends Survey_Common_Action
                         case "H":
                             $fresult = Answer::model()->with(array(
                             'answerL10ns' => array(
-                                'condition' => 'answerL10ns.language = :lang',
-                                'params' => array(':lang' => $this->language)
+                                'condition' => 'answerl10ns.language = :lang',
+                                'params' => array(':lang' => $this->language),
+                                'alias' => 'answerl10ns',
                             )))->findAllByAttributes(
                                 array(
                                     'qid' => $rows['qid'],
@@ -1621,7 +1632,8 @@ class conditionsaction extends Survey_Common_Action
                         $aresult = Answer::model()->with(array(
                             'answerL10ns' => array(
                                 'condition' => 'answerL10ns.language = :lang',
-                                'params' => array(':lang' => $this->language)
+                                'params' => array(':lang' => $this->language),
+                                'alias' => 'answerl10ns',
                             ))
                         )->findAllByAttributes(array(
                             'qid' => $rows['qid'],
