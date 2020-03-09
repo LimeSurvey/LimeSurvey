@@ -33,6 +33,7 @@ before_script:
     - phpenv config-rm xdebug.ini
 
     # Install LimeSurvey.
+    - php -m  # Spit out all loaded PHP modules
     - mysql --version
     - sudo service mysql status
     - touch enabletests
