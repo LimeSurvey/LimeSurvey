@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.9 (build 200310) to 1 (build 200311) March 9, 2020
+#Updated translation: French (France) by janolap1
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 4.1.8 (build 200302) to 4.1.9 (build 200310) March 9, 2020
 -Fixed issue: Unable to import multilingual question from version 3.x (Carsten Schmitz)
 -Fixed issue: Question editor won't load when using MSSQL server (Carsten Schmitz)
