@@ -24,4 +24,5 @@ foreach ($packages as $class => $file) {
 }
 
 // All good.
+echo 'All good.' . PHP_EOL;
 exit(0);
