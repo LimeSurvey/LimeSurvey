@@ -12,6 +12,8 @@ require_once __DIR__ . '/../third_party/autoload.php';
 
 $packages = include(__DIR__ . '/../third_party/composer/autoload_classmap.php');
 
+echo 'Checking all autoloaded classes...' . PHP_EOL;
+
 foreach ($packages as $class => $file) {
     if (!class_exists($class)
         && !interface_exists($class)

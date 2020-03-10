@@ -23,10 +23,8 @@ notifications:
     on_failure: always 
 
 before_script:
-    # Before running composer install, check that the autoload is up-to-date.
-    # TODO: Does not work, since there's a diff in the ClassLoader on Travis. TODO: Why?
-    #- git diff
-    #- php tests/check_autoloader.php
+    # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
+    - php tests/check_autoloader.php
 
     # Test
     #- sudo apt-get update
