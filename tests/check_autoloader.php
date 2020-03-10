@@ -8,44 +8,18 @@
  * @author Olle Haerstedt
  */
 
-chdir(__DIR__ . '/..');
+require_once __DIR__ . '/../third_party/autoload.php';
 
-/** @var string */
-$command = "composer dump-autoload --no-dev";
-$output = [];
-$returnValue = null;
+$packages = include(__DIR__ . '/../third_party/composer/autoload_classmap.php');
 
-exec($command, $output, $returnValue);
-
-if ($returnValue !== 0) {
-    echo 'Could not run `composer dump-autoload --no-dev`.';
-    exit(3);
+foreach ($packages as $class => $file) {
+    if (!class_exists($class)
+        && !interface_exists($class)
+        && !trait_exists($class)) {
+        echo 'Autoloader broken: Could not load class/interface/trait ' . json_encode($class) . PHP_EOL;
+        exit(1);
+    }
 }
 
-/** @var string */
-$command = "git status -s | sed 's/^ //g' | grep ^M | wc -l";
-
-/** @var string[] */
-$output = [];
-
-exec($command, $output);
-
-if (count($output) !== 1) {
-    echo 'Got more than one line from command, aborting' . PHP_EOL;
-    exit(1);
-}
-
-/** @var int */
-$changedLines = intval(trim($output[0]));
-
-if ($changedLines !== 0) {
-    echo 'Some lines changed when running `composer dump-autoload --no-dev`, which means the dev autoloader was probably submitted. Please review.' . PHP_EOL;
-    echo 'Changed lines: ' . $changedLines . PHP_EOL;
-    system('git status');
-    system('git diff');
-    exit(2);
-} else {
-    // All good.
-    echo 'Autoload check OK.' . PHP_EOL;
-    exit(0);
-}
+// All good.
+exit(0);
