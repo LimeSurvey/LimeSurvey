@@ -42,6 +42,7 @@ if ($changedLines !== 0) {
     echo 'Some lines changed when running `composer dump-autoload --no-dev`, which means the dev autoloader was probably submitted. Please review.' . PHP_EOL;
     echo 'Changed lines: ' . $changedLines . PHP_EOL;
     system('git status');
+    system('git diff');
     exit(2);
 } else {
     // All good.
