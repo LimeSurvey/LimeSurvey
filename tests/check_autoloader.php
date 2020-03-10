@@ -39,7 +39,7 @@ if (count($output) !== 1) {
 $changedLines = intval(trim($output[0]));
 
 if ($changedLines !== 0) {
-    echo 'Some lines changed when running `composer dump-autoload`, which means some vendor package is not added to git. Please review.' . PHP_EOL;
+    echo 'Some lines changed when running `composer dump-autoload --no-dev`, which means the dev autoloader was probably submitted. Please review.' . PHP_EOL;
     exit(2);
 } else {
     // All good.
