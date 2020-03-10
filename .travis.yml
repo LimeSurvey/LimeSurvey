@@ -38,6 +38,7 @@ before_script:
     - sudo service mysql status
     - touch enabletests
     # Before running composer install, check that the autoload is up-to-date.
+    - git diff third_party/composer/ClassLoader.php
     - php tests/check_autoloader.php
     # NB: PHPUnit 6.5.* is installed with composer.
     - composer install
