@@ -1,29 +1,33 @@
 <?php
 
-
 class SurveyActivator
 {
     /** @var Survey */
     protected $survey;
+
     /** @var array  */
     protected $tableDefinition = [];
+
     /** @var array  */
     protected $timingsTableDefinition = [];
+
     /** @var array  */
     protected $fieldMap;
+
     /** @var string */
     protected $collation;
+
     /** @var PluginEvent */
     protected $event;
+
     /** @var string */
     protected $error;
+
     /** @var bool */
     protected $createSurveyDir = false;
 
-
     /** @var boolean */
     public $isSimulation;
-
 
     /**
      * @param Survey $survey
@@ -39,7 +43,6 @@ class SurveyActivator
      */
     public function activate()
     {
-
         $this->event = new PluginEvent('beforeSurveyActivate');
         $this->event->set('surveyId', $this->survey->primaryKey);
         $this->event->set('simulate', $this->isSimulation);
@@ -70,10 +73,10 @@ class SurveyActivator
         }
 
         Yii::app()->db->createCommand()->update(
-                Survey::model()->tableName(),
-                ['active'=>'Y'], 'sid=:sid',
-                [':sid'=>$this->survey->primaryKey]
-            );
+            Survey::model()->tableName(),
+            ['active'=>'Y'], 'sid=:sid',
+            [':sid'=>$this->survey->primaryKey]
+        );
 
         $aResult = array(
             'status' => 'OK',
@@ -86,8 +89,6 @@ class SurveyActivator
         return $aResult;
     }
 
-
-
     /**
      * For each question, create the appropriate field(s)
      * @return void
@@ -96,7 +97,7 @@ class SurveyActivator
     {
         $sFieldMap = $this->fieldMap;
 
-        foreach ($sFieldMap as $j=>$aRow) {
+        foreach ($sFieldMap as $aRow) {
             switch ($aRow['type']) {
                 case 'seed':
                     $aTableDefinition[$aRow['fieldname']] = "string(31)";
@@ -211,7 +212,6 @@ class SurveyActivator
             }
         }
         $this->tableDefinition = $aTableDefinition;
-
     }
 
     /**
@@ -222,13 +222,11 @@ class SurveyActivator
         $timingsfieldmap = createTimingsFieldMap($this->survey->primaryKey, "full", false, false, $this->survey->language);
         $aTimingTableDefinition = array();
         $aTimingTableDefinition['id'] = $this->tableDefinition['id'];
-        foreach ($timingsfieldmap as $field=>$fielddata) {
+        foreach ($timingsfieldmap as $field => $fielddata) {
             $aTimingTableDefinition[$field] = 'FLOAT';
         }
         $this->timingsTableDefinition = $aTimingTableDefinition;
     }
-
-
 
     /**
      * @return void
@@ -244,7 +242,6 @@ class SurveyActivator
             $this->collation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
         }
     }
-
 
     /**
      * @return void
@@ -262,9 +259,7 @@ class SurveyActivator
             $arrSim[] = array($type);
             $this->tableDefinition = $arrSim;
         }
-
     }
-
 
     /**
      * @return void
@@ -280,7 +275,6 @@ class SurveyActivator
         $this->prepareSimulateQuery();
     }
 
-
     /**
      * @return boolean
      * @throws CDbException
@@ -292,7 +286,8 @@ class SurveyActivator
         Yii::app()->loadHelper("database");
         try {
             Yii::app()->db->createCommand()->createTable($sTableName, $this->tableDefinition);
-            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
+            // Refresh schema cache just in case the table existed in the past
+            Yii::app()->db->schema->getTable($sTableName, true);
         } catch (Exception $e) {
             if (App()->getConfig('debug')) {
                 $this->error = $e->getMessage();
@@ -302,7 +297,7 @@ class SurveyActivator
             return false;
         }
         try {
-            if (isset($aTableDefinition['token'])) {
+            if (isset($this->tableDefinition['token'])) {
                 Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$this->survey->primaryKey}_".rand(1, 50000), $sTableName, 'token');
             }
         } catch (\Exception $e) {
@@ -310,9 +305,7 @@ class SurveyActivator
 
         $this->createParticipantsTableKeys();
         return true;
-
     }
-
 
     /**
      * @return boolean
@@ -325,11 +318,10 @@ class SurveyActivator
         if ($success === false) {
             Yii::app()->user->setFlash('error', $message);
             return false;
-        } else if (!empty($message)) {
+        } elseif (!empty($message)) {
             Yii::app()->user->setFlash('info', $message);
         }
         return true;
-
     }
 
     /**
@@ -364,7 +356,6 @@ class SurveyActivator
                 @Yii::app()->db->createCommand($sQuery)->execute();
             }
         }
-
     }
 
     /**
@@ -377,15 +368,14 @@ class SurveyActivator
             $sTableName = $this->survey->timingsTableName;
             try {
                 Yii::app()->db->createCommand()->createTable($sTableName, $this->timingsTableDefinition);
-                Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
+                // Refresh schema cache just in case the table existed in the past
+                Yii::app()->db->schema->getTable($sTableName, true);
             } catch (\Exception $e) {
                 throw $e;
             }
-
         }
         return true;
     }
-
 
     /**
      * @return bool
@@ -404,21 +394,21 @@ class SurveyActivator
             }
         }
         return true;
-
     }
 
     /**
      * Set the default_storage_engine for mysql DB
      * @param string $dbEngine
      */
-    private function setMySQLDefaultEngine($dbEngine) {
+    private function setMySQLDefaultEngine($dbEngine)
+    {
         /* empty dbEngine : out */
-        if(empty($dbEngine)) {
+        if (empty($dbEngine)) {
             return;
         }
         $db = Yii::app()->db;
         /* not DB : out */
-        if(empty($db)) {
+        if (empty($db)) {
             return;
         }
         /* not mysql : out */
