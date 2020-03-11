@@ -17,9 +17,6 @@ class SurveyActivator
     /** @var string */
     protected $collation;
 
-    /** @var PluginEvent */
-    protected $event;
-
     /** @var string */
     protected $error;
 
@@ -43,14 +40,17 @@ class SurveyActivator
      */
     public function activate()
     {
-        $this->event = new PluginEvent('beforeSurveyActivate');
-        $this->event->set('surveyId', $this->survey->primaryKey);
-        $this->event->set('simulate', $this->isSimulation);
-        App()->getPluginManager()->dispatchEvent($this->event);
+        EmCacheHelper::init(['sid' => $this->survey->sid, 'active' => 'Y']);
+        EmCacheHelper::flush();
+
+        $event = new PluginEvent('beforeSurveyActivate');
+        $event->set('surveyId', $this->survey->primaryKey);
+        $event->set('simulate', $this->isSimulation);
+        App()->getPluginManager()->dispatchEvent($event);
 
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
-        if (!$this->showEventMessages()) {
+        if (!$this->showEventMessages($event)) {
             return ['error'=>'plugin'];
         }
 
@@ -80,7 +80,7 @@ class SurveyActivator
 
         $aResult = array(
             'status' => 'OK',
-            'pluginFeedback' => $this->event->get('pluginFeedback')
+            'pluginFeedback' => $event->get('pluginFeedback')
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
@@ -308,12 +308,13 @@ class SurveyActivator
     }
 
     /**
+     * @param PluginEvent $event
      * @return boolean
      */
-    protected function showEventMessages()
+    protected function showEventMessages($event)
     {
-        $success = $this->event->get('success');
-        $message = $this->event->get('message');
+        $success = $event->get('success');
+        $message = $event->get('message');
 
         if ($success === false) {
             Yii::app()->user->setFlash('error', $message);
