@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Service class to activate survey.
+ * @todo Move to models/services/survey/ folder.
+ */
 class SurveyActivator
 {
     /** @var Survey */
@@ -24,7 +28,7 @@ class SurveyActivator
     protected $createSurveyDir = false;
 
     /** @var boolean */
-    public $isSimulation;
+    public $isSimulation = false;
 
     /**
      * @param Survey $survey
@@ -57,7 +61,11 @@ class SurveyActivator
         $this->prepareResponsesTable();
 
         if ($this->isSimulation) {
-            return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$this->tableDefinition);
+            return array(
+                'dbengine'=>Yii::app()->db->getDriverName(),
+                'dbtype'=>Yii::app()->db->driverName,
+                'fields'=>$this->tableDefinition
+            );
         }
 
         if (!$this->createParticipantsTable()) {
@@ -74,8 +82,9 @@ class SurveyActivator
 
         Yii::app()->db->createCommand()->update(
             Survey::model()->tableName(),
-            ['active'=>'Y'], 'sid=:sid',
-            [':sid'=>$this->survey->primaryKey]
+            ['active' => 'Y'],
+            'sid=:sid',
+            [':sid' => $this->survey->primaryKey]
         );
 
         $aResult = array(
@@ -226,10 +235,16 @@ class SurveyActivator
      */
     protected function prepareTimingsTable()
     {
-        $timingsfieldmap = createTimingsFieldMap($this->survey->primaryKey, "full", false, false, $this->survey->language);
+        $timingsfieldmap = createTimingsFieldMap(
+            $this->survey->primaryKey,
+            "full",
+            false,
+            false,
+            $this->survey->language
+        );
         $aTimingTableDefinition = array();
         $aTimingTableDefinition['id'] = $this->tableDefinition['id'];
-        foreach ($timingsfieldmap as $field => $fielddata) {
+        foreach (array_keys($timingsfieldmap) as $field) {
             $aTimingTableDefinition[$field] = 'FLOAT';
         }
         $this->timingsTableDefinition = $aTimingTableDefinition;
@@ -245,7 +260,9 @@ class SurveyActivator
         if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
             $this->collation = " COLLATE 'utf8mb4_bin'";
         }
-        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib' || Yii::app()->db->driverName == 'mssql') {
+        if (Yii::app()->db->driverName == 'sqlsrv'
+            || Yii::app()->db->driverName == 'dblib'
+            || Yii::app()->db->driverName == 'mssql') {
             $this->collation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
         }
     }
@@ -305,7 +322,11 @@ class SurveyActivator
         }
         try {
             if (isset($this->tableDefinition['token'])) {
-                Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$this->survey->primaryKey}_".rand(1, 50000), $sTableName, 'token');
+                Yii::app()->db->createCommand()->createIndex(
+                    "idx_survey_token_{$this->survey->primaryKey}_".rand(1, 50000),
+                    $sTableName,
+                    'token'
+                );
             }
         } catch (\Exception $e) {
         }
