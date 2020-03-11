@@ -15,9 +15,6 @@ class SurveyActivator
     /** @var array  */
     protected $timingsTableDefinition = [];
 
-    /** @var array  */
-    protected $fieldMap;
-
     /** @var string */
     protected $error;
 
@@ -108,10 +105,8 @@ class SurveyActivator
      * @param string $collation
      * @return void
      */
-    protected function prepareTableDefinition(string $collation)
+    protected function prepareTableDefinition(string $collation, array $sFieldMap)
     {
-        $sFieldMap = $this->fieldMap;
-
         foreach ($sFieldMap as $aRow) {
             switch ($aRow['type']) {
                 case 'seed':
@@ -295,8 +290,8 @@ class SurveyActivator
         //Check for any additional fields for this survey and create necessary fields (token and datestamp)
         $this->survey->fixInvalidQuestions();
         //Get list of questions for the base language
-        $this->fieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
-        $this->prepareTableDefinition($collation);
+        $sFieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
+        $this->prepareTableDefinition($collation, $sFieldMap);
         $this->prepareSimulateQuery();
     }
 
