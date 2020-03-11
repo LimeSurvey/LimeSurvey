@@ -281,9 +281,11 @@ class InstallerConfigForm extends CFormModel
     }
 
     /**
-     * @return mixed
+     * Get the array of supported DB type
+     * @return array
      */
     public function getSupportedDbTypes(){
+        $result = array();
         foreach (CDbConnection::getAvailableDrivers() as $driver) {
             if (isset($this->db_names[$driver])) {
                 $result[$driver] = $this->db_names[$driver];
