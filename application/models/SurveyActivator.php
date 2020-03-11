@@ -19,9 +19,6 @@ class SurveyActivator
     protected $fieldMap;
 
     /** @var string */
-    protected $collation;
-
-    /** @var string */
     protected $error;
 
     /** @var bool */
@@ -107,9 +104,11 @@ class SurveyActivator
 
     /**
      * For each question, create the appropriate field(s)
+     *
+     * @param string $collation
      * @return void
      */
-    protected function prepareTableDefinition()
+    protected function prepareTableDefinition(string $collation)
     {
         $sFieldMap = $this->fieldMap;
 
@@ -190,7 +189,7 @@ class SurveyActivator
                     }
                     break;
                 case "token":
-                    $aTableDefinition[$aRow['fieldname']] = 'string(' . Token::MAX_LENGTH . ')'.$this->collation;
+                    $aTableDefinition[$aRow['fieldname']] = 'string(' . Token::MAX_LENGTH . ')'.$collation;
                     break;
                 case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
@@ -224,7 +223,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
-                $aTableDefinition['token'] = 'string('.Token::MAX_LENGTH.')'.$this->collation;
+                $aTableDefinition['token'] = 'string('.Token::MAX_LENGTH.')'.$collation;
             }
         }
         $this->tableDefinition = $aTableDefinition;
@@ -251,20 +250,21 @@ class SurveyActivator
     }
 
     /**
-     * @return void
+     * @return string
      */
-    protected function prepareCollation()
+    protected function getCollation()
     {
         // Specify case sensitive collations for the token
-        $this->collation = '';
+        $collation = '';
         if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
-            $this->collation = " COLLATE 'utf8mb4_bin'";
+            $collation = " COLLATE 'utf8mb4_bin'";
         }
         if (Yii::app()->db->driverName == 'sqlsrv'
             || Yii::app()->db->driverName == 'dblib'
             || Yii::app()->db->driverName == 'mssql') {
-            $this->collation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
+            $collation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
         }
+        return $collation;
     }
 
     /**
@@ -290,12 +290,13 @@ class SurveyActivator
      */
     protected function prepareResponsesTable()
     {
-        $this->prepareCollation();
+        /** @var string */
+        $collation = $this->getCollation();
         //Check for any additional fields for this survey and create necessary fields (token and datestamp)
         $this->survey->fixInvalidQuestions();
         //Get list of questions for the base language
         $this->fieldMap = createFieldMap($this->survey, 'full', true, false, $this->survey->language);
-        $this->prepareTableDefinition();
+        $this->prepareTableDefinition($collation);
         $this->prepareSimulateQuery();
     }
 
