@@ -69,7 +69,7 @@ $surveyid = $aTabContents['surveyid'];
                         'data' => getLanguageDataRestricted (false,'short'),
                         'value' => $oSurvey->language,
                         'name' => 'language',
-                        'pluginOptions' => array()
+                        'pluginOptions' => array('width'=>'100%')
                     ));?>
                     <?php else:?>
                     <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>

@@ -108,7 +108,7 @@ export default {
                     this.loading = false;
                     LS.EventBus.$emit('loadingFinished');
                     $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader("Questiongroup could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                    window.LS.notifyFader("Question group could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )

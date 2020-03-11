@@ -34,6 +34,36 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.9 (build 200310) to 1 (build 200311) March 9, 2020
+#Updated translation: French (France) by janolap1
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 4.1.8 (build 200302) to 4.1.9 (build 200310) March 9, 2020
+-Fixed issue: Unable to import multilingual question from version 3.x (Carsten Schmitz)
+-Fixed issue: Question editor won't load when using MSSQL server (Carsten Schmitz)
+-Fixed issue: Language selector overlaps other elements when resizing screen at survey creation (Carsten Schmitz)
+-Fixed issue: Error message is missing for Questioneditor on save (Patrick Teichmann)
+-Fixed issue: #15906 you can not enter anything in the input validation question attribute (Jessica Höck)
+-Fixed issue: #15558 Labels contain 'template' instead of 'theme' (Jessica Höck)
+-Fixed issue #15885: Save button missing for response editing (Patrick Teichmann)
+-Fixed issue #15882: Missing attribute "Label for other" in listradio question (Patrick Teichmann)
+-Fixed issue #15844: api get_question_properties not responding the subquestions question (m-rm)
+-Fixed issue #15832: Participant settings not imported correctly when importing a CSV file (emailstatus issue) (Marc Leonhardt)
+-Fixed issue #15829: Unable to upgrade from 3.x to 4x when using MSSQL (Carsten Schmitz)
+-Fixed issue #15073: Cannot export data to SPSS if no participant table exists (Carsten Schmitz)
+-Fixed issue #12131: Config parameter filterout_incomplete_answers does not seem to work anymore (Carsten Schmitz)
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Indonesian by Mazi
+#Updated translation: Hungarian by kkd
+#Updated translation: German by MalteHoffmann
+#Updated translation: Finnish by jeskiv, Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+
+
 Changes from 4.1.7 (build 200224) to 4.1.8 (build 200302) March 2, 2020
 -Fixed issue #15920: PHP notice when submit a survey with refurl (Denis Chenu)
 -Fixed issue #15905: Delete question internal server error (Eddy Lackmann)
