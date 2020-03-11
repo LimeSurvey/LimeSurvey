@@ -86,6 +86,13 @@ class SurveyActivator
             $aResult['warning'] = 'nouploadsurveydir';
         }
 
+        LimeExpressionManager::SetDirtyFlag();
+
+        $event = new PluginEvent('afterSurveyActivate');
+        $event->set('surveyId', $this->survey->sid);
+        $event->set('simulate', $this->isSimulation);
+        App()->getPluginManager()->dispatchEvent($event);
+
         return $aResult;
     }
 
