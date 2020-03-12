@@ -586,7 +586,7 @@ class InstallerConfigForm extends CFormModel
     }
 
     /**
-     * @return bool
+     * @return void
      * @throws Exception
      */
     public function createDatabase() {
@@ -602,8 +602,6 @@ class InstallerConfigForm extends CFormModel
         $this->useDbName = true;
         // reconnect to set database name & status
         $this->dbConnect();
-
-        return $bCreateDB;
     }
 
 
