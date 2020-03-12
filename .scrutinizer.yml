@@ -6,6 +6,8 @@ build:
     nodes:
         tests: true
         analysis:
+            environment:
+                php: 7.4
             tests:
                 override: [php-scrutinizer-run]
 filter:
@@ -84,4 +86,3 @@ coding_style:
         upper_lower_casing:
             constants:
                 true_false_null: lower
-                
