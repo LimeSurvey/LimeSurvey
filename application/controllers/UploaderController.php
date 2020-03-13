@@ -18,6 +18,7 @@ class UploaderController extends SurveyController
 {
     public function run($actionID)
     {
+        global $surveyid; // needed for getHeader below!
         $surveyid = Yii::app()->session['LEMsid'];
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!$oSurvey) {
@@ -324,7 +325,6 @@ class UploaderController extends SurveyController
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
         App()->bootstrap->register();
-
         $header = getHeader($meta);
 
         echo $header;
