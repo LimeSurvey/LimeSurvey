@@ -118,9 +118,9 @@ class Question extends LSActiveRecord
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid'), 'order'=> App()->getDb()->quoteColumnName('subquestions.question_order').' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
-            'answers' => array(self::HAS_MANY, 'Answer', 'qid')
+            'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order'=> App()->getDb()->quoteColumnName('answers.sortorder').' ASC'),
         );
     }
 
