@@ -988,10 +988,6 @@ class responses extends Survey_Common_Action
      */
     private function _zipFiles($iSurveyID, $responseIds, $zipfilename)
     {
-        /**
-         * @todo Move this to model.
-         */
-        Yii::app()->loadLibrary('admin/pclzip');
 
         $tmpdir = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$iSurveyID.DIRECTORY_SEPARATOR."files".DIRECTORY_SEPARATOR;
 
@@ -1007,18 +1003,18 @@ class responses extends Survey_Common_Action
                 * files from a different source with the same name.
                 */
                 if (file_exists($tmpdir.basename($file['filename']))) {
-                    $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir.basename($file['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, sanitize_filename(rawurldecode($file['name']))));
+                    $filelist[] = array($tmpdir.basename($file['filename']),sprintf("%05s_%02s_%s", $response->id, $filecount, sanitize_filename(rawurldecode($file['name']))));
                 }
             }
         }
 
         if (count($filelist) > 0) {
-            $zip = new PclZip($tmpdir.$zipfilename);
-            if ($zip->create($filelist) === 0) {
-                //Oops something has gone wrong!
+            $zip = new ZipArchive(); 
+            $zip->open($tmpdir.$zipfilename,ZipArchive::CREATE);
+            foreach($filelist as $aFile) {
+                $zip->addFile($aFile[0],$aFile[1]);
             }
-
+            $zip->close();
             if (file_exists($tmpdir.'/'.$zipfilename)) {
                 @ob_clean();
                 header('Content-Description: File Transfer');
