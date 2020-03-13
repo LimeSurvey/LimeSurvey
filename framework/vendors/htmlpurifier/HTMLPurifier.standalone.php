@@ -2546,7 +2546,6 @@ class HTMLPurifier_Config
         if ($index !== false) {
             $array = (isset($array[$index]) && is_array($array[$index])) ? $array[$index] : array();
         }
-        $mq = $mq_fix && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc();
 
         $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm($allowed, $schema);
         $ret = array();
@@ -2560,8 +2559,7 @@ class HTMLPurifier_Config
             if (!isset($array[$skey])) {
                 continue;
             }
-            $value = $mq ? stripslashes($array[$skey]) : $array[$skey];
-            $ret[$ns][$directive] = $value;
+            $ret[$ns][$directive] = $array[$skey];
         }
         return $ret;
     }

@@ -713,17 +713,11 @@ class themes extends Survey_Common_Action
             if (returnGlobal('changes')) {
                 $changedtext = returnGlobal('changes');
                 $changedtext = str_replace('<?', '', $changedtext);
-                if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-                    $changedtext = stripslashes($changedtext);
-                }
             }
 
             if (returnGlobal('changes_cp')) {
                 $changedtext = returnGlobal('changes_cp');
                 $changedtext = str_replace('<?', '', $changedtext);
-                if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-                    $changedtext = stripslashes($changedtext);
-                }
             }
 
             $action               = returnGlobal('action');
