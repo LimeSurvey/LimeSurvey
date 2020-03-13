@@ -83,8 +83,8 @@ class Question extends LSActiveRecord
             'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
             'parents' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid", "language" => "language")),
             'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language")),
-            'answers' => array(self::HAS_MANY, 'Answer', array('qid'=>'qid', "language" => "language"))
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language"), 'order'=> App()->getDb()->quoteColumnName('subquestions.question_order').' ASC'),
+            'answers' => array(self::HAS_MANY, 'Answer', array('qid'=>'qid', "language" => "language"), 'order'=> App()->getDb()->quoteColumnName('answers.sortorder').' ASC'),
         );
     }
 
