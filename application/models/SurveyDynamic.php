@@ -954,9 +954,9 @@ class SurveyDynamic extends LSActiveRecord
         /* Second (X) scale for array text and array number */
         if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])) {
             $oScaleXSubquestions = Question::model()->findAll(array(
-                'condition' => "parent_qid = :parent_qid and scale_id = :scale_id",
+                'condition' => "parent_qid = :parent_qid and scale_id = :scale_id and language =:language",
                 'order' => "question_order ASC",
-                'params' => array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => 1),
+                'params' => array(':parent_qid' => $aQuestionAttributes['parent_qid'], ':scale_id' => 1, ":language" => $oQuestion->language),
             ));
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
                 $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
