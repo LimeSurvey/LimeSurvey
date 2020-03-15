@@ -70,6 +70,7 @@ abstract class Token extends Dynamic
         // Set the default values
         $this->usesleft = 1;
         $this->completed = "N";
+        $this->emailstatus = "OK";
     }
     /** @inheritdoc */
     public function attributeLabels()
