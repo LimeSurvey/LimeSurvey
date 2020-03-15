@@ -122,6 +122,8 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         [{}^\~`]
         ~x',
         '-', $filename);
+    // Removes smart quotes
+    $filename = str_replace(array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"), array('','', '', '', '-', '--','...'), $filename);
     // avoids ".", ".." or ".hiddenFiles"
     $filename = ltrim($filename, '.-');
     // optional beautification
@@ -133,9 +135,12 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)).($ext ? '.'.$ext : '');
     $filename = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $filename) : $filename;
     
-    return ($force_lowercase) ?
-        (function_exists('mb_strtolower')) ?
-            mb_strtolower($filename, 'UTF-8') : strtolower($filename) : $filename;
+    if ($force_lowercase) {
+        $filename=mb_strtolower($filename, 'UTF-8');
+    }
+    // At the end of the process there are sometimes question marks left from non-UTF-8 characters
+    $filename = str_replace('?', '', $filename);
+    return $filename;
 }
 
 /**
