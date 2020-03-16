@@ -718,8 +718,7 @@ function submitfailed($errormsg = '', $query = null)
         }
         SendEmailMessage($email, gT("Error saving results", "unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
     } else {
-        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
-        $completed .= $subquery;
+        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a>\n";
     }
     return $completed;
 }
