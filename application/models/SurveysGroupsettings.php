@@ -49,6 +49,7 @@
  * @property integer $navigationdelay
  * @property string $nokeyboard
  * @property string $alloweditaftercompletion
+ * @property string $ipanonymize
  */
 class SurveysGroupsettings extends LSActiveRecord
 {

@@ -4878,3 +4878,24 @@ function resourceExtractFilter($p_event, &$p_header) {
         return 0;
     }
 }
+
+/**
+ * Anonymizes ip address:
+ * This anonymize an IP address to a /24 subnet (IPv4) or a /64 subnet (IPv6)
+ * For instance, the IPv4 address 192.168.178.123 is anonymized to 192.168.178.0.
+ * The IPv6 address 2a03:2880:2110:df07:face:b00c::1 is anonymized to 2a03:2880:2110:df07::
+ * It also checks before anonymizes if it has already been anonymized and in that case give back
+ * the ip address without changing it.
+ *
+ * @param string $ipAddress
+ * @return string
+ */
+function anonymizeIpAdress($ipAddress){
+    $anonymizedIp = "";
+
+    //check if it is ipv4 or ipv6
+    //check if it has already been anonymized
+    //if not anonymize it ...
+
+    return $anonymizedIp;
+}
