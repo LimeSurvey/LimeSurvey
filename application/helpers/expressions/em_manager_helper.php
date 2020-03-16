@@ -5586,23 +5586,16 @@
                     }
                     //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                        $iCountUpdated = Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
-                        if (!$iCountUpdated) {
-                            // Fix #15733 comparing values of previous response
-                            $aReponseCurrentAttributes = $oResponse->getAttributes();
-                            $aIntersect = array_intersect_key($aReponseCurrentAttributes,$aResponseAttributes);
-                            if (!empty(array_diff_assoc($aResponseAttributes,$aIntersect))) {
-                                $message = submitfailed('',$this->gT('Error on response update'));
-                                LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                            }
-                        } else {
-                            // Action in case its saved with success : to be move in Response::aferSave ?
-                            // Save Timings if needed
-                            if ($this->surveyOptions['savetimings']) {
-                                Yii::import("application.libraries.Save");
-                                $cSave = new Save();
-                                $cSave->set_answer_time();
-                            }
+                        Response::model($this->sid)->updateByPk($oResponse->id,$aResponseAttributes);
+                        /* See https://www.php.net/manual/en/pdostatement.rowcount.php :
+                         * this behaviour is not guaranteed for all databases and should not be relied on for portable applications.
+                         */
+                        // Action in case its saved with success : to be move in Response::aferSave ?
+                        // Save Timings if needed
+                        if ($this->surveyOptions['savetimings']) {
+                            Yii::import("application.libraries.Save");
+                            $cSave = new Save();
+                            $cSave->set_answer_time();
                         }
                     } else {
                         LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('This response was already submitted.'), $this->sid);
