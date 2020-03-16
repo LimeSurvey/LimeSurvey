@@ -508,7 +508,7 @@ class CheckIntegrity extends Survey_Common_Action
                 foreach ($aColumns as $oColumn) {
 
                     // Question columns start with the SID
-                    if (strpos($oColumn->name, $oSurvey->sid) !== false) {
+                    if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
 
                         // Fileds are separated by X
                         $aFields   = explode('X', $oColumn->name);

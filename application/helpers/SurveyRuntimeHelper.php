@@ -331,8 +331,6 @@ class SurveyRuntimeHelper
             }
         }
 
-        $this->aSurveyInfo['yiiflashmessages'] = Yii::app()->user->getFlashes();
-
         /**
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *

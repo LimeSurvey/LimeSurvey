@@ -423,7 +423,6 @@ function getStandardsReplacementFields($thissurvey)
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
-    $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
     $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($surveyid);
     $coreReplacements['NUMBEROFQUESTIONS'] = $totalquestions;
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));

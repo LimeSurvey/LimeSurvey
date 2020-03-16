@@ -480,7 +480,11 @@ class PluginManager extends \CApplicationComponent
             }
 
             foreach ($records as $record) {
-                if (!isset($record->load_error) || $record->load_error == 0) {
+                if (!isset($record->load_error)
+                    || $record->load_error == 0
+                    // NB: Authdb is hardcoded since updating sometimes causes error.
+                    // @see https://bugs.limesurvey.org/view.php?id=15908
+                    || $record->name == 'Authdb') {
                     $this->loadPlugin($record->name, $record->id);
                 }
             }
