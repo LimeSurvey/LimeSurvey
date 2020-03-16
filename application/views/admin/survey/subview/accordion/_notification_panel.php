@@ -92,6 +92,7 @@ $googleAnalyticsStyleOptions = array(
                                 }
                             }")*/
                         ));
+
                         /*$this->widget('bootstrap.widgets.TbModal', array(
                             'id' => 'datestampModal_2',
                             'header' => gt('Warning','unescaped'),
@@ -99,6 +100,24 @@ $googleAnalyticsStyleOptions = array(
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                         ));*/
                         }
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" control-label" for='ipaddr'><?php  eT("Anonymize IP address:"); ?></label>
+                <div>
+                    <?php
+                    // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                        'name' => 'ipanonymize',
+                        'value'=> $oSurvey->ipanonymize,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->ipaddr . ']')): $optionsOnOff,
+                        /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                        if ($('#anonymized').is(':checked') == true) {
+                        $('#datestampModal_2').modal();
+                        }
+                        }")*/
+                    ));
                     ?>
                 </div>
             </div>
