@@ -5681,7 +5681,7 @@
                             } else {
                                 $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
+                            if ($submitdate != $oResponse->submitdate && !Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
                                 LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
                             }
                         }
