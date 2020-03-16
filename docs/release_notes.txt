@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.8 (build 200309) to 3.22.9 (build 200317) March 16, 2020
+-Fixed issue: Special characters in uploaded files for responses were corrupted when downloaded as ZIP file (Carsten Schmitz)
+-Fixed issue: Missing file in zip file when downloading files uploaded by participants in responses (Carsten Schmitz)
+-Fixed issue: Invalid language header in file upload popup (Carsten Schmitz)
+-Fixed issue : order of scale X subquestion in array number and text (Denis Chenu)
+-Fixed issue : get good language in print answers for array text and number (Denis Chenu)
+-Fixed issue #15984: Order of subquestion are not respected in print answers (#1398) (Denis Chenu)
+-Fixed issue #15773: Unable to check integrity (Carsten Schmitz)
+-Fixed issue #15528: Internal server error when trying to view partial responses using Postgres (Carsten Schmitz)
+-Fixed issue #14188: Error 500 when copying question in Postgres (Carsten Schmitz)
+
+
 Changes from 3.22.7 (build 200225) to 3.22.8 (build 200309) March 9, 2020
 -Fixed issue: Save button in Questioneditor keeps loading (Patrick Teichmann)
 -Fixed issue: Language selector overlaps other elements when resizing screen at survey creation (Carsten Schmitz)
