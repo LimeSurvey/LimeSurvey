@@ -604,7 +604,7 @@ function submitfailed($errormsg = '', $query = null)
         $mailer->addAddress($thissurvey['adminemail']);
         $mailer->sendMessage();
     } else {
-        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
+        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a>\n";
     }
     return $completed;
 }
