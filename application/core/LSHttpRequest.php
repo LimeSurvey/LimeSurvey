@@ -38,6 +38,30 @@ class LSHttpRequest extends CHttpRequest
     
     public $noCsrfValidationRoutes = array();
     public $noCsrfValidationParams = array();
+    
+    /**
+     * Creates a cookie with a randomly generated CSRF token.
+     * Initial values specified in {@link csrfCookie} will be applied
+     * to the generated cookie.
+     * This function was customized to enable secure CSRF tokens.
+     * See also https://stackoverflow.com/questions/24686557/turning-yii-csrf-token-secure-flag-on
+     * @return CHttpCookie the generated cookie
+     * @see enableCsrfValidation
+     */    
+    protected function createCsrfCookie()
+    {
+        $securityManager=Yii::app()->getSecurityManager();
+        $token=$securityManager->generateRandomBytes(32);
+        $maskedToken=$securityManager->maskToken($token);
+        $cookie=new CHttpCookie($this->csrfTokenName,$maskedToken);
+       $cookie->secure = true; 
+        if(is_array($this->csrfCookie))
+        {
+            foreach($this->csrfCookie as $name=>$value)
+                $cookie->$name=$value;
+        }
+        return $cookie;        
+    }    
 
     /**
      * Return the referal url,
