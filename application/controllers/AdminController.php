@@ -38,6 +38,7 @@ class AdminController extends LSYii_Controller
         // This scenario happens if the user was deleted while still being logged in
         if ( !empty( $this->user_id ) && User::model()->findByPk( $this->user_id ) == null ){
             $this->user_id = null;
+            Yii::app()->session->destroy();
         }
         
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
