@@ -4888,14 +4888,33 @@ function resourceExtractFilter($p_event, &$p_header) {
  * the ip address without changing it.
  *
  * @param string $ipAddress
- * @return string
+ * @return string|boolean if ip is not anonymised false will be returned (in case of not a valid ip or ip has already been
+ *                        anonymised), else the anonymise ip will be returned as a string
  */
-function anonymizeIpAdress($ipAddress){
-    $anonymizedIp = "";
+function anonymizeIpAddress($ipAddress){
+    $anonymizedIp = false;
 
-    //check if it is ipv4 or ipv6
-    //check if it has already been anonymized
-    //if not anonymize it ...
+    if(filter_var($ipAddress,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)){ //check if it is valid ipv4
+        $ipArray = explode('.', $ipAddress);
+        $last_digit = array_pop($ipArray);
+        if($last_digit!=0){ //check if it has already been anonymized
+            //set last number to 0
+            $anonymizedIp = implode('.',$ipArray); //without last digit ?!?
+            $anonymizedIp .= '.0';
+        }
+    } elseif (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) { //check if it is valid ipv6
+        $ipArray = explode(':', $ipAddress);
+        //the last 5 blocks have to be set to 0 ...
+        for ($i = 0; $i < 5; $i++) {
+            array_pop($ipArray);
+        }
+
+        $anonymizedIp = implode(':', $ipArray);
+        //append last 5 blocks with 0
+        for ($i = 0; $i < 5; $i++) {
+            $anonymizedIp .= ':0';
+        }
+    }
 
     return $anonymizedIp;
 }
