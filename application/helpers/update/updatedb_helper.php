@@ -71,7 +71,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
     $options = "";
-    if(in_array(Yii::app()->db->driverName,['mysql','mysqli'])) {
+    if ( Yii::app()->db->driverName == 'mysql' ) {
         $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
     }
     try {
@@ -90,7 +90,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // copy any valid codes from code field to assessment field
             switch (Yii::app()->db->driverName){
                 case 'mysql':
-                case 'mysqli':
                     $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
@@ -1102,7 +1101,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             switch (Yii::app()->db->driverName){
                 case 'mysql':
-                case 'mysqli':
                     addColumn('{{sessions}}', 'data', 'longbinary');
                     break;
                 case 'sqlsrv':
@@ -1218,7 +1216,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 178)
         {
             $oTransaction = $oDB->beginTransaction();
-            if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli')
+            if (Yii::app()->db->driverName=='mysql')
             {
                 modifyPrimaryKey('questions', array('qid','language'));
             }
@@ -2432,9 +2430,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }        
 
         if ($iOldDBVersion < 400) {
+            // Fix database default collation, again
+            if (Yii::app()->db->driverName == 'mysql') {
+                Yii::app()->db->createCommand("ALTER DATABASE `".getDBConnectionStringProperty('dbname')."` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+            }
+
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
-            
+
             // Question table 
             /* l10ns question table */
             if(Yii::app()->db->schema->getTable('{{question_l10ns}}')){
@@ -3151,7 +3154,6 @@ function upgradeSurveyTables402($sMySQLCollation)
                     alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                     break;
                 case 'mysql':
-                case 'mysqli':
                     alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');
@@ -3178,7 +3180,6 @@ function upgradeTokenTables402($sMySQLCollation)
                         alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                         break;
                     case 'mysql':
-                    case 'mysqli':
                         alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
@@ -3352,7 +3353,6 @@ function transferPasswordFieldToText($oDB)
 {
     switch ($oDB->getDriverName()) {
         case 'mysql':
-        case 'mysqli':
             $oDB->createCommand()->alterColumn('{{users}}', 'password', 'text NOT NULL');
             break;
         case 'pgsql':
@@ -4019,7 +4019,6 @@ function upgradeSurveyTables181($sMySQLCollation)
                     $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
                     break;
                 case 'mysql':
-                case 'mysqli':
                     alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');
@@ -4047,7 +4046,6 @@ function upgradeTokenTables181($sMySQLCollation)
                         $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 50000).'}}', $sTableName, 'token');
                         break;
                     case 'mysql':
-                    case 'mysqli':
                         alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
@@ -4727,7 +4725,6 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
     $oDB = Yii::app()->db;
     switch (Yii::app()->db->driverName) {
         case 'mysql':
-        case 'mysqli':
             $sType = $sFieldType;
             if ($bAllowNull !== true) {
                 $sType .= ' NOT NULL';

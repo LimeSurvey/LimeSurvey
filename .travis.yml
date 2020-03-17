@@ -23,6 +23,9 @@ notifications:
     on_failure: always 
 
 before_script:
+    # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
+    - php tests/check_autoloader.php
+
     # Test
     #- sudo apt-get update
     #- sudo apt-get upgrade
@@ -33,6 +36,7 @@ before_script:
     - phpenv config-rm xdebug.ini
 
     # Install LimeSurvey.
+    - php -m  # Spit out all loaded PHP modules
     - mysql --version
     - sudo service mysql status
     - touch enabletests

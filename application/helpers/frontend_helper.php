@@ -242,7 +242,7 @@ function makeFlashMessage() {
     $originalPrefix = Yii::app()->user->getStateKeyPrefix();
     // Bug in Yii? Getting the state-key prefix changes the locale, so set the language manually after.
     Yii::app()->setLanguage($language);
-    Yii::app()->user->setStateKeyPrefix('frontend');
+    Yii::app()->user->setStateKeyPrefix('frontend' . $surveyid);
 
     $mapYiiToBootstrapClass = array(
         'error' => 'danger',
@@ -604,7 +604,7 @@ function submitfailed($errormsg = '', $query = null)
         $mailer->addAddress($thissurvey['adminemail']);
         $mailer->sendMessage();
     } else {
-        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
+        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a>\n";
     }
     return $completed;
 }

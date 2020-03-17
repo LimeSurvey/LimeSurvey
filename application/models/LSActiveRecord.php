@@ -387,13 +387,10 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt values before saving to the database
      */
-    public function encryptSave($runValidation=true)
+    public function encryptSave($runValidation=false)
     {
         // run validation on attribute values before encryption take place, it is impossible to validate encrypted values
         if ($runValidation){
-            // decrypt attributes before validation, return input value if decryption failed (ie because of unencrypted value in encrypted field)
-            $this->decryptEncryptAttributes('decrypt', $bReturnInputIfError=true);
-            // validate attributes
             if(!$this->validate()) {
                 return false;
             }  
@@ -409,7 +406,7 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt/decrypt values
      */
-    public function decryptEncryptAttributes($action = 'decrypt', $bReturnInputIfError=false)
+    public function decryptEncryptAttributes($action = 'decrypt')
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
@@ -419,18 +416,13 @@ class LSActiveRecord extends CActiveRecord
             $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(array("select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'")), 'attribute_id', '');
             foreach ($aParticipantAttributes as $attribute => $value) {
                 if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
-                    $this->value = $sodium->$action($this->value, $bReturnInputIfError);
+                    $this->value = $sodium->$action($this->value);
                 }
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
             foreach ($attributes as $key => $attribute) {
-                // check if the attribute should be decrypted and can be decrypted (maybe plaintexts in crypted fields)
-                if ($action == 'decrypt' && strlen(base64_decode($attribute)) < 64) {
-                    // attribute is not a valid base64 encoded value and can not be decrypted
-                } else {
-                    $this->$key = $sodium->$action($attribute, $bReturnInputIfError);
-                }
+                $this->$key = $sodium->$action($attribute);
             }
         }
     }

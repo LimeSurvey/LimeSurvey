@@ -5632,7 +5632,7 @@
                         $oResponse->setAttributes($aResponseAttributes, false);
                         if (!$oResponse->encryptSave())
                         {
-                            $message = submitfailed('', print_r($oResponse->getErrors())); // $response->getErrors() is array[string[]], then can not join
+                            $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
                             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                                 $message .= CHTml::errorSummary($oResponse,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
                             }
@@ -5681,7 +5681,7 @@
                             } else {
                                 $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
+                            if ( !Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate)) && $submitdate != $oResponse->submitdate ) {
                                 LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
                             }
                         }

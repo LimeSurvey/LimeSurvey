@@ -26,12 +26,6 @@ class EncryptAttributesTest extends TestBaseClass
      */
     public function testToken()
     {
-        function generateRandomString($length = 10) {
-            return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-        }
-        
-        $teststring = generateRandomString(128);
-
         // Get our token.
         $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
         $this->assertNotEmpty($tokens);
@@ -39,7 +33,7 @@ class EncryptAttributesTest extends TestBaseClass
         $token = $tokens[0];
 
         // Change lastname.
-        $token->lastname = $teststring;
+        $token->lastname = 'last';
         $token->encryptSave();
 
         // Load token and decrypt.
@@ -47,13 +41,13 @@ class EncryptAttributesTest extends TestBaseClass
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $token->decrypt();
-        $this->assertEquals($teststring, $token->lastname);
+        $this->assertEquals('last', $token->lastname);
 
         // Test the omitting decrypt() works.
         $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
-        $this->assertNotEquals($teststring, $token->lastname);
+        $this->assertNotEquals('last', $token->lastname);
     }
 
     /**
