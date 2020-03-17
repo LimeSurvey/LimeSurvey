@@ -404,6 +404,22 @@ class GlobalSettings extends Survey_Common_Action
         $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
         $oSurvey->setOptions();
 
+        // TEST anonymize IP adresses
+        $ipToAnonymize = "192.168.2.5"; //this one should be anonymized ...
+        $result = anonymizeIpAddress($ipToAnonymize); // tested OK
+        // Test already anonymized ip
+        $result = anonymizeIpAddress($result); // tested OK
+        // TEST no ip address
+        $result = anonymizeIpAddress("not.an.ip"); // tested OK
+        $ipV6 = "2a03:2880:2110:df07:face:b00c::1";
+        $result = anonymizeIpAddress($ipV6);
+        $ipV6 = "2a03:2880:2110:df07:face:b00c::";
+        $result = anonymizeIpAddress($ipV6);
+        $ipV6 = "2a03::2110:df07:face:b00c::"; //this one is not a valid ipv6
+        $result = anonymizeIpAddress($ipV6);
+        $ipV6 = "2a03::2110:df07:face:b00c:3:4"; //this one is not a valid ipv6
+        $result = anonymizeIpAddress($ipV6);
+
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
         if (isset($_POST)) {
