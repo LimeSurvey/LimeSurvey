@@ -19,12 +19,16 @@
 
         public function actionPublicList($lang = null)
         {
-            if (!empty($lang)) {
-                // Control is a real language , in restrictToLanguages ?
-                App()->setLanguage($lang);
+            if ( !empty($lang) ) {
+                // Validate if languages exists and fall back to default lang if needed
+                $aLanguages = getLanguageDataRestricted( false,'short' );
+                if ( !isset($aLanguages[ $lang ]) ) {
+                    $lang=App()->getConfig( 'defaultlang' );
+                }
             } else {
-                App()->setLanguage(App()->getConfig('defaultlang'));
+                $lang=App()->getConfig( 'defaultlang' );
             }
+            App()->setLanguage( $lang );
 
 
             $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
