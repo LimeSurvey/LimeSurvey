@@ -2088,7 +2088,7 @@ class remotecontrol_handle
                 }
 
                 $aAttributeValues = array();
-                if (count($aConditions)) {
+                if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
                     $aAttributeValues = array_intersect_key($aConditions, $aConditionFields);
                 }
