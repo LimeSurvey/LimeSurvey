@@ -46,7 +46,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $allowprev Allow backwards navigation (Y/N)
  * @property string $printanswers Participants may print answers: (Y/N)
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
- * @property string $ipanonymize Whether id addresses have been anonymized (Y/N)
+ * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
  * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)

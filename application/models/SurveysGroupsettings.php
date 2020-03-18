@@ -96,13 +96,19 @@ class SurveysGroupsettings extends LSActiveRecord
 		return array(
 			array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly'=>true),
 			array('admin', 'length', 'max'=>50),
-			array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion', 'length', 'max'=>1),
+			array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max'=>1),
 			array('adminemail, bounce_email', 'length', 'max'=>255),
 			array('template', 'length', 'max'=>100),
 			array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on'=>'search'),
+			array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, 
+			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, 
+			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, 
+			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, 
+			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, 
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, 
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on'=>'search'),
 		);
     }
   

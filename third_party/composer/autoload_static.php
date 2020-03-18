@@ -10,6 +10,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'L' => 
         array (
             'LimeSurvey\\PluginManager\\' => 25,
+            'LimeSurvey\\Models\\Services\\' => 27,
             'LimeSurvey\\Menu\\' => 16,
             'LimeSurvey\\Helpers\\' => 19,
             'LimeSurvey\\ExtensionInstaller\\' => 30,
@@ -21,6 +22,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/PluginManager',
             1 => __DIR__ . '/../..' . '/application/libraries/PluginManager/Storage',
+        ),
+        'LimeSurvey\\Models\\Services\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/models/services',
         ),
         'LimeSurvey\\Menu\\' => 
         array (

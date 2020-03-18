@@ -4997,6 +4997,7 @@
             $LEM->surveyOptions['deletenonvalues'] = (isset($aSurveyOptions['deletenonvalues']) ? ($aSurveyOptions['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($aSurveyOptions['hyperlinkSyntaxHighlighting']) ? $aSurveyOptions['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = $survey->isIpAddr;
+            $LEM->surveyOptions['ipAnonymize'] = ($survey->ipanonymize === 'Y');
             $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
             $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : NULL);
             $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
@@ -5508,6 +5509,13 @@
                 if ($this->surveyOptions['ipaddr'] == true)
                 {
                     $sdata['ipaddr'] = getIPAddress();
+                    if($this->surveyOptions['ipAnonymize']){
+                        $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($sdata['ipaddr']);
+                        $result = $ipAddressAnonymizer->anonymizeIpAddress();
+                        if($result){
+                            $sdata['ipaddr'] = $result;
+                        }
+                    }
                 }
                 if ($this->surveyOptions['refurl'] == true)
                 {
