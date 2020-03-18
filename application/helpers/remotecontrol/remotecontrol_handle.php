@@ -2079,12 +2079,12 @@ class remotecontrol_handle
             $iLimit = (int) $iLimit;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID');
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No survey participants table');
+                    return array('status' => 'Error: No survey participants table');
                 }
 
                 $aAttributeValues = array();
@@ -2094,13 +2094,13 @@ class remotecontrol_handle
                 }
 
                 if ($bUnused) {
-                                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
                 } else {
-                                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
                 }
 
                 if (count($oTokens) == 0) {
-                                    return array('status' => 'No survey participants found.');
+                    return array('status' => 'No survey participants found.');
                 }
 
                 
@@ -2121,7 +2121,8 @@ class remotecontrol_handle
                             'firstname'=>$token->attributes['firstname'],
                             'lastname'=>$token->attributes['lastname'],
                             'email'=>$token->attributes['email'],
-                    ));
+                        )
+                    );
                     foreach ($extendedAttributes as $sAttribute) {
                         $aTempData[$sAttribute] = $token->attributes[$sAttribute];
                     }
@@ -2129,10 +2130,10 @@ class remotecontrol_handle
                 }
                 return $aData;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
