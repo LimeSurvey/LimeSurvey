@@ -71,8 +71,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
     $options = "";
+    // The engine has to be explicitely set because MYSQL 8 switches the default engine to INNODB
     if ( Yii::app()->db->driverName == 'mysql' ) {
-        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+        $options='ENGINE='.Yii::app()->getConfig('mysqlEngine').' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+        if (Yii::app()->getConfig('mysqlEngine')=='INNODB') {
+            $options .= ' ROW_FORMAT=DYNAMIC'; // Same than create-database
+        }
     }
     try {
 
@@ -2600,6 +2604,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'language' =>  "string(20) NOT NULL DEFAULT 'en'"
             ), $options);
             $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+            // Remove invalid labels, otherwise update will fail because of index duplicates in the next query
+            $oDB->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
             $oDB->createCommand("INSERT INTO {{label_l10ns}}
                 (label_id, title, language)
                 SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
