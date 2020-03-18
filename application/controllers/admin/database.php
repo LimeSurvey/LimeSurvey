@@ -975,6 +975,9 @@ class database extends Survey_Common_Action
                 $oSurvey->savetimings = $this->_filterEmptyFields($oSurvey, 'savetimings');
                 $oSurvey->datestamp = $this->_filterEmptyFields($oSurvey, 'datestamp');
                 $oSurvey->ipaddr = $this->_filterEmptyFields($oSurvey, 'ipaddr');
+                //save the new setting ipanonymize
+                $oSurvey->ipanonymize = $this->_filterEmptyFields($oSurvey, 'ipanonymize');
+                //todo: here we have to change the ip-addresses already saved ?!?
                 $oSurvey->refurl = $this->_filterEmptyFields($oSurvey, 'refurl');
             }
 
