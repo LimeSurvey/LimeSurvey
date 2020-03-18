@@ -2068,7 +2068,7 @@ class remotecontrol_handle
      * @param int  $iLimit Number of participants to return
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extented attributes that we want
-     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
+     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com') or array('validuntil' => array('>', '2019-01-01 00:00:00'))
      * @return array The list of tokens
      */
     public function list_participants($sSessionKey, $iSurveyID, $iStart = 0, $iLimit = 10, $bUnused = false, $aAttributes = false, $aConditions = array())
@@ -2087,22 +2087,47 @@ class remotecontrol_handle
                     return array('status' => 'Error: No survey participants table');
                 }
 
+                /** @var CDbCriteria mixed> Criteria used in final query below. */
+                $oCriteria = new CDbCriteria;
+                $oCriteria->order = 'tid';
+                $oCriteria->limit = $iLimit;
+                $oCriteria->offset = $iStart;
+
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
+                    foreach ($aConditions as $columnName => $valueOrTuple) {
+                        if (is_array($valueOrTuple)) {
+                            /** @var string[] List of operators allowed in query. */
+                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE'];
+                            /** @var string */
+                            $operator = $valueOrTuple[0];
+                            if (!in_array($operator, $allowedOperators)) {
+                                return array('status' => 'Illegal operator: ' . $operator);
+                            } else {
+                                /** @var mixed */
+                                $value = $valueOrTuple[1];
+                                $oCriteria->compare($columnName, $operator . $value);
+                            }
+                        } elseif (is_string($valueOrTuple)) {
+                            if (in_array($columnName, $aConditionFields)) {
+                                $aAttributeValues[$columnName] = $valueOrTuple;
+                            }
+                        }
+                    }
                     $aAttributeValues = array_intersect_key($aConditions, $aConditionFields);
                 }
 
                 if ($bUnused) {
-                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, $oCriteria);
                 } else {
-                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, $oCriteria);
                 }
 
                 if (count($oTokens) == 0) {
                     return array('status' => 'No survey participants found.');
                 }
-
                 
                 $extendedAttributes = array();
                 if ($aAttributes) {
@@ -2111,7 +2136,7 @@ class remotecontrol_handle
                     $currentAttributes = array('tid', 'token', 'firstname', 'lastname', 'email');
                     $extendedAttributes = array_diff($aTokenProperties, $currentAttributes);
                 }
-                
+
                 foreach ($oTokens as $token) {
                     $token->decrypt();
                     $aTempData = array(

@@ -40,6 +40,11 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         $dbo = \Yii::app()->getDb();
         $query = sprintf('DELETE FROM {{failed_login_attempts}}');
         $dbo->createCommand($query)->execute();
+
+        /** @var string */
+        $filename = self::$surveysFolder . '/survey_archive_265351_listParticipants.lsa';
+        self::importSurvey($filename);
+
     }
 
     /**
@@ -52,13 +57,6 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);
-
-        /** @var CDbConnection */
-        $dbo = \Yii::app()->getDb();
-
-        /** @var string */
-        $filename = self::$surveysFolder . '/survey_archive_265351_listParticipants.lsa';
-        self::importSurvey($filename);
 
         // Create handler.
         $admin   = new \AdminController('dummyid');
@@ -102,20 +100,13 @@ class RemoteControlListParticipantsTest extends TestBaseClass
     /**
      * Test condition with empty return result.
      * 
-     * @return 
+     * @return void
      */
     public function testConditionEmptyResult()
     {
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);
-
-        /** @var CDbConnection */
-        $dbo = \Yii::app()->getDb();
-
-        /** @var string */
-        $filename = self::$surveysFolder . '/survey_archive_265351_listParticipants.lsa';
-        self::importSurvey($filename);
 
         // Create handler.
         $admin   = new \AdminController('dummyid');
@@ -141,6 +132,86 @@ class RemoteControlListParticipantsTest extends TestBaseClass
 
         $expected = [
             'status' => 'No survey participants found.'
+        ];
+
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
+     * Test illegal operator '!'.
+     *
+     * @return void
+     */
+    public function testConditionIllegalOperator()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            999,
+            false,
+            ['validuntil', 'validfrom'],
+            ['validuntil' => ['!', '2019']]
+        );
+
+        $expected = [
+            'status' => 'Illegal operator: !'
+        ];
+
+        $this->assertEquals($expected, $list);
+    }
+
+    /**
+     * Test higher-than operator, '>'.
+     *
+     * @return void
+     */
+    public function testConditionHigherThan()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            999,
+            false,
+            ['validuntil', 'validfrom'],
+            ['validuntil' => ['>', '2019']]
+        );
+
+        $expected = [
+            'status' => 'Illegal operator: !'
         ];
 
         $this->assertEquals($expected, $list);
