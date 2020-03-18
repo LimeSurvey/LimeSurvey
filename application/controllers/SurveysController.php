@@ -19,12 +19,16 @@ class SurveysController extends LSYii_Controller
 
     public function actionPublicList($lang = null)
     {
-        if (!empty($lang)) {
-            // Control is a real language , in restrictToLanguages ?
-            App()->setLanguage($lang);
-        } else {
-            App()->setLanguage(App()->getConfig('defaultlang'));
-        }
+            if ( !empty($lang) ) {
+                // Validate if languages exists and fall back to default lang if needed
+                $aLanguages = getLanguageDataRestricted( false,'short' );
+                if ( !isset($aLanguages[ $lang ]) ) {
+                    $lang=App()->getConfig( 'defaultlang' );
+                }
+            } else {
+                $lang=App()->getConfig( 'defaultlang' );
+            }
+            App()->setLanguage( $lang );
 
 
         $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));

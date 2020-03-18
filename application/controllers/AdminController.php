@@ -36,7 +36,13 @@ class AdminController extends LSYii_Controller
         $this->_sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
-
+        // Check if the user really exists
+        // This scenario happens if the user was deleted while still being logged in
+        if ( !empty( $this->user_id ) && User::model()->findByPk( $this->user_id ) == null ){
+            $this->user_id = null;
+            Yii::app()->session->destroy();
+        }
+        
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
@@ -142,6 +148,7 @@ class AdminController extends LSYii_Controller
 
 
         if ($action != "databaseupdate" && $action != "db") {
+            
             if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
                                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
