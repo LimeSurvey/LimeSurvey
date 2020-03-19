@@ -65,7 +65,7 @@ class SurveysGroupsettings extends LSActiveRecord
     // attributes separated by column datatype, used by setToInherit method
     protected $optionAttributesInteger  = array('owner_id', 'tokenlength', 'questionindex', 'navigationdelay');
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
-                                                'ipaddr', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence', 
+                                                'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard', 
                                                 'alloweditaftercompletion');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');    

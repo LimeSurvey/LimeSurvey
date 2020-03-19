@@ -129,6 +129,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isAllowPrev Allow backwards navigation
  * @property bool $isPrintAnswers Participants may print answers
  * @property bool $isIpAddr Whether Participants IP address will be saved
+ * @property bool $isIpAnonymize Whether Participants IP address will be saved
  * @property bool $isRefUrl Save referrer URL
  * @property bool $isPublicStatistics Public statistics
  * @property bool $isPublicGraphs Show graphs in public statistics
@@ -1231,6 +1232,14 @@ class Survey extends LSActiveRecord
     public function getIsIpAddr()
     {
         return ($this->oOptions->ipaddr === 'Y');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsIpAnonymize()
+    {
+        return ($this->oOptions->ipanonymize === 'Y');
     }
     /**
      * @return bool

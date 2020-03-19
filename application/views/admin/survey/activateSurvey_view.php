@@ -185,6 +185,25 @@
                 </div>
             </div>
 
+            <div class="col-sm-4 ">
+                <div class='form-group'>
+                    <label for='ipaddr' class='control-label col-sm-7'>
+                        <?php eT("Anonymize IP address?"); ?>
+                    </label>
+
+                    <div class='col-sm-5'>
+                        <select name='ipanonymize' id='ipanonymize' class='form-control'>
+                            <option value='Y' <?php if ($aSurveysettings['ipanonymize'] == "Y") {echo "selected='selected'";} ?>>
+                                <?php eT("Yes"); ?>
+                            </option>
+                            <option value='N' <?php if ($aSurveysettings['ipanonymize'] != "Y") { echo "selected='selected'";} ?>>
+                                <?php eT("No"); ?>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-sm-4">
                 <div class='form-group'>
                     <label class='control-label col-sm-7' for='refurl'><?php eT("Save referrer URL?"); ?></label>

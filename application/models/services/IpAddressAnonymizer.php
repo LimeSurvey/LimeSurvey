@@ -12,13 +12,13 @@ namespace LimeSurvey\Models\Services;
 class IpAddressAnonymizer
 {
 
-    /** @var string the original ip address*/
+    /** @var string the original ip address */
     private $ipAddress;
 
     /**
      * IpAddressAnonymizer constructor.
      *
-     * @param $ipAddress
+     * @param string $ipAddress
      */
     public function __construct($ipAddress)
     {
@@ -28,27 +28,41 @@ class IpAddressAnonymizer
     /**
      * Checks if ip is a valid ipv4
      *
-     * @return mixed
+     * @return boolean
      */
-    public function isIpv4(){
-        return filter_var($this->ipAddress,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4);
+    public function isIpv4()
+    {
+        if($this->ipAddress === ''){
+            $result = false;
+        }else{
+            $result = (boolean)filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        }
+
+        return $result;
     }
 
     /**
      * Checks if ip is a valid ipv6
      *
-     * @return mixed|boolean false if not valid, otherwise the filtered ip address
+     * @return boolean false if not valid, otherwise the filtered ip address
      */
-    public function isIpv6(){
-        return filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+    public function isIpv6()
+    {
+        if($this->ipAddress === ''){
+            $result = false;
+        }else{
+            $result = (boolean)filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+        }
+        return $result;
     }
 
     /**
      * Checks if ip is a valid ipAddress
      *
-     * @return bool
+     * @return boolean
      */
-    public function isValidIp(){
+    public function isValidIp()
+    {
         return $this->isIpv4() || $this->isIpv6();
     }
 
@@ -63,15 +77,16 @@ class IpAddressAnonymizer
      * @return string|boolean if ip is not anonymized false will be returned (in case of not a valid ip or ip has already been
      *                        anonymized), else the anonymize ip will be returned as a string
      */
-    public function anonymizeIpAddress(){
+    public function anonymizeIpAddress()
+    {
         $anonymizedIp = false;
 
-        if($this->isIpv4()){ //check if it is valid ipv4
+        if ($this->isIpv4()) { //check if it is valid ipv4
             $ipArray = explode('.', $this->ipAddress);
             $last_digit = array_pop($ipArray);
-            if($last_digit!=0){ //check if it has already been anonymized
+            if ($last_digit != 0) { //check if it has already been anonymized
                 //set last number to 0
-                $anonymizedIp = implode('.',$ipArray); //without last digit ?!?
+                $anonymizedIp = implode('.', $ipArray); //without last digit ?!?
                 $anonymizedIp .= '.0';
             }
         } elseif ($this->isIpv6()) { //check if it is valid ipv6
