@@ -2114,9 +2114,10 @@ class remotecontrol_handle
                             if (in_array($columnName, $aConditionFields)) {
                                 $aAttributeValues[$columnName] = $valueOrTuple;
                             }
+                        } else {
+                            // Silent ignore?
                         }
                     }
-                    $aAttributeValues = array_intersect_key($aConditions, $aConditionFields);
                 }
 
                 if ($bUnused) {
