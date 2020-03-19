@@ -250,5 +250,25 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         ];
 
         $this->assertEquals($expected, $list);
+
+        // As above but with future date.
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            999,
+            false,
+            ['validuntil', 'validfrom'],
+            ['validuntil' => ['>=', '2021-04-01 15:12:00']]
+        );
+
+        /** @var array */
+        $expected = [
+            'status' => 'No survey participants found.'
+        ];
+
+        $this->assertEquals($expected, $list);
     }
 }
