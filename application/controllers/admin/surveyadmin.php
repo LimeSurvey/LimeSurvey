@@ -907,6 +907,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
                 $survey->datestamp = Yii::app()->request->getPost('datestamp');
                 $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
+                $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
                 $survey->refurl = Yii::app()->request->getPost('refurl');
                 $survey->savetimings = Yii::app()->request->getPost('savetimings');
                 $survey->save();
@@ -2002,6 +2003,7 @@ class SurveyAdmin extends Survey_Common_Action
                 'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
                 'datestamp' => App()->request->getPost('datestamp'),
                 'ipaddr' => App()->request->getPost('ipaddr'),
+                'ipanonymize' => App()->request->getPost('ipanonymize'),
                 'refurl' => App()->request->getPost('refurl'),
                 'usecookie' => App()->request->getPost('usecookie'),
                 'emailnotificationto' => App()->request->getPost('emailnotificationto'),
