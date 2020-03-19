@@ -270,5 +270,20 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         ];
 
         $this->assertEquals($expected, $list);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            999,
+            false,
+            ['validuntil', 'validfrom'],
+            ['email' => ['LIKE', 'com']]
+        );
+
+        // Got exactly one participant with "com" in email.
+        $this->assertCount(1, $list);
+        $this->assertEquals('q@q.com', $list[0]['participant_info']['email']);
     }
 }

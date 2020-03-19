@@ -2105,6 +2105,10 @@ class remotecontrol_handle
                             $operator = $valueOrTuple[0];
                             if (!in_array($operator, $allowedOperators)) {
                                 return array('status' => 'Illegal operator: ' . $operator);
+                            } elseif ($operator === 'LIKE') {
+                                /** @var mixed */
+                                $value = $valueOrTuple[1];
+                                $oCriteria->addSearchCondition($columnName, $value);
                             } else {
                                 /** @var mixed */
                                 $value = $valueOrTuple[1];
