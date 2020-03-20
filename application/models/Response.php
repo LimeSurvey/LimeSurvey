@@ -48,12 +48,14 @@
             $criteria = new CDbCriteria();
             $criteria->compare('sid', $this->dynamicId);
             $criteria->compare('type', Question::QT_VERTICAL_FILE_UPLOAD);
-            $criteria->compare('questionL10ns.language', $survey->language);
+            $criteria->compare('ql10ns.language', $survey->language);
             if ($qid !== null) {
                 $criteria->compare('t.qid', $qid);
             }
 
-            $questions = Question::model()->with('questionL10ns')->findAll($criteria);
+            $questions = Question::model()
+                ->with(array('questionL10ns' => array('alias' => 'ql10ns')))
+                ->findAll($criteria);
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;

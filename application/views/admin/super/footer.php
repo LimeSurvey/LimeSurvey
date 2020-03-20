@@ -41,9 +41,9 @@ try {
 }
 
 /* Fix array to string , see #13352 */
-foreach($systemInfos as &$systemInfo) {
+foreach($systemInfos as $key=>$systemInfo) {
     if(is_array($systemInfo)) {
-        $systemInfo = json_encode($systemInfo, JSON_PRETTY_PRINT);
+        $systemInfos[$key] = json_encode($systemInfo, JSON_PRETTY_PRINT);
     }
 }
 ?>

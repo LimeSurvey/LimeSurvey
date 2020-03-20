@@ -114,7 +114,9 @@ class Assessments extends Survey_Common_Action
         $aData['groups'] = $this->_collectGroupData($oSurvey, $aData);
         $this->setSearchParams($oAssessments);
         $aData['model'] = $oAssessments;
-        $aData['pageSizeAsessements'] = Yii::app()->user->getState('pageSizeAsessements', Yii::app()->params['defaultPageSize']);
+        if (isset($_POST['pageSize'])) {
+            Yii::app()->user->setState('pageSize', Yii::app()->request->getParam('pageSize'));
+        }
         $aData['actiontitle'] = gT("Add");
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
