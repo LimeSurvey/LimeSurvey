@@ -105,19 +105,31 @@ $googleAnalyticsStyleOptions = array(
             </div>
             <div class="form-group">
                 <label class=" control-label" for='ipaddr'><?php  eT("Anonymize IP address:"); ?></label>
-                <div>
+                <div class="">
                     <?php
-                    // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
-                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                        'name' => 'ipanonymize',
-                        'value'=> $oSurvey->ipanonymize,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->ipaddr . ']')): $optionsOnOff,
-                        /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
-                        if ($('#anonymized').is(':checked') == true) {
-                        $('#datestampModal_2').modal();
-                        }
-                        }")*/
-                    ));
+                    if ($oSurvey->isActive) {
+                        if ($oSurvey->ipanonymize!= "Y") {
+                            eT("Responses will not have the IP address anonymized.");
+                        } else {
+                            eT("Responses will have the IP address anonymized");
+                        } ?>
+                        <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
+                        <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipanonymize);
+                    }else {
+                        // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'ipanonymize',
+                            'value' => $oSurvey->ipanonymize,
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array(
+                                'I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipaddr . ']'
+                            )) : $optionsOnOff,
+                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                            if ($('#anonymized').is(':checked') == true) {
+                            $('#datestampModal_2').modal();
+                            }
+                            }")*/
+                        ));
+                    }
                     ?>
                 </div>
             </div>
