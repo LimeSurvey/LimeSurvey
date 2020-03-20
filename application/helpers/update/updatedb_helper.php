@@ -3060,6 +3060,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if($iOldDBVersion < 426){
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{surveys_groupsettings}}', 'ipanonymize', "string(1) NULL default 'N'");
+            //change gsid=0 and gsid=1 for inheritance logic ...
+            $oDB->createCommand()->update('{{surveys_groupsettings}}',array('ipanonymize' => 'N'), 'gsid=1');
+            $oDB->createCommand()->update('{{surveys_groupsettings}}',array('ipanonymize' => 'I'), 'gsid=0');
             $oDB->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NULL default 'N'");
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
             $oTransaction->commit();

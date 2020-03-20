@@ -716,6 +716,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     if (!$oSurvey) {
         return false;
     }
+    //todo: here ipanonymize is wrong in $oSurvey->aOptions where is that initialized ???
     $aSurveyOptions = $oSurvey->aOptions;
     // if no language code is set then get the base language one
     if ((!isset($languagecode) || $languagecode == '')) {

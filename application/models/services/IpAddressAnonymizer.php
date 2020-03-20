@@ -86,7 +86,7 @@ class IpAddressAnonymizer
             $last_digit = array_pop($ipArray);
             if ($last_digit != 0) { //check if it has already been anonymized
                 //set last number to 0
-                $anonymizedIp = implode('.', $ipArray); //without last digit ?!?
+                $anonymizedIp = implode('.', $ipArray);
                 $anonymizedIp .= '.0';
             }
         } elseif ($this->isIpv6()) { //check if it is valid ipv6
