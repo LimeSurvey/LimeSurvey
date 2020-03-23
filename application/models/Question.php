@@ -683,7 +683,7 @@ class Question extends LSActiveRecord
 
                 // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
                 foreach($aScaleArray as $iKey => $oAnswer){
-                    $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+                    $aSorted[$oAnswer->answerl10ns[$this->survey->language]->answer] = $iKey;
                 }
 
                 ksort($aSorted);

@@ -1308,7 +1308,7 @@ class questionedit extends Survey_Common_Action
         $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
         foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
             $aScaledAnswerOptions[$scaleId] = array_map(function ($oAnswerOption) {
-                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerL10ns);
+                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerl10ns);
             }, $aAnswerOptions);
         }
         $aReplacementData = [];
