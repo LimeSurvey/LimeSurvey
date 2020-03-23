@@ -1047,7 +1047,7 @@ class questionedit extends Survey_Common_Action
             return false;
         }
 
-        $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAllByAttributes(['qid' => $oldQid]);
+        $oOldDefaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $oldQid]);
 
         $setApplied['defaultValues'] = array_reduce(
             $oOldDefaultValues,
@@ -1065,7 +1065,7 @@ class questionedit extends Survey_Common_Action
                     );
                 }
 
-                foreach ($oDefaultValue->defaultValueL10ns as $oDefaultValueL10n) {
+                foreach ($oDefaultValue->defaultvaluel10ns as $oDefaultValueL10n) {
                     $oNewDefaultValueL10n = new DefaultValueL10n();
                     $oNewDefaultValueL10n->setAttributes($oDefaultValueL10n->attributes, false);
                     $oNewDefaultValueL10n->id = null;

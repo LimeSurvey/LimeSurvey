@@ -1647,9 +1647,9 @@ class remotecontrol_handle
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } else if ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultValueL10ns')
+                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
                             ->find(
-                                'qid = :qid AND defaultValueL10ns.language = :language',
+                                'qid = :qid AND defaultvaluel10ns.language = :language',
                                 array(':qid' => $iQuestionID, ':language'=> $sLanguage)
                             )
                             ->defaultvalue;

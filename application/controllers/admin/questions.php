@@ -320,9 +320,9 @@ class questions extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $defaultvalue = DefaultValue::model()
-                        ->with('defaultValueL10ns')
+                        ->with('defaultvaluel10ns')
                         ->find(
-                            'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                            'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                             array(
                                 ':specialtype' => '',
                                 ':qid' => $qid,
@@ -330,7 +330,7 @@ class questions extends Survey_Common_Action
                                 ':language' => $language,
                                 )
                         );
-                    $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                    $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
                     $answerresult = Answer::model()->with('answerl10ns')->findAll(
@@ -345,9 +345,9 @@ class questions extends Survey_Common_Action
 
                     if ($questionrow['other'] == 'Y') {
                         $defaultvalue = DefaultValue::model()
-                            ->with('defaultValueL10ns')
+                            ->with('defaultvaluel10ns')
                             ->find(
-                                'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                                'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                                 array(
                                 ':specialtype' => 'other',
                                 ':qid' => $qid,
@@ -355,7 +355,7 @@ class questions extends Survey_Common_Action
                                 ':language' => $language,
                                 )
                         );
-                        $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
                         $langopts[$language][$questionrow['type']]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
@@ -392,9 +392,9 @@ class questions extends Survey_Common_Action
 
                     foreach ($sqresult as $aSubquestion) {
                         $defaultvalue = DefaultValue::model()
-                            ->with('defaultValueL10ns')
+                            ->with('defaultvaluel10ns')
                             ->find(
-                                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                                 array(
                                 ':specialtype' => '',
                                 ':qid' => $qid,
@@ -403,7 +403,7 @@ class questions extends Survey_Common_Action
                                 ':language' => $language
                                 )
                         );
-                        $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
 
                         $question = $aSubquestion->questionl10ns[$language]->question;
                         $aSubquestion = $aSubquestion->attributes;
@@ -418,9 +418,9 @@ class questions extends Survey_Common_Action
             if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
             $qtproperties[$questionrow['type']]['subquestions'] == 0) {
                 $defaultvalue = DefaultValue::model()
-                    ->with('defaultValueL10ns')
+                    ->with('defaultvaluel10ns')
                     ->find(
-                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                         array(
                         ':specialtype' => '',
                         ':qid' => $qid,
@@ -428,7 +428,7 @@ class questions extends Survey_Common_Action
                         ':language' => $language,
                         )
                 );
-                $langopts[$language][$questionrow['type']][0] = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                $langopts[$language][$questionrow['type']][0] = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
             }
 
         }

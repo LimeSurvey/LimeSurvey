@@ -191,8 +191,8 @@ class database extends Survey_Common_Action
                 }   
             } else {
                 if ($dvid !== null){
-                    $arDefaultValue->with('defaultValueL10ns');
-                    $idL10n = !empty($arDefaultValue->defaultValueL10ns) && array_key_exists($language, $arDefaultValue->defaultValueL10ns) ? $arDefaultValue->defaultValueL10ns[$language]->id : null;
+                    $arDefaultValue->with('defaultvaluel10ns');
+                    $idL10n = !empty($arDefaultValue->defaultvaluel10ns) && array_key_exists($language, $arDefaultValue->defaultvaluel10ns) ? $arDefaultValue->defaultvaluel10ns[$language]->id : null;
                     if ($idL10n !== null){
                         DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
                     } else {
@@ -1401,7 +1401,7 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copydefaultanswers') == 1) {
-                        $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
+                        $oOldDefaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
                         foreach ($oOldDefaultValues as $defaultvalue) {
                             $newDefaultValue = new DefaultValue();
                             $newDefaultValue->qid = $this->iQuestionID;
@@ -1410,8 +1410,8 @@ class database extends Survey_Common_Action
                             $newDefaultValue->specialtype = $defaultvalue['specialtype'];
                             if ($newDefaultValue->save()) {
                                 $iNewDefaultValueId = Yii::app()->db->getLastInsertID();                                 
-                                if (isset($defaultvalue->defaultValueL10ns)){
-                                    foreach($defaultvalue->defaultValueL10ns as $language => $defaultValueL10ns){
+                                if (isset($defaultvalue->defaultvaluel10ns)){
+                                    foreach($defaultvalue->defaultvaluel10ns as $language => $defaultValueL10ns){
                                         $oDefaultValueLS = new DefaultValueL10n;
                                         $oDefaultValueLS->dvid = $iNewDefaultValueId;
                                         $oDefaultValueLS->language = $language;

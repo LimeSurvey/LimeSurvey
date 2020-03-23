@@ -66,14 +66,14 @@ function updateset($lid)
         $criteria->addColumnCondition(array('lid' => $lid));
         $langcriteria = new CDbCriteria();
         foreach ($dellangidsarray as $sDeleteLanguage) {
-            $langcriteria->addColumnCondition(array('labelL10ns.language' => $sDeleteLanguage), 'OR');
+            $langcriteria->addColumnCondition(array('labell10ns.language' => $sDeleteLanguage), 'OR');
         }
         $criteria->mergeWith($langcriteria);
         // FIXME undefined function
         //debugbreak();
-        $aLabels = Label::model()->with('labelL10ns')->together()->findAll($criteria);
+        $aLabels = Label::model()->with('labell10ns')->together()->findAll($criteria);
         foreach ($aLabels as $aLabel) {
-            foreach ($aLabel->labelL10ns as $aLabelL10ns) {
+            foreach ($aLabel->labell10ns as $aLabelL10ns) {
                 $aLabelL10ns->delete();
             }
         } 

@@ -62,7 +62,7 @@ class DefaultValue extends LSActiveRecord
         $alias = $this->getTableAlias();
         return array(
             'question' => array(self::HAS_ONE, 'Question', "qid"),
-            'defaultValueL10ns' => array(self::HAS_MANY, 'DefaultValueL10n', 'dvid')
+            'defaultvaluel10ns' => array(self::HAS_MANY, 'DefaultValueL10n', 'dvid')
         );
     }
 
@@ -95,7 +95,7 @@ class DefaultValue extends LSActiveRecord
     /*
     public function getDefaultValue($language = 'en')
     {
-        $oDefaultValue = $this->with('defaultValueL10ns')->find('language = :language', array(':language' => $language));
-        return $oDefaultValue->defaultValueL10ns[$language]->defaultvalue;
+        $oDefaultValue = $this->with('defaultvaluel10ns')->find('language = :language', array(':language' => $language));
+        return $oDefaultValue->defaultvaluel10ns[$language]->defaultvalue;
     }*/
 }
