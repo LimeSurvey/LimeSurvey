@@ -6,19 +6,19 @@
             :aria-expanded="!triggerShowHelp" 
             :aria-controls="'help-'+(elName || elId)"
         />
-        <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group col-12">
-                <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
-                <input 
-                    type="text" 
-                    v-model="curValue" 
-                    :pattern="elOptions.elInputPattern" 
-                    :class="getClasses" 
-                    :name="elName || elId" 
-                    :id="elId" 
+        <label class="form-label" :for="elId"> {{titleWithLanguage}} </label>
+        <div class="input-group col-12">
+            <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}}</div>
+            <input
+                    type="text"
+                    v-model="curValue"
+                    :pattern="elOptions.elInputPattern"
+                    :class="getClasses"
+                    :name="elName || elId"
+                    :id="elId"
                     :readonly="readonly"/>
-                <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
-            </div>
+            <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}}</div>
+        </div>
         <div 
             class="question-option-help well"
             :id="'help-'+(elName || elId)"
@@ -74,6 +74,12 @@
                     }
                     this.$emit('change', newValue);
                 },
+            },
+            titleWithLanguage() {
+                if (typeof this.currentValue !== 'string') {
+                    return this.elLabel + ' (' + this.$store.state.languages[this.$store.state.activeLanguage] + ')';
+                }
+                return this.elLabel
             }
         }
     };
