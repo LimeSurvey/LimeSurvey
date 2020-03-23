@@ -498,7 +498,7 @@ class questiongroups extends Survey_Common_Action
         $aQuestions = [];
         $aAllQuestions = $oQuestionGroup->questions;
         array_walk($aAllQuestions, function ($oQuestion) use (&$aQuestions) {
-            $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionL10ns);
+            $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionl10ns);
         });
 
         $this->renderJSON($aQuestions);

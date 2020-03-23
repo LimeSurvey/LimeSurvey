@@ -53,7 +53,7 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
             $aData = array(
                 'anslangs'  => $anslangs,
                 'results'   => $results,
-                'question'  => $oAnswer->questionL10ns[$anslang]->question,
+                'question'  => $oAnswer->questionl10ns[$anslang]->question,
                 'title'     => CHtml::encode($oAnswer->code),
                 'surveyid' => $surveyid,
                 'gid' => $gid,

@@ -233,7 +233,7 @@ class Condition extends LSActiveRecord
     {
         // Need to quote columns for Postgres.
         $db = Yii::app()->db;
-        $quotedQL10ns = $db->quoteTableName('questionL10ns');
+        $quotedQL10ns = $db->quoteTableName('questionl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
         $quotedQGL10ns = $db->quoteTableName('questionGroupL10ns');
 
@@ -242,7 +242,7 @@ class Condition extends LSActiveRecord
                 'condition' => 'questions.parent_qid = :parent_qid',
                 'params' => array(':parent_qid' => 0)
             ),
-            'questions.questionL10ns' => array(
+            'questions.questionl10ns' => array(
                 'condition' => $quotedQL10ns . '.' . $quotedLanguage . ' = :lang1',
                 'params' => array(':lang1' => $language)
             ),
@@ -268,7 +268,7 @@ class Condition extends LSActiveRecord
     {
         // Need to quote columns for Postgres.
         $db = Yii::app()->db;
-        $quotedQL10ns = $db->quoteTableName('questionL10ns');
+        $quotedQL10ns = $db->quoteTableName('questionl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
         $quotedQGL10ns = $db->quoteTableName('questionGroupL10ns');
 
@@ -277,7 +277,7 @@ class Condition extends LSActiveRecord
                 'condition' => 'questions.parent_qid = :parent_qid',
                 'params' => array(':parent_qid' => 0)
             ),
-            'questions.questionL10ns' => array(
+            'questions.questionl10ns' => array(
                 'condition' => $quotedQL10ns . '.' . $quotedLanguage . ' = :lang1',
                 'params' => array(':lang1' => $language)
             ),

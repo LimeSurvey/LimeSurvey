@@ -368,9 +368,9 @@ class questions extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $sqresult = Question::model()
-                        ->with('questionL10ns')
+                        ->with('questionl10ns')
                         ->findAll(
-                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionL10ns.language =:language',
+                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language =:language',
                             array(
                                 ':sid' => $iSurveyID,
                                 ':gid' => $gid,
@@ -405,7 +405,7 @@ class questions extends Survey_Common_Action
                         );
                         $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
 
-                        $question = $aSubquestion->questionL10ns[$language]->question;
+                        $question = $aSubquestion->questionl10ns[$language]->question;
                         $aSubquestion = $aSubquestion->attributes;
                         $aSubquestion['question'] = $question;
                         $aSubquestion['defaultvalue'] = $defaultvalue;
@@ -1040,12 +1040,12 @@ class questions extends Survey_Common_Action
 
         foreach ($aQids as $iQid) {
 
-            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
             $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
             $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0);
+                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0);
                 $result = $this->delete($oQuestion->sid, $iQid, $oQuestion->gid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
@@ -1623,12 +1623,12 @@ class questions extends Survey_Common_Action
             $aQidAndLang = explode(',', $sQidAndLang);
             $iQid        = $aQidAndLang[0];
 
-            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
             $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
             $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0),0,100);
+                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0),0,100);
                 $aResults[$iQid]['result'] = 'selected';
             }
         }

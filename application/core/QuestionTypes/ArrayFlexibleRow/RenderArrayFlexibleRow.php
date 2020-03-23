@@ -67,7 +67,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->setAnsweroptions();
 
         $iCount = array_reduce($this->aSubQuestions[0], function ($combined, $oSubQuestions) {
-            if (preg_match("/^[^|]+\|[^|]+$/", $oSubQuestions->questionL10ns[$this->sLanguage]->question)) {
+            if (preg_match("/^[^|]+\|[^|]+$/", $oSubQuestions->questionl10ns[$this->sLanguage]->question)) {
                 $combined++;
             }
             return $combined;
@@ -163,13 +163,13 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
             $myfname        = $this->sSGQA.$oQuestion->title;
-            $answertext     = $oQuestion->questionL10ns[$this->sLanguage]['question'];
+            $answertext     = $oQuestion->questionl10ns[$this->sLanguage]['question'];
             // Check the mandatory sub Q violation 
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ)); 
             $value = $this->getFromSurveySession($myfname);
 
-            if ($this->rightExists && (strpos($oQuestion->questionL10ns[$this->sLanguage]['question'], '|') !== false)) {
-                $aAnswertextArray = explode('|', $oQuestion->questionL10ns[$this->sLanguage]['question']);
+            if ($this->rightExists && (strpos($oQuestion->questionl10ns[$this->sLanguage]['question'], '|') !== false)) {
+                $aAnswertextArray = explode('|', $oQuestion->questionl10ns[$this->sLanguage]['question']);
                 $answertextright = $aAnswertextArray[1];
                 $answertext = $aAnswertextArray[0];
             } else {
@@ -240,11 +240,11 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             }
 
             $myfname        = $this->sSGQA.$oQuestion->title;
-            $answertext     = $oQuestion->questionL10ns[$this->sLanguage]->question;
+            $answertext     = $oQuestion->questionl10ns[$this->sLanguage]->question;
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
-            if ($this->rightExists && strpos($oQuestion->questionL10ns[$this->sLanguage]->question, '|') !== false) {
-                $answertextright = substr($oQuestion->questionL10ns[$this->sLanguage]->question, strpos($oQuestion->questionL10ns[$this->sLanguage]->question, '|') + 1);
+            if ($this->rightExists && strpos($oQuestion->questionl10ns[$this->sLanguage]->question, '|') !== false) {
+                $answertextright = substr($oQuestion->questionl10ns[$this->sLanguage]->question, strpos($oQuestion->questionl10ns[$this->sLanguage]->question, '|') + 1);
             } else {
                 $answertextright = '';
             }

@@ -1845,8 +1845,8 @@ class dataentry extends Survey_Common_Action
                     $cdata['deqrow'] = $arQuestion;
 
                     $cdata['thissurvey'] = $thissurvey;
-                    if (!empty($arQuestion->questionL10ns[$sDataEntryLanguage]->help)) {
-                        $hh = addcslashes($arQuestion->questionL10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
+                    if (!empty($arQuestion->questionl10ns[$sDataEntryLanguage]->help)) {
+                        $hh = addcslashes($arQuestion->questionl10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
                     }
@@ -2073,7 +2073,7 @@ class dataentry extends Survey_Common_Action
             $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'sid' => $surveyid));
             if ($question) {
                 $output .= "\n<p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], flattenText(breakToNewline($question->questionL10ns[$surveyprintlang]->question)))."
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], flattenText(breakToNewline($question->questionl10ns[$surveyprintlang]->question)))."
                 </p>\n";
             }
         }
@@ -2082,7 +2082,7 @@ class dataentry extends Survey_Common_Action
             $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'sid' => $surveyid));
             if ($question) {
                 $output .= "\n    <p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter_exclude'], breakToNewline($question->questionL10ns[$surveyprintlang]->question))."
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter_exclude'], breakToNewline($question->questionl10ns[$surveyprintlang]->question))."
                 </p>\n";
             }
         }

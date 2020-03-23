@@ -598,7 +598,7 @@ class userstatistics_helper
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => $qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
+            $qquestion = flattenText($nresult->questionl10ns[$language]->question);
             $qlid = $nresult->parent_qid;
             $qother = $nresult->other;
 
@@ -1124,7 +1124,7 @@ class userstatistics_helper
                 $nrow = Question::model()->findByPk($rqid);
                 $qtitle = flattenText($nrow->title);
                 $qtype = $nrow->type;
-                $qquestion = flattenText($nrow->questionL10ns[$language]->question);
+                $qquestion = flattenText($nrow->questionl10ns[$language]->question);
                 $qiqid = $nrow->qid;
                 $qother = $nrow->other;
 
@@ -1142,7 +1142,7 @@ class userstatistics_helper
                                 $alist[] = array("$i", "$i");
                             }
                             //add counter
-                            $atext = flattenText($qrow->questionL10ns[$language]->question);
+                            $atext = flattenText($qrow->questionl10ns[$language]->question);
                         }
 
                         //list IDs and answer codes in brackets
@@ -1158,7 +1158,7 @@ class userstatistics_helper
                             for ($i = 1; $i <= 10; $i++) {
                                 $alist[] = array("$i", "$i");
                             }
-                            $atext = flattenText($qrow->questionL10ns[$language]->question);
+                            $atext = flattenText($qrow->questionl10ns[$language]->question);
                         }
 
                         $qquestion .= $linefeed;
@@ -1174,7 +1174,7 @@ class userstatistics_helper
                             $alist[] = array("Y", gT("Yes"));
                             $alist[] = array("N", gT("No"));
                             $alist[] = array("U", gT("Uncertain"));
-                            $atext = flattenText($qrow->questionL10ns[$language]->question);
+                            $atext = flattenText($qrow->questionl10ns[$language]->question);
                         }
                         //output
                         $qquestion .= $linefeed;
@@ -1188,7 +1188,7 @@ class userstatistics_helper
                             $alist[] = array("I", gT("Increase"));
                             $alist[] = array("S", gT("Same"));
                             $alist[] = array("D", gT("Decrease"));
-                            $atext = flattenText($qrow->questionL10ns[$language]->question);
+                            $atext = flattenText($qrow->questionl10ns[$language]->question);
                         }
                         $qquestion .= $linefeed;
                         $qtitle .= "($qanswer)" . "[" . $atext . "]";
@@ -1258,7 +1258,7 @@ class userstatistics_helper
                             }
 
                             //counter
-                            $atext = flattenText($qrow->questionL10ns[$language]->question);
+                            $atext = flattenText($qrow->questionl10ns[$language]->question);
                         }
 
                         //output

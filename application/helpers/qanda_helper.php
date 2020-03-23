@@ -1466,7 +1466,7 @@ function do_multiplechoice($ia)
         $aRows[] = array(
             'name'                    => $ia[1], // field name
             'title'                   => $aQuestion['title'],
-            'question'                => $aQuestion->questionL10ns[$sSurveyLang]->question,
+            'question'                => $aQuestion->questionl10ns[$sSurveyLang]->question,
             'ansrow'                  => $aQuestion,
             'checkedState'            => $checkedState,
             'sCheckconditionFunction' => $sCheckconditionFunction,
@@ -1616,7 +1616,7 @@ function do_multiplechoice_withcomments($ia)
     // Size of elements depends on longest text item
     $longest_question = 0;
     foreach ($aSubquestions as $ansrow) {
-        $current_length = round((strlen($ansrow->questionL10ns[$sSurveyLanguage]->question) / 10) + 1);
+        $current_length = round((strlen($ansrow->questionl10ns[$sSurveyLanguage]->question) / 10) + 1);
         $longest_question = ($longest_question > $current_length) ? $longest_question : $current_length;
     }
 
@@ -1626,8 +1626,8 @@ function do_multiplechoice_withcomments($ia)
     foreach ($aSubquestions as $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
 
-        if ($label_width < strlen(trim(strip_tags($ansrow->questionL10ns[$sSurveyLanguage]->question)))) {
-            $label_width = strlen(trim(strip_tags($ansrow->questionL10ns[$sSurveyLanguage]->question)));
+        if ($label_width < strlen(trim(strip_tags($ansrow->questionl10ns[$sSurveyLanguage]->question)))) {
+            $label_width = strlen(trim(strip_tags($ansrow->questionl10ns[$sSurveyLanguage]->question)));
         }
 
         $myfname2 = $myfname."comment";
@@ -1657,7 +1657,7 @@ function do_multiplechoice_withcomments($ia)
             'value'                         => 'Y', // TODO : check if it should be the same than javavalue
             'classes'                       => '',
             'otherNumber'                   => $otherNumber,
-            'labeltext'                     => $ansrow->questionL10ns[$sSurveyLanguage]->question,
+            'labeltext'                     => $ansrow->questionl10ns[$sSurveyLanguage]->question,
             'javainput'                     => true,
             'javaname'                      => 'java'.$myfname,
             'javavalue'                     => $javavalue,
@@ -1959,7 +1959,7 @@ function do_multipleshorttext($ia)
         $alert = false;
         foreach ($aSubquestions as $aSubquestion) {
             $myfname = $ia[1].$aSubquestion['title'];
-            $sSubquestionText = ($aSubquestion->questionL10ns[$sSurveyLanguage]->question == "") ? "&nbsp;" : $aSubquestion->questionL10ns[$sSurveyLanguage]->question;
+            $sSubquestionText = ($aSubquestion->questionl10ns[$sSurveyLanguage]->question == "") ? "&nbsp;" : $aSubquestion->questionl10ns[$sSurveyLanguage]->question;
 
             // color code missing mandatory questions red
             if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
@@ -2169,7 +2169,7 @@ function do_multiplenumeric($ia)
         $answer = doRender('/survey/questions/answer/multiplenumeric/empty', [], true);
     } else {
         foreach ($aSubquestions as $aSubquestion) {
-            $labelText = $sQuestionText = $aSubquestion->questionL10ns[$sSurveyLanguage]->question;
+            $labelText = $sQuestionText = $aSubquestion->questionl10ns[$sSurveyLanguage]->question;
             $myfname   = $ia[1].$aSubquestion['title'];
 
             if ($sQuestionText == "") {
@@ -3064,7 +3064,7 @@ function do_array_5point($ia)
     // Check if any subquestion use suffix/prefix
     $right_exists  = false;
     foreach ($aSubquestions as $ansrow) {
-        $answertext2 = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+        $answertext2 = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         if (strpos($answertext2, '|')) {
             $right_exists = true;
         }
@@ -3122,7 +3122,7 @@ function do_array_5point($ia)
 
     foreach ($aSubquestions as $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+        $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         if (strpos($answertext, '|') !== false) {
             $answertext = substr($answertext, 0, strpos($answertext, '|'));
         }
@@ -3149,7 +3149,7 @@ function do_array_5point($ia)
         }
 
         // Suffix
-        $answertext2 = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+        $answertext2 = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         if (strpos($answertext2, '|')) {
             $answertext2 = substr($answertext2, strpos($answertext2, '|') + 1);
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_answertext', array(
@@ -3285,7 +3285,7 @@ function do_array_10point($ia)
     $sSurveyLanguage = isset($_SESSION['survey_'.$iSurveyId]) ? $_SESSION['survey_'.$iSurveyId]['s_lang'] : Question::model()->findByPk($ia[0])->survey->language;
     foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+        $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         /* Check if this item has not been answered */
         $error = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
         $trbc = alternation($trbc, 'row');
@@ -3406,7 +3406,7 @@ function do_array_yesnouncertain($ia)
 
         foreach ($aSubquestions as $i => $ansrow) {
             $myfname = $ia[1].$ansrow['title'];
-            $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+            $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
             /* Check the sub question mandatory violation */
             $error = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
 
@@ -3501,7 +3501,7 @@ function do_array_increasesamedecrease($ia)
     $sRows = '';
     foreach ($aSubquestions as $i => $ansrow) {
         $myfname        = $ia[1].$ansrow['title'];
-        $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+        $answertext     = $ansrow->questionl10ns[$sSurveyLanguage]->question;
         $error          = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the sub Q mandatory violation */
         $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
         $Ichecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
@@ -3589,7 +3589,7 @@ function do_array($ia)
             $defaultWidth = true;
         }
         $columnswidth = 100 - $answerwidth;
-        $iCount = (int) Question::model()->with(array('questionL10ns'=>array('condition'=>"question like :separator")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0], ":separator"=>'%|%'));
+        $iCount = (int) Question::model()->with(array('questionl10ns'=>array('condition'=>"question like :separator")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0], ":separator"=>'%|%'));
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {
             $right_exists = true;
@@ -3665,11 +3665,11 @@ function do_array($ia)
             }
 
             $myfname        = $ia[1].$ansrow['title'];
-            $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+            $answertext     = $ansrow->questionl10ns[$sSurveyLanguage]->question;
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
-            if ($right_exists && strpos($ansrow->questionL10ns[$sSurveyLanguage]->question, '|') !== false) {
-                $answertextright = substr($ansrow->questionL10ns[$sSurveyLanguage]->question, strpos($ansrow->questionL10ns[$sSurveyLanguage]->question, '|') + 1);
+            if ($right_exists && strpos($ansrow->questionl10ns[$sSurveyLanguage]->question, '|') !== false) {
+                $answertextright = substr($ansrow->questionl10ns[$sSurveyLanguage]->question, strpos($ansrow->questionl10ns[$sSurveyLanguage]->question, '|') + 1);
             } else {
                 $answertextright = '';
             }
@@ -3805,13 +3805,13 @@ function do_array($ia)
         $sRows = "";
         foreach ($aQuestions as $j => $ansrow) {
             $myfname        = $ia[1].$ansrow['title'];
-            $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]['question'];
+            $answertext     = $ansrow->questionl10ns[$sSurveyLanguage]['question'];
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-            if ($right_exists && (strpos($ansrow->questionL10ns[$sSurveyLanguage]['question'], '|') !== false)) {
-                $answertextright = substr($ansrow->questionL10ns[$sSurveyLanguage]['question'], strpos($ansrow['question'], '|') + 1);
+            if ($right_exists && (strpos($ansrow->questionl10ns[$sSurveyLanguage]['question'], '|') !== false)) {
+                $answertextright = substr($ansrow->questionl10ns[$sSurveyLanguage]['question'], strpos($ansrow['question'], '|') + 1);
             } else {
                 $answertextright = null;
             }
@@ -4019,7 +4019,7 @@ function do_array_texts($ia)
     $labelans     = [];
 
     foreach ($aSubquestionsX as $oSubquestion) {
-        $labelans[$oSubquestion->title] = $oSubquestion->questionL10ns[$sSurveyLanguage]->question;
+        $labelans[$oSubquestion->title] = $oSubquestion->questionl10ns[$sSurveyLanguage]->question;
     }
 
     if ($numrows = count($labelans)) {
@@ -4030,7 +4030,7 @@ function do_array_texts($ia)
 
         $cellwidth = $columnswidth / $numrows;
 
-        $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
+        $iCount = Question::model()->with(array('questionl10ns'=>array('condition'=>"question like '%|%'")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
         if ($iCount > 0) {
             $right_exists = true;
             if (!$defaultWidth) {
@@ -4070,7 +4070,7 @@ function do_array_texts($ia)
             }
 
             $myfname = $ia[1].$ansrow['title'];
-            $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+            $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
             $answertextsave = $answertext;
             $error = false;
 
@@ -4338,14 +4338,14 @@ function do_array_multiflexi($ia)
     $labelcode      = [];
 
     foreach ($aQuestions as $lrow) {
-        $labelans[]  = $lrow->questionL10ns[$sSurveyLanguage]->question;
+        $labelans[]  = $lrow->questionl10ns[$sSurveyLanguage]->question;
         $labelcode[] = $lrow['title'];
     }
 
     if ($numrows = count($labelans)) {
         // There are no "No answer" column
         $cellwidth  = $columnswidth / $numrows;
-        $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->countByAttributes([], 'parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
+        $iCount = Question::model()->with(array('questionl10ns'=>array('condition'=>"question like '%|%'")))->countByAttributes([], 'parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {
             $right_exists = true;
@@ -4402,7 +4402,7 @@ function do_array_multiflexi($ia)
             }
 
             $myfname        = $ia[1].$aSubquestion['title'];
-            $answertext     = $aSubquestion->questionL10ns[$sSurveyLanguage]->question;
+            $answertext     = $aSubquestion->questionl10ns[$sSurveyLanguage]->question;
             $answertextsave = $answertext;
 
             /* Check the sub Q mandatory violation */
@@ -4611,13 +4611,13 @@ function do_arraycolumns($ia)
             $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions'] = [];
             foreach ($aQuestions as $aQuestion) {
-                $aData['aQuestions'][] = array_merge($aQuestion->attributes, $aQuestion->questionL10ns[$sSurveyLanguage]->attributes);
+                $aData['aQuestions'][] = array_merge($aQuestion->attributes, $aQuestion->questionl10ns[$sSurveyLanguage]->attributes);
             }
             $anscode = [];
             $answers = [];
             foreach ($aQuestions as $ansrow) {
                 $anscode[] = $ansrow['title'];
-                $answers[] = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+                $answers[] = $ansrow->questionl10ns[$sSurveyLanguage]->question;
             }
 
             $aData['anscode'] = $anscode;
@@ -4712,7 +4712,7 @@ function do_array_dual($ia)
     $anscount = count($aSubQuestionsR);
     $aSubQuestions = [];
     foreach ($aSubQuestionsR as $oQuestion) {
-        $aSubQuestions[] = array_merge($oQuestion->attributes, $oQuestion->questionL10ns[$sLanguage]->attributes);
+        $aSubQuestions[] = array_merge($oQuestion->attributes, $oQuestion->questionl10ns[$sLanguage]->attributes);
     }
     
    

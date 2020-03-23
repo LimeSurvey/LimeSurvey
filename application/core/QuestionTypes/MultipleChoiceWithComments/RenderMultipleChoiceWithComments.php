@@ -94,8 +94,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname], '');
             $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2], '');
             
-            if ($this->iLabelWidth < strlen(trim(strip_tags($oQuestion->questionL10ns[$this->sLanguage]->question)))) {
-                $this->iLabelWidth = strlen(trim(strip_tags($oQuestion->questionL10ns[$this->sLanguage]->question)));
+            if ($this->iLabelWidth < strlen(trim(strip_tags($oQuestion->questionl10ns[$this->sLanguage]->question)))) {
+                $this->iLabelWidth = strlen(trim(strip_tags($oQuestion->questionl10ns[$this->sLanguage]->question)));
             }
 
             $this->inputnames[] = $myfname;
@@ -112,7 +112,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 'value'                => 'Y', // TODO : check if it should be the same than javavalue
                 'classes'              => '',
                 'otherNumber'          => $this->getQuestionAttribute('other_numbers_only'),
-                'labeltext'            => $oQuestion->questionL10ns[$this->sLanguage]->question,
+                'labeltext'            => $oQuestion->questionl10ns[$this->sLanguage]->question,
                 'javainput'            => true,
                 'javaname'             => 'java'.$myfname,
                 'javavalue'            => $mSessionValue,

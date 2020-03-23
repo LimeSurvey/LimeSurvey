@@ -3449,7 +3449,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         if ($bModified) {
             $arQuestion->save();
         }
-        foreach ($arQuestion->questionL10ns as $arQuestionLS) {
+        foreach ($arQuestion->questionl10ns as $arQuestionLS) {
             $bModified = false;
             foreach ($aCodeMap as $sOldCode=>$sNewCode) {
                 // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)

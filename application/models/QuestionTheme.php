@@ -560,7 +560,7 @@ class QuestionTheme extends LSActiveRecord
         $sThemeName = empty($oQuestionTheme->extends) ? 'core' : $oQuestionTheme->name;
 
         // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader $query = new CDbDataReader($command), $query->read()
-        $aQuestions = Question::model()->with('questionAttributes')->findAll(
+        $aQuestions = Question::model()->with('questionattributes')->findAll(
             'type = :type AND parent_qid = :parent_qid',
             [
                 ':type'       => $oQuestionTheme->question_type,
@@ -568,8 +568,8 @@ class QuestionTheme extends LSActiveRecord
             ]
         );
         foreach ($aQuestions as $oQuestion) {
-            if (isset($oQuestion['questionAttributes']['question_template'])) {
-                if ($sThemeName == $oQuestion['questionAttributes']['question_template']) {
+            if (isset($oQuestion['questionattributes']['question_template'])) {
+                if ($sThemeName == $oQuestion['questionattributes']['question_template']) {
                     $bDeleteTheme = false;
                     break;
                 };

@@ -174,7 +174,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
             
             
-            $answertext = $oQuestionRow->questionL10ns[$this->sLanguage]->question;
+            $answertext = $oQuestionRow->questionl10ns[$this->sLanguage]->question;
 
             $aData['aSubQuestions'][$i]['question'] = $answertext;
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
@@ -221,7 +221,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $aData['aSubQuestions'][$i]['repeatheadings'] = false;
             }
 
-            $answertext = $oQuestionRow->questionL10ns[$this->sLanguage]->question;
+            $answertext = $oQuestionRow->questionl10ns[$this->sLanguage]->question;
             // right and center answertext: not explode for ? Why not
             if (strpos($answertext, '|') !== false) {
                 $answertextright = (string) substr($answertext, strpos($answertext, '|') + 1);

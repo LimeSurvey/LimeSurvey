@@ -1806,7 +1806,7 @@ return $s->hasTokensTable; });
         ));
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
         /** @var Question[] $questions */
-        $questions = Question::model()->with('questionL10ns')->findAll($criteria);
+        $questions = Question::model()->with('questionl10ns')->findAll($criteria);
         return $questions;
     }
 

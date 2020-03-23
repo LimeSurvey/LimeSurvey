@@ -239,7 +239,7 @@ class database extends Survey_Common_Action
         }
         if ($aQuestionTypeList[$sQuestionType]['subquestions'] > 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                $arQuestions = Question::model()->with('questionL10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
+                $arQuestions = Question::model()->with('questionl10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
 
                 for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['subquestions']; $iScaleID++) {
                     foreach ($arQuestions as $aSubquestionrow) {
@@ -1357,7 +1357,7 @@ class database extends Survey_Common_Action
 
                             // subquestions
                             $aOldNewSubquestions = array(); // track old and new sqid's
-                            $oOldSubQuestions = Question::model()->with('questionL10ns')->findAllByAttributes(array("parent_qid"=>$oldQID), array('order'=>'question_order'));
+                            $oOldSubQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(array("parent_qid"=>$oldQID), array('order'=>'question_order'));
                             foreach ($oOldSubQuestions as $sSubquestionIndex => $subquestion) {
                                 $aInsertData = $subquestion->attributes;
                                 unset($aInsertData['qid']);
@@ -1366,12 +1366,12 @@ class database extends Survey_Common_Action
                                     $iNewSubquestionId = Yii::app()->db->getLastInsertID();
                                     $aOldNewSubquestions[$subquestion->qid] = $iNewSubquestionId;
 
-                                    if (isset($subquestion->questionL10ns)){
-                                        foreach($subquestion->questionL10ns as $language => $questionL10ns){
+                                    if (isset($subquestion->questionl10ns)){
+                                        foreach($subquestion->questionl10ns as $language => $questionl10ns){
                                             $oQuestionLS = new QuestionL10n;
                                             $oQuestionLS->language = $language;
-                                            $oQuestionLS->question = $questionL10ns->question;
-                                            $oQuestionLS->help = $questionL10ns->help;
+                                            $oQuestionLS->question = $questionl10ns->question;
+                                            $oQuestionLS->help = $questionl10ns->help;
                                             $oQuestionLS->qid = $iNewSubquestionId;
                                             $oQuestionLS->save();
                                         }

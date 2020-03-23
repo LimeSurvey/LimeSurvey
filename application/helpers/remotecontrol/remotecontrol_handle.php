@@ -1535,9 +1535,9 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->with('questionL10ns')
+                $oQuestion = Question::model()->with('questionl10ns')
                     ->find(
-                        't.qid = :qid and questionL10ns.language = :language',
+                        't.qid = :qid and questionl10ns.language = :language',
                         array(':qid' => $iQuestionID, ':language'=>$sLanguage)
                 );
                 if (!isset($oQuestion)) {
@@ -1564,9 +1564,9 @@ class remotecontrol_handle
                 $aResult = array();
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
-                        $oSubQuestions = Question::model()->with('questionL10ns')
+                        $oSubQuestions = Question::model()->with('questionl10ns')
                             ->findAll(
-                                't.parent_qid = :parent_qid and questionL10ns.language = :language',
+                                't.parent_qid = :parent_qid and questionl10ns.language = :language',
                                 array(':parent_qid' => $iQuestionID, ':language'=>$sLanguage),
                                 array('order'=>'title')
                         );
@@ -1575,10 +1575,10 @@ class remotecontrol_handle
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
                                 if ($sPropertyName == 'available_answers') {
-                                    $aData[$oSubQuestion['title']] = array_key_exists($sLanguage, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['title']] = array_key_exists($sLanguage, $oSubQuestion->questionl10ns) ? $oSubQuestion->questionl10ns[$sLanguage]->question : '';
                                 } else {
                                     $aData[$oSubQuestion['qid']]['title'] = $oSubQuestion['title'];
-                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($sLanguage, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($sLanguage, $oSubQuestion->questionl10ns) ? $oSubQuestion->questionl10ns[$sLanguage]->question : '';
                                     $aData[$oSubQuestion['qid']]['scale_id'] = $oSubQuestion['scale_id'];
                                 }
 
@@ -2191,7 +2191,7 @@ class remotecontrol_handle
                 }
 
                 foreach ($aQuestionList as $oQuestion) {
-                    $L10ns = $oQuestion->questionL10ns[$sLanguage];
+                    $L10ns = $oQuestion->questionl10ns[$sLanguage];
                     $aData[] = array_merge([
                         'id' => $oQuestion->primaryKey,
                         'question' => $L10ns->question,

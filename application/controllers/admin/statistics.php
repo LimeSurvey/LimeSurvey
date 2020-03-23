@@ -178,7 +178,7 @@ class statistics extends Survey_Common_Action
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionL10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question'])
             );
 
             if (!in_array($sGroupName, $aGroups)) {
@@ -192,7 +192,7 @@ class statistics extends Survey_Common_Action
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionL10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question'])
             );
             $keyone = $keyone + 1;
         }

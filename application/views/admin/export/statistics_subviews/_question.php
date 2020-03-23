@@ -571,7 +571,7 @@
                 foreach($result[$key1] as $row)
                 {
                     //$fresult = Question::model()->getQuestionsForStatistics('*', "parent_qid='{$row->qid}' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
-                    $fresult = Question::model()->with('questionL10ns')->findAll(array('condition' =>'parent_qid = ' . $row['parent_qid'] . ' AND scale_id = 1', 'order' => 'question_order ASC'));
+                    $fresult = Question::model()->with('questionl10ns')->findAll(array('condition' =>'parent_qid = ' . $row['parent_qid'] . ' AND scale_id = 1', 'order' => 'question_order ASC'));
                     foreach ($fresult as $frow) {
                         $myfield2 = $myfield . $row['title'] . "_" . $frow['title'];
                         echo "<!-- MyField2:  $myfield2 - ";
@@ -582,7 +582,7 @@
                         echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
                         if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {echo " checked='checked'";}
                         echo " />&nbsp;<strong>"
-                        .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow->questionL10ns[$language]->question."]")." - ".$row['title']."/".$frow['title'])
+                        .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row['question']." [".$frow->questionl10ns[$language]->question."]")." - ".$row['title']."/".$frow['title'])
                         ."</strong>\n"
                         ."</div>\n";
                         echo "\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5' class='form-control'>\n";

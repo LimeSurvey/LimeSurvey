@@ -671,12 +671,12 @@ class questionedit extends Survey_Common_Action
                 'code' => $oQuestion->title,
                 'text' => isset($changedText['question'])
                 ? $changedText['question']
-                : $oQuestion->questionL10ns[$sLanguage]->question,
+                : $oQuestion->questionl10ns[$sLanguage]->question,
                 'help' => [
                     'show' => true,
                     'text' => (isset($changedText['help'])
                         ? $changedText['help']
-                        : $oQuestion->questionL10ns[$sLanguage]->help),
+                        : $oQuestion->questionl10ns[$sLanguage]->help),
                 ],
             ]
         );
@@ -1301,7 +1301,7 @@ class questionedit extends Survey_Common_Action
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
             $aScaledSubquestions[$scaleId] = array_map(function ($oSubQuestion) {
-                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionL10ns);
+                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionl10ns);
             }, $aSubquestions);
         }
 
@@ -1313,7 +1313,7 @@ class questionedit extends Survey_Common_Action
         }
         $aReplacementData = [];
         $questioni10N = [];
-        foreach ($oQuestion->questionL10ns as $lng => $oQuestionI10N) {
+        foreach ($oQuestion->questionl10ns as $lng => $oQuestionI10N) {
             $questioni10N[$lng] = $oQuestionI10N->attributes;
 
             templatereplace(

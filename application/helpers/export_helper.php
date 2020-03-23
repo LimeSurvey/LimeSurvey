@@ -1213,14 +1213,14 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     if ($scale_id != false) {
         $aCondition['scale_id'] = $scale_id;
     }
-    $QueryResult = Question::model()->with('questionL10ns')->findAllByAttributes($aCondition);
+    $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition);
     foreach ($QueryResult as $Row) {
         $response = $dom->createElement("response");
         if ($free == false) {
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
-            $label = $dom->createElement("label", QueXMLCleanup($Row->questionL10ns[$quexmllang]->question, ''));
+            $label = $dom->createElement("label", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
 
             $value = $dom->createElement("value", $yesvalue);
             $nextcode = $Row['title'];
@@ -1254,7 +1254,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $response->appendChild($fixed);
 
         } else {
-            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[$quexmllang]->question));
+            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionl10ns[$quexmllang]->question));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1345,7 +1345,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers) {
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerL10ns[$quexmllang]->answer, ''));
         } else {
-            $text = $dom->createElement("text", QueXMLCleanup($Row->questionL10ns[$quexmllang]->question, ''));
+            $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
         }
         $subQuestion->appendChild($text);
         if ($use_answers) {

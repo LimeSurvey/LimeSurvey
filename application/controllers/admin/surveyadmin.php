@@ -151,11 +151,11 @@ class SurveyAdmin extends Survey_Common_Action
         $iGroupNumber    = 0;
         $iGroupSequence  = 0;
         $oQuestions      = Question::model()
-            ->with(['group', 'questionL10ns'])
+            ->with(['group', 'questionl10ns'])
             ->findAll(
                 array(
                     'select' => 't.qid,t.gid',
-                    'condition' => "t.sid=:sid and questionL10ns.language=:language and parent_qid=0",
+                    'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
                     'order' => 'group.group_order, question_order',
                     'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
                 )
@@ -515,8 +515,8 @@ class SurveyAdmin extends Survey_Common_Action
             $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
 
             $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionL10ns[$baselang]['question'])) {
-                $aData['last_question_name'] .= ' : '.$qrrow->questionL10ns[$baselang]['question'];
+            if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
+                $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
             }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
@@ -568,9 +568,9 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
-                        $curQuestion['hidden'] = isset($question->questionAttributes['hidden']) && !empty($question->questionAttributes['hidden']->value);
-                        $questionText = isset($question->questionL10ns[$baselang])
-                            ? $question->questionL10ns[$baselang]->question
+                        $curQuestion['hidden'] = isset($question->questionattributes['hidden']) && !empty($question->questionattributes['hidden']->value);
+                        $questionText = isset($question->questionl10ns[$baselang])
+                            ? $question->questionl10ns[$baselang]->question
                             : '';
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
                         $curGroup['questions'][] = $curQuestion;
@@ -1743,7 +1743,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
         $aQuestions = [];
         foreach ($oResult as $aRecord) {
-            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
+            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionl10ns[$survey->language]->attributes);
         }
 
         $aData['jsData'] = [

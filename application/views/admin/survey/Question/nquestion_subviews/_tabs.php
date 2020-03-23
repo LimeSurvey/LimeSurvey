@@ -56,7 +56,7 @@
             <label class=" control-label" for='help_<?php echo $oSurvey->language; ?>'><?php eT("Help:"); ?></label>
             <div class="">
                 <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("help_".$oSurvey->language, $oQuestion->questionL10ns[$oSurvey->language]->help, array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")); ?>
+                    <?php echo CHtml::textArea("help_".$oSurvey->language, $oQuestion->questionl10ns[$oSurvey->language]->help, array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")); ?>
                     <?php echo getEditor("question-help", "help_".$oSurvey->language, "[".gT("Help:", "js")."](".$oSurvey->language.")", $surveyid, $gid, $qid, $action); ?>
                 </div>
             </div>
@@ -65,7 +65,7 @@
 
     <!-- Other languages tab-panes -->
     <?php if (!$adding):?>
-    <?php foreach ($oQuestion->questionL10ns as $sLanguage=>$oQuestionL10n): ?>
+    <?php foreach ($oQuestion->questionl10ns as $sLanguage=>$oQuestionL10n): ?>
     <?php if ($sLanguage==$oSurvey->language) {
             continue;
         } ?>

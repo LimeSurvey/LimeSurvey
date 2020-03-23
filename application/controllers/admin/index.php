@@ -68,8 +68,8 @@ class Index extends Survey_Common_Action
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid));
                 if ($qrrow) {
                     $aData['last_question_name'] = $qrrow['title'];
-                    if (!empty($qrrow->questionL10ns[$baselang]['question'])) {
-                        $aData['last_question_name'] .= ' : '.$qrrow->questionL10ns[$baselang]['question'];
+                    if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
+                        $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
                     }
                     $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
                 } else {
