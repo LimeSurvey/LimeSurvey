@@ -1057,8 +1057,6 @@ class responses extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        // TODO: Remove unused code.
-        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
         App()->getClientScript()->registerCssFile(App()->getConfig('publicstyleurl').'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
