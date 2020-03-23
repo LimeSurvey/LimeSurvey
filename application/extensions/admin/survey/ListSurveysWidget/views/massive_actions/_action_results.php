@@ -4,6 +4,8 @@
 /**
  * This view display the result of delete multiple action. It's rendered via ajax for the confirmation modal in survey list
  *
+ * it's also used for saving "change survey group" result (not only delete multiple action) ...
+ *
  * @var $aResults   The array containing the result of each survey deletion
  */
 ?>
