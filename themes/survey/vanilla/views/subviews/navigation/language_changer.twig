@@ -10,20 +10,7 @@
 #}
 
 {% if aSurveyInfo.alanguageChanger.show == true %}
-
-    {% set htmlOptions = {
-        'id'          : 'firstpage-changelang',
-        'autocomplete': 'off',
-        'class'       : 'form',
-    } %}
-
-    <!-- Start of language change Form-->
-    {{ C.Html.form(
-        ( aSurveyInfo.surveyUrl ),
-    'post',
-    (htmlOptions)
-    ) }}
-
+    
     {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
     {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
@@ -32,7 +19,6 @@
         To add a new attribute, just add an entry:
         'attribute' : 'value',
     #}
-
     {% set htmlOptions = {
             'class'          : 'form-control',
             'data-targeturl' : aLCD.targetUrl,
@@ -69,6 +55,5 @@
 
     {# Activate the language changer  #}
     {{ registerScript("activateLanguageChanger", "activateLanguageChanger(); ", "POS_END") }}
-
-    </form>
+    
 {% endif %}
