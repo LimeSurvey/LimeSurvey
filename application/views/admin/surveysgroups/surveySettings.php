@@ -31,7 +31,7 @@ Yii::app()->getClientScript()->registerScript(
                 )
                 )
             )); ?>
-    <h3><?php eT('Survey settings for group: '); echo '<strong><em>'.$model->title.'</strong></em>'; ?></h3>
+    <h3><?php eT('Survey settings for group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
     <div class="row">
         <div id="surveySettingsForThisGroup" style="display: flex; flex-wrap:nowrap;">
             <div id="global-sidebar-container">
