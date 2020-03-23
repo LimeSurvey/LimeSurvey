@@ -906,37 +906,6 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData(array('iSurveyId' => $iSurveyID));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        // TODO: Remove unused code?
-        /*
-        extract($aData);
-        $aViewUrls = array();
-
-        if ($survey->savetimings != "Y")
-            die();
-
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked'
-        && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
-        {
-            $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
-            SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-            SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-        }
-
-        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
-        {
-            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' &&
-            Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
-            {
-                foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
-                {
-                    $iResponseID=(int) $iResponseID;
-                    SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                }
-            }
-        }
-        */
-
         $aData['columns'] = array(
             array(
                 'header' => gT('ID'),
