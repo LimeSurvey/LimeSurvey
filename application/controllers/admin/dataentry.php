@@ -1793,7 +1793,7 @@ class dataentry extends Survey_Common_Action
                 $aQuestions = Question::model()->findAllByAttributes(['sid'=>$surveyid, 'parent_qid'=>0, 'gid'=>$arGroup['gid']]);
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 ."<!-- Inside controller dataentry.php -->"
-                ."<td colspan='3'><h4>".flattenText($arGroup->questionGroupL10ns[$sDataEntryLanguage]->group_name, true)."</h4></td>\n"
+                ."<td colspan='3'><h4>".flattenText($arGroup->questiongroupl10ns[$sDataEntryLanguage]->group_name, true)."</h4></td>\n"
                 ."\t</tr>\n";
 
                 $gid = $arGroup['gid'];

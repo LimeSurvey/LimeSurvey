@@ -235,7 +235,7 @@ class Condition extends LSActiveRecord
         $db = Yii::app()->db;
         $quotedQL10ns = $db->quoteTableName('questionl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
-        $quotedQGL10ns = $db->quoteTableName('questionGroupL10ns');
+        $quotedQGL10ns = $db->quoteTableName('questiongroupl10ns');
 
         $result = Condition::model()->with(array(
             'questions' => array(
@@ -247,7 +247,7 @@ class Condition extends LSActiveRecord
                 'params' => array(':lang1' => $language)
             ),
             'questions.group',
-            'questions.group.questionGroupL10ns' => array(
+            'questions.group.questiongroupl10ns' => array(
                 'condition' => $quotedQGL10ns . '.' . $quotedLanguage . ' = :lang2',
                 'params' => array(':lang2' => $language)
             )
@@ -270,7 +270,7 @@ class Condition extends LSActiveRecord
         $db = Yii::app()->db;
         $quotedQL10ns = $db->quoteTableName('questionl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
-        $quotedQGL10ns = $db->quoteTableName('questionGroupL10ns');
+        $quotedQGL10ns = $db->quoteTableName('questiongroupl10ns');
 
         $results = Condition::model()->with(array(
             'questions' => array(
@@ -282,7 +282,7 @@ class Condition extends LSActiveRecord
                 'params' => array(':lang1' => $language)
             ),
             'questions.group',
-            'questions.group.questionGroupL10ns' => array(
+            'questions.group.questiongroupl10ns' => array(
                 'condition' => $quotedQGL10ns . '.' . $quotedLanguage . ' = :lang2',
                 'params' => array(':lang2' => $language)
             )

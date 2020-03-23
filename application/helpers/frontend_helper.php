@@ -1599,8 +1599,8 @@ function UpdateGroupList($surveyid, $language)
     foreach ($result as $row) {
         $group = array(
             'gid'         => $row['gid'],
-            'group_name'  => $row->questionGroupL10ns[$language]->group_name,
-            'description' =>  $row->questionGroupL10ns[$language]->description);
+            'group_name'  => $row->questiongroupl10ns[$language]->group_name,
+            'description' =>  $row->questiongroupl10ns[$language]->description);
         $groupList[] = $group;
         $gidList[$row['gid']] = $group;
     }

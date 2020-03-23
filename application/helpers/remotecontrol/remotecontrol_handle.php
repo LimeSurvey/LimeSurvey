@@ -1198,7 +1198,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->with('questionGroupL10ns')->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
                 return array('status' => 'Error: Invalid group ID');
             }
@@ -1229,9 +1229,9 @@ class remotecontrol_handle
                 foreach ($aGroupSettings as $sGroupSetting) {
                     if (isset($oGroup->$sGroupSetting)) {
                         $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
-                    } elseif (isset($oGroup->questionGroupL10ns[$sLanguage])
-                        && isset($oGroup->questionGroupL10ns[$sLanguage]->$sGroupSetting)) {
-                        $aResult[$sGroupSetting] = $oGroup->questionGroupL10ns[$sLanguage]->$sGroupSetting;
+                    } elseif (isset($oGroup->questiongroupl10ns[$sLanguage])
+                        && isset($oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting)) {
+                        $aResult[$sGroupSetting] = $oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting;
                     }
                 }
                 return $aResult;
@@ -2023,7 +2023,7 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                $oGroupList = QuestionGroup::model()->with('questionGroupL10ns')->findAllByAttributes(array("sid"=>$iSurveyID));
+                $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid"=>$iSurveyID));
                 if (count($oGroupList) == 0) {
                     return array('status' => 'No groups found');
                 }
@@ -2033,7 +2033,7 @@ class remotecontrol_handle
                 }
 
                 foreach ($oGroupList as $oGroup) {
-                    $L10ns = $oGroup->questionGroupL10ns[$sLanguage];
+                    $L10ns = $oGroup->questiongroupl10ns[$sLanguage];
                     $tmp = array('id'=>$oGroup->primaryKey) + $oGroup->attributes;
                     $tmp['group_name'] = $L10ns['group_name'];
                     $tmp['description'] = $L10ns['description'];

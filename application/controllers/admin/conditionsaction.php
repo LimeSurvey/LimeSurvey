@@ -1217,11 +1217,11 @@ class conditionsaction extends Survey_Common_Action
 
             $result = Question::model()->with(array(
                 'group' => array(
-                    'condition' => 'questionGroupL10ns.language = :lang',
+                    'condition' => 'questiongroupl10ns.language = :lang',
                     'params' => array(':lang' => $this->language),
                     'alias'  => 'group',
                 ),
-                'group.questionGroupL10ns' => array('alias' =>'questiongroupl10ns' ),
+                'group.questiongroupl10ns' => array('alias' =>'questiongroupl10ns' ),
                 'questionl10ns'
             ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
 

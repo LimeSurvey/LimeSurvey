@@ -169,7 +169,7 @@ class statistics extends Survey_Common_Action
         $aGroups = array();
         $keyone = 0;
         foreach ($rows as $row) {
-            $sGroupName = $row->group->questionGroupL10ns[$language]->group_name;
+            $sGroupName = $row->group->questiongroupl10ns[$language]->group_name;
 
             //store some column names in $filters array
             $filters[] = array(

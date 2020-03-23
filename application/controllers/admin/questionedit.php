@@ -1296,7 +1296,7 @@ class questionedit extends Survey_Common_Action
         LimeExpressionManager::StartProcessingPage(false, true);
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
-        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);
+        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questiongroupl10ns);
 
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {

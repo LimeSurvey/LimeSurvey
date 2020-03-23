@@ -12,7 +12,7 @@
                 <!-- Question Group -->
                 <tr>
                     <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-                    <td><em><?php echo flattenText($oQuestion->group->questionGroupL10ns[$baselang]->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
+                    <td><em><?php echo flattenText($oQuestion->group->questiongroupl10ns[$baselang]->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
                 </tr>
 
                 <!-- Code -->

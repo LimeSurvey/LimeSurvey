@@ -880,7 +880,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT('Group'),
                 'name' => 'group',
-                'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
+                'value'=> '$data->group->questiongroupl10ns[$data->survey->language]->group_name',
             ),
 
             array(
