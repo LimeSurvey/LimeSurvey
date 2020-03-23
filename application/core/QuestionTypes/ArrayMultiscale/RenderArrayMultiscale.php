@@ -72,7 +72,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             foreach ($aScale as $oAnswerOption) {
                 $this->aLabels[$iScaleId][] = [
                     'code' => $oAnswerOption->code,
-                    'title' => $oAnswerOption->answerL10ns[$this->sLanguage]->answer
+                    'title' => $oAnswerOption->answerl10ns[$this->sLanguage]->answer
                 ];
             }
         }
@@ -83,7 +83,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->numrows = 0;
         foreach ($this->aAnswerOptions as $iScaleId => $aScale) {
             foreach ($aScale as $oAnswerOption) {
-                $aData['labelans'.$iScaleId][] = $oAnswerOption->answerL10ns[$this->sLanguage]->answer;
+                $aData['labelans'.$iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
                 $aData['labelcode'.$iScaleId][] = $oAnswerOption->code;
             }
             

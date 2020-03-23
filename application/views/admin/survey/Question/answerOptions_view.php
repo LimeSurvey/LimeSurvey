@@ -61,7 +61,7 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 'viewType' => $viewType,
                 'assessment_value'  => CHtml::encode($oAnswer->assessment_value),
                 'scalecount' => $scalecount,
-                'answer'     => CHtml::encode($oAnswer->answerL10ns[$anslang]->answer),
+                'answer'     => CHtml::encode($oAnswer->answerl10ns[$anslang]->answer),
                 'tableId' => $tableId,
                 'activated' => $activated,
                 'assessmentvisible' => (empty($assessmentvisible)) ? false : $assessmentvisible,

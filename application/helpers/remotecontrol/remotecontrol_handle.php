@@ -1613,16 +1613,16 @@ class remotecontrol_handle
                             $aResult['attributes_lang'] = 'No available attributes';
                         }
                     } else if ($sPropertyName == 'answeroptions') {
-                        $oAttributes = Answer::model()->with('answerL10ns')
+                        $oAttributes = Answer::model()->with('answerl10ns')
                             ->findAll(
-                                't.qid = :qid and answerL10ns.language = :language',
+                                't.qid = :qid and answerl10ns.language = :language',
                                 array(':qid' => $iQuestionID, ':language'=> $sLanguage),
                                 array('order'=>'sortorder')
                         );
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['code']]['answer'] = array_key_exists($sLanguage, $oAttribute->answerL10ns) ? $oAttribute->answerL10ns[$sLanguage]->answer : '';
+                                $aData[$oAttribute['code']]['answer'] = array_key_exists($sLanguage, $oAttribute->answerl10ns) ? $oAttribute->answerl10ns[$sLanguage]->answer : '';
                                 $aData[$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];

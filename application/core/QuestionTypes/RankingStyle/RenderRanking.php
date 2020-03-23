@@ -80,7 +80,7 @@ class RenderRanking extends QuestionBaseRenderer
             }
     
             foreach ($this->aAnswerOptions[0] as $oAnswer) {
-                $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerL10ns[$this->sLanguage]->attributes);
+                $this->aDisplayAnswers[$oAnswer->aid] = array_merge($oAnswer->attributes, $oAnswer->answerl10ns[$this->sLanguage]->attributes);
                 $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname], false);
 
                 if ($mSessionValue == $oAnswer->code) {
@@ -94,7 +94,7 @@ class RenderRanking extends QuestionBaseRenderer
                     'value' => $oAnswer->code,
                     'selected'=>$selected,
                     'classes'=>'',
-                    'optiontext'=>$oAnswer->answerL10ns[$this->sLanguage]->answer
+                    'optiontext'=>$oAnswer->answerl10ns[$this->sLanguage]->answer
                 );
             }
     

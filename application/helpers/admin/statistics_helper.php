@@ -1247,8 +1247,8 @@ class statistics_helper
                     foreach ($qresult as $qrow) {
                         $fresult = Answer::model()->findAll(array('condition'=>'qid=:qid AND code=:code ND scale_id=0', 'params'=>array(":qid"=>$qiqid, ':code'=>$licode)));
                         foreach ($fresult as $frow) {
-                            $alist[] = array($frow['code'], $frow->answerL10ns[$language]->answer);
-                            $ltext = $frow->answerL10ns[$language]->answer;
+                            $alist[] = array($frow['code'], $frow->answerl10ns[$language]->answer);
+                            $ltext = $frow->answerl10ns[$language]->answer;
                         }
                         $atext = flattenText($qrow[1]);
                     }
@@ -1301,7 +1301,7 @@ class statistics_helper
                         //this question type uses its own labels
                         //add code and title to results for outputting them later
                         foreach ($fresult as $frow) {
-                            $alist[] = array($frow['code'], flattenText($frow->answerL10ns[$language]->answer));
+                            $alist[] = array($frow['code'], flattenText($frow->answerl10ns[$language]->answer));
                         }
 
                         //counter
@@ -1417,7 +1417,7 @@ class statistics_helper
                     $qresult = Answer::model()->findAllByAttributes(['qid'=>$qqid, 'scale_id'=>0]);
                     //put answer code and title into array
                     foreach ($qresult as $qrow) {
-                        $alist[] = array($qrow->code, flattenText($qrow->answerL10ns[$language]->answer));
+                        $alist[] = array($qrow->code, flattenText($qrow->answerl10ns[$language]->answer));
                     }
 
                     //handling for "other" field for list radio or list drowpdown

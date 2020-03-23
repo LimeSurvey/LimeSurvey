@@ -44,7 +44,7 @@
                                                             <?php eT('<No default value>') ?>
                                                         </option>
                                                         <?php foreach ($opts['answers'] as $answer) {
-                                                            $sAnswer = $answer->answerL10ns[$language]->answer;
+                                                            $sAnswer = $answer->answerl10ns[$language]->answer;
                                                             $answer = $answer->attributes;
                                                             $answer['answer'] = $sAnswer;
                                                             

@@ -750,7 +750,7 @@ function do_list_dropdown($ia)
                 'name'=> $ia[1],
                 'value'=>$ansrow['code'],
                 'opt_select'=>$opt_select,
-                'answer'=>$_prefix.$ansrow->answerL10ns[$sSurveyLang]->answer,
+                'answer'=>$_prefix.$ansrow->answerl10ns[$sSurveyLang]->answer,
                 ), true);
         }
     } else {
@@ -758,7 +758,7 @@ function do_list_dropdown($ia)
         $optgroups = [];
         foreach ($ansresult as $ansrow) {
             // Let's sort answers in an array indexed by subcategories
-            @list($categorytext, $answertext) = explode($optCategorySeparator, $ansrow->answerL10ns[$sSurveyLang]->answer);
+            @list($categorytext, $answertext) = explode($optCategorySeparator, $ansrow->answerl10ns[$sSurveyLang]->answer);
             // The blank category is left at the end outside optgroups
             if ($categorytext == '') {
                 $defaultopts[] = array('code' => $ansrow['code'], 'answer' => $answertext);
@@ -975,7 +975,7 @@ function do_list_radio($ia)
             'sDisplayStyle' => $sDisplayStyle,
             'name'          => $ia[1],
             'code'          => $ansrow['code'],
-            'answer'        => $ansrow->answerL10ns[$sSurveyLang]->answer,
+            'answer'        => $ansrow->answerl10ns[$sSurveyLang]->answer,
             'checkedState'  => $checkedState,
             'myfname'       => $myfname,
             'i'             => $i
@@ -1149,7 +1149,7 @@ function do_listwithcomment($ia)
                 'value'                  => $ansrow['code'],
                 'check_ans'              => $check_ans,
                 'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type);',
-                'labeltext'              => $ansrow->answerL10ns[$sSurveyLang]->answer,
+                'labeltext'              => $ansrow->answerl10ns[$sSurveyLang]->answer,
             );
             $sRows .= doRender('/survey/questions/answer/list_with_comment/list/rows/answer_row', $itemData, true);
         }
@@ -1341,7 +1341,7 @@ function do_ranking($ia)
                 'value' => $aAnswer['code'],
                 'selected'=>$selected,
                 'classes'=>'',
-                'optiontext'=>$aAnswer->answerL10ns[$sSurveyLanguage]->answer
+                'optiontext'=>$aAnswer->answerl10ns[$sSurveyLanguage]->answer
             );
         }
 
@@ -1374,7 +1374,7 @@ function do_ranking($ia)
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {
-        $aDisplayAnswers[] = array_merge($aAnswer->attributes, $aAnswer->answerL10ns[$sSurveyLanguage]->attributes);
+        $aDisplayAnswers[] = array_merge($aAnswer->attributes, $aAnswer->answerl10ns[$sSurveyLanguage]->attributes);
     }
     
     $answer = doRender('/survey/questions/answer/ranking/answer', array(
@@ -3575,7 +3575,7 @@ function do_array($ia)
     $labelcode = [];
 
     foreach ($aAnswers as $aAnswer) {
-        $labelans[]  = $aAnswer->answerL10ns[$sSurveyLanguage]->answer;
+        $labelans[]  = $aAnswer->answerl10ns[$sSurveyLanguage]->answer;
         $labelcode[] = $aAnswer->code;
     }
 
@@ -3772,7 +3772,7 @@ function do_array($ia)
         foreach ($aAnswers as $aAnswer) {
             $labels[] = array(
                 'code'   => $aAnswer->code,
-                'answer' => $aAnswer->answerL10ns[$sSurveyLanguage]->answer
+                'answer' => $aAnswer->answerl10ns[$sSurveyLanguage]->answer
             );
         }
 
@@ -3801,7 +3801,7 @@ function do_array($ia)
 
         $fn         = 1;
         $inputnames = [];
-        //$aAnswer->answerL10ns[$sSurveyLanguage]->answer
+        //$aAnswer->answerl10ns[$sSurveyLanguage]->answer
         $sRows = "";
         foreach ($aQuestions as $j => $ansrow) {
             $myfname        = $ia[1].$ansrow['title'];
@@ -4573,9 +4573,9 @@ function do_arraycolumns($ia)
     $labels = [];
 
     foreach ($aAnswers as $lrow) {
-        $labelans[] = $lrow->answerL10ns[$sSurveyLanguage]->answer;
+        $labelans[] = $lrow->answerl10ns[$sSurveyLanguage]->answer;
         $labelcode[] = $lrow['code'];
-        $labels[] = array("answer"=>$lrow->answerL10ns[$sSurveyLanguage]->answer, "code"=>$lrow['code']);
+        $labels[] = array("answer"=>$lrow->answerl10ns[$sSurveyLanguage]->answer, "code"=>$lrow['code']);
     }
 
     $inputnames = [];
@@ -4761,11 +4761,11 @@ function do_array_dual($ia)
     $labels1 = [];
     foreach ($aAnswersScale0 as $lrow) {
         $labels0[] = array('code' => $lrow->code,
-            'title' => $lrow->answerL10ns[$sLanguage]->answer);
+            'title' => $lrow->answerl10ns[$sLanguage]->answer);
     }
     foreach ($aAnswersScale1 as $lrow) {
         $labels1[] = array('code' => $lrow->code,
-            'title' => $lrow->answerL10ns[$sLanguage]->answer);
+            'title' => $lrow->answerl10ns[$sLanguage]->answer);
     }
     if (count($aAnswersScale0) > 0 && $anscount) {
         $answer = "";
@@ -4784,11 +4784,11 @@ function do_array_dual($ia)
             $labelcode0 = [];
             $labelcode1 = [];
             foreach ($aAnswersScale0 as $lrow) {
-                $labelans0[] = $lrow->answerL10ns[$sLanguage]->answer;
+                $labelans0[] = $lrow->answerl10ns[$sLanguage]->answer;
                 $labelcode0[] = $lrow->code;
             }
             foreach ($aAnswersScale1 as $lrow) {
-                $labelans1[] = $lrow->answerL10ns[$sLanguage]->answer;
+                $labelans1[] = $lrow->answerl10ns[$sLanguage]->answer;
                 $labelcode1[] = $lrow->code;
             }
             $numrows = count($labelans0) + count($labelans1);

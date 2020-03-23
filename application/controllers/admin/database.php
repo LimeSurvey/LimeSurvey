@@ -1381,15 +1381,15 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
-                        $oOldAnswers = Answer::model()->with('answerL10ns')->findAllByAttributes(array("qid"=>$oldQID));
+                        $oOldAnswers = Answer::model()->with('answerl10ns')->findAllByAttributes(array("qid"=>$oldQID));
                         foreach ($oOldAnswers as $answer) {
                             $newAnswer = new Answer();
                             $newAnswer->attributes = $answer->attributes;
                             $newAnswer->qid = $this->iQuestionID;
                             if ($newAnswer->save()) {
                                 $iNewAnswerId = Yii::app()->db->getLastInsertID();                                 
-                                if (isset($answer->answerL10ns)){
-                                    foreach($answer->answerL10ns as $language => $answerL10ns){
+                                if (isset($answer->answerl10ns)){
+                                    foreach($answer->answerl10ns as $language => $answerL10ns){
                                         $oAnswerLS = new AnswerL10n;
                                         $oAnswerLS->language = $language;
                                         $oAnswerLS->answer = $answerL10ns->answer;

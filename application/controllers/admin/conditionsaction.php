@@ -1400,7 +1400,7 @@ class conditionsaction extends Survey_Common_Action
                             //Array Flexible Column
                         case "H":
                             $fresult = Answer::model()->with(array(
-                            'answerL10ns' => array(
+                            'answerl10ns' => array(
                                 'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language),
                                 'alias' => 'answerl10ns',
@@ -1410,7 +1410,7 @@ class conditionsaction extends Survey_Common_Action
                                     'scale_id' => 0,
                                 ), array('order' => 'sortorder, code')
                             );
-                            foreach ($fresult as $frow) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow->answerL10ns[$this->language]->answer); }
+                            foreach ($fresult as $frow) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow->answerl10ns[$this->language]->answer); }
                             break;
                     }
                     // Only Show No-Answer if question is not mandatory
@@ -1492,8 +1492,8 @@ class conditionsaction extends Survey_Common_Action
 
                     // first label
                     $lresult = Answer::model()->with(array(
-                            'answerL10ns' => array(
-                                'condition' => 'answerL10ns.language = :lang',
+                            'answerl10ns' => array(
+                                'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0), array('order' => 'sortorder, answer'));
                     foreach ($lresult as $lrows) {
@@ -1502,8 +1502,8 @@ class conditionsaction extends Survey_Common_Action
 
                     // second label
                     $lresult = Answer::model()->with(array(
-                            'answerL10ns' => array(
-                                'condition' => 'answerL10ns.language = :lang',
+                            'answerl10ns' => array(
+                                'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(array(
                         'qid' => $rows['qid'],
@@ -1540,8 +1540,8 @@ class conditionsaction extends Survey_Common_Action
             } elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) {
                 //Answer Ranking
                 $aresult = Answer::model()->with(array(
-                            'answerL10ns' => array(
-                                'condition' => 'answerL10ns.language = :lang',
+                            'answerl10ns' => array(
+                                'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language)
                             )))->findAllByAttributes(
                     array(
@@ -1554,7 +1554,7 @@ class conditionsaction extends Survey_Common_Action
 
                 $quicky = [];
                 foreach ($aresult as $arow) {
-                    $theanswer = $arow->answerL10ns[$this->language]->answer;
+                    $theanswer = $arow->answerl10ns[$this->language]->answer;
                     $quicky[] = array($arow['code'], $theanswer);
                 }
 
@@ -1630,8 +1630,8 @@ class conditionsaction extends Survey_Common_Action
 
                     default:
                         $aresult = Answer::model()->with(array(
-                            'answerL10ns' => array(
-                                'condition' => 'answerL10ns.language = :lang',
+                            'answerl10ns' => array(
+                                'condition' => 'answerl10ns.language = :lang',
                                 'params' => array(':lang' => $this->language),
                                 'alias' => 'answerl10ns',
                             ))
@@ -1641,7 +1641,7 @@ class conditionsaction extends Survey_Common_Action
                         ), array('order' => 'sortorder, answer'));
 
                         foreach ($aresult as $arows) {
-                            $theanswer = $arows->answerL10ns[$this->language]->answer;
+                            $theanswer = $arows->answerl10ns[$this->language]->answer;
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                         }
                         if ($rows['type'] == Question::QT_D_DATE) {

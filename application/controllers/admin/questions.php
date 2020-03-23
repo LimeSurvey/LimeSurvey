@@ -333,8 +333,8 @@ class questions extends Survey_Common_Action
                     $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
-                    $answerresult = Answer::model()->with('answerL10ns')->findAll(
-                        'qid = :qid AND answerL10ns.language = :language',
+                    $answerresult = Answer::model()->with('answerl10ns')->findAll(
+                        'qid = :qid AND answerl10ns.language = :language',
                         array(
                             ':qid' => $qid,
                             ':language' => $language
@@ -540,8 +540,8 @@ class questions extends Survey_Common_Action
         // Check that there are answers for every language supported by the survey
         foreach ($oQuestion->answers as $oAnswer){
             foreach ($oSurvey->allLanguages as $language) {
-                if (!isset($oAnswer->answerL10ns[$language])) {
-                    $baseL10n = $oAnswer->answerL10ns[$oSurvey->language];
+                if (!isset($oAnswer->answerl10ns[$language])) {
+                    $baseL10n = $oAnswer->answerl10ns[$oSurvey->language];
                     $oAnswerL10n = new AnswerL10n();
                     $oAnswerL10n->attributes = $baseL10n->attributes;
                     $oAnswerL10n->language = $language;

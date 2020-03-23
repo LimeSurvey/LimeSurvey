@@ -123,7 +123,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $this->getMainView().'/rows/cells/header_answer', 
                 [
                     'class'   => "answer-text",
-                    'content' => $oAnswer->answerL10ns[$this->sLanguage]->answer,
+                    'content' => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                 ]
             );
         }
@@ -156,10 +156,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         
         // $labels[] = array(
         //     'code'   => $aAnswer->code,
-        //     'answer' => $aAnswer->answerL10ns[$sSurveyLanguage]->answer
+        //     'answer' => $aAnswer->answerl10ns[$sSurveyLanguage]->answer
         // );
 
-        //$aAnswer->answerL10ns[$sSurveyLanguage]->answer
+        //$aAnswer->answerl10ns[$sSurveyLanguage]->answer
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
             $myfname        = $this->sSGQA.$oQuestion->title;
@@ -193,7 +193,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $options[] = array(
                     'value'=>$oAnswer->code,
                     'selected'=>($value == $oAnswer->code) ? SELECTED :'',
-                    'text'=> $oAnswer->answerL10ns[$this->sLanguage]->answer
+                    'text'=> $oAnswer->answerl10ns[$this->sLanguage]->answer
                 );
             }
             // Add the now answer if needed 
@@ -257,7 +257,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $aAnswerColumns[] = array(
                     'myfname'=>$myfname,
                     'ld'=>$oAnswer->code,
-                    'label'=>$oAnswer->answerL10ns[$this->sLanguage]->answer,
+                    'label'=>$oAnswer->answerl10ns[$this->sLanguage]->answer,
                     'CHECKED'=>($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'CHECKED' : '',
                     'checkconditionFunction'=>'checkconditions',
                     );

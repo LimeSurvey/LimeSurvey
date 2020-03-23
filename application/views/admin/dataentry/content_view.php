@@ -150,7 +150,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                     <select name='<?php echo $fieldname.$dearow['title']; ?>#0'  class='form-control'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow): ?>
-                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerL10ns[$sDataEntryLanguage]->answer; ?></option>
+                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -162,7 +162,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow)
                                         { ?>
-                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerL10ns[$sDataEntryLanguage]->answer; ?></option>
+                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -251,7 +251,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <?php
                     foreach ($answers as $ansrow)
                     {
-                        echo "\t<option value=\"".$ansrow['code']."\">".flattenText($ansrow->answerL10ns[$sDataEntryLanguage]->answer)."</option>\n";
+                        echo "\t<option value=\"".$ansrow['code']."\">".flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer)."</option>\n";
                     }
                 ?>
             </select>
@@ -266,7 +266,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <div style="display:none">
         <?php foreach ($answers as $ansrow)
         {
-            echo "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerL10ns[$sDataEntryLanguage]->answer}</div>";
+            echo "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
         }
         ?>
         </div>
@@ -854,7 +854,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
                             <?php foreach ($fresult as $frow)
                                 { ?>
-                                <option value='<?php echo $frow['code']; ?>'><?php echo $frow->answerL10ns[$sDataEntryLanguage]->answer; ?></option>
+                                <option value='<?php echo $frow['code']; ?>'><?php echo $frow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
                                 <?php } ?>
                         </select>
                     </td>

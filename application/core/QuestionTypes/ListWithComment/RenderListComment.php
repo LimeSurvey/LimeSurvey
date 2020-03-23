@@ -48,7 +48,7 @@ class RenderListComment extends QuestionBaseRenderer
                 'value'                  => $ansrow['code'],
                 'check_ans'              => ($this->mSessionValue == $ansrow['code'] ? CHECKED :''),
                 'checkconditionFunction' => $this->checkconditionFunction.'(this.value, this.name, this.type);',
-                'labeltext'              => $ansrow->answerL10ns[$this->sLanguage]->answer,
+                'labeltext'              => $ansrow->answerl10ns[$this->sLanguage]->answer,
             );
             $sRows .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/list/rows/answer_row', $itemData, true);
         }
@@ -102,12 +102,12 @@ class RenderListComment extends QuestionBaseRenderer
             $itemData = array(
                 'value' => $ansrow['code'],
                 'check_ans' => ($this->mSessionValue == $ansrow['code'] ? SELECTED : ''),
-                'option_text' => $ansrow->answerL10ns[$this->sLanguage]->answer,
+                'option_text' => $ansrow->answerl10ns[$this->sLanguage]->answer,
             );
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/dropdown/rows/option', $itemData, true);
 
-            if (strlen($ansrow->answerL10ns[$this->sLanguage]->answer) > $this->maxoptionsize) {
-                $this->maxoptionsize = strlen($ansrow->answerL10ns[$this->sLanguage]->answer);
+            if (strlen($ansrow->answerl10ns[$this->sLanguage]->answer) > $this->maxoptionsize) {
+                $this->maxoptionsize = strlen($ansrow->answerl10ns[$this->sLanguage]->answer);
             }
         }
 

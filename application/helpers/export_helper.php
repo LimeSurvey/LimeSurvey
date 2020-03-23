@@ -1343,7 +1343,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         }
         $subQuestion = $dom->createElement("subQuestion");
         if ($use_answers) {
-            $text = $dom->createElement("text", QueXMLCleanup($Row->answerL10ns[$quexmllang]->answer, ''));
+            $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
         } else {
             $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
         }
