@@ -214,9 +214,9 @@ function activateLanguageChanger(){
     });
     /* Language changer dropdown */
     /* Don't activate change when using key up / key down */
-    $('.form-change-lang [name="lang"]').on('keypress keydown', function(event) {
+    $('.form-change-lang [name="lang"]').on('keypress keydown keyup', function(event) {
         var code = event.keyCode || event.which;
-        $(this).data('lastkey') = code;
+        $(this).data('lastkey',code);
     });
     $('.form-change-lang [name="lang"]').on('change', function(event) {
         if( $(this).data("lastkey") == 38 || $(this).data("lastkey") == 40) {
