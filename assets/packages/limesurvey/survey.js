@@ -213,7 +213,16 @@ function activateLanguageChanger(){
         }
     });
     /* Language changer dropdown */
+    /* Don't activate change when using key up / key down */
+    $('.form-change-lang [name="lang"]').on('keypress keydown', function(event) {
+        var code = event.keyCode || event.which;
+        $(this).data('lastkey') = code;
+    });
     $('.form-change-lang [name="lang"]').on('change', function(event) {
+        if( $(this).data("lastkey") == 38 || $(this).data("lastkey") == 40) {
+            /* Last key is up or down : disable auto submit mantis #16024 */
+            return;
+        }
         var closestForm = $(this).closest('form');
         var newLang = $(this).val();
         if (!closestForm.length) {
