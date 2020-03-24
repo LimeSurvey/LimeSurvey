@@ -380,11 +380,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $checkFileCreate = $archive->create($arrayOfFiles, PCLZIP_OPT_REMOVE_ALL_PATH);
         $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
         $getFileLink = Yii::app()->createUrl('admin/filemanager/sa/getZipFile');
-        if($urlFormat == 'path') {
-            $getFileLink .= '?path='.$zipfile;
-        } else {
-            $getFileLink .= '&path='.$zipfile;
-        }
+        $_SESSION['__path'] = $zipfile;
 
         $this->_printJsonResponse(
             [
@@ -395,15 +391,16 @@ class LimeSurveyFileManager extends Survey_Common_Action
         );
     }
 
-    public function getZipFile($path) {
+    /**
+     * @return void
+     */
+    public function getZipFile()
+    {
+        $path = $_SESSION['__path'];
+        unset($_SESSION['__path']);
         $filename = basename($path);
 
-        // echo "<pre>";
-        // echo $path."\n";
-        // echo $filename."\n";
-        // echo "isFile => ".is_file($path) ? 'isFile' : 'isNoFile'."\n";
-        // echo "</pre>";
-        if (is_file($path) || true) {
+        if (is_file($path)) {
             // Send the file for download!
             header("Expires: 0");
             header("Cache-Control: must-revalidate");
