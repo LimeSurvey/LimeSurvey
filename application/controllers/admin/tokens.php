@@ -2400,7 +2400,8 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-
+        $aData['topBar']['showSaveButton'] = true;
+        
         $this->_renderWrappedTemplate('token', array('bounce'), $aData);
     }
 
