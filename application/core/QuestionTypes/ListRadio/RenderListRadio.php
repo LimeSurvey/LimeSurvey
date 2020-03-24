@@ -66,7 +66,7 @@ class RenderListRadio extends QuestionBaseRenderer
             $aRows[] = Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/answer_row', array(
                 'name'          => $this->sSGQA,
                 'code'          => $oAnswer->code,
-                'answer'        => $oAnswer->answerL10ns[$this->sLanguage]->answer,
+                'answer'        => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                 'checkedState'  => ($this->mSessionValue == $oAnswer->code ? 'CHECKED' : ''),
                 'myfname'       => $this->sSGQA.$oAnswer->code,
                 ), true);

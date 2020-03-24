@@ -671,12 +671,12 @@ class questionedit extends Survey_Common_Action
                 'code' => $oQuestion->title,
                 'text' => isset($changedText['question'])
                 ? $changedText['question']
-                : $oQuestion->questionL10ns[$sLanguage]->question,
+                : $oQuestion->questionl10ns[$sLanguage]->question,
                 'help' => [
                     'show' => true,
                     'text' => (isset($changedText['help'])
                         ? $changedText['help']
-                        : $oQuestion->questionL10ns[$sLanguage]->help),
+                        : $oQuestion->questionl10ns[$sLanguage]->help),
                 ],
             ]
         );
@@ -1047,7 +1047,7 @@ class questionedit extends Survey_Common_Action
             return false;
         }
 
-        $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAllByAttributes(['qid' => $oldQid]);
+        $oOldDefaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $oldQid]);
 
         $setApplied['defaultValues'] = array_reduce(
             $oOldDefaultValues,
@@ -1065,7 +1065,7 @@ class questionedit extends Survey_Common_Action
                     );
                 }
 
-                foreach ($oDefaultValue->defaultValueL10ns as $oDefaultValueL10n) {
+                foreach ($oDefaultValue->defaultvaluel10ns as $oDefaultValueL10n) {
                     $oNewDefaultValueL10n = new DefaultValueL10n();
                     $oNewDefaultValueL10n->setAttributes($oDefaultValueL10n->attributes, false);
                     $oNewDefaultValueL10n->id = null;
@@ -1296,24 +1296,24 @@ class questionedit extends Survey_Common_Action
         LimeExpressionManager::StartProcessingPage(false, true);
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
-        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);
+        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questiongroupl10ns);
 
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
             $aScaledSubquestions[$scaleId] = array_map(function ($oSubQuestion) {
-                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionL10ns);
+                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionl10ns);
             }, $aSubquestions);
         }
 
         $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
         foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
             $aScaledAnswerOptions[$scaleId] = array_map(function ($oAnswerOption) {
-                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerL10ns);
+                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerl10ns);
             }, $aAnswerOptions);
         }
         $aReplacementData = [];
         $questioni10N = [];
-        foreach ($oQuestion->questionL10ns as $lng => $oQuestionI10N) {
+        foreach ($oQuestion->questionl10ns as $lng => $oQuestionI10N) {
             $questioni10N[$lng] = $oQuestionI10N->attributes;
 
             templatereplace(

@@ -59,7 +59,7 @@ export default {
       this.$store.dispatch('downloadFiles').catch( (e) => {
         this.$log.error(e);
         window.LS.notifyFader(
-                    `${this.translate("An error has occured and the selected files ycould not be downloaded.")}
+                    `${this.translate("An error has occured and the selected files could not be downloaded.")}
 Error:
 ${error.data.message}`,
                     'well-lg bg-danger text-center'

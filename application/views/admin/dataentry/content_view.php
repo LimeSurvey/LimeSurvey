@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         <!-- question text -->
         <strong>
-            <?php echo $deqrow->questionL10ns[$sDataEntryLanguage]->question;   // don't flatten if want to use EM.  However, may not be worth it as want dynamic relevance and question changes?>
+            <?php echo $deqrow->questionl10ns[$sDataEntryLanguage]->question;   // don't flatten if want to use EM.  However, may not be worth it as want dynamic relevance and question changes?>
         </strong>
     </td>
 
@@ -115,7 +115,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <?php foreach ($dearesult as $dearow):?>
                         <tr>
                             <td align='right'>
-                                <?php echo $dearow->questionL10ns[$sDataEntryLanguage]->question; ?>
+                                <?php echo $dearow->questionl10ns[$sDataEntryLanguage]->question; ?>
                             </td>
                             <td>
                                 <input type='text' name='<?php echo $fieldname.$dearow['title']; ?>' />
@@ -144,13 +144,13 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             $delresult = Answer::model()->findAll("qid={$deqrow['qid']} and scale_id=0");
                         ?>
                         <tr>
-                            <td><?php echo $dearow->questionL10ns[$sDataEntryLanguage]->question; ?></td>
+                            <td><?php echo $dearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                             <td>
                                 <div class="col-sm-10">
                                     <select name='<?php echo $fieldname.$dearow['title']; ?>#0'  class='form-control'>
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow): ?>
-                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerL10ns[$sDataEntryLanguage]->answer; ?></option>
+                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -162,7 +162,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                         <option selected='selected' value=''><?php eT("Please choose..."); ?></option>
                                         <?php foreach ($delresult as $delrow)
                                         { ?>
-                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerL10ns[$sDataEntryLanguage]->answer; ?></option>
+                                            <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -251,7 +251,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <?php
                     foreach ($answers as $ansrow)
                     {
-                        echo "\t<option value=\"".$ansrow['code']."\">".flattenText($ansrow->answerL10ns[$sDataEntryLanguage]->answer)."</option>\n";
+                        echo "\t<option value=\"".$ansrow['code']."\">".flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer)."</option>\n";
                     }
                 ?>
             </select>
@@ -266,7 +266,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <div style="display:none">
         <?php foreach ($answers as $ansrow)
         {
-            echo "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerL10ns[$sDataEntryLanguage]->answer}</div>";
+            echo "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
         }
         ?>
         </div>
@@ -310,7 +310,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                     $upto=0;
                             } ?>
                             <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['title']; ?>' id='answer<?php echo $fieldname.$mearow['title']; ?>' value='Y' />
-                            <label for='answer<?php echo $fieldname.$mearow['title']; ?>'><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?></label><br />
+                            <label for='answer<?php echo $fieldname.$mearow['title']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
                             <?php $upto++; ;
                             }
                             if ($deqrow['other'] == "Y")
@@ -322,7 +322,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php } else {
                 foreach ($mearesult as $mearow) { ?>
                 <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['title']; ?>' id='answer<?php echo $fieldname.$mearow['title']; ?>' value='Y'
-                    /><label for='<?php $fieldname.$mearow['title']; ?>'><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?></label><br />
+                    /><label for='<?php $fieldname.$mearow['title']; ?>'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></label><br />
                 <?php }
                 if ($deqrow['other'] == "Y")
                 { ?>
@@ -357,7 +357,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                         <tr>
                             <td>
                                 <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['title']; ?>' value='Y'
-                                /><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?>
+                                /><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?>
                             </td>
 
                             <td>
@@ -635,7 +635,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <?php foreach ($mearesult as $mearow)
                     { ?>
                         <tr>
-                            <td align='right'><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?></td>
+                            <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                             <td>
                                 <select name='<?php echo $fieldname.$mearow['title']; ?>' class='form-control'>
                                     <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
@@ -659,7 +659,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php foreach ($mearesult as $mearow)
                 { ?>
                 <tr>
-                    <td align='right'><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?></td>
+                    <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
@@ -684,7 +684,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php foreach ($mearesult as $mearow)
                 { ?>
                 <tr>
-                    <td align='right'><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?></td>
+                    <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
@@ -709,7 +709,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php foreach ($mearesult as $mearow)
                 { ?>
                 <tr>
-                    <td align='right'><?php echo $mearow->questionL10ns[$sDataEntryLanguage]->question; ?></td>
+                    <td align='right'><?php echo $mearow->questionl10ns[$sDataEntryLanguage]->question; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
                             <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
@@ -734,7 +734,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <tr><td></td>
                 <?php foreach($lresult as $data)
                     { ?>
-                    <th><?php echo $data->questionL10ns[$sDataEntryLanguage]->question; ?></th>
+                    <th><?php echo $data->questionl10ns[$sDataEntryLanguage]->question; ?></th>
                     <?php $labelcodes[]=$data['title'];
                     }
                 ?>
@@ -743,14 +743,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 foreach ($mearesult as $mearow)
                 {
 
-                    if (strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|'))
+                    if (strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
                     {
-                        $answerleft=substr($mearow->questionL10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|'));
-                        $answerright=substr($mearow->questionL10ns[$sDataEntryLanguage]->question,strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|')+1);
+                        $answerleft=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
+                        $answerright=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
                     }
                     else
                     {
-                        $answerleft=$mearow->questionL10ns[$sDataEntryLanguage]->question;
+                        $answerleft=$mearow->questionl10ns[$sDataEntryLanguage]->question;
                         $answerright='';
                 } ?>
 
@@ -789,7 +789,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 <?php $labelcodes=array();
                     foreach ($lresult as $data)
                     { ?>
-                    <th><?php echo $data->questionL10ns[$sDataEntryLanguage]->question; ?></th>
+                    <th><?php echo $data->questionl10ns[$sDataEntryLanguage]->question; ?></th>
                     <?php $labelcodes[]=$data['title'];
                 } ?>
 
@@ -798,14 +798,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php $i=0;
                 foreach ($mearesult as $mearow)
                 {
-                    if (strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|'))
+                    if (strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
                     {
-                        $answerleft=substr($mearow->questionL10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|'));
-                        $answerright=substr($mearow->questionL10ns[$sDataEntryLanguage]->question,strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|')+1);
+                        $answerleft=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
+                        $answerright=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
                     }
                     else
                     {
-                        $answerleft=$mearow->questionL10ns[$sDataEntryLanguage]->question;
+                        $answerleft=$mearow->questionl10ns[$sDataEntryLanguage]->question;
                         $answerright='';
                     }
                 ?>
@@ -834,14 +834,14 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php  foreach ( $mearesult as $mearow)
                 {
 
-                    if (strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|'))
+                    if (strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'))
                     {
-                        $answerleft=substr($mearow->questionL10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|'));
-                        $answerright=substr($mearow->questionL10ns[$sDataEntryLanguage]->question,strpos($mearow->questionL10ns[$sDataEntryLanguage]->question,'|')+1);
+                        $answerleft=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,0,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|'));
+                        $answerright=substr($mearow->questionl10ns[$sDataEntryLanguage]->question,strpos($mearow->questionl10ns[$sDataEntryLanguage]->question,'|')+1);
                     }
                     else
                     {
-                        $answerleft=$mearow->questionL10ns[$sDataEntryLanguage]->question;
+                        $answerleft=$mearow->questionl10ns[$sDataEntryLanguage]->question;
                         $answerright='';
                     }
                 ?>
@@ -854,7 +854,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
                             <?php foreach ($fresult as $frow)
                                 { ?>
-                                <option value='<?php echo $frow['code']; ?>'><?php echo $frow->answerL10ns[$sDataEntryLanguage]->answer; ?></option>
+                                <option value='<?php echo $frow['code']; ?>'><?php echo $frow->answerl10ns[$sDataEntryLanguage]->answer; ?></option>
                                 <?php } ?>
                         </select>
                     </td>
@@ -866,7 +866,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <?php break;
 } ?>
 
-<?php if (!empty($deqrow->questionL10ns[$sDataEntryLanguage]->help)): ?>
+<?php if (!empty($deqrow->questionl10ns[$sDataEntryLanguage]->help)): ?>
     <div class="col-sm-1">
         <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-toggle="tooltip" data-placement="top">
             <span class="fa fa-question-circle"></span>

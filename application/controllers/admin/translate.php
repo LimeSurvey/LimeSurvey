@@ -203,20 +203,20 @@ class translate extends Survey_Common_Action
 
                 $class = get_class($oRowfrom);
                 if ($class == 'QuestionGroup'){
-                    $aRowfrom = $oRowfrom->questionGroupL10ns[$baselang]->getAttributes();
-                    $aResultBase2 = !empty($type2) ? $oResultBase2->questionGroupL10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->questionGroupL10ns[$tolang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionGroupL10ns[$tolang]->getAttributes() : $aResultTo;
+                    $aRowfrom = $oRowfrom->questiongroupl10ns[$baselang]->getAttributes();
+                    $aResultBase2 = !empty($type2) ? $oResultBase2->questiongroupl10ns[$baselang]->getAttributes() : $aRowfrom;
+                    $aResultTo = $oResultTo->questiongroupl10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->questiongroupl10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Question' || $class == 'Subquestion'){
-                    $aRowfrom = $oRowfrom->questionL10ns[$baselang]->getAttributes();
-                    $aResultBase2 = !empty($type2) ? $oResultBase2->questionL10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->questionL10ns[$tolang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionL10ns[$tolang]->getAttributes() : $aResultTo;
+                    $aRowfrom = $oRowfrom->questionl10ns[$baselang]->getAttributes();
+                    $aResultBase2 = !empty($type2) ? $oResultBase2->questionl10ns[$baselang]->getAttributes() : $aRowfrom;
+                    $aResultTo = $oResultTo->questionl10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->questionl10ns[$tolang]->getAttributes() : $aResultTo;
                 } elseif ($class == 'Answer'){
-                    $aRowfrom = $oRowfrom->answerL10ns[$baselang]->getAttributes();
-                    $aResultBase2 = !empty($type2) ? $oResultBase2->answerL10ns[$baselang]->getAttributes() : $aRowfrom;
-                    $aResultTo = $oResultTo->answerL10ns[$tolang]->getAttributes();
-                    $aResultTo2 = !empty($type2) ? $oResultTo2->answerL10ns[$tolang]->getAttributes() : $aResultTo;
+                    $aRowfrom = $oRowfrom->answerl10ns[$baselang]->getAttributes();
+                    $aResultBase2 = !empty($type2) ? $oResultBase2->answerl10ns[$baselang]->getAttributes() : $aRowfrom;
+                    $aResultTo = $oResultTo->answerl10ns[$tolang]->getAttributes();
+                    $aResultTo2 = !empty($type2) ? $oResultTo2->answerl10ns[$tolang]->getAttributes() : $aResultTo;
                 }
                 $aRowfrom = array_merge($aRowfrom, $oRowfrom->getAttributes());
                 $aResultBase2 = array_merge($aResultBase2, $oResultBase2->getAttributes());
@@ -766,19 +766,19 @@ class translate extends Survey_Common_Action
                         return SurveyLanguageSetting::model()->resetScope()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
-                        return QuestionGroup::model()->with('questionGroupL10ns', array('condition' => 'language = ' . $baselang))->findAllByAttributes(array('sid'=>$iSurveyID), array('order' => 't.gid'));
+                        return QuestionGroup::model()->with('questiongroupl10ns', array('condition' => 'language = ' . $baselang))->findAllByAttributes(array('sid'=>$iSurveyID), array('order' => 't.gid'));
                     case 'question':
                     case 'question_help':
-                        return Question::model()->with('questionL10ns', array('condition' => 'language = ' . $baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group.group_order, t.question_order, t.scale_id'));
+                        return Question::model()->with('questionl10ns', array('condition' => 'language = ' . $baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group.group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
                         return Question::model()
-                        ->with('questionL10ns', array('condition' => 'language = ' . $baselang))
+                        ->with('questionl10ns', array('condition' => 'language = ' . $baselang))
                         ->with('parent', array('condition' => 'language = ' . $baselang))
                         ->with('group', array('condition' => 'language = ' . $baselang))
                         ->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 'group.group_order, parent.question_order, t.scale_id, t.question_order', 'condition'=>'t.parent_qid>0', 'params'=>array()));
                     case 'answer':
                         return Answer::model()
-                        ->with('answerL10ns', array('condition' => 'language = ' . $baselang))
+                        ->with('answerl10ns', array('condition' => 'language = ' . $baselang))
                         ->with('question') 
                         ->with('group')
                         ->findAllByAttributes(array(), array('order' => 'group.group_order, question.question_order, t.scale_id, t.sortorder', 'condition'=>'question.sid=:sid', 'params'=>array(':sid' => $iSurveyID)));

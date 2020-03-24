@@ -92,7 +92,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $oSubquestion) {
             $myfname = $this->sSGQA.$oSubquestion->title;
-            $sSubquestionText = $this->setDefaultIfEmpty($oSubquestion->questionL10ns[$this->sLanguage]->question, "&nbsp;");
+            $sSubquestionText = $this->setDefaultIfEmpty($oSubquestion->questionl10ns[$this->sLanguage]->question, "&nbsp;");
 
             // color code missing mandatory questions red
             $alert = (

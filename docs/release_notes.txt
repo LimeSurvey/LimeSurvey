@@ -34,6 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.11 (build 200316) to 4.1.12 (build 200324) March 24, 2020
+-Fixed issue: added language name to translatable attributes in the questioneditor (Patrick Teichmann)
+-Fixed issue: [security] Enable secure flag on CSRF tokens (Carsten Schmitz)
+-Fixed issue: Numerous postgres problems due to improper table alias name casing (Carsten Schmitz)
+-Fixed issue: Flash message not shown in frontend after response is deleted mid-survey (Olle Harstedt)
+-Fixed issue: Display x rows in plugin manager (Olle Haerstedt)
+-Fixed issue: Database update fails due to labels without code (Carsten Schmitz)
+-Fixed issue: Database update fails due to invalid database engine and collation being set on new tables (Carsten Schmitz)
+-Fixed issue [security] #16019: Stored XSS in survey groups. (Thanks to Matthew Aberegg and Michael Burkey) (Denis Chenu)
+-Fixed issue [security] #16019: Stored Cross Site Scripting Vulnerability in survey groups. (Thanks to Matthew Aberegg and Michael Burkey) (Patrick Teichmann)
+-Fixed issue [security] #16018: Path Traversal Vulnerability (Matthew Aberegg, Michael Burkey) (Olle Harstedt)
+-Fixed issue 15968: Deleted user not being completely logged out (Carsten Schmitz)
+-Fixed issue #16002: Database version doesn't show correctly in version popup (Carsten Schmitz)
+-Fixed issue #15975: Sanitize lang parameter for public survey list to restricted languages (Carsten Schmitz)
+-Fixed issue #15973: Invalid submitfailed received (Denis Chenu)
+-Fixed issue #15968: Deleted user not being completely logged out (Carsten Schmitz)
+-Fixed issue #15943: Save and save and close buttons in quick-add conditions not working (Jessica Höck)
+-Fixed issue #15912: Error updating database on upgrade from 3.x (Carsten Schmitz)
+-Fixed issue #15838: Check database integrity error (Carsten Schmitz)
+-Fixed issue #14004: language changer not automatically changing language on selection and will also work without checking the data policy checkbox (Patrick Teichmann)
+#Updated translation: Swedish by Norfa97
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by b00z00, GuillaumeZ6, DenisChenu, eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 4.1.10 (build 200311) to 4.1.11 (build 200316) March 16, 2020
 -Fixed issue: Survey cannot be activated (Carsten Schmitz)
 -Fixed issue: Missing file in zip file when downloading files uploaded by participants in responses (Carsten Schmitz)

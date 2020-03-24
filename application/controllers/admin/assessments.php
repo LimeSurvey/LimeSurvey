@@ -257,12 +257,12 @@ class Assessments extends Survey_Common_Action
     {
         $aGroups = [];
         $db = Yii::app()->db;
-        $quotedQGL10ns = $db->quoteTableName('questionGroupL10ns');
+        $quotedQGL10ns = $db->quoteTableName('questiongroupl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
 
         $groups = QuestionGroup::model()->with(
             [
-                'questionGroupL10ns' => [
+                'questiongroupl10ns' => [
                     'condition' => $quotedQGL10ns . '.' . $quotedLanguage . ' = :language',
                     'params' => array(':language' => $oSurvey->language)
                 ]

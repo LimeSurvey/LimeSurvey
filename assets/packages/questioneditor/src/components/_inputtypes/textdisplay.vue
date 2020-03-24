@@ -6,7 +6,7 @@
            :aria-expanded="!triggerShowHelp" 
            :aria-controls="'help-'+(elName || elId)"/>
         <label class="form-label" :for="elId">
-            {{elLabel}}
+            {{titleWithLanguage}}
         </label>
         <div :class="getClasses" 
              :name="elName || elId"
@@ -51,6 +51,12 @@
             */
             curValue: {
                 get() { return this.currentValue },
+            },
+            titleWithLanguage() {
+                if (typeof this.currentValue !== 'string') {
+                    return this.elLabel + ' (' + this.$store.state.languages[this.$store.state.activeLanguage] + ')';
+                }
+                return this.elLabel
             }
         }
     };

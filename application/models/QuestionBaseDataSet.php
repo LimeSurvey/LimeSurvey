@@ -194,7 +194,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             function ($oQuestionGroup) use (&$aGroupOptions){
                 $aGroupOptions[] = [
                     'value' => $oQuestionGroup->gid,
-                    'text' => $oQuestionGroup->questionGroupL10ns[$this->sLanguage]->group_name,
+                    'text' => $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name,
                 ];
             }
         );

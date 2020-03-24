@@ -341,7 +341,7 @@ class questiongroups extends Survey_Common_Action
         // TODO: Code duplication (Line 611 - 614) side menu state
         $aData['sidemenu']['state'] = true;
         $aData['sidemenu']['questiongroups'] = true;
-        $aData['sidemenu']['group_name'] = $oQuestionGroup->questionGroupL10ns[$baselang]->group_name ?? '';
+        $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
         $aData['sidemenu']['explorer']['state'] = true;
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = false;
@@ -430,7 +430,7 @@ class questiongroups extends Survey_Common_Action
             });
         } else {
             $i10N = [];
-            foreach ($oQuestionGroup->questionGroupL10ns as $lng => $oQuestionGroupi10n) {
+            foreach ($oQuestionGroup->questiongroupl10ns as $lng => $oQuestionGroupi10n) {
                 $i10N[$lng] = $oQuestionGroupi10n->attributes;
 
                 templatereplace(
@@ -498,7 +498,7 @@ class questiongroups extends Survey_Common_Action
         $aQuestions = [];
         $aAllQuestions = $oQuestionGroup->questions;
         array_walk($aAllQuestions, function ($oQuestion) use (&$aQuestions) {
-            $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionL10ns);
+            $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionl10ns);
         });
 
         $this->renderJSON($aQuestions);

@@ -54,7 +54,7 @@
             }
 
             $questions = Question::model()
-                ->with(array('questionL10ns' => array('alias' => 'ql10ns')))
+                ->with(array('questionl10ns' => array('alias' => 'ql10ns')))
                 ->findAll($criteria);
             $files = array();
             foreach ($questions as $question) {

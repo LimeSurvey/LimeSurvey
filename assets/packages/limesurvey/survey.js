@@ -213,7 +213,7 @@ function activateLanguageChanger(){
         }
     });
     /* Language changer dropdown */
-    $('.form-change-lang [name="lang"] option:not(selected)').on('click', function(event) {
+    $('.form-change-lang [name="lang"]').on('change', function(event) {
         var closestForm = $(this).closest('form');
         var newLang = $(this).val();
         if (!closestForm.length) {
