@@ -168,6 +168,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $this->printJsonResponse($aAllowedFolders);
     }
 
+    /**
+     * Delete file.
+     *
+     * @return void
+     */
     public function deleteFile()
     {
         $iSurveyId = Yii::app()->request->getPost('surveyid');
@@ -206,6 +211,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
         );
     }
 
+    /**
+     * Move file(s)
+     *
+     * @return void
+     */
     public function transitFiles()
     {
         $folder = Yii::app()->request->getPost('targetFolder');
@@ -215,7 +225,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $checkDirectory = $this->checkFolder($folder, $iSurveyId);
         
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $this->checkChangedFilename($file);
 
             $realTargetPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
@@ -256,8 +266,6 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'success' => true,
             'message' => $successMessage,
         ]);
-        return;
-
     }
 
     /**
@@ -570,6 +578,10 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param string $fileDestination
+     * @return boolean
+     */
     private function checkTargetExists($fileDestination)
     {
         return is_file($fileDestination);
