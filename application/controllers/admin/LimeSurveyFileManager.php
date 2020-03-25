@@ -831,11 +831,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $shortName = end($pathArray);
 
         $folderArray = [
-            'key' => $shortName.'_'.$level,
-            'folder' => $folder,
+            'key'       => $shortName.'_'.$level,
+            'folder'    => $folder,
             'shortName' => $shortName,
-            'surveyId' => intval($shortName),
-            'children' => $childFolders,
+            'surveyId'  => intval($shortName),  // Will be 0 for 'global' and 'generalfiles'.
+            'children'  => $childFolders,
         ];
         return $folderArray;
     }
