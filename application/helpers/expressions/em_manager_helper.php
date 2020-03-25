@@ -5591,6 +5591,15 @@
                 }
                 if ($this->surveyOptions['ipaddr']) {
                     $aResponseAttributes['ipaddr'] = getIPAddress();
+
+                    //anonymize ip adress
+                    if($this->surveyOptions['ipAnonymize']){
+                        $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($aResponseAttributes['ipaddr']);
+                        $result = $ipAddressAnonymizer->anonymizeIpAddress();
+                        if($result){
+                            $aResponseAttributes['ipaddr'] = $result;
+                        }
+                    }
                 }
 
                 foreach ($updatedValues as $key=>$value)
