@@ -60,6 +60,8 @@ export default {
             return this.$store.state.uncollapsedFolders.indexOf(folderKey) == -1
         },
         selectFolder(folderObject) {
+            this.$store.state.currentSurveyId = folderObject.surveyId;
+            this.$store.state.currentFolderType = folderObject.folderType;
             this.loadingState = true;
             this.$store
                 .dispatch("folderSelected", folderObject)
