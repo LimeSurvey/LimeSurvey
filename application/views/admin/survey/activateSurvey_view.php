@@ -203,22 +203,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-4">
-                <div class='form-group'>
-                    <label class='control-label col-sm-7' for='refurl'><?php eT("Save referrer URL?"); ?></label>
-                    <div class='col-sm-5'>
-                        <select class='form-control' name='refurl' id='refurl'>
-                            <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y"){echo "selected='selected'";} ?>>
-                                <?php eT("Yes"); ?>
-                            </option>
-                            <option value='N' <?php if ($aSurveysettings['refurl'] != "Y") {echo "selected='selected'";} ?>>
-                                <?php eT("No"); ?>
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="col-sm-4 col-sm-offset-2">
@@ -237,6 +221,22 @@
                 </div>
             </div>
         </div>
+
+    <div class="col-sm-4">
+        <div class='form-group'>
+            <label class='control-label col-sm-7' for='refurl'><?php eT("Save referrer URL?"); ?></label>
+            <div class='col-sm-5'>
+                <select class='form-control' name='refurl' id='refurl'>
+                    <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y"){echo "selected='selected'";} ?>>
+                        <?php eT("Yes"); ?>
+                    </option>
+                    <option value='N' <?php if ($aSurveysettings['refurl'] != "Y") {echo "selected='selected'";} ?>>
+                        <?php eT("No"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
 
         <p class='col-sm-7 col-sm-offset-2'>
             <?php eT("Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."); ?><br /><br />

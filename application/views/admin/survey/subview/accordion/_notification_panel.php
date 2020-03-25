@@ -104,7 +104,7 @@ $googleAnalyticsStyleOptions = array(
                 </div>
             </div>
             <div class="form-group">
-                <label class=" control-label" for='ipaddr'><?php  eT("Anonymize IP address:"); ?></label>
+                <label class=" control-label" for='ipanonymize'><?php  eT("Anonymize IP address:"); ?></label>
                 <div class="">
                     <?php
                     if ($oSurvey->isActive) {
@@ -114,20 +114,15 @@ $googleAnalyticsStyleOptions = array(
                             eT("Responses will have the IP address anonymized");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipanonymize);
+                        <?php echo CHtml::hiddenField('ipanonymize',$oSurvey->ipanonymize);
                     }else {
                         // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'ipanonymize',
                             'value' => $oSurvey->ipanonymize,
                             'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array(
-                                'I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipaddr . ']'
+                                'I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipanonymize . ']'
                             )) : $optionsOnOff,
-                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
-                            if ($('#anonymized').is(':checked') == true) {
-                            $('#datestampModal_2').modal();
-                            }
-                            }")*/
                         ));
                     }
                     ?>
