@@ -68,7 +68,7 @@ class responses extends Survey_Common_Action
         $aData['all'] = App()->request->getParam('all');
         $thissurvey = getSurveyInfo($iSurveyId);
         if (!$thissurvey) {
-// Already done in Survey_Common_Action
+            // Already done in Survey_Common_Action
             App()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         } elseif ($thissurvey['active'] != 'Y') {
@@ -77,7 +77,6 @@ class responses extends Survey_Common_Action
         }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-
         if (App()->request->getParam('browselang')) {
             $aData['language'] = App()->request->getParam('browselang');
             $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -597,6 +596,8 @@ class responses extends Survey_Common_Action
         $hasStatisticsReadPermission  = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
         $hasResponsesExportPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
         $hasResponsesDeletePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'delete');
+        $isActive                     = $survey->active;
+        $isTimingEnabled              = $survey->savetimings;
 
         return App()->getController()->renderPartial(
             '/admin/survey/topbar/responses_topbar',
@@ -607,6 +608,8 @@ class responses extends Survey_Common_Action
                 'hasStatisticsReadPermission'  => $hasStatisticsReadPermission,
                 'hasResponsesExportPermission' => $hasResponsesExportPermission,
                 'hasResponsesDeletePermission' => $hasResponsesDeletePermission,
+                'isActive' => $isActive,
+                'isTimingEnabled' => $isTimingEnabled,
             )
         );
     }
