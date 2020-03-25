@@ -71,8 +71,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
     $options = "";
-    if(in_array(Yii::app()->db->driverName,['mysql','mysqli'])) {
-        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+    // The engine has to be explicitely set because MYSQL 8 switches the default engine to INNODB
+    if ( Yii::app()->db->driverName == 'mysql' ) {
+        $options='ENGINE='.Yii::app()->getConfig('mysqlEngine').' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+        if (Yii::app()->getConfig('mysqlEngine')=='INNODB') {
+            $options .= ' ROW_FORMAT=DYNAMIC'; // Same than create-database
+        }
     }
     try {
 
@@ -90,7 +94,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // copy any valid codes from code field to assessment field
             switch (Yii::app()->db->driverName){
                 case 'mysql':
-                case 'mysqli':
                     $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
@@ -1102,7 +1105,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             switch (Yii::app()->db->driverName){
                 case 'mysql':
-                case 'mysqli':
                     addColumn('{{sessions}}', 'data', 'longbinary');
                     break;
                 case 'sqlsrv':
@@ -1218,7 +1220,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 178)
         {
             $oTransaction = $oDB->beginTransaction();
-            if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli')
+            if (Yii::app()->db->driverName=='mysql')
             {
                 modifyPrimaryKey('questions', array('qid','language'));
             }
@@ -2432,9 +2434,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }        
 
         if ($iOldDBVersion < 400) {
+            // Fix database default collation, again
+            if (Yii::app()->db->driverName == 'mysql') {
+                Yii::app()->db->createCommand("ALTER DATABASE `".getDBConnectionStringProperty('dbname')."` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+            }
+
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
-            
+
             // Question table 
             /* l10ns question table */
             if(Yii::app()->db->schema->getTable('{{question_l10ns}}')){
@@ -2597,6 +2604,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'language' =>  "string(20) NOT NULL DEFAULT 'en'"
             ), $options);
             $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+            // Remove invalid labels, otherwise update will fail because of index duplicates in the next query
+            $oDB->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
             $oDB->createCommand("INSERT INTO {{label_l10ns}}
                 (label_id, title, language)
                 SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
@@ -3161,7 +3170,6 @@ function upgradeSurveyTables402($sMySQLCollation)
                     alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                     break;
                 case 'mysql':
-                case 'mysqli':
                     alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');
@@ -3188,7 +3196,6 @@ function upgradeTokenTables402($sMySQLCollation)
                         alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                         break;
                     case 'mysql':
-                    case 'mysqli':
                         alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
@@ -3362,7 +3369,6 @@ function transferPasswordFieldToText($oDB)
 {
     switch ($oDB->getDriverName()) {
         case 'mysql':
-        case 'mysqli':
             $oDB->createCommand()->alterColumn('{{users}}', 'password', 'text NOT NULL');
             break;
         case 'pgsql':
@@ -4029,7 +4035,6 @@ function upgradeSurveyTables181($sMySQLCollation)
                     $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
                     break;
                 case 'mysql':
-                case 'mysqli':
                     alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');
@@ -4057,7 +4062,6 @@ function upgradeTokenTables181($sMySQLCollation)
                         $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 50000).'}}', $sTableName, 'token');
                         break;
                     case 'mysql':
-                    case 'mysqli':
                         alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                         break;
                     default: die('Unknown database driver');
@@ -4737,7 +4741,6 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
     $oDB = Yii::app()->db;
     switch (Yii::app()->db->driverName) {
         case 'mysql':
-        case 'mysqli':
             $sType = $sFieldType;
             if ($bAllowNull !== true) {
                 $sType .= ' NOT NULL';

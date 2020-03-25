@@ -59,8 +59,8 @@ abstract class QuestionBaseRenderer extends StaticModel
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
         
-        if(!empty($this->oQuestion->questionL10ns[$this->sLanguage]->script)){
-            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionL10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+        if(!empty($this->oQuestion->questionl10ns[$this->sLanguage]->script)){
+            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionl10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
             $this->addScript('QuestionStoredScript-'.$this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
         }
     }
@@ -105,18 +105,18 @@ abstract class QuestionBaseRenderer extends StaticModel
         //Render timer
         $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid'=>$oQuestion->qid, 'sWarnId'=>''), true);
         
-        $time_limit = $oQuestion->questionAttributes['time_limit']['value'];
-        $disable_next = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_disable_next']['value'], 0);
-        $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_disable_prev']['value'], 0);
-        $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_action']['value'], 1);
-        $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
-        $time_limit_warning = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning']['value'], 0);
-        $time_limit_warning_2 = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning_2']['value'], 0);
-        $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_countdown_message']['value'], gT("Time remaining"));
-        $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit = $oQuestion->questionattributes['time_limit']['value'];
+        $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
+        $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
+        $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1);
+        $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
+        $time_limit_warning = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0);
+        $time_limit_warning_2 = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0);
+        $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
+        $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
-        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning_display_time'], 0);
-        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning_2_message'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time'], 0);
+        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         
 
         //Render timer 2
@@ -126,16 +126,16 @@ abstract class QuestionBaseRenderer extends StaticModel
             true
         );
         
-        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_message_delay'], 1000);
+        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay'], 1000);
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
-        $time_limit_warning_2_display_time = trim($oQuestion->questionAttributes['time_limit_warning_2_display_time'], 0);
-        $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_message_style'], '');
+        $time_limit_warning_2_display_time = trim($oQuestion->questionattributes['time_limit_warning_2_display_time'], 0);
+        $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style'], '');
         $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
-        $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning_style'], '');
+        $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style'], '');
         $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
-        $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_warning_2_style'], '');
+        $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style'], '');
         $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
-        $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionAttributes['time_limit_timer_style'], '');
+        $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style'], '');
         $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
         $timersessionname = "timer_question_".$oQuestion->qid;

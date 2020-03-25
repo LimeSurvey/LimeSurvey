@@ -169,7 +169,7 @@ class statistics extends Survey_Common_Action
         $aGroups = array();
         $keyone = 0;
         foreach ($rows as $row) {
-            $sGroupName = $row->group->questionGroupL10ns[$language]->group_name;
+            $sGroupName = $row->group->questiongroupl10ns[$language]->group_name;
 
             //store some column names in $filters array
             $filters[] = array(
@@ -178,7 +178,7 @@ class statistics extends Survey_Common_Action
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionL10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question'])
             );
 
             if (!in_array($sGroupName, $aGroups)) {
@@ -192,7 +192,7 @@ class statistics extends Survey_Common_Action
                 $row['type'],
                 $row['title'],
                 $sGroupName,
-                flattenText($row->questionL10ns[$language]['question'])
+                flattenText($row->questionl10ns[$language]['question'])
             );
             $keyone = $keyone + 1;
         }

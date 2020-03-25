@@ -71,8 +71,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'myfname'                 => $myfname,
                 'name'                    => $this->sSGQA, // field name
                 'title'                   => $oQuestion->title,
-                'question'                => $oQuestion->questionL10ns[$this->sLanguage]->question,
-                'ansrow'                  => array_merge($oQuestion->attributes, $oQuestion->questionL10ns[$this->sLanguage]->attributes),
+                'question'                => $oQuestion->questionl10ns[$this->sLanguage]->question,
+                'ansrow'                  => array_merge($oQuestion->attributes, $oQuestion->questionl10ns[$this->sLanguage]->attributes),
                 'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'') == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
                 'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],''),

@@ -331,8 +331,6 @@ class SurveyRuntimeHelper
             }
         }
 
-        $this->aSurveyInfo['yiiflashmessages'] = Yii::app()->user->getFlashes();
-
         /**
          * create question index only in SurveyRuntime, not needed elsewhere, add it to GlobalVar : must be always set even if empty
          *
@@ -1050,6 +1048,7 @@ class SurveyRuntimeHelper
     private function displayFirstPageIfNeeded()
     {
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
+        $this->aSurveyInfo['move'] = isset($this->sMove) ? $this->sMove : '';
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
 

@@ -698,7 +698,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n";
                             } else {
-                                $lresult = Answer::model()->with('answerL10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
+                                $lresult = Answer::model()->with('answerl10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                                 ."<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'"; }
@@ -708,13 +708,13 @@ class dataentry extends Survey_Common_Action
                                     foreach ($lresult as $llrow) {
                                         $aDataentryoutput .= "<option value='{$llrow['code']}'";
                                         if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'"; }
-                                        $aDataentryoutput .= ">{$llrow->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                        $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                                     }
                                 } else {
                                     $defaultopts = array();
                                     $optgroups = array();
                                     foreach ($lresult as $llrow) {
-                                        list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow->answerL10ns[$sDataEntryLanguage]->answer);
+                                        list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow->answerl10ns[$sDataEntryLanguage]->answer);
                                         if ($categorytext == '') {
                                             $defaultopts[] = array('code' => $llrow['code'], 'answer' => $answertext);
                                         } else {
@@ -757,7 +757,7 @@ class dataentry extends Survey_Common_Action
                             foreach ($lresult as $llrow) {
                                 $aDataentryoutput .= "<option value='{$llrow['code']}'";
                                 if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'"; }
-                                $aDataentryoutput .= ">{$llrow->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                $aDataentryoutput .= ">{$llrow->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                             }
                             $fname = next($fnames);
                             $aDataentryoutput .= "\t</select>\n"
@@ -776,7 +776,7 @@ class dataentry extends Survey_Common_Action
                                 }
                                 $fname = next($fnames);
                             }
-                            $ansresult = Answer::model()->with('answerL10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
+                            $ansresult = Answer::model()->with('answerl10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
                             $anscount = count($ansresult);
                             $answers = array();
                                 foreach ($ansresult as $ansrow) {
@@ -797,7 +797,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<option value=\"\" $selected>".gT('None')."</option>\n";
                                 foreach ($ansresult as $ansrow) {
                                     (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $ansrow['code']) ? $selected = " selected=\"selected\"" : $selected = "";
-                                    $aDataentryoutput .= "\t<option value=\"".$ansrow['code']."\" $selected>".flattenText($ansrow->answerL10ns[$sDataEntryLanguage]->answer)."</option>\n";
+                                    $aDataentryoutput .= "\t<option value=\"".$ansrow['code']."\" $selected>".flattenText($ansrow->answerl10ns[$sDataEntryLanguage]->answer)."</option>\n";
                                 }
                                 $aDataentryoutput .= "</select\n";
                                 $aDataentryoutput .= "</li>";
@@ -808,7 +808,7 @@ class dataentry extends Survey_Common_Action
                                 . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
                             $aDataentryoutput .= "<div style=\"display:none\">";
                             foreach ($ansresult as $ansrow) {
-                                $aDataentryoutput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerL10ns[$sDataEntryLanguage]->answer}</div>";
+                                $aDataentryoutput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerl10ns[$sDataEntryLanguage]->answer}</div>";
                             }
                             $aDataentryoutput .= "</div>";
                             $aDataentryoutput .= '</div>';
@@ -1090,7 +1090,7 @@ class dataentry extends Survey_Common_Action
                                 foreach ($fresult as $frow) {
                                     $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value='{$frow['code']}'";
                                     if ($idrow[$fname['fieldname']] == $frow['code']) {$aDataentryoutput .= " checked"; }
-                                    $aDataentryoutput .= " />".$frow->answerL10ns[$sDataEntryLanguage]->answer."&nbsp;\n";
+                                    $aDataentryoutput .= " />".$frow->answerl10ns[$sDataEntryLanguage]->answer."&nbsp;\n";
                                 }
                                 //Add 'No Answer'
                                 $aDataentryoutput .= "\t<input type='radio' class='' name='{$fname['fieldname']}' value=''";
@@ -1793,7 +1793,7 @@ class dataentry extends Survey_Common_Action
                 $aQuestions = Question::model()->findAllByAttributes(['sid'=>$surveyid, 'parent_qid'=>0, 'gid'=>$arGroup['gid']]);
                 $aDataentryoutput .= "\t<tr class='info'>\n"
                 ."<!-- Inside controller dataentry.php -->"
-                ."<td colspan='3'><h4>".flattenText($arGroup->questionGroupL10ns[$sDataEntryLanguage]->group_name, true)."</h4></td>\n"
+                ."<td colspan='3'><h4>".flattenText($arGroup->questiongroupl10ns[$sDataEntryLanguage]->group_name, true)."</h4></td>\n"
                 ."\t</tr>\n";
 
                 $gid = $arGroup['gid'];
@@ -1845,8 +1845,8 @@ class dataentry extends Survey_Common_Action
                     $cdata['deqrow'] = $arQuestion;
 
                     $cdata['thissurvey'] = $thissurvey;
-                    if (!empty($arQuestion->questionL10ns[$sDataEntryLanguage]->help)) {
-                        $hh = addcslashes($arQuestion->questionL10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
+                    if (!empty($arQuestion->questionl10ns[$sDataEntryLanguage]->help)) {
+                        $hh = addcslashes($arQuestion->questionl10ns[$sDataEntryLanguage]->help, "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
                     }
@@ -1871,21 +1871,21 @@ class dataentry extends Survey_Common_Action
                                 unset($optCategorySeparator);
                             }
                             $defexists = "";
-                            $arAnswers = Answer::model()->with('answerL10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $arQuestion['qid'], 'language' => $sDataEntryLanguage)));
+                            $arAnswers = Answer::model()->with('answerl10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $arQuestion['qid'], 'language' => $sDataEntryLanguage)));
                             //$aDataentryoutput .= "\t<select name='$fieldname' class='form-control' >\n";
                             $aDatatemp = '';
                             if (!isset($optCategorySeparator)) {
                                 foreach ($arAnswers as $aAnswer) {
                                     $aDatatemp .= "<option value='{$aAnswer['code']}'";
                                     //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
-                                    $aDatatemp .= ">{$aAnswer->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                    $aDatatemp .= ">{$aAnswer->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
                                 }
                             } else {
                                 $defaultopts = array();
                                 $optgroups = array();
 
                                 foreach ($arAnswers as $aAnswer) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $aAnswer->answerL10ns[$sDataEntryLanguage]->answer);
+                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $aAnswer->answerl10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
@@ -1920,7 +1920,7 @@ class dataentry extends Survey_Common_Action
                             foreach ($arAnswers as $aAnswer) {
                                 $aDatatemp .= "<option value='{$aAnswer['code']}'";
                                 //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
-                                $aDatatemp .= ">{$aAnswer->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
+                                $aDatatemp .= ">{$aAnswer->answerl10ns[$sDataEntryLanguage]->answer}</option>\n";
 
                             }
                             $cdata['datatemp'] = $aDatatemp;
@@ -2073,7 +2073,7 @@ class dataentry extends Survey_Common_Action
             $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'sid' => $surveyid));
             if ($question) {
                 $output .= "\n<p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], flattenText(breakToNewline($question->questionL10ns[$surveyprintlang]->question)))."
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], flattenText(breakToNewline($question->questionl10ns[$surveyprintlang]->question)))."
                 </p>\n";
             }
         }
@@ -2082,7 +2082,7 @@ class dataentry extends Survey_Common_Action
             $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'sid' => $surveyid));
             if ($question) {
                 $output .= "\n    <p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter_exclude'], breakToNewline($question->questionL10ns[$surveyprintlang]->question))."
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter_exclude'], breakToNewline($question->questionl10ns[$surveyprintlang]->question))."
                 </p>\n";
             }
         }

@@ -242,7 +242,7 @@ function makeFlashMessage() {
     $originalPrefix = Yii::app()->user->getStateKeyPrefix();
     // Bug in Yii? Getting the state-key prefix changes the locale, so set the language manually after.
     Yii::app()->setLanguage($language);
-    Yii::app()->user->setStateKeyPrefix('frontend');
+    Yii::app()->user->setStateKeyPrefix('frontend' . $surveyid);
 
     $mapYiiToBootstrapClass = array(
         'error' => 'danger',
@@ -604,7 +604,7 @@ function submitfailed($errormsg = '', $query = null)
         $mailer->addAddress($thissurvey['adminemail']);
         $mailer->sendMessage();
     } else {
-        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
+        $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a>\n";
     }
     return $completed;
 }
@@ -996,13 +996,13 @@ function randomizationQuestion($surveyid, array $fieldmap, $preview)
     // Find all defined randomization groups through question attribute values
     if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
         //Previous query: $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) as value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
-        $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and CAST(value as varchar(255)) <>'' and sid={$surveyid}");
+        $rgresult = Question::model()->with('questionattributes')->together()->findAll("attribute='random_group' and CAST(value as varchar(255)) <>'' and sid={$surveyid}");
     } else {
         //Previous query: $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
-        $rgresult = Question::model()->with('questionAttributes')->together()->findAll("attribute='random_group' and value <>'' and sid={$surveyid}");
+        $rgresult = Question::model()->with('questionattributes')->together()->findAll("attribute='random_group' and value <>'' and sid={$surveyid}");
     }
     foreach ($rgresult as $rgrow) {
-        $randomGroups[$rgrow->questionAttributes['random_group']->value][] = $rgrow['qid']; // Get the question IDs for each randomization group
+        $randomGroups[$rgrow->questionattributes['random_group']->value][] = $rgrow['qid']; // Get the question IDs for each randomization group
     }
 
     // If we have randomization groups set, then lets cycle through each group and
@@ -1599,8 +1599,8 @@ function UpdateGroupList($surveyid, $language)
     foreach ($result as $row) {
         $group = array(
             'gid'         => $row['gid'],
-            'group_name'  => $row->questionGroupL10ns[$language]->group_name,
-            'description' =>  $row->questionGroupL10ns[$language]->description);
+            'group_name'  => $row->questiongroupl10ns[$language]->group_name,
+            'description' =>  $row->questiongroupl10ns[$language]->description);
         $groupList[] = $group;
         $gidList[$row['gid']] = $group;
     }
@@ -1638,7 +1638,7 @@ function updateFieldArray()
             $arQuestion = Question::model()->findByPk($questionarray[0]);
             if (!empty($arQuestion)) {
                 $questionarray[2] = $arQuestion->title;
-                $questionarray[3] = $arQuestion->questionL10ns[$_SESSION['survey_'.$surveyid]['s_lang']]->question;
+                $questionarray[3] = $arQuestion->questionl10ns[$_SESSION['survey_'.$surveyid]['s_lang']]->question;
             }
             unset($questionarray);
         }
