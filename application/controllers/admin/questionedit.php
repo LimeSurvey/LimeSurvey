@@ -296,8 +296,7 @@ class questionedit extends Survey_Common_Action
         } catch (CException $ex) {
             throw new LSJsonException(
                 500,
-                gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage()
-                . ' ' . $ex->getFile() . ': ' . $ex->getLine(),
+                gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage(),
                 0,
                 App()->createUrl(
                     'admin/questioneditor/sa/view/',
