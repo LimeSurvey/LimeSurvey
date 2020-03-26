@@ -129,10 +129,14 @@ export default {
             }
         },
         isSelected(questionType) {
-            return this.currentlySelectedType.type == questionType.type 
-                && this.currentlySelectedType.name == questionType.name 
-                    ? 'selected' 
-                    : '';
+            if (this.currentlySelectedType) {
+                return this.currentlySelectedType.type == questionType.type 
+                    && this.currentlySelectedType.name == questionType.name 
+                        ? 'selected' 
+                        : '';
+            } else {
+                return '';
+            }
         },
         closeButton() {
             this.$emit('close');
