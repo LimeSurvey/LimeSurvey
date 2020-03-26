@@ -296,7 +296,8 @@ class questionedit extends Survey_Common_Action
         } catch (CException $ex) {
             throw new LSJsonException(
                 500,
-                gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage(),
+                gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage()
+                . ' ' . $ex->getFile() . ': ' . $ex->getLine(),
                 0,
                 App()->createUrl(
                     'admin/questioneditor/sa/view/',
@@ -1275,6 +1276,7 @@ class questionedit extends Survey_Common_Action
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
                     throw new CHttpException(
+                        500,
                         "Answer option couldn't be saved. Error: "
                         . print_r($oAnswer->getErrors(), true)
                     );
