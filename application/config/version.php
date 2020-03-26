@@ -12,8 +12,6 @@
  */
 
 $config['versionnumber'] = '4.1.13';
-$config['dbversionnumber'] = 425;
-$config['versionnumber'] = '4.1.12';
 $config['dbversionnumber'] = 426;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
