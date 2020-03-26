@@ -72,7 +72,7 @@ if($isActive) {
             'url'  => $this->createUrl("admin/responses/sa/time/surveyid/$survey->sid"),
             'class'=> 'btn btn-default pjax',
             'icon' => 'fa fa-clock-o',
-            'icon-class' => 'text-success',
+            'iconclass' => 'text-success',
         ];
         array_push($topBar['alignment']['left']['buttons'], $buttons['timing_statistics']);
     }

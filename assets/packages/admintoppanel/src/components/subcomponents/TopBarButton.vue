@@ -130,9 +130,14 @@ export default {
             )
         } 
 
-        const classAddition = this.buttonIcon.includes('-o') || button.class.includes('btn-danger') || button.class.includes('btn-success')
-            ? ' white '
-            : ' btn-default ';
+        let classAddition;
+        if (this.buttonIcon.includes('clock-o')) {
+            classAddition = ' btn-default ';
+        } else if (this.buttonIcon.includes('-o') || button.class.includes('btn-danger') || button.class.includes('btn-success')) {
+            classAddition = ' white ';
+        } else {
+            classAddition = ' btn-default ';
+        }
 
         return  (
             <div class="topbarbutton">
