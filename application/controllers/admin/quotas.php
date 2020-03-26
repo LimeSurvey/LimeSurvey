@@ -525,12 +525,14 @@ class quotas extends Survey_Common_Action
         $aQuestionType = $aQuestion['type'];
 
         if ($aQuestionType == Question::QT_M_MULTIPLE_CHOICE) {
-            $aResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
+            $aResults = Question::model()
+                ->with('questionl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('parent_qid' => $iQuestionId));
             $aAnswerList = array();
 
-            foreach ($aResults as $aDbAnsList) {
-                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
-                $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
+            foreach ($aResults as $oDbAnsList) {
+                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($oDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40), 'code' => $oDbAnsList->title);
+                $aAnswerList[$oDbAnsList->title] = $tmparrayans;
             }
         } elseif ($aQuestionType == Question::QT_G_GENDER_DROPDOWN) {
             $aAnswerList = array(
