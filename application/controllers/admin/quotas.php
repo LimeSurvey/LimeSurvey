@@ -564,16 +564,16 @@ class quotas extends Survey_Common_Action
                 }
             }
         } elseif ($aQuestionType == Question::QT_B_ARRAY_10_CHOICE_QUESTIONS) {
-            $aAnsResults = Answer::model()
-                ->with('answerl10ns', array('language' => $sBaseLang))
-                ->findAllByAttributes(array('qid' => $iQuestionId));
+            $aAnsResults = Question::model()
+                ->with('questionl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 11; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['code']);
-                    $aAnswerList[$aDbAnsList['code']."-".$x] = $tmparrayans;
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
+                    $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
         } elseif ($aQuestionType == Question::QT_Y_YES_NO_RADIO) {
