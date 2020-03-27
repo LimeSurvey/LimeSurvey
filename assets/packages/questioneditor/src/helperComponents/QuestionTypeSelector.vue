@@ -59,13 +59,13 @@
                             <h3>
                             <b>{{"Question type preview"|translate}}</b><br/>
                             <p id="selector__question_type_selector-currentSelected" v-if="currentlySelectedType"> {{currentlySelectedType.title}} </p>
-                            <p id="selector__question_type_selector-currentSelected" v-else>No previously selected question</p>
+                            <p id="selector__question_type_selector-currentSelected" v-else></p>
                             </h3>
                         </div>
                     </div>
                     <div class="row" id="selector__question_type_selector-detailPage">
                         <div class="col-sm-12" v-if="currentlySelectedType" v-html="currentlySelectedType.detailpage" />
-                        <div class="col-sm-12" v-else v-html="" />
+                        <div class="col-sm-12" v-else />
                     </div>
                 </div>
             </div>
