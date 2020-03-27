@@ -551,13 +551,15 @@ class quotas extends Survey_Common_Action
             }
 
         } elseif ($aQuestionType == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
-            $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
+            $aAnsResults = Question::model()
+                ->with('questionl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 6; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
                     $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
