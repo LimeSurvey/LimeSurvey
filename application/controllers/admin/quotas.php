@@ -546,14 +546,14 @@ class quotas extends Survey_Common_Action
                 }
             }
         } elseif ($aQuestionType == 'B') {
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
+            $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 11; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['code']);
-                    $aAnswerList[$aDbAnsList['code']."-".$x] = $tmparrayans;
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
+                    $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
         } elseif ($aQuestionType == 'Y') {
