@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "7b1b3d3db48c24e0c263";
+/******/ 	var hotCurrentHash = "fab18c95ee0588c5a631";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -811,9 +811,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es6_string_iterator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_string_iterator__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.array.from */ "./node_modules/core-js/modules/es6.array.from.js");
 /* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
 
 
 
@@ -829,7 +829,7 @@ function () {
     var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     var silencer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-    Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__["default"])(this, ConsoleShim);
+    Object(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__["default"])(this, ConsoleShim);
 
     this.param = param;
     this.silencer = silencer;
@@ -872,7 +872,7 @@ function () {
     };
   }
 
-  Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__["default"])(ConsoleShim, [{
+  Object(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__["default"])(ConsoleShim, [{
     key: "_generateError",
     value: function _generateError() {
       try {
@@ -885,7 +885,7 @@ function () {
     key: "_insertParamToArguments",
     value: function _insertParamToArguments(rawArgs) {
       if (this.param !== '') {
-        var args = Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__["default"])(rawArgs);
+        var args = Object(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_3__["default"])(rawArgs);
 
         args.unshift(this.param);
         return args;
@@ -1799,7 +1799,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es7_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es7_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es6_object_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es6.object.keys */ "./node_modules/core-js/modules/es6.object.keys.js");
 /* harmony import */ var core_js_modules_es6_object_keys__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_keys__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
 /* harmony import */ var core_js_modules_es7_array_includes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es7.array.includes */ "./node_modules/core-js/modules/es7.array.includes.js");
 /* harmony import */ var core_js_modules_es7_array_includes__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es7_array_includes__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var core_js_modules_es6_string_includes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es6.string.includes */ "./node_modules/core-js/modules/es6.string.includes.js");
@@ -1820,7 +1820,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { Object(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { Object(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -30111,14 +30111,14 @@ if(true) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.array.iterator.js */ "./node_modules/core-js/modules/es6.array.iterator.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.promise.js */ "./node_modules/core-js/modules/es6.promise.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.object.assign.js */ "./node_modules/core-js/modules/es6.object.assign.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/core-js/modules/es7.promise.finally.js */ "./node_modules/core-js/modules/es7.promise.finally.js");
-/* harmony import */ var _var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_var_www_lime25_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.array.iterator.js */ "./node_modules/core-js/modules/es6.array.iterator.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_array_iterator_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.promise.js */ "./node_modules/core-js/modules/es6.promise.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_promise_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/core-js/modules/es6.object.assign.js */ "./node_modules/core-js/modules/es6.object.assign.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es6_object_assign_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/core-js/modules/es7.promise.finally.js */ "./node_modules/core-js/modules/es7.promise.finally.js");
+/* harmony import */ var _var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_var_www_html_limesurvey_assets_packages_admintoppanel_node_modules_core_js_modules_es7_promise_finally_js__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
 /* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_5__);
@@ -30140,7 +30140,7 @@ __webpack_require__.r(__webpack_exports__);
  //Ignore phpunits testing tags
 
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.ignoredElements = ["x-test"];
-vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.devtools = false;
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].config.devtools = true;
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(_mixins_logSystem_js__WEBPACK_IMPORTED_MODULE_8__["PluginLog"]);
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_js_modal__WEBPACK_IMPORTED_MODULE_5___default.a, {
   dynamic: true
@@ -30593,8 +30593,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TopBarButtonGroup_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TopBarButtonGroup.vue?vue&type=script&lang=js& */ "./src/components/subcomponents/TopBarButtonGroup.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-/* harmony import */ var _TopBarButtonGroup_vue_vue_type_custom_index_0_blockType_scoped_style_true__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TopBarButtonGroup.vue?vue&type=custom&index=0&blockType=scoped&style=true */ "./src/components/subcomponents/TopBarButtonGroup.vue?vue&type=custom&index=0&blockType=scoped&style=true");
-/* harmony import */ var _TopBarButtonGroup_vue_vue_type_custom_index_0_blockType_scoped_style_true__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_TopBarButtonGroup_vue_vue_type_custom_index_0_blockType_scoped_style_true__WEBPACK_IMPORTED_MODULE_2__);
 var render, staticRenderFns
 
 
@@ -30608,14 +30606,10 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   staticRenderFns,
   false,
   null,
-  null,
+  "8b8eb0d4",
   null
   
 )
-
-/* custom blocks */
-
-if (typeof _TopBarButtonGroup_vue_vue_type_custom_index_0_blockType_scoped_style_true__WEBPACK_IMPORTED_MODULE_2___default.a === 'function') _TopBarButtonGroup_vue_vue_type_custom_index_0_blockType_scoped_style_true__WEBPACK_IMPORTED_MODULE_2___default()(component)
 
 /* hot reload */
 if (true) {
@@ -30633,17 +30627,6 @@ if (true) {
 }
 component.options.__file = "src/components/subcomponents/TopBarButtonGroup.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./src/components/subcomponents/TopBarButtonGroup.vue?vue&type=custom&index=0&blockType=scoped&style=true":
-/*!****************************************************************************************************************!*\
-  !*** ./src/components/subcomponents/TopBarButtonGroup.vue?vue&type=custom&index=0&blockType=scoped&style=true ***!
-  \****************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ }),
 

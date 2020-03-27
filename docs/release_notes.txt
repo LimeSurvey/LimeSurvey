@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.12 (build 200324) to 4.1.13 (build 200325) March 25, 2020
+-Fixed issue [security]: Possible to handcraft POST to reach any file through file manager (Olle Harstedt)
+-Fixed issue #16023: All survey group settings could now be saved correctly (Patricia Stelling)
+
+
 Changes from 4.1.11 (build 200316) to 4.1.12 (build 200324) March 24, 2020
 -Fixed issue: added language name to translatable attributes in the questioneditor (Patrick Teichmann)
 -Fixed issue: [security] Enable secure flag on CSRF tokens (Carsten Schmitz)

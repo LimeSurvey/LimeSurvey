@@ -131,18 +131,34 @@ class SurveysGroupsController extends Survey_Common_Action
     public function surveySettings($id)
     {
         $bRedirect = 0;
+        /** @var SurveysGroups $model */
         $model = $this->loadModel($id);
 
         $aData['model'] = $model;
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
+        /** @var SurveysGroupsettings $oSurvey */
         $oSurvey = SurveysGroupsettings::model()->findByPk($model->gsid);
-        $oSurvey->setOptions();
+        $oSurvey->setOptions(); //this gets the "values" from the group that inherits to this group ...
         $oSurvey->owner_id = $model->owner_id;
 
-        if (isset($_POST['template'])) {
+        //every $_POST checked here is one of the switchers(On|Off|Inherit) names
+        // Name of sidemenulink   => name of input field
+        // "General settings"     => 'template'
+        // "Presentation"         => 'showxquestions'
+        // "Pariticipant setting" => 'anonymized'
+        // "Notification & data"  => 'datestamp'
+        // "Publication & access" => 'listpublic'
+        if(isset($_POST['template']) || isset($_POST['showxquestions']) || isset($_POST['anonymized'])
+            || isset($_POST['datestamp']) || isset($_POST['listpublic'])){
             $oSurvey->attributes = $_POST;
-            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if(isset($_POST['listpublic'])){
+                //what is usecaptcha used for? see saveTranscribeCaptchaOptions method description ...
+                // in default group this is set to 'N' ... (this means 'none' no captcha for survey access, regigstration
+                // and 'save&load'
+                $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+            }
 
             if ($oSurvey->save()) {
                 $bRedirect = 1;

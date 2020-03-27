@@ -278,6 +278,17 @@ class SurveysGroupsettings extends LSActiveRecord
     }
 
     /**
+     * Recursive function
+     *
+     * Gets the real values for a group.
+     * A group could inherit from a group, this one could inherit from a group ...
+     * It steps up (see param $iStep) until it has found the real settings ...
+     *
+     * @param int $iSurveyGroupId
+     * @param null $oSurvey
+     * @param null $instance
+     * @param int $iStep      this is inheritance step (recursive step) (parent, parentParent, parentParentParent ?)
+     * @param bool $bRealValues
      * @return SurveysGroupsettings instance
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false){
@@ -285,6 +296,7 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($iSurveyGroupId > 0){
             $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
         } else {
+            //this is the default group setting with gsid=0 !!!
             $model = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
         }
         
@@ -392,6 +404,13 @@ class SurveysGroupsettings extends LSActiveRecord
         }
     }
 
+    /**
+     *  Gets the "values" from the group that inherits to this group and ...
+     *
+     *  ... sets the variables (not DB attributes) of "oOptions", "oOptionLabels", "aOptions"
+     *  and "showInherited" (most of them used for frontend i think)
+     *
+     */
     public function setOptions()
     {
         $instance = SurveysGroupsettings::getInstance($this->gsid);
