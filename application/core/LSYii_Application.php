@@ -415,8 +415,8 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-     * Check if a file is inside a specific directory
-     * @var string $dirPath complete directory path
+     * Check if a file (with a full path) is inside a specific directory
+     * @var string $filePath complete file path
      * @var string $baseDir the directory where it must be, default to upload dir
      * @var boolean|null $throwException if security issue
      * Throw Exception
@@ -431,6 +431,8 @@ class LSYii_Application extends CWebApplication
             $throwException = boolval($this->getConfig('debug'));
         }
         $realFilePath = realpath($filePath);
+        $baseDir = realpath($baseDir);
+        
         if(!is_file($realFilePath)) {
             /* Not existing file */
             Yii::log("Try to read invalid file ".$filePath, 'warning', 'application.security.files.is_file');
