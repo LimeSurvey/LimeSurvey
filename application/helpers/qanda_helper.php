@@ -2929,7 +2929,12 @@ function do_hugefreetext($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
+/**
+ * Renders Yes/No Question Type.
+ *
+ * @param array $ia
+ * @return array
+ */
 function do_yesno($ia)
 {
     $coreClass = "ls-answers answers-list";
@@ -2951,7 +2956,7 @@ function do_yesno($ia)
     }
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType = $aQuestionAttributes['display_type'];
+    $displayType = (int) $aQuestionAttributes['display_type'];
     $noAnswer = (isset($noAnswer)) ? $noAnswer : false;
     $itemDatas = array(
         'name'=>$ia[1],
@@ -2963,7 +2968,6 @@ function do_yesno($ia)
         'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'displayType'=>$displayType,
     );
-    $displayType = (int) $displayType;
     if ($displayType === 0) {
         $itemDatas['coreClass'] = "{$coreClass} button-list yesno-button";
         $answer = doRender('/survey/questions/answer/yesno/buttons/item', $itemDatas, true);
@@ -2977,7 +2981,12 @@ function do_yesno($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
+/**
+ * Renders Gender Question Types.
+ *
+ * @param array $ia
+ * @return array
+ */
 function do_gender($ia)
 {
     $fChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F') ? 'CHECKED' : '';
