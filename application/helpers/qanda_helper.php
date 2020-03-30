@@ -2984,7 +2984,7 @@ function do_gender($ia)
     $mChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M') ? 'CHECKED' : '';
     $naChecked              = '';
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType            = $aQuestionAttributes['display_type'];
+    $displayType            = (int) $aQuestionAttributes['display_type'];
     $coreClass              = "ls-answers answers-list radio-list";
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
