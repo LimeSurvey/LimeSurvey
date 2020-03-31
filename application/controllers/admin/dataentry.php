@@ -1485,7 +1485,6 @@ class dataentry extends Survey_Common_Action
                 $errormsg = $this->returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage();
             } elseif ($tokenTableExists && $lastanswfortoken != '') {
                 $errormsg = $this->returnAlreadyRecordedAnswerForAccessCodeErrorMessage();
-                var_dump($errormsg);
 
                 if ($lastanswfortoken != 'PrivacyProtected') {
                     $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected($lastanswfortoken, $surveyid, $errormsg);
