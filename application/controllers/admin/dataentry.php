@@ -1445,7 +1445,10 @@ class dataentry extends Survey_Common_Action
             'lang' => $lang
         );
 
-        if ($subaction == "insert" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
+        $insertSubaction = $subaction == 'insert';
+        $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create');
+        if ($insertSubaction && $hasResponsesCreatePermission) {
+            // TODO: $surveytable is unused. Remove it.
             $surveytable = "{{survey_{$surveyid}}}";
             $thissurvey = getSurveyInfo($surveyid);
             $errormsg = "";
@@ -1458,20 +1461,14 @@ class dataentry extends Survey_Common_Action
             $hiddenfields = '';
             $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
 
-            if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
-                $aToken = Token::model($surveyid)->findByAttributes(['token'=>$_POST['token']]);
-                if (empty($aToken)) {
-                // token doesn't exist in survey participants table
-                    $lastanswfortoken = 'UnknownToken';
-                } elseif ($survey->isAnonymized) {
-                // token exist but survey is anonymous, check completed state
-                    // token is completed
-                    if ($aToken->completed != "" && $aToken->completed != "N") {
-                        $lastanswfortoken = 'PrivacyProtected';
-                    }
-                } else {
-                // token is valid, survey not anonymous, try to get last recorded response id
-                    $aresult = Response::model($surveyid)->findAllByAttributes(['token'=>$_POST['token']]);
+            $postToken = App()->request->getPost('token');
+            $hasTokensUpdatePermission = Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update');
+            if ($postToken && $hasTokensUpdatePermission) {
+                $aToken = $this->getToken($surveyid, $postToken);
+                $lastanswfortoken = $this->getLastAnswerByTokenOrAnonymousSurvey($survey, $aToken);
+                if ($lastanswfortoken == '') {
+                    // token is valid, survey not anonymous, try to get last recorded response id
+                    $aresult = Response::model($surveyid)->findAllByAttributes(['token'=>$postToken]);
                     foreach ($aresult as $arow) {
                         if ($aToken->completed != "N") { $lastanswfortoken = $arow['id']; }
                         $rlanguage = $arow['startlanguage'];
@@ -1482,27 +1479,20 @@ class dataentry extends Survey_Common_Action
             $tokenTableExists = $survey->hasTokensTable;
 
             // First Check if the survey uses tokens and if a token has been provided
-            if ($tokenTableExists && (!$_POST['token'])) {
-                $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a access code.  Please contact the administrator for assistance."));
+            if ($tokenTableExists && (!$postToken)) {
+                $errormsg = $this->returnClosedAccessSurveyErrorMessage();
             } elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken') {
-                $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("The access code have provided is not valid or has already been used."));
+                $errormsg = $this->returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage();
             } elseif ($tokenTableExists && $lastanswfortoken != '') {
-                $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this access code"));
+                $errormsg = $this->returnAlreadyRecordedAnswerForAccessCodeErrorMessage();
+                var_dump($errormsg);
 
                 if ($lastanswfortoken != 'PrivacyProtected') {
-                    $errormsg .= "<br /><br />".gT("Follow the following link to update it").":\n";
-                    $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid),
-                        array('title' => gT("Edit this entry")));
-                    $errormsg .= "<br/><br/>";
+                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected($errormsg);
                 } else {
-                    $errormsg .= "<br /><br />".gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
+                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected($errormsg);
                 }
             } else {
-
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
                     $aData['save'] = true;
                     $saver = [];
@@ -1722,6 +1712,102 @@ class dataentry extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
         }
+    }
+
+    /**
+     * Returns an Token.
+     * @param int          $id      Survey ID
+     * @param string       $token   Token (Post Request Data)
+     * @return null|Token
+     */
+    private function getToken(int $id, string $token)
+    {
+        $token = Token::model($id)->findByAttributes(['token' => $token]);
+        return $token;
+    }
+
+    /**
+     * Returns the last answer for token or anonymous survey.
+     * @param Survey $survey Survey
+     * @param Token  $token  Token
+     * @return string
+     */
+    private function getLastAnswerByTokenOrAnonymousSurvey(Survey $survey, Token $token = null): string
+    {
+        $lastAnswer = '';
+        $isTokenNull  = $token == null;
+        $isTokenEmpty = empty($token);
+        $isTokenCompleted = $token->completed;
+        $isTokenCompletedEmpty = empty($isTokenCompleted);
+        $isSurveyAnonymous = $survey->isAnonymized;
+
+        if ($isTokenNull || $isTokenEmpty) {
+            $lastAnswer = 'UnknownToken';
+        } else if ($isSurveyAnonymous) {
+            if (!$isTokenCompletedEmpty && $isTokenCompleted !== "N") {
+                $lastAnswer = 'PrivacyProtected';
+            }
+        }
+        return $lastAnswer;
+    }
+
+    /**
+     * Returns Error Message if the survey only supports closed access.
+     * @return string
+     */
+    private function returnClosedAccessSurveyErrorMessage(): string
+    {
+        $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+        $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a access code.  Please contact the administrator for assistance."));
+        return $errormsg;
+    }
+
+    /**
+     * Returns Error Message if access code is not valid or already in use.
+     * @return string
+     */
+    private function returnAccessCodeIsNotValidOrAlreadyInUseErrorMessage(): string
+    {
+        $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+        $errormsg .= CHtml::tag('p', array(), gT("The access code have provided is not valid or has already been used."));
+        return $errormsg;
+    }
+
+    /**
+     * Returns Error Message if access code is already recorded.
+     * @return string
+     */
+    private function returnAlreadyRecordedAnswerForAccessCodeErrorMessage(): string
+    {
+        $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+        $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this access code"));
+        return $errormsg;
+    }
+
+    /**
+     * Returns Error Message if LastAnswerForToken is not Privacy Protected. Appends it to the given ErrorMessage.
+     * @param string $errorMessage Error Message
+     * @return string
+     */
+    private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $errorMessage): string
+    {
+        $errorMessage .= "<br /><br />".gT("Follow the following link to update it").":\n";
+        $errorMessage .= CHtml::link("[id:$lastanswfortoken]",
+            $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid),
+            array('title' => gT("Edit this entry")));
+        $errorMessage .= "<br/><br/>";
+        return $errorMessage;
+    }
+
+    /**
+     * Returns Error Message if Last Answer for Token is Privacy Protected.
+     * @param string $errorMessage Error Message
+     * @return string
+     */
+    private function returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected(string $errorMessage): string
+    {
+        $errorMessage .= "<br /><br />".gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
+        return $errorMessage;
     }
 
     /**
