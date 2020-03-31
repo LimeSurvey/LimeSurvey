@@ -1434,8 +1434,8 @@ class dataentry extends Survey_Common_Action
      */
     public function insert()
     {
-        $subaction = Yii::app()->request->getPost('subaction');
-        $surveyid = (int) Yii::app()->request->getPost('sid');
+        $subaction = App()->request->getPost('subaction');
+        $surveyid  = (int) Yii::app()->request->getPost('sid');
 
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : null;
         $survey = Survey::model()->findByPk($surveyid);
@@ -1450,7 +1450,7 @@ class dataentry extends Survey_Common_Action
             $thissurvey = getSurveyInfo($surveyid);
             $errormsg = "";
 
-            Yii::app()->loadHelper("database");
+            App()->loadHelper("database");
             $aViewUrls = [];
             $aViewUrls['display']['menu_bars']['browse'] = gT("Data entry");
 
