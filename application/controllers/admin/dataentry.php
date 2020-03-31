@@ -1450,7 +1450,7 @@ class dataentry extends Survey_Common_Action
         if ($insertSubaction && $hasResponsesCreatePermission) {
             // TODO: $surveytable is unused. Remove it.
             $surveytable = "{{survey_{$surveyid}}}";
-            $thissurvey = getSurveyInfo($surveyid);
+            $thissurvey  = getSurveyInfo($surveyid);
             $errormsg = "";
 
             App()->loadHelper("database");
@@ -1488,7 +1488,7 @@ class dataentry extends Survey_Common_Action
                 var_dump($errormsg);
 
                 if ($lastanswfortoken != 'PrivacyProtected') {
-                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected($errormsg);
+                    $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected($lastanswfortoken, $surveyid, $errormsg);
                 } else {
                     $errormsg .= $this->returnErrorMessageIfLastAnswerForTokenIsPrivacyProtected($errormsg);
                 }
@@ -1517,7 +1517,6 @@ class dataentry extends Survey_Common_Action
                         foreach ($_POST as $key=>$val) {
                             if (substr($key, 0, 4) != "save" && $key != "action" && $key != "sid" && $key != "datestamp" && $key != "ipaddr") {
                                 $hiddenfields .= CHtml::hiddenField($key, $val);
-                                //$aDataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
                             }
                         }
                     }
@@ -1786,14 +1785,16 @@ class dataentry extends Survey_Common_Action
 
     /**
      * Returns Error Message if LastAnswerForToken is not Privacy Protected. Appends it to the given ErrorMessage.
+     * @param string $lastAnswer   Last Answer for Token
+     * @param int    $id           Survey ID
      * @param string $errorMessage Error Message
      * @return string
      */
-    private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $errorMessage): string
+    private function returnErrorMessageIfLastAnswerForTokenIsNotPrivacyProtected(string $lastAnswer, int $id, string $errorMessage): string
     {
         $errorMessage .= "<br /><br />".gT("Follow the following link to update it").":\n";
-        $errorMessage .= CHtml::link("[id:$lastanswfortoken]",
-            $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid),
+        $errorMessage .= CHtml::link("[id:$lastAnswer]",
+            $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastAnswer.'/surveyid/'.$id),
             array('title' => gT("Edit this entry")));
         $errorMessage .= "<br/><br/>";
         return $errorMessage;
