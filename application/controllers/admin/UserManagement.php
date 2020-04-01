@@ -724,7 +724,7 @@ class UserManagement extends Survey_Common_Action
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
