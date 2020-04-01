@@ -1470,7 +1470,9 @@ class dataentry extends Survey_Common_Action
                     // token is valid, survey not anonymous, try to get last recorded response id
                     $aresult = Response::model($surveyid)->findAllByAttributes(['token'=>$postToken]);
                     foreach ($aresult as $arow) {
-                        if ($aToken->completed != "N") { $lastanswfortoken = $arow['id']; }
+                        if ($aToken->completed != "N") {
+                            $lastanswfortoken = $arow['id'];
+                        }
                         $rlanguage = $arow['startlanguage'];
                     }
                 }
