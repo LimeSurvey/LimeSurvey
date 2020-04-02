@@ -189,6 +189,12 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $this->IsMail();
         }
         $this->init();
+        /* set default from return path and event , didn't reset when getInstance */
+        $this->setFrom(Yii::app()->getConfig('siteadminemail'),Yii::app()->getConfig('siteadminname'));
+        if(!empty(Yii::app()->getConfig('siteadminbounce'))) {
+            $this->Sender = Yii::app()->getConfig('siteadminbounce');
+        }
+        $this->eventName = 'beforeEmail';
     }
 
     /**
@@ -210,12 +216,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->AltBody = "";
         $this->MIMEBody = "";
         $this->MIMEHeader = "";
-        $this->setFrom(Yii::app()->getConfig('siteadminemail'),Yii::app()->getConfig('siteadminname'));
-        /* set default return path */
-        if(!empty(Yii::app()->getConfig('siteadminbounce'))) {
-            $this->Sender = Yii::app()->getConfig('siteadminbounce');
-        }
-        $this->eventName = 'beforeEmail';
         $this->addCustomHeader("X-Surveymailer",Yii::app()->getConfig("sitename")." Emailer (LimeSurvey.org)");
     }
 
@@ -238,7 +238,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 self::$instance->setSurvey(self::$instance->surveyId);
             }
         }
-        
         return self::$instance;
     }
 
