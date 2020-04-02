@@ -767,7 +767,7 @@ class UserManagement extends Survey_Common_Action
                     $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
                 } else {
                     $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a part of the group.');
+                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
                 }
             }
         } else {
