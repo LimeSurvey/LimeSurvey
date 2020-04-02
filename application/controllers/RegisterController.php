@@ -135,7 +135,7 @@ class RegisterController extends LSYii_Controller
                     self::sendRegistrationEmail($iSurveyId, $iTokenId);
                 }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
-                $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
+                $redirectUrl = Yii::app()->getController()->createUrl('/survey/index', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
@@ -190,16 +190,16 @@ class RegisterController extends LSYii_Controller
      *
      * @param Integer $iSurveyId The survey id
      * @param Integer $iTokenId The token id
-     * 
+     *
      * @return Array The rendereable array
      */
     public function getRegisterSuccess($iSurveyId, $iTokenId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        
+
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
-        
-        $aData['active'] = $oSurvey->active;        
+
+        $aData['active'] = $oSurvey->active;
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;
         $aData['sFirstName'] = Yii::app()->request->getPost('register_firstname', '');
@@ -215,7 +215,7 @@ class RegisterController extends LSYii_Controller
      * Takes eventual changes through plugins into account
      *
      * @param Integer $iSurveyId The surey id
-     * 
+     *
      * @return Array The rendereable array
      */
     public function getRegisterForm($iSurveyId)
@@ -332,7 +332,7 @@ class RegisterController extends LSYii_Controller
         $sTo = $event->get('to');
         $sFrom = $event->get('from');
         $sBounce = $event->get('bounce');
-        
+
         $customheaders = array('1' => "X-surveyid: ".$iSurveyId, '2' => "X-tokenid: ".$sToken);
 
         $aRelevantAttachments = array();
