@@ -28,7 +28,7 @@ class IpAddressAnonymizer
     /**
      * Checks if ip is a valid ipv4
      *
-     * @return boolean
+     * @return boolean true if it is ipv4, false otherwise
      */
     public function isIpv4()
     {
@@ -44,7 +44,7 @@ class IpAddressAnonymizer
     /**
      * Checks if ip is a valid ipv6
      *
-     * @return boolean false if not valid, otherwise the filtered ip address
+     * @return boolean true if ipv6 is valid, false otherwise
      */
     public function isIpv6()
     {
