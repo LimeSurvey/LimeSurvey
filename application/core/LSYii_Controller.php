@@ -147,6 +147,7 @@ abstract class LSYii_Controller extends CController
         }
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
+
     }
 
     /**
@@ -183,4 +184,6 @@ abstract class LSYii_Controller extends CController
     {
         return array();
     }
+
+
 }

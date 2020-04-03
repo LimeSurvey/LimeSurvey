@@ -813,4 +813,29 @@ class Permission extends LSActiveRecord
             'export' => gT("Export"),
         ];
     }
+
+    /**
+     * Saves the updated values of a users themepermissions.
+     *
+     * @param $userId   integer  -- this user themepermission values should be updated
+     * @param $aTemplatePermissions array -- permissions to be set
+     * @return array
+     */
+    public static function editThemePermissionsUser($userId, $aTemplatePermissions){
+        $results = [];
+        foreach ($aTemplatePermissions as $key => $value) {
+            $oPermission = Permission::model()->findByAttributes(array('permission' => $key, 'uid' => $userId, 'entity' => 'template'));
+            if (empty($oPermission)) {
+                $oPermission = new Permission;
+                $oPermission->uid = $userId;
+                $oPermission->permission = $key;
+                $oPermission->entity = 'template';
+                $oPermission->entity_id = 0;
+            }
+            $oPermission->read_p = $value;
+            $results[$key] = $oPermission->save();
+        }
+
+        return $results;
+    }
 }

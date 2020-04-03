@@ -335,7 +335,9 @@ class Survey_Common_Action extends CAction
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
 
         if ($sRenderFile == false) {
+
             if (!empty($aData['surveyid'])) {
+                //todo REFACTORING this should be moved into LSBaseController->beforeRender()
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
 
                 // Needed to evaluate EM expressions in question summary
@@ -347,6 +349,8 @@ class Survey_Common_Action extends CAction
             } else {
                 $renderFile = $basePath.'/layout_main.php';
             }
+
+
         } else {
             $renderFile = $basePath.'/'.$sRenderFile;
         }
@@ -359,6 +363,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Display the update notification
+     *
+     *
+     * REFACTORED (in LayoutHelper.php)
      */
     protected function _updatenotification()
     {
@@ -381,6 +388,8 @@ class Survey_Common_Action extends CAction
 
     /**
      * Display notifications
+     *
+     * * REFACTORED (in LayoutHelper.php)
      */
     private function _notifications()
     {
@@ -408,6 +417,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Header
+     *
+     * * REFACTORED (in LayoutHelper.php)
+     *
      * @param array $aData
      */
     private function _showHeaders($aData, $sendHTTPHeader = true)
@@ -423,6 +435,8 @@ class Survey_Common_Action extends CAction
 
     /**
      * _showadminmenu() function returns html text for the administration button bar
+     *
+     * REFACTORED (in LayoutHelper.php)
      *
      * @access public
      * @param $aData
@@ -1170,6 +1184,10 @@ class Survey_Common_Action extends CAction
 
     /**
      * Browse Menu Bar
+     *
+     * DEPRECATED ??? Never used...
+     *
+     *
      * @param array $aData
      */
     public function _browsemenubar(array $aData)
@@ -1191,6 +1209,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Load menu bar of user group controller.
+     *
+     * REFACTORED (it's in UserGroupController and uses function from Layouthelper->renderMenuBar())
+     *
      * @param array $aData
      * @return void
      */

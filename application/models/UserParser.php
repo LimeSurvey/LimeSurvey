@@ -24,19 +24,19 @@ class UserParser
  
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            Yii::app()->getController()->redirect(array('/admin/usermanagement'));
+            Yii::app()->getController()->redirect(array('/userManagement/index'));
             Yii::app()->end();
-        } elseif (strtolower($sExtension) == 'csv' ||1==1) {
+        } elseif (strtolower($sExtension) == 'csv' ) {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         } else {
             Yii::app()->setFlashMessage(gT("This is not a .csv file."). 'It is a '.$sExtension, 'error');
-            Yii::app()->getController()->redirect(array('/admin/usermanagement'));
+            Yii::app()->getController()->redirect(array('/userManagement/index'));
             Yii::app()->end();
         }
 
         if ($bMoveFileResult === false) {
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
-            Yii::app()->getController()->redirect(array('/admin/usermanagement'));
+            Yii::app()->getController()->redirect(array('/userManagement/index'));
             Yii::app()->end();
             return;
         }
@@ -86,7 +86,7 @@ class UserParser
                     sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>'),
                     'error'
                     );
-                Yii::app()->getController()->redirect(array('/admin/usermanagement'));
+                Yii::app()->getController()->redirect(array('/userManagement/index'));
                 Yii::app()->end();
             }
         }

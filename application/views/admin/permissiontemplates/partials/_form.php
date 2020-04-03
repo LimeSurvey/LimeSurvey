@@ -19,7 +19,7 @@
 
         <?php $form=$this->beginWidget('TbActiveForm', array(
             'id'=>'RoleControl--modalform',
-            'action' => App()->createUrl('admin/roles/sa/applyedit'),
+            'action' => App()->createUrl('admin/roles/sa/applyEdit'),
             'enableAjaxValidation'=>false,
         )); ?>
             <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">

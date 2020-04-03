@@ -526,19 +526,13 @@ class User extends LSActiveRecord
      */
     public function getManagementButtons()
     {
-        $editUser = "";
-        $deleteUser = "";
-        $setPermissionsUser = "";
-        $setTemplatePermissionUser = "";
-        $changeOwnership = "";
-
-        $detailUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/viewuser', ['userid' => $this->uid]);
-        $editUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/editusermodal', ['userid' => $this->uid]);
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
-        $setRoleUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/addrole', ['userid' => $this->uid]);
-        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
-        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
-        $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
+        $detailUrl = Yii::app()->getController()->createUrl('userManagement/viewUser', ['userid' => $this->uid]);
+        $editUrl = Yii::app()->getController()->createUrl('userManagement/addEditUser', ['userid' => $this->uid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $this->uid]);
+        $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
+        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
+        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm');
         
 
         $userDetail = ""
@@ -583,10 +577,10 @@ class User extends LSActiveRecord
                 data-user='".$this->full_name."' 
                 data-action='deluser' 
                 data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\")' 
-                data-message='".gt('Do you want to take ownership of this user?')."'>
-                    <span data-toggle='tooltip' title='".gT("Take ownership")."'>
-                        <i class='fa fa-hand-rock-o'></i>
-                    </span>
+                data-message='".gt('Do you want to take ownerschip of this user?')."'>
+                <span data-toggle='tooltip' title='".gT("Take ownership")."'>
+                    <i class='fa fa-hand-rock-o'></i>
+                </span>    
               </button>";
         $deleteUserButton = ""
             ."<button 

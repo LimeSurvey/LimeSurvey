@@ -69,4 +69,8 @@ describe("file representation changes", () => {
        expect(fileListMount.vm.fileviz).toBe('tablerep');
     })
 
+    it('should contain search bar', () => {
+        let searchBar = fileListMount.find('#file-search-bar');
+        expect(searchBar).toBeDefined;
+    });
 });
