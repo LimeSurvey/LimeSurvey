@@ -3562,13 +3562,25 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     $settings1->showgroupinfo = ($globalSetting2 === false || $globalSetting2['stg_value'] == 'choose') ? 'B' : str_replace(array('both', 'name', 'description', 'none'), array('B', 'N', 'D', 'X'), $globalSetting2['stg_value']);
     $settings1->shownoanswer = ($globalSetting3 === false || $globalSetting3['stg_value'] == '2') ? 'Y' : str_replace(array('1', '0'), array('Y', 'N'), $globalSetting3['stg_value']);
     $settings1->showxquestions = ($globalSetting4 === false || $globalSetting4['stg_value'] == 'choose') ? 'Y' : str_replace(array('show', 'hide'), array('Y', 'N'), $globalSetting4['stg_value']);
-    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings1->attributes);
+
+    // Quick hack to remote ipanonymize.
+    // TODO: Don't use models in updatedb_helper.
+    $attributes = $settings1->attributes;
+    unset($attributes['ipanonymize']);
+
+    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
     // insert settings for default survey group
     $settings2 = new SurveysGroupsettings;
     $settings2->setToInherit();
     $settings2->gsid = 1;
-    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings2->attributes);
+
+    // Quick hack to remote ipanonymize.
+    // TODO: Don't use models in updatedb_helper.
+    $attributes = $settings2->attributes;
+    unset($attributes['ipanonymize']);
+
+    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
 }
 /**
