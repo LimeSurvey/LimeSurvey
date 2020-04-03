@@ -68,6 +68,7 @@ class IpAddressAnonymizerTest extends TestCase
 
     /**
      * Test ip anonymization with ipv6
+     *
      * 2a03:2880:2117:df07:face:b00c:5:1 is anonymized to 2a03:2880:2117:0:0:0:0:0
      */
     public function testIpAnonymizeIpv6(){
