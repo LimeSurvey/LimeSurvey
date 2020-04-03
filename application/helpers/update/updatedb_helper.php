@@ -3069,8 +3069,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if($iOldDBVersion < 426){
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->addColumn('{{surveys_groupsettings}}', 'ipanonymize', "string(1) NULL default 'N'");
-            $oDB->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NULL default 'N'");
+            $oDB->createCommand()->addColumn('{{surveys_groupsettings}}', 'ipanonymize', "string(1) NOT NULL default 'N'");
+            $oDB->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NOT NULL default 'N'");
 
             //all groups (except default group gsid=0), must have inheritance value
             $oDB->createCommand()->update('{{surveys_groupsettings}}',array('ipanonymize' => 'I'), 'gsid<>0');
