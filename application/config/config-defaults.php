@@ -724,6 +724,7 @@ $config['bNumRealValue'] = 0;
 $config['show_logo'] = 'show';
 $config['show_last_survey_and_question'] = 'show';
 $config['show_survey_list_search'] = 'show';
+$config['show_survey_list'] = 'hide';
 $config['boxes_by_row'] = '3';
 $config['boxes_offset'] = '3';
 $config['boxes_in_container'] = 'yes';

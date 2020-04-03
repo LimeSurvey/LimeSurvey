@@ -4406,13 +4406,16 @@
             $event->set('surveyId',$surveyid);
             $event->set('language',self::getEMlanguage());
             $event->set('knownVars',$this->knownVars);
+            $event->set('questionSeq2relevance',$this->questionSeq2relevance);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
             $newExpressionSuffixes = $event->get('newExpressionSuffixes');
             if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
                 $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
             }
+            /* Put in manual : offer updating this part must be done with care. And can broke without API version update */
             $this->knownVars = $result->get('knownVars');
+            $this->questionSeq2relevance = $result->get('questionSeq2relevance');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);

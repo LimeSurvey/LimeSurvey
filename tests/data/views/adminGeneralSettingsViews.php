@@ -9,8 +9,8 @@ return [
     // general Settings ---------------------------------------
     // --------------------------------------------------
 
-    ['homepageSettings', ['route'=>'homepagesettings']],
-    ['createNewBox', ['route'=>'homepagesettings/sa/create']],
+    ['homepageSettings', ['route'=>'homepageSettings', 'noAdminInFront' => true]],
+    ['createNewBox', ['route'=>'homepageSettings/createBox' , 'noAdminInFront' => true]],
     ['pluginManager', ['route'=>'pluginmanager/sa/index']],
     // TODO: Can't hardcode &id=2 if you using other urlFormat (path).
     //['configurePlugin', ['route'=>'pluginmanager/sa/configure&id=2']],

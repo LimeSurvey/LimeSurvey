@@ -2929,7 +2929,12 @@ function do_hugefreetext($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
+/**
+ * Renders Yes/No Question Type.
+ *
+ * @param array $ia
+ * @return array
+ */
 function do_yesno($ia)
 {
     $coreClass = "ls-answers answers-list";
@@ -2951,7 +2956,7 @@ function do_yesno($ia)
     }
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType = $aQuestionAttributes['display_type'];
+    $displayType = (int) $aQuestionAttributes['display_type'];
     $noAnswer = (isset($noAnswer)) ? $noAnswer : false;
     $itemDatas = array(
         'name'=>$ia[1],
@@ -2976,14 +2981,19 @@ function do_yesno($ia)
     return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
+/**
+ * Renders Gender Question Types.
+ *
+ * @param array $ia
+ * @return array
+ */
 function do_gender($ia)
 {
     $fChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F') ? 'CHECKED' : '';
     $mChecked               = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M') ? 'CHECKED' : '';
     $naChecked              = '';
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $displayType            = $aQuestionAttributes['display_type'];
+    $displayType            = (int) $aQuestionAttributes['display_type'];
     $coreClass              = "ls-answers answers-list radio-list";
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;

@@ -75,8 +75,7 @@ class AdminViewsTest extends TestBaseClassView
      * @param string $name
      * @param array $view
      * @dataProvider addSurveyViews
-     * 
-     * TODO: Marked as incomplete cause the routes for the views are wrong.
+     * TODO: Skipped cause failing at travis.
      */
     public function testAdminSurveyViews($name, $view)
     {
