@@ -3576,7 +3576,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
     $settings2->gsid = 1;
 
     // Quick hack to remote ipanonymize.
-    // TODO: Don't use models in updatedb_helper.
+    // TODO: Don't use models in updatedb_helper. ok
     $attributes = $settings2->attributes;
     unset($attributes['ipanonymize']);
 
