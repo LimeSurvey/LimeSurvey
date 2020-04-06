@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.11 (build 200330) to 3.22.12 (build 200406) April 6, 2020
+-Fixed issue #16074: Wrong survey url when directLogin from beforeRegister event (Marko Bischof)
+-Fixed issue #16069: Deactivate survey using tokens in Postgres 12 shows error (Carsten Schmitz)
+-Fixed issue #15987: Move surveys from group A to group B now shows correct message "success" when saving was successful (Patricia Stelling)
+
+
 Changes from 3.22.10 (build 200323) to 3.22.11 (build 200330) March 30, 2020
 -Fixed issue: Quota not working for array 10-point (Olle Harstedt)
 -Fixed issue 16037: Trim entered e-mail addresses  (fkroener)
