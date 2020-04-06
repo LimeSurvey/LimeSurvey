@@ -257,7 +257,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->mailLanguage = $oSurvey->language;
         }
         if($this->surveyId == $surveyId) {
-            // Other part not needed (to confirm)
+            // Other part not needed
             return;
         }
         $this->surveyId = $surveyId;
@@ -353,20 +353,26 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
-      */
+     * @return bool
+     */
     public function setFrom($from,$fromname = null,$auto = true)
     {
         $fromemail = $from;
-        if(empty($fromname)) {
+        if (strpos($from, '<')!==false) {
+            if(is_null($fromname)) {
+                if(strpos($from, '<')) {
+                    $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
+                } else {
+                    /* Allow to force empty name in token email */
+                    $fromname = '';
+                }
+            }
+            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+        }
+        if(is_null($fromname)) {
             $fromname = $this->FromName;
         }
-        if (strpos($from, '<')) {
-            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
-            if(empty($fromname)) {
-                $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-            }
-        }
-        parent::setFrom($fromemail, $fromname, $auto);
+        return parent::setFrom($fromemail, $fromname, $auto);
     }
 
     /**
