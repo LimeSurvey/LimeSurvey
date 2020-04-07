@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.15 (build 200402) to 4.1.16 (build 200407) April 7, 2020
+-Fixed issue: Quota not working for array 10-point (Olle Harstedt)
+-Fixed issue: #16021: Save Button missing in data entry view (Jessica Höck)
+-Fixed issue #16072: E-Mail Sender Name is always "Administrator" (Denis Chenu)
+-Fixed issue #16003: Button Timing statistics not displayed. (Jessica Höck)
+-Fixed issue #15902: Cannot add quota answer (Olle Harstedt)
+
+
 Changes from 4.1.14 (build 200331) to 4.1.15 (build 200402) April 2, 2020
 -Fixed issue [security] #16068: Stored Cross Site Scripting Vulnerability in permission rules. (Thanks to Matthew Aberegg) (Patrick Teichmann)
 -Fixed issue #16069: Deactivate survey using tokens in Postgres 12 shows error (Carsten Schmitz)
