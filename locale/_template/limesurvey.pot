@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-04-01 09:57:28+00:00\n"
+"POT-Creation-Date: 2020-04-02 11:44:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -266,9 +266,7 @@ msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here
 msgstr ""
 
 #: application/controllers/OptinController.php:64
-#: application/controllers/OptoutController.php:109
-#: application/controllers/OptoutController.php:159
-msgid "You are not a participant in this survey."
+msgid "You are not a participant of this survey."
 msgstr ""
 
 #: application/controllers/OptinController.php:69
@@ -276,7 +274,7 @@ msgid "You have been successfully added back to this survey."
 msgstr ""
 
 #: application/controllers/OptinController.php:71
-msgid "You are already a part of this survey."
+msgid "You are already a participant of this survey."
 msgstr ""
 
 #: application/controllers/OptinController.php:73
@@ -294,6 +292,11 @@ msgstr ""
 
 #: application/controllers/OptoutController.php:65
 msgid "I confirm"
+msgstr ""
+
+#: application/controllers/OptoutController.php:109
+#: application/controllers/OptoutController.php:159
+msgid "You are not a participant in this survey."
 msgstr ""
 
 #: application/controllers/OptoutController.php:115
@@ -1060,7 +1063,7 @@ msgid "Files successfully moved"
 msgstr ""
 
 #: application/controllers/admin/LimeSurveyFileManager.php:299
-#: application/controllers/admin/PermissiontemplatesController.php:144
+#: application/controllers/admin/PermissiontemplatesController.php:148
 #: application/controllers/admin/labels.php:142
 #: application/controllers/admin/participantsaction.php:792
 #: application/controllers/admin/questiongroups.php:59
@@ -1128,27 +1131,27 @@ msgstr ""
 #: application/controllers/admin/PermissiontemplatesController.php:12
 #: application/controllers/admin/PermissiontemplatesController.php:53
 #: application/controllers/admin/PermissiontemplatesController.php:68
-#: application/controllers/admin/PermissiontemplatesController.php:127
-#: application/controllers/admin/PermissiontemplatesController.php:273
-#: application/controllers/admin/PermissiontemplatesController.php:301
-#: application/controllers/admin/PermissiontemplatesController.php:330
-#: application/controllers/admin/PermissiontemplatesController.php:356
+#: application/controllers/admin/PermissiontemplatesController.php:131
+#: application/controllers/admin/PermissiontemplatesController.php:277
+#: application/controllers/admin/PermissiontemplatesController.php:305
+#: application/controllers/admin/PermissiontemplatesController.php:334
+#: application/controllers/admin/PermissiontemplatesController.php:360
 msgid "You have no access to the role management!"
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:91
+#: application/controllers/admin/PermissiontemplatesController.php:95
 msgid "Role successfully saved"
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:94
+#: application/controllers/admin/PermissiontemplatesController.php:98
 msgid "Failed saving the role"
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:150
+#: application/controllers/admin/PermissiontemplatesController.php:154
 msgid "This is not a .xml file."
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:156
+#: application/controllers/admin/PermissiontemplatesController.php:160
 #: application/controllers/admin/dataentry.php:182
 #: application/controllers/admin/labels.php:106
 #: application/controllers/admin/labels.php:147
@@ -1164,16 +1167,16 @@ msgstr ""
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:169
+#: application/controllers/admin/PermissiontemplatesController.php:173
 msgid "Error creating role"
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:177
+#: application/controllers/admin/PermissiontemplatesController.php:181
 msgid "Role was successfully imported."
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:188
-#: application/controllers/admin/PermissiontemplatesController.php:246
+#: application/controllers/admin/PermissiontemplatesController.php:192
+#: application/controllers/admin/PermissiontemplatesController.php:250
 #: application/controllers/admin/SurveymenuEntryController.php:11
 #: application/controllers/admin/UserManagement.php:51
 #: application/controllers/admin/UserManagement.php:94
@@ -1246,7 +1249,7 @@ msgstr ""
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:200
+#: application/controllers/admin/PermissiontemplatesController.php:204
 #: application/controllers/admin/UserManagement.php:422
 #: application/controllers/admin/useraction.php:507
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:6
@@ -1254,7 +1257,7 @@ msgstr ""
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/admin/PermissiontemplatesController.php:314
+#: application/controllers/admin/PermissiontemplatesController.php:318
 msgid "Roles successfully deleted"
 msgstr ""
 
@@ -1818,7 +1821,7 @@ msgid "Email successfully sent."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:770
-msgid "User is already a part of the group."
+msgid "User is already a member of the group."
 msgstr ""
 
 #: application/controllers/admin/UserManagement.php:780
