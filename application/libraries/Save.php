@@ -158,6 +158,9 @@ class Save
         return $aSaveForm;
     }
 
+    /**
+     * Seems @deprecated on 2020-04-07
+     */
     function savedcontrol()
     {
         //This data will be saved to the "saved_control" table with one row per response.
@@ -267,6 +270,7 @@ class Save
                 $mailer = new \LimeMailer;
                 $mailer->setSurvey($thissurvey['sid']);
                 $mailer->emailType = 'savesurveydetails';
+                $mailer->isHtml(false);
                 $mailer->Subject = gT("Saved Survey Details")." - ".$thissurvey['name'];
                 $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
@@ -412,6 +416,7 @@ class Save
                 $mailer = new \LimeMailer;
                 $mailer->setSurvey($thissurvey['sid']);
                 $mailer->emailType = 'savesurveydetails';
+                $mailer->isHTML(false);
                 $mailer->Subject = gT("Saved Survey Details")." - ".$thissurvey['name'];
                 $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
