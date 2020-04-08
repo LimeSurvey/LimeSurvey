@@ -6,7 +6,7 @@
  * @throws CHttpException
  * @throws CException
  */
-function createDatabase($oDB){
+function populateDatabase($oDB){
     /**
     * Populate the database for a limesurvey installation
     * Rules:
