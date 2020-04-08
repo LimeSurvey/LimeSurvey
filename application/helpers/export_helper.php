@@ -2573,12 +2573,6 @@ function tsvSurveyExport($surveyid){
         } else {
             $groups_data = array();
         }
-        $groups = array();
-        foreach ($groups_data as $key => $group) {
-            if ($group['language'] === $language){
-                $groups[$language][$group['gid']] = $group;
-            }
-        }
 
         // questions data
         if (array_key_exists('questions', $xmlData)){
@@ -2596,12 +2590,6 @@ function tsvSurveyExport($surveyid){
             }
         } else {
             $questions_data = array();
-        }
-        $questions = array();
-        foreach ($questions_data as $key => $question) {
-            if ($question['language'] === $language){
-                $questions[$language][$question['gid']][$question['qid']] = $question;
-            }
         }
 
         // subquestions data
@@ -2621,12 +2609,6 @@ function tsvSurveyExport($surveyid){
         } else {
             $subquestions_data = array();
         }
-        $subquestions = array();
-        foreach ($subquestions_data as $key => $subquestion) {
-            if ($subquestion['language'] === $language){
-                $subquestions[$language][$subquestion['parent_qid']][] = $subquestion;
-            }
-        }
 
         // answers data
         if (array_key_exists('answers', $xmlData)){
@@ -2643,12 +2625,6 @@ function tsvSurveyExport($surveyid){
             }
         } else {
             $answers_data = array();
-        }
-        $answers = array();
-        foreach ($answers_data as $key => $answer) {
-            if ($answer['language'] === $language){
-                $answers[$language][$answer['qid']][] = $answer;
-            }
         }
 
         // assessments data
