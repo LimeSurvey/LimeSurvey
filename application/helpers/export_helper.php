@@ -1940,7 +1940,7 @@ function groupGetXMLStructure($xml, $gid)
     $qqueryl10n = "SELECT {{question_l10ns}}.*
     FROM {{question_l10ns}}
     JOIN {{questions}} ON {{question_l10ns}}.qid = {{questions}}.qid
-    WHERE gid=$gid and parent_qid=0 order by question_order, {{question_l10ns}}.language, scale_id";
+    WHERE gid=$gid order by question_order, {{question_l10ns}}.language, scale_id";
     buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
 
     // Questions table - Subquestions
