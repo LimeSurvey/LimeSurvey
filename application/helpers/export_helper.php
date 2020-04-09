@@ -1936,20 +1936,20 @@ function groupGetXMLStructure($xml, $gid)
     WHERE gid=$gid and parent_qid=0 order by question_order, scale_id";
     buildXMLFromQuery($xml, $qquery, 'questions');
 
-    // Questions localization
-    $qqueryl10n = "SELECT {{question_l10ns}}.*
-    FROM {{question_l10ns}}
-    JOIN {{questions}} ON {{question_l10ns}}.qid = {{questions}}.qid
-    WHERE gid=$gid order by question_order, {{question_l10ns}}.language, scale_id";
-    buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
-
-    // Questions table - Subquestions
-    $qquery = "SELECT *
+    // Subquestions
+    $qquery = "SELECT {{questions}}.*
     FROM {{questions}}
     JOIN {{question_l10ns}} ON {{question_l10ns}}.qid = {{questions}}.qid
     WHERE gid=$gid and parent_qid>0 order by question_order, {{question_l10ns}}.language, scale_id";
     buildXMLFromQuery($xml, $qquery, 'subquestions');
 
+    // Questions localization
+    $qqueryl10n = "SELECT {{question_l10ns}}.*
+    FROM {{question_l10ns}}
+    JOIN {{questions}} ON {{questions}}.qid = {{question_l10ns}}.qid 
+    WHERE gid=$gid order by question_order, {{question_l10ns}}.language, scale_id";
+    buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
+    
     //Answer
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
