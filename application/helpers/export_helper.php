@@ -2503,6 +2503,7 @@ function tsvSurveyExport($surveyid){
         $language_data = array();
     }
 
+    // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
     if (!array_key_exists('surveyls_language', $language_data[0])){
         $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
     }
@@ -2563,10 +2564,24 @@ function tsvSurveyExport($surveyid){
     foreach ($aSurveyLanguages as $key => $language) {
         // groups data
         if (array_key_exists('groups', $xmlData)){
+            debugbreak();
+            // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
+            if (!array_key_exists('gid', $xmlData['groups']['rows']['row'][0])){
+                $aSaveData=$xmlData['groups']['rows']['row'];
+                unset($xmlData['groups']['rows']['row']);
+                $xmlData['groups']['rows']['row'][0] = $aSaveData;
+            }
+
             foreach($xmlData['groups']['rows']['row'] as $group){
                 $groups_data[$group['gid']] = $group;
             }
 
+            // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
+            if (!array_key_exists('gid', $xmlData['group_l10ns']['rows']['row'][0])){
+                $aSaveData=$xmlData['group_l10ns']['rows']['row'];
+                unset($xmlData['group_l10ns']['rows']['row']);
+                $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
+            }            
             foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns){
                 $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
             }
