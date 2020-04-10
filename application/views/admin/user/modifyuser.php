@@ -47,7 +47,7 @@ echo viewHelper::getViewTestTag('modifyUser');
                     </div>
                 </div>
 
-                <?php if( !Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid)  || (Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid) && Yii::app()->session['loginID']==1)): ?>
+                <?php if( !Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid) || (Permission::isForcedSuperAdmin(Permission::getUserId())) ): ?>
                 <div class="form-group">
                     <label for="password" class=" control-label">
                         <?php eT("Password");?>
