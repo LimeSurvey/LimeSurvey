@@ -39,8 +39,8 @@
     <label class=" control-label"  for='disablescriptwithxss'><?php eT("Disable question script for XSS restricted user:"); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-            'name' => 'filterxsshtml',
-            'id'=>'filterxsshtml',
+            'name' => 'disablescriptwithxss',
+            'id'=>'disablescriptwithxss',
             'value' => Yii::app()->getConfig('disablescriptwithxss'),
             'onLabel'=>gT('On'),
             'offLabel' => gT('Off')
