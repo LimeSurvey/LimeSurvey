@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.12 (build 200406) to 3.22.13 (build 200415) April 14, 2020
+-Fixed issue: Original superadmin (UID 1) should always be able to edit other users passwords (Carsten Schmitz)
+-Fixed issue #14291: CSRF 400 server error after entering update key (Carsten Schmitz)
+
+
 Changes from 3.22.11 (build 200330) to 3.22.12 (build 200406) April 6, 2020
 -Fixed issue #16074: Wrong survey url when directLogin from beforeRegister event (Marko Bischof)
 -Fixed issue #16069: Deactivate survey using tokens in Postgres 12 shows error (Carsten Schmitz)
