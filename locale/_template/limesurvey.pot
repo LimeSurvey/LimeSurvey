@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-04-07 10:54:41+00:00\n"
+"POT-Creation-Date: 2020-04-14 09:48:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1276,8 +1276,8 @@ msgstr ""
 #: application/controllers/admin/PluginManagerController.php:180
 #: application/controllers/admin/PluginManagerController.php:222
 #: application/controllers/admin/PluginManagerController.php:248
-#: application/controllers/admin/PluginManagerController.php:304
-#: application/controllers/admin/PluginManagerController.php:642
+#: application/controllers/admin/PluginManagerController.php:328
+#: application/controllers/admin/PluginManagerController.php:666
 #: application/controllers/admin/dataentry.php:257
 #: application/controllers/admin/participantsaction.php:58
 #: application/controllers/admin/participantsaction.php:2555
@@ -1335,70 +1335,232 @@ msgid "The plugin settings were saved."
 msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:271
+#: application/controllers/admin/dataentry.php:1210
+#: application/controllers/admin/labels.php:223
+#: application/controllers/admin/questionedit.php:136
+#: application/controllers/admin/surveyadmin.php:1768
+#: application/controllers/admin/usergroups.php:160
+#: application/helpers/admin/label_helper.php:122
+#: application/models/TemplateManifest.php:171
+#: application/views/admin/assessments/assessments_edit.php:126
+#: application/views/admin/assessments/assessments_edit.php:143
+#: application/views/admin/conditions/conditionshead_view.php:72
+#: application/views/admin/dataentry/includes/editdata/edit.php:1
+#: application/views/admin/emailtemplates/email_language_template_tab.php:126
+#: application/views/admin/emailtemplates/emailtemplates_view.php:62
+#: application/views/admin/labels/editlabel_view.php:77
+#: application/views/admin/participants/blacklist_view.php:119
+#: application/views/admin/participants/modal_subviews/_editAttribute.php:247
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:136
+#: application/views/admin/participants/viewAttribute_view.php:135
+#: application/views/admin/permissiontemplates/partials/_form.php:53
+#: application/views/admin/permissiontemplates/partials/_import.php:30
+#: application/views/admin/permissiontemplates/partials/_permissions.php:75
+#: application/views/admin/responses/browsemenubar_view.php:158
+#: application/views/admin/responses/listResponses_view.php:293
+#: application/views/admin/super/fullpagebar_view.php:21
+#: application/views/admin/survey/Question/editQuestion_view.php:457
+#: application/views/admin/survey/Question/editQuestion_view.php:464
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:197
+#: application/views/admin/survey/Question/neditQuestion_view.php:391
+#: application/views/admin/survey/Question/neditQuestion_view.php:397
+#: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:126
+#: application/views/admin/survey/Question/question_subviews/_tabs.php:127
+#: application/views/admin/survey/Question/questionbar_view.php:197
+#: application/views/admin/survey/Question/questionbar_view.php:246
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:247
+#: application/views/admin/survey/organizeGroupsAndQuestions_view.php:59
+#: application/views/admin/survey/subview/tab_survey_view.php:26
+#: application/views/admin/survey/subview/tab_survey_view.php:55
+#: application/views/admin/survey/surveybar_rightactionbuttons.php:22
+#: application/views/admin/survey/topbar/question_group_topbar.php:254
+#: application/views/admin/survey/topbar/question_topbar.php:366
+#: application/views/admin/survey/topbar/question_topbar.php:401
+#: application/views/admin/survey/topbar/survey_topbar.php:485
+#: application/views/admin/survey/topbar/token_bar.php:298
+#: application/views/admin/surveymenu/_form.php:92
+#: application/views/admin/surveymenu_entries/_form.php:212
+#: application/views/admin/themeoptions/update.php:33
+#: application/views/admin/themeoptions/update.php:83
+#: application/views/admin/themes/templateeditorbar_view.php:188
+#: application/views/admin/token/browse.php:98
+#: application/views/admin/token/managetokenattributes.php:172
+#: application/views/admin/translate/translatefooter_view.php:3
+#: application/views/admin/user/editusers.php:132
+#: application/views/admin/user/modifyuser.php:65
+#: application/views/admin/user/setuserpermissions.php:82
+#: application/views/admin/usermanagement/partial/addedituser.php:96
+#: application/views/admin/usermanagement/partial/addrole.php:37
+#: application/views/admin/usermanagement/partial/applypermissiontemplate.php:35
+#: application/views/admin/usermanagement/partial/editpermissions.php:70
+#: application/views/admin/usermanagement/partial/edittemplatepermissions.php:45
+#: application/views/admin/usermanagement/partial/importuser.php:42
+#: tmp/runtime/twig_cache/8e/8e22d866ed6b977a1cb1020991006b267b59acea9ae68b189e216d11be48ff6c.php:185
+#: tmp/runtime/twig_cache/b9/b995eb09dcaa6e2f25e31e6b9d04dbccc6f1c7986e881d6d819ccb2bb42a6f00.php:185
+#: tmp/runtime/twig_cache/e6/e680ca6f77141211755634bb6708026974c4b3f7050921e691d2a91477e63680.php:55
+msgid "Save"
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:276
+#: application/controllers/admin/questionedit.php:153
+#: application/views/admin/conditions/conditionshead_view.php:73
+#: application/views/admin/emailtemplates/emailtemplates_view.php:63
+#: application/views/admin/super/fullpagebar_view.php:29
+#: application/views/admin/survey/Question/editQuestion_view.php:459
+#: application/views/admin/survey/Question/editQuestion_view.php:465
+#: application/views/admin/survey/Question/neditQuestion_view.php:392
+#: application/views/admin/survey/Question/neditQuestion_view.php:398
+#: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:128
+#: application/views/admin/survey/Question/question_subviews/_tabs.php:128
+#: application/views/admin/survey/Question/questionbar_view.php:203
+#: application/views/admin/survey/Question/questionbar_view.php:251
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:255
+msgid "Save and close"
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:282
+#: application/controllers/admin/SurveysGroupsController.php:67
+#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
+#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
+#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:52
+#: application/helpers/replacements_helper.php:342
+#: application/helpers/replacements_helper.php:456
+#: application/models/TemplateConfig.php:746
+#: application/models/TemplateConfig.php:747
+#: application/views/admin/assessments/assessments_delete.php:24
+#: application/views/admin/assessments/assessments_edit.php:142
+#: application/views/admin/conditions/conditionshead_view.php:74
+#: application/views/admin/emailtemplates/email_language_template_tab.php:126
+#: application/views/admin/emailtemplates/emailtemplates_view.php:101
+#: application/views/admin/globalsettings/surveySettings.php:24
+#: application/views/admin/homepagesettings/index.php:26
+#: application/views/admin/labels/labelsetsbar_view.php:116
+#: application/views/admin/notifications/notifications.php:19
+#: application/views/admin/participants/attributeMapToken_view.php:124
+#: application/views/admin/participants/attributeMap_view.php:210
+#: application/views/admin/participants/modal_subviews/_addToSurvey.php:49
+#: application/views/admin/participants/modal_subviews/_deleteParticipant.php:27
+#: application/views/admin/participants/modal_subviews/_editAttribute.php:246
+#: application/views/admin/participants/modal_subviews/_editParticipant.php:135
+#: application/views/admin/participants/modal_subviews/_exportCSV.php:31
+#: application/views/admin/participants/modal_subviews/_exportCSV.php:61
+#: application/views/admin/participants/modal_subviews/_shareParticipant.php:58
+#: application/views/admin/participants/modal_subviews/_showParticipantSurveys.php:37
+#: application/views/admin/permissiontemplates/partials/error.php:36
+#: application/views/admin/permissiontemplates/partials/success.php:32
+#: application/views/admin/pluginmanager/uploadModal.php:43
+#: application/views/admin/quotas/viewquotas_quota_actions.php:41
+#: application/views/admin/quotas/viewquotas_quota_actions.php:42
+#: application/views/admin/responses/browseallfiltered_view.php:12
+#: application/views/admin/responses/browsemenubar_view.php:241
+#: application/views/admin/responses/listResponses_view.php:292
+#: application/views/admin/super/footer.php:163
+#: application/views/admin/super/footer.php:183
+#: application/views/admin/super/footer.php:202
+#: application/views/admin/super/footer.php:224
+#: application/views/admin/super/fullpagebar_view.php:37
+#: application/views/admin/super/welcome.php:80
+#: application/views/admin/survey/Question/listquestions.php:146
+#: application/views/admin/survey/Question/nquestion_subviews/_question_type_select.php:65
+#: application/views/admin/survey/Question/question_subviews/_question_type_select.php:65
+#: application/views/admin/survey/Question/questionbar_view.php:210
+#: application/views/admin/survey/Question/questionbar_view.php:232
+#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:265
+#: application/views/admin/survey/deactivateSurvey_view.php:109
+#: application/views/admin/survey/subview/import_ressources_modal.php:32
+#: application/views/admin/survey/subview/tabImport_view.php:61
+#: application/views/admin/survey/topbar/survey_topbar.php:495
+#: application/views/admin/survey/topbar/token_bar.php:309
+#: application/views/admin/surveymenu/_form.php:93
+#: application/views/admin/surveymenu_entries/_form.php:213
+#: application/views/admin/surveysgroups/index.php:12
+#: application/views/admin/surveysgroups/surveySettings.php:24
+#: application/views/admin/surveysgroups/update.php:13
+#: application/views/admin/themeoptions/import_modal.php:40
+#: application/views/admin/themeoptions/index.php:20
+#: application/views/admin/themeoptions/update.php:27
+#: application/views/admin/themes/templateeditorbar_view.php:196
+#: application/views/admin/themes/templatesummary_view.php:221
+#: application/views/admin/token/browse.php:97
+#: application/views/admin/usergroup/usergroupbar_view.php:55
+#: application/views/admin/usermanagement/partial/adddummyuser.php:26
+#: application/views/admin/usermanagement/partial/createdrandoms.php:50
+#: application/views/admin/usermanagement/partial/error.php:36
+#: application/views/admin/usermanagement/partial/permissionsuccess.php:44
+#: application/views/admin/usermanagement/partial/showuser.php:26
+#: application/views/admin/usermanagement/partial/success.php:31
+#: tmp/runtime/twig_cache/34/3410caf9753b29e50a7dc7eefff4ac9424957a1a88e2330179fe593ebba002fa.php:100
+#: tmp/runtime/twig_cache/7e/7eab37c944c30ffd22c73d5ffa49645b77c3f11fe66fab5fa634eae87ca49f85.php:168
+#: tmp/runtime/twig_cache/af/afba546e126f6f109548bb9883abb13d7dece93950cca3a21589d65c96be519a.php:86
+#: tmp/runtime/twig_cache/e1/e1398d6fecc4c3026fa0769ec0c47d5ef2bb64e899e152f7d56972264cec8ad1.php:505
+msgid "Close"
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:294
 msgid "Return to plugin list"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:315
+#: application/controllers/admin/PluginManagerController.php:339
 msgid "Reset load error for plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:317
+#: application/controllers/admin/PluginManagerController.php:341
 msgid "Could not update plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:321
+#: application/controllers/admin/PluginManagerController.php:345
 msgid "Found no plugin with id %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:344
+#: application/controllers/admin/PluginManagerController.php:368
 msgid "Found no plugin with name %s"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:357
+#: application/controllers/admin/PluginManagerController.php:381
 msgid "Plugin was installed."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:389
+#: application/controllers/admin/PluginManagerController.php:413
 msgid "Found no plugin with id %d."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:397
+#: application/controllers/admin/PluginManagerController.php:421
 msgid "Plugin uninstalled."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:399
+#: application/controllers/admin/PluginManagerController.php:423
 msgid "Could not uninstall plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:423
+#: application/controllers/admin/PluginManagerController.php:447
 msgid "Could not fetch files."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:455
+#: application/controllers/admin/PluginManagerController.php:479
 msgid "Could not read plugin configuration file."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:460
+#: application/controllers/admin/PluginManagerController.php:484
 msgid "The plugin is not compatible with your version of LimeSurvey."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:508
+#: application/controllers/admin/PluginManagerController.php:532
 msgid "The plugin was successfully updated. You might need to deactivate it and activate it again to apply changes."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:514
+#: application/controllers/admin/PluginManagerController.php:538
 msgid "The plugin was successfully installed. You need to activate it before you can use it."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:521
+#: application/controllers/admin/PluginManagerController.php:545
 msgid "The plugin could not be installed or updated:"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:541
+#: application/controllers/admin/PluginManagerController.php:565
 msgid "Installation aborted."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:572
+#: application/controllers/admin/PluginManagerController.php:596
 #: application/controllers/admin/labels.php:73
 #: application/controllers/admin/surveyadmin.php:282
 #: application/controllers/admin/surveyadmin.php:2571
@@ -1406,11 +1568,11 @@ msgstr ""
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:583
+#: application/controllers/admin/PluginManagerController.php:607
 msgid "Plugin '%s' does already exist."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:599
+#: application/controllers/admin/PluginManagerController.php:623
 msgid "Demo mode: Uploading plugins is disabled."
 msgstr ""
 
@@ -1527,84 +1689,6 @@ msgstr ""
 msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:67
-#: application/extensions/SettingsWidget/SettingsWidget.php:245
-#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
-#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
-#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:52
-#: application/helpers/replacements_helper.php:342
-#: application/helpers/replacements_helper.php:456
-#: application/models/TemplateConfig.php:746
-#: application/models/TemplateConfig.php:747
-#: application/views/admin/assessments/assessments_delete.php:24
-#: application/views/admin/assessments/assessments_edit.php:142
-#: application/views/admin/conditions/conditionshead_view.php:74
-#: application/views/admin/emailtemplates/email_language_template_tab.php:126
-#: application/views/admin/emailtemplates/emailtemplates_view.php:101
-#: application/views/admin/globalsettings/surveySettings.php:24
-#: application/views/admin/homepagesettings/index.php:26
-#: application/views/admin/labels/labelsetsbar_view.php:116
-#: application/views/admin/notifications/notifications.php:19
-#: application/views/admin/participants/attributeMapToken_view.php:124
-#: application/views/admin/participants/attributeMap_view.php:210
-#: application/views/admin/participants/modal_subviews/_addToSurvey.php:49
-#: application/views/admin/participants/modal_subviews/_deleteParticipant.php:27
-#: application/views/admin/participants/modal_subviews/_editAttribute.php:246
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:135
-#: application/views/admin/participants/modal_subviews/_exportCSV.php:31
-#: application/views/admin/participants/modal_subviews/_exportCSV.php:61
-#: application/views/admin/participants/modal_subviews/_shareParticipant.php:58
-#: application/views/admin/participants/modal_subviews/_showParticipantSurveys.php:37
-#: application/views/admin/permissiontemplates/partials/error.php:36
-#: application/views/admin/permissiontemplates/partials/success.php:32
-#: application/views/admin/pluginmanager/uploadModal.php:43
-#: application/views/admin/quotas/viewquotas_quota_actions.php:41
-#: application/views/admin/quotas/viewquotas_quota_actions.php:42
-#: application/views/admin/responses/browseallfiltered_view.php:12
-#: application/views/admin/responses/browsemenubar_view.php:241
-#: application/views/admin/responses/listResponses_view.php:292
-#: application/views/admin/super/footer.php:163
-#: application/views/admin/super/footer.php:183
-#: application/views/admin/super/footer.php:202
-#: application/views/admin/super/footer.php:224
-#: application/views/admin/super/fullpagebar_view.php:37
-#: application/views/admin/super/welcome.php:80
-#: application/views/admin/survey/Question/listquestions.php:146
-#: application/views/admin/survey/Question/nquestion_subviews/_question_type_select.php:65
-#: application/views/admin/survey/Question/question_subviews/_question_type_select.php:65
-#: application/views/admin/survey/Question/questionbar_view.php:210
-#: application/views/admin/survey/Question/questionbar_view.php:232
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:265
-#: application/views/admin/survey/deactivateSurvey_view.php:109
-#: application/views/admin/survey/subview/import_ressources_modal.php:32
-#: application/views/admin/survey/subview/tabImport_view.php:61
-#: application/views/admin/survey/topbar/survey_topbar.php:495
-#: application/views/admin/survey/topbar/token_bar.php:309
-#: application/views/admin/surveymenu/_form.php:93
-#: application/views/admin/surveymenu_entries/_form.php:213
-#: application/views/admin/surveysgroups/index.php:12
-#: application/views/admin/surveysgroups/surveySettings.php:24
-#: application/views/admin/surveysgroups/update.php:13
-#: application/views/admin/themeoptions/import_modal.php:40
-#: application/views/admin/themeoptions/index.php:20
-#: application/views/admin/themeoptions/update.php:27
-#: application/views/admin/themes/templateeditorbar_view.php:196
-#: application/views/admin/themes/templatesummary_view.php:221
-#: application/views/admin/token/browse.php:97
-#: application/views/admin/usergroup/usergroupbar_view.php:55
-#: application/views/admin/usermanagement/partial/adddummyuser.php:26
-#: application/views/admin/usermanagement/partial/createdrandoms.php:50
-#: application/views/admin/usermanagement/partial/error.php:36
-#: application/views/admin/usermanagement/partial/permissionsuccess.php:44
-#: application/views/admin/usermanagement/partial/showuser.php:26
-#: application/views/admin/usermanagement/partial/success.php:31
-#: tmp/runtime/twig_cache/34/3410caf9753b29e50a7dc7eefff4ac9424957a1a88e2330179fe593ebba002fa.php:100
-#: tmp/runtime/twig_cache/7e/7eab37c944c30ffd22c73d5ffa49645b77c3f11fe66fab5fa634eae87ca49f85.php:168
-#: tmp/runtime/twig_cache/af/afba546e126f6f109548bb9883abb13d7dece93950cca3a21589d65c96be519a.php:86
-#: tmp/runtime/twig_cache/e1/e1398d6fecc4c3026fa0769ec0c47d5ef2bb64e899e152f7d56972264cec8ad1.php:505
-msgid "Close"
-msgstr ""
-
 #: application/controllers/admin/SurveysGroupsController.php:94
 msgid "A child group can't be set as parent group"
 msgstr ""
@@ -1652,7 +1736,7 @@ msgid "Inherit"
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:199
-#: application/controllers/admin/globalsettings.php:441
+#: application/controllers/admin/globalsettings.php:442
 #: application/core/LsDefaultDataSets.php:133
 #: application/models/Permission.php:725
 #: application/models/SurveysGroups.php:277
@@ -3226,73 +3310,6 @@ msgstr ""
 msgid "Your Ranking"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1210
-#: application/controllers/admin/labels.php:223
-#: application/controllers/admin/questionedit.php:136
-#: application/controllers/admin/surveyadmin.php:1768
-#: application/controllers/admin/usergroups.php:160
-#: application/extensions/SettingsWidget/SettingsWidget.php:242
-#: application/helpers/admin/label_helper.php:122
-#: application/models/TemplateManifest.php:171
-#: application/views/admin/assessments/assessments_edit.php:126
-#: application/views/admin/assessments/assessments_edit.php:143
-#: application/views/admin/conditions/conditionshead_view.php:72
-#: application/views/admin/dataentry/includes/editdata/edit.php:1
-#: application/views/admin/emailtemplates/email_language_template_tab.php:126
-#: application/views/admin/emailtemplates/emailtemplates_view.php:62
-#: application/views/admin/labels/editlabel_view.php:77
-#: application/views/admin/participants/blacklist_view.php:119
-#: application/views/admin/participants/modal_subviews/_editAttribute.php:247
-#: application/views/admin/participants/modal_subviews/_editParticipant.php:136
-#: application/views/admin/participants/viewAttribute_view.php:135
-#: application/views/admin/permissiontemplates/partials/_form.php:53
-#: application/views/admin/permissiontemplates/partials/_import.php:30
-#: application/views/admin/permissiontemplates/partials/_permissions.php:75
-#: application/views/admin/responses/browsemenubar_view.php:158
-#: application/views/admin/responses/listResponses_view.php:293
-#: application/views/admin/super/fullpagebar_view.php:21
-#: application/views/admin/survey/Question/editQuestion_view.php:457
-#: application/views/admin/survey/Question/editQuestion_view.php:464
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:197
-#: application/views/admin/survey/Question/neditQuestion_view.php:391
-#: application/views/admin/survey/Question/neditQuestion_view.php:397
-#: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:126
-#: application/views/admin/survey/Question/question_subviews/_tabs.php:127
-#: application/views/admin/survey/Question/questionbar_view.php:197
-#: application/views/admin/survey/Question/questionbar_view.php:246
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:247
-#: application/views/admin/survey/organizeGroupsAndQuestions_view.php:59
-#: application/views/admin/survey/subview/tab_survey_view.php:26
-#: application/views/admin/survey/subview/tab_survey_view.php:55
-#: application/views/admin/survey/surveybar_rightactionbuttons.php:22
-#: application/views/admin/survey/topbar/question_group_topbar.php:254
-#: application/views/admin/survey/topbar/question_topbar.php:366
-#: application/views/admin/survey/topbar/question_topbar.php:401
-#: application/views/admin/survey/topbar/survey_topbar.php:485
-#: application/views/admin/survey/topbar/token_bar.php:298
-#: application/views/admin/surveymenu/_form.php:92
-#: application/views/admin/surveymenu_entries/_form.php:212
-#: application/views/admin/themeoptions/update.php:33
-#: application/views/admin/themeoptions/update.php:83
-#: application/views/admin/themes/templateeditorbar_view.php:188
-#: application/views/admin/token/browse.php:98
-#: application/views/admin/token/managetokenattributes.php:172
-#: application/views/admin/translate/translatefooter_view.php:3
-#: application/views/admin/user/editusers.php:132
-#: application/views/admin/user/modifyuser.php:65
-#: application/views/admin/user/setuserpermissions.php:82
-#: application/views/admin/usermanagement/partial/addedituser.php:96
-#: application/views/admin/usermanagement/partial/addrole.php:37
-#: application/views/admin/usermanagement/partial/applypermissiontemplate.php:35
-#: application/views/admin/usermanagement/partial/editpermissions.php:70
-#: application/views/admin/usermanagement/partial/edittemplatepermissions.php:45
-#: application/views/admin/usermanagement/partial/importuser.php:42
-#: tmp/runtime/twig_cache/8e/8e22d866ed6b977a1cb1020991006b267b59acea9ae68b189e216d11be48ff6c.php:185
-#: tmp/runtime/twig_cache/b9/b995eb09dcaa6e2f25e31e6b9d04dbccc6f1c7986e881d6d819ccb2bb42a6f00.php:185
-#: tmp/runtime/twig_cache/e6/e680ca6f77141211755634bb6708026974c4b3f7050921e691d2a91477e63680.php:55
-msgid "Save"
-msgstr ""
-
 #: application/controllers/admin/dataentry.php:1293
 #: application/controllers/admin/questions.php:67
 #: application/controllers/admin/responses.php:72
@@ -3321,17 +3338,17 @@ msgid "The response record %s was updated."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1511
-#: application/libraries/Save.php:185 application/libraries/Save.php:326
+#: application/libraries/Save.php:188 application/libraries/Save.php:330
 msgid "You must supply a name for this saved session."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1512
-#: application/libraries/Save.php:188 application/libraries/Save.php:329
+#: application/libraries/Save.php:191 application/libraries/Save.php:333
 msgid "You must supply a password for this saved session."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1513
-#: application/libraries/Save.php:191 application/libraries/Save.php:332
+#: application/libraries/Save.php:194 application/libraries/Save.php:336
 msgid "Your passwords do not match."
 msgstr ""
 
@@ -3344,17 +3361,17 @@ msgid "A survey participant entry for the saved survey has been created too."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1683
-#: application/libraries/Save.php:270 application/libraries/Save.php:415
+#: application/libraries/Save.php:274 application/libraries/Save.php:420
 msgid "Saved Survey Details"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1684
-#: application/libraries/Save.php:271 application/libraries/Save.php:416
+#: application/libraries/Save.php:275 application/libraries/Save.php:421
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1686
-#: application/libraries/Save.php:273 application/libraries/Save.php:418
+#: application/libraries/Save.php:277 application/libraries/Save.php:423
 #: application/models/Assessment.php:83 application/models/Field.php:50
 #: application/models/ParticipantAttributeName.php:245
 #: application/models/Permissiontemplates.php:198
@@ -3379,7 +3396,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:429
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:366
 #: application/core/plugins/Authdb/Authdb.php:125
-#: application/libraries/Save.php:274 application/libraries/Save.php:419
+#: application/libraries/Save.php:278 application/libraries/Save.php:424
 #: application/models/User.php:110
 #: application/views/admin/user/modifyuser.php:53
 #: application/views/admin/usermanagement/partial/createdrandoms.php:29
@@ -3387,7 +3404,7 @@ msgid "Password"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1688
-#: application/libraries/Save.php:275 application/libraries/Save.php:420
+#: application/libraries/Save.php:279 application/libraries/Save.php:425
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
@@ -3702,15 +3719,15 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:287
+#: application/controllers/admin/globalsettings.php:288
 msgid "Warning! Admin bounce email was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:293
+#: application/controllers/admin/globalsettings.php:294
 msgid "Warning! Administrator email address was not saved because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/globalsettings.php:338
+#: application/controllers/admin/globalsettings.php:339
 msgid "Global settings were saved."
 msgstr ""
 
@@ -4618,23 +4635,6 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: application/controllers/admin/questionedit.php:153
-#: application/extensions/SettingsWidget/SettingsWidget.php:243
-#: application/views/admin/conditions/conditionshead_view.php:73
-#: application/views/admin/emailtemplates/emailtemplates_view.php:63
-#: application/views/admin/super/fullpagebar_view.php:29
-#: application/views/admin/survey/Question/editQuestion_view.php:459
-#: application/views/admin/survey/Question/editQuestion_view.php:465
-#: application/views/admin/survey/Question/neditQuestion_view.php:392
-#: application/views/admin/survey/Question/neditQuestion_view.php:398
-#: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:128
-#: application/views/admin/survey/Question/question_subviews/_tabs.php:128
-#: application/views/admin/survey/Question/questionbar_view.php:203
-#: application/views/admin/survey/Question/questionbar_view.php:251
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:255
-msgid "Save and close"
-msgstr ""
-
 #: application/controllers/admin/questionedit.php:154
 msgid "Script"
 msgstr ""
@@ -5268,7 +5268,7 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:216
 #: application/controllers/admin/surveyadmin.php:1128
-#: application/extensions/SettingsWidget/SettingsWidget.php:351
+#: application/extensions/SettingsWidget/SettingsWidget.php:349
 #: application/models/QuestionBaseDataSet.php:237
 #: application/models/QuestionBaseDataSet.php:261
 #: application/models/QuestionBaseDataSet.php:296
@@ -5361,7 +5361,7 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:217
 #: application/controllers/admin/surveyadmin.php:1129
-#: application/extensions/SettingsWidget/SettingsWidget.php:352
+#: application/extensions/SettingsWidget/SettingsWidget.php:350
 #: application/helpers/questionHelper.php:459
 #: application/helpers/questionHelper.php:715
 #: application/helpers/questionHelper.php:1018
@@ -7077,7 +7077,7 @@ msgid "You did not answer to the security question."
 msgstr ""
 
 #: application/controllers/survey/index.php:411
-#: application/libraries/Save.php:199 application/libraries/Save.php:356
+#: application/libraries/Save.php:202 application/libraries/Save.php:360
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
@@ -8452,7 +8452,7 @@ msgid "December"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:85
-#: application/extensions/SettingsWidget/SettingsWidget.php:626
+#: application/extensions/SettingsWidget/SettingsWidget.php:624
 #: application/views/admin/dataentry/content_view.php:74
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:21
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:55
@@ -8467,7 +8467,7 @@ msgid "Clear selection"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:86
-#: application/extensions/SettingsWidget/SettingsWidget.php:627
+#: application/extensions/SettingsWidget/SettingsWidget.php:625
 #: application/views/admin/dataentry/content_view.php:75
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:22
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:56
@@ -8481,7 +8481,7 @@ msgid "Previous month"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:87
-#: application/extensions/SettingsWidget/SettingsWidget.php:628
+#: application/extensions/SettingsWidget/SettingsWidget.php:626
 #: application/views/admin/dataentry/content_view.php:76
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:23
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:57
@@ -8495,7 +8495,7 @@ msgid "Next month"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:88
-#: application/extensions/SettingsWidget/SettingsWidget.php:629
+#: application/extensions/SettingsWidget/SettingsWidget.php:627
 #: application/views/admin/dataentry/content_view.php:77
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:24
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:58
@@ -8509,7 +8509,7 @@ msgid "Select year"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:89
-#: application/extensions/SettingsWidget/SettingsWidget.php:630
+#: application/extensions/SettingsWidget/SettingsWidget.php:628
 #: application/views/admin/dataentry/content_view.php:78
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:25
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:59
@@ -8523,7 +8523,7 @@ msgid "Previous year"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:90
-#: application/extensions/SettingsWidget/SettingsWidget.php:631
+#: application/extensions/SettingsWidget/SettingsWidget.php:629
 #: application/views/admin/dataentry/content_view.php:79
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:26
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:60
@@ -8537,7 +8537,7 @@ msgid "Next year"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:91
-#: application/extensions/SettingsWidget/SettingsWidget.php:632
+#: application/extensions/SettingsWidget/SettingsWidget.php:630
 #: application/views/admin/dataentry/content_view.php:80
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:27
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:61
@@ -8551,7 +8551,7 @@ msgid "Select decade"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:92
-#: application/extensions/SettingsWidget/SettingsWidget.php:633
+#: application/extensions/SettingsWidget/SettingsWidget.php:631
 #: application/views/admin/dataentry/content_view.php:81
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:28
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:62
@@ -8565,7 +8565,7 @@ msgid "Previous decade"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:93
-#: application/extensions/SettingsWidget/SettingsWidget.php:634
+#: application/extensions/SettingsWidget/SettingsWidget.php:632
 #: application/views/admin/dataentry/content_view.php:82
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:29
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:63
@@ -8579,7 +8579,7 @@ msgid "Next decade"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:94
-#: application/extensions/SettingsWidget/SettingsWidget.php:635
+#: application/extensions/SettingsWidget/SettingsWidget.php:633
 #: application/views/admin/dataentry/content_view.php:83
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:30
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:64
@@ -8593,7 +8593,7 @@ msgid "Previous century"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:95
-#: application/extensions/SettingsWidget/SettingsWidget.php:636
+#: application/extensions/SettingsWidget/SettingsWidget.php:634
 #: application/views/admin/dataentry/content_view.php:84
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:31
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:65
@@ -8607,7 +8607,7 @@ msgid "Next century"
 msgstr ""
 
 #: application/core/QuestionTypes/Date/RenderDate.php:96
-#: application/extensions/SettingsWidget/SettingsWidget.php:637
+#: application/extensions/SettingsWidget/SettingsWidget.php:635
 #: application/views/admin/dataentry/content_view.php:85
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:32
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:66
@@ -9174,7 +9174,7 @@ msgid "Survey group:"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
-msgid "This will update the survey group for all selected active surveys."
+msgid "This will update the survey group for all selected surveys."
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_expiry_dialog.php:12
@@ -13403,31 +13403,31 @@ msgstr ""
 msgid "Randomization group:"
 msgstr ""
 
-#: application/libraries/Save.php:210 application/libraries/Save.php:342
+#: application/libraries/Save.php:213 application/libraries/Save.php:346
 msgid "You may not use slashes or ampersands in your name or password."
 msgstr ""
 
-#: application/libraries/Save.php:214 application/libraries/Save.php:346
+#: application/libraries/Save.php:217 application/libraries/Save.php:350
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr ""
 
-#: application/libraries/Save.php:218
+#: application/libraries/Save.php:221
 msgid "This is not a valid email address. Please provide a valid email address or leave it empty."
 msgstr ""
 
-#: application/libraries/Save.php:286 application/libraries/Save.php:431
+#: application/libraries/Save.php:290 application/libraries/Save.php:436
 msgid "Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference."
 msgstr ""
 
-#: application/libraries/Save.php:288 application/libraries/Save.php:433
+#: application/libraries/Save.php:292 application/libraries/Save.php:438
 msgid "Email error message %s"
 msgstr ""
 
-#: application/libraries/Save.php:290 application/libraries/Save.php:435
+#: application/libraries/Save.php:294 application/libraries/Save.php:440
 msgid "(Reason: Administrator email address empty)"
 msgstr ""
 
-#: application/libraries/Save.php:295 application/libraries/Save.php:440
+#: application/libraries/Save.php:299 application/libraries/Save.php:445
 msgid "Your survey was successfully saved."
 msgstr ""
 
@@ -18290,7 +18290,7 @@ msgstr ""
 msgid "Plugin:"
 msgstr ""
 
-#: application/views/admin/pluginmanager/configure.php:52
+#: application/views/admin/pluginmanager/configure.php:53
 msgid "This plugin has no settings."
 msgstr ""
 
