@@ -43,7 +43,6 @@ class User extends LSActiveRecord
     public $lang = 'auto';
     public $searched_value;
 
-
     /**
      * @inheritdoc
      * @return User
@@ -848,10 +847,38 @@ class User extends LSActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
-        
-        $criteria->compare('full_name',$this->searched_value,true);
-        $criteria->compare('users_name',$this->searched_value,true, 'OR');
-        $criteria->compare('email',$this->searched_value,true, 'OR');
+
+        $criteria->compare('t.uid',$this->uid);
+        $criteria->compare('t.full_name',$this->full_name,true);
+        $criteria->compare('t.users_name',$this->users_name,true, 'OR');
+        $criteria->compare('t.email',$this->email,true, 'OR');
+
+        //filter for 'created' date comparison
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        if ($this->created) {
+            try {
+                $dateTimeInput = $this->created .' 00:00'; //append time
+                $s = DateTime::createFromFormat($dateformatdetails['phpdate'].' H:i', $dateTimeInput);
+                if($s) {
+                    $s2 = $s->format('Y-m-d H:i');
+                    $criteria->addCondition('t.created >= \'' . $s2 . '\'');
+                }else{
+                    throw new Exception('wrong date format.');
+                }
+            }catch (Exception $e){
+                //could only mean wrong input from user ...reset filter value
+                $this->created='';
+            }
+        }
+
+        //filter for parentUserName
+        $getParentName = Yii::app()->request->getParam('User');
+        $getParentName = $getParentName['parentUserName'];
+        if(isset($getParentName) && $getParentName!==null && $getParentName!==''){
+            $criteria->join = "LEFT JOIN lime_users luparent ON t.parent_id = luparent.uid";
+            $criteria->compare('luparent.users_name', $getParentName, true, 'OR');
+        }
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination' => array(

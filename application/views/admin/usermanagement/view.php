@@ -28,6 +28,34 @@ echo viewHelper::getViewTestTag('usersIndex');
 </div>
 <?php App()->getController()->renderPartial('/admin/usermanagement/partial/_menubar'); ?>
 <div class="pagetitle h3"><?php eT("User control");?></div>
+
+<div class="row">
+    <?php
+    /* Example Datepicker ...
+    $this->widget('zii.widgets.jui.CJuiDatePicker',array(
+    'name'=>'publishDate',
+    // additional javascript options for the date picker plugin
+    'options'=>array(
+    'showAnim'=>'fold',
+    ),
+    'htmlOptions'=>array(
+    'style'=>'height:20px;'
+    ),
+    ));
+    */
+    ?>
+
+    <?php
+    /* Example used in survey participants gridview
+    Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        'name' => "no",
+        'id'   => "no",
+        'value' => '',
+
+    ));
+     */
+    ?>
+</div>
 <div class="row" style="margin-bottom: 100px">
     <div class="container-fluid">
         <?php
