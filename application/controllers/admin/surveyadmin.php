@@ -88,6 +88,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aResults = [];
         $tableLabels= array(gT('Survey ID'),gT('Survey title') ,gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
+            if (!is_numeric($iSurveyID)) {
+                continue;
+            }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
                 $oSurvey                        = Survey::model()->findByPk($iSurveyID);
                 $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
