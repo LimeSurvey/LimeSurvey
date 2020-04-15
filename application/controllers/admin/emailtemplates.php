@@ -88,6 +88,7 @@ class emailtemplates extends Survey_Common_Action
         $aData['grplangs'] = $grplangs;
         
         App()->getClientScript()->registerPackage('emailtemplates');
+        App()->getClientScript()->registerPackage('expressionscript');
 
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
     }

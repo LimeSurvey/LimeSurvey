@@ -195,21 +195,7 @@ return array(
             'adminbasics'
         )
      ),
-    // 'adminpanel' => array(
-    //     'devBaseUrl' => 'assets/packages/adminpanel/',
-    //     'basePath' => 'core.adminpanel',
-    //     'js' => array(
-    //         'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-    //         'build/surveysettings'.$minVersion.'.js',
-    //         'build/hammer'.$minVersion.'.js'
-    //     ),
-    //     'css' => array(
-    //         'build/lsadminpanel'.$minVersion.'.css'
-    //     ),
-    //     'depends' => array(
-    //         'adminbasics'
-    //     )
-    // ),
+
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -229,7 +215,6 @@ return array(
         'devBaseUrl' => 'assets/packages/lslog/',
         'basePath' => 'core.lslog',
         'js' => array(
-            // 'build/lslog'.$minVersion.'.js',
             'build/lslog.js',
         )
     ),
@@ -341,6 +326,17 @@ return array(
             'decimal',
         )
     ),
+    'expressionscript' => array(
+        'devBaseUrl' => 'assets/packages/expressionscript/',
+        'basePath' => 'core.expressionscript',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'expression.js',
+        ),
+        'css' => array(
+            'expressions.css'
+        )  
+    ),    
     /* Replace bbq package from Yii core to set position */
     'bbq'=>array(
         'position' => CClientScript::POS_BEGIN,

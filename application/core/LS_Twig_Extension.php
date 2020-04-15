@@ -390,8 +390,8 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
         self::unregisterPackage('decimal');
+        self::unregisterPackage('expressionscript');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
-        self::unregisterScriptFile('/assets/scripts/admin/expression.js');
         self::unregisterScriptFile('/assets/scripts/nojs.js');
         self::unregisterScriptFile('/assets/scripts/expressions/em_javascript.js');
     }
