@@ -412,8 +412,9 @@ abstract class QuestionBaseDataSet extends StaticModel
 
     protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray)
     {
+        $aAttributeArray = array_merge(QuestionAttribute::getDefaultSettings(),$aAttributeArray);
         $aAdvancedAttributeArray = [
-            'name' => $sAttributeKey,
+            'name' => empty($aAttributeArray['name']) ? $sAttributeKey : $aAttributeArray['name'],
             'title' => CHtml::decode($aAttributeArray['caption']),
             'inputtype' => $aAttributeArray['inputtype'],
             'formElementId' => $sAttributeKey,
