@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.16 (build 200407) to 4.1.17 (build 200414) April 14, 2020
+-Fixed issue: Original superadmin should always be able to edit other users passwords (Carsten Schmitz)
+-Fixed issue #16134: Unable to disable XSS , inversion with script enable (Denis Chenu)
+-Fixed issue #16132: ext.SettingsWidget.SettingsWidget add uneeded, broken and anasked buttons (Denis Chenu)
+-Fixed issue #16123: TSV export does not properly export a single group/question/answer option etc. (Carsten Schmitz)
+-Fixed issue #16115: .lsg group export does not export subquestion texts (Carsten Schmitz)
+-Fixed issue #16098: Typo in survey groups (#1403) (jmantysalo)
+-Fixed issue #16087: Resume later email text bad content-type set (Denis Chenu)
+-Fixed issue #16080: Preview question does not work from the first try (Olle Harstedt)
+-Fixed issue #15933: Missing groups, question and answer options in tab-separated-values format (*.txt) export (Carsten Schmitz)
+-Fixed issue #15931: Custom table-prefix ignored on installation (Carsten Schmitz)
+-Fixed issue #15843: Unable to run db migration via command line (Carsten Schmitz)
+-Fixed issue #14291: CSRF 400 server error after entering update key (Carsten Schmitz)
+
+
 Changes from 4.1.15 (build 200402) to 4.1.16 (build 200407) April 7, 2020
 -Fixed issue: Quota not working for array 10-point (Olle Harstedt)
 -Fixed issue: #16021: Save Button missing in data entry view (Jessica Höck)

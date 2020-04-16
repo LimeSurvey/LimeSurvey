@@ -646,7 +646,7 @@ class InstallerConfigForm extends CFormModel
         $fileName = dirname(APPPATH).'/installer/create-database.php';
         require_once($fileName);
         try {
-            createDatabase($this->db);
+            populateDatabase($this->db);
         } catch (Exception $e) {
             return array($e->getMessage());
         }
