@@ -103,8 +103,7 @@ class Expressions extends Survey_Common_Action
         $aData['subaction'] = gT("Survey logic file");
         $aData['sidemenu']['state'] = false;
         $aData['survey'] = $oSurvey;
-        
-        $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING', LEM_DEBUG_TIMING);
+        $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING',(App()->getConfig('debug')>0)?LEM_DEBUG_TIMING:0);
         $LEM_DEBUG_VALIDATION_SUMMARY = Yii::app()->request->getParam('LEM_DEBUG_VALIDATION_SUMMARY', LEM_DEBUG_VALIDATION_SUMMARY);
         $LEM_DEBUG_VALIDATION_DETAIL = Yii::app()->request->getParam('LEM_DEBUG_VALIDATION_DETAIL', LEM_DEBUG_VALIDATION_DETAIL);
         $LEM_PRETTY_PRINT_ALL_SYNTAX = Yii::app()->request->getParam('LEM_PRETTY_PRINT_ALL_SYNTAX', LEM_PRETTY_PRINT_ALL_SYNTAX);
