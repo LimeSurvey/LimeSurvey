@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.17 (build 200414) to 4.1.18 (build 200416) April 16, 2020
+-Fixed issue [security] #16137: XSS on Mass Survey Management (imacat)
+-Fixed issue : Multiple Numeric Input Slider ignores slider_default_set (Denis Chenu)
+-Fixed issue #16140: Error 500 each time save a question (debug > 1) (Denis Chenu)
+-Fixed issue #16139: Multiple Numeric Input Slider ignores Slider Initial Value (Denis Chenu)
+-Fixed issue #15956: "search" button on Question list screen not working for searching groups (Patricia Stelling)
+-Fixed issue #15954: Filtering users in admin panel not working (Patricia Stelling)
+
+
 Changes from 4.1.16 (build 200407) to 4.1.17 (build 200414) April 14, 2020
 -Fixed issue: Original superadmin should always be able to edit other users passwords (Carsten Schmitz)
 -Fixed issue #16134: Unable to disable XSS , inversion with script enable (Denis Chenu)
