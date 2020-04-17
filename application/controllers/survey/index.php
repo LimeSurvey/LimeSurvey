@@ -119,7 +119,6 @@ class index extends CAction
 
 
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
-
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y') {
                 $oToken = $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));
@@ -128,6 +127,10 @@ class index extends CAction
             }
             if (empty($tokenInstance)) {
                 $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
+            }
+            if(empty($oToken)) {
+                // #16142 quick fix : unset invalid token
+                $token = null;
             }
         }
 
@@ -451,8 +454,7 @@ class index extends CAction
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
-            if (empty($tokenInstance)) {
-                if ($oToken) {
+            if (empty($tokenInstance) && $oToken ) {
                     $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
 
                     // This can not happen (TokenInstance must fix this)
@@ -486,9 +488,9 @@ class index extends CAction
                         null,
                         array($sError)
                     );
-                } else {
-                    $sError = gT("This is a controlled survey. You need a valid token to participate.");
-                }
+            } else {
+                // Must never happen : unset invalid token for the second time
+                $token = null;
             }
         }
 
