@@ -262,7 +262,30 @@ class PluginManagerController extends Survey_Common_Action
 
         // Prepare settings to be send to the view.
         $aSettings = $oPluginObject->getPluginSettings();
-
+        // Add button if permission
+        $aButtons = array();
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
+            $url = App()->createUrl("admin/pluginmanager/sa/index");
+            $aButtons = array(
+                'save' => array(
+                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> '.gT('Save'),
+                    'class' => array('btn-success'),
+                    'type'  => 'submit'
+                ),
+                'redirect' => array(
+                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> '.gT('Save and close'),
+                    'class' => array('btn-default'),
+                    'type'  => 'submit',
+                    'value' => $url,
+                ),
+                'cancel' => array(
+                    'label' => gT('Close'),
+                    'class' => array('btn-danger'),
+                    'type'  => 'link',
+                    'href' => $url,
+                ),
+            );
+        }
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
@@ -275,6 +298,7 @@ class PluginManagerController extends Survey_Common_Action
             'configure',
             [
                 'settings'     => $aSettings,
+                'buttons'      => $aButtons,
                 'plugin'       => $plugin,
                 'pluginObject' => $oPluginObject,
                 'properties'   => $aPluginProp,

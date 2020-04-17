@@ -21,10 +21,10 @@ if (!isset($tableLabels)) {
         <?php foreach($aResults as $iSid => $result):?>
             <tr>
                 <td>
-                    <?php echo $iSid;?>
+                    <?php echo CHtml::encode($iSid);?>
                 </td>
                 <td>
-                    <?php echo $result['title'];?>
+                    <?php echo CHtml::encode($result['title']);?>
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">
@@ -32,7 +32,7 @@ if (!isset($tableLabels)) {
                     </td>
                 <?php else: ?>
                     <td class="text-warning">
-                        <?php echo $result['error'] ; ?>
+                        <?php echo CHtml::encode($result['error']) ; ?>
                     </td>
                 <?php endif;?>
             </tr>

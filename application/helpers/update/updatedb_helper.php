@@ -2848,8 +2848,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             
             // encrypt values in db
-            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(getGlobalSetting('emailsmtppassword')));
-            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(getGlobalSetting('bounceaccountpass')));
+            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(App()->getConfig('emailsmtppassword')));
+            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(App()->getConfig('bounceaccountpass')));
             
             // encrypt bounceaccountpass value in db
             alterColumn('{{surveys}}','bounceaccountpass',"text",true,'NULL');

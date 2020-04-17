@@ -222,7 +222,7 @@ class GlobalSettings extends Survey_Common_Action
         $defaultlang = sanitize_languagecode(Yii::app()->getRequest()->getPost('defaultlang'));
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS(Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
-// Force default language in restrictToLanguages
+            // Force default language in restrictToLanguages
             $aRestrictToLanguages[] = $defaultlang;
         }
         if (count(array_diff(array_keys(getLanguageData(false, Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
@@ -278,6 +278,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('emailsmtpdebug', sanitize_int(Yii::app()->request->getPost('emailsmtpdebug', '0')));
         SettingGlobal::setSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml')));
+        SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss')));
         $warning = '';
         // make sure emails are valid before saving them
         if (Yii::app()->request->getPost('siteadminbounce', '') == ''
