@@ -27,7 +27,7 @@ $script = "
 * with LimeReplacementFields and in general use ProtectSource for ExpressionScript
 * See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
 */ 
-$cript.="CKEDITOR.on('instanceReady', function(event) {
+$script.="CKEDITOR.on('instanceReady', function(event) {
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
