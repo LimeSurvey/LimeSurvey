@@ -1,18 +1,12 @@
 <?php
 
-
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
-
 class IpAddressAnonymizeTest extends TestBaseClassWeb
 {
-
-    const SURVEY_ID =573837;
-    
-
     /**
      * Import survey in tests/surveys/.
      */
@@ -36,11 +30,15 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         self::adminLogin($username, $password);
     }
 
-    public function testIpAnonymizeInActiveSurvey(){
+    /**
+     * Test IP anonymization.
+     */
+    public function testIpAnonymizeInActiveSurvey()
+    {
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
-            'admin/survey/sa/view/surveyid/'.self::SURVEY_ID
+            'admin/survey/sa/view/surveyid/'.self::$surveyId
         );
         self::$webDriver->get($url);
         sleep(1);
@@ -61,12 +59,12 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         sleep(1);
 
         // Click "Overview" (inside sidemenu).
-        $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_overview'));
-        $overview->click();
+        //$overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_overview'));
+        //$overview->click();
 
-        print_r('After click overview tab inside sidemenu 2');
+        //print_r('After click overview tab inside sidemenu 2');
 
-        sleep(1);
+        //sleep(1);
 
         // Click "Execute survey".
         $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
@@ -90,13 +88,12 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         //now check if ip was anonymized (ipv4, last digit should be 0)
         //get ipadr from table survey_573837 ...
-        $models = \Response::model(self::SURVEY_ID)->findAll();
+        $models = \Response::model(self::$surveyId)->findAll();
 /*
         if(isset($models[0]->ipaddr)){
             $this->assertTrue($models[0]->ipaddr==='127.0.0.0');
         }
 */
-        $this->assertTrue( (isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.0'));
+        $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.0'));
     }
-
 }
