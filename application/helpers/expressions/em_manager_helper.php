@@ -6693,6 +6693,7 @@
                         }
                         if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN))
                         {
+                            $sMandatoryText = $LEM->gT('Please check at least one item.');
                             $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
                                     'part' => 'multiplechoice',
