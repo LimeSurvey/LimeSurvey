@@ -83,4 +83,12 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 */
         $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.0'));
     }
+
+    /**
+     * Test so that previous behaviour is still working.
+     */
+    public function testNormalActiveSurvey()
+    {
+        // TODO: As above, but without ip anon and ip === 127.0.0.1
+    }
 }
