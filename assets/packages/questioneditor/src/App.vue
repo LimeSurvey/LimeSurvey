@@ -358,7 +358,6 @@ export default {
     methods: {
         // Methods for event management, either external, or internal
         jqueryTriggered(event, data){
-            //this.$log.log('data', data);
             this.event = JSON.parse(data.emitter);
         },
         setModalEvent(payload) {
@@ -458,7 +457,6 @@ export default {
                         this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
                         LS.EventBus.$emit('updateSideBar', {updateQuestions:true});
                         $('#in_survey_common').trigger('lsStopLoading');
-                        this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                         this.$log.log('OBJECT AFTER TRANSFER: ', result);
                         if(redirect == true || this.isCreateQuestion || redirectUrl !== false) {
                             window.location.href = redirectUrl || result.data.redirect || window.location.href;

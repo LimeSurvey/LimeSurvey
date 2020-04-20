@@ -104,27 +104,7 @@
                         <hr />
                     </div>
                 </div>
-                <div class="row" v-if="$store.state.currentQuestion.qid != null" key="previewFrame">
-                    <div class="col-sm-12 ls-space margin bottom-5">
-                        <button
-                            class="btn btn-default pull-right"
-                            @click.prevent="triggerPreview"
-                        >{{previewActive ? "Hide Preview" : "Show Preview"}}</button>
-                    </div>
-                    <div class="col-sm-12 ls-space margin top-5 bottom-5">
-                        <div class="scope-preview" v-show="previewActive">
-                            <PreviewFrame
-                                :id="'previewFrame'"
-                                :content="previewContent"
-                                :root-url="previewRootUrl"
-                                :firstStart="firstStart"
-                                :loading="previewLoading"
-                                @ready="setPreviewReady"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div> 
         </transition>
         <transition name="slide-fade">
             <div class="row" v-if="loading">
@@ -142,14 +122,16 @@ import merge from "lodash/merge";
 import ClassicEditor from "../../../meta/LsCkeditor/src/LsCkEditorClassic.js";
 import Aceeditor from "../helperComponents/AceEditor";
 
-import PreviewFrame from "./subcomponents/_previewFrame";
 import runAjax from "../mixins/runAjax";
 import eventChild from "../mixins/eventChild";
 
 export default {
     name: "MainEditor",
     mixins: [runAjax, eventChild],
-    components: { PreviewFrame, Aceeditor },
+    components: 
+    {
+        Aceeditor
+    },
     props: {
         loading: { type: Boolean, default: false }
     },
@@ -187,32 +169,17 @@ export default {
                 "lsExtension:currentFolder":
                     "upload/surveys/" + this.$store.getters.surveyid + "/"
             },
-            previewContent: " ",
             questionEditSource: false,
             scriptForAllLanugages: false,
             helpEditSource: false,
-            previewLoading: false,
-            previewActive: true,
             debug: false,
             firstStart: true,
             changeTriggered: debounce((content, event) => {
                 this.$log.log("Debounced load triggered", { content, event });
-                this.getQuestionPreview();
             }, 3000)
         };
     },
     computed: {
-        previewRootUrl() {
-            return window.QuestionEditData.qid != null
-                ? LS.createUrl(window.QuestionEditData.connectorBaseUrl, {
-                      sa: "getRenderedPreview",
-                      sid: this.$store.getters.surveyid,
-                      iQuestionId: window.QuestionEditData.qid,
-                      root: this.firstStart ? "1" : "",
-                      sLanguage: this.$store.state.activeLanguage
-                  })
-                : "about:blank";
-        },
         currentQuestionQuestion: {
             get() {
                 return this.$store.state.currentQuestionI10N[
@@ -323,44 +290,6 @@ export default {
         runDebouncedChange(content, event) {
             this.changeTriggered(content, event);
         },
-        triggerPreview() {
-            this.previewActive = !this.previewActive;
-            if (this.previewActive) {
-                this.getQuestionPreview();
-            }
-        },
-        getQuestionPreview() {
-            this.$log.log(
-                "window.QuestionEditData.qid",
-                window.QuestionEditData.qid
-            );
-            if (!window.QuestionEditData.qid) {
-                this.previewContent = `<div><h3>${this.translate(
-                    "No preview available"
-                )}</h3></div>`;
-                this.previewLoading = false;
-                return;
-            }
-            if (this.previewLoading === true) {
-                return;
-            }
-            this.firstStart = false;
-            this.previewLoading = true;
-            this.$_load(this.previewRootUrl, this.changedParts(), "POST").then(
-                result => {
-                    this.previewContent = result.data;
-                    this.previewLoading = false;
-                },
-                error => {
-                    this.$log.error("Error loading preview", error);
-                    this.previewLoading = false;
-                }
-            );
-        },
-        setPreviewReady() {
-            this.previewLoading = false;
-            this.firstStart = false;
-        },
         toggleSourceEditQuestion() {
             this.questionEditSource = !this.questionEditSource;
         },
@@ -378,7 +307,7 @@ export default {
         }
     },
     mounted() {
-        this.previewLoading = true;
+    
     }
 };
 </script>
