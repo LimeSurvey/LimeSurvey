@@ -719,6 +719,10 @@ class TemplateConfiguration extends TemplateConfig
                 array("id" => $this->id)
             );
 
+        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
+        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/', array("gsid"=>$gsid));
+
+
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
             href='" . $sEditorUrl . "'
@@ -759,12 +763,51 @@ class TemplateConfiguration extends TemplateConfig
                 ' . gT('Extend') . '
             </a>';
 
+        $sUninstallLink = '<a
+            id="remove_fromdb_link_'.$this->template_name.'"
+            href="'.$sUninstallUrl.'"
+            data-post=\'{ "templatename": "'.$this->template_name.'" }\'
+            data-text="'.gT('This will reset all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
+            title="'.gT('Uninstall this theme').'"
+            class="btn btn-danger btn-block selector--ConfirmModal">
+                <span class="icon-trash"></span>
+                '.gT('Uninstall').'
+            </a>';
+
+        $sResetLink = '<a
+                id="remove_fromdb_link_'.$this->template_name.'"
+                href="'.$sResetUrl.'"
+                data-post=\'{ "templatename": "'.$this->template_name.'" }\'
+                data-text="'.gT('This will reload the configuration file of this theme.').'<br>'.gT('Do you want to continue?').'"
+                title="'.gT('Reset this theme').'"
+                class="btn btn-warning btn-block selector--ConfirmModal">
+                    <span class="icon-trash"></span>
+                    '.gT('Reset').'
+            </a>';
+
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
         } else {
             $sButtons = $sEditorLink . $OptionLink . $sExtendLink;
 
+            if ($this->template_name != getGlobalSetting('defaulttheme')) {
+                $sButtons .= $sUninstallLink;
+            } else {
+                $sButtons .= '
+                    <a
+                        class="btn btn-danger btn-block"
+                        disabled
+                        data-toggle="tooltip"
+                        title="' . gT('You cannot uninstall the default template.').'"
+                    >
+                        <span class="icon-trash"></span>
+                        '.gT('Uninstall').'
+                    </a>
+                ';
+            }
         }
+
+        $sButtons .= $sResetLink;
 
         return $sButtons;
     }
