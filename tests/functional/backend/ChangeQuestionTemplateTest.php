@@ -264,7 +264,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findByCss('#question_template option[value=bootstrap_buttons]');
             $option->click();
             
-            sleep(1);
+            sleep(2);
 
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));

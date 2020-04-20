@@ -68,7 +68,7 @@ class responses extends Survey_Common_Action
         $aData['all'] = App()->request->getParam('all');
         $thissurvey = getSurveyInfo($iSurveyId);
         if (!$thissurvey) {
-// Already done in Survey_Common_Action
+            // Already done in Survey_Common_Action
             App()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
         } elseif ($thissurvey['active'] != 'Y') {
@@ -77,7 +77,6 @@ class responses extends Survey_Common_Action
         }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-
         if (App()->request->getParam('browselang')) {
             $aData['language'] = App()->request->getParam('browselang');
             $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -597,6 +596,8 @@ class responses extends Survey_Common_Action
         $hasStatisticsReadPermission  = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
         $hasResponsesExportPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
         $hasResponsesDeletePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'delete');
+        $isActive                     = $survey->active;
+        $isTimingEnabled              = $survey->savetimings;
 
         return App()->getController()->renderPartial(
             '/admin/survey/topbar/responses_topbar',
@@ -607,6 +608,8 @@ class responses extends Survey_Common_Action
                 'hasStatisticsReadPermission'  => $hasStatisticsReadPermission,
                 'hasResponsesExportPermission' => $hasResponsesExportPermission,
                 'hasResponsesDeletePermission' => $hasResponsesDeletePermission,
+                'isActive' => $isActive,
+                'isTimingEnabled' => $isTimingEnabled,
             )
         );
     }
@@ -906,37 +909,6 @@ class responses extends Survey_Common_Action
         $aData = $this->_getData(array('iSurveyId' => $iSurveyID));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        // TODO: Remove unused code?
-        /*
-        extract($aData);
-        $aViewUrls = array();
-
-        if ($survey->savetimings != "Y")
-            die();
-
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked'
-        && Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
-        {
-            $iResponseID=(int) Yii::app()->request->getPost('deleteanswer');
-            SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-            SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-        }
-
-        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
-        {
-            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked' &&
-            Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete'))
-            {
-                foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
-                {
-                    $iResponseID=(int) $iResponseID;
-                    SurveyDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                    SurveyTimingDynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                }
-            }
-        }
-        */
-
         $aData['columns'] = array(
             array(
                 'header' => gT('ID'),
@@ -980,131 +952,12 @@ class responses extends Survey_Common_Action
             }
         }
         $fncount = count($fnames);
-
-        // TODO: Remove unused code
-        /*
-        //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
-        foreach ($fnames as $fn)
-        {
-            if (!isset($currentgroup))
-            {
-                $currentgroup = $fn[1];
-                $gbc = "oddrow";
-            }
-            if ($currentgroup != $fn[1])
-            {
-                $currentgroup = $fn[1];
-                if ($gbc == "oddrow")
-                {
-                    $gbc = "evenrow";
-                }
-                else
-                {
-                    $gbc = "oddrow";
-                }
-            }
-        }
-        $aData['fnames'] = $fnames;
-        $start = Yii::app()->request->getParam('start', 0);
-        $limit = Yii::app()->request->getParam('limit', 50);
-        if(!$limit){$limit=50;}
-        //LETS COUNT THE DATA
-        $oCriteria = new CdbCriteria();
-        $oCriteria->select = 'tid';
-        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
-        $oCriteria->condition = 'submitdate IS NOT NULL';
-        $dtcount = SurveyTimingDynamic::model($iSurveyID)->count($oCriteria); // or die("Couldn't get response data");
-
-        if ($limit > $dtcount)
-        {
-            $limit = $dtcount;
-        }
-
-        //NOW LETS SHOW THE DATA
-        $oCriteria = new CdbCriteria();
-        $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
-        $oCriteria->condition = 'submitdate IS NOT NULL';
-        $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
-        $oCriteria->offset = $start;
-        $oCriteria->limit = $limit;
-
-        $dtresult = SurveyTimingDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
-
-        //CONTROL MENUBAR
-        $last = $start - $limit;
-        $next = $start + $limit;
-        $end = $dtcount - $limit;
-        if ($end < 0)
-        {
-            $end = 0;
-        }
-        if ($last < 0)
-        {
-            $last = 0;
-        }
-        if ($next >= $dtcount)
-        {
-            $next = $dtcount - $limit;
-        }
-        if ($end < 0)
-        {
-            $end = 0;
-        }
-
-        $aData['sCompletionStateValue']=incompleteAnsFilterState();
-        $aData['start'] = $start;
-        $aData['limit'] = $limit;
-        $aData['last'] = $last;
-        $aData['next'] = $next;
-        $aData['end'] = $end;
-        */
         $aViewUrls[] = 'browsetimeheader_view';
-
-        // TODO: Remove unused code
-        /*
-
-        $aData['fncount'] = $fncount;
-        $bgcc = 'oddrow';
-
-        foreach ($dtresult as $dtrow)
-        {
-            if ($bgcc == "evenrow")
-            {
-                $bgcc = "oddrow";
-            }
-            else
-            {
-                $bgcc = "evenrow";
-            }
-            $browsedatafield=array();
-            for ($i = 0; $i < $fncount; $i++)
-            {
-                $browsedatafield[$i] = $dtrow[$fnames[$i][0]];
-                // seconds -> minutes & seconds
-                if (strtolower(substr($fnames[$i][0], -4)) == "time")
-                {
-                    $minutes = (int) ($browsedatafield[$i] / 60);
-                    $seconds = $browsedatafield[$i] % 60;
-                    $browsedatafield[$i] = '';
-                    if ($minutes > 0)
-                        $browsedatafield[$i] .= "$minutes min ";
-                    $browsedatafield[$i] .= "$seconds s";
-                }
-            }
-            $aData['browsedatafield'] = $browsedatafield;
-            $aData['bgcc'] = $bgcc;
-            $aData['dtrow'] = $dtrow;
-            */
-            $aViewUrls['browsetimerow_view'][] = $aData;
-            /*
-        }
-        */
-
+        $aViewUrls['browsetimerow_view'][] = $aData;
         // Set number of page
         if (App()->request->getParam('pageSize')) {
             App()->user->setState('pageSize', (int) App()->request->getParam('pageSize'));
         }
-
 
         //interview Time statistics
         $aData['model'] = SurveyTimingDynamic::model($iSurveyID);
@@ -1207,8 +1060,6 @@ class responses extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        // TODO: Remove unused code.
-        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
         App()->getClientScript()->registerCssFile(App()->getConfig('publicstyleurl').'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];

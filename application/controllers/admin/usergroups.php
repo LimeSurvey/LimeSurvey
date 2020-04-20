@@ -39,7 +39,6 @@ class Usergroups extends Survey_Common_Action
         $action = Yii::app()->request->getPost("action");
 
         if ($action == "mailsendusergroup") {
-
             // user must be in user group or superadmin
             $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
             if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -61,7 +60,7 @@ class Usergroups extends Survey_Common_Action
                 $body = wordwrap($body, 70);
                 $mailer->Body = $body;
                 foreach ($eguresult as $egurow) {
-                    $mailer = \LimeMailer::getInstance(); // To reset error
+                    /* Set just needed part */
                     $mailer->setTo($egurow->users->email, $egurow->users->users_name);
                     if ($mailer->sendMessage()) {
                         list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => gT("Message(s) sent successfully!")));
@@ -70,6 +69,7 @@ class Usergroups extends Survey_Common_Action
                         $headercfg["message"] = sprintf(gT("Email to %s failed. Error Message : %s"), \CHtml::encode("{$egurow->users->users_name} <{$egurow->users->email}>"), $mailer->getError());
                         list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
                     }
+                    $mailer->ErrorInfo ="";
                 }
             } else {
                 throw new CHttpException(403);

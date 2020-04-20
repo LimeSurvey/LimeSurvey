@@ -13,8 +13,8 @@ import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
-Vue.config.productionTip = true;
-Vue.config.devtools = false;
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 Vue.use(VuejsDialog);
 Vue.use(VModal, { dynamic: true });

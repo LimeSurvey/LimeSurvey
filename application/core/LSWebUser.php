@@ -133,9 +133,6 @@ class LSWebUser extends CWebUser
             // Permission::model exist only after 172 DB version
             return Yii::app()->getConfig('filterxsshtml');
         }
-        if (!Yii::app()->getConfig('disablescriptwithxss')) {
-            return true;
-        }
         if (Yii::app()->getConfig('filterxsshtml')) {
             return !\Permission::model()->hasGlobalPermission('superadmin', 'read');
         }
@@ -148,6 +145,9 @@ class LSWebUser extends CWebUser
      */
     public function isScriptUpdateAllowed()
     {
+        if (!Yii::app()->getConfig('disablescriptwithxss')) {
+            return true;
+        }
         return !$this->isXssFiltered();
     }
 }

@@ -34,6 +34,58 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.17 (build 200414) to 4.1.18 (build 200416) April 16, 2020
+-Fixed issue [security] #16137: XSS on Mass Survey Management (imacat)
+-Fixed issue : Multiple Numeric Input Slider ignores slider_default_set (Denis Chenu)
+-Fixed issue #16140: Error 500 each time save a question (debug > 1) (Denis Chenu)
+-Fixed issue #16139: Multiple Numeric Input Slider ignores Slider Initial Value (Denis Chenu)
+-Fixed issue #15956: "search" button on Question list screen not working for searching groups (Patricia Stelling)
+-Fixed issue #15954: Filtering users in admin panel not working (Patricia Stelling)
+
+
+Changes from 4.1.16 (build 200407) to 4.1.17 (build 200414) April 14, 2020
+-Fixed issue: Original superadmin should always be able to edit other users passwords (Carsten Schmitz)
+-Fixed issue #16134: Unable to disable XSS , inversion with script enable (Denis Chenu)
+-Fixed issue #16132: ext.SettingsWidget.SettingsWidget add uneeded, broken and anasked buttons (Denis Chenu)
+-Fixed issue #16123: TSV export does not properly export a single group/question/answer option etc. (Carsten Schmitz)
+-Fixed issue #16115: .lsg group export does not export subquestion texts (Carsten Schmitz)
+-Fixed issue #16098: Typo in survey groups (#1403) (jmantysalo)
+-Fixed issue #16087: Resume later email text bad content-type set (Denis Chenu)
+-Fixed issue #16080: Preview question does not work from the first try (Olle Harstedt)
+-Fixed issue #15933: Missing groups, question and answer options in tab-separated-values format (*.txt) export (Carsten Schmitz)
+-Fixed issue #15931: Custom table-prefix ignored on installation (Carsten Schmitz)
+-Fixed issue #15843: Unable to run db migration via command line (Carsten Schmitz)
+-Fixed issue #14291: CSRF 400 server error after entering update key (Carsten Schmitz)
+
+
+Changes from 4.1.15 (build 200402) to 4.1.16 (build 200407) April 7, 2020
+-Fixed issue: Quota not working for array 10-point (Olle Harstedt)
+-Fixed issue: #16021: Save Button missing in data entry view (Jessica Höck)
+-Fixed issue #16072: E-Mail Sender Name is always "Administrator" (Denis Chenu)
+-Fixed issue #16003: Button Timing statistics not displayed. (Jessica Höck)
+-Fixed issue #15902: Cannot add quota answer (Olle Harstedt)
+
+
+Changes from 4.1.14 (build 200331) to 4.1.15 (build 200402) April 2, 2020
+-Fixed issue [security] #16068: Stored Cross Site Scripting Vulnerability in permission rules. (Thanks to Matthew Aberegg) (Patrick Teichmann)
+-Fixed issue #16069: Deactivate survey using tokens in Postgres 12 shows error (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.1.13 (build 200325) to 4.1.14 (build 200331) March 31, 2020
+-Fixed issue 16037: Trim entered e-mail addresses (#1401) (fkroener)
+-Fixed issue #16024: Language changer dropdown autoupdated : keybord navigation issue (Denis Chenu)
+-Fixed issue #15918: No save button fo bounce settings. (Jessica Höck)
+-Fixed issue #15723: 'Button group' option in Yes/No Question Type (Jessica Höck)
+
+
+Changes from 4.1.12 (build 200324) to 4.1.13 (build 200325) March 25, 2020
+-Fixed issue [security]: Possible to handcraft POST to reach any file through file manager (Olle Harstedt)
+-Fixed issue #16023: All survey group settings could now be saved correctly (Patricia Stelling)
+
+
 Changes from 4.1.11 (build 200316) to 4.1.12 (build 200324) March 24, 2020
 -Fixed issue: added language name to translatable attributes in the questioneditor (Patrick Teichmann)
 -Fixed issue: [security] Enable secure flag on CSRF tokens (Carsten Schmitz)

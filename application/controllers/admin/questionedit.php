@@ -1275,6 +1275,7 @@ class questionedit extends Survey_Common_Action
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
                     throw new CHttpException(
+                        500,
                         "Answer option couldn't be saved. Error: "
                         . print_r($oAnswer->getErrors(), true)
                     );

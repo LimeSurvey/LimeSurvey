@@ -979,7 +979,7 @@ class Question extends LSActiveRecord
 
         /* make sure gid is a numeric */
         if ($this->gid != '' and is_numeric($this->gid)) {
-            $criteria->compare('group.gid', $this->gid, false, 'AND');
+            $criteria->compare('g.gid', $this->gid, false, 'AND');
         }
 
         $dataProvider = new CActiveDataProvider('Question', array(

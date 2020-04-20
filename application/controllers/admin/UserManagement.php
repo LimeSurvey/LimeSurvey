@@ -724,7 +724,7 @@ class UserManagement extends Survey_Common_Action
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -767,7 +767,7 @@ class UserManagement extends Survey_Common_Action
                     $aResults[$sItem]['result'] = $oUserGroup->addUser($sItem);
                 } else {
                     $aResults[$sItem]['result'] = false;
-                    $aResults[$sItem]['error'] = gT('User is already a part of the group.');
+                    $aResults[$sItem]['error'] = gT('User is already a member of the group.');
                 }
             }
         } else {

@@ -88,6 +88,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aResults = [];
         $tableLabels= array(gT('Survey ID'),gT('Survey title') ,gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
+            if (!is_numeric($iSurveyID)) {
+                continue;
+            }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
                 $oSurvey                        = Survey::model()->findByPk($iSurveyID);
                 $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
@@ -786,7 +789,8 @@ class SurveyAdmin extends Survey_Common_Action
                 $toldtable = Yii::app()->db->tablePrefix."tokens_{$iSurveyID}";
                 $tnewtable = Yii::app()->db->tablePrefix."old_tokens_{$iSurveyID}_{$date}";
                 if (Yii::app()->db->getDriverName() == 'pgsql') {
-                    $tidDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
+                    // Find out the trigger name for tid column
+                    $tidDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(adbin, adrelid) as adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
                     if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", $tidDefault, $matches)) {
                         $oldSeq = $matches[1];
                         Yii::app()->db->createCommand()->renameTable($oldSeq, $tnewtable.'_tid_seq');
