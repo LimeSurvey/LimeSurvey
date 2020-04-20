@@ -641,6 +641,17 @@ return array(
             'decimal',
         )
     ),
+    'expressionscript' => array(
+        'devBaseUrl' => 'assets/packages/expressionscript/',
+        'basePath' => 'core.expressionscript',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'expression.js',
+        ),
+        'css' => array(
+            'expressions.css'
+        )  
+    ),    
     /* Replace bbq package from Yii core to set position */
     'bbq'=>array(
         'position' => CClientScript::POS_BEGIN,
