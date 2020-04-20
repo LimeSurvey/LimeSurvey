@@ -47,31 +47,19 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
         $overview->click();
 
-        print_r('After click activate survey');
-
         sleep(1);
 
         // Confirm.
         $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
         $overview->click();
 
-        print_r('after click confirm');
         sleep(1);
-
-        // Click "Overview" (inside sidemenu).
-        //$overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_overview'));
-        //$overview->click();
-
-        //print_r('After click overview tab inside sidemenu 2');
-
-        //sleep(1);
 
         // Click "Execute survey".
         $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
         $exceuteBtn->click();
 
         sleep(1);
-        print_r('After click execute survey');
 
         // Switch to new tab.
         $windowHandles = self::$webDriver->getWindowHandles();
@@ -84,7 +72,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         // New tab with active survey.
         $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $nextButton->click();
-        print_r('after click next button');
 
         //now check if ip was anonymized (ipv4, last digit should be 0)
         //get ipadr from table survey_573837 ...
