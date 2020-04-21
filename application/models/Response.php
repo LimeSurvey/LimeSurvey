@@ -85,11 +85,13 @@
          */
         public function getFilesAndSqga($sQID = 0)
         {
-            $aConditions = array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$this->survey->language);
+            $aConditions = array('sid' => $this->dynamicId, 'type' => '|');
             if ($sQID > 0) {
                 $aConditions['qid'] = $sQID;
             }
-            $aQuestions = Question::model()->findAllByAttributes($aConditions);
+            $aQuestions = Question::model()
+                ->with(['questionl10ns' => ['language' => $this->survey->language]])
+                ->findAllByAttributes($aConditions);
             $files = array();
             foreach ($aQuestions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
