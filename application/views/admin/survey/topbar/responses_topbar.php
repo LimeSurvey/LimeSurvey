@@ -63,6 +63,21 @@ if ($hasStatisticsReadPermission) {
     array_push($topBar['alignment']['left']['buttons'], $buttons['statistics']);
 }
 
+if($isActive) {
+    // If 'save timings' is enabled (from Notifications & Data).
+    // Original view: views/admin/responses/browsemenubar_view.php
+    if ($isTimingEnabled) {
+        $buttons['timing_statistics'] = [
+            'name' => gT('Timing statistics'),
+            'url'  => $this->createUrl("admin/responses/sa/time/surveyid/$survey->sid"),
+            'class'=> 'btn btn-default pjax',
+            'icon' => 'fa fa-clock-o',
+            'iconclass' => 'text-success',
+        ];
+        array_push($topBar['alignment']['left']['buttons'], $buttons['timing_statistics']);
+    }
+}
+
 if ($hasResponsesExportPermission) {
     $permissions['export'] = $hasResponsesExportPermission;
     // Export Button

@@ -87,7 +87,7 @@ class InstallFromConfigCommand extends CConsoleCommand
             require_once($sFileName);
             try {
                 $this->output('Creating tables...');
-                createDatabase($this->connection);
+                populateDatabase($this->connection);
             } catch (Exception $e) {
                 $this->output('Could not create LimeSurvey tables: '.$e->getMessage());
                 return 1;

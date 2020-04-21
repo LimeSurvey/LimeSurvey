@@ -32,6 +32,7 @@ export default {
         });
     },
     folderSelected: (ctx, folderObject) => {
+        console.log('folderObject', folderObject);
         ctx.commit('setCurrentFolder', folderObject.folder);
         return ctx.dispatch('getFileList');
     },
@@ -115,7 +116,8 @@ export default {
                 window.FileManager.baseUrl+'downloadFiles', 
                 {
                     files: ctx.getters.filesSelected,
-                    folder: ctx.state.currentFolder
+                    folder: ctx.state.currentFolder,
+                    surveyId: ctx.state.currentSurveyId
                 }).then(
                 (result) => {
                     const downloadIframe = document.getElementById("fileManager-DownloadFrame");

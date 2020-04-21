@@ -68,8 +68,8 @@ class Answer extends LSActiveRecord
             'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'question',
                 'on' => 'question.gid = group.gid'
             ),
-            'answerL10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
-            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
+            'answerl10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
+            'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
             
         );
     }
@@ -150,7 +150,7 @@ class Answer extends LSActiveRecord
             if (is_null($aAnswer)) {
                 return null;
             }
-            $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerL10ns[$sLanguage]->answer;
+            $answerCache[$qid][$code][$sLanguage][$iScaleID] = $aAnswer->answerl10ns[$sLanguage]->answer;
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         }
     }
@@ -164,7 +164,7 @@ class Answer extends LSActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->compare('question.sid', $newsid);
-        $criteria->with = ['answerL10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
+        $criteria->with = ['answerl10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
         return $this->findAll($criteria);
     }
 
@@ -255,11 +255,11 @@ class Answer extends LSActiveRecord
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
 
-        $oAnswers = Answer::model()->with('answerL10ns')->findAll($condition);
+        $oAnswers = Answer::model()->with('answerl10ns')->findAll($condition);
         $arr = array();
         foreach($oAnswers as $key => $answer)
         {
-            $arr[$key] = array_merge($answer->attributes, current($answer->answerL10ns)->attributes);
+            $arr[$key] = array_merge($answer->attributes, current($answer->answerl10ns)->attributes);
         }
         return $arr;
     }

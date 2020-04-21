@@ -60,7 +60,7 @@ $.fn.displayComfortStep = function(options)
             $("#updaterLayout").show();
             $("#updaterContainer").show();
 
-            $("#updaterContainer").empty().append("<span class='error'>you have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
+            $("#updaterContainer").empty().append("<span class='error'>You have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
             $("#updaterContainer").append(html.responseText);
         }
     });

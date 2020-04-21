@@ -3,7 +3,7 @@ class customToken extends PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $name = 'customToken';
-    static protected $description = 'Numeric, non-ambiguous or CAPITAL tokens';
+    static protected $description = 'At token generation this plugin enforces certain token formats like Numeric, non-ambiguous or uppercase tokens';
 
     public function init()
     {
@@ -92,7 +92,7 @@ class customToken extends PluginBase {
                         0=>$this->gT('No custom function for this survey'),
                         1=>$this->gT('Numeric tokens'),
                         2=>$this->gT('Without ambiguous characters'),
-                        3=>$this->gT('CAPITALS ONLY')
+                        3=>$this->gT('Uppercase only')
                     ),
                     'default' => 0,
                     'label' => $this->gT('Custom token'),

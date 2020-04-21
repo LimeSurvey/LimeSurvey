@@ -469,6 +469,7 @@ export default {
                         LS.EventBus.$emit('loadingFinished');
                         this.$nextTick().then(() => {
                             LS.EventBus.$emit('setQuestionType', result.data.newQuestionDetails.question.type);
+                            LS.EventBus.$emit('reloadTopBar', {});
                         });
                     },
                     (rejected) => {

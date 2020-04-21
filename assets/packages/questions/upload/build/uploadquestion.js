@@ -1,7 +1,7 @@
 (function (factory) {
     typeof define === 'function' && define.amd ? define(factory) :
     factory();
-}(function () { 'use strict';
+}((function () { 'use strict';
 
     /**
      * AJAX Upload ( http://valums.com/ajax-upload/ )
@@ -672,7 +672,7 @@
           this.$el.dialog("close");
         };
 
-        $(document).off('shown.bs.modal.lsuploadquestion');
+        $(document).off('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname);
         $(document).on('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname, () => {
           const uploadFrame = $('#uploader' + this.fieldname);
           uploadFrame.load(uploadFrame.data('src'));
@@ -1137,4 +1137,4 @@
       return window.currentUploadHandler;
     };
 
-}));
+})));

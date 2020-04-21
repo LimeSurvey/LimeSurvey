@@ -32,7 +32,7 @@ $.fn.buildComfortButtons = function(options)
 				},
 				error :  function(html, statut){
 					$("#ajaxLoading").hide();
-					$("#updatesavailable").empty().append("<span class='error'>you have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
+					$("#updatesavailable").empty().append("<span class='error'>You have an error, or a notice, inside your local installation of limesurvey. See : <br/></span>");
 					$("#updatesavailable").append(html.responseText);
 				}
 		    });

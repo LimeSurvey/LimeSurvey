@@ -88,6 +88,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aResults = [];
         $tableLabels= array(gT('Survey ID'),gT('Survey title') ,gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
+            if (!is_numeric($iSurveyID)) {
+                continue;
+            }
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
                 $oSurvey                        = Survey::model()->findByPk($iSurveyID);
                 $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
@@ -151,11 +154,11 @@ class SurveyAdmin extends Survey_Common_Action
         $iGroupNumber    = 0;
         $iGroupSequence  = 0;
         $oQuestions      = Question::model()
-            ->with(['group', 'questionL10ns'])
+            ->with(['group', 'questionl10ns'])
             ->findAll(
                 array(
                     'select' => 't.qid,t.gid',
-                    'condition' => "t.sid=:sid and questionL10ns.language=:language and parent_qid=0",
+                    'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
                     'order' => 'group.group_order, question_order',
                     'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
                 )
@@ -515,8 +518,8 @@ class SurveyAdmin extends Survey_Common_Action
             $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
 
             $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionL10ns[$baselang]['question'])) {
-                $aData['last_question_name'] .= ' : '.$qrrow->questionL10ns[$baselang]['question'];
+            if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
+                $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
             }
 
             $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
@@ -559,7 +562,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (count($aGroups)) {
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
-                $curGroup['group_name'] = $group->questionGroupL10ns[$baselang]->group_name;
+                $curGroup['group_name'] = $group->questiongroupl10ns[$baselang]->group_name;
                 $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
                 $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], 'parent_qid'=>0), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
@@ -568,9 +571,9 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
-                        $curQuestion['hidden'] = isset($question->questionAttributes['hidden']) && !empty($question->questionAttributes['hidden']->value);
-                        $questionText = isset($question->questionL10ns[$baselang])
-                            ? $question->questionL10ns[$baselang]->question
+                        $curQuestion['hidden'] = isset($question->questionattributes['hidden']) && !empty($question->questionattributes['hidden']->value);
+                        $questionText = isset($question->questionl10ns[$baselang])
+                            ? $question->questionl10ns[$baselang]->question
                             : '';
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
                         $curGroup['questions'][] = $curQuestion;
@@ -786,7 +789,8 @@ class SurveyAdmin extends Survey_Common_Action
                 $toldtable = Yii::app()->db->tablePrefix."tokens_{$iSurveyID}";
                 $tnewtable = Yii::app()->db->tablePrefix."old_tokens_{$iSurveyID}_{$date}";
                 if (Yii::app()->db->getDriverName() == 'pgsql') {
-                    $tidDefault = Yii::app()->db->createCommand("SELECT pg_attrdef.adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
+                    // Find out the trigger name for tid column
+                    $tidDefault = Yii::app()->db->createCommand("SELECT pg_get_expr(adbin, adrelid) as adsrc FROM pg_attribute JOIN pg_class ON (pg_attribute.attrelid=pg_class.oid) JOIN pg_attrdef ON(pg_attribute.attrelid=pg_attrdef.adrelid AND pg_attribute.attnum=pg_attrdef.adnum) WHERE pg_class.relname='$toldtable' and pg_attribute.attname='tid'")->queryScalar();
                     if (preg_match("/nextval\('(tokens_\d+_tid_seq\d*)'::regclass\)/", $tidDefault, $matches)) {
                         $oldSeq = $matches[1];
                         Yii::app()->db->createCommand()->renameTable($oldSeq, $tnewtable.'_tid_seq');
@@ -906,6 +910,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
                 $survey->datestamp = Yii::app()->request->getPost('datestamp');
                 $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
+                $survey->ipanonymize = Yii::app()->request->getPost('ipanonymize');
                 $survey->refurl = Yii::app()->request->getPost('refurl');
                 $survey->savetimings = Yii::app()->request->getPost('savetimings');
                 $survey->save();
@@ -1743,7 +1748,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
         $aQuestions = [];
         foreach ($oResult as $aRecord) {
-            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
+            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionl10ns[$survey->language]->attributes);
         }
 
         $aData['jsData'] = [
@@ -2001,6 +2006,7 @@ class SurveyAdmin extends Survey_Common_Action
                 'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
                 'datestamp' => App()->request->getPost('datestamp'),
                 'ipaddr' => App()->request->getPost('ipaddr'),
+                'ipanonymize' => App()->request->getPost('ipanonymize'),
                 'refurl' => App()->request->getPost('refurl'),
                 'usecookie' => App()->request->getPost('usecookie'),
                 'emailnotificationto' => App()->request->getPost('emailnotificationto'),

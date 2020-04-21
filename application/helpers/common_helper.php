@@ -588,7 +588,7 @@ function getGroupList3($gid, $surveyid)
     foreach ($gidresult as $gv) {
         $groupselecter .= "<option";
         if ($gv->gid == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questionGroupL10ns[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
+        $groupselecter .= " value='".$gv->gid."'>".htmlspecialchars($gv->questiongroupl10ns[$sBaseLanguage]->group_name)." (ID:".$gv->gid.")</option>\n";
     }
     return $groupselecter;
 }
@@ -614,7 +614,7 @@ function getGroupListLang($gid, $language, $surveyid)
         if ($aAttributes['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
         $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$aAttributes['gid']);
         $groupselecter .= " value='{$link}'>";
-        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questionGroupL10ns[$language]->group_name));
+        $groupselecter .= htmlspecialchars(strip_tags($oGroup->questiongroupl10ns[$language]->group_name));
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
@@ -716,6 +716,7 @@ function getSurveyInfo($surveyid, $languagecode = '', $force = false)
     if (!$oSurvey) {
         return false;
     }
+    //todo: here ipanonymize is wrong in $oSurvey->aOptions where is that initialized ???
     $aSurveyOptions = $oSurvey->aOptions;
     // if no language code is set then get the base language one
     if ((!isset($languagecode) || $languagecode == '')) {
@@ -3449,7 +3450,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         if ($bModified) {
             $arQuestion->save();
         }
-        foreach ($arQuestion->questionL10ns as $arQuestionLS) {
+        foreach ($arQuestion->questionl10ns as $arQuestionLS) {
             $bModified = false;
             foreach ($aCodeMap as $sOldCode=>$sNewCode) {
                 // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
@@ -3476,7 +3477,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         if ($bModified) {
             $arGroup->save();
         }
-        foreach ($arGroup->questionGroupL10ns as $arQuestionGroupLS) {
+        foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
             foreach ($aCodeMap as $sOldCode=>$sNewCode) {
                 $sOldCode = preg_quote($sOldCode, '~');
                 $arQuestionGroupLS->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);

@@ -606,7 +606,7 @@ class statistics_helper
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid'=>$qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
+            $qquestion = flattenText($nresult->questionl10ns[$language]->question);
             $qother = 'N';
             if (!empty($nresult)) {
                 $qother = $nresult->other;
@@ -620,7 +620,7 @@ class statistics_helper
             ));
             foreach ($result as $row) {
                 $mfield = substr($rt, 1, strlen($rt)).$row['title'];
-                $alist[] = array($row['title'], flattenText($row->questionL10ns[$language]->question), $mfield);
+                $alist[] = array($row['title'], flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
@@ -640,7 +640,7 @@ class statistics_helper
                 $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid'=>$fielddata['qid']));
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
-                $qquestion = flattenText($nresult->questionL10ns[$language]->question);
+                $qquestion = flattenText($nresult->questionl10ns[$language]->question);
 
                 $mfield = substr($rt, 1, strlen($rt));
 
@@ -664,17 +664,17 @@ class statistics_helper
             $qaid = $aQuestionInfo['aid'];
 
             //get question data
-            $nresult = Question::model()->with('questionL10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
+            $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
+            $qquestion = flattenText($nresult->questionl10ns[$language]->question);
 
             //get answers / subquestion text
-            $nresult = Question::model()->with('questionL10ns')->find(array('order'=>'question_order',
+            $nresult = Question::model()->with('questionl10ns')->find(array('order'=>'question_order',
                 'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
                 'params'=>array(':language'=>$language, ':parent_qid'=>$qqid, ':title'=>$qaid)
             ));
-            $atext = flattenText($nresult->questionL10ns[$language]->question);
+            $atext = flattenText($nresult->questionl10ns[$language]->question);
             //add this to the question title
             $qtitle .= " [$atext]";
 
@@ -1161,7 +1161,7 @@ class statistics_helper
             $nrow = Question::model()->findByPk($rqid);
             $qtitle = flattenText($nrow['title']);
             $qtype = $nrow['type'];
-            $qquestion = flattenText($nrow->questionL10ns[$language]->question);
+            $qquestion = flattenText($nrow->questionl10ns[$language]->question);
             $qiqid = $nrow['qid'];
             $qother = $nrow['other'];
 
@@ -1180,7 +1180,7 @@ class statistics_helper
                             $alist[] = array("$i", "$i");
                         }
                         //add counter
-                        $atext = flattenText($qrow->questionL10ns[$language]->question);
+                        $atext = flattenText($qrow->questionl10ns[$language]->question);
                     }
 
                     //list IDs and answer codes in brackets
@@ -1198,7 +1198,7 @@ class statistics_helper
                         for ($i = 1; $i <= 10; $i++) {
                             $alist[] = array("$i", "$i");
                         }
-                        $atext = flattenText($qrow->questionL10ns[$language]->question);
+                        $atext = flattenText($qrow->questionl10ns[$language]->question);
                     }
 
                     $qquestion .= $linefeed;
@@ -1216,7 +1216,7 @@ class statistics_helper
                         $alist[] = array("Y", gT("Yes"));
                         $alist[] = array("N", gT("No"));
                         $alist[] = array("U", gT("Uncertain"));
-                        $atext = flattenText($qrow->questionL10ns[$language]->question);
+                        $atext = flattenText($qrow->questionl10ns[$language]->question);
                     }
                     //output
                     $qquestion .= $linefeed;
@@ -1233,7 +1233,7 @@ class statistics_helper
                         $alist[] = array("I", gT("Increase"));
                         $alist[] = array("S", gT("Same"));
                         $alist[] = array("D", gT("Decrease"));
-                        $atext = flattenText($qrow->questionL10ns[$language]->question);
+                        $atext = flattenText($qrow->questionl10ns[$language]->question);
                     }
                     $qquestion .= $linefeed;
                     $qtitle .= "({$qanswer})"."[".$atext."]";
@@ -1247,8 +1247,8 @@ class statistics_helper
                     foreach ($qresult as $qrow) {
                         $fresult = Answer::model()->findAll(array('condition'=>'qid=:qid AND code=:code ND scale_id=0', 'params'=>array(":qid"=>$qiqid, ':code'=>$licode)));
                         foreach ($fresult as $frow) {
-                            $alist[] = array($frow['code'], $frow->answerL10ns[$language]->answer);
-                            $ltext = $frow->answerL10ns[$language]->answer;
+                            $alist[] = array($frow['code'], $frow->answerl10ns[$language]->answer);
+                            $ltext = $frow->answerl10ns[$language]->answer;
                         }
                         $atext = flattenText($qrow[1]);
                     }
@@ -1301,11 +1301,11 @@ class statistics_helper
                         //this question type uses its own labels
                         //add code and title to results for outputting them later
                         foreach ($fresult as $frow) {
-                            $alist[] = array($frow['code'], flattenText($frow->answerL10ns[$language]->answer));
+                            $alist[] = array($frow['code'], flattenText($frow->answerl10ns[$language]->answer));
                         }
 
                         //counter
-                        $atext = flattenText($qrow->questionL10ns[$language]->question);
+                        $atext = flattenText($qrow->questionl10ns[$language]->question);
                     }
 
                     //output
@@ -1417,7 +1417,7 @@ class statistics_helper
                     $qresult = Answer::model()->findAllByAttributes(['qid'=>$qqid, 'scale_id'=>0]);
                     //put answer code and title into array
                     foreach ($qresult as $qrow) {
-                        $alist[] = array($qrow->code, flattenText($qrow->answerL10ns[$language]->answer));
+                        $alist[] = array($qrow->code, flattenText($qrow->answerl10ns[$language]->answer));
                     }
 
                     //handling for "other" field for list radio or list drowpdown

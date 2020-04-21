@@ -215,7 +215,9 @@ class quotas extends Survey_Common_Action
                     }
 
                     $aQuotaItems[$oQuota['id']][] = array(
-                        'oQuestion' => Question::model()->with('questionL10ns')->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
+                        'oQuestion' => Question::model()
+                            ->with('questionl10ns', array('language' => $oSurvey->language))
+                            ->findByPk(array('qid' => $oQuotaMember['qid'])),
                         'answer_title' => $answerText,
                         'oQuotaMember'=>$oQuotaMember,
                         'valid'=>isset($answerText),
@@ -373,6 +375,10 @@ class quotas extends Survey_Common_Action
 
     /**
      * Add new answer to quota
+     *
+     * @param int $iSurveyId
+     * @param string $sSubAction
+     * @return void
      */
     public function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
@@ -396,7 +402,9 @@ class quotas extends Survey_Common_Action
         }
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
-            $oQuestion = Question::model()->findByPk(array('qid' => Yii::app()->request->getPost('quota_qid'), 'language' => $oSurvey->language));
+            $oQuestion = Question::model()
+                ->with('questionl10ns', array('language' => $oSurvey->language))
+                ->findByPk(array('qid' => Yii::app()->request->getPost('quota_qid')));
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
             $x = 0;
@@ -511,16 +519,20 @@ class quotas extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
 
-        $aQuestion = Question::model()->findByPk(array('qid' => $iQuestionId, 'language' => $sBaseLang));
+        $aQuestion = Question::model()
+            ->with('questionl10ns', array('language' => $sBaseLang))
+            ->findByPk(array('qid' => $iQuestionId));
         $aQuestionType = $aQuestion['type'];
 
         if ($aQuestionType == Question::QT_M_MULTIPLE_CHOICE) {
-            $aResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
+            $aResults = Question::model()
+                ->with('questionl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('parent_qid' => $iQuestionId));
             $aAnswerList = array();
 
-            foreach ($aResults as $aDbAnsList) {
-                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40), 'code' => $aDbAnsList['title']);
-                $aAnswerList[$aDbAnsList['title']] = $tmparrayans;
+            foreach ($aResults as $oDbAnsList) {
+                $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($oDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40), 'code' => $oDbAnsList->title);
+                $aAnswerList[$oDbAnsList->title] = $tmparrayans;
             }
         } elseif ($aQuestionType == Question::QT_G_GENDER_DROPDOWN) {
             $aAnswerList = array(
@@ -528,34 +540,40 @@ class quotas extends Survey_Common_Action
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
         } elseif ($aQuestionType == Question::QT_L_LIST_DROPDOWN || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
 
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
+            $aAnsResults = Answer::model()
+                ->with('answerl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('qid' => $iQuestionId));
 
             $aAnswerList = array();
 
             foreach ($aAnsResults as $aDbAnsList) {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
+                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList->answerl10ns[$sBaseLang]->answer, 'code' => $aDbAnsList['code']);
             }
 
         } elseif ($aQuestionType == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
-            $aAnsResults = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionId));
+            $aAnsResults = Question::model()
+                ->with('questionl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 6; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['question'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
                     $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
         } elseif ($aQuestionType == Question::QT_B_ARRAY_10_CHOICE_QUESTIONS) {
-            $aAnsResults = Answer::model()->findAllByAttributes(array('qid' => $iQuestionId, 'language' => $sBaseLang));
+            $aAnsResults = Question::model()
+                ->with('questionl10ns', array('language' => $sBaseLang))
+                ->findAllByAttributes(array('parent_qid' => $iQuestionId));
 
             $aAnswerList = array();
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 11; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40).' ['.$x.']', 'code' => $aDbAnsList['code']);
-                    $aAnswerList[$aDbAnsList['code']."-".$x] = $tmparrayans;
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
+                    $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
                 }
             }
         } elseif ($aQuestionType == Question::QT_Y_YES_NO_RADIO) {

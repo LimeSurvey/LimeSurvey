@@ -83,6 +83,10 @@ class PermissiontemplatesController extends Survey_Common_Action
         $aPermissiontemplate = Yii::app()->request->getPost('Permissiontemplates');
         $model = $this->loadModel($aPermissiontemplate['ptid']);
 
+        // XSS filter
+        $aPermissiontemplate['name'] = CHtml::encode($aPermissiontemplate['name']);
+        $aPermissiontemplate['description'] = CHtml::encode($aPermissiontemplate['description']);
+
         $newAttributes = array_merge($model->attributes, $aPermissiontemplate);
         $model->attributes = $newAttributes;
 

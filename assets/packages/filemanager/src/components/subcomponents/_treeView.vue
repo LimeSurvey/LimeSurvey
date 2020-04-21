@@ -2,7 +2,7 @@
 <template>
     <div class="col-12">
         <ul class="scoped-root-list">
-            <li v-for="(folder,cnt) in folders" :key="folder.key" :class="getHtmlClasses(folder)">
+            <li v-for="folder in folders" :key="folder.key" :class="getHtmlClasses(folder)">
                 <div class="ls-flex ls-flex-row" :id="folder.key" @click.stop="selectFolder(folder)">
                     <div class="ls-flex-item grow-1 text-center">
                         <i
@@ -50,7 +50,7 @@ export default {
                 return [];
             }
         },
-        presetFolder: {type: String|null, default: null},
+        presetFolder: {type: String, default: null},
     },
     methods: {
         toggleCollapse(folderKey) {
@@ -60,10 +60,13 @@ export default {
             return this.$store.state.uncollapsedFolders.indexOf(folderKey) == -1
         },
         selectFolder(folderObject) {
+            this.$store.state.currentSurveyId = folderObject.surveyId;
+            this.$store.state.currentFolderType = folderObject.folderType;
             this.loadingState = true;
             this.$store
                 .dispatch("folderSelected", folderObject)
                 .then(result => {
+                    this.selectFolderResult = result;
                     this.loadingState = false;
                 });
         },

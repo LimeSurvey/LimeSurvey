@@ -315,7 +315,7 @@ class SurveysGroups extends LSActiveRecord
             $oSurveysGroups = SurveysGroups::model()->findAll();
         }
         $options = [
-            '' => gT('No parent menu')
+            '' => gT('No parent group')
         ];
 
 

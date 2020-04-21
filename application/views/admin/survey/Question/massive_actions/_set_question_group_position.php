@@ -16,7 +16,7 @@
             <select name="group_gid" class="form-control custom-data" id="gid">
                 <?php foreach($model->survey->groups as $group): ?>
                     <option value="<?php echo $group->gid;?>">
-                        <?php echo flattenText($group->questionGroupL10ns[$model->survey->language]->group_name);?>
+                        <?php echo flattenText($group->questiongroupl10ns[$model->survey->language]->group_name);?>
                     </option>
                 <?php endforeach?>
             </select>

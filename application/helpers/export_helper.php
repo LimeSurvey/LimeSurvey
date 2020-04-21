@@ -1213,14 +1213,14 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     if ($scale_id != false) {
         $aCondition['scale_id'] = $scale_id;
     }
-    $QueryResult = Question::model()->with('questionL10ns')->findAllByAttributes($aCondition);
+    $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition);
     foreach ($QueryResult as $Row) {
         $response = $dom->createElement("response");
         if ($free == false) {
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
-            $label = $dom->createElement("label", QueXMLCleanup($Row->questionL10ns[$quexmllang]->question, ''));
+            $label = $dom->createElement("label", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
 
             $value = $dom->createElement("value", $yesvalue);
             $nextcode = $Row['title'];
@@ -1254,7 +1254,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $response->appendChild($fixed);
 
         } else {
-            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[$quexmllang]->question));
+            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionl10ns[$quexmllang]->question));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1343,9 +1343,9 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         }
         $subQuestion = $dom->createElement("subQuestion");
         if ($use_answers) {
-            $text = $dom->createElement("text", QueXMLCleanup($Row->answerL10ns[$quexmllang]->answer, ''));
+            $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
         } else {
-            $text = $dom->createElement("text", QueXMLCleanup($Row->questionL10ns[$quexmllang]->question, ''));
+            $text = $dom->createElement("text", QueXMLCleanup($Row->questionl10ns[$quexmllang]->question, ''));
         }
         $subQuestion->appendChild($text);
         if ($use_answers) {
@@ -1936,20 +1936,20 @@ function groupGetXMLStructure($xml, $gid)
     WHERE gid=$gid and parent_qid=0 order by question_order, scale_id";
     buildXMLFromQuery($xml, $qquery, 'questions');
 
-    // Questions localization
-    $qqueryl10n = "SELECT {{question_l10ns}}.*
-    FROM {{question_l10ns}}
-    JOIN {{questions}} ON {{question_l10ns}}.qid = {{questions}}.qid
-    WHERE gid=$gid and parent_qid=0 order by question_order, {{question_l10ns}}.language, scale_id";
-    buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
-
-    // Questions table - Subquestions
-    $qquery = "SELECT *
+    // Subquestions
+    $qquery = "SELECT {{questions}}.*
     FROM {{questions}}
     JOIN {{question_l10ns}} ON {{question_l10ns}}.qid = {{questions}}.qid
     WHERE gid=$gid and parent_qid>0 order by question_order, {{question_l10ns}}.language, scale_id";
     buildXMLFromQuery($xml, $qquery, 'subquestions');
 
+    // Questions localization
+    $qqueryl10n = "SELECT {{question_l10ns}}.*
+    FROM {{question_l10ns}}
+    JOIN {{questions}} ON {{questions}}.qid = {{question_l10ns}}.qid 
+    WHERE gid=$gid order by question_order, {{question_l10ns}}.language, scale_id";
+    buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
+    
     //Answer
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
@@ -2503,6 +2503,7 @@ function tsvSurveyExport($surveyid){
         $language_data = array();
     }
 
+    // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
     if (!array_key_exists('surveyls_language', $language_data[0])){
         $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
     }
@@ -2563,21 +2564,29 @@ function tsvSurveyExport($surveyid){
     foreach ($aSurveyLanguages as $key => $language) {
         // groups data
         if (array_key_exists('groups', $xmlData)){
+            debugbreak();
+            // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
+            if (!array_key_exists('gid', $xmlData['groups']['rows']['row'][0])){
+                $aSaveData=$xmlData['groups']['rows']['row'];
+                unset($xmlData['groups']['rows']['row']);
+                $xmlData['groups']['rows']['row'][0] = $aSaveData;
+            }
+
             foreach($xmlData['groups']['rows']['row'] as $group){
                 $groups_data[$group['gid']] = $group;
             }
 
+            // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
+            if (!array_key_exists('gid', $xmlData['group_l10ns']['rows']['row'][0])){
+                $aSaveData=$xmlData['group_l10ns']['rows']['row'];
+                unset($xmlData['group_l10ns']['rows']['row']);
+                $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
+            }            
             foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns){
                 $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
             }
         } else {
             $groups_data = array();
-        }
-        $groups = array();
-        foreach ($groups_data as $key => $group) {
-            if ($group['language'] === $language){
-                $groups[$language][$group['gid']] = $group;
-            }
         }
 
         // questions data
@@ -2597,12 +2606,6 @@ function tsvSurveyExport($surveyid){
         } else {
             $questions_data = array();
         }
-        $questions = array();
-        foreach ($questions_data as $key => $question) {
-            if ($question['language'] === $language){
-                $questions[$language][$question['gid']][$question['qid']] = $question;
-            }
-        }
 
         // subquestions data
         if (array_key_exists('subquestions', $xmlData)){
@@ -2621,12 +2624,6 @@ function tsvSurveyExport($surveyid){
         } else {
             $subquestions_data = array();
         }
-        $subquestions = array();
-        foreach ($subquestions_data as $key => $subquestion) {
-            if ($subquestion['language'] === $language){
-                $subquestions[$language][$subquestion['parent_qid']][] = $subquestion;
-            }
-        }
 
         // answers data
         if (array_key_exists('answers', $xmlData)){
@@ -2643,12 +2640,6 @@ function tsvSurveyExport($surveyid){
             }
         } else {
             $answers_data = array();
-        }
-        $answers = array();
-        foreach ($answers_data as $key => $answer) {
-            if ($answer['language'] === $language){
-                $answers[$language][$answer['qid']][] = $answer;
-            }
         }
 
         // assessments data

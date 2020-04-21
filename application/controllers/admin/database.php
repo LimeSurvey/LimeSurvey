@@ -191,8 +191,8 @@ class database extends Survey_Common_Action
                 }   
             } else {
                 if ($dvid !== null){
-                    $arDefaultValue->with('defaultValueL10ns');
-                    $idL10n = !empty($arDefaultValue->defaultValueL10ns) && array_key_exists($language, $arDefaultValue->defaultValueL10ns) ? $arDefaultValue->defaultValueL10ns[$language]->id : null;
+                    $arDefaultValue->with('defaultvaluel10ns');
+                    $idL10n = !empty($arDefaultValue->defaultvaluel10ns) && array_key_exists($language, $arDefaultValue->defaultvaluel10ns) ? $arDefaultValue->defaultvaluel10ns[$language]->id : null;
                     if ($idL10n !== null){
                         DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
                     } else {
@@ -239,7 +239,7 @@ class database extends Survey_Common_Action
         }
         if ($aQuestionTypeList[$sQuestionType]['subquestions'] > 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                $arQuestions = Question::model()->with('questionL10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
+                $arQuestions = Question::model()->with('questionl10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
 
                 for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['subquestions']; $iScaleID++) {
                     foreach ($arQuestions as $aSubquestionrow) {
@@ -975,6 +975,9 @@ class database extends Survey_Common_Action
                 $oSurvey->savetimings = $this->_filterEmptyFields($oSurvey, 'savetimings');
                 $oSurvey->datestamp = $this->_filterEmptyFields($oSurvey, 'datestamp');
                 $oSurvey->ipaddr = $this->_filterEmptyFields($oSurvey, 'ipaddr');
+                //save the new setting ipanonymize
+                $oSurvey->ipanonymize = $this->_filterEmptyFields($oSurvey, 'ipanonymize');
+                //todo: here we have to change the ip-addresses already saved ?!?
                 $oSurvey->refurl = $this->_filterEmptyFields($oSurvey, 'refurl');
             }
 
@@ -1357,7 +1360,7 @@ class database extends Survey_Common_Action
 
                             // subquestions
                             $aOldNewSubquestions = array(); // track old and new sqid's
-                            $oOldSubQuestions = Question::model()->with('questionL10ns')->findAllByAttributes(array("parent_qid"=>$oldQID), array('order'=>'question_order'));
+                            $oOldSubQuestions = Question::model()->with('questionl10ns')->findAllByAttributes(array("parent_qid"=>$oldQID), array('order'=>'question_order'));
                             foreach ($oOldSubQuestions as $sSubquestionIndex => $subquestion) {
                                 $aInsertData = $subquestion->attributes;
                                 unset($aInsertData['qid']);
@@ -1366,12 +1369,12 @@ class database extends Survey_Common_Action
                                     $iNewSubquestionId = Yii::app()->db->getLastInsertID();
                                     $aOldNewSubquestions[$subquestion->qid] = $iNewSubquestionId;
 
-                                    if (isset($subquestion->questionL10ns)){
-                                        foreach($subquestion->questionL10ns as $language => $questionL10ns){
+                                    if (isset($subquestion->questionl10ns)){
+                                        foreach($subquestion->questionl10ns as $language => $questionl10ns){
                                             $oQuestionLS = new QuestionL10n;
                                             $oQuestionLS->language = $language;
-                                            $oQuestionLS->question = $questionL10ns->question;
-                                            $oQuestionLS->help = $questionL10ns->help;
+                                            $oQuestionLS->question = $questionl10ns->question;
+                                            $oQuestionLS->help = $questionl10ns->help;
                                             $oQuestionLS->qid = $iNewSubquestionId;
                                             $oQuestionLS->save();
                                         }
@@ -1381,15 +1384,15 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
-                        $oOldAnswers = Answer::model()->with('answerL10ns')->findAllByAttributes(array("qid"=>$oldQID));
+                        $oOldAnswers = Answer::model()->with('answerl10ns')->findAllByAttributes(array("qid"=>$oldQID));
                         foreach ($oOldAnswers as $answer) {
                             $newAnswer = new Answer();
                             $newAnswer->attributes = $answer->attributes;
                             $newAnswer->qid = $this->iQuestionID;
                             if ($newAnswer->save()) {
                                 $iNewAnswerId = Yii::app()->db->getLastInsertID();                                 
-                                if (isset($answer->answerL10ns)){
-                                    foreach($answer->answerL10ns as $language => $answerL10ns){
+                                if (isset($answer->answerl10ns)){
+                                    foreach($answer->answerl10ns as $language => $answerL10ns){
                                         $oAnswerLS = new AnswerL10n;
                                         $oAnswerLS->language = $language;
                                         $oAnswerLS->answer = $answerL10ns->answer;
@@ -1401,7 +1404,7 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copydefaultanswers') == 1) {
-                        $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
+                        $oOldDefaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
                         foreach ($oOldDefaultValues as $defaultvalue) {
                             $newDefaultValue = new DefaultValue();
                             $newDefaultValue->qid = $this->iQuestionID;
@@ -1410,8 +1413,8 @@ class database extends Survey_Common_Action
                             $newDefaultValue->specialtype = $defaultvalue['specialtype'];
                             if ($newDefaultValue->save()) {
                                 $iNewDefaultValueId = Yii::app()->db->getLastInsertID();                                 
-                                if (isset($defaultvalue->defaultValueL10ns)){
-                                    foreach($defaultvalue->defaultValueL10ns as $language => $defaultValueL10ns){
+                                if (isset($defaultvalue->defaultvaluel10ns)){
+                                    foreach($defaultvalue->defaultvaluel10ns as $language => $defaultValueL10ns){
                                         $oDefaultValueLS = new DefaultValueL10n;
                                         $oDefaultValueLS->dvid = $iNewDefaultValueId;
                                         $oDefaultValueLS->language = $language;

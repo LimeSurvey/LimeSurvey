@@ -10,7 +10,7 @@
 #}
 
 {% if aSurveyInfo.alanguageChanger.show == true %}
-
+    
     {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
     {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
@@ -55,5 +55,5 @@
 
     {# Activate the language changer  #}
     {{ registerScript("activateLanguageChanger", "activateLanguageChanger(); ", "POS_END") }}
-
+    
 {% endif %}

@@ -48,12 +48,14 @@
             $criteria = new CDbCriteria();
             $criteria->compare('sid', $this->dynamicId);
             $criteria->compare('type', Question::QT_VERTICAL_FILE_UPLOAD);
-            $criteria->compare('questionL10ns.language', $survey->language);
+            $criteria->compare('ql10ns.language', $survey->language);
             if ($qid !== null) {
                 $criteria->compare('t.qid', $qid);
             }
 
-            $questions = Question::model()->with('questionL10ns')->findAll($criteria);
+            $questions = Question::model()
+                ->with(array('questionl10ns' => array('alias' => 'ql10ns')))
+                ->findAll($criteria);
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
@@ -83,11 +85,13 @@
          */
         public function getFilesAndSqga($sQID = 0)
         {
-            $aConditions = array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$this->survey->language);
+            $aConditions = array('sid' => $this->dynamicId, 'type' => '|');
             if ($sQID > 0) {
                 $aConditions['qid'] = $sQID;
             }
-            $aQuestions = Question::model()->findAllByAttributes($aConditions);
+            $aQuestions = Question::model()
+                ->with(['questionl10ns' => ['language' => $this->survey->language]])
+                ->findAllByAttributes($aConditions);
             $files = array();
             foreach ($aQuestions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;

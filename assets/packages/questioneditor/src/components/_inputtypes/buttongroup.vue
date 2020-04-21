@@ -80,7 +80,8 @@
             <label 
                 v-for="(optionObject, i) in cleanOptions"
                 :key="i"
-                type="button" 
+                type="
+                button"
                 :for="'input-'+(elName || elId)+'_'+i" 
                 :class="getHTMLClasses(optionObject.value)" 
                 :disabled="readonly"

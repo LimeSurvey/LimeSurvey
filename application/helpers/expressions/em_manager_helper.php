@@ -4406,16 +4406,23 @@
             $event->set('surveyId',$surveyid);
             $event->set('language',self::getEMlanguage());
             $event->set('knownVars',$this->knownVars);
+            $event->set('questionSeq2relevance',$this->questionSeq2relevance);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
             $newExpressionSuffixes = $event->get('newExpressionSuffixes');
             if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
                 $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
             }
+            /* Put in manual : offer updating this part must be done with care. And can broke without API version update */
             $this->knownVars = $result->get('knownVars');
+            $this->questionSeq2relevance = $result->get('questionSeq2relevance');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
-            usort($this->questionSeq2relevance,'cmpQuestionSeq');
-            $this->numQuestions = count($this->questionSeq2relevance);
+            if (!empty($this->questionSeq2relevance)) {
+                usort($this->questionSeq2relevance,'cmpQuestionSeq');
+                $this->numQuestions = count($this->questionSeq2relevance);
+            } else {
+                $this->numQuestions = 0;
+            }
             $this->numGroups = count($this->groupSeqInfo);
             return true;
         }
@@ -4997,6 +5004,7 @@
             $LEM->surveyOptions['deletenonvalues'] = (isset($aSurveyOptions['deletenonvalues']) ? ($aSurveyOptions['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($aSurveyOptions['hyperlinkSyntaxHighlighting']) ? $aSurveyOptions['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = $survey->isIpAddr;
+            $LEM->surveyOptions['ipAnonymize'] = $survey->isIpAnonymize;
             $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
             $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : NULL);
             $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
@@ -5508,6 +5516,13 @@
                 if ($this->surveyOptions['ipaddr'] == true)
                 {
                     $sdata['ipaddr'] = getIPAddress();
+                    if($this->surveyOptions['ipAnonymize'] == true){
+                        $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($sdata['ipaddr']);
+                        $result = $ipAddressAnonymizer->anonymizeIpAddress();
+                        if($result){
+                            $sdata['ipaddr'] = $result;
+                        }
+                    }
                 }
                 if ($this->surveyOptions['refurl'] == true)
                 {
@@ -5580,6 +5595,15 @@
                 }
                 if ($this->surveyOptions['ipaddr']) {
                     $aResponseAttributes['ipaddr'] = getIPAddress();
+
+                    //anonymize ip adress
+                    if($this->surveyOptions['ipAnonymize']){
+                        $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($aResponseAttributes['ipaddr']);
+                        $result = $ipAddressAnonymizer->anonymizeIpAddress();
+                        if($result){
+                            $aResponseAttributes['ipaddr'] = $result;
+                        }
+                    }
                 }
 
                 foreach ($updatedValues as $key=>$value)
@@ -6690,6 +6714,7 @@
                         }
                         if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN))
                         {
+                            $sMandatoryText = $LEM->gT('Please check at least one item.');
                             $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
                                     'part' => 'multiplechoice',

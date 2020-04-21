@@ -508,7 +508,7 @@ class labels extends Survey_Common_Action
         array_walk(
             $aLabels, 
             function ($oLabel) use (&$aLabelCompleteArray) {
-                $aLabelCompleteArray[] = array_merge($oLabel->attributes, $oLabel->labelL10ns);
+                $aLabelCompleteArray[] = array_merge($oLabel->attributes, $oLabel->labell10ns);
             }
         );
 
@@ -624,7 +624,7 @@ class labels extends Survey_Common_Action
             $aLabelSet = $oLabelSet->attributes;
             $aLabelSet['labels'] = array_map(
                 function ($oLabel) {
-                    return array_merge($oLabel->attributes, $oLabel->labelL10ns);
+                    return array_merge($oLabel->attributes, $oLabel->labell10ns);
                 },
                 $oLabelSet->labels
             );

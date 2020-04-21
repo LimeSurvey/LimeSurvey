@@ -46,7 +46,8 @@ describe("correct display", () => {
 
     const tableRepMount = shallowMount(TableRepComponent, {
         propsData: { 
-            loading: false
+            loading: false,
+            currentPage: 0
         },
         mocks: {
             $dialog: {
@@ -68,11 +69,12 @@ describe("correct display", () => {
     });
 
     test.each(_.toArray(MockState.fileList))(
-        "Has an image block for every file rendered", 
+        "Has an image block for every file rendered",
         (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
-    });
+            const tableRowContainer = tableRepMount.find('#file-row-' + file.hash);
+            expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
+        }
+    );
 
     test.each(_.toArray(MockState.fileList))(
         "Has an image block for every file rendered", 
@@ -122,7 +124,8 @@ describe("File transit actions", () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -174,7 +177,8 @@ describe("File in transit actions", () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -236,7 +240,8 @@ describe('Delete file success', () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -279,7 +284,8 @@ describe('Delete file failure', () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -297,4 +303,63 @@ describe('Delete file failure', () => {
         fileRowWrapper.find('.FileManager--file-action-delete').trigger('click');
         expect(actions.deleteFile).not.toHaveBeenCalled()
     });
-});
+    
+    describe('Pagination', () => {
+        const state = _.merge({},MockState);
+        const callDialog = jest.fn((txt) => Promise.reject());
+        let actions;
+        let tableRepMount;
+
+        beforeEach(() => {
+            actions = _.merge({},MockActions);
+            actions.deleteFile = jest.fn(() => Promise.resolve());
+
+            const store = new Vuex.Store({
+                state,
+                mutations: VueXMutations,
+                actions,
+                getters: VueXGetters
+            });
+
+            tableRepMount = shallowMount(TableRepComponent, {
+                propsData: { 
+                    loading: false,
+                    currentPage: 0
+                },
+                mocks: {
+                    $dialog: {
+                        confirm: callDialog
+                    },
+                    $log: {log: ()=>{}, error: ()=>{}}
+                },
+                store,
+                localVue
+            });
+        });
+
+        // TODO: WIP: Mock file as new filelist.json
+        // TODO: WIP: Test abstract representation.vue!
+        it.skip('should contain pagination', () => {
+            let files = [];
+            for (let index = 0; index > 50; i++) {
+                files.push('test_'+index+'.txt');
+            }
+            if (tableRepMount !== null) {
+                tableRepMount.computed.files = files;
+                expect(tableRepMount.computed.files.length).toBe(50);
+                let pagination = tableRepMount.find('#ls-ba pager');
+                expect(pagination).toBeDefined;
+            } else {
+                console.log('TableRepMount is null!');
+            }
+        });
+
+        it.skip('should contains 2 pages', () => {
+            // TODO: Set up dependencies for current test.
+        });
+
+        it.skip('should select page 2', () => {
+            // TODO: Set up dependencies for current test.
+        });
+    });
+})

@@ -19,7 +19,7 @@
  * @property integer $ugid UserGroup ID
  * @property int $uid User ID
  *
- *
+ *@property User $users Group ownre user
  */
 class UserInGroup extends LSActiveRecord
 {
@@ -43,6 +43,16 @@ class UserInGroup extends LSActiveRecord
     public function primaryKey()
     {
         return array('ugid', 'uid');
+    }
+
+    /** @inheritdoc */
+    public function rules()
+    {
+        return array(
+            array('uid, ugid', 'required'),
+            array('uid, ugid', 'numerical', 'integerOnly'=>true),
+        );
+
     }
 
     /** @inheritdoc */

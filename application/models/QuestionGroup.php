@@ -75,7 +75,7 @@ class QuestionGroup extends LSActiveRecord
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
             'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
-            'questionGroupL10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
+            'questiongroupl10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
     }    
  
@@ -192,8 +192,8 @@ class QuestionGroup extends LSActiveRecord
      * @return string
      */
     public function getGroupNameI10N($sLanguage) {
-        if (isset($this->questionGroupL10ns[$sLanguage])) {
-            return $this->questionGroupL10ns[$sLanguage]->group_name;
+        if (isset($this->questiongroupl10ns[$sLanguage])) {
+            return $this->questiongroupl10ns[$sLanguage]->group_name;
         }
         return '';
     }
@@ -205,8 +205,8 @@ class QuestionGroup extends LSActiveRecord
      * @return string
      */
     public function getGroupDescriptionI10N($sLanguage) {
-        if (isset($this->questionGroupL10ns[$sLanguage])) {
-            return $this->questionGroupL10ns[$sLanguage]->description;
+        if (isset($this->questiongroupl10ns[$sLanguage])) {
+            return $this->questiongroupl10ns[$sLanguage]->description;
         }
         return '';
     }
@@ -341,7 +341,7 @@ class QuestionGroup extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->with = array('questionGroupL10ns'=>array("select"=>"group_name, description"));
+        $criteria->with = array('questiongroupl10ns'=>array("select"=>"group_name, description"));
         $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';
         $criteria->params = (array(':surveyid'=>$this->sid, ':language'=>$this->language));
@@ -366,8 +366,8 @@ class QuestionGroup extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($this->sid);
         $baselang = $survey->language;
-        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
-        return $oQuestionGroup->questionGroupL10ns[$baselang]->group_name;
+        $oQuestionGroup = $this->with('questiongroupl10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questiongroupl10ns[$baselang]->group_name;
     }
 
     /*
@@ -377,8 +377,8 @@ class QuestionGroup extends LSActiveRecord
     {
         $survey = Survey::model()->findByPk($this->sid);
         $baselang = $survey->language;
-        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
-        return $oQuestionGroup->questionGroupL10ns[$baselang]->description;
+        $oQuestionGroup = $this->with('questiongroupl10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questiongroupl10ns[$baselang]->description;
     }
 
     /**

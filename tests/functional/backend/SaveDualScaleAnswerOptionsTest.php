@@ -105,8 +105,8 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $web->wait(10)->until(WebDriverExpectedCondition::visibilityOf($oElementAdvancedOptionsPanel));
 
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
-        $this->assertEquals('123', $answers[0]->answerL10ns['en']->answer);
-        $this->assertEquals('abc', $answers[1]->answerL10ns['en']->answer);
+        $this->assertEquals('123', $answers[0]->answerl10ns['en']->answer);
+        $this->assertEquals('abc', $answers[1]->answerl10ns['en']->answer);
 
         $notif = $web->findElement(WebDriverBy::id('notif-container_1'));
         $notifText = $notif->getText();

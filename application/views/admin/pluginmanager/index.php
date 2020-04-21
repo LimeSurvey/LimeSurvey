@@ -11,8 +11,9 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('pluginManager');
 
+$pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
+
 ?>
-<?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
 
 <div class='col-sm-12'>
     <div>  <!-- Extra funny div -->
@@ -152,7 +153,18 @@ echo viewHelper::getViewTestTag('pluginManager');
                 ),
             'columns' => $gridColumns,
             'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
+            'ajaxUpdate' => 'plugins-grid'
         ]
     );
 
     $this->renderPartial('./pluginmanager/uploadModal', []);
+?>
+
+<script type="text/javascript">
+jQuery(function($) {
+    // To update rows per page via ajax
+    $(document).on("change", '#pageSize', function() {
+        $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
+    });
+});
+</script>

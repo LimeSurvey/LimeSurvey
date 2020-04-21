@@ -69,7 +69,7 @@ $baseLanguage = $oSurvey->language;
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($oSurvey->groups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText($group->questionGroupL10ns[$oSurvey->language]->group_name);?>
+                                                <?php echo flattenText($group->questiongroupl10ns[$oSurvey->language]->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>

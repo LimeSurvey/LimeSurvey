@@ -48,8 +48,8 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch("getFolderList").then( () => {
-
+        this.$store.dispatch("getFolderList").then(result => {
+            this.getFolderListResult = result;
             if(this.presetFolder != null) {
                 this.$store.commit(
                     "setCurrentFolder",

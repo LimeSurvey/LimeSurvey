@@ -72,7 +72,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             foreach ($aScale as $oAnswerOption) {
                 $this->aLabels[$iScaleId][] = [
                     'code' => $oAnswerOption->code,
-                    'title' => $oAnswerOption->answerL10ns[$this->sLanguage]->answer
+                    'title' => $oAnswerOption->answerl10ns[$this->sLanguage]->answer
                 ];
             }
         }
@@ -83,7 +83,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->numrows = 0;
         foreach ($this->aAnswerOptions as $iScaleId => $aScale) {
             foreach ($aScale as $oAnswerOption) {
-                $aData['labelans'.$iScaleId][] = $oAnswerOption->answerL10ns[$this->sLanguage]->answer;
+                $aData['labelans'.$iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
                 $aData['labelcode'.$iScaleId][] = $oAnswerOption->code;
             }
             
@@ -174,7 +174,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
             
             
-            $answertext = $oQuestionRow->questionL10ns[$this->sLanguage]->question;
+            $answertext = $oQuestionRow->questionl10ns[$this->sLanguage]->question;
 
             $aData['aSubQuestions'][$i]['question'] = $answertext;
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
@@ -221,7 +221,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $aData['aSubQuestions'][$i]['repeatheadings'] = false;
             }
 
-            $answertext = $oQuestionRow->questionL10ns[$this->sLanguage]->question;
+            $answertext = $oQuestionRow->questionl10ns[$this->sLanguage]->question;
             // right and center answertext: not explode for ? Why not
             if (strpos($answertext, '|') !== false) {
                 $answertextright = (string) substr($answertext, strpos($answertext, '|') + 1);
