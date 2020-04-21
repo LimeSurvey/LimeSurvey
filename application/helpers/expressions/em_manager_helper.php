@@ -4417,8 +4417,12 @@
             $this->knownVars = $result->get('knownVars');
             $this->questionSeq2relevance = $result->get('questionSeq2relevance');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
-            usort($this->questionSeq2relevance,'cmpQuestionSeq');
-            $this->numQuestions = count($this->questionSeq2relevance);
+            if (!empty($this->questionSeq2relevance)) {
+                usort($this->questionSeq2relevance,'cmpQuestionSeq');
+                $this->numQuestions = count($this->questionSeq2relevance);
+            } else {
+                $this->numQuestions = 0;
+            }
             $this->numGroups = count($this->groupSeqInfo);
             return true;
         }
