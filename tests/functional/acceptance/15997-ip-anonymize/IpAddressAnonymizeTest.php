@@ -13,8 +13,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
-        self::importSurvey($surveyFile);
 
         /* Login */
         $username = getenv('ADMINUSERNAME');
@@ -36,6 +34,9 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
      */
     public function testIpAnonymizeInActiveSurvey()
     {
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
+        self::importSurvey($surveyFile);
+
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -81,26 +82,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.0'));
 
-        //after this deactivate survey for next test ...
-        // Switch to first window.
-        $windowHandles = self::$webDriver->getWindowHandles();
-        self::$webDriver->switchTo()->window(
-            reset($windowHandles)
-        );
-
-        //click button stop this survey
-        $stopSurveyButton = self::$webDriver->findElement(WebDriverBy::id('ls-stop-survey'));
-        $stopSurveyButton->click();
-        sleep(1);
-
-        //click to deactivate survey
-        $execute = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('input[type="submit"][value="Deactivate survey"]')
-            )
-        );
-        $execute->click();
-        sleep(2);
     }
 
     /**
@@ -108,7 +89,9 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
      */
     public function testNormalActiveSurvey()
     {
-        // TODO: As above, but without ip anon and ip === 127.0.0.1
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_573837.lss';
+        self::importSurvey($surveyFile);
+
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -154,33 +137,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $nextButton->click();
 
         sleep(2);
-
-        /*
-
-        // Enter answer text. (this must be only for the second test, i don't know why?!?!
-        $survey = \Survey::model()->findByPk(self::$surveyId);
-        $questionObjects = $survey->groups[0]->questions;
-        $questions = [];
-        foreach ($questionObjects as $q) {
-            $questions[$q->title] = $q;
-        }
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['G01Q01']->qid;
-        $question = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa));
-        $question->sendKeys('foo bar');
-
-        sleep(2);
-
-        // Click submit.
-        /*
-        $submitButton = self::$webDriver->wait(10)->until(
-            WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::cssSelector('input[type="submit"][value="movesubmit"]')
-            )
-        );
-       $submitButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-        $submitButton->click();
-
-        sleep(2); */
 
         //now check if ip was anonymized (ipv4, last digit should be 0)
         //get ipadr from table survey_573837 ...
