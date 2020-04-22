@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.1.18 (build 200416) to 4.2.0 (build 200422) April 22, 2020
++New feature #15923: Allow to update some Expression Dynamic variable (Denis Chenu)
++New feature #15246: Allow fixed function (only PHP) in expression manager (Denis Chenu)
++New feature #15246: Allow fixed function (only PHP) in expression manager (#1320) (Denis Chenu)
++New feature #13175: Ability to show calculated values based on all users (Denis Chenu)
++New feature #15997: Anonymise IP address (Patricia Stelling)
+-Fixed issue: Inherit option not editable on survey edit and in survey create view (lacrioque)
+-Fixed issue: Expressions not being properly validated & highlighted in email templates when using 'Validate expression' function (Carsten Schmitz)
+-Fixed issue #16169: Missing comma in generated config.php file (Olle Harstedt)
+-Fixed issue #16166: Survey taking/editing uploaded pictures not showing up (#1408) (Timo Gurr)
+-Fixed issue #16160: Email to user group does not work (Denis Chenu)
+-Fixed issue #16155: Correct terminology (#1406) (jmantysalo)
+-Fixed issue #16136: Deleting file attachment does not work (Olle Harstedt)
+-Fixed issue #16095: Multiple choice exclamation sign without text (Denis Chenu)
+-Fixed issue #15705: Button 'delete current user group' not working (Jessica Höck)
+
+
 Changes from 4.1.17 (build 200414) to 4.1.18 (build 200416) April 16, 2020
 -Fixed issue [security] #16137: XSS on Mass Survey Management (imacat)
 -Fixed issue : Multiple Numeric Input Slider ignores slider_default_set (Denis Chenu)
