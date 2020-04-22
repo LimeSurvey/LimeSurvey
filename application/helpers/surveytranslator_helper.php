@@ -756,6 +756,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['th']['dateformat'] = 5;
     $supportedLanguages['th']['radixpoint'] = 0;
 
+    // Thai
+    $supportedLanguages['ti']['description'] = gT('Tigrinya');
+    $supportedLanguages['ti']['nativedescription'] = '&#x1275;&#x130d;&#x122d;&#x129b;';
+    $supportedLanguages['ti']['rtl'] = false;
+    $supportedLanguages['ti']['dateformat'] = 9;
+    $supportedLanguages['ti']['radixpoint'] = 0;
+
     //Ukrainian
     $supportedLanguages['uk']['description'] = gT('Ukrainian');
     $supportedLanguages['uk']['nativedescription'] = '&#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x441;&#x44C;&#x43A;&#x430;';
