@@ -19,135 +19,281 @@
             <template
                 v-for="subquestionscale in subquestionScales"
             >
-                <div
-                    :key="subquestionscale+'subquestions'"
-                    class="row list-group scoped-subquestion-row-container"
-                    @dragover.prevent="preventDisallowedCursor"
-                >
-                    <div class="list-group-item scoped-subquestion-block header-block">
-                        <div class="scoped-move-block" v-show="!readonly">
-                            <div>&nbsp;</div>
-                        </div>
-                        <div class="scoped-code-block">
-                            {{'Title'|translate}}
-                        </div>
-                        <div class="scoped-content-block">
-                            {{'Subquestion'|translate}}
-                        </div>
-                        <div class="scoped-relevance-block">
-                            {{'Condition'}}
-                        </div>
-                        <div class="scoped-actions-block" v-show="!readonly">
-                            <div>&nbsp;</div>
-                        </div>
-                    </div>
+                <!-- Y-Scale -->
+                <div v-if="subquestionscale == 0" :key="subquestionscale">
+
                     <div
-                        class="list-group-item scoped-subquestion-block"
-                        v-for="subquestion in currentDataSet[subquestionscale]"
-                        :key="subquestion.qid"
-                        @dragenter.prevent="dragoverSubQuestion($event, subquestion, subquestionscale)"
-                        :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
+                        :key="subquestionscale+'subquestions'"
+                        class="row list-group scoped-subquestion-row-container"
+                        @dragover.prevent="preventDisallowedCursor"
                     >
-                        <div class="scoped-move-block" v-show="!readonly">
-                            <i
-                                class="fa fa-bars"
-                                :class="surveyActive ? ' disabled' : ' '"
-                                :draggable="!surveyActive"
-                                @dragstart="startDraggingSubQuestion($event, subquestion, subquestionscale)"
-                                @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)"
-                            ></i>
-                        </div>
-                        <div class="scoped-code-block   ">
-                            <input
-                                type='text'
-                                class="form-control"
-                                maxlength='20'
-                                size='5'
-                                :class="surveyActive ? ' disabled' : ' '"
-                                :disabled="surveyActive"
-                                :name="'code_'+subquestion.question_order+'_'+subquestionscale"
-                                :readonly="readonly"
-                                v-model="subquestion.title"
-                                @dblclick="toggleEditMode"
-                                @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
-                            />
-                        </div>
-                        <div class="scoped-content-block   ">
-                            <input
-                                type='text'
-                                size='20'
-                                class='answer form-control input'
-                                :id='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
-                                :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
-                                :placeholder='translate("Some example subquestion")'
-                                :value="getQuestionForCurrentLanguage(subquestion)"
-                                :readonly="readonly"
-                                @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
-                                @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
-                                @dblclick="toggleEditMode"
-                            />
-                        </div>
-                        <div class="scoped-relevance-block   ">
-                            <div class="input-group">
-                                <div class="input-group-addon">{</div>
-                                <input
-                                    type='text'
-                                    class='relevance_input_field form-control input'
-                                    :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                    :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                    :readonly="readonly"
-                                    v-model="subquestion.relevance"
-                                    @dblclick="toggleEditMode"
-                                    @keyup.enter.prevent='switchinput(false,$event)'
-                                    @focus='triggerScale'
-                                    @blur='untriggerScale'
-                                />
-                                <div class="input-group-addon">}</div>
+                        <div class="list-group-item scoped-subquestion-block header-block">
+                            <div class="scoped-move-block" v-show="!readonly">
+                                <div>&nbsp;</div>
+                            </div>
+                            <div>
+                                Y-Scale
+                            </div>
+                            <div class="scoped-code-block">
+                                {{'Title'|translate}}
+                            </div>
+                            <div class="scoped-content-block">
+                                {{'Subquestion'|translate}}
+                            </div>
+                            <div class="scoped-relevance-block">
+                                {{'Condition'}}
+                            </div>
+                            <div class="scoped-actions-block" v-show="!readonly">
+                                <div>&nbsp;</div>
                             </div>
                         </div>
-                        <div class="scoped-actions-block" v-show="!readonly">
-                            <button
-                                v-if="!surveyActive"
-                                class="btn btn-default btn-small"
-                                data-toggle="tooltip"
-                                :title='translate("Delete")'
-                                @click.prevent="deleteThisDataSet(subquestion, subquestionscale)"
-                            >
-                                <i class="fa fa-trash text-danger"></i>
-                                <span class="sr-only">{{ "Delete" | translate }}</span>
-                            </button>
+                        <div
+                            class="list-group-item scoped-subquestion-block"
+                            v-for="subquestion in currentDataSet[subquestionscale]"
+                            :key="subquestion.qid"
+                            @dragenter.prevent="dragoverSubQuestion($event, subquestion, subquestionscale)"
+                            :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
+                        >
+                            <div class="scoped-move-block" v-show="!readonly">
+                                <i
+                                    class="fa fa-bars"
+                                    :class="surveyActive ? ' disabled' : ' '"
+                                    :draggable="!surveyActive"
+                                    @dragstart="startDraggingSubQuestion($event, subquestion, subquestionscale)"
+                                    @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)"
+                                ></i>
+                            </div>
+                            <div class="scoped-code-block   ">
+                                <input
+                                    type='text'
+                                    class="form-control"
+                                    maxlength='20'
+                                    size='5'
+                                    :class="surveyActive ? ' disabled' : ' '"
+                                    :disabled="surveyActive"
+                                    :name="'code_'+subquestion.question_order+'_'+subquestionscale"
+                                    :readonly="readonly"
+                                    v-model="subquestion.title"
+                                    @dblclick="toggleEditMode"
+                                    @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
+                                />
+                            </div>
+                            <div class="scoped-content-block   ">
+                                <input
+                                    type='text'
+                                    size='20'
+                                    class='answer form-control input'
+                                    :id='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
+                                    :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
+                                    :placeholder='translate("Some example subquestion")'
+                                    :value="getQuestionForCurrentLanguage(subquestion)"
+                                    :readonly="readonly"
+                                    @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
+                                    @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
+                                    @dblclick="toggleEditMode"
+                                />
+                            </div>
+                            <div class="scoped-relevance-block   ">
+                                <div class="input-group">
+                                    <div class="input-group-addon">{</div>
+                                    <input
+                                        type='text'
+                                        class='relevance_input_field form-control input'
+                                        :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                        :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                        :readonly="readonly"
+                                        v-model="subquestion.relevance"
+                                        @dblclick="toggleEditMode"
+                                        @keyup.enter.prevent='switchinput(false,$event)'
+                                        @focus='triggerScale'
+                                        @blur='untriggerScale'
+                                    />
+                                    <div class="input-group-addon">}</div>
+                                </div>
+                            </div>
+                            <div class="scoped-actions-block" v-show="!readonly">
                                 <button
-                                class="btn btn-default btn-small"
-                                data-toggle="tooltip"
-                                :title='translate("Open editor")'
-                                @click.prevent="openPopUpEditor(subquestion, subquestionscale)"
-                            >
-                                <i class="fa fa-edit"></i>
-                                <span class="sr-only">{{ "Open editor" | translate }}</span>
-                            </button>
-                            <button
-                                v-if="!surveyActive"
-                                class="btn btn-default btn-small"
-                                data-toggle="tooltip"
-                                :title='translate("Duplicate")'
-                                @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)"
-                            >
-                                <i class="fa fa-copy"></i>
-                                <span class="sr-only">{{ "Duplicate" | translate }}</span>
+                                    v-if="!surveyActive"
+                                    class="btn btn-default btn-small"
+                                    data-toggle="tooltip"
+                                    :title='translate("Delete")'
+                                    @click.prevent="deleteThisDataSet(subquestion, subquestionscale)"
+                                >
+                                    <i class="fa fa-trash text-danger"></i>
+                                    <span class="sr-only">{{ "Delete" | translate }}</span>
+                                </button>
+                                    <button
+                                    class="btn btn-default btn-small"
+                                    data-toggle="tooltip"
+                                    :title='translate("Open editor")'
+                                    @click.prevent="openPopUpEditor(subquestion, subquestionscale)"
+                                >
+                                    <i class="fa fa-edit"></i>
+                                    <span class="sr-only">{{ "Open editor" | translate }}</span>
+                                </button>
+                                <button
+                                    v-if="!surveyActive"
+                                    class="btn btn-default btn-small"
+                                    data-toggle="tooltip"
+                                    :title='translate("Duplicate")'
+                                    @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)"
+                                >
+                                    <i class="fa fa-copy"></i>
+                                    <span class="sr-only">{{ "Duplicate" | translate }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Buttons Predifined label sets Save as label set and Add Subquestion -->
+                    <div class="row custom custom-margin bottom-15" :key="subquestionscale+'metaSettings'" v-show="!readonly">
+                        <div class="col-sm-6 text-left">
+                            <button v-if="!isSurveyActive" class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
+                            <button class="btn btn-default" @click.prevent="saveAsLabelSet(subquestionscale)">{{ "Save as label set" | translate }}</button>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary" v-if="!surveyActive">
+                                <i class="fa fa-plus"></i>
+                                {{ "Add subquestion" | translate}}
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="row custom custom-margin bottom-15" :key="subquestionscale+'metaSettings'" v-show="!readonly">
-                    <div class="col-sm-6 text-left">
-                        <button v-if="!isSurveyActive" class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
-                        <button class="btn btn-default" @click.prevent="saveAsLabelSet(subquestionscale)">{{ "Save as label set" | translate }}</button>
+                <!-- X-Scale -->
+                <div v-if="subquestionscale == 1" :key="subquestionscale">
+                    <div
+                        :key="subquestionscale+'subquestions'"
+                        class="row list-group scoped-subquestion-row-container"
+                        @dragover.prevent="preventDisallowedCursor"
+                    >
+                        <div class="list-group-item scoped-subquestion-block header-block">
+                            <div class="scoped-move-block" v-show="!readonly">
+                                <div>&nbsp;</div>
+                            </div>
+                            <div>
+                                X-Scale
+                            </div>
+                            <div class="scoped-code-block">
+                                {{'Title'|translate}}
+                            </div>
+                            <div class="scoped-content-block">
+                                {{'Subquestion'|translate}}
+                            </div>
+                            <div class="scoped-relevance-block">
+                                {{'Condition'}}
+                            </div>
+                            <div class="scoped-actions-block" v-show="!readonly">
+                                <div>&nbsp;</div>
+                            </div>
+                        </div>
+                        <div
+                            class="list-group-item scoped-subquestion-block"
+                            v-for="subquestion in currentDataSet[subquestionscale]"
+                            :key="subquestion.qid"
+                            @dragenter.prevent="dragoverSubQuestion($event, subquestion, subquestionscale)"
+                            :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
+                        >
+                            <div class="scoped-move-block" v-show="!readonly">
+                                <i
+                                    class="fa fa-bars"
+                                    :class="surveyActive ? ' disabled' : ' '"
+                                    :draggable="!surveyActive"
+                                    @dragstart="startDraggingSubQuestion($event, subquestion, subquestionscale)"
+                                    @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)"
+                                ></i>
+                            </div>
+                            <div class="scoped-code-block   ">
+                                <input
+                                    type='text'
+                                    class="form-control"
+                                    maxlength='20'
+                                    size='5'
+                                    :class="surveyActive ? ' disabled' : ' '"
+                                    :disabled="surveyActive"
+                                    :name="'code_'+subquestion.question_order+'_'+subquestionscale"
+                                    :readonly="readonly"
+                                    v-model="subquestion.title"
+                                    @dblclick="toggleEditMode"
+                                    @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
+                                />
+                            </div>
+                            <div class="scoped-content-block   ">
+                                <input
+                                    type='text'
+                                    size='20'
+                                    class='answer form-control input'
+                                    :id='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
+                                    :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
+                                    :placeholder='translate("Some example subquestion")'
+                                    :value="getQuestionForCurrentLanguage(subquestion)"
+                                    :readonly="readonly"
+                                    @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
+                                    @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
+                                    @dblclick="toggleEditMode"
+                                />
+                            </div>
+                            <div class="scoped-relevance-block   ">
+                                <div class="input-group">
+                                    <div class="input-group-addon">{</div>
+                                    <input
+                                        type='text'
+                                        class='relevance_input_field form-control input'
+                                        :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                        :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                        :readonly="readonly"
+                                        v-model="subquestion.relevance"
+                                        @dblclick="toggleEditMode"
+                                        @keyup.enter.prevent='switchinput(false,$event)'
+                                        @focus='triggerScale'
+                                        @blur='untriggerScale'
+                                    />
+                                    <div class="input-group-addon">}</div>
+                                </div>
+                            </div>
+                            <div class="scoped-actions-block" v-show="!readonly">
+                                <button
+                                    v-if="!surveyActive"
+                                    class="btn btn-default btn-small"
+                                    data-toggle="tooltip"
+                                    :title='translate("Delete")'
+                                    @click.prevent="deleteThisDataSet(subquestion, subquestionscale)"
+                                >
+                                    <i class="fa fa-trash text-danger"></i>
+                                    <span class="sr-only">{{ "Delete" | translate }}</span>
+                                </button>
+                                <button
+                                    class="btn btn-default btn-small"
+                                    data-toggle="tooltip"
+                                    :title='translate("Open editor")'
+                                    @click.prevent="openPopUpEditor(subquestion, subquestionscale)"
+                                >
+                                    <i class="fa fa-edit"></i>
+                                    <span class="sr-only">{{ "Open editor" | translate }}</span>
+                                </button>
+                                <button
+                                    v-if="!surveyActive"
+                                    class="btn btn-default btn-small"
+                                    data-toggle="tooltip"
+                                    :title='translate("Duplicate")'
+                                    @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)"
+                                >
+                                    <i class="fa fa-copy"></i>
+                                    <span class="sr-only">{{ "Duplicate" | translate }}</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-6 text-right">
-                        <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary" v-if="!surveyActive">
-                            <i class="fa fa-plus"></i>
-                            {{ "Add subquestion" | translate}}
-                        </button>
+                    <!-- Buttons Predifined label sets Save as label set and Add Subquestion -->
+                    <div class="row custom custom-margin bottom-15" :key="subquestionscale+'metaSettings'" v-show="!readonly">
+                        <div class="col-sm-6 text-left">
+                            <button v-if="!isSurveyActive" class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
+                            <button class="btn btn-default" @click.prevent="saveAsLabelSet(subquestionscale)">{{ "Save as label set" | translate }}</button>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary" v-if="!surveyActive">
+                                <i class="fa fa-plus"></i>
+                                {{ "Add subquestion" | translate}}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </template>
