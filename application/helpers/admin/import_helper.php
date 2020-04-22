@@ -2873,6 +2873,7 @@ function TSVImportSurvey($sFullFilePath)
         }
         $adata[] = $rowarray;
     }
+    fclose($tmp);
     unset($rowheaders);
     unset($rowarray) ;
 
