@@ -139,7 +139,7 @@
                     <div class="col-sm-6 text-right">
                         <button v-if="!surveyActive" @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
-                            {{ "Add answeroption" | translate}}
+                            {{ "Add answer option" | translate}}
                         </button>
                     </div>
                 </div>
