@@ -487,7 +487,7 @@ class UserGroup extends LSActiveRecord
         $cnt = 0;
         foreach ($usersInGroup as $userInGroup) {
             /**@var $userInGroup UserInGroup */
-            $mailer = \LimeMailer::getInstance(); // To reset error
+            /* Set just needed part */
             $mailer->setTo($userInGroup->users->email, $userInGroup->users->users_name);
             $sendEmailSuccessErrors[$cnt]['username'] = $userInGroup->users->users_name;
             if ($mailer->sendMessage()) {
@@ -497,6 +497,7 @@ class UserGroup extends LSActiveRecord
                 $sendEmailSuccessErrors[$cnt]['msg'] = sprintf(gT("Email to %s failed. Error Message : %s"),
                     \CHtml::encode("{$userInGroup->users->users_name} <{$userInGroup->users->email}>"), $mailer->getError());
             }
+            $mailer->ErrorInfo = '';
             $cnt++;
         }
 
