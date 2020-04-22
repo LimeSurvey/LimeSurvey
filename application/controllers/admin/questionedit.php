@@ -594,6 +594,8 @@ class questionedit extends Survey_Common_Action
      * @throws Twig_Error_Loader
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
+     * 
+     * @deprecated Removed Preview in frontend.
      */
     public function getRenderedPreview($iQuestionId, $sLanguage, $root = false)
     {
