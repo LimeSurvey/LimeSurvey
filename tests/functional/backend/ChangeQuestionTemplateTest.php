@@ -215,6 +215,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
      * TODO: This test will fail cause of bug.
      * TODO: Bug #15330.
      *
+     * @test
      */
     public function selectQuestionThemeForQuestion()
     {
@@ -232,7 +233,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $web = self::$webDriver;
             $web->get($url);
 
-            sleep(3);
+            sleep(5);
 
             // Select Question Editor View
             try {
@@ -263,7 +264,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findByCss('#question_template option[value=bootstrap_buttons]');
             $option->click();
             
-            sleep(2);
+            sleep(5);
 
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
@@ -275,7 +276,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
             $option->click();
  
-            sleep(1);
+            sleep(5);
             
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
@@ -289,7 +290,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             );
             $this->assertNotNull($scopeApplyBaseStyleContainer);
 
-            sleep(1);
+            sleep(5);
 
             // Check if Display theme options link exists
             try {
