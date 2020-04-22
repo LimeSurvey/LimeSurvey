@@ -385,8 +385,14 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Return the question attributes definition by question type
-     * @param $sType: type pof question
+     *
+     * @param $sType : type of question (this is the attribute 'question_type' in table question_theme)
+     *
      * @return array : the attribute settings for this question type
+     *                 returns values from getGeneralAttributesFromXml and getAdvancedAttributesFromXml if this fails
+     *                 getAttributesDefinition and getDefaultSettings are returned
+     *
+     * @throws CException
      */
     public static function getQuestionAttributesSettings($sType)
     {
