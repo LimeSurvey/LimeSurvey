@@ -215,7 +215,6 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
      * TODO: This test will fail cause of bug.
      * TODO: Bug #15330.
      *
-     * @test
      */
     public function selectQuestionThemeForQuestion()
     {
