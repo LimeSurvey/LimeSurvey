@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.13 (build 200415) to 3.22.14 (build 200423) April 23, 2020
+-Fixed issue: Very high memory usage when importing TSV files (Carsten Schmitz)
+-Fixed issue: Expressions not being properly validated & highlighted in email templates when using 'Validate expression' function (Carsten Schmitz)
+
+
 Changes from 3.22.12 (build 200406) to 3.22.13 (build 200415) April 14, 2020
 -Fixed issue: Original superadmin (UID 1) should always be able to edit other users passwords (Carsten Schmitz)
 -Fixed issue #14291: CSRF 400 server error after entering update key (Carsten Schmitz)
