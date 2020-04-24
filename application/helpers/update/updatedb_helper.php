@@ -3570,18 +3570,58 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
 
     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
 
+    //this will fail because of using model in updatedb_helper ...
     // insert settings for default survey group
-    $settings2 = new SurveysGroupsettings;
-    $settings2->setToInherit();
-    $settings2->gsid = 1;
+    //$settings2 = new SurveysGroupsettings;
+    //$settings2->gsid = 1;
+    //$settings2->setToInherit(); //we can not use this function because of ipanonymize (again: never use models in update_helper)
 
-    // Quick hack to remote ipanonymize.
-    // TODO: Don't use models in updatedb_helper. ok
-    $attributes = $settings2->attributes;
-    unset($attributes['ipanonymize']);
+    $attributes2 =  array(
+        "gsid" => 1,
+        "owner_id" => -1,
+        "admin" => "inherit",
+        "adminemail" => "inherit",
+        "anonymized" => "I",
+        "format" => "I",
+        "savetimings" => "I",
+        "template" => "inherit",
+        "datestamp" => "I",
+        "usecookie" => "I",
+        "allowregister" => "I",
+        "allowsave" => "I",
+        "autonumber_start" => 0,
+        "autoredirect" => "I",
+        "allowprev" => "I",
+        "printanswers" => "I",
+        "ipaddr" => "I",
+        "refurl" => "I",
+        "showsurveypolicynotice" => 0,
+        "publicstatistics" => "I",
+        "publicgraphs" => "I",
+        "listpublic" => "I",
+        "htmlemail" => "I",
+        "sendconfirmation" => "I",
+        "tokenanswerspersistence" => "I",
+        "assessments" => "I",
+        "usecaptcha" => "E",
+        "bounce_email" => "inherit",
+        "attributedescriptions" => NULL,
+        "emailresponseto" => "inherit",
+        "emailnotificationto" => "inherit",
+        "tokenlength" => -1,
+        "showxquestions" => "I",
+        "showgroupinfo" => "I",
+        "shownoanswer" => "I",
+        "showqnumcode" => "I",
+        "showwelcome" => "I",
+        "showprogress" => "I",
+        "questionindex" => -1,
+        "navigationdelay" => -1,
+        "nokeyboard" => "I",
+        "alloweditaftercompletion" => "I",
+    );
 
-    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes);
-
+    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 }
 /**
 * @param CDbConnection $oDB
