@@ -323,33 +323,34 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * @param array $aAttributeNames
-     * @param array $aAttributeValues
-     * @param Question $oQuestion
-     * @return mixed
+     * Add custom attributes (if there are any custom attributes). It also removes all attributeNames where inputType is
+     * empty. Otherwise (not adding and removing anything)it returns the incoming parameter $aAttributeNames.
+     *
+     * @param array $aAttributeNames  the values from getQuestionAttributesSettings($sType)
+     * @param array $aAttributeValues  $attributeValues['question_template'] != 'core', only if this is true the function changes something
+     * @param Question $oQuestion      this is needed to check if a questionTemplate has custom attributes
+     * @return mixed  returns the incoming parameter $aAttributeNames or
      */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
-        if (isset($aAttributeValues['question_template'])) {
-            if ($aAttributeValues['question_template'] != 'core') {
-                $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
-                if ($oQuestionTemplate->bHasCustomAttributes) {
-                    // Add the custom attributes to the list
-                    foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
-                        $sAttributeName = (string) $attribute->name;
-                        $sInputType = (string)$attribute->inputtype;
-                        // remove attribute if inputtype is empty
-                        if (empty($sInputType)) {
-                            unset($aAttributeNames[$sAttributeName]);
-                        } else {
-                            $aCustomAttribute = json_decode(json_encode((array) $attribute), 1);
-                            $aCustomAttribute = array_merge(
-                                QuestionAttribute::getDefaultSettings(),
-                                array("category"=>gT("Template")),
-                                $aCustomAttribute
-                            );
-                            $aAttributeNames[$sAttributeName] = $aCustomAttribute;
-                        }
+        if (isset($aAttributeValues['question_template']) && ($aAttributeValues['question_template'] != 'core')) {
+            $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
+            if ($oQuestionTemplate->bHasCustomAttributes) {
+                // Add the custom attributes to the list
+                foreach ($oQuestionTemplate->oConfig->attributes->attribute as $attribute) {
+                    $sAttributeName = (string)$attribute->name;
+                    $sInputType = (string)$attribute->inputtype;
+                    // remove attribute if inputtype is empty
+                    if (empty($sInputType)) {
+                        unset($aAttributeNames[$sAttributeName]);
+                    } else {
+                        $aCustomAttribute = json_decode(json_encode((array)$attribute), 1);
+                        $aCustomAttribute = array_merge(
+                            QuestionAttribute::getDefaultSettings(),
+                            array("category" => gT("Template")),
+                            $aCustomAttribute
+                        );
+                        $aAttributeNames[$sAttributeName] = $aCustomAttribute;
                     }
                 }
             }

@@ -206,6 +206,7 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
+        $starttime = microtime();
         $iQuestionID = (int) $iQuestionID;
 
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
@@ -217,8 +218,9 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Limit the size of the attribute cache due to memory usage
-        $aQuestionAttributes = array();
-        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
+
+        // Maybe take parent_qid attribute before this qid attribute
+        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID));
 
         if ($oQuestion) {
             if ($sLanguage) {
@@ -234,21 +236,8 @@ class QuestionAttribute extends LSActiveRecord
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
 
-            $aAttributeNames = self::getQuestionAttributesSettings($sType);
-
-            /* Get whole existing attribute for this question in an array*/
+            /* Get whole existing attribute for this question in an array */
             $oAttributeValues = self::model()->resetScope()->findAll("qid=:qid", ['qid' => $iQuestionID]);
-
-            // insert additional attributes from an extended question theme
-            foreach ($oAttributeValues as $oAttributeValue) {
-                if ($oAttributeValue->attribute == 'question_template') {
-                    $aAttributeValues['question_template'] = $oAttributeValue->value;
-                    $aAttributeNames = Question::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
-                    break;
-                }
-            }
-
-
             $aAttributeValues = array();
             foreach ($oAttributeValues as $oAttributeValue) {
                 if ($oAttributeValue->language) {
@@ -259,9 +248,19 @@ class QuestionAttribute extends LSActiveRecord
                 }
             }
 
+            $aAttributeNames = self::getQuestionAttributesSettings($sType);
+            // insert additional attributes from an extended question theme
+            /* @var $oAttributeValue QuestionAttribute*/
+            $oAttributeValue = self::model()->resetScope()->find("qid=:qid and attribute=:attribute",
+                ['qid' => $iQuestionID, 'attribute' => 'question_template']);
+            if($oAttributeValue !== null){
+                $aAttributeValueQuestionTemplate['question_template'] = $oAttributeValue->value;
+                $aAttributeNames = Question::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValueQuestionTemplate, $oQuestion);
+            }
 
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
+            $aQuestionAttributes = array();
             foreach ($aAttributeNames as $aAttribute) {
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
@@ -299,6 +298,8 @@ class QuestionAttribute extends LSActiveRecord
             EmCacheHelper::set($cacheKey, $aQuestionAttributes);
         }
 
+        $endtime=  microtime();
+        $timeDiff = $endtime - $starttime;
         return $aQuestionAttributes;
     }
 
