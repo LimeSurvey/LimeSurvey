@@ -294,11 +294,9 @@ class UserAction extends Survey_Common_Action
             $postuserid = (int) Yii::app()->request->getParam("uid");
         }
         $postuser = flattenText(Yii::app()->request->getPost("user"));
-        // Never delete initial admin (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) {
-            // it's the original superadmin !!!
-            Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"), 'error');
+        // Never delete a forced super admin
+        if (Permission::isForcedSuperAdmin($postuserid)) {
+            Yii::app()->setFlashMessage(gT("This superadmin cannot be deleted."), 'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         if (isset($_POST['transfer_surveys_to'])) {
@@ -313,11 +311,11 @@ class UserAction extends Survey_Common_Action
             User::model()->updateAll(array('parent_id' => $fields['parent_id']), 'parent_id='.$postuserid);
         }
 
-        //DELETE USER FROM TABLE
-        User::model()->deleteUser($postuserid);
-
-        // Delete user rights
+        // Delete user permissions
         Permission::model()->deleteAllByAttributes(array('uid' => $postuserid));
+
+        // Delete user
+        User::model()->deleteByPk($postuserid);
 
         if ($postuserid == Yii::app()->session['loginID']) {
             session_destroy(); // user deleted himself
