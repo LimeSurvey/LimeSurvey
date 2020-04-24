@@ -689,10 +689,7 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['title'] = $model->users_name;
             $aResults[$user]['result'] = $this->deleteUser($user);
             if (!$aResults[$user]['result'] && $user == Yii::app()->user->id) {
-                $aResults[$user]['error'] = gT("You cannot delete yourself.");
-            }
-            if (Permission::isForcedSuperAdmin($user)) {
-                $aResults[$user]['error'] = gT("You have no permission to delete this user.");
+                $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
             }
         }
 
@@ -964,10 +961,13 @@ class UserManagementController extends LSBaseController
 
         if ($uid == Yii::app()->user->id) {
             return false;
-        } else {
-            $oUser = User::model()->findByPk($uid);
-            return $oUser->delete();
         }
+        if (Permission::isForcedSuperAdmin($uid)) {
+            return false;
+        }
+        
+        $oUser = User::model()->findByPk($uid);
+        return $oUser->delete();
     }
 
     /**
