@@ -135,7 +135,7 @@ class Usergroups extends Survey_Common_Action
                 $db_group_description = $_POST['group_description'];
 
                 if (isset($db_group_name) && strlen($db_group_name) > 0) {
-                    if (strlen($db_group_name) > 21) {
+                    if (strlen($db_group_name) > 20) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group name length more than 20 characters.")));
                         Yii::app()->user->setFlash('error', gT("Failed to add group! Group name length more than 20 characters."));
                     } elseif (UserGroup::model()->find("name=:groupName", array(':groupName' => $db_group_name))) {
