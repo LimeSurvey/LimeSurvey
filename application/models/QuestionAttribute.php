@@ -119,7 +119,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param integer $iQuestionID
      * @param string $sAttributeName
      * @param string $sValue
-     * @return CDbDataReader
+     * @return CDbDataReader|boolean
      */
     public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
@@ -196,111 +196,149 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Returns Question attribute array name=>value
+     * --> returns from emCache if it is set OR
+     * --> build the returned array and set the emCache to it
+     *
+     * get attributes from XML-Files
+     * get additional attributes from extended theme
+     * prepare an easier/smaller array to return
      *
      * @access public
      * @param int $iQuestionID
-     * @param string $sLanguage restrict to this language (@todo : add it in qanda)
+     * @param string $sLanguage restrict to this language (if null $oQuestion->survey->allLanguages will be used)
      * @return array|boolean
-     * @throws CException
-     * @todo This function needs to be incorporated in the model because it creates a big number of additional queries. For exmaple the default value merging could be done in AfterFind.
+     *
+     * @throws CException throws exception if questiontype is null
+     * @todo this function is doing to much things to prepare just an array. Find a better solution (maybe service class)
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
-        $starttime = microtime();
         $iQuestionID = (int) $iQuestionID;
-
+        // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
         if (EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
-                return $value;
+                return $value; //do we ever reach this point???
             }
         }
-
-        // Limit the size of the attribute cache due to memory usage
-
         // Maybe take parent_qid attribute before this qid attribute
         $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID));
-
         if ($oQuestion) {
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);
             } else {
                 $aLanguages = $oQuestion->survey->allLanguages;
             }
-            // Get all atribute set for this question
-            $sType = $oQuestion->type;
-
             // For some reason this happened in bug #10684
-            if ($sType == null) {
+            if ($oQuestion->type == null) {
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
-
-            /* Get whole existing attribute for this question in an array */
-            $oAttributeValues = self::model()->resetScope()->findAll("qid=:qid", ['qid' => $iQuestionID]);
-            $aAttributeValues = array();
-            foreach ($oAttributeValues as $oAttributeValue) {
-                if ($oAttributeValue->language) {
-                    $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language] = $oAttributeValue->value;
-                } else {
-                    /* Don't replace existing language, use '' for null key (and for empty string) */
-                    $aAttributeValues[$oAttributeValue->attribute][''] = $oAttributeValue->value;
-                }
-            }
-
-            $aAttributeNames = self::getQuestionAttributesSettings($sType);
-            // insert additional attributes from an extended question theme
-            /* @var $oAttributeValue QuestionAttribute*/
-            $oAttributeValue = self::model()->resetScope()->find("qid=:qid and attribute=:attribute",
-                ['qid' => $iQuestionID, 'attribute' => 'question_template']);
-            if($oAttributeValue !== null){
-                $aAttributeValueQuestionTemplate['question_template'] = $oAttributeValue->value;
-                $aAttributeNames = Question::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValueQuestionTemplate, $oQuestion);
-            }
-
-            // Fill with aQuestionAttributes with default attribute or with aAttributeValues
-            // Can not use array_replace due to i18n
-            $aQuestionAttributes = array();
-            foreach ($aAttributeNames as $aAttribute) {
-                $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
-
-                // convert empty array to empty string
-                if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
-                    $aAttribute['default'] = '';
-                }
-
-                if ($aAttribute['i18n'] == false) {
-                    if (isset($aAttributeValues[$aAttribute['name']][''])) {
-                        $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
-                    } elseif (isset($aAttributeValues[$aAttribute['name']])) {
-/* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
-                        $aQuestionAttributes[$aAttribute['name']] = reset($aAttributeValues[$aAttribute['name']]);
-                    } else {
-                        $aQuestionAttributes[$aAttribute['name']] = $aAttribute['default'];
-                    }
-                } else {
-                    foreach ($aLanguages as $sLanguage) {
-                        if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
-                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                        } elseif (isset($aAttributeValues[$aAttribute['name']][''])) {
-                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][''];
-                        } else {
-                            $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
-                        }
-                    }
-                }
-            }
+            $aAttributeValues = self::getAttributesAsArrayFromDB($iQuestionID);
+            $aAttributeFromXmlOrDefault = self::getQuestionAttributesSettings($oQuestion->type); //from xml files
+            $aAttributeNames = self::addAdditionalAttributesFromExtendedTheme($aAttributeFromXmlOrDefault, $oQuestion);
+            // Fill aQuestionAttributes with default attribute or with aAttributeValues
+            $aQuestionAttributes = self::rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages);
         } else {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
-
         if (EmCacheHelper::useCache()) {
             EmCacheHelper::set($cacheKey, $aQuestionAttributes);
         }
 
-        $endtime=  microtime();
-        $timeDiff = $endtime - $starttime;
         return $aQuestionAttributes;
+    }
+
+    /**
+     * Returns an array with attributes like
+     *   $aQuestionAttributes[$aAttribute['name']]['expression'] this will be overwritten if there are no languages and
+     *   will be set to the default value of the attribute if there is any --> e.g. $aQuestionAttributes["question_template"] = "core"
+     *   If there are languages the next array element will be appended to the result array
+     *   $aQuestionAttributes[$aAttribute['name']][$sLanguage]
+     *
+     * @param array $aAttributeNames array of attributes (see addAdditionalAttributesFromExtendedTheme())
+     * @param array $aAttributeValues array of attribute values (see getAttributesAsArrayFromDB())
+     * @param array $aLanguages  like $aLanguages[0] = 'en'
+     * @return array
+     */
+    private static function rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages){
+        $aQuestionAttributes = array();
+        foreach ($aAttributeNames as $aAttribute) {
+            $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
+
+            // convert empty array to empty string
+            if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+                $aAttribute['default'] = '';
+            }
+
+            if ($aAttribute['i18n'] == false) {
+                if (isset($aAttributeValues[$aAttribute['name']][''])) {
+                    $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
+                } elseif (isset($aAttributeValues[$aAttribute['name']])) {
+                    /* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
+                    $aQuestionAttributes[$aAttribute['name']] = reset($aAttributeValues[$aAttribute['name']]);
+                } else {
+                    $aQuestionAttributes[$aAttribute['name']] = $aAttribute['default'];
+                }
+            } else {
+                foreach ($aLanguages as $sLanguage) {
+                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
+                        $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
+                    } elseif (isset($aAttributeValues[$aAttribute['name']][''])) {
+                        $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][''];
+                    } else {
+                        $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
+                    }
+                }
+            }
+        }
+
+        return $aQuestionAttributes;
+    }
+
+
+    /**
+     * Get whole existing attribute for one question as array
+     *
+     * @param int $iQuestionID  the question id
+     * @return array the returning array structure will be like
+     *               $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]
+     *               $aAttributeValues[$oAttributeValue->attribute]['']
+     */
+    public static function getAttributesAsArrayFromDB($iQuestionID){
+        /* Get whole existing attribute for this question in an array */
+        $oAttributeValues = self::model()->resetScope()->findAll("qid=:qid", ['qid' => $iQuestionID]);
+        $aAttributeValues = array();
+        foreach ($oAttributeValues as $oAttributeValue) {
+            if ($oAttributeValue->language) {
+                $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language] = $oAttributeValue->value;
+            } else {
+                /* Don't replace existing language, use '' for null key (and for empty string) */
+                $aAttributeValues[$oAttributeValue->attribute][''] = $oAttributeValue->value;
+            }
+        }
+
+        return $aAttributeValues;
+    }
+
+    /**
+     * Insert additional attributes from an extended question theme
+     *
+     * @param array $aAttributeNames array of attributes (see getQuestionAttributesSettings())
+     * @param Question $oQuestion
+     * @return array|mixed returns $aAttributeNames with appended additional attributes
+     */
+    public static function addAdditionalAttributesFromExtendedTheme($aAttributeNames, $oQuestion){
+        $retAttributeNamesExtended = $aAttributeNames;
+        /* @var $oAttributeValue QuestionAttribute*/
+        $oAttributeValue = self::model()->resetScope()->find("qid=:qid and attribute=:attribute",
+            ['qid' => $oQuestion->qid, 'attribute' => 'question_template']);
+        if($oAttributeValue !== null){
+            $aAttributeValueQuestionTemplate['question_template'] = $oAttributeValue->value;
+            $retAttributeNamesExtended = Question::getQuestionTemplateAttributes($retAttributeNamesExtended, $aAttributeValueQuestionTemplate, $oQuestion);
+        }
+
+        return $retAttributeNamesExtended;
     }
 
     /**
@@ -385,7 +423,7 @@ class QuestionAttribute extends LSActiveRecord
 
 
     /**
-     * Return the question attributes definition by question type
+     * Return the question attribute settings for the passed type (parameter)
      *
      * @param $sType : type of question (this is the attribute 'question_type' in table question_theme)
      *
