@@ -2120,7 +2120,7 @@ class ExpressionManager
                                         if (is_numeric($params[0])) {
                                             $result = $funcName(floatval($params[0]));
                                         } else {
-                                            $result = false;
+                                            $result = NAN;
                                         }
                                         break;
                                     default:
@@ -2136,7 +2136,7 @@ class ExpressionManager
                                         if (is_numeric($params[0]) && is_numeric($params[1])) {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         } else {
-                                            $result = NAN;
+                                            $result = false;
                                         }
                                         break;
                                     default:
