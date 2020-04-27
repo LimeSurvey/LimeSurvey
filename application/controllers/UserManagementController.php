@@ -17,7 +17,7 @@ class UserManagementController extends LSBaseController
                 'allow',
                 'actions'=>array('index', 'addEditUser', 'applyEdit','addDummyUser',
                     'runAddDummyUser', 'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
-                    'batchSendAndResetLoginData', 'deleteConfirm', 'deleteMultiple', 'exportUser', 'importUser',
+                    'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
                     'renderSelectedItems', 'renderUserImport', 'runAddDummyUser', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'),
                 'users'=>array('@'), //only login users
@@ -689,7 +689,7 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['title'] = $model->users_name;
             $aResults[$user]['result'] = $this->deleteUser($user);
             if (!$aResults[$user]['result'] && $user == Yii::app()->user->id) {
-                $aResults[$user]['error'] = gT("You cannot delete yourself.");
+                $aResults[$user]['error'] = gT("You cannot delete yourself or a protected user.");
             }
         }
 
@@ -961,10 +961,13 @@ class UserManagementController extends LSBaseController
 
         if ($uid == Yii::app()->user->id) {
             return false;
-        } else {
-            $oUser = User::model()->findByPk($uid);
-            return $oUser->delete();
         }
+        if (Permission::isForcedSuperAdmin($uid)) {
+            return false;
+        }
+        
+        $oUser = User::model()->findByPk($uid);
+        return $oUser->delete();
     }
 
     /**

@@ -437,7 +437,11 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute){
-            $this->$attribute = 'I';
+            //fix for 16179
+            $dbversion =  GetGlobalSetting('DBVersion');
+            if( !($attribute==='ipanonymize' && ( $dbversion < 412 ))){
+                $this->$attribute = 'I';
+            }
         }
         foreach ($this->optionAttributesText as $attribute){
             $this->$attribute = 'inherit';

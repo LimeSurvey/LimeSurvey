@@ -209,20 +209,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Delete user
-     *
-     * @param string $iUserID The User ID to delete
-     * @return boolean
-     */
-    public function deleteUser($iUserID)
-    {
-        // TODO should be done via $oUser->delete directly
-        $iUserID = (int) $iUserID;
-        $oUser = $this->findByPk($iUserID);
-        return (bool) $oUser->delete();
-    }
-
-    /**
      * Finds user by username
      * @param string $sUserName
      * @return User
