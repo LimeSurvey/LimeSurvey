@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.0 (build 200422) to 4.2.1 (build 200428) April 28, 2020
+-Fixed issue: [security] Superadmin can delete a protected superadmin (Carsten Schmitz)
+-Fixed issue: Very high memory usage when importing TSV files (Carsten Schmitz)
+-Fixed issue #15824: Misleading gui for subquestion details when using array texts or similiar question types (Jessica Höck)
+-Fixed issue #16179: Update 3.20.2 -> 4.2.0 running into database error (Patricia Stelling)
+-Fixed issue #16160: (Email to user group does not work)fix has been done already in master. Since develop differs from master, fix has to be done again at this point. (Patricia Stelling)
+-Fixed issue #16122: Encryption of "email" field in participants database: Limesurvey does not mark participant as invited (Denis Chenu)
+-Fixed issue #15901: Regression: Buttons to uninstall or reset a theme missing at LS 4 (Patricia Stelling)
+
+
 Changes from 4.1.18 (build 200416) to 4.2.0 (build 200422) April 22, 2020
 +New feature #15923: Allow to update some Expression Dynamic variable (Denis Chenu)
 +New feature #15246: Allow fixed function (only PHP) in expression manager (Denis Chenu)
