@@ -281,8 +281,11 @@ class SurveyLanguageSetting extends LSActiveRecord
     function insertSomeRecords($data)
     {
         $lang = new self;
+        $aFields=$this->attributes;
         foreach ($data as $k => $v) {
-            $lang->$k = $v;
+            if (array_key_exists($k,$aFields)) {
+                $lang->$k = $v;
+            }
         }
         return $lang->save();
     }
