@@ -109,22 +109,19 @@ abstract class QuestionBaseDataSet extends StaticModel
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
         } else {
-            $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
+            $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo this should be done in controller ...
             $this->oQuestion = $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
-        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
-        
-        $sQuestionType = $this->sQuestionType;
 
-        if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
+        //this function call must be here, because the emcache is set in this function and comes to use somewhere else ...
+        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
+        if( $sQuestionTemplate === null && $this->aQuestionAttributes['question_template'] !== 'core') {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
         }
-
         $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
-        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionType, $sQuestionTemplate);
 
         $aAdvancedOptionsArray = [];
         if ($iQuestionID == null) {
@@ -134,10 +131,15 @@ abstract class QuestionBaseDataSet extends StaticModel
             }
         }
 
-        // this is how the sorting should work but is overwritten by returning the json to the ajax result, sorting is done in _settingstab.vue for now
-        uasort($aQuestionTypeAttributes, 'categorySort');
         if (empty($aAdvancedOptionsArray)) {
-            foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
+
+            //$aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTemplate);
+            //is it possible to call this instead?
+            $aQuestionTypeAttributes2 = QuestionAttribute::getQuestionAttributesSettings($this->sQuestionType); //from xml files
+
+            // this is how the sorting should work but is overwritten by returning the json to the ajax result, sorting is done in _settingstab.vue for now
+            uasort($aQuestionTypeAttributes2, 'categorySort');
+            foreach ($aQuestionTypeAttributes2 as $sAttributeName => $aQuestionAttributeArray) {
                 if ($sAttributeName == 'question_template') {
                     continue;
                 } // Avoid double displaying

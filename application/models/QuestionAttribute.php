@@ -196,12 +196,12 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Returns Question attribute array name=>value
-     * --> returns from emCache if it is set OR
+     * --> returns result from emCache if it is set OR
      * --> build the returned array and set the emCache to it
      *
-     * get attributes from XML-Files
-     * get additional attributes from extended theme
-     * prepare an easier/smaller array to return
+     * --get attributes from XML-Files
+     * --get additional attributes from extended theme
+     * --prepare an easier/smaller array to return
      *
      * @access public
      * @param int $iQuestionID
@@ -219,10 +219,9 @@ class QuestionAttribute extends LSActiveRecord
         if (EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
-                return $value; //do we ever reach this point???
+                return $value;
             }
         }
-        // Maybe take parent_qid attribute before this qid attribute
         $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID));
         if ($oQuestion) {
             if ($sLanguage) {
@@ -525,7 +524,6 @@ class QuestionAttribute extends LSActiveRecord
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
-        $aXmlAttributes = array();
         $aAttributes = array();
 
         if (file_exists($sXmlFilePath)) {

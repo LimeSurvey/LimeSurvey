@@ -899,4 +899,85 @@ class QuestionTheme extends LSActiveRecord
             'success' => true
         ];
     }
+
+    /**
+     * Return the question Theme custom attributes values
+     * -- gets coreAttributes from xml-file
+     * --
+     *
+     * @param string  $type question type (this is the attribute 'question_type' in table question_theme)
+     * @param string  $sQuestionThemeName : question theme name
+     *
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionThemeAttributeValues($type, $sQuestionThemeName = null)
+    {
+        $aQuestionAttributes = array();
+        $additionalAttributes = array();
+
+        $sCoreTypeXmlPath = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends',
+            ['question_type' => $type, 'extends' => '']);
+        $xmlConfigPath = App()->getConfig('rootdir') .'/'. $sCoreTypeXmlPath['xml_path'] . '/config.xml';
+        libxml_disable_entity_loader(false);
+        $oCoreConfig = simplexml_load_file($xmlConfigPath);
+        $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
+
+
+        if ($sQuestionThemeName !== null) {
+            $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
+            if (!empty($questionTheme)) {
+                $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
+                $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+            } else {
+                $attributes = json_decode(json_encode((array)$oCoreConfig->attributes), true);
+            }
+        }
+        libxml_disable_entity_loader(true);
+
+        if (!empty($attributes)) {
+            if (!empty($attributes['attribute']['name'])) {
+                // Only one attribute set in config : need an array of attributes
+                $attributes['attribute'] = array($attributes['attribute']);
+            }
+            // Create array of attribute with name as key
+            $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+            foreach ($attributes['attribute'] as $attribute) {
+                if (!empty($attribute['name'])) {
+                    // inputtype is text by default
+                    $additionalAttributes[$attribute['name']] = array_merge($defaultQuestionAttributeValues, $attribute);
+                }
+            }
+        }
+
+        if (!isset($aCoreAttributes['attributes']['attribute'])) {
+            throw new Exception("Question type attributes not available!");
+        }
+
+        foreach ($aCoreAttributes['attributes']['attribute'] as $aCoreAttribute) {
+            $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
+        }
+
+        /**
+         * New event to allow plugin to add own question attribute (settings)
+         * Using $event->append('questionAttributes', $questionAttributes);
+         * $questionAttributes=[
+         *  attributeName=>[
+         *      'types' : Aply to this question type
+         *      'category' : Where to put it
+         *      'sortorder' : Qort order in this category
+         *      'inputtype' : type of input
+         *      'expression' : 2 to force Exprerssion Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+         *      'options' : optionnal options if input type need it
+         *      'default' : the default value
+         *      'caption' : the label
+         *      'help' : an help
+         *  ]
+         */
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
+        $eventAttributes = (array) $result->get('questionAttributes');
+
+        return array_merge($aQuestionAttributes, $additionalAttributes, $eventAttributes);
+    }
 }
