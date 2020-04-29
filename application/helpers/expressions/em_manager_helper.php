@@ -9105,7 +9105,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         {
                             $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                         }
-
                         // Check for and adjust ',' and '.' in numbers
                         $isOnlyNum = isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1';
                         if ($radixchange && $isOnlyNum) {
@@ -9205,16 +9204,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             'type'=>$type,
                             'value'=>NULL,
                         );
-                        // set irrelevant value for Question M and P to 'N', will be validated in _validateQuestion
-                        if ($type == Question::QT_M_MULTIPLE_CHOICE || $type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
-                            $value = 'N';
-                            // Add the string in $_SESSION to be shown and see if we need to reset value
-                            if (!self::checkValidityAnswer($type, $value, $sq, $qinfo['info'])) {
-                                $value = NULL;
-                            }
-                            $_SESSION[$LEM->sessid][$sq] = $value;
-                            $_update['value'] = $value;
-                        }
                         $updatedValues[$sq] = $_update;
                         $LEM->updatedValues[$sq] = $_update;
                     }
