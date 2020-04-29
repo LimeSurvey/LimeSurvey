@@ -6,8 +6,8 @@
   "author": "Markus Fluer <markus.fluer@limesurvey.org>",
   "license": "GPL-2.0-or-later",
   "scripts": {
-      "build" : "webpack --mode=production",
-      "dev" : "webpack --mode=development"
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^15.0.0",
