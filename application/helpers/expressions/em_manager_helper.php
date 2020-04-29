@@ -4409,20 +4409,13 @@
             $event->set('questionSeq2relevance',$this->questionSeq2relevance);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
-            $newExpressionSuffixes = $event->get('newExpressionSuffixes');
-            if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
-                $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
-            }
+            $this->em->addRegexpExtraAttributes($event->get('newExpressionSuffixes', array()));
             /* Put in manual : offer updating this part must be done with care. And can broke without API version update */
-            $this->knownVars = $result->get('knownVars');
-            $this->questionSeq2relevance = $result->get('questionSeq2relevance');
+            $this->knownVars = $result->get('knownVars', array()); // PluginManager use not a strict compare to false, empty array get the default.
+            $this->questionSeq2relevance = $result->get('questionSeq2relevance', array()); // PluginManager use not a strict compare to false, empty array get the default.
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
-            if (!empty($this->questionSeq2relevance)) {
-                usort($this->questionSeq2relevance,'cmpQuestionSeq');
-                $this->numQuestions = count($this->questionSeq2relevance);
-            } else {
-                $this->numQuestions = 0;
-            }
+            usort($this->questionSeq2relevance,'cmpQuestionSeq');
+            $this->numQuestions = count($this->questionSeq2relevance);
             $this->numGroups = count($this->groupSeqInfo);
             return true;
         }
