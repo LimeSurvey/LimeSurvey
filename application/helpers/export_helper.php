@@ -2564,7 +2564,6 @@ function tsvSurveyExport($surveyid){
     foreach ($aSurveyLanguages as $key => $language) {
         // groups data
         if (array_key_exists('groups', $xmlData)){
-            debugbreak();
             // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
             if (!array_key_exists('gid', $xmlData['groups']['rows']['row'][0])){
                 $aSaveData=$xmlData['groups']['rows']['row'];
