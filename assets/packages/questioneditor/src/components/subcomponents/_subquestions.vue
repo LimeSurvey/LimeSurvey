@@ -21,11 +21,9 @@
             >
                 <!-- Y-Scale -->
                 <div v-if="subquestionscale == 0" :key="subquestionscale" class="panel panel-default">
-                    <template v-if="subquestionScales.length > 1">
                         <div class="panel-heading">
                             {{'Y-Scale (lines)'|translate}}
                         </div>
-                    </template>
                     <div class="panel-body">
                         <div
                             :key="subquestionscale+'subquestions'"
