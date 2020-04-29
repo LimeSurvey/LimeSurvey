@@ -21,7 +21,7 @@
             >
                 <!-- Y-Scale -->
                 <div v-if="subquestionscale == 0" :key="subquestionscale" class="panel panel-default">
-                    <div class="panel-header">
+                    <div class="panel-heading">
                         {{'Y-Scale'|translate}}
                     </div>
                     <div class="panel-body">
@@ -161,7 +161,7 @@
                 </div>
                 <!-- X-Scale -->
                 <div v-if="subquestionscale == 1" :key="subquestionscale"  class="panel panel-default">
-                    <div class="panel-header">
+                    <div class="panel-heading">
                         {{'X-Scale'|translate}}
                     </div>
                     <div class="panel-body">
@@ -173,9 +173,6 @@
                             <div class="list-group-item scoped-subquestion-block header-block">
                                 <div class="scoped-move-block" v-show="!readonly">
                                     <div>&nbsp;</div>
-                                </div>
-                                <div>
-                                    X-Scale
                                 </div>
                                 <div class="scoped-code-block">
                                     {{'Title'|translate}}
