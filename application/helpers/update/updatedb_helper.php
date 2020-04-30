@@ -779,7 +779,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{surveys}}','publicstatistics',"string(1)",false , 'N');
             alterColumn('{{surveys}}','publicgraphs',"string(1)",false , 'N');
             alterColumn('{{surveys}}','listpublic',"string(1)",false , 'N');
-            alterColumn('{{surveys}}','htmlemail',"string(1)",false , 'Y');
+            alterColumn('{{surveys}}','htmlemail',"string(1)",false , 'N');
             alterColumn('{{surveys}}','sendconfirmation',"string(1)",false , 'Y');
             alterColumn('{{surveys}}','tokenanswerspersistence',"string(1)",false , 'N');
             alterColumn('{{surveys}}','assessments',"string(1)",false , 'N');
@@ -3525,7 +3525,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
         'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
         'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
         'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
-        'htmlemail' => "string(1) NOT NULL DEFAULT 'Y'",
+        'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
         'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
         'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
         'assessments' => "string(1) NOT NULL DEFAULT 'N'",
