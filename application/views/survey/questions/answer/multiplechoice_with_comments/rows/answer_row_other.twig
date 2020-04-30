@@ -34,7 +34,7 @@
                type="text"
                name="{{ name }}"
                id="{{ id }}"
-               value="{{ value }}"
+               value="{{ C.Html.encode(value) }}"
                data-number={{ otherNumber }}
             />
         </div>
@@ -48,7 +48,7 @@
                 type='text'
                 id='{{ inputCommentId }}'
                 name='{{ inputCommentName }}'
-                value='{{ inputCOmmentValue }}'
+                value='{{ C.Html.encode(inputCommentValue) }}'
                 aria-labelledby='label-{{ id }} {{ id }}'
             />
         </div>
