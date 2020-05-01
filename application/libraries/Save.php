@@ -506,6 +506,7 @@ class Save
         $pluginEmailData->set('savename', $savename);
         $pluginEmailData->set('savepass', $savepass);
         $pluginEmailData->set('saveemail', $saveemail);
+        $pluginEmailData->set('lang', $lang);
         $pluginEmailData->set('subject', gT("Saved Survey Details")." - ".$thissurvey['name'] );
         $pluginEmailData->set('body', $message );
         App()->getPluginManager()->dispatchEvent($pluginEmailData);
