@@ -507,19 +507,38 @@ class Save
         $pluginEmailData->set('savepass', $savepass);
         $pluginEmailData->set('saveemail', $saveemail);
         $pluginEmailData->set('lang', $lang);
-        $pluginEmailData->set('subject', gT("Saved Survey Details")." - ".$thissurvey['name'] );
+        $pluginEmailData->set('subject', gT("Saved Survey Details")." - %surveyName%" );
         $pluginEmailData->set('body', $message );
         App()->getPluginManager()->dispatchEvent($pluginEmailData);
 
         $mailer = new \LimeMailer;
         $mailer->setSurvey($thissurvey['sid']);
         $mailer->emailType = $emailType;
-        $mailer->Subject = $pluginEmailData->get('subject');
-        $mailer->Body = $pluginEmailData->get('body');
-        foreach( ['surveyId', 'surveyName', 'surveyLink', 'savename', 'savepass', 'saveemail'] as $f ) {
-            $mailer->Body = preg_replace('/%' . $f . '%/m', $pluginEmailData->get( $f ), $mailer->Body );
-        }
         $mailer->addAddress($pluginEmailData->get('saveemail'));
+
+        foreach( ['subject', 'body'] as $k) {
+            $tmp = $pluginEmailData->get($k);
+			preg_match_all("/%([^%]+)%/ismu", $tmp, $matches);
+
+            if( !empty($matches[1]) ) {
+
+                foreach($matches[1] as $src) {
+                    $_src = trim($src);
+                    if( in_array($_src, ['body', 'subject']) ) {
+                        continue;
+                    }
+                    
+                    $dst = $pluginEmailData->get(trim($src));
+                    if( empty($dst) ) {
+                        $dst = "";
+                    }
+                    $tmp = str_replace("%$src%", $dst, $tmp );
+                }
+            }
+
+			$_k = ucfirst($k);
+            $mailer->$_k = $tmp;
+        }
 
         return $mailer;
     }
