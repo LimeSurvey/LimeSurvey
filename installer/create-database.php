@@ -6,7 +6,7 @@
  * @throws CHttpException
  * @throws CException
  */
-function createDatabase($oDB){
+function populateDatabase($oDB){
     /**
     * Populate the database for a limesurvey installation
     * Rules:
@@ -606,6 +606,7 @@ function createDatabase($oDB){
             'allowprev' => "string(1) NOT NULL default 'N'",
             'printanswers' => "string(1) NOT NULL default 'N'",
             'ipaddr' => "string(1) NOT NULL default 'N'",
+            'ipanonymize' => "string(1) NOT NULL default 'N'",
             'refurl' => "string(1) NOT NULL default 'N'",
             'datecreated' => "datetime",
             'showsurveypolicynotice' => 'integer DEFAULT 0',
@@ -693,6 +694,7 @@ function createDatabase($oDB){
             'allowprev' => "string(1) NOT NULL DEFAULT 'N'",
             'printanswers' => "string(1) NOT NULL DEFAULT 'N'",
             'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
+            'ipanonymize' => "string(1) NOT NULL DEFAULT 'N'",
             'refurl' => "string(1) NOT NULL DEFAULT 'N'",
             'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
             'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
@@ -741,6 +743,7 @@ function createDatabase($oDB){
             'allowprev' => 'N',
             'printanswers' => 'N',
             'ipaddr' => 'N',
+            'ipanonymize' => 'N',
             'refurl' => 'N',
             'showsurveypolicynotice' => '0',
             'publicstatistics' => 'N',
@@ -784,6 +787,7 @@ function createDatabase($oDB){
                 "allowprev" => "I",
                 "printanswers" => "I",
                 "ipaddr" => "I",
+                'ipanonymize' => "I",
                 "refurl" => "I",
                 "showsurveypolicynotice" => 0,
                 "publicstatistics" => "I",

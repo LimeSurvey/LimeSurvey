@@ -194,7 +194,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             function ($oQuestionGroup) use (&$aGroupOptions){
                 $aGroupOptions[] = [
                     'value' => $oQuestionGroup->gid,
-                    'text' => $oQuestionGroup->questionGroupL10ns[$this->sLanguage]->group_name,
+                    'text' => $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name,
                 ];
             }
         );
@@ -412,8 +412,9 @@ abstract class QuestionBaseDataSet extends StaticModel
 
     protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray)
     {
+        $aAttributeArray = array_merge(QuestionAttribute::getDefaultSettings(),$aAttributeArray);
         $aAdvancedAttributeArray = [
-            'name' => $sAttributeKey,
+            'name' => empty($aAttributeArray['name']) ? $sAttributeKey : $aAttributeArray['name'],
             'title' => CHtml::decode($aAttributeArray['caption']),
             'inputtype' => $aAttributeArray['inputtype'],
             'formElementId' => $sAttributeKey,

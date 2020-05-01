@@ -1198,7 +1198,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->with('questionGroupL10ns')->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
                 return array('status' => 'Error: Invalid group ID');
             }
@@ -1229,9 +1229,9 @@ class remotecontrol_handle
                 foreach ($aGroupSettings as $sGroupSetting) {
                     if (isset($oGroup->$sGroupSetting)) {
                         $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
-                    } elseif (isset($oGroup->questionGroupL10ns[$sLanguage])
-                        && isset($oGroup->questionGroupL10ns[$sLanguage]->$sGroupSetting)) {
-                        $aResult[$sGroupSetting] = $oGroup->questionGroupL10ns[$sLanguage]->$sGroupSetting;
+                    } elseif (isset($oGroup->questiongroupl10ns[$sLanguage])
+                        && isset($oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting)) {
+                        $aResult[$sGroupSetting] = $oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting;
                     }
                 }
                 return $aResult;
@@ -1535,9 +1535,9 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->with('questionL10ns')
+                $oQuestion = Question::model()->with('questionl10ns')
                     ->find(
-                        't.qid = :qid and questionL10ns.language = :language',
+                        't.qid = :qid and questionl10ns.language = :language',
                         array(':qid' => $iQuestionID, ':language'=>$sLanguage)
                 );
                 if (!isset($oQuestion)) {
@@ -1564,9 +1564,9 @@ class remotecontrol_handle
                 $aResult = array();
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
-                        $oSubQuestions = Question::model()->with('questionL10ns')
+                        $oSubQuestions = Question::model()->with('questionl10ns')
                             ->findAll(
-                                't.parent_qid = :parent_qid and questionL10ns.language = :language',
+                                't.parent_qid = :parent_qid and questionl10ns.language = :language',
                                 array(':parent_qid' => $iQuestionID, ':language'=>$sLanguage),
                                 array('order'=>'title')
                         );
@@ -1575,10 +1575,10 @@ class remotecontrol_handle
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
                                 if ($sPropertyName == 'available_answers') {
-                                    $aData[$oSubQuestion['title']] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['title']] = array_key_exists($sLanguage, $oSubQuestion->questionl10ns) ? $oSubQuestion->questionl10ns[$sLanguage]->question : '';
                                 } else {
                                     $aData[$oSubQuestion['qid']]['title'] = $oSubQuestion['title'];
-                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($sLanguage, $oSubQuestion->questionl10ns) ? $oSubQuestion->questionl10ns[$sLanguage]->question : '';
                                     $aData[$oSubQuestion['qid']]['scale_id'] = $oSubQuestion['scale_id'];
                                 }
 
@@ -1613,16 +1613,16 @@ class remotecontrol_handle
                             $aResult['attributes_lang'] = 'No available attributes';
                         }
                     } else if ($sPropertyName == 'answeroptions') {
-                        $oAttributes = Answer::model()->with('answerL10ns')
+                        $oAttributes = Answer::model()->with('answerl10ns')
                             ->findAll(
-                                't.qid = :qid and answerL10ns.language = :language',
+                                't.qid = :qid and answerl10ns.language = :language',
                                 array(':qid' => $iQuestionID, ':language'=> $sLanguage),
                                 array('order'=>'sortorder')
                         );
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['code']]['answer'] = array_key_exists($language, $oAttribute->answerL10ns) ? $oAttribute->answerL10ns[$sLanguage]->answer : '';
+                                $aData[$oAttribute['code']]['answer'] = array_key_exists($sLanguage, $oAttribute->answerl10ns) ? $oAttribute->answerl10ns[$sLanguage]->answer : '';
                                 $aData[$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];
@@ -1647,9 +1647,9 @@ class remotecontrol_handle
                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } else if ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultValueL10ns')
+                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
                             ->find(
-                                'qid = :qid AND defaultValueL10ns.language = :language',
+                                'qid = :qid AND defaultvaluel10ns.language = :language',
                                 array(':qid' => $iQuestionID, ':language'=> $sLanguage)
                             )
                             ->defaultvalue;
@@ -2023,7 +2023,7 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                $oGroupList = QuestionGroup::model()->with('questionGroupL10ns')->findAllByAttributes(array("sid"=>$iSurveyID));
+                $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid"=>$iSurveyID));
                 if (count($oGroupList) == 0) {
                     return array('status' => 'No groups found');
                 }
@@ -2033,7 +2033,7 @@ class remotecontrol_handle
                 }
 
                 foreach ($oGroupList as $oGroup) {
-                    $L10ns = $oGroup->questionGroupL10ns[$sLanguage];
+                    $L10ns = $oGroup->questiongroupl10ns[$sLanguage];
                     $tmp = array('id'=>$oGroup->primaryKey) + $oGroup->attributes;
                     $tmp['group_name'] = $L10ns['group_name'];
                     $tmp['description'] = $L10ns['description'];
@@ -2191,7 +2191,7 @@ class remotecontrol_handle
                 }
 
                 foreach ($aQuestionList as $oQuestion) {
-                    $L10ns = $oQuestion->questionL10ns[$sLanguage];
+                    $L10ns = $oQuestion->questionl10ns[$sLanguage];
                     $aData[] = array_merge([
                         'id' => $oQuestion->primaryKey,
                         'question' => $L10ns->question,

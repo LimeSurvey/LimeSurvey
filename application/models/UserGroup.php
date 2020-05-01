@@ -56,6 +56,23 @@ class UserGroup extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    public function rules()
+    {
+        return array(
+            array('name', 'required'),
+            array('ugid, owner_id', 'numerical', 'integerOnly'=>true),
+            array('name', 'unique', 'message' => gT("Failed to add group! Group already exists.")),
+            array(
+                'name',
+                'length',
+                'min' => 1,
+                'max' => 20,
+                'tooShort' => gt("Name should be at least have one sign"),
+                'tooLong' => gt('Failed to add group! Group name length more than 20 characters.')),
+        );
+    }
+
+    /** @inheritdoc */
     public function relations()
     {
         // NOTE: you may need to adjust the relation name and the related
@@ -308,18 +325,18 @@ class UserGroup extends LSActiveRecord
     {
 
         // View users
-        $url = Yii::app()->createUrl("admin/usergroups/sa/view/ugid/$this->ugid");
+        $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
         $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
-            $url = Yii::app()->createUrl("admin/usergroups/sa/edit/ugid/$this->ugid");
+            $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
             $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Mail to user group
         // Which permission should be checked for this button to be available?
-        $url = Yii::app()->createUrl("admin/usergroups/sa/mail/ugid/$this->ugid");
+        $url = Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid");
         $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Email user group').'" href="'.$url.'" role="button"><span class="icon-invite" ></span></a>';
 
         // Delete user group
@@ -405,15 +422,12 @@ class UserGroup extends LSActiveRecord
 
     /**
      * Checks whether the specified UID is part of that group
+     *
      * @param integer $uid
      * @return bool
      */
     public function hasUser($uid)
     {
-        // superadmin is part of all groups
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            return true;
-        }
         $userInGroup = UserInGroup::model()->findByAttributes(['ugid'=>$this->ugid], 'uid=:uid', [':uid'=>$uid]);
         if ($userInGroup) {
             return true;
@@ -437,6 +451,67 @@ class UserGroup extends LSActiveRecord
         return $oModel->save();
     }
 
+    /**
+     * Sending emails to all users of a specific group.
+     * Returns information about success/errors for sending emails to all single users
+     *
+     * @param $ugid     integer
+     * @param $subject  string  subject of email
+     * @param $body     string  body of email
+     * @param $copy     integer  1->send copy to user
+     * @return string
+     *
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function sendUserEmails($ugid, $subject, $body, $copy){
+        $sendEmailSuccessErrors = [];
 
+        $criteria = new CDbCriteria;
+        $criteria->compare('ugid', $ugid)->addNotInCondition('users.uid', array(Yii::app()->session['loginID']));
+        /**@var $eruresult UserInGroup[] */
+        $usersInGroup = UserInGroup::model()->with('users')->findAll($criteria);
+
+        $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
+        $mailer->emailType = "mailsendusergroup";
+        $oUserFrom = User::model()->findByPk(Yii::app()->session['loginID']);
+        $fromName = empty($oUserFrom->full_name) ? $oUserFrom->users_name : $oUserFrom->full_name;
+        $mailer->setFrom($oUserFrom->email, $fromName);
+        //todo: this will send user in cc amountNumberOfUsers (spaming the email of user ...)
+        if ($copy == 1) {
+            $mailer->addCC($oUserFrom->email, $fromName);
+        }
+        $mailer->Subject = $subject;
+        $body = str_replace("\n.", "\n..", $body);
+        $body = wordwrap($body, 70);
+        $mailer->Body = $body;
+        $cnt = 0;
+        foreach ($usersInGroup as $userInGroup) {
+            /**@var $userInGroup UserInGroup */
+            /* Set just needed part */
+            $mailer->setTo($userInGroup->users->email, $userInGroup->users->users_name);
+            $sendEmailSuccessErrors[$cnt]['username'] = $userInGroup->users->users_name;
+            if ($mailer->sendMessage()) {
+                $sendEmailSuccessErrors[$cnt]['success'] = true;
+            } else {
+                $sendEmailSuccessErrors[$cnt]['success'] = false;
+                $sendEmailSuccessErrors[$cnt]['msg'] = sprintf(gT("Email to %s failed. Error Message : %s"),
+                    \CHtml::encode("{$userInGroup->users->users_name} <{$userInGroup->users->email}>"), $mailer->getError());
+            }
+            $mailer->ErrorInfo = '';
+            $cnt++;
+        }
+
+        $msgToUser = gt('Sending emails to users(sucess/errors):') ."<br>";
+        foreach ($sendEmailSuccessErrors as $emaiLResult){
+            $msgToUser .= $emaiLResult['username'] . ': ';
+            if($emaiLResult['success']){
+                $msgToUser .= gt('Sending successful') ."<br>";
+            }else{
+                $msgToUser .= gt('Error: ') . $emaiLResult['msg'] ."<br>";
+            }
+        }
+
+        return $msgToUser;
+    }
 
 }

@@ -15,6 +15,16 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     public static function setupBeforeClass()
     {
         parent::setupBeforeClass();
+
+        $db = \Yii::app()->getDb();
+
+        $db->schemaCachingDuration = 0;
+        // Load all tables of the application in the schema
+        $db->schema->getTables();
+        // clear the cache of all loaded tables
+        $db->schema->refresh();
+        $db->active = false;
+        $db->active = true;
     }
 
     /**

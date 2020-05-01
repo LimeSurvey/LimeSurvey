@@ -1,3 +1,5 @@
+<template>
+</template>
 <script>
 export default {
   data() {
@@ -5,6 +7,7 @@ export default {
       isBlocked: false,
     }
   },
+  name: 'AbstractRepresentation',
   computed: {
     files() {
       return this.$store.state.fileList
@@ -29,10 +32,10 @@ export default {
       }
       if (this.inTransit(file) === true ) {
         htmlClasses += "file-in-transit ";
-        if (this.$store.state.transitType == "move") {
+        if (this.$store.state.transitType === "move") {
           htmlClasses += "move ";
         }
-        if (this.$store.state.transitType == "copy") {
+        if (this.$store.state.transitType === "copy") {
           htmlClasses += "copy ";
         }
       }
@@ -42,7 +45,7 @@ export default {
       return htmlClasses;
     },
     inDeletion(file) {
-      return this.fileInDeletion == file.path;
+      return this.fileInDeletion === file.path;
     },
     deleteFile(file) {
       if (!this.isBlocked) {

@@ -15,7 +15,7 @@ class UploadQuestionController {
             this.$el.dialog("close");
         };
 
-        $(document).off('shown.bs.modal.lsuploadquestion');
+        $(document).off('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname);
         $(document).on('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname, () => {
             const uploadFrame = $('#uploader' + this.fieldname);
             uploadFrame.load(uploadFrame.data('src'));

@@ -483,13 +483,13 @@ class limereplacementfields extends Survey_Common_Action
                 foreach ($aSubquestions as $oSubQuestion) {
                     $aResult[$oQuestion->title.'_'.$oSubQuestion->title] = [
                         'type' => 'question',
-                        'value' => ' -('.$oQuestion->title.')| '.$oSubQuestion->questionL10ns[$oSurvey->language]->question
+                        'value' => ' -('.$oQuestion->title.')| '.$oSubQuestion->questionl10ns[$oSurvey->language]->question
                     ];
                 }
             } else {
                 $aResult[$oQuestion->title] = [
                     'type' => 'question',
-                    'value' => $oQuestion->questionL10ns[$oSurvey->language]->question,
+                    'value' => $oQuestion->questionl10ns[$oSurvey->language]->question,
                 ];
             }
         }

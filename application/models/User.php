@@ -43,7 +43,6 @@ class User extends LSActiveRecord
     public $lang = 'auto';
     public $searched_value;
 
-
     /**
      * @inheritdoc
      * @return User
@@ -207,20 +206,6 @@ class User extends LSActiveRecord
         } else {
             return false;
         }
-    }
-
-    /**
-     * Delete user
-     *
-     * @param string $iUserID The User ID to delete
-     * @return boolean
-     */
-    public function deleteUser($iUserID)
-    {
-        // TODO should be done via $oUser->delete directly
-        $iUserID = (int) $iUserID;
-        $oUser = $this->findByPk($iUserID);
-        return (bool) $oUser->delete();
     }
 
     /**
@@ -526,19 +511,13 @@ class User extends LSActiveRecord
      */
     public function getManagementButtons()
     {
-        $editUser = "";
-        $deleteUser = "";
-        $setPermissionsUser = "";
-        $setTemplatePermissionUser = "";
-        $changeOwnership = "";
-
-        $detailUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/viewuser', ['userid' => $this->uid]);
-        $editUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/editusermodal', ['userid' => $this->uid]);
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
-        $setRoleUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/addrole', ['userid' => $this->uid]);
-        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
-        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership');
-        $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
+        $detailUrl = Yii::app()->getController()->createUrl('userManagement/viewUser', ['userid' => $this->uid]);
+        $editUrl = Yii::app()->getController()->createUrl('userManagement/addEditUser', ['userid' => $this->uid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $this->uid]);
+        $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
+        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
+        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm');
         
 
         $userDetail = ""
@@ -583,10 +562,10 @@ class User extends LSActiveRecord
                 data-user='".$this->full_name."' 
                 data-action='deluser' 
                 data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-".$this->uid."\")' 
-                data-message='".gt('Do you want to take ownership of this user?')."'>
-                    <span data-toggle='tooltip' title='".gT("Take ownership")."'>
-                        <i class='fa fa-hand-rock-o'></i>
-                    </span>
+                data-message='".gt('Do you want to take ownerschip of this user?')."'>
+                <span data-toggle='tooltip' title='".gT("Take ownership")."'>
+                    <i class='fa fa-hand-rock-o'></i>
+                </span>    
               </button>";
         $deleteUserButton = ""
             ."<button 
@@ -848,10 +827,38 @@ class User extends LSActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
-        
-        $criteria->compare('full_name',$this->searched_value,true);
-        $criteria->compare('users_name',$this->searched_value,true, 'OR');
-        $criteria->compare('email',$this->searched_value,true, 'OR');
+
+        $criteria->compare('t.uid',$this->uid);
+        $criteria->compare('t.full_name',$this->full_name,true);
+        $criteria->compare('t.users_name',$this->users_name,true, 'OR');
+        $criteria->compare('t.email',$this->email,true, 'OR');
+
+        //filter for 'created' date comparison
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        if ($this->created) {
+            try {
+                $dateTimeInput = $this->created .' 00:00'; //append time
+                $s = DateTime::createFromFormat($dateformatdetails['phpdate'].' H:i', $dateTimeInput);
+                if($s) {
+                    $s2 = $s->format('Y-m-d H:i');
+                    $criteria->addCondition('t.created >= \'' . $s2 . '\'');
+                }else{
+                    throw new Exception('wrong date format.');
+                }
+            }catch (Exception $e){
+                //could only mean wrong input from user ...reset filter value
+                $this->created='';
+            }
+        }
+
+        //filter for parentUserName
+        $getParentName = Yii::app()->request->getParam('User');
+        $getParentName = $getParentName['parentUserName'];
+        if(isset($getParentName) && $getParentName!==null && $getParentName!==''){
+            $criteria->join = "LEFT JOIN lime_users luparent ON t.parent_id = luparent.uid";
+            $criteria->compare('luparent.users_name', $getParentName, true, 'OR');
+        }
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'pagination' => array(

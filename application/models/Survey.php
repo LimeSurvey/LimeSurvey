@@ -46,6 +46,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $allowprev Allow backwards navigation (Y/N)
  * @property string $printanswers Participants may print answers: (Y/N)
  * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
+ * @property string $ipanonymize Whether id addresses should be anonymized (Y/N)
  * @property string $refurl Save referrer URL: (Y/N)
  * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
  * @property string $publicstatistics Public statistics: (Y/N)
@@ -128,6 +129,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isAllowPrev Allow backwards navigation
  * @property bool $isPrintAnswers Participants may print answers
  * @property bool $isIpAddr Whether Participants IP address will be saved
+ * @property bool $isIpAnonymize Whether Participants IP address will be saved
  * @property bool $isRefUrl Save referrer URL
  * @property bool $isPublicStatistics Public statistics
  * @property bool $isPublicGraphs Show graphs in public statistics
@@ -1231,6 +1233,14 @@ class Survey extends LSActiveRecord
     {
         return ($this->oOptions->ipaddr === 'Y');
     }
+
+    /**
+     * @return bool
+     */
+    public function getIsIpAnonymize()
+    {
+        return ($this->oOptions->ipanonymize === 'Y');
+    }
     /**
      * @return bool
      */
@@ -1806,7 +1816,7 @@ return $s->hasTokensTable; });
         ));
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
         /** @var Question[] $questions */
-        $questions = Question::model()->with('questionL10ns')->findAll($criteria);
+        $questions = Question::model()->with('questionl10ns')->findAll($criteria);
         return $questions;
     }
 

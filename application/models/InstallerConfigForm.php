@@ -281,9 +281,11 @@ class InstallerConfigForm extends CFormModel
     }
 
     /**
-     * @return mixed
+     * Get the array of supported DB type
+     * @return array
      */
     public function getSupportedDbTypes(){
+        $result = array();
         foreach (CDbConnection::getAvailableDrivers() as $driver) {
             if (isset($this->db_names[$driver])) {
                 $result[$driver] = $this->db_names[$driver];
@@ -584,7 +586,7 @@ class InstallerConfigForm extends CFormModel
     }
 
     /**
-     * @return bool
+     * @return void
      * @throws Exception
      */
     public function createDatabase() {
@@ -600,8 +602,6 @@ class InstallerConfigForm extends CFormModel
         $this->useDbName = true;
         // reconnect to set database name & status
         $this->dbConnect();
-
-        return $bCreateDB;
     }
 
 
@@ -646,7 +646,7 @@ class InstallerConfigForm extends CFormModel
         $fileName = dirname(APPPATH).'/installer/create-database.php';
         require_once($fileName);
         try {
-            createDatabase($this->db);
+            populateDatabase($this->db);
         } catch (Exception $e) {
             return array($e->getMessage());
         }

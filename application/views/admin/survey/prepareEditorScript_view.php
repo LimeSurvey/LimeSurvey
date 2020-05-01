@@ -18,6 +18,18 @@ $script = "
            dialogDefinition.removeContents( 'Upload' );
         }
     });
+    ";
+
+/**
+* @todo This following three JS lines are a hack to keep the most common usage of <br> in ExpressionScript from breaking the expression,
+* because the HTML editor will insert linebreaks after every <br>, even if it is inside a ExpressionScript tag {}
+* The proper way to fix this would be to merge a plugin like ShowProtected (https://github.com/IGx89/CKEditor-ShowProtected-Plugin) 
+* with LimeReplacementFields and in general use ProtectSource for ExpressionScript
+* See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
+*/ 
+$script.="CKEDITOR.on('instanceReady', function(event) {
+        event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
+    });    
 
     var sReplacementFieldTitle = '".gT('Placeholder fields','js')."';
     var sReplacementFieldButton = '".gT('Insert/edit placeholder field','js')."';

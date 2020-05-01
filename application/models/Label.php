@@ -78,12 +78,12 @@ class Label extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'labelset' => array(self::BELONGS_TO, 'LabelSet', 'lid'),
-            'labelL10ns' => array(self::HAS_MANY, 'LabelL10n', 'label_id')
+            'labell10ns' => array(self::HAS_MANY, 'LabelL10n', 'label_id')
         );
     }
 
     public function getTranslated($sLanguage) {
-        $ol10N = $this->labelL10ns;
+        $ol10N = $this->labell10ns;
         if(isset($ol10N[$sLanguage])) {
             return array_merge($this->attributes, $ol10N[$sLanguage]->attributes);
         } 

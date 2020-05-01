@@ -58,12 +58,14 @@
                         <div class="col-sm-12">
                             <h3>
                             <b>{{"Question type preview"|translate}}</b><br/>
-                            <p id="selector__question_type_selector-currentSelected"> {{currentlySelectedType.title}} </p>
+                            <p id="selector__question_type_selector-currentSelected" v-if="currentlySelectedType"> {{currentlySelectedType.title}} </p>
+                            <p id="selector__question_type_selector-currentSelected" v-else></p>
                             </h3>
                         </div>
                     </div>
                     <div class="row" id="selector__question_type_selector-detailPage">
-                        <div class="col-sm-12" v-html="currentlySelectedType.detailpage" />
+                        <div class="col-sm-12" v-if="currentlySelectedType" v-html="currentlySelectedType.detailpage" />
+                        <div class="col-sm-12" v-else />
                     </div>
                 </div>
             </div>
@@ -129,10 +131,14 @@ export default {
             }
         },
         isSelected(questionType) {
-            return this.currentlySelectedType.type == questionType.type 
-                && this.currentlySelectedType.name == questionType.name 
-                    ? 'selected' 
-                    : '';
+            if (this.currentlySelectedType) {
+                return this.currentlySelectedType.type == questionType.type 
+                    && this.currentlySelectedType.name == questionType.name 
+                        ? 'selected' 
+                        : '';
+            } else {
+                return '';
+            }
         },
         closeButton() {
             this.$emit('close');

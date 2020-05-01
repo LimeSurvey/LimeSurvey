@@ -351,6 +351,9 @@ class SurveyDynamic extends LSActiveRecord
                 'class' => "btn btn-default btn-xs btn-delete",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete this response"),
+                'data-confirm-text' => gT('Do you want to delete this response?')
+                . '<br/>'
+                . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.')
             ),
             'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
@@ -958,10 +961,17 @@ class SurveyDynamic extends LSActiveRecord
 
         }
 
+        /* Second (X) scale for array text and array number */
         if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])) {
-            foreach (Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parents['type'] == '1' ? 2 : 1))) as $oScaleSubquestion) {
+            $oScaleXSubquestions = Question::model()->findAll(array(
+                'condition' => "parent_qid = :parent_qid and scale_id = :scale_id",
+                'order' => "question_order ASC",
+                'params' => array(':parent_qid' => $aQuestionAttributes['parent_qid'], ':scale_id' => 1),
+            ));
+            foreach ($oScaleXSubquestions as $oScaleSubquestion) {
                 $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+                /* Isue with language, need #15907 fixed */
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = isset($oScaleSubquestion->question) ? $oScaleSubquestion->question : null;
             }
         }

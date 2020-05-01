@@ -29,7 +29,7 @@
                 </div>
             </div>
         </li>
-        <!-- Template -->
+        <!-- Theme -->
         <li class="list-group-item">
             <div class="ls-flex-row col-12">
                 <div class="col-4">
@@ -42,8 +42,8 @@
                             {% set sTemplateOptionsUrl = createUrl("admin/themeoptions/sa/updatesurvey", {'surveyid' : oSurvey.sid} ) %}
                             {% set sTemplateEditorUrl = createUrl("admin/themes/sa/view", {'templatename' : oSurvey.aOptions['template'] } ) %}
                             {{templateModel.title}} ( {{templateModel.name}})
-                            <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Open template options")}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
-                            <a href='{{sTemplateEditorUrl}}' title="{{ gT("Open template editor in new window")}}" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
+                            <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Edit theme options")}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
+                            <a href='{{sTemplateEditorUrl}}' title="{{ gT("Open theme editor in new window")}}" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
                             <?php
                         {% else %}
                             {{templatename}}

@@ -44,7 +44,8 @@ echo viewHelper::getViewTestTag('configurePlugin');
                             ],
                             'labelWidth'      =>4,
                             'controlWidth'    =>6,
-                            'method'          => 'post'
+                            'method'          => 'post',
+                            'buttons'         => $buttons,
                         ]
                     );
                 ?>

@@ -4406,13 +4406,13 @@
             $event->set('surveyId',$surveyid);
             $event->set('language',self::getEMlanguage());
             $event->set('knownVars',$this->knownVars);
+            $event->set('questionSeq2relevance',$this->questionSeq2relevance);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
-            $newExpressionSuffixes = $event->get('newExpressionSuffixes');
-            if(!empty($newExpressionSuffixes)) { /* Don't add if it's null */
-                $this->em->addRegexpExtraAttributes($newExpressionSuffixes);
-            }
-            $this->knownVars = $result->get('knownVars');
+            $this->em->addRegexpExtraAttributes($event->get('newExpressionSuffixes', array()));
+            /* Put in manual : offer updating this part must be done with care. And can broke without API version update */
+            $this->knownVars = $result->get('knownVars', array()); // PluginManager use not a strict compare to false, empty array get the default.
+            $this->questionSeq2relevance = $result->get('questionSeq2relevance', array()); // PluginManager use not a strict compare to false, empty array get the default.
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
@@ -4997,6 +4997,7 @@
             $LEM->surveyOptions['deletenonvalues'] = (isset($aSurveyOptions['deletenonvalues']) ? ($aSurveyOptions['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($aSurveyOptions['hyperlinkSyntaxHighlighting']) ? $aSurveyOptions['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = $survey->isIpAddr;
+            $LEM->surveyOptions['ipAnonymize'] = $survey->isIpAnonymize;
             $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
             $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : NULL);
             $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
@@ -5508,6 +5509,13 @@
                 if ($this->surveyOptions['ipaddr'] == true)
                 {
                     $sdata['ipaddr'] = getIPAddress();
+                    if($this->surveyOptions['ipAnonymize'] == true){
+                        $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($sdata['ipaddr']);
+                        $result = $ipAddressAnonymizer->anonymizeIpAddress();
+                        if($result){
+                            $sdata['ipaddr'] = $result;
+                        }
+                    }
                 }
                 if ($this->surveyOptions['refurl'] == true)
                 {
@@ -5580,6 +5588,15 @@
                 }
                 if ($this->surveyOptions['ipaddr']) {
                     $aResponseAttributes['ipaddr'] = getIPAddress();
+
+                    //anonymize ip adress
+                    if($this->surveyOptions['ipAnonymize']){
+                        $ipAddressAnonymizer = new LimeSurvey\Models\Services\IpAddressAnonymizer($aResponseAttributes['ipaddr']);
+                        $result = $ipAddressAnonymizer->anonymizeIpAddress();
+                        if($result){
+                            $aResponseAttributes['ipaddr'] = $result;
+                        }
+                    }
                 }
 
                 foreach ($updatedValues as $key=>$value)
@@ -5622,11 +5639,17 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $oResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                    if (empty($oResponse)) {
+                        // This can happen if admin deletes incomple response while survey is running.
+                        $message = submitfailed($this->gT('The data could not be saved because the response does not exist in the database.'));
+                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
+                        return;
+                    }
                     if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $oResponse->setAttributes($aResponseAttributes, false);
                         if (!$oResponse->encryptSave())
                         {
-                            $message = submitfailed('', print_r($oResponse->getErrors())); // $response->getErrors() is array[string[]], then can not join
+                            $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
                             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                                 $message .= CHTml::errorSummary($oResponse,$this->gT('Error on response update'));  // Add SQL error according to debugLevel
                             }
@@ -5675,7 +5698,7 @@
                             } else {
                                 $submitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            if (!Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate))) {
+                            if ( !Response::model($this->sid)->updateByPk($oResponse->id,array('submitdate'=>$submitdate)) && $submitdate != $oResponse->submitdate ) {
                                 LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('An error happened when trying to submit your response.'), $this->sid);
                             }
                         }
@@ -6684,6 +6707,7 @@
                         }
                         if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN))
                         {
+                            $sMandatoryText = $LEM->gT('Please check at least one item.');
                             $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
                                     'part' => 'multiplechoice',

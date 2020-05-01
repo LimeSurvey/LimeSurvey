@@ -1,9 +1,6 @@
-import {
-    shallowMount,
-    createLocalVue
-} from '@vue/test-utils';
-
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
+import Vue from 'vue';
 import _ from 'lodash';
 
 import TableRepComponent from '../../src/components/subcomponents/_tableRepresentation.vue';
@@ -14,7 +11,16 @@ import MockActions from '../mocks/mockActions.js';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-
+global.LS = {
+    EventBus: new Vue(),
+};
+global.$ = jest.fn(() => {
+    return {
+        on: ()=>{},
+        trigger: ()=>{},
+        tooltip: ()=>{},
+    }
+});
 localVue.mixin({
     methods: {
         translate(value) {
@@ -40,7 +46,8 @@ describe("correct display", () => {
 
     const tableRepMount = shallowMount(TableRepComponent, {
         propsData: { 
-            loading: false
+            loading: false,
+            currentPage: 0
         },
         mocks: {
             $dialog: {
@@ -62,11 +69,12 @@ describe("correct display", () => {
     });
 
     test.each(_.toArray(MockState.fileList))(
-        "Has an image block for every file rendered", 
+        "Has an image block for every file rendered",
         (file) => {
-            const tableRowContainer = tableRepMount.find('#file-row-'+file.hash)
-        expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
-    });
+            const tableRowContainer = tableRepMount.find('#file-row-' + file.hash);
+            expect(tableRowContainer.find('.FileManager--file-action-cancelTransit').exists()).toBe(false);
+        }
+    );
 
     test.each(_.toArray(MockState.fileList))(
         "Has an image block for every file rendered", 
@@ -98,7 +106,6 @@ describe("correct display", () => {
 
 });
 
-
 describe("File transit actions", () => {
     
     const actions = _.merge({},MockActions);
@@ -117,7 +124,8 @@ describe("File transit actions", () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -130,7 +138,6 @@ describe("File transit actions", () => {
             localVue
         }); 
 
-        // tableRepMount.vm.$store.commit('setFolderList', MockState.fileList);
     }); 
 
     test("Should start transit after clicking on 'copy'", () => {
@@ -138,14 +145,14 @@ describe("File transit actions", () => {
         const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-copy');
         copyButton.trigger('click');
         expect(tableRepMount.vm.$store.state.fileList['firstPicture.jpg'].inTransit).toBe(true);  
-    })
+    });
 
     test("Should start transit after clicking on 'move'", () => {
         const fileRowWrapper = tableRepMount.find("#file-row-" + fileInTransit.hash);
         const copyButton = fileRowWrapper.find('.FileManager--file-action-startTransit-move');
         copyButton.trigger('click');
         expect(tableRepMount.vm.$store.state.fileList['firstPicture.jpg'].inTransit).toBe(true);  
-    })
+    });
 });
 
 describe("File in transit actions", () => {
@@ -155,7 +162,6 @@ describe("File in transit actions", () => {
     const fileNotTransit = MockState.fileList['secondPicture.jpg'];
     const state = _.merge({},MockState);
     
-    // actions.getFileList = jest.fn(() => Promise.resolve());
     let tableRepMount;
     beforeEach(() => {
         
@@ -171,7 +177,8 @@ describe("File in transit actions", () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -210,8 +217,6 @@ describe("File in transit actions", () => {
         const fileRowClasses = tableRepMount.vm.fileClass(tableRepMount.vm.files['secondPicture.jpg']);
         expect(fileRowClasses).toBe("scoped-file-icon ")
     })
-
-    
 });
 
 describe('Delete file success', () => {
@@ -235,7 +240,8 @@ describe('Delete file success', () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -255,9 +261,8 @@ describe('Delete file success', () => {
     });
     test("Should have called the delete action after clicking delete", () => {
         expect(actions.deleteFile).toHaveBeenCalled()
-    });
-    
-})
+    }); 
+});
 
 describe('Delete file failure', () => {
     const fileToBeDeleted = MockState.fileList['firstPicture.jpg'];
@@ -279,7 +284,8 @@ describe('Delete file failure', () => {
 
         tableRepMount = shallowMount(TableRepComponent, {
             propsData: { 
-                loading: false
+                loading: false,
+                currentPage: 0
             },
             mocks: {
                 $dialog: {
@@ -298,4 +304,62 @@ describe('Delete file failure', () => {
         expect(actions.deleteFile).not.toHaveBeenCalled()
     });
     
+    describe('Pagination', () => {
+        const state = _.merge({},MockState);
+        const callDialog = jest.fn((txt) => Promise.reject());
+        let actions;
+        let tableRepMount;
+
+        beforeEach(() => {
+            actions = _.merge({},MockActions);
+            actions.deleteFile = jest.fn(() => Promise.resolve());
+
+            const store = new Vuex.Store({
+                state,
+                mutations: VueXMutations,
+                actions,
+                getters: VueXGetters
+            });
+
+            tableRepMount = shallowMount(TableRepComponent, {
+                propsData: { 
+                    loading: false,
+                    currentPage: 0
+                },
+                mocks: {
+                    $dialog: {
+                        confirm: callDialog
+                    },
+                    $log: {log: ()=>{}, error: ()=>{}}
+                },
+                store,
+                localVue
+            });
+        });
+
+        // TODO: WIP: Mock file as new filelist.json
+        // TODO: WIP: Test abstract representation.vue!
+        it.skip('should contain pagination', () => {
+            let files = [];
+            for (let index = 0; index > 50; i++) {
+                files.push('test_'+index+'.txt');
+            }
+            if (tableRepMount !== null) {
+                tableRepMount.computed.files = files;
+                expect(tableRepMount.computed.files.length).toBe(50);
+                let pagination = tableRepMount.find('#ls-ba pager');
+                expect(pagination).toBeDefined;
+            } else {
+                console.log('TableRepMount is null!');
+            }
+        });
+
+        it.skip('should contains 2 pages', () => {
+            // TODO: Set up dependencies for current test.
+        });
+
+        it.skip('should select page 2', () => {
+            // TODO: Set up dependencies for current test.
+        });
+    });
 })

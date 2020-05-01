@@ -49,6 +49,7 @@
  * @property integer $navigationdelay
  * @property string $nokeyboard
  * @property string $alloweditaftercompletion
+ * @property string $ipanonymize
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
@@ -64,7 +65,7 @@ class SurveysGroupsettings extends LSActiveRecord
     // attributes separated by column datatype, used by setToInherit method
     protected $optionAttributesInteger  = array('owner_id', 'tokenlength', 'questionindex', 'navigationdelay');
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
-                                                'ipaddr', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence', 
+                                                'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard', 
                                                 'alloweditaftercompletion');
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');    
@@ -95,13 +96,19 @@ class SurveysGroupsettings extends LSActiveRecord
 		return array(
 			array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly'=>true),
 			array('admin', 'length', 'max'=>50),
-			array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion', 'length', 'max'=>1),
+			array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion, ipanonymize', 'length', 'max'=>1),
 			array('adminemail, bounce_email', 'length', 'max'=>255),
 			array('template', 'length', 'max'=>100),
 			array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on'=>'search'),
+			array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, 
+			savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, 
+			autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, 
+			publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, 
+			assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, 
+			tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, 
+			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on'=>'search'),
 		);
     }
   
@@ -278,6 +285,17 @@ class SurveysGroupsettings extends LSActiveRecord
     }
 
     /**
+     * Recursive function
+     *
+     * Gets the real values for a group.
+     * A group could inherit from a group, this one could inherit from a group ...
+     * It steps up (see param $iStep) until it has found the real settings ...
+     *
+     * @param int $iSurveyGroupId
+     * @param null $oSurvey
+     * @param null $instance
+     * @param int $iStep      this is inheritance step (recursive step) (parent, parentParent, parentParentParent ?)
+     * @param bool $bRealValues
      * @return SurveysGroupsettings instance
      */
     public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false){
@@ -285,6 +303,7 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($iSurveyGroupId > 0){
             $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
         } else {
+            //this is the default group setting with gsid=0 !!!
             $model = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
         }
         
@@ -392,6 +411,13 @@ class SurveysGroupsettings extends LSActiveRecord
         }
     }
 
+    /**
+     *  Gets the "values" from the group that inherits to this group and ...
+     *
+     *  ... sets the variables (not DB attributes) of "oOptions", "oOptionLabels", "aOptions"
+     *  and "showInherited" (most of them used for frontend i think)
+     *
+     */
     public function setOptions()
     {
         $instance = SurveysGroupsettings::getInstance($this->gsid);
@@ -411,7 +437,11 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute){
-            $this->$attribute = 'I';
+            //fix for 16179
+            $dbversion =  GetGlobalSetting('DBVersion');
+            if( !($attribute==='ipanonymize' && ( $dbversion < 412 ))){
+                $this->$attribute = 'I';
+            }
         }
         foreach ($this->optionAttributesText as $attribute){
             $this->$attribute = 'inherit';

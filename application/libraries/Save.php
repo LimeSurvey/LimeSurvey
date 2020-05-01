@@ -158,6 +158,9 @@ class Save
         return $aSaveForm;
     }
 
+    /**
+     * Seems @deprecated on 2020-04-07
+     */
     function savedcontrol()
     {
         //This data will be saved to the "saved_control" table with one row per response.

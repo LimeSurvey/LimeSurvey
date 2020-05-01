@@ -152,6 +152,8 @@ class questionedit extends Survey_Common_Action
                 'Scale' => gT('Scale'),
                 'Save and Close' => gT('Save and close'),
                 'Script' => gT('Script'),
+                'X-Scale (columns)' => gT('X-Scale (columns)'),
+                'Y-Scale (lines)' => gT('Y-Scale (lines)'),
                 '__SCRIPTHELP' => gT("This optional script field will be wrapped,"
                     . " so that the script is correctly executed after the question is on the screen."
                     . " If you do not have the correct permissions, this will be ignored"),
@@ -671,12 +673,12 @@ class questionedit extends Survey_Common_Action
                 'code' => $oQuestion->title,
                 'text' => isset($changedText['question'])
                 ? $changedText['question']
-                : $oQuestion->questionL10ns[$sLanguage]->question,
+                : $oQuestion->questionl10ns[$sLanguage]->question,
                 'help' => [
                     'show' => true,
                     'text' => (isset($changedText['help'])
                         ? $changedText['help']
-                        : $oQuestion->questionL10ns[$sLanguage]->help),
+                        : $oQuestion->questionl10ns[$sLanguage]->help),
                 ],
             ]
         );
@@ -1047,7 +1049,7 @@ class questionedit extends Survey_Common_Action
             return false;
         }
 
-        $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAllByAttributes(['qid' => $oldQid]);
+        $oOldDefaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $oldQid]);
 
         $setApplied['defaultValues'] = array_reduce(
             $oOldDefaultValues,
@@ -1065,7 +1067,7 @@ class questionedit extends Survey_Common_Action
                     );
                 }
 
-                foreach ($oDefaultValue->defaultValueL10ns as $oDefaultValueL10n) {
+                foreach ($oDefaultValue->defaultvaluel10ns as $oDefaultValueL10n) {
                     $oNewDefaultValueL10n = new DefaultValueL10n();
                     $oNewDefaultValueL10n->setAttributes($oDefaultValueL10n->attributes, false);
                     $oNewDefaultValueL10n->id = null;
@@ -1275,6 +1277,7 @@ class questionedit extends Survey_Common_Action
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
                     throw new CHttpException(
+                        500,
                         "Answer option couldn't be saved. Error: "
                         . print_r($oAnswer->getErrors(), true)
                     );
@@ -1296,24 +1299,24 @@ class questionedit extends Survey_Common_Action
         LimeExpressionManager::StartProcessingPage(false, true);
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
-        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);
+        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questiongroupl10ns);
 
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
             $aScaledSubquestions[$scaleId] = array_map(function ($oSubQuestion) {
-                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionL10ns);
+                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionl10ns);
             }, $aSubquestions);
         }
 
         $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
         foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
             $aScaledAnswerOptions[$scaleId] = array_map(function ($oAnswerOption) {
-                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerL10ns);
+                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerl10ns);
             }, $aAnswerOptions);
         }
         $aReplacementData = [];
         $questioni10N = [];
-        foreach ($oQuestion->questionL10ns as $lng => $oQuestionI10N) {
+        foreach ($oQuestion->questionl10ns as $lng => $oQuestionI10N) {
             $questioni10N[$lng] = $oQuestionI10N->attributes;
 
             templatereplace(
@@ -1349,9 +1352,8 @@ class questionedit extends Survey_Common_Action
         $aQuestionTitles = $oCommand = Yii::app()->db->createCommand()
             ->select('title')
             ->from('{{questions}}')
-            ->where('sid=:sid', [':sid'=>$oSurvey->sid])
-            ->where('parent_qid=0')
-            ->queryColumn();
+            ->where('sid=:sid and parent_qid=0')
+            ->queryColumn([':sid'=>$oSurvey->sid]);
         $isActive = $oSurvey->isActive;
         $questionCount = safecount($aQuestionTitles);
         $groupCount = safecount($oSurvey->groups);

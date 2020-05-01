@@ -64,7 +64,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'name'=> $this->sSGQA,
                 'value'=>$oAnsweroption->code,
                 'opt_select'=>$opt_select,
-                'answer'=>$_prefix.$oAnsweroption->answerL10ns[$this->sLanguage]->answer,
+                'answer'=>$_prefix.$oAnsweroption->answerl10ns[$this->sLanguage]->answer,
                 ), true);
         }
 
@@ -78,10 +78,10 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
             // Let's sort answers in an array indexed by subcategories
-            @list($categorytext, $answertext) = explode($this->optCategorySeparator, $oAnsweroption->answerL10ns[$this->sLanguage]->answer);
+            @list($categorytext, $answertext) = explode($this->optCategorySeparator, $oAnsweroption->answerl10ns[$this->sLanguage]->answer);
             // The blank category is left at the end outside optgroups
             if ($categorytext == '' || $answertext == '') {
-                $defaultopts[] = array('code' => $oAnsweroption->code, 'answer' => $oAnsweroption->answerL10ns[$this->sLanguage]->answer);
+                $defaultopts[] = array('code' => $oAnsweroption->code, 'answer' => $oAnsweroption->answerl10ns[$this->sLanguage]->answer);
             } else {
                 $optgroups[$categorytext][] = array('code' => $oAnsweroption->code, 'answer' => $answertext);
             }

@@ -135,11 +135,11 @@ class Box extends CActiveRecord
     public function getbuttons()
     {
 
-        $url = Yii::app()->createUrl("/admin/homepagesettings/sa/update/id/");
+        $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
         $url .= '/'.$this->id;
         $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
 
-        $url = Yii::app()->createUrl("/admin/homepagesettings/sa/delete");
+        $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
         //$url .= '/'.$this->id;
         $button .= '<a class="btn btn-default selector--ConfirmModal"'
         .' data-button-no="'.gT('No, cancel').'"'

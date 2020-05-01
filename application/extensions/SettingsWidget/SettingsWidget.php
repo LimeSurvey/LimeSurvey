@@ -108,6 +108,10 @@ class SettingsWidget extends CWidget
         $htmlOptions = $this->htmlOptions($metaData);
 
         if (isset($metaData['type']) && $metaData['type'] == 'link') {
+            if(!empty($metaData['label'])) {
+                $label = $metaData['label'];
+                unset($metaData['label']);
+            }
             // This allow cancel without js
             return CHtml::link($label, $metaData['href'], $htmlOptions);
         } elseif (isset($metaData['type'])) {
@@ -115,9 +119,13 @@ class SettingsWidget extends CWidget
             if (!empty($metaData['name']) && is_string($metaData['name'])) {
                 $htmlOptions['name']=$metaData['name'];
             }
-            return CHtml::htmlButton($label, $htmlOptions);
-        } elseif (isset($htmlOptions['type'])) {
-            // Allow type button or cancel in pluginSettings>settings>button
+            if(!empty($metaData['label'])) {
+                if(empty($metaData['name'])) {
+                    $htmlOptions['name'] = $label;
+                }
+                $label = $metaData['label'];
+                unset($metaData['label']);
+            }
             return CHtml::htmlButton($label, $htmlOptions);
         } else {
             return CHtml::submitButton($label, $htmlOptions);
@@ -218,7 +226,6 @@ class SettingsWidget extends CWidget
     public function run()
     {
         parent::run();
-
         // Render settings
         $this->renderSettings();
         // Render buttons
@@ -235,16 +242,7 @@ class SettingsWidget extends CWidget
      */
     protected function renderAdditionalHtml()
     {
-        $url = App()->createUrl("admin/pluginmanager/sa/index");
-        echo "<div class='form-group'>";
-        echo "<div class='col-sm-6 col-md-offset-4'>";
-        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            echo "<button name='save' class='btn btn-success' type='submit'><span class='fa fa-floppy-o'></span>&nbsp;".gT('Save')."</button>&nbsp;";
-            echo "<button name='redirect' value='" . $url . "' class='btn btn-default' type='submit'><span class='fa fa-saved'></span>&nbsp;".gT('Save and close')."</button>&nbsp;";
-        }
-        echo "<a class='btn btn-danger' href='" . $url . "'>".gT('Close')."</a>";
-        echo "</div>";
-        echo "</div>";
+        echo $this->additionalHtml;
     }
 
     /**

@@ -1,8 +1,5 @@
-import {
-    shallowMount,
-    createLocalVue
-} from '@vue/test-utils';
-
+import { shallowMount, createLocalVue } from '@vue/test-utils';
+import Vue from 'vue';
 import Vuex from 'vuex';
 
 import NavBarComponent from '../../src/components/NavBar.vue';
@@ -12,6 +9,15 @@ import MockActions from '../mocks/mockActions.js';
 import MockModal from '../mocks/mockActions.js';
 
 const localVue = createLocalVue();
+global.LS = {
+    EventBus: new Vue(),
+};
+global.$ = jest.fn(() => {
+    return {
+        on: ()=>{},
+        trigger: ()=>{}
+    }
+});
 localVue.use(Vuex);
 
 localVue.mixin({

@@ -1385,13 +1385,6 @@ class tokens extends Survey_Common_Action
         initKcfinder();
         Yii::app()->loadHelper('replacements');
 
-        $oToken = Token::model($iSurveyId)->find();
-        $token = null;
-        if ($oToken !== null) {
-            $token = Token::model($iSurveyId)->find()->decrypt();
-        }
-
-        $aExampleRow = isset($token) ? $token->attributes : array();
         $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($aSurveyLangs, $sBaseLanguage);
@@ -1410,11 +1403,9 @@ class tokens extends Survey_Common_Action
         $aData['baselang'] = $sBaseLanguage;
         $aData['tokenfields'] = array_keys($aTokenFields);
         $aData['nrofattributes'] = $iAttributes;
-        $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
         $aData['ishtml'] = $bHtml;
         $aData['reminderbutton'] = (Yii::app()->request->getParam('action') == "remind");
-                        
                         
         $iMaxEmails = Yii::app()->getConfig('maxemails');
 
@@ -1476,18 +1467,24 @@ class tokens extends Survey_Common_Action
                         $success = $mail->sendMessage();
                         $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
                         if ($success) {
-                            // Put date into sent
-                            $token = Token::model($iSurveyId)->findByPk($emrow['tid']);
+                            // Load token to set as sent, no need to check existence ? we just send the email
+                            $oToken = Token::model($iSurveyId)->findByPk($emrow['tid'])->decrypt();
                             if ($bIsInvitation) {
                                 $tokenoutput .= gT("Invitation sent to:");
-                                $token->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                             } else {
                                 $tokenoutput .= gT("Reminder sent to:");
-                                $token->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-                                $token->remindercount++;
+                                $oToken->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+                                $oToken->remindercount++;
                             }
-                            $token->save();
-
+                            $tokenSaveError = "";
+                            if(!$oToken->encryptSave(true)) {
+                                // Add the error when try to save token
+                                $tokenSaveError = CHtml::errorSummary(
+                                    $oToken,
+                                    CHtml::tag("div",array('class'=>'text-warning'),sprintf(gT("An error happen when save this survey participant email sent date (id:%s)"),$emrow['tid']))
+                                );
+                            }
                             // Mark token email as send this session.
                             // NB: This cache is cleared on form page for invitation/reminder.
                             $sType = $bIsInvitation?'i':'r';
@@ -1505,6 +1502,7 @@ class tokens extends Survey_Common_Action
                             if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
                                 $tokenoutput .= $mail->getDebug('html');
                             }
+                            $tokenoutput .= $tokenSaveError;
                         } else {
                             $maildebug = $mail->getDebug('html');
                             $tokenoutput .= $stringInfo.CHtml::tag("span",array('class'=>"text-warning"),sprintf(gT("Error message: %s"), $mail->getError()))."<br>\n";
@@ -2400,7 +2398,8 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-
+        $aData['topBar']['showSaveButton'] = true;
+        
         $this->_renderWrappedTemplate('token', array('bounce'), $aData);
     }
 

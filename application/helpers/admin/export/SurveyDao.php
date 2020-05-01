@@ -43,12 +43,12 @@ class SurveyDao
 
         $survey->groups = QuestionGroup::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'group_order'));
         $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
-        $aAnswers = Answer::model()->with('answerL10ns', 'question')->findAll(array('condition'=>'question.sid='.$intId.' AND answerL10ns.language = \''.$lang.'\'', 'order' => 'question.question_order, t.scale_id, sortorder'));
+        $aAnswers = Answer::model()->with('answerl10ns', 'question')->findAll(array('condition'=>'question.sid='.$intId.' AND '.Yii::app()->db->quoteTableName('answerl10ns').'.language = \''.$lang.'\'', 'order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
             if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id !='remotecontrol'){
-                $answer=stripTagsFull($aAnswer->answerL10ns[$lang]->answer);
+                $answer=stripTagsFull($aAnswer->answerl10ns[$lang]->answer);
             } else {
-                $answer=$aAnswer->answerL10ns[$lang]->answer;
+                $answer=$aAnswer->answerl10ns[$lang]->answer;
             }
             $survey->answers[$aAnswer->question->qid][$aAnswer->scale_id][$aAnswer->code] = $answer;
         }

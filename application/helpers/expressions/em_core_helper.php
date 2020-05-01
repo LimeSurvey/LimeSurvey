@@ -290,8 +290,8 @@ class ExpressionManager
 
         $event = new \LimeSurvey\PluginManager\PluginEvent('ExpressionManagerStart');
         $result = App()->getPluginManager()->dispatchEvent($event);
-        $newValidFunctions = (array) $result->get('functions');
-        $newPackages = (array) $result->get('packages'); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
+        $newValidFunctions = $result->get('functions',array());
+        $newPackages = $result->get('packages',array()); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
 
         $this->RegisterFunctions($newValidFunctions); // No validation : plugin dev can break all easily
         foreach($newPackages as $name => $definition) {
@@ -1493,7 +1493,7 @@ class ExpressionManager
                     $stringParts[] = CHtml::tag('span',array(
                         'title' => !empty( $messages) ? implode('; ', $messages) : null,
                         'class'=> 'em-var-string'
-                    ),"'".$token[0]."'");
+                    ),"'".CHtml::encode($token[0])."'");
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1638,8 +1638,7 @@ class ExpressionManager
             }
         }
         if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update') && method_exists(App(), 'getClientScript')) {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."expressions.css");
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts')."expression.js");
+            App()->getClientScript()->registerPackage('expressionscript');
         }
         $sClass = 'em-expression';
         $sClass .= ($bHaveError) ? " em-haveerror" : "";

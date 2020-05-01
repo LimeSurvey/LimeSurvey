@@ -34,6 +34,188 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.0 (build 200422) to 4.2.1 (build 200428) April 28, 2020
+-Fixed issue: [security] Superadmin can delete a protected superadmin (Carsten Schmitz)
+-Fixed issue: Very high memory usage when importing TSV files (Carsten Schmitz)
+-Fixed issue #15824: Misleading gui for subquestion details when using array texts or similiar question types (Jessica Höck)
+-Fixed issue #16179: Update 3.20.2 -> 4.2.0 running into database error (Patricia Stelling)
+-Fixed issue #16160: (Email to user group does not work)fix has been done already in master. Since develop differs from master, fix has to be done again at this point. (Patricia Stelling)
+-Fixed issue #16122: Encryption of "email" field in participants database: Limesurvey does not mark participant as invited (Denis Chenu)
+-Fixed issue #15901: Regression: Buttons to uninstall or reset a theme missing at LS 4 (Patricia Stelling)
+
+
+Changes from 4.1.18 (build 200416) to 4.2.0 (build 200422) April 22, 2020
++New feature #15923: Allow to update some Expression Dynamic variable (Denis Chenu)
++New feature #15246: Allow fixed function (only PHP) in expression manager (Denis Chenu)
++New feature #15246: Allow fixed function (only PHP) in expression manager (#1320) (Denis Chenu)
++New feature #13175: Ability to show calculated values based on all users (Denis Chenu)
++New feature #15997: Anonymise IP address (Patricia Stelling)
+-Fixed issue: Inherit option not editable on survey edit and in survey create view (lacrioque)
+-Fixed issue: Expressions not being properly validated & highlighted in email templates when using 'Validate expression' function (Carsten Schmitz)
+-Fixed issue #16169: Missing comma in generated config.php file (Olle Harstedt)
+-Fixed issue #16166: Survey taking/editing uploaded pictures not showing up (#1408) (Timo Gurr)
+-Fixed issue #16160: Email to user group does not work (Denis Chenu)
+-Fixed issue #16155: Correct terminology (#1406) (jmantysalo)
+-Fixed issue #16136: Deleting file attachment does not work (Olle Harstedt)
+-Fixed issue #16095: Multiple choice exclamation sign without text (Denis Chenu)
+-Fixed issue #15705: Button 'delete current user group' not working (Jessica Höck)
+
+
+Changes from 4.1.17 (build 200414) to 4.1.18 (build 200416) April 16, 2020
+-Fixed issue [security] #16137: XSS on Mass Survey Management (imacat)
+-Fixed issue : Multiple Numeric Input Slider ignores slider_default_set (Denis Chenu)
+-Fixed issue #16140: Error 500 each time save a question (debug > 1) (Denis Chenu)
+-Fixed issue #16139: Multiple Numeric Input Slider ignores Slider Initial Value (Denis Chenu)
+-Fixed issue #15956: "search" button on Question list screen not working for searching groups (Patricia Stelling)
+-Fixed issue #15954: Filtering users in admin panel not working (Patricia Stelling)
+
+
+Changes from 4.1.16 (build 200407) to 4.1.17 (build 200414) April 14, 2020
+-Fixed issue: Original superadmin should always be able to edit other users passwords (Carsten Schmitz)
+-Fixed issue #16134: Unable to disable XSS , inversion with script enable (Denis Chenu)
+-Fixed issue #16132: ext.SettingsWidget.SettingsWidget add uneeded, broken and anasked buttons (Denis Chenu)
+-Fixed issue #16123: TSV export does not properly export a single group/question/answer option etc. (Carsten Schmitz)
+-Fixed issue #16115: .lsg group export does not export subquestion texts (Carsten Schmitz)
+-Fixed issue #16098: Typo in survey groups (#1403) (jmantysalo)
+-Fixed issue #16087: Resume later email text bad content-type set (Denis Chenu)
+-Fixed issue #16080: Preview question does not work from the first try (Olle Harstedt)
+-Fixed issue #15933: Missing groups, question and answer options in tab-separated-values format (*.txt) export (Carsten Schmitz)
+-Fixed issue #15931: Custom table-prefix ignored on installation (Carsten Schmitz)
+-Fixed issue #15843: Unable to run db migration via command line (Carsten Schmitz)
+-Fixed issue #14291: CSRF 400 server error after entering update key (Carsten Schmitz)
+
+
+Changes from 4.1.15 (build 200402) to 4.1.16 (build 200407) April 7, 2020
+-Fixed issue: Quota not working for array 10-point (Olle Harstedt)
+-Fixed issue: #16021: Save Button missing in data entry view (Jessica Höck)
+-Fixed issue #16072: E-Mail Sender Name is always "Administrator" (Denis Chenu)
+-Fixed issue #16003: Button Timing statistics not displayed. (Jessica Höck)
+-Fixed issue #15902: Cannot add quota answer (Olle Harstedt)
+
+
+Changes from 4.1.14 (build 200331) to 4.1.15 (build 200402) April 2, 2020
+-Fixed issue [security] #16068: Stored Cross Site Scripting Vulnerability in permission rules. (Thanks to Matthew Aberegg) (Patrick Teichmann)
+-Fixed issue #16069: Deactivate survey using tokens in Postgres 12 shows error (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.1.13 (build 200325) to 4.1.14 (build 200331) March 31, 2020
+-Fixed issue 16037: Trim entered e-mail addresses (#1401) (fkroener)
+-Fixed issue #16024: Language changer dropdown autoupdated : keybord navigation issue (Denis Chenu)
+-Fixed issue #15918: No save button fo bounce settings. (Jessica Höck)
+-Fixed issue #15723: 'Button group' option in Yes/No Question Type (Jessica Höck)
+
+
+Changes from 4.1.12 (build 200324) to 4.1.13 (build 200325) March 25, 2020
+-Fixed issue [security]: Possible to handcraft POST to reach any file through file manager (Olle Harstedt)
+-Fixed issue #16023: All survey group settings could now be saved correctly (Patricia Stelling)
+
+
+Changes from 4.1.11 (build 200316) to 4.1.12 (build 200324) March 24, 2020
+-Fixed issue: added language name to translatable attributes in the questioneditor (Patrick Teichmann)
+-Fixed issue: [security] Enable secure flag on CSRF tokens (Carsten Schmitz)
+-Fixed issue: Numerous postgres problems due to improper table alias name casing (Carsten Schmitz)
+-Fixed issue: Flash message not shown in frontend after response is deleted mid-survey (Olle Harstedt)
+-Fixed issue: Display x rows in plugin manager (Olle Haerstedt)
+-Fixed issue: Database update fails due to labels without code (Carsten Schmitz)
+-Fixed issue: Database update fails due to invalid database engine and collation being set on new tables (Carsten Schmitz)
+-Fixed issue [security] #16019: Stored XSS in survey groups. (Thanks to Matthew Aberegg and Michael Burkey) (Denis Chenu)
+-Fixed issue [security] #16019: Stored Cross Site Scripting Vulnerability in survey groups. (Thanks to Matthew Aberegg and Michael Burkey) (Patrick Teichmann)
+-Fixed issue [security] #16018: Path Traversal Vulnerability (Matthew Aberegg, Michael Burkey) (Olle Harstedt)
+-Fixed issue 15968: Deleted user not being completely logged out (Carsten Schmitz)
+-Fixed issue #16002: Database version doesn't show correctly in version popup (Carsten Schmitz)
+-Fixed issue #15975: Sanitize lang parameter for public survey list to restricted languages (Carsten Schmitz)
+-Fixed issue #15973: Invalid submitfailed received (Denis Chenu)
+-Fixed issue #15968: Deleted user not being completely logged out (Carsten Schmitz)
+-Fixed issue #15943: Save and save and close buttons in quick-add conditions not working (Jessica Höck)
+-Fixed issue #15912: Error updating database on upgrade from 3.x (Carsten Schmitz)
+-Fixed issue #15838: Check database integrity error (Carsten Schmitz)
+-Fixed issue #14004: language changer not automatically changing language on selection and will also work without checking the data policy checkbox (Patrick Teichmann)
+#Updated translation: Swedish by Norfa97
+#Updated translation: German by c_schmitz
+#Updated translation: French (France) by b00z00, GuillaumeZ6, DenisChenu, eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 4.1.10 (build 200311) to 4.1.11 (build 200316) March 16, 2020
+-Fixed issue: Survey cannot be activated (Carsten Schmitz)
+-Fixed issue: Missing file in zip file when downloading files uploaded by participants in responses (Carsten Schmitz)
+-Fixed issue : bad order in X Scale for array test and number (Denis Chenu)
+-Fixed issue #15984: Order of subquestion are not respected in print answers (Denis Chenu)
+-Fixed issue #15908: No input fields for admin login page after update (Olle Harstedt)
+-Fixed issue #15832: Email status was not set to OK when creating tokens (Carsten Schmitz)
+-Fixed issue #15773: Unable to check integrety (Carsten Schmitz)
+-Fixed issue #15742: RC export_responses fails with "undefined table" on Postgres (Carsten Schmitz)
+-Fixed issue #15528: Internal server error when trying to view partial responses using Postgres (Carsten Schmitz)
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 4.1.9 (build 200310) to 1 (build 200311) March 9, 2020
+#Updated translation: French (France) by janolap1
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 4.1.8 (build 200302) to 4.1.9 (build 200310) March 9, 2020
+-Fixed issue: Unable to import multilingual question from version 3.x (Carsten Schmitz)
+-Fixed issue: Question editor won't load when using MSSQL server (Carsten Schmitz)
+-Fixed issue: Language selector overlaps other elements when resizing screen at survey creation (Carsten Schmitz)
+-Fixed issue: Error message is missing for Questioneditor on save (Patrick Teichmann)
+-Fixed issue: #15906 you can not enter anything in the input validation question attribute (Jessica Höck)
+-Fixed issue: #15558 Labels contain 'template' instead of 'theme' (Jessica Höck)
+-Fixed issue #15885: Save button missing for response editing (Patrick Teichmann)
+-Fixed issue #15882: Missing attribute "Label for other" in listradio question (Patrick Teichmann)
+-Fixed issue #15844: api get_question_properties not responding the subquestions question (m-rm)
+-Fixed issue #15832: Participant settings not imported correctly when importing a CSV file (emailstatus issue) (Marc Leonhardt)
+-Fixed issue #15829: Unable to upgrade from 3.x to 4x when using MSSQL (Carsten Schmitz)
+-Fixed issue #15073: Cannot export data to SPSS if no participant table exists (Carsten Schmitz)
+-Fixed issue #12131: Config parameter filterout_incomplete_answers does not seem to work anymore (Carsten Schmitz)
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Indonesian by Mazi
+#Updated translation: Hungarian by kkd
+#Updated translation: German by MalteHoffmann
+#Updated translation: Finnish by jeskiv, Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+
+
+Changes from 4.1.7 (build 200224) to 4.1.8 (build 200302) March 2, 2020
+-Fixed issue #15920: PHP notice when submit a survey with refurl (Denis Chenu)
+-Fixed issue #15905: Delete question internal server error (Eddy Lackmann)
+#Updated translation: Tajik by Iskandar_r
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: English by englisheducationum
+#Updated translation: Danish by c_schmitz, Mikkel
+#Updated translation: Croatian by rovinj
+
+
+Changes from 4.1.6 (build 200220) to 4.1.7 (build 200224) February 24, 2020
+-Fixed issue #15911: Double checkconditions with array_text quetsion type (Denis Chenu)
+-Fixed issue #15909: customToken delete settings by other plugin (Denis Chenu)
+-Fixed issue #15889: Quota names not displayed in overview (Patrick Teichmann)
+-Fixed issue #15888: Importing quotas deletes the answers that have been set to the respective quota (Patrick Teichmann)
+-Fixed issue #15879: Plugin menu events not implemented in V4 (Olle Haerstedt)
+-Fixed issue #15781: File manager - copy file buttons are not disappearing (Jessica Höck)
+-Fixed issue #15466: Pagination not working after updating the grid (Patrick Teichmann)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by b00z00
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 4.1.5 (build 200217) to 4.1.6 (build 200220) February 20, 2020
 -Fixed issue: Wrong redirection to enter new key in Comfort update (eddylackmann)
 -Fixed issue: Empty comfort update key can be submitted (eddylackmann)

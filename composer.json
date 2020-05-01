@@ -25,7 +25,8 @@
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
 			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
-			"LimeSurvey\\Helpers\\": "application/helpers"
+			"LimeSurvey\\Helpers\\": "application/helpers",
+			"LimeSurvey\\Models\\Services\\": "application/models/services"
 		}
 	},
 	"require": {

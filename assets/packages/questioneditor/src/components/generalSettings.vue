@@ -11,19 +11,21 @@
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
+                        <div class="list-group-item question-option-general-setting-block" 
+                             v-for="generalSetting in generalSettingOptions" 
+                             :key="generalSetting.name">
                             <component 
-                            v-bind:is="getComponentName(generalSetting.inputtype)" 
-                            :elId="generalSetting.formElementId"
-                            :elName="generalSetting.formElementName"
-                            :elLabel="generalSetting.title"
-                            :elHelp="generalSetting.formElementHelp"
-                            :currentValue="generalSetting.formElementValue"
-                            :elOptions="generalSetting.formElementOptions"
-                            :debug="generalSetting"
-                            :readonly="isReadonly(generalSetting)"
-                            @change="reactOnChange($event, generalSetting)"
-                            ></component>
+                                v-bind:is="getComponentName(generalSetting.inputtype)" 
+                                :elId="generalSetting.formElementId"
+                                :elName="generalSetting.formElementName"
+                                :elLabel="generalSetting.title"
+                                :elHelp="generalSetting.formElementHelp"
+                                :currentValue="generalSetting.formElementValue"
+                                :elOptions="generalSetting.formElementOptions"
+                                :debug="generalSetting"
+                                :readonly="isReadonly(generalSetting)"
+                                @change="reactOnChange($event, generalSetting)">
+                            </component>
                         </div>
                     </div>
                 </div>
@@ -51,7 +53,6 @@ import filter from 'lodash/filter';
 import SettingSwitch from './_inputtypes/switch.vue';
 import SettingText from './_inputtypes/text.vue';
 import SettingSelect from './_inputtypes/select.vue';
-import SettingTextdisplay from './_inputtypes/textdisplay.vue';
 import SettingTextarea from './_inputtypes/textarea.vue';
 import SettingButtongroup from './_inputtypes/buttongroup.vue';
 import SettingQuestiontheme from './_inputtypes/questiontheme.vue';
@@ -68,9 +69,8 @@ export default {
         'setting-questiontheme': SettingQuestiontheme,
         'setting-questiongroup': SettingQuestiongroup,
         'setting-switch': SettingSwitch,
-        'setting-text': SettingTextdisplay,
         'setting-select': SettingSelect,
-        'setting-textinput': SettingText,
+        'setting-text': SettingText,
         'setting-textarea': SettingTextarea,
         'setting-buttongroup': SettingButtongroup,
         'setting-columns': SettingColumns,
@@ -100,9 +100,13 @@ export default {
     },
     methods: {
         getComponentName(componentRawName){
-            if(componentRawName != undefined)
-                return 'setting-'+componentRawName;
-            return 'stub-set';
+            let name = '';
+            if(componentRawName != undefined) {
+                name = 'setting-' + componentRawName;
+            } else {
+                name = 'stub-set';
+            }
+            return name;
         },
         reactOnChange(newValue, oSettingObject) {
             this.$store.commit('setQuestionGeneralSetting', {newValue, settingName: oSettingObject.formElementId});   

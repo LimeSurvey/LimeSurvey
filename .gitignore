@@ -21,7 +21,7 @@
 !.eslintrc.json
 !.eslintrc
 !.env-cmdrc
-
+!.eslintignore
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*.*
@@ -175,3 +175,9 @@ tags
 package-lock.json
 
 third_party/
+
+# Docker related files
+.dockerignore
+.Dockerfile
+docker-compose.yml
+docker/

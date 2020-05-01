@@ -228,7 +228,8 @@ class questions extends Survey_Common_Action
                     $sFullFilepath,
                     $iSurveyID,
                     $gid,
-                    ['autorename' =>App()->request->getPost('autorename') == '1']
+                    ['autorename' =>App()->request->getPost('autorename') == '1',
+                    'translinkfields' =>App()->request->getPost('autorename') == '1']
                 );
             } else {
                 $this->getController()->error(gT('Unknown file extension'));
@@ -319,9 +320,9 @@ class questions extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $defaultvalue = DefaultValue::model()
-                        ->with('defaultValueL10ns')
+                        ->with('defaultvaluel10ns')
                         ->find(
-                            'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                            'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                             array(
                                 ':specialtype' => '',
                                 ':qid' => $qid,
@@ -329,11 +330,11 @@ class questions extends Survey_Common_Action
                                 ':language' => $language,
                                 )
                         );
-                    $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                    $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
-                    $answerresult = Answer::model()->with('answerL10ns')->findAll(
-                        'qid = :qid AND answerL10ns.language = :language',
+                    $answerresult = Answer::model()->with('answerl10ns')->findAll(
+                        'qid = :qid AND answerl10ns.language = :language',
                         array(
                             ':qid' => $qid,
                             ':language' => $language
@@ -344,9 +345,9 @@ class questions extends Survey_Common_Action
 
                     if ($questionrow['other'] == 'Y') {
                         $defaultvalue = DefaultValue::model()
-                            ->with('defaultValueL10ns')
+                            ->with('defaultvaluel10ns')
                             ->find(
-                                'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                                'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                                 array(
                                 ':specialtype' => 'other',
                                 ':qid' => $qid,
@@ -354,7 +355,7 @@ class questions extends Survey_Common_Action
                                 ':language' => $language,
                                 )
                         );
-                        $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
                         $langopts[$language][$questionrow['type']]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
@@ -367,9 +368,9 @@ class questions extends Survey_Common_Action
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
                     $sqresult = Question::model()
-                        ->with('questionL10ns')
+                        ->with('questionl10ns')
                         ->findAll(
-                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionL10ns.language =:language',
+                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionl10ns.language =:language',
                             array(
                                 ':sid' => $iSurveyID,
                                 ':gid' => $gid,
@@ -391,9 +392,9 @@ class questions extends Survey_Common_Action
 
                     foreach ($sqresult as $aSubquestion) {
                         $defaultvalue = DefaultValue::model()
-                            ->with('defaultValueL10ns')
+                            ->with('defaultvaluel10ns')
                             ->find(
-                                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                                 array(
                                 ':specialtype' => '',
                                 ':qid' => $qid,
@@ -402,9 +403,9 @@ class questions extends Survey_Common_Action
                                 ':language' => $language
                                 )
                         );
-                        $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
 
-                        $question = $aSubquestion->questionL10ns[$language]->question;
+                        $question = $aSubquestion->questionl10ns[$language]->question;
                         $aSubquestion = $aSubquestion->attributes;
                         $aSubquestion['question'] = $question;
                         $aSubquestion['defaultvalue'] = $defaultvalue;
@@ -417,9 +418,9 @@ class questions extends Survey_Common_Action
             if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
             $qtproperties[$questionrow['type']]['subquestions'] == 0) {
                 $defaultvalue = DefaultValue::model()
-                    ->with('defaultValueL10ns')
+                    ->with('defaultvaluel10ns')
                     ->find(
-                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                         array(
                         ':specialtype' => '',
                         ':qid' => $qid,
@@ -427,7 +428,7 @@ class questions extends Survey_Common_Action
                         ':language' => $language,
                         )
                 );
-                $langopts[$language][$questionrow['type']][0] = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
+                $langopts[$language][$questionrow['type']][0] = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
             }
 
         }
@@ -539,8 +540,8 @@ class questions extends Survey_Common_Action
         // Check that there are answers for every language supported by the survey
         foreach ($oQuestion->answers as $oAnswer){
             foreach ($oSurvey->allLanguages as $language) {
-                if (!isset($oAnswer->answerL10ns[$language])) {
-                    $baseL10n = $oAnswer->answerL10ns[$oSurvey->language];
+                if (!isset($oAnswer->answerl10ns[$language])) {
+                    $baseL10n = $oAnswer->answerl10ns[$oSurvey->language];
                     $oAnswerL10n = new AnswerL10n();
                     $oAnswerL10n->attributes = $baseL10n->attributes;
                     $oAnswerL10n->language = $language;
@@ -1039,12 +1040,12 @@ class questions extends Survey_Common_Action
 
         foreach ($aQids as $iQid) {
 
-            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
             $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
             $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0);
+                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0);
                 $result = $this->delete($oQuestion->sid, $iQid, $oQuestion->gid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
@@ -1116,7 +1117,7 @@ class questions extends Survey_Common_Action
             ];
         }
 
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid, 'gid' => $gid_search]);
+        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [
@@ -1622,12 +1623,12 @@ class questions extends Survey_Common_Action
             $aQidAndLang = explode(',', $sQidAndLang);
             $iQid        = $aQidAndLang[0];
 
-            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
             $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
             $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0),0,100);
+                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0),0,100);
                 $aResults[$iQid]['result'] = 'selected';
             }
         }

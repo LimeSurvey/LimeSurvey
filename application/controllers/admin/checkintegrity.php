@@ -508,7 +508,7 @@ class CheckIntegrity extends Survey_Common_Action
                 foreach ($aColumns as $oColumn) {
 
                     // Question columns start with the SID
-                    if (strpos($oColumn->name, $oSurvey->sid) !== false) {
+                    if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
 
                         // Fileds are separated by X
                         $aFields   = explode('X', $oColumn->name);
@@ -538,7 +538,7 @@ class CheckIntegrity extends Survey_Common_Action
                                 if ($oQuestion->gid != $sGid){
 
                                     // If not, we change the column name
-                                    $sNvColName = $oSurvey->sid . 'X'. $oQuestion->groups->gid . 'X' . $sDirtyQid;
+                                    $sNvColName = $oSurvey->sid . 'X'. $oQuestion->group->gid . 'X' . $sDirtyQid;
 
                                     if ( array_key_exists( $sNvColName, $aColumns ) ){
                                         // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group

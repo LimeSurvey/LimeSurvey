@@ -24,6 +24,8 @@ class AdminController extends LSYii_Controller
     /**
      * Initialises this controller, does some basic checks and setups
      *
+     * REFACTORED ( in LSBaseController )
+     *
      * @access protected
      * @return void
      */
@@ -34,7 +36,13 @@ class AdminController extends LSYii_Controller
         $this->_sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
-
+        // Check if the user really exists
+        // This scenario happens if the user was deleted while still being logged in
+        if ( !empty( $this->user_id ) && User::model()->findByPk( $this->user_id ) == null ){
+            $this->user_id = null;
+            Yii::app()->session->destroy();
+        }
+        
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
@@ -54,6 +62,8 @@ class AdminController extends LSYii_Controller
 
     /**
      * Shows a nice error message to the world
+     *
+     * todo REFACTORING is this still in use? can't find any call in an action or a view ...
      *
      * @access public
      * @param string $message The error message
@@ -91,6 +101,8 @@ class AdminController extends LSYii_Controller
     /**
      * Load and set session vars
      *
+     * REFACTORED (in LSBaseController)
+     *
      * @access protected
      * @return void
      */
@@ -114,6 +126,8 @@ class AdminController extends LSYii_Controller
     /**
      * Checks for action specific authorization and then executes an action
      *
+     * REFACTORED ( in LSBaseController)
+     *
      * @access public
      * @param string $action
      * @return boolean|null
@@ -134,6 +148,7 @@ class AdminController extends LSYii_Controller
 
 
         if ($action != "databaseupdate" && $action != "db") {
+            
             if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
                                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
@@ -167,6 +182,9 @@ class AdminController extends LSYii_Controller
 
     /**
      * Starting with LS4, 3rd party developper can extends any of the LimeSurve controllers.
+     *
+     *  REFACTORED ( in LSBaseController)
+     *
      */
     protected function runModuleController($action)
     {
@@ -225,6 +243,8 @@ class AdminController extends LSYii_Controller
     /**
      * Routes all the actions to their respective places
      *
+     * todo REFACTORING we don't have to refactore this method ...
+     *
      * @access public
      * @return array
      */
@@ -257,6 +277,8 @@ class AdminController extends LSYii_Controller
      * This function is very similiar to AdminController::actions()
      * Routes all the modules actions to their respective places
      *
+     * todo REFACTORING we don't have to refactore this method ...
+     *
      * @access public
      * @return array
      */
@@ -276,6 +298,9 @@ class AdminController extends LSYii_Controller
 
     /**
      * Return the list of overriden actions from modules, and generate it if needed
+     *
+     * REFACTORED ( in LSYiiController)
+     *
      * @return array
      */
     protected function getOverridenCoreAction()
@@ -374,6 +399,8 @@ class AdminController extends LSYii_Controller
     /**
      * Prints Admin Header
      *
+     * REFACTORED (in LayoutHelper.php)
+     *
      * @access protected
      * @param bool $meta
      * @param bool $return
@@ -437,6 +464,8 @@ class AdminController extends LSYii_Controller
     /**
      * Prints Admin Footer
      *
+     * REFACTORED (in LayoutHelper)
+     *
      * @access protected
      * @param string $url
      * @param string $explanation
@@ -470,6 +499,8 @@ class AdminController extends LSYii_Controller
     /**
      * Shows a message box
      *
+     * REFACTORED ( in LayoutHelper.php )
+     *
      * @access public
      * @param string $title
      * @param string $message
@@ -486,6 +517,13 @@ class AdminController extends LSYii_Controller
     }
 
 
+    /**
+     *
+     * REFACTORED (in LayoutHelper.php)
+     *
+     * @return bool|string
+     * @throws CException
+     */
     public function _loadEndScripts()
     {
         static $bRendered = false;

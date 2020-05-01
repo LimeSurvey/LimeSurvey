@@ -17,6 +17,6 @@
                     <?php } ?>
             </select>
         </div>
-        <?php eT('This will update the survey group for all selected active surveys.').' '.eT('Continue?'); ?>
+        <?php eT('This will update the survey group for all selected surveys.').' '.eT('Continue?'); ?>
 </div>
 <?php $this->endWidget(); ?>

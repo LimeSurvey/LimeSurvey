@@ -469,6 +469,7 @@ export default {
                         LS.EventBus.$emit('loadingFinished');
                         this.$nextTick().then(() => {
                             LS.EventBus.$emit('setQuestionType', result.data.newQuestionDetails.question.type);
+                            LS.EventBus.$emit('reloadTopBar', {});
                         });
                     },
                     (rejected) => {
@@ -476,7 +477,7 @@ export default {
                         this.loading = false;
                         this.$log.error(rejected);
                         if(rejected.data != undefined) {
-                            window.LS.notifyFader(rejected.data.message, 'well-lg bg-danger text-center', undefined, {timeout: 5500});
+                            window.LS.notifyFader(rejected.data, 'well-lg bg-danger text-center', undefined, {timeout: 5500});
                         }
                     }
                 )

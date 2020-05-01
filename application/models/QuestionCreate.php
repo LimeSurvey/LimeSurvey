@@ -46,7 +46,7 @@ class QuestionCreate extends Question
                 'help' => '',
             ], false);
         }
-        $oQuestion->questionL10ns = $i10N;
+        $oQuestion->questionl10ns = $i10N;
 
         return $oQuestion;
     }

@@ -304,6 +304,7 @@ $internalConfig = array(
                 'getEditor'               => 'getEditor',
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
+                'makeFlashMessage'        => 'makeFlashMessage',
                 'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
             ),
             'filters' => array(
@@ -423,6 +424,7 @@ $internalConfig = array(
                     'darkencss',
                     'lightencss',
                     'getAllTokenAnswers',
+                    'makeFlashMessage',
                 ),
             ),
         ),

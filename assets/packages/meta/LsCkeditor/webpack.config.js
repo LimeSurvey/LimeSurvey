@@ -22,7 +22,7 @@ module.exports = (env, argv) => {
             hints: false
         },
 
-        entry: path.resolve(__dirname, 'src', 'globalBind.js'),
+        entry: path.resolve(__dirname, 'src', 'LsCkEditor.js'),
 
         optimization: {},
 

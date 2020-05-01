@@ -213,20 +213,35 @@ function activateLanguageChanger(){
         }
     });
     /* Language changer dropdown */
-    $('.form-change-lang [name="lang"] option:not(selected)').on('click', function(event) {
+    /* Don't activate change when using key up / key down */
+    $('.form-change-lang [name="lang"]').on('keypress keydown keyup', function(event) {
+        var code = event.keyCode || event.which;
+        /* packaje name : limesurvey */
+        $(this).data("limesurvey-lastkey",code);
+    });
+    $('.form-change-lang [name="lang"]').on('click', function(event) {
+        /* didn't work with chrome , chrom bug : onclick are an intrinsic event see https://www.w3.org/TR/html401/interact/forms.html#h-17.6 */
+        /* Happen rarely (keyboard + mouse + still have the button */
+        $(this).data("limesurvey-lastkey",null);
+    });
+    $('.form-change-lang [name="lang"]').on('change', function(event) {
+        if( $(this).data("limesurvey-lastkey") == 38 || $(this).data("lastkey") == 40) {
+            /* Last key is up or down : disable auto submit mantis #16024 */
+            return;
+        }
         var closestForm = $(this).closest('form');
         var newLang = $(this).val();
         if (!closestForm.length) {
-            /* we are not in a forum, can not submit directly */
+            /* we are not in a form, can not submit directly */
+            // Remind user can put language changer everywhere, not only in home page, but for example in clear all page etc … in form or not etc ...
             if (limesurveyForm.length == 1) {
                 /* The limesurvey form exist in document, move select and button inside and click */
                 applyChangeAndSubmit(newLang);
-                // TODO: Check all code below. When does it happen?
-                // Answer : remind user can put language changer everywhere, not only in home page, but for example in clear all page etc …
             } else {
                 // If there are no form : we can't use it */
                 if($(this).parent().data('targeturl')){
                     /* If we have a target url : just move location to this url with lang set */
+                    /* targeturl was used for preview gropup and question in 2.6lts : check if still used/usable */
                     var target=$(this).parent().data('targeturl');
                     /* adding lang in get param manually */
                     if(target.indexOf("?") >=0){
@@ -239,6 +254,7 @@ function activateLanguageChanger(){
                     return false;
                 }else{
                     /* No form, not targeturl : just see what happen */
+                    /* This must not happen : issue in theme */
                     $("<form>", {
                         "class":'ls-js-hidden',
                         "html": '<input type="hidden" name="lang" value="' + newLang + '" />',
@@ -250,7 +266,7 @@ function activateLanguageChanger(){
             }
         }else{
             /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-            $(this).closest('form').find("[name='lang']").not($(this).parent()).remove();
+            $(this).closest('form').find("[name='lang']").not(this).remove();
             $(this).closest('.form-change-lang').find(':submit').click();
         }
     });

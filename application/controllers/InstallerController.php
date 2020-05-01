@@ -934,7 +934,7 @@ class InstallerController extends CController
             ."\t\t".""."\n"
 
             ."\t\t"." 'session' => array ("."\n"
-            ."\t\t\t"."'sessionName'=>'LS-".$this->_getRandomString(16)."'"."\n"
+            ."\t\t\t"."'sessionName'=>'LS-".$this->_getRandomString(16)."'".",\n"
             ."\t\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
             ."\t\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
             ."\t\t\t"."// 'class' => 'application.core.web.DbHttpSession',"."\n"
@@ -1029,6 +1029,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dbuser']) ? $model->dbuser = Yii::app()->session['dbuser'] : null;
         isset(Yii::app()->session['dbpwd']) ? $model->dbpwd = Yii::app()->session['dbpwd'] : null;
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
+        isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
     }
@@ -1043,6 +1044,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dbuser']);
         unset(Yii::app()->session['dbpwd']);
         unset(Yii::app()->session['dblocation']);
+        unset(Yii::app()->session['dbprefix']);
         unset(Yii::app()->session['dbExists']);
     }
 

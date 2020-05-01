@@ -634,8 +634,8 @@ class themeoptions  extends Survey_Common_Action
             $aData['surveybar']['buttons']['view'] = true;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
-            $aData['title_bar']['title'] = gT("Survey template options");
-            $aData['subaction'] = gT("Survey template options");
+            $aData['title_bar']['title'] = gT("Survey theme options");
+            $aData['subaction'] = gT("Survey theme options");
         }
 
         $this->_renderWrappedTemplate('themeoptions', 'update', $aData);

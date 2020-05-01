@@ -41,7 +41,7 @@ use \LimeSurvey\Helpers\questionHelper;
  * @property Question $parents      //@TODO should be singular
  * @property Question[] $subquestions
  * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
- * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
+ * @property QuestionL10n[] $questionl10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
  * @property QuestionType $questionType
@@ -116,11 +116,11 @@ class Question extends LSActiveRecord
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'group' => array(self::BELONGS_TO, 'QuestionGroup', 'gid', 'together' => true),
             'parent' => array(self::HAS_ONE, 'Question', array("qid" => "parent_qid")),
-            'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
-            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
-            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid')),
+            'questionattributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
+            'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true),
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid'), 'order'=> App()->getDb()->quoteColumnName('subquestions.question_order').' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
-            'answers' => array(self::HAS_MANY, 'Answer', 'qid')
+            'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order'=> App()->getDb()->quoteColumnName('answers.sortorder').' ASC'),
         );
     }
 
@@ -474,14 +474,14 @@ class Question extends LSActiveRecord
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
         if ($orderby === false){
-            $oQuestions = Question::model()->with('questionL10ns')->findAll(array('condition' => $condition));
+            $oQuestions = Question::model()->with('questionl10ns')->findAll(array('condition' => $condition));
         } else {
-            $oQuestions = Question::model()->with('questionL10ns')->findAll(array('condition' => $condition, 'order' => $orderby));
+            $oQuestions = Question::model()->with('questionl10ns')->findAll(array('condition' => $condition, 'order' => $orderby));
         }
         $arr = array();
         foreach($oQuestions as $key => $question)
         {
-            $arr[$key] = array_merge($question->attributes, current($question->questionL10ns)->attributes);
+            $arr[$key] = array_merge($question->attributes, current($question->questionl10ns)->attributes);
         }
         return $arr;
     }
@@ -683,7 +683,7 @@ class Question extends LSActiveRecord
 
                 // We create an aray aSorted that will use the answer in the current language as key, and that will store its old index as value
                 foreach($aScaleArray as $iKey => $oAnswer){
-                    $aSorted[$oAnswer->answerL10ns[$this->survey->language]->answer] = $iKey;
+                    $aSorted[$oAnswer->answerl10ns[$this->survey->language]->answer] = $iKey;
                 }
 
                 ksort($aSorted);
@@ -832,7 +832,7 @@ class Question extends LSActiveRecord
     {
         $this->with(
             array(
-                'questionL10ns'=>array('condition'=>"language='".$sLanguage."'"),
+                'questionl10ns'=>array('condition'=>"language='".$sLanguage."'"),
                 'group'=>array('condition'=>"language='".$sLanguage."'")
             )
         );
@@ -866,7 +866,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT('Question'),
                 'name' => 'question',
-                'value'=> 'array_key_exists($data->survey->language, $data->questionL10ns) ? viewHelper::flatEllipsizeText($data->questionL10ns[$data->survey->language]->question,true,0) : ""',
+                'value'=> 'array_key_exists($data->survey->language, $data->questionl10ns) ? viewHelper::flatEllipsizeText($data->questionl10ns[$data->survey->language]->question,true,0) : ""',
                 'htmlOptions' => array('class' => 'col-md-5'),
             ),
             array(
@@ -880,7 +880,7 @@ class Question extends LSActiveRecord
             array(
                 'header' => gT('Group'),
                 'name' => 'group',
-                'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
+                'value'=> '$data->group->questiongroupl10ns[$data->survey->language]->group_name',
             ),
 
             array(
@@ -963,7 +963,7 @@ class Question extends LSActiveRecord
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
         //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';
-        $criteria->with = array('group' => array('alias' => 'g'), 'questionL10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
+        $criteria->with = array('group' => array('alias' => 'g'), 'questionl10ns'=>array('alias'=>'ql10n', 'condition'=>"language='".$this->survey->language."'"));
 
         if (!empty($this->title)) {
             $criteria2 = new CDbCriteria;
@@ -979,7 +979,7 @@ class Question extends LSActiveRecord
 
         /* make sure gid is a numeric */
         if ($this->gid != '' and is_numeric($this->gid)) {
-            $criteria->compare('group.gid', $this->gid, false, 'AND');
+            $criteria->compare('g.gid', $this->gid, false, 'AND');
         }
 
         $dataProvider = new CActiveDataProvider('Question', array(

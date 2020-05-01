@@ -77,7 +77,7 @@ $googleAnalyticsStyleOptions = array(
                         if ($oSurvey->ipaddr!= "Y") {
                             eT("Responses will not have the IP address logged.");
                         } else {
-                            eT("Responses will have the IP address logged");
+                            eT("Responses will have the IP address logged.");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                         <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipaddr);
@@ -92,6 +92,7 @@ $googleAnalyticsStyleOptions = array(
                                 }
                             }")*/
                         ));
+
                         /*$this->widget('bootstrap.widgets.TbModal', array(
                             'id' => 'datestampModal_2',
                             'header' => gt('Warning','unescaped'),
@@ -99,6 +100,31 @@ $googleAnalyticsStyleOptions = array(
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                         ));*/
                         }
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" control-label" for='ipanonymize'><?php  eT("Anonymize IP address:"); ?></label>
+                <div class="">
+                    <?php
+                    if ($oSurvey->isActive) {
+                        if ($oSurvey->ipanonymize!= "Y") {
+                            eT("Responses will not have the IP address anonymized.");
+                        } else {
+                            eT("Responses will have the IP address anonymized.");
+                        } ?>
+                        <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
+                        <?php echo CHtml::hiddenField('ipanonymize',$oSurvey->ipanonymize);
+                    }else {
+                        // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'ipanonymize',
+                            'value' => $oSurvey->ipanonymize,
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array(
+                                'I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipanonymize . ']'
+                            )) : $optionsOnOff,
+                        ));
+                    }
                     ?>
                 </div>
             </div>
