@@ -44,7 +44,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @var array<string, string>
      */
     private $globalDirectoriesMap = [
-        'generalfiles' => 'upload' . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'generalfiles',
+         'generalfiles' => 'upload' . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'generalfiles',
         'global'       => 'upload' . DIRECTORY_SEPARATOR . 'global',
     ];
 
@@ -570,11 +570,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
     private function extensionAllowed($fileExtension, $purpose = 'show')
     {
         if ($purpose == 'upload') {
-            return in_array($fileExtension, $this->allowedFileExtensions) || $fileExtension == 'zip';
+            return in_array(strtolower($fileExtension), $this->allowedFileExtensions) || $fileExtension == 'zip';
         }
 
         if ($purpose == 'show') {
-            return in_array($fileExtension, $this->allowedFileExtensions);
+            return in_array(strtolower($fileExtension), $this->allowedFileExtensions);
         }
     }
 
@@ -721,7 +721,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $folders = $this->globalDirectories;
 
         if ($iSurveyId != null) {
-            $folders[$iSurveyId] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId;
+            $folders[$iSurveyId] = 'upload/surveys/' . $iSurveyId;
         } else {
             $aSurveyIds = Yii::app()->db->createCommand()->select('sid')->from('{{surveys}}')->queryColumn();
             foreach ($aSurveyIds as $itrtSsurveyId) {
@@ -729,7 +729,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     || Permission::model()->hasGlobalPermission('surveys', 'update')
                     || Permission::model()->hasSurveyPermission($itrtSsurveyId, 'surveylocale', 'update')
                 ) {
-                    $folders[$itrtSsurveyId] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $itrtSsurveyId;
+                    $folders[$itrtSsurveyId] = 'upload/surveys/'. $itrtSsurveyId;
                 }
 
             }
