@@ -1696,19 +1696,15 @@ class dataentry extends Survey_Common_Action
                         if ($saver['email']) {
                             //Send email
                             if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
-                                $mailer = New \LimeMailer;
-                                $mailer->addAddress($saver['email']);
-                                $mailer->setSurvey($surveyid);
-                                $mailer->emailType = 'savesurveydetails';
-                                $mailer->Subject = gT("Saved Survey Details");
-                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
-                                $message .= "\n\n".$thissurvey['name']."\n\n";
-                                $message .= gT("Name").": ".$saver['identifier']."\n";
-                                $message .= gT("Password").": ".$saver['password']."\n\n";
-                                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                                $aParams = array('lang'=>$saver['language'], 'loadname'=>$saver['identifier'], 'loadpass'=>$saver['password']);
-                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
-                                $mailer->Body = $message;
+                                $tmp = new Safe();
+                                $mailer = $tmp->getSaveSurveyMailer(
+                                    $arSaveControl->scid, null, $thissurvey, $surveyid,
+                                    $saver['identifier'],
+                                    $saver['password'],
+                                    $saver['email'],
+                                    $saver['language']
+                                );
+                                
                                 if ($mailer->sendMessage()) {
                                     $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
                                 } else {

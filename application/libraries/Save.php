@@ -264,22 +264,13 @@ class Save
 
             //Email if needed
             if (Yii::app()->getRequest()->getPost('saveemail') && validateEmailAddress(Yii::app()->getRequest()->getPost('saveemail'))) {
-                $mailer = new \LimeMailer;
-                $mailer->setSurvey($thissurvey['sid']);
-                $mailer->emailType = 'savesurveydetails';
-                $mailer->Subject = gT("Saved Survey Details")." - ".$thissurvey['name'];
-                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
-                $message .= "\n\n".$thissurvey['name']."\n\n";
-                $message .= gT("Name").": ".Yii::app()->getRequest()->getPost('savename')."\n";
-                $message .= gT("Password").": ".Yii::app()->getRequest()->getPost('savepass')."\n\n";
-                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $aParams  = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>Yii::app()->getRequest()->getPost('savename'), 'loadpass'=>Yii::app()->getRequest()->getPost('savepass'));
-                if (!empty($clienttoken)) {
-                    $aParams['token'] = $clienttoken;
-                }
-                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
-                $mailer->Body = $message;
-                $mailer->addAddress(Yii::app()->getRequest()->getPost('saveemail'));
+                $mailer = $this->getSaveSurveyMailer(
+                    $scid, $clienttoken, $thissurvey, $surveyid,
+                    Yii::app()->getRequest()->getPost('savename'),
+                    Yii::app()->getRequest()->getPost('savepass'),
+                    Yii::app()->getRequest()->getPost('saveemail')
+                );
+
                 if ($mailer->sendMessage()) {
                     $emailsent = "Y";
                 } else {
@@ -409,22 +400,13 @@ class Save
 
             //Email if needed
             if (Yii::app()->getRequest()->getPost('saveemail') && validateEmailAddress(Yii::app()->getRequest()->getPost('saveemail'))) {
-                $mailer = new \LimeMailer;
-                $mailer->setSurvey($thissurvey['sid']);
-                $mailer->emailType = 'savesurveydetails';
-                $mailer->Subject = gT("Saved Survey Details")." - ".$thissurvey['name'];
-                $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
-                $message .= "\n\n".$thissurvey['name']."\n\n";
-                $message .= gT("Name").": ".Yii::app()->getRequest()->getPost('savename')."\n";
-                $message .= gT("Password").": ".Yii::app()->getRequest()->getPost('savepass')."\n\n";
-                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $aParams  = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>Yii::app()->getRequest()->getPost('savename'), 'loadpass'=>Yii::app()->getRequest()->getPost('savepass'));
-                if (!empty($clienttoken)) {
-                    $aParams['token'] = $clienttoken;
-                }
-                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
-                $mailer->Body = $message;
-                $mailer->addAddress(Yii::app()->getRequest()->getPost('saveemail'));
+                $mailer = $this->getSaveSurveyMailer(
+                    $scid, $clienttoken, $thissurvey, $surveyid,
+                    Yii::app()->getRequest()->getPost('savename'),
+                    Yii::app()->getRequest()->getPost('savepass'),
+                    Yii::app()->getRequest()->getPost('saveemail')
+                );
+                
                 if ($mailer->sendMessage()) {
                     $emailsent = "Y";
                 } else {
@@ -488,5 +470,53 @@ class Save
             ." WHERE id = ".$_SESSION['survey_'.$thissurvey['sid']]['srid'];
         }
         Yii::app()->db->createCommand($query)->execute();
+    }
+
+    function getSaveSurveyMailer($scid = null, $clienttoken, $thissurvey, $surveyid, $savename, $savepass, $saveemail, $lang = null) {
+        $emailType = 'savesurveydetails';
+
+        if( empty( $lang ) ) {
+            $lang = App()->language;
+        }
+        
+        $aParams = array('lang'=>$lang, 'loadname'=>$savename, 'loadpass'=>$savepass);
+
+        if( !empty( $scid ) ) {
+            $aParams['scid'] = $scid;
+        }
+        if (!empty($clienttoken)) {
+            $aParams['token'] = $clienttoken;
+        }
+
+        $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+        $message .= "\n\n%surveyName%\n\n";
+        $message .= gT("Name").": %savename%\n";
+        $message .= gT("Password").": %savepass%\n\n";
+        $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
+        $message .= "%surveyLink%";
+
+        $pluginEmailData = new PluginEvent('beforeEmailBody');
+        $pluginEmailData->set('emailType', $emailType);
+        $pluginEmailData->set('surveyId', $thissurvey['sid']);
+        $pluginEmailData->set('surveyName', $thissurvey['name']);
+        $pluginEmailData->set('surveyLink', Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams) );
+        $pluginEmailData->set('savename', $savename);
+        $pluginEmailData->set('savepass', $savepass);
+        $pluginEmailData->set('saveemail', $saveemail);
+        $pluginEmailData->set('subject', gT("Saved Survey Details")." - ".$thissurvey['name'] );
+        $pluginEmailData->set('body', $message );
+        App()->getPluginManager()->dispatchEvent($pluginEmailData);
+
+        $mailer = new \LimeMailer;
+        $mailer->setSurvey($thissurvey['sid']);
+        $mailer->emailType = $emailType;
+        $mailer->Subject = $pluginEmailData->get('subject');
+        $mailer->Body = $pluginEmailData->get('body');
+        foreach( ['surveyId', 'surveyName', 'surveyLink', 'savename', 'savepass', 'saveemail'] as $f ) {
+            $mailer->Body = preg_replace('/%' . $f . '%/m', $pluginEmailData->get( $f ), $mailer->Body );
+        }
+        $mailer->addAddress($pluginEmailData->get('saveemail'));
+
+        return $mailer;
     }
 }
