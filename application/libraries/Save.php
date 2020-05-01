@@ -505,7 +505,7 @@ class Save
         $pluginEmailData->set('surveyLink', Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams) );
         $pluginEmailData->set('savename', $savename);
         $pluginEmailData->set('savepass', $savepass);
-        $pluginEmailData->set('saveemail', $saveemail);
+        $pluginEmailData->set('email', $saveemail);
         $pluginEmailData->set('lang', $lang);
         $pluginEmailData->set('subject', gT("Saved Survey Details")." - %surveyName%" );
         $pluginEmailData->set('body', $message );
@@ -514,7 +514,7 @@ class Save
         $mailer = new \LimeMailer;
         $mailer->setSurvey($thissurvey['sid']);
         $mailer->emailType = $emailType;
-        $mailer->addAddress($pluginEmailData->get('saveemail'));
+        $mailer->addAddress($pluginEmailData->get('email'));
 
         foreach( ['subject', 'body'] as $k) {
             $tmp = $pluginEmailData->get($k);
