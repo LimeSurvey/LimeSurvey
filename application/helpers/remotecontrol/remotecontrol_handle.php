@@ -78,6 +78,15 @@ class remotecontrol_handle
         $criteria->condition = 'expire < '.time();
         Session::model()->deleteAll($criteria);
         return 'OK';
+		$session = Yii::app()->session;
+        // check if a session is already open
+		if ($session->isActive){
+			// close a session
+			$session->close();
+			// destroys all data registered to a session.
+			$session->destroy();        
+		}
+
     }
 
     /**
