@@ -44,7 +44,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @var array<string, string>
      */
     private $globalDirectoriesMap = [
-        'generalfiles' => 'upload' . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'generalfiles',
+         'generalfiles' => 'upload' . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'generalfiles',
         'global'       => 'upload' . DIRECTORY_SEPARATOR . 'global',
     ];
 
@@ -317,15 +317,13 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
 
         $destdir = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
-
         $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
-        $fullfilepath = $destdir . DIRECTORY_SEPARATOR . $filename;
-        $fullfilepath = preg_replace("%".DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR."%", DIRECTORY_SEPARATOR, $fullfilepath);
+        $fullfilepath = $destdir . $filename;
 
         if ($this->checkTargetExists($fullfilepath) && Yii::app()->getConfig('overwritefiles') == 0) {
             $ext = pathinfo($fullfilepath, PATHINFO_EXTENSION);
             $shorthash = hash('adler32', microtime());
-            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . ".", $fullfilepath);
+            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . ".".$ext, $fullfilepath);
         }
 
         //$fullfilepath = realpath($fullfilepath);
@@ -361,12 +359,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $linkToImage = 'about:blank';
             $message = sprintf(gT("File %s uploaded and %s files unpacked"), $filename, safecount($aExtractResult));
         } else {
-            if (
-                !move_uploaded_file(
-                    $_FILES['file']['tmp_name'], 
-                    $fullfilepath 
-                )
-            ) {
+            if ( !move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath ) ) {
                 $this->setError(
                     'FILE_COULD NOT_BE_MOVED',
                     sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the target folder. (%s)"), $folder)
@@ -570,11 +563,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
     private function extensionAllowed($fileExtension, $purpose = 'show')
     {
         if ($purpose == 'upload') {
-            return in_array($fileExtension, $this->allowedFileExtensions) || $fileExtension == 'zip';
+            return in_array(strtolower($fileExtension), $this->allowedFileExtensions) || $fileExtension == 'zip';
         }
 
         if ($purpose == 'show') {
-            return in_array($fileExtension, $this->allowedFileExtensions);
+            return in_array(strtolower($fileExtension), $this->allowedFileExtensions);
         }
     }
 
@@ -721,7 +714,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $folders = $this->globalDirectories;
 
         if ($iSurveyId != null) {
-            $folders[$iSurveyId] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId;
+            $folders[$iSurveyId] = 'upload/surveys/' . $iSurveyId;
         } else {
             $aSurveyIds = Yii::app()->db->createCommand()->select('sid')->from('{{surveys}}')->queryColumn();
             foreach ($aSurveyIds as $itrtSsurveyId) {
@@ -729,7 +722,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     || Permission::model()->hasGlobalPermission('surveys', 'update')
                     || Permission::model()->hasSurveyPermission($itrtSsurveyId, 'surveylocale', 'update')
                 ) {
-                    $folders[$itrtSsurveyId] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $itrtSsurveyId;
+                    $folders[$itrtSsurveyId] = 'upload/surveys/'. $itrtSsurveyId;
                 }
 
             }

@@ -152,6 +152,8 @@ class questionedit extends Survey_Common_Action
                 'Scale' => gT('Scale'),
                 'Save and Close' => gT('Save and close'),
                 'Script' => gT('Script'),
+                'X-Scale (columns)' => gT('X-Scale (columns)'),
+                'Y-Scale (lines)' => gT('Y-Scale (lines)'),
                 '__SCRIPTHELP' => gT("This optional script field will be wrapped,"
                     . " so that the script is correctly executed after the question is on the screen."
                     . " If you do not have the correct permissions, this will be ignored"),
