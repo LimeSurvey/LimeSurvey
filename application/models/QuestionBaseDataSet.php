@@ -133,13 +133,13 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         if (empty($aAdvancedOptionsArray)) {
 
-            //$aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTemplate);
+            $aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTemplate);
             //is it possible to call this instead?
-            $aQuestionTypeAttributes2 = QuestionAttribute::getQuestionAttributesSettings($this->sQuestionType); //from xml files
+            //$aQuestionTypeAttributes2 = QuestionAttribute::getQuestionAttributesSettings($this->sQuestionType); //from xml files
 
             // this is how the sorting should work but is overwritten by returning the json to the ajax result, sorting is done in _settingstab.vue for now
-            uasort($aQuestionTypeAttributes2, 'categorySort');
-            foreach ($aQuestionTypeAttributes2 as $sAttributeName => $aQuestionAttributeArray) {
+            uasort($aQuestionTypeAttributes, 'categorySort');
+            foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
                 if ($sAttributeName == 'question_template') {
                     continue;
                 } // Avoid double displaying

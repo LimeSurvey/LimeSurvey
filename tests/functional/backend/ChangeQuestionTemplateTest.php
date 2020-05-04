@@ -85,15 +85,16 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             
             
             //// Old way, by useing the html elements
-            // sleep(1);
+            sleep(1);
             // // Select bootstrap_buttons on Question theme dropdown
-            // $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
-            // $option->click();
+            $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
+            $option->click();
+            sleep(5);
 
             //// New way by triggering a vuejs function
-            $web->executeScript('LS.EventBus.$emit("questionTypeChange", {type: "L", name: "bootstrap_buttons"})');
+            //$web->executeScript('LS.EventBus.$emit("questionTypeChange", {type: "L", name: "bootstrap_buttons"})');
             $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('advanced-options-container')));
-            sleep(1);
+            sleep(3);
 
             // Select "Display theme options" tab
             $displayLink = $web->findElement(WebDriverBy::linkText('Display theme options'));
