@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.1 (build 200428) to 4.2.2 (build 200504) May 4, 2020
+-Fixed issue: Uppercase file extensions were not allowed (Carsten Schmitz)
+-Fixed issue: Make html email default to Y (Olle Harstedt)
+-Fixed issue: File upload not possible on non-linux system (Carsten Schmitz)
+-Fixed issue: File rename on duplicate file upload does not work (Carsten Schmitz)
+-Fixed issue #16199: .txt export not working (Olle Harstedt)
+-Fixed issue #15824: Improved interface for Y-axis and X-axis (Denis Chenu)
+
+
 Changes from 4.2.0 (build 200422) to 4.2.1 (build 200428) April 28, 2020
 -Fixed issue: [security] Superadmin can delete a protected superadmin (Carsten Schmitz)
 -Fixed issue: Very high memory usage when importing TSV files (Carsten Schmitz)

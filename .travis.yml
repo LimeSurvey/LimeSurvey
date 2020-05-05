@@ -97,18 +97,18 @@ before_script:
     #- wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
     #- unzip chromedriver_linux64.zip
 
-    # Prepare the packages that need to be tested
-    - nvm install 10.16.3
-    - nvm use 10.16.3
-    - node ./buildVueComponents.js -s adminbasics,filemanager -p
-
     # Setup Selenium with Firefox headless mode.
     - wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
     - wget "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz"
     - tar xvzf geckodriver-v0.23.0-linux64.tar.gz
     - export MOZ_HEADLESS=1
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
-  
+
+    # Prepare the packages that need to be tested
+    - nvm install 10.16.3
+    - nvm use 10.16.3
+    - node ./buildVueComponents.js -s adminbasics,filemanager -p
+
 script:
     # Run tests.
     - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
