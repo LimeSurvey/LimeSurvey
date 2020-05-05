@@ -555,4 +555,30 @@ class QuestionAttribute extends LSActiveRecord
         return $aAttributes;
     }
 
+    /**
+     * New event to allow plugin to add own question attribute (settings)
+     * Using $event->append('questionAttributes', $questionAttributes);
+     * $questionAttributes=[
+     *  attributeName=>[
+     *      'types' : Aply to this question type
+     *      'category' : Where to put it
+     *      'sortorder' : Qort order in this category
+     *      'inputtype' : type of input
+     *      'expression' : 2 to force Exprerssion Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+     *      'options' : optional options if input type need it
+     *      'default' : the default value
+     *      'caption' : the label
+     *      'help' : an help
+     *  ]
+     *
+     * @return array the event attributes as array or an empty array
+     */
+    public static function getOwnQuestionAttributesViaPlugin(){
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
+        $eventAttributes = (array) $result->get('questionAttributes');
+
+        return $eventAttributes;
+    }
 }

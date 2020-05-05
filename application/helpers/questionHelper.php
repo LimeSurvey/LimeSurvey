@@ -32,7 +32,7 @@ class questionHelper
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     * DEPRECATED, used only as fall back method
+     *@deprecated  used only as fall back method
      * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
     public static function getAttributesDefinitions()
