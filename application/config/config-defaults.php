@@ -72,7 +72,7 @@ $config['allowexportalldb']          = 0; // 0 will only export prefixed tables 
 $config['maxdumpdbrecords']          = 500; // The maximum number of records that would be ouputted in a go during a database backup. Reduce this number if you're getting errors while backing up the entire database.
 $config['deletenonvalues']           = 1; // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators'] = 0; // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['shownoanswer']              = 1; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
+$config['shownoanswer']              = 2; // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = overridden by survey settings )
 $config['blacklistallsurveys']       = 'N'; // Blacklist all current surveys for participant once the global field is set
 $config['blacklistnewsurveys']       = 'N'; // Blacklist participant for any new added survey once the global field is set
 $config['blockaddingtosurveys']      = 'Y'; // Don't allow blacklisted participants to be added to new survey
@@ -86,7 +86,20 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
+$config['allowedfileuploads'] = [
+    //Documents
+    'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
+    //Images - as mentioned above be very careful if you want to allow SVG files
+    'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif',
+    // Iphone file extensions (version 11 and above)
+    'heif', 'heic', 'heifs', 'heics', 'avci', 'avcs', 'avif', 'avifs',
+    //soundfiles
+    'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
+    //videos
+    'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
+]; 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig,php,html';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
@@ -223,6 +236,12 @@ $config['auth_webserver_autocreate_permissions'] = Array(
 // you created for the administration of  LimeSurvey and if you want to
 // allow these users to be able to use Javascript etc. .
 $config['filterxsshtml'] = true;
+
+// disablescriptwithxss
+// Allow update of script in question
+// true : Default : follow XSS rules
+// false : allowed for all
+$config['disablescriptwithxss'] = true;
 
 // usercontrolSameGroupPolicy
 // If this option is set to true, then limesurvey operators will only 'see'
@@ -626,6 +645,12 @@ $config['proxy_host_port'] = 80;
  */
 $config['forcedsuperadmin'] = array(1);
 
+/**
+ * Set when install a post 4.0, mysql engine before was always MyIsam
+ * Need to be set for old config.php file
+ */
+$config['mysqlEngine'] = "MyISAM";
+
 /** final theme set if default theme didn't exist. Updatebale only via PHP file
  * if this theme didn't exist in standardthemerootdir and url : this can broke your instance.
  * Choose vanilla since it's parent of other's core theme.
@@ -663,6 +688,7 @@ $config['adminimageurl']          = $config['styleurl'].$config['admintheme'].'/
 $config['applicationurl']         = $config['publicurl'].'application/';
 $config['extensionsurl']          = $config['applicationurl'].'extensions/';
 $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/'; // Location of button bar files for admin script
+$config['userfontsurl']            = $config['uploadurl'].'/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
@@ -673,6 +699,7 @@ $config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."as
 $config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the standard themes
 $config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
+$config['corequestiontypedir']      = "application".DIRECTORY_SEPARATOR."views";
 $config['corequestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
 $config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir']; // The directory containing the core's question themes.
 $config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
@@ -680,21 +707,26 @@ $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'ap
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
 $config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user custom twig extensions
 $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; // The directory containing the user's question themes.
-$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
+$config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
+$config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
+$config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";
+//Overwrite files with the same name on upload?
+$config['overwritefiles'] = 'off';
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
 
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;
-// (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
+// (javascript) Send real value entered when using Numeric question type in ExpressionScript Engine : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
 $config['bNumRealValue'] = 0;
 
 // Home page default Settings
 $config['show_logo'] = 'show';
 $config['show_last_survey_and_question'] = 'show';
 $config['show_survey_list_search'] = 'show';
+$config['show_survey_list'] = 'hide';
 $config['boxes_by_row'] = '3';
 $config['boxes_offset'] = '3';
 $config['boxes_in_container'] = 'yes';
@@ -707,6 +739,9 @@ $config['bounceaccountuser'] = '';
 
 // Question selector
 $config['defaultquestionselectormode'] = 'default';
+
+// Preselected Question Type
+$config['preselectquestiontype'] = 'T';
 
 // theme editor mode
 $config['defaultthemeteeditormode'] = 'default';
@@ -743,5 +778,20 @@ $config['pluginCoreList'] = [
 ];
 
 $config['pluginWhitelist'] = [];
+
+/* replaced in generated application/config/security.php if exist */
+$config['encryptionkeypair'] = '';
+$config['encryptionpublickey'] = '';
+$config['encryptionsecretkey'] = '';
+
+$config['passwordValidationRules'] = array(
+    'min' => 4,
+    'max' => 0,
+    'lower' => 0,
+    'upper' => 0,
+    'numeric' => 0,
+    'symbol' => 0,
+);
+
 return $config;
 //settings deleted
