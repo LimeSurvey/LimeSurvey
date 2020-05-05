@@ -10,17 +10,16 @@ var uploadHandler = function (qid, options) {
     
     var fixParentHeigth = function () {
         return;
-    }
+    };
 
     var renderPreviewItem = function (fieldname, item, iterator) {
-
         var i = iterator;
-        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
-         
+        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
+
         var previewblock = $('<li id="' + fieldname + '_li_' + i + '" class="previewblock file-element"></li>');
         var previewContainer = $('<div class="file-preview"></div>');
 
-        if (isValueInArray(image_extensions, item.ext.toLowerCase())){
+        if (isValueInArray(image_extensions, item.ext.toLowerCase())) {
             previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
         } else {
             previewContainer.append('<div class="upload-placeholder"></div>');
@@ -96,8 +95,7 @@ var uploadHandler = function (qid, options) {
 
         $('#' + fieldname + '_filecount').val(filecount);
 
-        var image_extensions = ['gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico'];
-
+        var image_extensions = ['gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic'];
         if (filecount > 0) {
             var jsontext = $('#' + fieldname).val();
 
@@ -131,10 +129,10 @@ var uploadHandler = function (qid, options) {
                 YII_CSRF_TOKEN: options.csrfToken
             },
             onSubmit: function (file, ext) {
-
                 var maxfiles = parseInt($('#' + fieldname + '_maxfiles').val());
                 var filecount = parseInt($('#' + fieldname + '_filecount').val());
                 var allowed_filetypes = $('#' + fieldname + '_allowed_filetypes').val().split(",");
+
                 /* If maximum number of allowed filetypes have already been uploaded,
                  * do not upload the file and display an error message ! */
                 if (filecount >= maxfiles) {
@@ -146,10 +144,10 @@ var uploadHandler = function (qid, options) {
                 /* If the file being uploaded is not allowed,
                  * do not upload the file and display an error message!
                  */
-                var allowSubmit = allowed_filetypes.reduce(function (col, item) {
-                    return col || ext.toLowerCase() === item;
-                }, false);
-
+                let allowSubmit = false;
+                for (let fileType of allowed_filetypes) {
+                    allowSubmit = allowed_filetypes.includes(fileType);
+                }
 
                 if (allowSubmit == false) {
                     $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
@@ -193,42 +191,6 @@ var uploadHandler = function (qid, options) {
                         $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus_" + options.qid);
                     }
                     renderPreviewItem(fieldname, metadata, count);
-
-                    // var previewblock =  "<li id='"+fieldname+"_li_"+count+"' class='previewblock file-element'>";
-
-                    // previewblock +="<div class='file-preview'>";
-                    // if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
-                    //     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded'  onload='fixParentHeigth()' />";
-                    // else
-                    //     previewblock += "<div class='upload-placeholder' />";
-                    // previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(metadata.name))+"<span>";
-                    // previewblock += "</div>";
-
-                    // previewblock +="<div class='file-info'><fieldset>";
-                    // if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
-                    // {
-                    //     if($('#'+fieldname+'_show_title').val() == 1)
-                    //     {
-                    //         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+count+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_title_"+count+"' /></div></div>";
-                    //     }
-                    //     if($('#'+fieldname+'_show_comment').val() == 1)
-                    //     {
-                    //         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+count+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_comment_"+count+"' /></div></div>";
-                    //     }
-                    // }
-                    // previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
-                    // previewblock += "</fieldset></div>";
-
-                    // previewblock += "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+
-                    //                 "<input type='hidden' id='"+fieldname+"_file_index_"+count+"' value="+metadata.file_index+" />"+
-                    //                 "<input type='hidden' id='"+fieldname+"_name_"+count+"' value="+metadata.name+" />"+
-                    //                 "<input type='hidden' id='"+fieldname+"_filename_"+count+"' value="+metadata.filename+" />"+
-                    //                 "<input type='hidden' id='"+fieldname+"_ext_" +count+"' value="+metadata.ext+"  />";
-
-                    // previewblock += "</li>";
-
-                    // // add file to the list
-                    // $('#field'+fieldname+'_listfiles').prepend(previewblock);
 
                     var filecount = parseInt($('#' + fieldname + '_filecount').val());
                     var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
@@ -292,7 +254,7 @@ var uploadHandler = function (qid, options) {
     const copyJSON = function(filecount, fieldname, show_title, show_comment, pos) {
         $('#'+fieldname+'_filecount').val(filecount);
         window['uploadQuestionController_' + fieldname].displayUploadedFiles(filecount, fieldname, show_title, show_comment, pos);
-    }
+    };
 
     var saveAndExit = function (fieldname, show_title, show_comment, pos) {
         var filecount = parseInt($('#' + fieldname + '_filecount').val());
@@ -312,7 +274,6 @@ var uploadHandler = function (qid, options) {
     }
 
     var deletefile = function (fieldname, count) {
-
         var file_index;
         var filename = $("#" + fieldname + "_filename_" + count).val();
         var name = $("#" + fieldname + "_name_" + count).val();
@@ -357,7 +318,7 @@ var uploadHandler = function (qid, options) {
                     fixParentHeigth();
                 }
             });
-    }
+    };
 
     return {
         init: init,
