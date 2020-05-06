@@ -1,9 +1,6 @@
 <?php
-
-
-
 /**
- * RenderClass for Boilerplate Question
+ * RenderClass for MultipleChoiceWithComments Question
  *  * The ia Array contains the following
  *  0 => string qid
  *  1 => string sgqa
@@ -28,8 +25,6 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     private $attributeLabelWidth;
     private $sLabelWidth;
     private $sInputContainerWidth;
-
-
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -120,7 +115,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 'inputCommentId'       => 'answer'.$myfname2,
                 'commentLabelText'     => gT('Make a comment on your choice here:'),
                 'inputCommentName'     => $myfname2,
-                'inputCOmmentValue'    => (isset($mSessionValue2)) ? $mSessionValue2 : '',
+                'inputCOmmentValue'    => CHtml::encode($mSessionValue2),
                 'sInputContainerWidth' => $this->sInputContainerWidth,
                 'sLabelWidth'          => $this->sLabelWidth,
             );
@@ -152,22 +147,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
-            $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
-        }
-
-        // TODO : check if $sValueHidden === $sValue
-        $sValueHidden = '';
-        if (!empty($mSessionValue)) {
-            $dispVal = $mSessionValue;
-            if ($this->getQuestionAttribute('other_numbers_only') == 1) {
-                $dispVal = str_replace('.', $sSeparator, $dispVal);
-            }
-            $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
-        }
-
-        // TODO: $value is not defined for some execution paths.
-        if (!isset($value)) {
-            $sValue = '';
+            $sValue .= CHtml::encode($dispVal);
         }
 
         ////
@@ -186,7 +166,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             'inputCommentId'       => 'answer'.$myfname2,
             'commentLabelText'     => gT('Make a comment on your choice here:'),
             'inputCommentName'     => $myfname2,
-            'inputCOmmentValue'    => $mSessionValue2,
+            'inputCOmmentValue'    => CHtml::encode($mSessionValue2),
             'checked'              => ($mSessionValue == 'Y' ? CHECKED : ''),
             'javainput'            => false,
             'javaname'             => '',
