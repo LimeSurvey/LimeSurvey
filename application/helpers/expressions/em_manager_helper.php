@@ -6507,55 +6507,15 @@
                                         $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                     }
                                 }
-                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-                                if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
-                                {
-                                    $foundSQrelevance = true;
-                                    if (isset($LEM->ParseResultCache[$sq['eqn']])) {
-                                        $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
-                                        if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
-                                            $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyprint'];
-                                        }
-                                    } else {
-                                        // check if the exclusive option is checked and set relevance to true
-                                        if (isset($_SESSION[$this->sessid][$qInfo['rowdivid']]) && $_SESSION[$this->sessid][$qInfo['rowdivid']] == "Y") {
-                                            $sqrel = true;
-                                        } else {
-                                            $stringToParse = htmlspecialchars_decode($sq['eqn'], ENT_QUOTES);  // TODO is this needed?
-                                            $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse, $qInfo['gseq'], $qInfo['qseq']);
-                                        }
-
-                                        $hasErrors = $LEM->em->HasErrors();
-                                        // make sure subquestions with errors in relevance equations are always shown and answers recorded  #7703
-                                        if ($hasErrors) {
-                                            $sqrel = true;
-                                        }
-                                        if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
-                                            $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                            $prettyPrintSQRelEqns[$sq['rowdivid']] = $prettyPrintSQRelEqn;
-                                        }
-                                        $LEM->ParseResultCache[$sq['eqn']] = array(
-                                            'result' => $sqrel,
-                                            'prettyprint' => $prettyPrintSQRelEqn,
-                                            'hasErrors' => $hasErrors,
-                                        );
-                                    }
-                                    if ($sqrel) {
-                                        $relevantSQs[] = $sgqa;
-                                        $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']] = true;
-                                    } else {
-                                        $irrelevantSQs[] = $sgqa;
-                                        $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']] = false;
-                                    }
-                                }
-                                break;
-                                // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
+                                // No break : next part is for array text and array number too
                             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
                             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
                             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                             case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
+                            case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
+                                // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
                             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                             case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
