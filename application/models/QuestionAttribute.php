@@ -557,14 +557,16 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * New event to allow plugin to add own question attribute (settings)
+     *
      * Using $event->append('questionAttributes', $questionAttributes);
+     *
      * $questionAttributes=[
      *  attributeName=>[
-     *      'types' : Aply to this question type
+     *      'types' : Apply to this question type
      *      'category' : Where to put it
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
-     *      'expression' : 2 to force Exprerssion Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+     *      'expression' : 2 to force Expression Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
      *      'options' : optional options if input type need it
      *      'default' : the default value
      *      'caption' : the label
@@ -576,9 +578,7 @@ class QuestionAttribute extends LSActiveRecord
     public static function getOwnQuestionAttributesViaPlugin(){
         $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
-        /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
-        $eventAttributes = (array) $result->get('questionAttributes');
 
-        return $eventAttributes;
+        return (array) $result->get('questionAttributes');
     }
 }

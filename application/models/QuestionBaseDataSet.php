@@ -116,7 +116,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
 
-        //this function call must be here, because the emcache is set in this function and comes to use somewhere else ...
+        //this function call must be here, because $this->aQuestionAttributes is used in function below (parseFromAttributeHelper)
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
         if( $sQuestionTemplate === null && $this->aQuestionAttributes['question_template'] !== 'core') {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
@@ -132,8 +132,6 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
        $aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTemplate);
-        //the following could not be used here, it's doing to much different things here ...
-       // $aQuestionTypeAttributes = QuestionAttribute::getQuestionAttributesSettings($this->sQuestionType); //from xml files
 
         uasort($aQuestionTypeAttributes, 'categorySort');
         if (empty($aAdvancedOptionsArray)) {
@@ -410,6 +408,11 @@ abstract class QuestionBaseDataSet extends StaticModel
             ];
     }
 
+    /**
+     * @param $sAttributeKey
+     * @param $aAttributeArray
+     * @return array
+     */
     protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray)
     {
         $aAttributeArray = array_merge(QuestionAttribute::getDefaultSettings(),$aAttributeArray);
@@ -435,9 +438,6 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'suffix' => '}',
                 ];
         }
-
-        
-
         $aAdvancedAttributeArray['aFormElementOptions'] = $aFormElementOptions;
         
         return $aAdvancedAttributeArray;
