@@ -6870,7 +6870,7 @@
                             $tipsDatas = array(
 
                             );
-                            $stringToParse = App()->twigRenderer->renderPartial('/survey/questions/question_help/em_tip.twig',array(
+                            $stringToParse .= App()->twigRenderer->renderPartial('/survey/questions/question_help/em_tip.twig',array(
                                 'qid'       =>$qid,
                                 'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
                                 'coreClass' =>"ls-em-tip em_{$vclass}",
