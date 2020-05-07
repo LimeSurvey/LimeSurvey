@@ -19,14 +19,13 @@
  * @property integer $aid PK
  * @property integer $qid Question id
  * @property string $code Answer code
- * @property string $answer Answer text
  * @property integer $sortorder Answer sort order
  * @property integer $assessment_value
  * @property integer $scale_id
  *
  * @property Question $questions
  * @property Question $groups
- * @property AnswerL10n[] $answerL10ns
+ * @property AnswerL10n[] $answerl10ns
  */
 class Answer extends LSActiveRecord
 {
