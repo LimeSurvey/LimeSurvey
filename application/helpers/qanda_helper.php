@@ -3013,9 +3013,9 @@ function do_array_5point($ia)
         'class'=>'',
         'content'=>'',
     ), true);
-
+    $columnHeading = 0;
     for ($xc = 1; $xc <= 5; $xc++) {
-        var_dump($xc);
+        $columnHeading = $xc;
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text',
             'content'=>" ".$xc,
@@ -3052,13 +3052,13 @@ function do_array_5point($ia)
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         // Value
-        $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+        $value = (isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.App()->getConfig('surveyID')][$myfname] : '';
 
         for ($i = 1; $i <= 5; $i++) {
-            $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
+            $CHECKED = (isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.App()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>$i,
-                'labelText'=>$i,
+                'labelText'=> (string) $i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
@@ -3096,12 +3096,12 @@ function do_array_5point($ia)
                 'value'=>'',
                 ), true);
         }
-        var_dump($answertext);
+
         $sRows .= doRender('/survey/questions/answer/arrays/5point/rows/answer_row', array(
             'answer_tds'    => $answer_tds,
             'myfname'       => $myfname,
             'answertext'    => $answertext,
-            'answerwidth'=>$answerwidth,
+            'answerwidth'   => $answerwidth,
             'value'         => $value,
             'error'         => $error,
             'sDisplayStyle' => $sDisplayStyle
@@ -3533,7 +3533,7 @@ function do_array($ia)
         $fn         = 1;
         $numrows    = count($labelans);
 
-        if ($right_exists) {
+         if ($right_exists) {
             ++$numrows;
             $caption .= gT("After the answer options a cell does give some information.");
         }
