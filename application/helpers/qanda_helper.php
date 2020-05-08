@@ -3222,7 +3222,7 @@ function do_array_10point($ia)
 
             $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>$i,
-                'labelText'=>$i,
+                'labelText'=> (string) $i,
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
