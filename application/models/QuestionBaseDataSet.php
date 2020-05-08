@@ -116,35 +116,63 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
 
-        //this function call must be here, because $this->aQuestionAttributes is used in function below (parseFromAttributeHelper)
-        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
-        if( $sQuestionTemplate === null && $this->aQuestionAttributes['question_template'] !== 'core') {
-            $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
-        }
-        $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
-
         $aAdvancedOptionsArray = [];
-        if ($iQuestionID == null) {
+        if ($iQuestionID == null) { //this is only the case if question is new and has not been saved
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
             if ($userSetting !== null){
                 $aAdvancedOptionsArray = (array) json_decode($userSetting);
             }
         }
 
-       $aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTemplate);
-
-        uasort($aQuestionTypeAttributes, 'categorySort');
         if (empty($aAdvancedOptionsArray)) {
+            //this function call must be here, because $this->aQuestionAttributes is used in function below (parseFromAttributeHelper)
+            $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
+            if( $sQuestionTemplate === null && $this->aQuestionAttributes['question_template'] !== 'core') {
+                $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
+            }
+            $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
+
+            $aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTemplate);
+            uasort($aQuestionTypeAttributes, 'categorySort');
+
             foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
                 if ($sAttributeName == 'question_template') {
-                    continue;
-                } // Avoid double displaying
-
-                $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
+                    continue; // Avoid double displaying
+                }
+                $formElementValue = isset($this->aQuestionAttributes[$sAttributeName]) ? $this->aQuestionAttributes[$sAttributeName] : '';
+                $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray, $formElementValue);
             }
         }
         
         return $aAdvancedOptionsArray;
+    }
+
+    /**
+     * Returns a preformatted block of the advanced settings for the question editor (qe).
+     * The advanced settings are the part at the bottom of the qe. They depend on the question type and the
+     * question theme.
+     *
+     * @param Question $oQuestion
+     * @param string $sQuestionTheme
+     * @return array
+     */
+    public function getPreformattedBlockOfAdvancedSettings($oQuestion,  $sQuestionTheme = null){
+        $advancedOptionsArray = array();
+
+        $this->oQuestion = $oQuestion;
+        $this->sQuestionType = $this->oQuestion->type;
+        $this->sLanguage = $this->oQuestion->survey->language;
+
+        //get all attributes for advanced settings (e.g. Subquestions, Attribute, Display, Display Theme options, Logic, Other, Statistics)
+        $advancedOptionsArray = [];
+        if ($this->oQuestion->qid == null) { //this is only the case if question is new and has not been saved
+            $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
+            if ($userSetting !== null){
+                $advancedOptionsArray = (array) json_decode($userSetting);
+            }
+        }
+
+        return $advancedOptionsArray;
     }
 
     //Question theme
@@ -411,9 +439,10 @@ abstract class QuestionBaseDataSet extends StaticModel
     /**
      * @param $sAttributeKey
      * @param $aAttributeArray
+     * @param $formElementValue
      * @return array
      */
-    protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray)
+    protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray, $formElementValue)
     {
         $aAttributeArray = array_merge(QuestionAttribute::getDefaultSettings(),$aAttributeArray);
         $aAdvancedAttributeArray = [
@@ -423,7 +452,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             'formElementId' => $sAttributeKey,
             'formElementName' => false,
             'formElementHelp' => $aAttributeArray['help'],
-            'formElementValue' => isset($this->aQuestionAttributes[$sAttributeKey]) ? $this->aQuestionAttributes[$sAttributeKey] : ''
+            'formElementValue' => $formElementValue
         ];
         unset($aAttributeArray['caption']);
         unset($aAttributeArray['help']);

@@ -551,7 +551,8 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
-     * @todo document me
+     * This is a controller action and also a used function called by other actions.
+     * It returns a preformatted array of advanced settings.
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
@@ -567,9 +568,16 @@ class questionedit extends Survey_Common_Action
         $returnArray = false,
         $question_template = 'core'
     ) {
+        //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
         $aAdvancedOptionsArray = $oQuestion->getDataSetObject()
             ->getAdvancedOptions($oQuestion->qid, $sQuestionType, null, $question_template);
+/* this only works for new not saved questions at the moment
+        $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
+            $oQuestion,
+            $question_template);
+*/
+
         if ($returnArray === true) {
             return $aAdvancedOptionsArray;
         }
@@ -758,7 +766,7 @@ class questionedit extends Survey_Common_Action
      */
     private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
-        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
+        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if ($oQuestion == null) {
