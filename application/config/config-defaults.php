@@ -95,7 +95,7 @@ $config['allowedfileuploads'] = [
     'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
     //videos
     'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
-]; 
+];
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig,php,html';
 
@@ -415,6 +415,13 @@ $config['bPdfResponseBorder'] = '1'; // Border in responses. Accepts 0:no border
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 
+
+// QueXML-PDF: If set to true, each question in the PDF will be identified by the question title instead of the section and number
+$config['quexmlusequestiontitleasid'] = false;
+
+// QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
+$config['quexmlkeepsurveydateformat'] = false;
+
 $config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
 $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
 
@@ -585,7 +592,7 @@ $config['uniq_upload_dir'] = false; // Use a single KCFinder upload directory fo
 $config['magic_database'] = null;
 
 /**
- * Allow to use a different magic file array 
+ * Allow to use a different magic file array
  * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
  * This file must return a PHP array of extension by mimeTypes
  * Example : https://github.com/LimeSurvey/LimeSurvey/blob/master/framework/utils/fileExtensions.php

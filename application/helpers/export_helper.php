@@ -1406,6 +1406,29 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
     }
 }
 
+/**
+ * Format defaultValue of Date/Time questions according to question date format
+ *
+ * @param mixed $element DOM element with the date to change
+ * @param int $qid The qid of the question
+ * @param int $iSurveyID The survey id
+ */
+function quexml_reformat_date(&$element, $qid, $iSurveyID)
+{
+    // Retrieve date format from the question
+    $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($qid);
+    $dateformat = getDateFormatDataForQID($questionAttributes, $iSurveyID)['phpdate'];
+
+    // Get the value from the DOM element
+    $currentValue = $element->getAttribute("defaultValue");
+
+    // Convert the value using the survey's date format
+    $value = date($dateformat,strtotime($currentValue));
+
+    // Change the value in the DOM element
+    $element->setAttribute("defaultValue", $value);
+}
+
 
 /**
  * Create a queXML question element
@@ -1733,6 +1756,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "D": //DATE
                         $response->appendChild(QueXMLCreateFree("date", "19", ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
+                        if (Yii::app()->getConfig('quexmlkeepsurveydateformat') == true) { 
+                            quexml_reformat_date($response, $qid, $iSurveyID);
+                        }
                         $question->appendChild($response);
                         break;
                     case "L": //LIST drop-down/radio-button list
