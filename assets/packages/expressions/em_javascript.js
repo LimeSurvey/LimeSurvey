@@ -1284,6 +1284,11 @@ function LEMval(alias)
                 }
                 return value;
             }
+            else if (/^\+/.test(value))
+            {
+                // Treat values like "+1234" (e.g. phone numbers) as strings. Decimal doesn't like them, and the + sign shouldn't be just dropped silently anyway.
+                return value;
+            }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
                 var length = value.length;
