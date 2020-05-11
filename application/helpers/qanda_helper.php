@@ -4958,9 +4958,6 @@ function do_array_dual($ia)
                 // Array filter : maybe leave EM do the trick
                 $aData['aSubQuestions'][$i]['sDisplayStyle'] = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
-                //~ list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname,"tr","$trbc subquestion-list questions-list dropdown-list");
-                //~ $aData['aSubQuestions'][$i]['htmltbody2'] = $htmltbody2;
-                //~ $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
                 $aData['labels0'] = $labels0;
                 $aData['labels1'] = $labels1;
                 $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER);
@@ -4968,7 +4965,6 @@ function do_array_dual($ia)
                 $aData['interddSep'] = $interddSep;
 
                 $inputnames[] = $myfname0;
-
                 $inputnames[] = $myfname1;
             }
 
