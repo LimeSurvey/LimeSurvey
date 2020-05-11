@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.2 (build 200504) to 4.2.3 (build 200511) May 11, 2020
+-Fixed issue: JsonEditor to not encode the value if it is already a valid json  (Tõnis Ormisson)
+-Fixed issue #16241: Only one tip are shown (Denis Chenu)
+-Fixed issue #16226: Invalid count on multi with exclude : broke logic and php vs js diff (Denis Chenu)
+-Fixed issue #16225: Unable to VV export if no token table (Denis Chenu)
+-Fixed issue #16208: escape in Multiple choice with comments (Denis Chenu)
+-Fixed issue #16203: Multiple choice questions with "other" with "exclusive" unable to submit (Denis Chenu)
+-Fixed issue #16175: statCountIf returns nothing for first participant (Denis Chenu)
+
+
 Changes from 4.2.1 (build 200428) to 4.2.2 (build 200504) May 4, 2020
 -Fixed issue: Uppercase file extensions were not allowed (Carsten Schmitz)
 -Fixed issue: Make html email default to Y (Olle Harstedt)
