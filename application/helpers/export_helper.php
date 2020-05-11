@@ -107,7 +107,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
             $oToken->setAttributes($row, false);
             $oToken->decrypt();
             $row = array_merge($oToken->attributes, $oResponse->attributes);
-        } 
+        }
 
         $rownr++;
         if ($rownr == 1) {
@@ -721,7 +721,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             } elseif ($TableName == 'tokens'){
                 $results = Token::model(Yii::app()->session['LEMsid'])->findAll($criteria);
             }
-            
+
             foreach($results as $row){
                 $result[] = $row->decrypt()->attributes;
             }
@@ -729,7 +729,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         } else {
             $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
             $result = $QueryResult->readAll();
-        }        
+        }
 
         if ($iStart == 0 && safecount($result) > 0) {
             $exclude = array_flip($excludes); //Flip key/value in array for faster checks
@@ -800,7 +800,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         AND {{questions}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter, $aquery);
     }
-    
+
     // Assessments
     $query = "SELECT {{assessments}}.*
     FROM {{assessments}}
@@ -839,8 +839,8 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     JOIN {{groups}} on {{groups.gid}}={{group_l10ns}}.gid
     WHERE sid=$iSurveyID
     ORDER BY {{group_l10ns}}.gid";
-    buildXMLFromQuery($xmlwriter, $gquery);  
-      
+    buildXMLFromQuery($xmlwriter, $gquery);
+
     //Questions
     $qquery = "SELECT *
     FROM {{questions}}
@@ -863,7 +863,7 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     ORDER BY {{question_l10ns}}.qid";
     buildXMLFromQuery($xmlwriter, $qquery);
 
-    
+
     //Question attributes
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
@@ -1399,7 +1399,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
         if ($colname != "") {
             // prepare and decrypt data
             $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
-            $oResponse->decrypt(); 
+            $oResponse->decrypt();
             $value = $oResponse->$colname;
             $element->setAttribute("defaultValue", $value);
         }
@@ -1417,7 +1417,8 @@ function quexml_reformat_date(&$element, $qid, $iSurveyID)
 {
     // Retrieve date format from the question
     $questionAttributes = QuestionAttribute::model()->getQuestionAttributes($qid);
-    $dateformat = getDateFormatDataForQID($questionAttributes, $iSurveyID)['phpdate'];
+    $dateformatArr = getDateFormatDataForQID($questionAttributes, $iSurveyID);
+    $dateformat = $dateformatArr['phpdate'];
 
     // Get the value from the DOM element
     $currentValue = $element->getAttribute("defaultValue");
@@ -1567,7 +1568,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
                 $RowQReplacements['TOKEN:FIRSTNAME'] = $token->firstname;
                 $RowQReplacements['TOKEN:LASTNAME'] = $token->lastname;
-                
+
                 $customAttributes = $token->getCustom_attributes();
                 foreach($customAttributes as $key => $val){
                     $RowQReplacements['TOKEN:' . strtoupper($key)] = $token->$key;
@@ -1756,7 +1757,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "D": //DATE
                         $response->appendChild(QueXMLCreateFree("date", "19", ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
-                        if (Yii::app()->getConfig('quexmlkeepsurveydateformat') == true) { 
+                        if (Yii::app()->getConfig('quexmlkeepsurveydateformat') == true) {
                             quexml_reformat_date($response, $qid, $iSurveyID);
                         }
                         $question->appendChild($response);
@@ -1972,10 +1973,10 @@ function groupGetXMLStructure($xml, $gid)
     // Questions localization
     $qqueryl10n = "SELECT {{question_l10ns}}.*
     FROM {{question_l10ns}}
-    JOIN {{questions}} ON {{questions}}.qid = {{question_l10ns}}.qid 
+    JOIN {{questions}} ON {{questions}}.qid = {{question_l10ns}}.qid
     WHERE gid=$gid order by question_order, {{question_l10ns}}.language, scale_id";
     buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
-    
+
     //Answer
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
@@ -2103,7 +2104,7 @@ function questionGetXMLStructure($xml, $gid, $qid)
     FROM {{question_l10ns}}
     WHERE qid=$qid";
     buildXMLFromQuery($xml, $qquery);
-    
+
     // Answer table
     $aquery = "SELECT *
     FROM {{answers}}
@@ -2159,11 +2160,11 @@ function tokensExport($iSurveyID)
     $bIsNotAnonymous = ($oSurvey->anonymized == 'N' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
     $bIsDateStamped = ($oSurvey->datestamp == 'Y' && $oSurvey->active == 'Y'); // db table exist (survey_$iSurveyID) ?
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
-    
+
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
-    
+
     if ($sEmailFiter != '') {
         // check if email is encrypted field
         $aAttributes = $oSurvey->getTokenEncryptionOptions();
@@ -2177,7 +2178,7 @@ function tokensExport($iSurveyID)
             $oRecordSet->andWhere("lt.email like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         }
     }
-    
+
     if ($iTokenStatus == 1) {
         $oRecordSet->andWhere("lt.completed<>'N'");
     } elseif ($iTokenStatus == 2) {
@@ -2229,7 +2230,7 @@ function tokensExport($iSurveyID)
     }
     $oRecordSet->order("lt.tid");
     $bresult = $oRecordSet->query();
-    // fetching all records into array, values need to be decrypted 
+    // fetching all records into array, values need to be decrypted
     $bresultAll = $bresult->readAll();
     foreach($bresultAll as $tokenKey => $tokenValue){
         // creating TokenDynamic object to be able to decrypt easier
@@ -2271,7 +2272,7 @@ function tokensExport($iSurveyID)
     foreach ($bresultAll as $brow) {
         if (Yii::app()->request->getPost('maskequations')){
             $brow=array_map('MaskFormula', $brow);
-        }    
+        }
         if (trim($brow['validfrom'] != '')) {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
             $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
@@ -2411,27 +2412,27 @@ function numericSize($sColumn,$decimal=false)
         if(Yii::app()->db->driverName == 'pgsql') {
             $maxDecimal = Yii::app()->db
             ->createCommand("SELECT MAX(CAST(nullif(split_part($castedColumnString, '.', 2),'') as integer))
-			    FROM {{survey_".$iSurveyId."}}")	
+			    FROM {{survey_".$iSurveyId."}}")
             ->queryScalar();
 	/* mssql */
 	} elseif (Yii::app()->db->driverName == 'mssql') {
            $maxDecimal = Yii::app()->db
-            ->createCommand("SELECT MAX(CASE 
-			     WHEN charindex('.',$castedColumnString) > 0 THEN 
+            ->createCommand("SELECT MAX(CASE
+			     WHEN charindex('.',$castedColumnString) > 0 THEN
                              CAST(SUBSTRING($castedColumnString ,charindex('.',$castedColumnString)+1 , Datalength($castedColumnString)-charindex('.',$castedColumnString) ) AS INT)
                              ELSE null END)
-			    FROM {{survey_".$iSurveyId."}}")	
-            ->queryScalar();			
+			    FROM {{survey_".$iSurveyId."}}")
+            ->queryScalar();
 	/* mysql */
         } else {
             $maxDecimal = Yii::app()->db
             ->createCommand("SELECT MAX(CASE
                              WHEN INSTR($castedColumnString, '.') THEN CAST(SUBSTRING_INDEX($castedColumnString, '.', -1) as UNSIGNED)
 			     ELSE NULL END)
-			     FROM {{survey_".$iSurveyId."}}")	
+			     FROM {{survey_".$iSurveyId."}}")
             ->queryScalar();
-    	}	
-	
+    	}
+
     }
     // With integer : Decimal return 00000000000 and float return 0
     // With decimal : Decimal return 00000000012 and float return 12
@@ -2606,7 +2607,7 @@ function tsvSurveyExport($surveyid){
                 $aSaveData=$xmlData['group_l10ns']['rows']['row'];
                 unset($xmlData['group_l10ns']['rows']['row']);
                 $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
-            }            
+            }
             foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns){
                 $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
             }
@@ -2626,7 +2627,7 @@ function tsvSurveyExport($surveyid){
                         $questions[$language][$questions_data[$question_l10ns['qid']]['gid']][$question_l10ns['qid']] = array_merge($question_l10ns, $questions_data[$question_l10ns['qid']]);
                     }
                 }
-                
+
             }
         } else {
             $questions_data = array();
@@ -2644,7 +2645,7 @@ function tsvSurveyExport($surveyid){
                         $subquestions[$language][$subquestions_data[$subquestion_l10ns['qid']]['parent_qid']][] = array_merge($subquestion_l10ns, $subquestions_data[$subquestion_l10ns['qid']]);
                     }
                 }
-                
+
             }
         } else {
             $subquestions_data = array();
@@ -2661,7 +2662,7 @@ function tsvSurveyExport($surveyid){
                     if ($answer_l10ns['language'] === $language){
                         $answers[$language][$answers_data[$answer_l10ns['aid']]['qid']][] = array_merge($answer_l10ns, $answers_data[$answer_l10ns['aid']]);
                     }
-                }                
+                }
             }
         } else {
             $answers_data = array();
@@ -2787,7 +2788,7 @@ function tsvSurveyExport($surveyid){
                             }
                         }
                         fputcsv($out, array_map('MaskFormula',$tsv_output), chr(9));
-                                                
+
                         // quota members
                         if ($index_languages == 0 && !empty($quota_members[$qid])){
                             foreach ($quota_members[$qid] as $key => $member) {
@@ -3011,7 +3012,7 @@ function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit 
 
  function MaskFormula ( $sValue  ) {
      if (isset($sValue[0]) && $sValue[0]=='=') {
-        $sValue="'".$sValue;    
+        $sValue="'".$sValue;
      }
      return $sValue;
  }
