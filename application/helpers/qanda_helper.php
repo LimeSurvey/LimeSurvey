@@ -4476,17 +4476,32 @@ function do_array_multiflexi($ia)
 
 // ---------------------------------------------------------------
 // TMSW TODO - Can remove DB query by passing in answer list from EM
+/**
+ * Renders array by column question type.
+ * @param array $ia
+ * @return array
+ */
 function do_arraycolumns($ia)
 {
     $aLastMoveResult = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $YorNorSvalue = $ia[6];
+    $isYes = ($YorNorSvalue == 'Y');
+    $isS   = ($YorNorSvalue == 'S');
+
+    if ($aLastMoveResult['mandViolation'] && ($isYes || $isS)) {
+        $aMandatoryViolationSubQ = explode('|', $aLastMoveResult['unansweredSQs']);
+    } else {
+        $aMandatoryViolationSubQ = [];
+    }
+
     $coreClass = "ls-answers subquestion-list questions-list array-radio";
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
-    $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
-    $aAnswers = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$ia[0])));
+    $sSurveyLanguage = $_SESSION['survey_'.App()->getConfig('surveyID')]['s_lang'];
+    $aAnswers = Answer::model()->findAll(array('order'=>'sortorder, code', 'condition'=>'qid=:qid AND scale_id=0', 'params' => array(':qid'=>$ia[0])));
+
     $labelans = [];
     $labelcode = [];
     $labels = [];
@@ -4510,11 +4525,11 @@ function do_arraycolumns($ia)
         } else {
             $sOrder = 'question_order';
         }
-        $aQuestions = Question::model()->findAll(array('order'=>$sOrder, 'condition'=>'parent_qid=:parent_qid', 'params'=>array(':parent_qid'=>$ia[0])));
+        $aQuestions = Question::model()->findAll(array('order' => $sOrder, 'condition' => 'parent_qid=:parent_qid', 'params' => array(':parent_qid'=>$ia[0])));
         $anscount = count($aQuestions);
 
         $aData = [];
-        $aData['labelans'] = $labelans;
+        $aData['labelans']  = $labelans;
         $aData['labelcode'] = $labelcode;
 
         if ($anscount > 0) {
@@ -4525,10 +4540,10 @@ function do_arraycolumns($ia)
             }
             $cellwidth = (100 - $answerwidth) / $anscount;
 
-            $aData['anscount'] = $anscount;
-            $aData['cellwidth'] = $cellwidth;
+            $aData['anscount']    = $anscount;
+            $aData['cellwidth']   = $cellwidth;
             $aData['answerwidth'] = $answerwidth;
-            $aData['aQuestions'] = [];
+            $aData['aQuestions']  = [];
             foreach ($aQuestions as $aQuestion) {
                 $aData['aQuestions'][] = array_merge($aQuestion->attributes, $aQuestion->questionl10ns[$sSurveyLanguage]->attributes);
             }
@@ -4560,9 +4575,9 @@ function do_arraycolumns($ia)
                 foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1].$ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
-                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === $ansrow['code']) {
+                    if (isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.App()->getConfig('surveyID')][$myfname] === $ansrow['code']) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
-                    } elseif (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '') {
+                    } elseif (!isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '') {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     // Humm.. (by lemeur), not sure this section can be reached
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
@@ -4575,8 +4590,9 @@ function do_arraycolumns($ia)
 
             foreach ($anscode as $j => $ld) {
                 $myfname = $ia[1].$ld;
-                if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
-                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+               
+                if (isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname])) {
+                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['survey_'.App()->getConfig('surveyID')][$myfname];
                 } else {
                     $aData['aQuestions'][$j]['myfname_value'] = '';
                 }
