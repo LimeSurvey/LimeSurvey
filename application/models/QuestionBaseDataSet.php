@@ -101,6 +101,8 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @param string $sLanguage
      * @param string   $sQuestionTemplate
      *
+     * @deprecated use getPreformattedBlockOfAdvancedSettings() instead of this function
+     *
      * @return array
      * @throws CException
      */
@@ -151,27 +153,62 @@ abstract class QuestionBaseDataSet extends StaticModel
      * Returns a preformatted block of the advanced settings for the question editor (qe).
      * The advanced settings are the part at the bottom of the qe. They depend on the question type and the
      * question theme.
-     *
-     * @param Question $oQuestion
+     * Result should look like:
+     * Display  --> category
+     *      repeat_headings   --> attributename
+     *          name
+     *          title
+     *          inputtpye
+     *          formElementId
+     *          formElementName
+     *          formElementHelp
+     *          formElementValue
+     *          aFormElementOptions
+     *      answer_width
+     *          name
+     *          ...
+     * Logic
+     *      min_answers
+     *          name
+     *          ...
+     * @param Question|QuestionCreate $oQuestion
      * @param string $sQuestionTheme
+     *
+     * @throws Exception when question type attributes are not available
      * @return array
      */
     public function getPreformattedBlockOfAdvancedSettings($oQuestion,  $sQuestionTheme = null){
         $advancedOptionsArray = array();
-
         $this->oQuestion = $oQuestion;
         $this->sQuestionType = $this->oQuestion->type;
         $this->sLanguage = $this->oQuestion->survey->language;
 
         //get all attributes for advanced settings (e.g. Subquestions, Attribute, Display, Display Theme options, Logic, Other, Statistics)
-        $advancedOptionsArray = [];
         if ($this->oQuestion->qid == null) { //this is only the case if question is new and has not been saved
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
             if ($userSetting !== null){
                 $advancedOptionsArray = (array) json_decode($userSetting);
             }
         }
+        if (empty($advancedOptionsArray)) {
+            $questionThemeFromDB = QuestionAttribute::model()->find("qid=:qid AND attribute=:attribute", array('qid'=>$this->oQuestion->qid, 'attribute' => "question_template"));
+            if( $sQuestionTheme === null && $questionThemeFromDB->value !== 'core') {
+                $sQuestionTheme = $questionThemeFromDB->value;
+            }
+            $sQuestionTheme = $sQuestionTheme == '' || $sQuestionTheme == 'core' ? null : $sQuestionTheme;
 
+            $aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTheme);
+            uasort($aQuestionTypeAttributes, 'categorySort');
+            $questionAttributesValuesFromDB = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$this->oQuestion->qid));
+
+            foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
+                if ($sAttributeName == 'question_template') {
+                    continue; // Avoid double displaying
+                }
+                $formElementValue = isset($questionAttributesValuesFromDB[$sAttributeName]) ? $questionAttributesValuesFromDB[$sAttributeName]->value : '';
+                $advancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray, $formElementValue);
+            }
+        }
         return $advancedOptionsArray;
     }
 

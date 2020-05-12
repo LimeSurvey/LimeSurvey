@@ -570,13 +570,11 @@ class questionedit extends Survey_Common_Action
     ) {
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        $aAdvancedOptionsArray = $oQuestion->getDataSetObject()
-            ->getAdvancedOptions($oQuestion->qid, $sQuestionType, null, $question_template);
-/* this only works for new not saved questions at the moment
+
         $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
             $oQuestion,
             $question_template);
-*/
+
 
         if ($returnArray === true) {
             return $aAdvancedOptionsArray;
