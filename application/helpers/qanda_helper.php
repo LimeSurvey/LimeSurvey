@@ -4480,6 +4480,7 @@ function do_array_multiflexi($ia)
  * Renders array by column question type.
  * @param array $ia
  * @return array
+ * @throws CException
  */
 function do_arraycolumns($ia)
 {
@@ -4544,11 +4545,14 @@ function do_arraycolumns($ia)
             $aData['cellwidth']   = $cellwidth;
             $aData['answerwidth'] = $answerwidth;
             $aData['aQuestions']  = [];
+
             foreach ($aQuestions as $aQuestion) {
                 $aData['aQuestions'][] = array_merge($aQuestion->attributes, $aQuestion->questionl10ns[$sSurveyLanguage]->attributes);
             }
+
             $anscode = [];
             $answers = [];
+
             foreach ($aQuestions as $ansrow) {
                 $anscode[] = $ansrow['title'];
                 $answers[] = $ansrow->questionl10ns[$sSurveyLanguage]->question;
@@ -4571,13 +4575,17 @@ function do_arraycolumns($ia)
             $aData['labels'] = $labels;
             $aData['checkconditionFunction'] = $checkconditionFunction;
 
+            // TODO: What is this? What is happening here?
             foreach ($labels as $ansrow) {
+                // AnswerCode
                 foreach ($anscode as $j => $ld) {
                     $myfname = $ia[1].$ld;
                     $aData['aQuestions'][$j]['myfname'] = $myfname;
-                    if (isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.App()->getConfig('surveyID')][$myfname] === $ansrow['code']) {
+                    if (isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) &&
+                        $_SESSION['survey_'.App()->getConfig('surveyID')][$myfname] === $ansrow['code']) {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
-                    } elseif (!isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) && $ansrow['code'] == '') {
+                    } elseif (!isset($_SESSION['survey_'.App()->getConfig('surveyID')][$myfname]) &&
+                        $ansrow['code'] == '') {
                         $aData['checked'][$ansrow['code']][$ld] = CHECKED;
                     // Humm.. (by lemeur), not sure this section can be reached
                         // because I think $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] is always set (by save.php ??) !
@@ -4588,6 +4596,7 @@ function do_arraycolumns($ia)
                 }
             }
 
+            // Whats happening here?
             foreach ($anscode as $j => $ld) {
                 $myfname = $ia[1].$ld;
                
@@ -4599,8 +4608,10 @@ function do_arraycolumns($ia)
 
                 $inputnames[] = $myfname;
             }
+
             $aData['coreClass'] = $coreClass;
             $aData['basename'] = $ia[1];
+
             // Render question
             $answer = doRender(
                 '/survey/questions/answer/arrays/column/answer',
