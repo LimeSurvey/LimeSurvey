@@ -659,22 +659,6 @@ class Question extends LSActiveRecord
             return $aAnswerOptions[$scale_id];
         }
 
-        // Random order
-        if ($this->getQuestionAttribute('random_order') == 1){
-            foreach($aAnswerOptions as $scaleId => $aScaleArray) {
-                $keys = array_keys($aScaleArray);
-                shuffle($keys); // See: https://forum.yiiframework.com/t/order-by-rand-and-total-posts/68099
-      
-                $aNew = array();
-                foreach($keys as $key) {
-                    $aNew[$key] = $aScaleArray[$key];
-                }
-                $aAnswerOptions[$scaleId] = $aNew;
-            }
-
-            return $aAnswerOptions;
-        }
-
         // Alphabetic ordrer
         $alphasort = $this->getQuestionAttribute('alphasort');
         if ($alphasort == 1) {
