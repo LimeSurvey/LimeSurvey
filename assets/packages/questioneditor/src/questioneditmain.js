@@ -37,3 +37,7 @@ const questionEditor = new Vue({
     store: AppState,
     components: {App},
 });
+
+// NB: Enable only for debugging.
+// Jessy: Can also define method hasIndividualAnsweroptionCodes in App.vue computed property.
+//window.questionEditor = questionEditor;

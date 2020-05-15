@@ -212,7 +212,7 @@ export default {
         },
     },
     methods: {
-        /*
+        /**
         Abstract base provides methods: 
          - getLength
          - getNewTitleFromCurrent
@@ -232,7 +232,10 @@ export default {
          - editFromSimplePopupEditor
          - reorder
          - preventDisallowedCursor
-        */
+         *
+         * @param {number} scaleId
+         * @return {object}
+         */
         getTemplate(scaleId = 0){
             let randomId = this.getRandomId();
 
@@ -317,6 +320,7 @@ export default {
     },
     mounted() {
         if(isEmpty(this.$store.state.currentQuestionAnswerOptions)){
+            // NB: 0 is scale id.
             this.$store.state.currentQuestionAnswerOptions = {"0": [this.getTemplate()]};
         };
         foreach(this.answeroptionscales, this.reorderAnsweroptions);
