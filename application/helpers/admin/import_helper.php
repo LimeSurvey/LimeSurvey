@@ -759,7 +759,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             if (!isset($insertdata['help'])) {
                 $insertdata['help'] = '';
             }            // now translate any links
-            if (!isset($xml->question_l10ns->rows->row)) {
+            if (!isset($xml->question_l10ns->rows->row)) { //when does subquestions are stored in xml file in tag "question_l10ns"?
                 if ($options['translinkfields']) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -771,6 +771,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 unset($insertdata['question']);
                 unset($insertdata['help']);
                 unset($insertdata['language']);
+            }elseif(isset($insertdata['question'])){
+                $oQuestionL10n = new QuestionL10n();
+                $oQuestionL10n->question = $insertdata['question'];
+                $oQuestionL10n->help = $insertdata['help'];
+                $oQuestionL10n->language = $insertdata['language'];
             }
             if (!$options['autorename']) {
                 $sScenario = 'archiveimport';
