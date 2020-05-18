@@ -31,114 +31,12 @@ class questions extends Survey_Common_Action
 
     public function view($surveyid, $gid, $qid)
     {
+        //todo change the url for action view in QuestionEditorController OR better remove this action completely ...
         $this->getController()->redirect(Yii::app()->createUrl('admin/questioneditor/sa/view/', ['surveyid' => $surveyid, 'gid' => $gid, 'qid' => $qid ]));
         return;
 
         // TODO: Delete this code in the future?
-        $aData = array();
-        $qid = (int) $qid;
-
-        // Init general variables
-        $aData['surveyid'] = $iSurveyID = (int) $surveyid;
-        $aData['gid'] = $gid;
-        $aData['qid'] = $qid;
-        $survey = Survey::model()->findByPk($iSurveyID);
-        $baselang = $survey->language;
-
-        //Show Question Details
-        //Count answer-options for this question
-        $qrr = Answer::model()->findAllByAttributes(array('qid' => $qid));
-
-        $aData['qct'] = count($qrr);
-
-        //Count sub-questions for this question
-        $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid));
-        $aData['sqct'] = count($sqrq);
-
-        $oQuestion = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID));
-        if (is_null($oQuestion)) {
-            return;
-        }
-
-        // Check if other questions in the Survey are dependent upon this question
-        $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
-
-        if (is_null($survey)) {
-            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
-        } //  if surveyid is invalid then die to prevent errors at a later time
-
-        $aData['activated'] = $survey->active;
-
-        $aData['oQuestion'] = $oQuestion;
-        $qrrow = $oQuestion->attributes;
-        $aData['languagelist'] = $survey->allLanguages;
-        $aData['qtypes'] = Question::typeList();
-
-        $qshowstyle = "";
-
-
-        $aData['qshowstyle'] = $qshowstyle;
-        $aData['surveyid'] = $iSurveyID;
-        $aData['qid'] = $qid;
-        $aData['gid'] = $gid;
-        $aData['qrrow'] = $qrrow;
-        $aData['baselang'] = $baselang;
-        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
-        $DisplayArray = array();
-
-        foreach ($aAttributesWithValues as $aAttribute) {
-            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
-                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
-                if ($aAttribute['inputtype'] == 'singleselect') {
-                    if (isset($aAttribute['options'][$aAttribute['value']])) {
-                        $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
-                    }
-                }
-                $DisplayArray[] = $aAttribute;
-            }
-        }
-        $aData['advancedsettings'] = $DisplayArray;
-        $aData['condarray'] = $condarray;
-        $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
-
-        $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
-        $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
-        $aData['questionbar']['buttons']['view'] = true;
-
-        ///////////
-        // sidemenu
-        $aData['sidemenu']['state'] = true;
-        $aData['sidemenu']['explorer']['state'] = true;
-        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
-        $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
-
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-
-        // Last question visited : By user (only one by user)
-        $setting_entry = 'last_question_'.Yii::app()->user->getId();
-        SettingGlobal::setSetting($setting_entry, $qid);
-
-        // we need to set the sid for this question
-        $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
-        SettingGlobal::setSetting($setting_entry, $iSurveyID);
-
-        // we need to set the gid for this question
-        $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
-        SettingGlobal::setSetting($setting_entry, $gid);
-
-        // Last question for this survey (only one by survey, many by user)
-        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
-        SettingGlobal::setSetting($setting_entry, $qid);
-
-        // we need to set the gid for this question
-        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
-        SettingGlobal::setSetting($setting_entry, $gid);
-
-        $aData['surveyIsActive'] = $survey->active !== 'N';
-
-        $this->_renderWrappedTemplate('survey/Question', 'question_view', $aData);
+        //code removed... this action is called in questionedit.php, after refactoring this will be in QuestionEditorController
     }
 
     /**
@@ -985,6 +883,8 @@ class questions extends Survey_Common_Action
      *
      * @param $surveyid int the sid
      * @param $gid      int Group ID
+     *
+     * @deprecated use action view in QuestionEditorController
      *
      * @return string html
      */
