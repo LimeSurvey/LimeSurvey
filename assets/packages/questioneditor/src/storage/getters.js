@@ -44,7 +44,13 @@ export default {
         return reduce(
             state.currentQuestionAnswerOptions, 
             (coll, scaleArray, scaleId) => {
-                const unique = (uniqBy(scaleArray, 'code').length == scaleArray.length);
+                if (!(scaleArray instanceof Array)) {
+                    // NB: uniqBy does not work on objects.
+                    // @see https://lodash.com/docs/#uniqBy
+                    scaleArray = Object.values(scaleArray);
+                }
+                const result = uniqBy(scaleArray, 'code');
+                const unique = result.length == scaleArray.length;
                 const notEmpty  = reduce(scaleArray, (sum, curr) => (sum && curr.code != ''), true);
                 return coll && unique && notEmpty;
             }, 

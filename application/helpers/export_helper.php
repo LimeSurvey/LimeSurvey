@@ -2067,9 +2067,15 @@ function questionGetXMLStructure($xml, $gid, $qid)
     buildXMLFromQuery($xml, $qquery);
 
     // Questions table - Subquestions
-    $qquery = "SELECT *
+    $qquery2 = "SELECT *
     FROM {{questions}}
     WHERE parent_qid=$qid order by scale_id, question_order";
+
+    $qquery ="SELECT *
+    FROM {{questions}} q, {{question_l10ns}} ql10ns
+    WHERE q.parent_qid=$qid
+    AND  q.qid = ql10ns.qid
+    order by scale_id, question_order";
     buildXMLFromQuery($xml, $qquery, 'subquestions');
 
     // Questions localizations
