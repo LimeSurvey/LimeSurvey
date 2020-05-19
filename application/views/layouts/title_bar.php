@@ -1,9 +1,4 @@
 <?php
-
-/* @deprecated moved to layouts/title_bar */
-//todo should be removed when all controllers have been refactored
-
-
 /**
  * Needs an array now
  * $breadCrumbArray = array('oSurvey'=>$oSurvey, 'oQuestionGroup' => $oQuestionGroup, 'oQuestion' => $oQuestion, 'sSubaction' =>$sSubaction,  'active'=>$active))

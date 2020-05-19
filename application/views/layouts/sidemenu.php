@@ -1,8 +1,4 @@
 <?php
-
-/* @deprecated moved to layouts/sidemenu */
-//todo should be removed when all controllers have been refactored
-
    /**
     * This view displays the sidemenu on the left side, containing the question explorer
     *
@@ -19,6 +15,7 @@
     } else {
         $showSideMenu = true;
     }
+    //todo: change urls after refactoring the controllers
     $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);

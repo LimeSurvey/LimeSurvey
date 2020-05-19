@@ -402,6 +402,9 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     *
+     * REFACTORED in LayoutHelper
+     *
      * Survey summary
      * @param array $aData
      */
@@ -509,6 +512,12 @@ class Survey_Common_Action extends CAction
         return null;
     }
 
+    /**
+     * REFACTORED in LayoutHelper.php
+     *
+     * @param $aData
+     * @throws CException
+     */
     private function _titlebar($aData)
     {
         if (isset($aData['title_bar'])) {
@@ -518,6 +527,8 @@ class Survey_Common_Action extends CAction
 
     /**
      * Render the save/cancel bar for Organize question groups/questions
+     *
+     * REFACTORED in LayoutHelper
      *
      * @param array $aData
      *
@@ -537,6 +548,12 @@ class Survey_Common_Action extends CAction
         }
     }
 
+    /**
+     * REFACTORED in LayoutHelper
+     *
+     * @param $aData
+     * @throws CException
+     */
     public function _generaltopbar($aData) {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
@@ -553,6 +570,7 @@ class Survey_Common_Action extends CAction
         Yii::app()->getClientScript()->registerPackage('admintoppanel');     
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
+
     public function _generaltopbarAdditions($aData) {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
@@ -877,6 +895,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Show side menu for survey view
+     *
+     * REFACTORED in LayoutHelper.php
+     *
      * @param array $aData all the needed data
      */
     private function _surveysidemenu($aData)
@@ -981,6 +1002,8 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     * REFACTORED in LayoutHelper
+     *
      * listquestion groups
      * @param array $aData
      */
@@ -992,6 +1015,8 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     * REFACTORED in LayoutHelper
+     *
      * @param $aData
      * @throws CException
      */
@@ -1031,6 +1056,8 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     * REFACTORED in LayoutHelper
+     *
      * Show survey summary
      * @param array $aData
      */

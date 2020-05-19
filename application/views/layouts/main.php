@@ -13,9 +13,6 @@ $layoutHelper->showHeaders($aData);
 //################################################# END HEADER #######################################################
 
 
-// --> source code from Survey_Common_Action ...
-//The adminmenu bar will be generated from /admin/super/adminmenu.php
-//$this->_showadminmenu($aData);
 //################################################## ADMIN MENU #####################################################
 $layoutHelper->showadminmenu($aData);
 
@@ -57,5 +54,3 @@ if (!Yii::app()->user->isGuest) {
     echo '</body>
     </html>';
 }
-
-

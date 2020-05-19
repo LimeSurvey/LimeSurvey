@@ -1,5 +1,8 @@
 <?php
 
+/* @deprecated moved to layouts/layout_questioneditor */
+//todo should be removed when all controllers have been refactored
+
     //All paths relative from /application/views
 
 //headers will be generated with the template file /admin/super/header.php
