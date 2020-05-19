@@ -91,6 +91,8 @@ $config['allowedfileuploads'] = [
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
     //Images - as mentioned above be very careful if you want to allow SVG files
     'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif',
+    // Iphone file extensions (version 11 and above)
+    'heif', 'heic', 'heifs', 'heics', 'avci', 'avcs', 'avif', 'avifs',
     //soundfiles
     'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
     //videos

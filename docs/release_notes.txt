@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.3 (build 200511) to 4.2.4 (build 200520) May 19, 2020
+-Fixed issue #16289: File Upload not working for iOS 13.2 (Jessica Höck)
+-Fixed issue #16153: Random order question attribute - if enabled, no changes can be saved anymore (Olle Harstedt)
+-Fixed issue #16152: Subquestion texts missing when exporting questions to lsq (Patricia Stelling)
+-Fixed issue #16032: Randomize also randomized answer options not only subquestions (Olle Harstedt)
+
+
 Changes from 4.2.2 (build 200504) to 4.2.3 (build 200511) May 11, 2020
 -Fixed issue: JsonEditor to not encode the value if it is already a valid json  (Tõnis Ormisson)
 -Fixed issue #16241: Only one tip are shown (Denis Chenu)
