@@ -64,6 +64,25 @@ class LimeSurveyFileManager extends Survey_Common_Action
      */
     public function index($surveyid = null)
     {
+        if ($surveyid !== null) {
+            $oSurvey = Survey::model()->findByPk($surveyid);
+            $aData['surveyid'] = $surveyid;
+            $aData['presetFolder'] = 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $surveyid;
+            $aData['surveybar']['buttons']['view'] = true;
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
+            $aData['subaction'] = gT("File manager");
+        }
+
+        $this->_renderWrappedTemplate('SurveyFiles', $renderView, $aData);
+    }
+
+    /**
+     * Renders the File Manager (old one, selfmade) as beta feature.
+     * @param int $surveyid
+     * @return void
+     */
+    public function indexBeta(int $surveyid)
+    {
         $aTranslate = [
             'File management' => gT('File management'),
             'Upload' => gT('Upload'),
