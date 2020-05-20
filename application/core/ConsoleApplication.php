@@ -44,15 +44,27 @@ class ConsoleApplication extends CConsoleApplication
 
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application').'/../'));
-
         /* Because we have app now : we have to call again the config : can be done before : no real usage of url in console, but usage of getPathOfAlias */
         $coreConfig = require(__DIR__.'/../config/config-defaults.php');
         $consoleConfig = require(__DIR__.'/../config/console.php'); // Only for console : replace some config-defaults
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $consoleConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
 
+        $lsConfig = array_merge(
+            $coreConfig,
+            $consoleConfig,
+            $emailConfig,
+            $versionConfig,
+            $updaterVersionConfig
+        );
+
+        if (file_exists(__DIR__.'/../config/security.php')) {
+            $securityConfig = require(  __DIR__.'/../config/security.php');
+            if (is_array($securityConfig)) {
+                $lsConfig = array_merge($lsConfig, $securityConfig);
+            }
+        }
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
         if (file_exists( $configdir .  '/security.php')) {
