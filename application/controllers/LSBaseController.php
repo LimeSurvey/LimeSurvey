@@ -67,6 +67,7 @@ class LSBaseController extends LSYii_Controller
     {
         //this lines come from _renderWarppedTemplate
         //todo: this should be moved to the new questioneditor controller when it is being refactored
+        /*
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
 
@@ -75,9 +76,9 @@ class LSBaseController extends LSYii_Controller
             LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
             LimeExpressionManager::StartProcessingPage(false, true);
 
-            $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
-            $this->layout = $basePath.'/layout_insurvey.php';
-        }
+            $basePath = (string) Yii::getPathOfAlias('application.views.layouts');
+            $this->layout = $basePath.'/layout_questioneditor.php';
+        }*/
 
         return parent::beforeRender($view);
     }

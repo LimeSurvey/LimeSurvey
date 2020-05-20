@@ -39,8 +39,10 @@ class QuestionEditorController extends LSBaseController
             LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
             LimeExpressionManager::StartProcessingPage(false, true);
 
-            $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
-            $this->layout = $basePath.'/layout_insurvey.php';
+            //$basePath = (string) Yii::getPathOfAlias('application.views.layouts');
+            //$this->layout = $basePath.'/layout_questioneditor.php';
+
+            $this->layout = 'layout_questioneditor';
         }
 
         return parent::beforeRender($view);
@@ -99,6 +101,7 @@ class QuestionEditorController extends LSBaseController
         ///////////
         // combine aData
         $aData['surveyid'] = $iSurveyID;
+        $aData['sid'] = $iSurveyID; //todo duplicated here, because it's needed in some functions of
         $aData['oSurvey'] = $oSurvey;
         $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
         $aData['aQuestionTypeStateList'] = QuestionType::modelsAttributes();
@@ -204,22 +207,46 @@ class QuestionEditorController extends LSBaseController
         }
 
         $this->aData = $aData;
-
-        /**
-         * @var $aQuestionTypeList array
-         * @var $questionType      QuestionTheme
-         * @var $oQuestion         Question
-         * @var $jsData            array
-         * @var $selectedQuestion  array
-         * @var $oQuestionSelector PreviewModalWidget
-         * @var $this              AdminController
-         * */
         $this->render('view', [
             'aQuestionTypeList' => $aData['aQuestionTypeList'],
-            'questionType' =>
+            'jsData' => $aData['jsData'],
+            'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
         ]);
 
         //todo do not use _renderwraptemplate
-        $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
+       // $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
+    }
+
+    /**
+     * Creates a question object
+     * This is either an instance of the placeholder model QuestionCreate for new questions,
+     * or of Question for already existing ones
+     *
+     * todo: this should be moved to model ...
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @return Question
+     * @throws CException
+     */
+    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
+    {
+        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
+        $oQuestion = Question::model()->findByPk($iQuestionId);
+
+        if ($oQuestion == null) {
+            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+        }
+
+        if ($sQuestionType != null) {
+            $oQuestion->type = $sQuestionType;
+        }
+
+        if ($gid != null) {
+            $oQuestion->gid = $gid;
+        }
+
+        return $oQuestion;
     }
 }

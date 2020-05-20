@@ -399,6 +399,56 @@ class LayoutHelper
     }
 
     /**
+     * Render the quick-menu that is shown
+     * when side-menu is hidden.
+     *
+     * Only show home-icon for now.
+     *
+     * Add support for plugin to attach
+     * icon elements using event afterQuickMenuLoad
+     *
+     * @param array $aData
+     * @return string
+     * @todo Make quick-menu user configurable
+     */
+    protected function renderQuickmenu(array $aData)
+    {
+        $event = new PluginEvent('afterQuickMenuLoad', $this);
+        $event->set('aData', $aData);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+
+        $quickMenuItems = $result->get('quickMenuItems');
+        if (!empty($quickMenuItems)) {
+            usort($quickMenuItems, function($b1, $b2)
+            {
+                return (int) $b1['order'] > (int) $b2['order'];
+            });
+        }
+
+        $aData['quickMenuItems'] = $quickMenuItems;
+
+        if ($aData['quickMenuItems'] === null) {
+            $aData['quickMenuItems'] = array();
+        }
+
+        $html = Yii::app()->getController()->renderPartial('/admin/super/quickmenu', $aData, true);
+        return $html;
+    }
+
+    /**
+     * Returns content from event beforeSideMenuRender
+     * @param array $aData
+     * @return string
+     */
+    protected function beforeSideMenuRender(array $aData)
+    {
+        $event = new PluginEvent('beforeSideMenuRender', $this);
+        $event->set('aData', $aData);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        return $result->get('html');
+    }
+
+    /**
      * @param $aData
      */
     public function renderGeneraltopbar($aData) {
@@ -505,6 +555,9 @@ class LayoutHelper
 
     /**
      * Show survey summary
+     *
+     * todo: here are to many things that should be done in controller ...
+     *
      * @param array $aData
      */
     private function _surveysummary($aData)
@@ -630,7 +683,6 @@ class LayoutHelper
         //        $aData['tableusage'] = getDBTableUsage($iSurveyID);
         // ToDo: Table usage is calculated on every menu display which is too slow with big surveys.
         // Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
-        //
 
         $aData['tableusage'] = false;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
@@ -648,11 +700,52 @@ class LayoutHelper
 
         Yii::app()->getClientScript()->registerPackage('surveysummary');
 
-        $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
-        $this->getController()->renderPartial("/admin/super/sidebody", array(
+        $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
+        Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,
             'sideMenuOpen' => true
         ));
+    }
+
+    /**
+     * todo: document me...
+     *
+     * @param $aData
+     */
+    public function renderGeneralTopbarAdditions($aData) {
+        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = array_merge(
+            [
+                'type' => 'survey',
+                'sid' => $aData['sid'],
+                'gid' => $aData['gid'] ?? 0,
+                'qid' => $aData['qid'] ?? 0,
+                'showSaveButton' => false
+            ],
+            $aData['topBar']
+        );
+
+        Yii::app()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ? 'admintoppanelrtl' : 'admintoppanelltr'));
+
+        if (isset($aData['qid'])) {
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';
+        } else if (isset($aData['gid'])) {
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'group';
+        } else if (isset($aData['surveyid'])) {
+            $sid = $aData['sid'];
+            $oSurvey       = Survey::model()->findByPk($sid);
+            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
+                Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
+                Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
+            $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+            $oneLanguage  = (count($oSurvey->allLanguages) == 1);
+            $aData['respstatsread'] = $respstatsread;
+            $aData['surveyexport']  = $surveyexport;
+            $aData['onelanguage']   = $oneLanguage;
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'survey';
+        }
+        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
+
     }
 
 }

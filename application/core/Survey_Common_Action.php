@@ -571,6 +571,12 @@ class Survey_Common_Action extends CAction
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
 
+    /**
+     * REFACTORED in LayoutHelper
+     *
+     * @param $aData
+     * @throws CException
+     */
     public function _generaltopbarAdditions($aData) {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
@@ -955,6 +961,8 @@ class Survey_Common_Action extends CAction
      * Render the quick-menu that is shown
      * when side-menu is hidden.
      *
+     * REFACTORED in LayoutHelper
+     *
      * Only show home-icon for now.
      *
      * Add support for plugin to attach
@@ -990,6 +998,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * Returns content from event beforeSideMenuRender
+     *
+     * REFACTORED in LayoutHelper
+     *
      * @param array $aData
      * @return string
      */

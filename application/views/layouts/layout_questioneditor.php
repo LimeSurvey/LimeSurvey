@@ -84,7 +84,8 @@ $layoutHelper->renderSurveySummary($aData);
 
 echo $content;
 
-$this->_generaltopbarAdditions($aData); //todo this must go to LayoutHelper too
+//$this->_generaltopbarAdditions($aData);
+$layoutHelper->renderGeneralTopbarAdditions($aData);
 echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";

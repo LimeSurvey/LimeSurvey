@@ -1,12 +1,8 @@
 <?php
 /**
  * @var $aQuestionTypeList array
- * @var $questionType      QuestionTheme
- * @var $oQuestion         Question
  * @var $jsData            array
- * @var $selectedQuestion  array
- * @var $oQuestionSelector PreviewModalWidget
- * @var $this              AdminController
+ * @var $aQuestionTypeStateList array
  * TODO: move logic from the view to controller
  */
 
@@ -49,7 +45,7 @@ foreach ($aQuestionTypeList as $questionType) {
 }
 ?>
 <?php $this->renderPartial(
-    "./survey/Question2/_jsVariables",
+    "_jsVariables",
     [
         'data' => $jsData,
         'aStructureArray' => $aQuestionTypeGroups,
