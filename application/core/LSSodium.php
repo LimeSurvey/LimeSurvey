@@ -125,10 +125,10 @@ class LSSodium {
 	 * Write encryption key to version.php config file
 	 */
 	protected function generateEncryptionKeys(){
-	if(is_file(APPPATH.'config/security.php')) {
-	    // Never replace an existing file
+        if (is_file(APPPATH.'config/security.php')) {
+            // Never replace an existing file
             throw new CException(500, gT("Configuration file already exist"));
-	}
+        }
         $sEncryptionKeypair   = ParagonIE_Sodium_Compat::crypto_sign_keypair();
         $sEncryptionPublicKey = ParagonIE_Sodium_Compat::bin2hex(ParagonIE_Sodium_Compat::crypto_sign_publickey($sEncryptionKeypair));
         $sEncryptionSecretKey = ParagonIE_Sodium_Compat::bin2hex(ParagonIE_Sodium_Compat::crypto_sign_secretkey($sEncryptionKeypair));
