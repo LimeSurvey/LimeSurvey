@@ -1,20 +1,21 @@
 <?php
-class LSSodium {
-
+class LSSodium
+{
     public $bLibraryExists = false;
     protected $sEncryptionKeypair = null;
     protected $sEncryptionPublicKey = null;
     protected $sEncryptionSecretKey = null;
 
-    public function init(){
+    public function init()
+    {
         require_once APPPATH.'/third_party/sodium_compat/src/Compat.php';
         require_once APPPATH.'/third_party/sodium_compat/src/Core/Util.php';
         require_once APPPATH.'/third_party/sodium_compat/autoload.php';
 
         $this->checkIfLibraryExists();
 
-        if($this->bLibraryExists === false){
-            /*throw new SodiumException(sprintf(gT("This operation uses data encryption functions which require Sodium library to be installed, but library was not found. If you don't want to use data encryption, you have to disable encryption in attribute settings. Here is a link to the manual page: 
+        if ($this->bLibraryExists === false) {
+            /*throw new SodiumException(sprintf(gT("This operation uses data encryption functions which require Sodium library to be installed, but library was not found. If you don't want to use data encryption, you have to disable encryption in attribute settings. Here is a link to the manual page:
             %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));*/
         } else {
             $this->checkIfKeyExists();
@@ -23,58 +24,63 @@ class LSSodium {
     
     /**
      * Check if Sodium library is installed
-     * @return bool 
+     * @return bool
      */
-    public function checkIfLibraryExists(){ 
-        if (function_exists('sodium_crypto_sign_open')){
+    public function checkIfLibraryExists()
+    {
+        if (function_exists('sodium_crypto_sign_open')) {
             $this->bLibraryExists = true;
         }
     }
 
-        /**
-     * 
+    /**
+     *
      * Check if encryption key exists in configuration
      * @return bool Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
      */
-    protected function checkIfKeyExists(){                 
-        if (empty(Yii::app()->getConfig('encryptionkeypair'))){
+    protected function checkIfKeyExists()
+    {
+        if (empty(Yii::app()->getConfig('encryptionkeypair'))) {
             $this->generateEncryptionKeys(); //return false;
         }
-        if ($this->sEncryptionKeypair === null){
+        if ($this->sEncryptionKeypair === null) {
             $this->sEncryptionKeypair = $this->getEncryptionKey();
         }
-        if ($this->sEncryptionPublicKey === null){
+        if ($this->sEncryptionPublicKey === null) {
             $this->sEncryptionPublicKey = $this->getEncryptionPublicKey();
         }
-        if ($this->sEncryptionSecretKey === null){
+        if ($this->sEncryptionSecretKey === null) {
             $this->sEncryptionSecretKey = $this->getEncryptionSecretKey();
         }
     }
 
     /**
-     * 
+     *
      * Get encryption key from version.php config file
      * @return string Return encryption key string
      */
-    protected function getEncryptionKey(){                 
+    protected function getEncryptionKey()
+    {
         return ParagonIE_Sodium_Compat::hex2bin(Yii::app()->getConfig('encryptionkeypair'));
     }
 
     /**
-     * 
+     *
      * Get encryption key from version.php config file
      * @return string Return encryption key string
      */
-    protected function getEncryptionPublicKey(){                 
+    protected function getEncryptionPublicKey()
+    {
         return ParagonIE_Sodium_Compat::hex2bin(Yii::app()->getConfig('encryptionpublickey'));
     }
 
     /**
-     * 
+     *
      * Get encryption key from version.php config file
      * @return string Return encryption key string
      */
-    protected function getEncryptionSecretKey(){                 
+    protected function getEncryptionSecretKey()
+    {
         return ParagonIE_Sodium_Compat::hex2bin(Yii::app()->getConfig('encryptionsecretkey'));
     }
     
@@ -83,9 +89,10 @@ class LSSodium {
      * @param unknown_type $sDataToEncrypt Data to encrypt. Could be a string or a serializable PHP object
      * @return string Return encrypted AES256 CBC value
      */
-    public function encrypt($sDataToEncrypt){
-        if ($this->bLibraryExists === true){
-            if (!empty($sDataToEncrypt)){
+    public function encrypt($sDataToEncrypt)
+    {
+        if ($this->bLibraryExists === true) {
+            if (!empty($sDataToEncrypt)) {
                 $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_sign((string) $sDataToEncrypt, $this->sEncryptionSecretKey));
                 return $sEncrypted;
             } else {
@@ -97,17 +104,18 @@ class LSSodium {
     }
  
     /**
-     * 
+     *
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt
      * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
      * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
      */
-    public function decrypt($sEncryptedString, $bReturnFalseIfError=false){     
-        if ($this->bLibraryExists === true){
-            if (!empty($sEncryptedString) && $sEncryptedString != 'null'){
+    public function decrypt($sEncryptedString, $bReturnFalseIfError = false)
+    {
+        if ($this->bLibraryExists === true) {
+            if (!empty($sEncryptedString) && $sEncryptedString != 'null') {
                 $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
-                if ($plaintext === false){
+                if ($plaintext === false) {
                     throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
                 } else {
                     return $plaintext;
@@ -119,10 +127,11 @@ class LSSodium {
     }
  
     /**
-     * 
+     *
      * Write encryption key to version.php config file
      */
-    protected function generateEncryptionKeys(){
+    protected function generateEncryptionKeys()
+    {
         if (is_file(APPPATH.'config/security.php')) {
             // Never replace an existing file
             throw new CException(500, gT("Configuration file already exist"));
@@ -132,7 +141,7 @@ class LSSodium {
         $sEncryptionSecretKey = ParagonIE_Sodium_Compat::bin2hex(ParagonIE_Sodium_Compat::crypto_sign_secretkey($sEncryptionKeypair));
         $sEncryptionKeypair   = ParagonIE_Sodium_Compat::bin2hex($sEncryptionKeypair);
 
-        if (empty($sEncryptionKeypair)){
+        if (empty($sEncryptionKeypair)) {
             return false;
         }
         
