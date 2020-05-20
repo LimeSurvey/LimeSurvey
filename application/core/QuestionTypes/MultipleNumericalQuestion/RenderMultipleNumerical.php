@@ -236,7 +236,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
                 if (strpos($sValue, ".")) {
                     $sValue = rtrim(rtrim($sValue, "0"), ".");
-                    $sValue = str_replace('.', $sSeparator, $sValue);
+                    $sValue = str_replace('.', $this->sSeparator, $sValue);
                 }
 
                 $aRows[] = array_merge(
