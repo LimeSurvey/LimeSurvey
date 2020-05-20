@@ -3084,6 +3084,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if ($iOldDBVersion < 427) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('menu_link' => 'index.php?r=admin/survey/sa/rendersidemenulink&subaction=resources'), "name='resources'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
