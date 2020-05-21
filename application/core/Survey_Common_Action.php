@@ -1364,6 +1364,8 @@ class Survey_Common_Action extends CAction
     /**
      * Method to render an array as a json document
      *
+     * REFACTORED in LSBaseController (this one called by a lot of actions in different controllers)
+     *
      * @param array $aData
      * @return void
      */

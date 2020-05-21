@@ -746,6 +746,7 @@ class LayoutHelper
         }
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
 
+
     }
 
 }

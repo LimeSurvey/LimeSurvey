@@ -191,6 +191,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Returns all languages in a specific survey as a JSON document
      *
+     * * REFACTORED in QuestionEditorController
+     *
      * @param int $iSurveyId
      *
      * @return void
@@ -204,6 +206,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Action called by the FE editor when a save is triggered.
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param int $sid Survey id
      *
@@ -361,6 +365,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Update the data set in the FE
+     *
+     * * REFACTORED in QuestionEditorController
      *
      * @param int $iQuestionId
      * @param string $type

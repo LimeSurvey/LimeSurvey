@@ -170,4 +170,25 @@ class LSBaseController extends LSYii_Controller
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         //todo end
     }
+
+    /**
+     * Method to render an array as a json document
+     * (this one called by a lot of actions in different controllers)
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData, $success=true)
+    {
+        $aData['success'] = $aData['success'] ?? $success;
+
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => $aData
+        ], true, false);
+        return;
+    }
 }

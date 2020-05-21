@@ -212,9 +212,6 @@ class QuestionEditorController extends LSBaseController
             'jsData' => $aData['jsData'],
             'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
         ]);
-
-        //todo do not use _renderwraptemplate
-       // $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
 
     /**
@@ -249,4 +246,331 @@ class QuestionEditorController extends LSBaseController
 
         return $oQuestion;
     }
+
+    /****
+     * *** A lot of getter function regarding functionalities and views.
+     * *** All called via ajax
+     ****/
+
+    /**
+     * Returns all languages in a specific survey as a JSON document
+     *
+     * @param int $iSurveyId
+     *
+     * @return void
+     */
+    public function actionGetPossibleLanguages($iSurveyId)
+    {
+        $iSurveyId = (int) $iSurveyId;
+        $aLanguages = Survey::model()->findByPk($iSurveyId)->allLanguages;
+        $this->renderJSON($aLanguages);
+    }
+
+    /**
+     * Action called by the FE editor when a save is triggered.
+     *
+     * @param int $sid Survey id
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionSaveQuestionData($sid)
+    {
+        $iSurveyId = (int) $sid;
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $questionData = App()->request->getPost('questionData', []);
+        // TODO: Unused variable
+        $isNewQuestion = false;
+        $questionCopy = (boolean) App()->request->getPost('questionCopy');
+        $questionCopySettings = App()->request->getPost('copySettings', []);
+        $questionCopySettings = array_map( function($value) {return !!$value;}, $questionCopySettings);
+
+        // Store changes to the actual question data, by either storing it, or updating an old one
+        $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
+        if ($oQuestion == null || $questionCopy == true) {
+            $oQuestion = $this->storeNewQuestionData($questionData['question']);
+            // TODO: Unused variable
+            $isNewQuestion = true;
+        } else {
+            $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
+        }
+
+        /*
+         * Setting up a try/catch scenario to delete a copied/created question,
+         * in case the storing of the peripherals breaks
+         */
+        try {
+            // Apply the changes to general settings, advanced settings and translations
+            $setApplied = [];
+
+            $setApplied['questionI10N'] = $this->applyI10N($oQuestion, $questionData['questionI10N']);
+
+            $setApplied['generalSettings'] = $this->unparseAndSetGeneralOptions(
+                $oQuestion,
+                $questionData['generalSettings']
+            );
+
+            if (!($questionCopy === true && $questionCopySettings['copyAdvancedOptions'] == false)) {
+                $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
+                    $oQuestion,
+                    $questionData['advancedSettings']
+                );
+            }
+
+            if (!($questionCopy === true && $questionCopySettings['copyDefaultAnswers'] == false)) {
+                $setApplied['defaultAnswers'] = $this->copyDefaultAnswers($oQuestion, $questionData['question']['qid']);
+            }
+
+
+            // save advanced attributes default values for given question type
+            if (array_key_exists('save_as_default', $questionData['generalSettings'])
+                && $questionData['generalSettings']['save_as_default']['formElementValue'] == 'Y') {
+                SettingsUser::setUserSetting(
+                    'question_default_values_' . $questionData['question']['type'],
+                    ls_json_encode($questionData['advancedSettings'])
+                );
+            } elseif (array_key_exists('clear_default', $questionData['generalSettings'])
+                && $questionData['generalSettings']['clear_default']['formElementValue'] == 'Y') {
+                SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type'], '');
+            }
+
+            // If set, store subquestions
+            if (isset($questionData['scaledSubquestions'])) {
+                if (!($questionCopy === true && $questionCopySettings['copySubquestions'] == false)) {
+                    $setApplied['scaledSubquestions'] = $this->storeSubquestions(
+                        $oQuestion,
+                        $questionData['scaledSubquestions'],
+                        $questionCopy
+                    );
+                }
+            }
+
+            // If set, store answer options
+            if (isset($questionData['scaledAnswerOptions'])) {
+                if (!($questionCopy === true && $questionCopySettings['copyAnswerOptions'] == false)) {
+                    $setApplied['scaledAnswerOptions'] = $this->storeAnswerOptions(
+                        $oQuestion,
+                        $questionData['scaledAnswerOptions'],
+                        $questionCopy
+                    );
+                }
+            }
+        } catch (CException $ex) {
+            throw new LSJsonException(
+                500,
+                gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage(),
+                0,
+                App()->createUrl(
+                    'admin/questioneditor/sa/view/',
+                    ["surveyid"=> $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid'=> $oQuestion->qid]
+                )
+            );
+        }
+
+        // Compile the newly stored data to update the FE
+        $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
+        $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, true);
+        $aQuestionGeneralOptions = $this->getGeneralOptions(
+            $oQuestion->qid,
+            null,
+            $oQuestion->gid,
+            true,
+            $aQuestionAttributeData['question_template']
+        );
+        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
+
+        // Return a JSON document with the newly stored question data
+        $this->renderJSON(
+            [
+                'success' => array_reduce(
+                    $setApplied,
+                    function ($coll, $it) {
+                        return $coll && $it;
+                    },
+                    true
+                ),
+                'message' => ($questionCopy === true
+                    ? gT('Question successfully copied')
+                    : gT('Question successfully stored')
+                ),
+                'successDetail' => $setApplied,
+                'questionId' => $oQuestion->qid,
+                'redirect' => $this->getController()->createUrl(
+                    'admin/questioneditor/sa/view/',
+                    [
+                        'surveyid' => $iSurveyId,
+                        'gid' => $oQuestion->gid,
+                        'qid' => $oQuestion->qid,
+                    ]
+                ),
+                'newQuestionDetails' => [
+                    "question" => $aCompiledQuestionData['question'],
+                    "scaledSubquestions" => $aCompiledQuestionData['subquestions'],
+                    "scaledAnswerOptions" => $aCompiledQuestionData['answerOptions'],
+                    "questionI10N" => $aCompiledQuestionData['i10n'],
+                    "questionAttributes" => $aQuestionAttributeData,
+                    "generalSettings" => $aQuestionGeneralOptions,
+                    "advancedSettings" => $aAdvancedOptions,
+                ],
+                'transfer' => $questionData,
+            ]
+        );
+        App()->close();
+    }
+
+    /**
+     * Update the data set in the FE
+     *
+     * @param int $iQuestionId
+     * @param string $type
+     * @param int $gid Group id
+     * @param string $question_template
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionReloadQuestionData($iQuestionId = null, $type = null, $gid = null, $question_template = 'core')
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
+
+        $aCompiledQuestionData = $this->getCompiledQuestionData($oQuestion);
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, $type, $oQuestion->gid, $question_template);
+        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, $type, true, $question_template);
+
+        $aLanguages = [];
+        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
+        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
+
+        array_walk(
+            $aSurveyLanguages,
+            function ($lngString) use (&$aLanguages, $aAllLanguages) {
+                $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
+            }
+        );
+
+        $this->renderJSON(
+            array_merge(
+                $aCompiledQuestionData,
+                [
+                    'languages' => $aLanguages,
+                    'mainLanguage' => $oQuestion->survey->language,
+                    'generalSettings' => $aQuestionGeneralOptions,
+                    'advancedSettings' => $aAdvancedOptions,
+                    'questiongroup' => $oQuestion->group->attributes,
+                ]
+            )
+        );
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @param boolean $returnArray
+     * @param string $question_template
+     *
+     * @return void|array
+     * @throws CException
+     */
+    public function actionGetGeneralOptions(
+        $iQuestionId = null,
+        $sQuestionType = null,
+        $gid = null,
+        $returnArray = false,
+        $question_template = 'core'
+    ) {
+        $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId,$sQuestionType,$gid,$question_template);
+
+        $this->renderJSON($aGeneralOptionsArray);
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @param string $question_template
+     *
+     * @return void|array
+     * @throws CException
+     */
+    public function getGeneralOptions($iQuestionId = null, $sQuestionType = null, $gid = null, $question_template = 'core')
+    {
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid);
+        $aGeneralOptionsArray = $oQuestion
+            ->getDataSetObject()
+            ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
+
+        return $aGeneralOptionsArray;
+    }
+
+    /**
+     * @todo document me.
+     * @todo move this function somewhere else, this should not be part of controller ... (e.g. model)
+     *
+     * @param Question $oQuestion
+     * @return array
+     */
+    private function getCompiledQuestionData(&$oQuestion)
+    {
+        LimeExpressionManager::StartProcessingPage(false, true);
+        $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
+        $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
+        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questiongroupl10ns);
+
+        $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
+        foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
+            $aScaledSubquestions[$scaleId] = array_map(function ($oSubQuestion) {
+                return array_merge($oSubQuestion->attributes, $oSubQuestion->questionl10ns);
+            }, $aSubquestions);
+        }
+
+        $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
+        foreach ($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
+            $aScaledAnswerOptions[$scaleId] = array_map(function ($oAnswerOption) {
+                return array_merge($oAnswerOption->attributes, $oAnswerOption->answerl10ns);
+            }, $aAnswerOptions);
+        }
+        $aReplacementData = [];
+        $questioni10N = [];
+        foreach ($oQuestion->questionl10ns as $lng => $oQuestionI10N) {
+            $questioni10N[$lng] = $oQuestionI10N->attributes;
+
+            templatereplace(
+                $oQuestionI10N->question,
+                array(),
+                $aReplacementData,
+                'Unspecified',
+                false,
+                $oQuestion->qid
+            );
+
+            $questioni10N[$lng]['question_expression'] = viewHelper::stripTagsEM(
+                LimeExpressionManager::GetLastPrettyPrintExpression()
+            );
+
+            templatereplace($oQuestionI10N->help, array(), $aReplacementData, 'Unspecified', false, $oQuestion->qid);
+            $questioni10N[$lng]['help_expression'] = viewHelper::stripTagsEM(
+                LimeExpressionManager::GetLastPrettyPrintExpression()
+            );
+        }
+        LimeExpressionManager::FinishProcessingPage();
+        return [
+            'question' => $aQuestionDefinition,
+            'questiongroup' => $aQuestionGroupDefinition,
+            'i10n' => $questioni10N,
+            'subquestions' => $aScaledSubquestions,
+            'answerOptions' => $aScaledAnswerOptions,
+        ];
+    }
+
 }
