@@ -142,6 +142,10 @@ class index extends CAction
             if (empty($tokenInstance)) {
                 $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
             }
+            if(empty($oToken)) {
+                // #16142 quick fix : unset invalid token
+                $token = null;
+            }
         }
 
         $this->_loadLimesurveyLang($surveyid);
@@ -465,44 +469,43 @@ class index extends CAction
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
-            if (empty($tokenInstance)) {
-                if ($oToken) {
-                    $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+            if (empty($tokenInstance) && $oToken) {
+                $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
 
-                    // This can not happen (TokenInstance must fix this)
-                    if ($oToken->completed != 'N' && !empty($oToken->completed)) {
-                        $sError = gT("This invitation has already been used.");
-                    } elseif ($oToken->usesleft < 1) {
-                        $sError = gT("This invitation has no uses left.");
-                    } elseif (strtotime($now) < strtotime($oToken->validfrom)) {
-                        $sError = gT("This invitation is not valid yet.");
-                    } elseif (strtotime($now) > strtotime($oToken->validuntil)) {
-                        $sError = gT("This invitation is not valid anymore.");
-                    } else {
-                        // This can not happen
-                        $sError = gT("This is a controlled survey. You need a valid access code to participate.");
-                    }
-
-                    $aMessage = array(
-                        gT("We are sorry but you are not allowed to enter this survey."),
-                        sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['adminname'], $thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
-                    );
-
-                    $event = new PluginEvent('onSurveyDenied');
-                    $event->set('surveyId', $surveyid);
-                    $event->set('reason', 'invalidToken');
-                    App()->getPluginManager()->dispatchEvent($event);
-
-                    App()->getController()->renderExitMessage(
-                        $surveyid,
-                        'survey-notstart',
-                        $aMessage,
-                        null,
-                        array($sError)
-                    );
+                // This can not happen (TokenInstance must fix this)
+                if ($oToken->completed != 'N' && !empty($oToken->completed)) {
+                    $sError = gT("This invitation has already been used.");
+                } elseif ($oToken->usesleft < 1) {
+                    $sError = gT("This invitation has no uses left.");
+                } elseif (strtotime($now) < strtotime($oToken->validfrom)) {
+                    $sError = gT("This invitation is not valid yet.");
+                } elseif (strtotime($now) > strtotime($oToken->validuntil)) {
+                    $sError = gT("This invitation is not valid anymore.");
                 } else {
+                    // This can not happen
                     $sError = gT("This is a controlled survey. You need a valid access code to participate.");
                 }
+
+                $aMessage = array(
+                    gT("We are sorry but you are not allowed to enter this survey."),
+                    sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['adminname'], $thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
+                );
+
+                $event = new PluginEvent('onSurveyDenied');
+                $event->set('surveyId', $surveyid);
+                $event->set('reason', 'invalidToken');
+                App()->getPluginManager()->dispatchEvent($event);
+
+                App()->getController()->renderExitMessage(
+                    $surveyid,
+                    'survey-notstart',
+                    $aMessage,
+                    null,
+                    array($sError)
+                );
+            } else {
+                /* Can not happen : already deleted */
+                unset($token);
             }
         }
 
