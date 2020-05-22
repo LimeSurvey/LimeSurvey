@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.15 (build 200505) to 3.22.16 (build 200519) May 19, 2020
+-Fixed issue: JsonEditor to not encode the value if it is already a valid json (#1217) (#1419) (Tõnis Ormisson)
+-Fixed issue #15624: File upload not working for ios 13.2 (Jessica Höck)
+
+
 Changes from 3.22.14 (build 200423) to 3.22.15 (build 200505) May 4, 2020
 -Fixed issue: RemoteControl leaves webserver session open (Carsten Schmitz)
 -Fixed issue: Cannot save general settings if a scale ID is not correct in a subquestion (Carsten Schmitz)
