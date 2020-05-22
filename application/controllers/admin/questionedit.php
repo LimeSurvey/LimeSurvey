@@ -26,6 +26,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Main view function prepares the necessary global js parts and renders the HTML
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param integer $surveyid
      * @param integer $gid
      * @param integer $qid
@@ -420,6 +422,8 @@ class questionedit extends Survey_Common_Action
      * Collect initial question data
      * This either creates a temporary question object, or calls a question object from the database
      *
+     * * REFACTORED in QuestionEditorController
+     *
      * @param int $iQuestionId
      * @param int $gid
      * @param string $type
@@ -459,6 +463,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Collect the permissions available for a specific question
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param $iQuestionId
      *
@@ -559,6 +565,8 @@ class questionedit extends Survey_Common_Action
     /**
      * This is a controller action and also a used function called by other actions.
      * It returns a preformatted array of advanced settings.
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
@@ -1361,6 +1369,12 @@ class questionedit extends Survey_Common_Action
         ];
     }
 
+    /**
+     * REFACTORED in QuestionEditorController
+     *
+     * @param $oQuestion
+     * @return array
+     */
     private function getCompiledSurveyInfo(&$oQuestion) {
         $oSurvey = $oQuestion->survey;
         $aQuestionTitles = $oCommand = Yii::app()->db->createCommand()
@@ -1378,7 +1392,6 @@ class questionedit extends Survey_Common_Action
             "questionCount" => $questionCount,
             "groupCount" => $groupCount,
         ];
-
     }
 
     /**

@@ -25,7 +25,6 @@ class QuestionEditorController extends LSBaseController
     /**
      * This part comes from _renderWrappedTemplate
      *
-     *
      * @param string $view
      * @return bool
      */
@@ -39,9 +38,6 @@ class QuestionEditorController extends LSBaseController
             LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
             LimeExpressionManager::StartProcessingPage(false, true);
 
-            //$basePath = (string) Yii::getPathOfAlias('application.views.layouts');
-            //$this->layout = $basePath.'/layout_questioneditor.php';
-
             $this->layout = 'layout_questioneditor';
         }
 
@@ -49,7 +45,7 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * Main view function prepares the necessary global js parts and renders the HTML
+     * Main view function prepares the necessary global js parts and renders the HTML for the question editor
      *
      * @param integer $surveyid
      * @param integer $gid
@@ -214,38 +210,6 @@ class QuestionEditorController extends LSBaseController
         ]);
     }
 
-    /**
-     * Creates a question object
-     * This is either an instance of the placeholder model QuestionCreate for new questions,
-     * or of Question for already existing ones
-     *
-     * todo: this should be moved to model ...
-     *
-     * @param int $iQuestionId
-     * @param string $sQuestionType
-     * @param int $gid
-     * @return Question
-     * @throws CException
-     */
-    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
-    {
-        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
-        $oQuestion = Question::model()->findByPk($iQuestionId);
-
-        if ($oQuestion == null) {
-            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
-        }
-
-        if ($sQuestionType != null) {
-            $oQuestion->type = $sQuestionType;
-        }
-
-        if ($gid != null) {
-            $oQuestion->gid = $gid;
-        }
-
-        return $oQuestion;
-    }
 
     /****
      * *** A lot of getter function regarding functionalities and views.
@@ -441,7 +405,7 @@ class QuestionEditorController extends LSBaseController
 
         $aCompiledQuestionData = $this->getCompiledQuestionData($oQuestion);
         $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, $type, $oQuestion->gid, $question_template);
-        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, $type, true, $question_template);
+        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, $type, $question_template);
 
         $aLanguages = [];
         $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
@@ -484,7 +448,7 @@ class QuestionEditorController extends LSBaseController
         $iQuestionId = null,
         $sQuestionType = null,
         $gid = null,
-        $returnArray = false,
+        $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
         $question_template = 'core'
     ) {
         $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId,$sQuestionType,$gid,$question_template);
@@ -571,6 +535,183 @@ class QuestionEditorController extends LSBaseController
             'subquestions' => $aScaledSubquestions,
             'answerOptions' => $aScaledAnswerOptions,
         ];
+    }
+
+    /**
+     * Action (called by ajaxrequest and returning json)
+     * Returns a preformatted json of advanced settings.
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param boolean $returnArray
+     * @param string $question_template
+     *
+     * @return void|array
+     * @throws CException
+     */
+    public function actionGetAdvancedOptions(
+        $iQuestionId = null,
+        $sQuestionType = null,
+        $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
+        $question_template = 'core'
+    ) {
+        //here we get a Question object (also if question is new --> QuestionCreate)
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
+        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
+
+        $this->renderJSON(
+            [
+                'advancedSettings' => $aAdvancedOptionsArray,
+                'questionTypeDefinition' => $oQuestion->questionType,
+            ]
+        );
+    }
+
+    /**
+     * It returns a preformatted array of advanced settings.
+     *
+     * @param null $iQuestionId
+     * @param null $sQuestionType
+     * @param string $question_template
+     * @return array
+     * @throws CException
+     */
+    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
+    {
+        //here we get a Question object (also if question is new --> QuestionCreate)
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
+
+        return $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
+            $oQuestion,
+            $question_template);
+    }
+
+    /**
+     * Collect initial question data
+     * This either creates a temporary question object, or calls a question object from the database
+     *
+     * @param int $iQuestionId
+     * @param int $gid
+     * @param string $type
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionGetQuestionData($iQuestionId = null, $gid = null, $type = null)
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
+
+        $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
+        $surveyInfo = $this->getCompiledSurveyInfo($oQuestion);
+
+        $aLanguages = [];
+        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
+        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
+        array_walk(
+            $aSurveyLanguages,
+            function ($lngString) use (&$aLanguages, $aAllLanguages) {
+                $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
+            }
+        );
+
+        $this->renderJSON(
+            array_merge(
+                $aQuestionInformationObject,
+                [
+                    'surveyInfo' => $surveyInfo,
+                    'languages' => $aLanguages,
+                    'mainLanguage' => $oQuestion->survey->language,
+                ]
+            )
+        );
+    }
+
+    /**
+     *
+     * todo: this should be moved to model, not a controller function ...
+     *
+     * @param $oQuestion
+     * @return array
+     */
+    private function getCompiledSurveyInfo($oQuestion) {
+        $oSurvey = $oQuestion->survey;
+        $aQuestionTitles = $oCommand = Yii::app()->db->createCommand()
+            ->select('title')
+            ->from('{{questions}}')
+            ->where('sid=:sid and parent_qid=0')
+            ->queryColumn([':sid'=>$oSurvey->sid]);
+        $isActive = $oSurvey->isActive;
+        $questionCount = safecount($aQuestionTitles);
+        $groupCount = safecount($oSurvey->groups);
+
+        return [
+            "aQuestionTitles" => $aQuestionTitles,
+            "isActive" => $isActive,
+            "questionCount" => $questionCount,
+            "groupCount" => $groupCount,
+        ];
+    }
+
+    /**
+     * Collect the permissions available for a specific question
+     *
+     * @param $iQuestionId
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionGetQuestionPermissions($iQuestionId = null)
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->getQuestionObject($iQuestionId);
+
+        $aPermissions = [
+            "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
+            "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
+            "editorpreset" => App()->session['htmleditormode'],
+            "script" =>
+                Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
+                && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
+        ];
+
+        $this->renderJSON($aPermissions);
+    }
+
+
+    /** ++++++++++++  the following functions should be moved to model or a service clas ++++++++++++++++++++++++++   */
+
+    /**
+     * Creates a question object
+     * This is either an instance of the placeholder model QuestionCreate for new questions,
+     * or of Question for already existing ones
+     *
+     * todo: this should be moved to model ...
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @return Question
+     * @throws CException
+     */
+    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
+    {
+        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
+        $oQuestion = Question::model()->findByPk($iQuestionId);
+
+        if ($oQuestion == null) {
+            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+        }
+
+        if ($sQuestionType != null) {
+            $oQuestion->type = $sQuestionType;
+        }
+
+        if ($gid != null) {
+            $oQuestion->gid = $gid;
+        }
+
+        return $oQuestion;
     }
 
 }
