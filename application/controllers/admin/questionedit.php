@@ -799,6 +799,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Method to store and filter questionData for a new question
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param array $aQuestionData
      * @param boolean $subquestion
      * @return Question
@@ -887,6 +889,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Method to store and filter questionData for editing a question
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param Question $oQuestion
      * @param array $aQuestionData
      * @return Question
@@ -932,6 +936,8 @@ class questionedit extends Survey_Common_Action
     /**
      * @todo document me
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
@@ -966,6 +972,9 @@ class questionedit extends Survey_Common_Action
     }
 
     /**
+     *
+     * REFACTORED in QuestionEditorController
+     *
      * @todo document me
      *
      * @param Question $oQuestion
@@ -1033,6 +1042,8 @@ class questionedit extends Survey_Common_Action
     /**
      * @todo document me
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
@@ -1058,6 +1069,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Copies the default value(s) set for a question
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param Question $oQuestion
      * @param integer $oldQid
@@ -1113,6 +1126,8 @@ class questionedit extends Survey_Common_Action
     /**
      * @todo document me
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
@@ -1138,6 +1153,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @todo document me
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param Answer $oAnswer
      * @param Question $oQuestion
@@ -1171,6 +1188,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @todo document me.
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param Question $oQuestion
      * @param array $dataSet
@@ -1206,6 +1225,8 @@ class questionedit extends Survey_Common_Action
     /**
      * @todo document me.
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
@@ -1233,6 +1254,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @todo document me
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param Question $oQuestion
      * @param array $dataSet
@@ -1267,6 +1290,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @todo document me
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param Question $oQuestion
      * @param array $dataSet

@@ -339,13 +339,7 @@ class QuestionEditorController extends LSBaseController
         $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, true);
-        $aQuestionGeneralOptions = $this->getGeneralOptions(
-            $oQuestion->qid,
-            null,
-            $oQuestion->gid,
-            true,
-            $aQuestionAttributeData['question_template']
-        );
+        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, $aQuestionAttributeData['question_template']);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
         // Return a JSON document with the newly stored question data
@@ -456,6 +450,142 @@ class QuestionEditorController extends LSBaseController
         $this->renderJSON($aGeneralOptionsArray);
     }
 
+
+    /**
+     * Action (called by ajaxrequest and returning json)
+     * Returns a preformatted json of advanced settings.
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param boolean $returnArray
+     * @param string $question_template
+     *
+     * @return void|array
+     * @throws CException
+     */
+    public function actionGetAdvancedOptions(
+        $iQuestionId = null,
+        $sQuestionType = null,
+        $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
+        $question_template = 'core'
+    ) {
+        //here we get a Question object (also if question is new --> QuestionCreate)
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
+        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
+
+        $this->renderJSON(
+            [
+                'advancedSettings' => $aAdvancedOptionsArray,
+                'questionTypeDefinition' => $oQuestion->questionType,
+            ]
+        );
+    }
+
+
+    /**
+     * Collect initial question data
+     * This either creates a temporary question object, or calls a question object from the database
+     *
+     * @param int $iQuestionId
+     * @param int $gid
+     * @param string $type
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionGetQuestionData($iQuestionId = null, $gid = null, $type = null)
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
+
+        $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
+        $surveyInfo = $this->getCompiledSurveyInfo($oQuestion);
+
+        $aLanguages = [];
+        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
+        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
+        array_walk(
+            $aSurveyLanguages,
+            function ($lngString) use (&$aLanguages, $aAllLanguages) {
+                $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
+            }
+        );
+
+        $this->renderJSON(
+            array_merge(
+                $aQuestionInformationObject,
+                [
+                    'surveyInfo' => $surveyInfo,
+                    'languages' => $aLanguages,
+                    'mainLanguage' => $oQuestion->survey->language,
+                ]
+            )
+        );
+    }
+
+
+
+    /**
+     * Collect the permissions available for a specific question
+     *
+     * @param $iQuestionId
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionGetQuestionPermissions($iQuestionId = null)
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->getQuestionObject($iQuestionId);
+
+        $aPermissions = [
+            "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
+            "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
+            "editorpreset" => App()->session['htmleditormode'],
+            "script" =>
+                Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
+                && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
+        ];
+
+        $this->renderJSON($aPermissions);
+    }
+
+
+    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++   */
+
+    /**
+     * Creates a question object
+     * This is either an instance of the placeholder model QuestionCreate for new questions,
+     * or of Question for already existing ones
+     *
+     * todo: this should be moved to model ...
+     *
+     * @param int $iQuestionId
+     * @param string $sQuestionType
+     * @param int $gid
+     * @return Question
+     * @throws CException
+     */
+    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
+    {
+        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
+        $oQuestion = Question::model()->findByPk($iQuestionId);
+
+        if ($oQuestion == null) {
+            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+        }
+
+        if ($sQuestionType != null) {
+            $oQuestion->type = $sQuestionType;
+        }
+
+        if ($gid != null) {
+            $oQuestion->gid = $gid;
+        }
+
+        return $oQuestion;
+    }
+
     /**
      * @todo document me
      *
@@ -538,36 +668,6 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * Action (called by ajaxrequest and returning json)
-     * Returns a preformatted json of advanced settings.
-     *
-     * @param int $iQuestionId
-     * @param string $sQuestionType
-     * @param boolean $returnArray
-     * @param string $question_template
-     *
-     * @return void|array
-     * @throws CException
-     */
-    public function actionGetAdvancedOptions(
-        $iQuestionId = null,
-        $sQuestionType = null,
-        $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
-        $question_template = 'core'
-    ) {
-        //here we get a Question object (also if question is new --> QuestionCreate)
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
-
-        $this->renderJSON(
-            [
-                'advancedSettings' => $aAdvancedOptionsArray,
-                'questionTypeDefinition' => $oQuestion->questionType,
-            ]
-        );
-    }
-
-    /**
      * It returns a preformatted array of advanced settings.
      *
      * @param null $iQuestionId
@@ -584,47 +684,6 @@ class QuestionEditorController extends LSBaseController
         return $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
             $oQuestion,
             $question_template);
-    }
-
-    /**
-     * Collect initial question data
-     * This either creates a temporary question object, or calls a question object from the database
-     *
-     * @param int $iQuestionId
-     * @param int $gid
-     * @param string $type
-     *
-     * @return void
-     * @throws CException
-     */
-    public function actionGetQuestionData($iQuestionId = null, $gid = null, $type = null)
-    {
-        $iQuestionId = (int) $iQuestionId;
-        $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
-
-        $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
-        $surveyInfo = $this->getCompiledSurveyInfo($oQuestion);
-
-        $aLanguages = [];
-        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
-        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
-        array_walk(
-            $aSurveyLanguages,
-            function ($lngString) use (&$aLanguages, $aAllLanguages) {
-                $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
-            }
-        );
-
-        $this->renderJSON(
-            array_merge(
-                $aQuestionInformationObject,
-                [
-                    'surveyInfo' => $surveyInfo,
-                    'languages' => $aLanguages,
-                    'mainLanguage' => $oQuestion->survey->language,
-                ]
-            )
-        );
     }
 
     /**
@@ -654,64 +713,521 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * Collect the permissions available for a specific question
+     * Method to store and filter questionData for a new question
      *
-     * @param $iQuestionId
+     * todo: move to model or service class
      *
-     * @return void
-     * @throws CException
-     */
-    public function actionGetQuestionPermissions($iQuestionId = null)
-    {
-        $iQuestionId = (int) $iQuestionId;
-        $oQuestion = $this->getQuestionObject($iQuestionId);
-
-        $aPermissions = [
-            "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
-            "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
-            "editorpreset" => App()->session['htmleditormode'],
-            "script" =>
-                Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
-                && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
-        ];
-
-        $this->renderJSON($aPermissions);
-    }
-
-
-    /** ++++++++++++  the following functions should be moved to model or a service clas ++++++++++++++++++++++++++   */
-
-    /**
-     * Creates a question object
-     * This is either an instance of the placeholder model QuestionCreate for new questions,
-     * or of Question for already existing ones
-     *
-     * todo: this should be moved to model ...
-     *
-     * @param int $iQuestionId
-     * @param string $sQuestionType
-     * @param int $gid
+     * @param array $aQuestionData
+     * @param boolean $subquestion
      * @return Question
-     * @throws CException
+     * @throws CHttpException
      */
-    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
+    private function storeNewQuestionData($aQuestionData = null, $subquestion = false)
     {
-        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
-        $oQuestion = Question::model()->findByPk($iQuestionId);
+        $iSurveyId = $aQuestionData['sid'];
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $iQuestionGroupId = App()->request->getParam('gid');
+        $type = SettingsUser::getUserSettingValue(
+            'preselectquestiontype',
+            null,
+            null,
+            null,
+            App()->getConfig('preselectquestiontype')
+        );
 
+        if(isset($aQuestionData['same_default'])){
+            if($aQuestionData['same_default'] == 1){
+                $aQuestionData['same_default'] =0;
+            }else{
+                $aQuestionData['same_default'] =1;
+            }
+        }
+
+        $aQuestionData = array_merge([
+            'sid' => $iSurveyId,
+            'gid' => App()->request->getParam('gid'),
+            'type' => $type,
+            'other' => 'N',
+            'mandatory' => 'N',
+            'relevance' => 1,
+            'group_name' => '',
+            'modulename' => '',
+        ], $aQuestionData);
+        unset($aQuestionData['qid']);
+
+        if ($subquestion) {
+            foreach ($oSurvey->allLanguages as $sLanguage) {
+                unset($aQuestionData[$sLanguage]);
+            }
+        } else {
+            $aQuestionData['question_order'] = getMaxQuestionOrder($iQuestionGroupId);
+        }
+
+        $oQuestion = new Question();
+        $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
-            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+            throw new LSJsonException(
+                500,
+                gT("Question creation failed - input was malformed or invalid"),
+                0,
+                null,
+                true
+            );
         }
 
-        if ($sQuestionType != null) {
-            $oQuestion->type = $sQuestionType;
+        $saved = $oQuestion->save();
+        if ($saved == false) {
+            throw new LSJsonException(
+                500,
+                "Object creation failed, couldn't save.\n ERRORS:\n"
+                . print_r($oQuestion->getErrors(), true),
+                0,
+                null,
+                true
+            );
         }
 
-        if ($gid != null) {
-            $oQuestion->gid = $gid;
+        $i10N = [];
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $i10N[$sLanguage] = new QuestionL10n();
+            $i10N[$sLanguage]->setAttributes([
+                'qid' => $oQuestion->qid,
+                'language' => $sLanguage,
+                'question' => '',
+                'help' => '',
+            ], false);
+            $i10N[$sLanguage]->save();
         }
 
         return $oQuestion;
     }
 
+    /**
+     * Method to store and filter questionData for editing a question
+     *
+     * @param Question $oQuestion
+     * @param array $aQuestionData
+     * @return Question
+     * @throws CHttpException
+     */
+    private function updateQuestionData(&$oQuestion, $aQuestionData)
+    {
+        //todo something wrong in frontend ... (?what is wrong?)
+
+        if(isset($aQuestionData['same_default'])){
+            if($aQuestionData['same_default'] == 1){
+                $aQuestionData['same_default'] =0;
+            }else{
+                $aQuestionData['same_default'] =1;
+            }
+        }
+
+        $oQuestion->setAttributes($aQuestionData, false);
+        if ($oQuestion == null) {
+            throw new LSJsonException(
+                500,
+                gT("Question update failed, input array malformed or invalid"),
+                0,
+                null,
+                true
+            );
+        }
+
+        $saved = $oQuestion->save();
+        if ($saved == false) {
+            throw new LSJsonException(
+                500,
+                "Update failed, could not save. ERRORS:<br/>"
+                .implode(", ", $oQuestion->getErrors()['title']),
+                0,
+                null,
+                true
+            );
+        }
+        return $oQuestion;
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     * @throws CHttpException
+     */
+    private function applyI10N(&$oQuestion, $dataSet)
+    {
+
+        foreach ($dataSet as $sLanguage => $aI10NBlock) {
+            $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);
+            $i10N->setAttributes([
+                'question' => $aI10NBlock['question'],
+                'help' => $aI10NBlock['help'],
+                'script' => $aI10NBlock['script'],
+            ], false);
+            if (!$i10N->save()) {
+                throw new CHttpException(500, gT("Could not store translation"));
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     * @throws CHttpException
+     */
+    private function unparseAndSetGeneralOptions(&$oQuestion, $dataSet)
+    {
+        $aQuestionBaseAttributes = $oQuestion->attributes;
+
+        foreach ($dataSet as $sAttributeKey => $aAttributeValueArray) {
+            if ($sAttributeKey === 'debug' || !isset($aAttributeValueArray['formElementValue'])) {
+                continue;
+            }
+            if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                $oQuestion->$sAttributeKey = $aAttributeValueArray['formElementValue'];
+            } else {
+                if (!QuestionAttribute::model()->setQuestionAttribute(
+                    $oQuestion->qid,
+                    $sAttributeKey,
+                    $aAttributeValueArray['formElementValue']
+                )) {
+                    throw new CHttpException(500, gT("Could not store general options"));
+                }
+            }
+        }
+
+        if (!$oQuestion->save()) {
+            throw new CHttpException(500, gT("Could not store general options"));
+        }
+
+        return true;
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     * @throws CHttpException
+     */
+    private function unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
+    {
+        $aQuestionBaseAttributes = $oQuestion->attributes;
+
+        foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
+            if ($sAttributeCategory === 'debug') {
+                continue;
+            }
+            foreach ($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
+                if (!isset($aAttributeValueArray['formElementValue'])) {
+                    continue;
+                }
+                $newValue = $aAttributeValueArray['formElementValue'];
+
+                // Set default value if empty.
+                if ($newValue === ""
+                    && isset($aAttributeValueArray['aFormElementOptions']['default'])) {
+                    $newValue = $aAttributeValueArray['aFormElementOptions']['default'];
+                }
+
+                if (is_array($newValue)) {
+                    foreach ($newValue as $lngKey => $content) {
+                        if ($lngKey == 'expression') {
+                            continue;
+                        }
+                        if (!QuestionAttribute::model()->setQuestionAttributeWithLanguage(
+                            $oQuestion->qid,
+                            $sAttributeKey,
+                            $content,
+                            $lngKey
+                        )) {
+                            throw new CHttpException(500, gT("Could not store advanced options"));
+                        }
+                    }
+                } else {
+                    if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                        $oQuestion->$sAttributeKey = $newValue;
+                    } else {
+                        if (!QuestionAttribute::model()->setQuestionAttribute(
+                            $oQuestion->qid,
+                            $sAttributeKey,
+                            $newValue
+                        )) {
+                            throw new CHttpException(500, gT("Could not store advanced options"));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!$oQuestion->save()) {
+            throw new CHttpException(500, gT("Could not store advanced options"));
+        }
+
+        return true;
+    }
+
+    /**
+     * Copies the default value(s) set for a question
+     *
+     * @param Question $oQuestion
+     * @param integer $oldQid
+     *
+     * @return boolean
+     * @throws CHttpException
+     */
+    private function copyDefaultAnswers($oQuestion, $oldQid)
+    {
+        if (empty($oldQid)) {
+            return false;
+        }
+
+        $oOldDefaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $oldQid]);
+
+        $setApplied['defaultValues'] = array_reduce(
+            $oOldDefaultValues,
+            function ($collector, $oDefaultValue) use ($oQuestion) {
+                $oNewDefaultValue = new DefaultValue();
+                $oNewDefaultValue->setAttributes($oDefaultValue->attributes, false);
+                $oNewDefaultValue->dvid = null;
+                $oNewDefaultValue->qid = $oQuestion->qid;
+
+                if (!$oNewDefaultValue->save()) {
+                    throw new CHttpException(
+                        500,
+                        "Could not save default values. ERRORS:"
+                        . print_r($oQuestion->getErrors(), true)
+                    );
+                }
+
+                foreach ($oDefaultValue->defaultvaluel10ns as $oDefaultValueL10n) {
+                    $oNewDefaultValueL10n = new DefaultValueL10n();
+                    $oNewDefaultValueL10n->setAttributes($oDefaultValueL10n->attributes, false);
+                    $oNewDefaultValueL10n->id = null;
+                    $oNewDefaultValueL10n->dvid = $oNewDefaultValue->dvid;
+                    if (!$oNewDefaultValueL10n->save()) {
+                        throw new CHttpException(
+                            500,
+                            "Could not save default value I10Ns. ERRORS:"
+                            . print_r($oQuestion->getErrors(), true)
+                        );
+                    }
+                }
+
+                return true;
+            },
+            true
+        );
+        return true;
+    }
+
+    /**
+     * @todo document me.
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     * @throws CException
+     * @throws CHttpException
+     */
+    private function storeSubquestions(&$oQuestion, $dataSet, $isCopyProcess = false)
+    {
+        $this->cleanSubquestions($oQuestion, $dataSet);
+        foreach ($dataSet as $aSubquestions) {
+            foreach ($aSubquestions as $aSubquestionDataSet) {
+                $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
+                if ($oSubQuestion != null && !$isCopyProcess) {
+                    $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
+                } else if(!$oQuestion->survey->isActive) {
+                    $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
+                    $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
+                }
+                $this->applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @todo document me.
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return void
+     * @todo PHPDoc description
+     */
+    private function cleanSubquestions(&$oQuestion, &$dataSet)
+    {
+        $aSubquestions = $oQuestion->subquestions;
+        array_walk(
+            $aSubquestions,
+            function ($oSubquestion) use (&$dataSet, $oQuestion) {
+                $exists = false;
+                foreach ($dataSet as $scaleId => $aSubquestions) {
+                    foreach ($aSubquestions as $i => $aSubquestionDataSet) {
+                        if ($oSubquestion->qid == $aSubquestionDataSet['qid']
+                            || (($oSubquestion->title == $aSubquestionDataSet['title'])
+                                && ($oSubquestion->scale_id == $scaleId))
+                        ) {
+                            $exists = true;
+                            $dataSet[$scaleId][$i]['qid'] = $oSubquestion->qid;
+                        }
+
+                        if (!$exists && !$oQuestion->survey->isActive) {
+                            $oSubquestion->delete();
+                        }
+                    }
+                }
+            }
+        );
+    }
+
+    /**
+     * @todo document me
+     *
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     * @throws CHttpException
+     */
+    private function applyI10NSubquestion($oQuestion, $dataSet)
+    {
+
+        foreach ($oQuestion->survey->allLanguages as $sLanguage) {
+            $aI10NBlock = $dataSet[$sLanguage];
+            $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);
+            $i10N->setAttributes([
+                'question' => $aI10NBlock['question'],
+                'help' => $aI10NBlock['help'],
+            ], false);
+            if (!$i10N->save()) {
+                throw new CHttpException(500, gT("Could not store translation for subquestion"));
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @todo document me
+     *
+     * REFACTORED in QuestionEditorController
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return boolean
+     * @throws CException
+     * @throws CHttpException
+     */
+    private function storeAnswerOptions(&$oQuestion, $dataSet, $isCopyProcess = false)
+    {
+        $this->cleanAnsweroptions($oQuestion, $dataSet);
+        foreach ($dataSet as $aAnswerOptions) {
+            foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
+                $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
+                $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
+                if ($oAnswer == null || $isCopyProcess) {
+                    $oAnswer = new Answer();
+                    $oAnswer->qid = $oQuestion->qid;
+                    unset($aAnswerOptionDataSet['aid']);
+                    unset($aAnswerOptionDataSet['qid']);
+                }
+
+                $codeIsEmpty = (!isset($aAnswerOptionDataSet['code']));
+                if ($codeIsEmpty) {
+                    throw new CHttpException(
+                        500,
+                        "Answer option code cannot be empty"
+                    );
+                }
+                $oAnswer->setAttributes($aAnswerOptionDataSet);
+                $answerSaved = $oAnswer->save();
+                if (!$answerSaved) {
+                    throw new CHttpException(
+                        500,
+                        "Answer option couldn't be saved. Error: "
+                        . print_r($oAnswer->getErrors(), true)
+                    );
+                }
+                $this->applyAnswerI10N($oAnswer, $oQuestion, $aAnswerOptionDataSet);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @return void
+     */
+    private function cleanAnsweroptions(&$oQuestion, &$dataSet)
+    {
+        $aAnsweroptions = $oQuestion->answers;
+        array_walk(
+            $aAnsweroptions,
+            function ($oAnsweroption) use (&$dataSet) {
+                $exists = false;
+                foreach ($dataSet as $scaleId => $aAnsweroptions) {
+                    foreach ($aAnsweroptions as $i => $aAnsweroptionDataSet) {
+                        if (((is_numeric($aAnsweroptionDataSet['aid'])
+                                    && $oAnsweroption->aid == $aAnsweroptionDataSet['aid'])
+                                || $oAnsweroption->code == $aAnsweroptionDataSet['code'])
+                            && ($oAnsweroption->scale_id == $scaleId)
+                        ) {
+                            $exists = true;
+                            $dataSet[$scaleId][$i]['aid'] = $oAnsweroption->aid;
+                        }
+
+                        if (!$exists) {
+                            $oAnsweroption->delete();
+                        }
+                    }
+                }
+            }
+        );
+    }
+
+    /**
+     * @todo document me
+     *
+     * @param Answer $oAnswer
+     * @param Question $oQuestion
+     * @param array $dataSet
+     *
+     * @return boolean
+     * @throws CHttpException
+     */
+    private function applyAnswerI10N($oAnswer, $oQuestion, $dataSet)
+    {
+        foreach ($oQuestion->survey->allLanguages as $sLanguage) {
+            $i10N = AnswerL10n::model()->findByAttributes(['aid' => $oAnswer->aid, 'language' => $sLanguage]);
+            if ($i10N == null) {
+                $i10N = new AnswerL10n();
+                $i10N->setAttributes([
+                    'aid' => $oAnswer->aid,
+                    'language' => $sLanguage,
+                ], false);
+            }
+            $i10N->setAttributes([
+                'answer' => $dataSet[$sLanguage]['answer'],
+            ], false);
+
+            if (!$i10N->save()) {
+                throw new CHttpException(500, gT("Could not store translation for answer option"));
+            }
+        }
+
+        return true;
+    }
 }
