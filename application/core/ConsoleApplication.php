@@ -24,7 +24,6 @@ class ConsoleApplication extends CConsoleApplication
 
     public function __construct($aApplicationConfig = null)
     {
-
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__.'/../config/config-defaults.php');
         if (file_exists(__DIR__.'/../config/config.php')) {
@@ -33,7 +32,7 @@ class ConsoleApplication extends CConsoleApplication
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
-
+        $configdir = $baseConfig['configdir'];
         /* Set the runtime path according to tempdir if needed */
         if (!isset($aApplicationConfig['runtimePath'])) {
             $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'].DIRECTORY_SEPARATOR.'runtime';
@@ -45,11 +44,11 @@ class ConsoleApplication extends CConsoleApplication
         // Set webroot alias.
         Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application').'/../'));
         /* Because we have app now : we have to call again the config : can be done before : no real usage of url in console, but usage of getPathOfAlias */
-        $coreConfig = require(__DIR__.'/../config/config-defaults.php');
-        $consoleConfig = require(__DIR__.'/../config/console.php'); // Only for console : replace some config-defaults
-        $emailConfig = require(__DIR__.'/../config/email.php');
-        $versionConfig = require(__DIR__.'/../config/version.php');
-        $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
+        $coreConfig = require($configdir.'/config-defaults.php');
+        $consoleConfig = require($configdir.'/console.php'); // Only for console : replace some config-defaults
+        $emailConfig = require($configdir.'/email.php');
+        $versionConfig = require($configdir.'/version.php');
+        $updaterVersionConfig = require($configdir.'/updater_version.php');
 
         $lsConfig = array_merge(
             $coreConfig,
@@ -59,32 +58,22 @@ class ConsoleApplication extends CConsoleApplication
             $updaterVersionConfig
         );
 
-        if (file_exists(__DIR__.'/../config/security.php')) {
+        if (file_exists($configdir.'/security.php')) {
             $securityConfig = require(  __DIR__.'/../config/security.php');
             if (is_array($securityConfig)) {
                 $lsConfig = array_merge($lsConfig, $securityConfig);
             }
         }
-        /* Custom config file */
-        $configdir = $coreConfig['configdir'];
-        if (file_exists( $configdir .  '/security.php')) {
-            $securityConfig = require(  $configdir .'/security.php');
-            if (is_array($securityConfig)) {
-                $lsConfig = array_merge($lsConfig, $securityConfig);
-            }
-        }
-
-        if (file_exists(__DIR__.'/../config/config.php')) {
-            $userConfigs = require(__DIR__.'/../config/config.php');
+        if (file_exists($configdir.'/config.php')) {
+            $userConfigs = require($configdir.'/config.php');
             if (is_array($userConfigs['config'])) {
                 $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
         $this->config = array_merge($this->config, $lsConfig);
         
-        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
-           it would be decrypted in LimeMailer when needed */
-           $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted */
+       $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {

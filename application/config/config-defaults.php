@@ -38,11 +38,13 @@ $config = array();
 
 // FILE LOCATIONS
 
-$config['rootdir'] = getcwd(); //dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
-// If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
-// Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
-// If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
-
+/**
+* rootdir
+* Physical disk location for your limesurvey installation
+* Normally you don't have to touch this setting
+* Usage of dirname like intenal.php
+*/
+$config['rootdir'] = realpath(dirname(dirname(dirname(__FILE__))));
 
 // Site Info
 $config['sitename']           = 'LimeSurvey'; // The official name of the site (appears in the Window title)
