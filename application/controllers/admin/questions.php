@@ -29,15 +29,16 @@ use \LimeSurvey\Helpers\questionHelper;
 class questions extends Survey_Common_Action
 {
 
+    /**
     public function view($surveyid, $gid, $qid)
     {
         //todo change the url for action view in QuestionEditorController OR better remove this action completely ...
-        $this->getController()->redirect(Yii::app()->createUrl('admin/questioneditor/sa/view/', ['surveyid' => $surveyid, 'gid' => $gid, 'qid' => $qid ]));
+        $this->getController()->redirect(Yii::app()->createUrl('questionEditor/view/', ['surveyid' => $surveyid, 'gid' => $gid, 'qid' => $qid ]));
         return;
 
         // TODO: Delete this code in the future?
         //code removed... this action is called in questionedit.php, after refactoring this will be in QuestionEditorController
-    }
+    }*/
 
     /**
      * Display import view
@@ -154,7 +155,7 @@ class questions extends Survey_Common_Action
             App()->setFlashMessage(gT("Question imported successfully"), 'success');
             $this->getController()->redirect(
                 App()->createUrl(
-                    'admin/questioneditor/sa/view/',
+                    'questionEditor/view/',
                     [
                         'surveyid' => $iSurveyID,
                         'gid' => $gid,
@@ -360,7 +361,7 @@ class questions extends Survey_Common_Action
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['showCloseButton'] = true;
         $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl(
-            'admin/questioneditor/sa/view/',
+            'questionEditor/view/',
             ['sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
         );
         $aData['hasUpdatePermission'] =
@@ -902,7 +903,7 @@ class questions extends Survey_Common_Action
         }
         return $this->getController()->redirect(
             App()->createUrl(
-                'admin/questioneditor/sa/view',
+                'questionEditor/view',
                 [
                     'surveyid' => $surveyid,
                     'gid' => $gid,

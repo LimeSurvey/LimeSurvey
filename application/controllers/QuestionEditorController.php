@@ -329,7 +329,7 @@ class QuestionEditorController extends LSBaseController
                 gT('Question has been stored, but an error happened: ')."\n".$ex->getMessage(),
                 0,
                 App()->createUrl(
-                    'admin/questioneditor/sa/view/',
+                    'questionEditor/view/',
                     ["surveyid"=> $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid'=> $oQuestion->qid]
                 )
             );
@@ -338,7 +338,7 @@ class QuestionEditorController extends LSBaseController
         // Compile the newly stored data to update the FE
         $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
-        $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, true);
+        $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, $aQuestionAttributeData['question_template']);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
@@ -358,8 +358,8 @@ class QuestionEditorController extends LSBaseController
                 ),
                 'successDetail' => $setApplied,
                 'questionId' => $oQuestion->qid,
-                'redirect' => $this->getController()->createUrl(
-                    'admin/questioneditor/sa/view/',
+                'redirect' => $this->createUrl(
+                    'questionEditor/view/',
                     [
                         'surveyid' => $iSurveyId,
                         'gid' => $oQuestion->gid,
@@ -548,6 +548,92 @@ class QuestionEditorController extends LSBaseController
         ];
 
         $this->renderJSON($aPermissions);
+    }
+
+    /**
+     * Renders a JSON document of the question attribute array
+     *
+     * @param int $iQuestionId
+     *
+     * @return void|array
+     * @throws CException
+     */
+    protected function actionGetQuestionAttributeData($iQuestionId = null)
+    {
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes((int) $iQuestionId);
+        $this->renderJSON($aQuestionAttributes);
+    }
+
+    /**
+     * Returns a json document containing the question types
+     *
+     * @return void
+     */
+    public function actionGetQuestionTypeList()
+    {
+        $this->renderJSON(QuestionType::modelsAttributes());
+    }
+
+    /**
+     * @todo document me.
+     *
+     * @param string $sQuestionType
+     * @return void
+     */
+    public function actionGetQuestionTypeInformation($sQuestionType)
+    {
+        $aTypeInformations = QuestionType::modelsAttributes();
+        $aQuestionTypeInformation = $aTypeInformations[$sQuestionType];
+
+        $this->renderJSON($aQuestionTypeInformation);
+    }
+
+    /**
+     * Renders the top bar definition for questions as JSON document
+     *
+     * @param int $qid
+     * @return false|null|string|string[]
+     * @throws CException
+     */
+    public function actionGetQuestionTopbar($qid = null)
+    {
+        $oQuestion = $this->getQuestionObject($qid);
+        $sid = $oQuestion->sid;
+        $gid = $oQuestion->gid;
+        $qid = $oQuestion->qid;
+        // TODO: Rename Variable for better readability.
+        $qtypes = QuestionType::modelsAttributes();
+        // TODO: Rename Variable for better readability.
+        $qrrow = $oQuestion->attributes;
+        $ownsSaveButton = true;
+        $ownsImportButton = true;
+
+        $hasCopyPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
+        $hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+        $hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+        $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
+        $hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+
+        return $this->renderPartial(
+            '/admin/survey/topbar/question_topbar',
+            array(
+                'oSurvey' => $oQuestion->survey,
+                'sid' => $sid,
+                'hasCopyPermission'   => $hasCopyPermission,
+                'hasUpdatePermission' => $hasUpdatePermission,
+                'hasExportPermission' => $hasExportPermission,
+                'hasDeletePermission' => $hasDeletePermission,
+                'hasReadPermission'   => $hasReadPermission,
+                'gid' => $gid,
+                'qid' => $qid,
+                'qrrow' => $qrrow,
+                'qtypes' => $qtypes,
+                'ownsSaveButton' => $ownsSaveButton,
+                'ownsImportButton' => $ownsImportButton,
+            ),
+            false,
+            false
+        );
     }
 
 
@@ -1120,7 +1206,6 @@ class QuestionEditorController extends LSBaseController
     /**
      * @todo document me
      *
-     * REFACTORED in QuestionEditorController
      *
      * @param Question $oQuestion
      * @param array $dataSet
@@ -1230,4 +1315,5 @@ class QuestionEditorController extends LSBaseController
 
         return true;
     }
+
 }

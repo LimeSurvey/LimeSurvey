@@ -491,6 +491,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Either renders a JSON document of the question attribute array, or returns it
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param int $iQuestionId
      * @param boolean $returnArray | If true returns array
      *
@@ -510,6 +512,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Returns a json document containing the question types
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @return void
      */
     public function getQuestionTypeList()
@@ -519,6 +523,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @todo document me.
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param string $sQuestionType
      * @return void
@@ -533,6 +539,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * @todo document me
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
@@ -604,6 +612,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Live preview rendering
+     *
+     * NOT REFACTORED !!!
      *
      * @param int $iQuestionId
      * @param string $sLanguage
@@ -720,6 +730,8 @@ class questionedit extends Survey_Common_Action
     /**
      * Renders the top bar definition for questions as JSON document
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param int $qid
      * @return void
      * @throws CException
@@ -769,6 +781,8 @@ class questionedit extends Survey_Common_Action
      * Creates a question object
      * This is either an instance of the placeholder model QuestionCreate for new questions,
      * or of Question for already existing ones
+     *
+     * REFACTORED in QuestionEditorController
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
@@ -1338,6 +1352,8 @@ class questionedit extends Survey_Common_Action
     /**
      * @todo document me.
      *
+     * REFACTORED in QuestionEditorController
+     *
      * @param Question $oQuestion
      * @return array
      */
@@ -1421,6 +1437,8 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Renders template(s) wrapped in header and footer
+     *
+     * NOT REFACTORED!!!
      *
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)

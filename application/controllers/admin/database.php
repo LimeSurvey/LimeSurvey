@@ -833,7 +833,7 @@ class database extends Survey_Common_Action
             $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         } else {
             // Redirect to edit
-            $this->getController()->redirect(array('admin/questioneditor/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
             // This works too: $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }

@@ -4,7 +4,7 @@ export default {
     getTopBarButtonsQuestion: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/questioneditor/sa/getQuestionTopbar', {
+            ajax.methods.$_get(LS.createUrl('questionEditor/getQuestionTopbar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 gid: context.state.gid || LS.reparsedParameters().combined.gid || 0,
                 qid: context.state.qid || LS.reparsedParameters().combined.qid || 0

@@ -356,11 +356,11 @@ class questiongroups extends Survey_Common_Action
                 ['sid' => $iSurveyID, 'sa' => '']
             ),
             'openQuestionUrl' => $this->getController()->createUrl(
-                'admin/questioneditor/sa/view/',
+                'questionEditor/view/',
                 ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']
             ),
             'createQuestionUrl' => $this->getController()->createUrl(
-                "admin/questioneditor/sa/view/",
+                "questionEditor/view/",
                 ["surveyid" =>  $surveyid, 'gid' => $gid]
             ),
             'i10N' => [
