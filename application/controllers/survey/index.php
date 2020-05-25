@@ -503,9 +503,6 @@ class index extends CAction
                     null,
                     array($sError)
                 );
-            } else {
-                /* Can not happen : already deleted */
-                unset($token);
             }
         }
 
