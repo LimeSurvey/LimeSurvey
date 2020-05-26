@@ -124,11 +124,7 @@ function modlabelsetanswers($lid)
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
     $sPostData = str_replace("\t", '', $sPostData);
-    if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-        $data = json_decode(stripslashes($sPostData));
-    } else {
-        $data = json_decode($sPostData, true);
-    }
+    $data = json_decode($sPostData, true);
 
     if ($ajax) {
             $lid = insertlabelset();
@@ -141,8 +137,6 @@ function modlabelsetanswers($lid)
         foreach ($aLabels as $aLabel) {
 //            if {}
         }
-        // FIXME undefined function
-        //debugbreak();
         foreach ($data['codelist'] as $index=>$codeid) {
 
             $codeObj = $data[$codeid];

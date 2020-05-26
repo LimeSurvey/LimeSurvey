@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-05-18 11:41:47+00:00\n"
+"POT-Creation-Date: 2020-05-25 09:22:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,9 +27,9 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1771
 #: application/controllers/admin/dataentry.php:1782
 #: application/controllers/survey/index.php:89
-#: application/controllers/survey/index.php:319
-#: application/controllers/survey/index.php:341
-#: application/controllers/survey/index.php:365
+#: application/controllers/survey/index.php:323
+#: application/controllers/survey/index.php:345
+#: application/controllers/survey/index.php:369
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/helpers/SurveyRuntimeHelper.php:1145
@@ -314,7 +314,7 @@ msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
 #: application/controllers/InstallerController.php:994
-#: application/core/LSSodium.php:168
+#: application/core/LSSodium.php:179
 msgid "Configuration directory is not writable"
 msgstr ""
 
@@ -374,12 +374,12 @@ msgid "You have been removed from the central participants list for this site"
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:90
-#: application/controllers/survey/index.php:260
+#: application/controllers/survey/index.php:264
 msgid "We are sorry but your session has expired."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:95
-#: application/controllers/survey/index.php:262
+#: application/controllers/survey/index.php:266
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
@@ -1654,7 +1654,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:197
 #: application/controllers/admin/surveyadmin.php:1178
 #: application/controllers/admin/surveyadmin.php:2550
-#: application/controllers/admin/themes.php:1316
+#: application/controllers/admin/themes.php:1310
 #: application/controllers/admin/tokens.php:1978
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:180
 #: application/models/UserParser.php:26
@@ -1992,7 +1992,7 @@ msgstr ""
 #: application/controllers/admin/labels.php:73
 #: application/controllers/admin/surveyadmin.php:285
 #: application/controllers/admin/surveyadmin.php:2576
-#: application/controllers/admin/themes.php:1343
+#: application/controllers/admin/themes.php:1337
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
@@ -2057,14 +2057,14 @@ msgstr ""
 #: application/controllers/admin/themes.php:635
 #: application/controllers/admin/themes.php:686
 #: application/controllers/admin/themes.php:738
-#: application/controllers/admin/themes.php:887
+#: application/controllers/admin/themes.php:881
 #: application/controllers/admin/tokens.php:86
 #: application/controllers/admin/tokens.php:480
 #: application/controllers/admin/tokens.php:500
 #: application/controllers/admin/tokens.php:598
 #: application/controllers/survey/index.php:90
-#: application/controllers/survey/index.php:243
-#: application/controllers/survey/index.php:245
+#: application/controllers/survey/index.php:247
+#: application/controllers/survey/index.php:249
 #: application/views/admin/participants/blacklist_view.php:128
 #: application/views/admin/survey/subview/_survey_quickaction.php:241
 #: application/views/admin/survey/subview/_survey_quickaction.php:294
@@ -4305,7 +4305,7 @@ msgid "There are no unmapped attributes"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:80
-#: application/controllers/admin/themes.php:1158
+#: application/controllers/admin/themes.php:1152
 msgid "Please submit by %s"
 msgstr ""
 
@@ -4322,12 +4322,12 @@ msgid "Submit Your Survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:135
-#: application/controllers/admin/themes.php:1159
+#: application/controllers/admin/themes.php:1153
 msgid "Thank you for completing this survey."
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:143
-#: application/controllers/admin/themes.php:1155
+#: application/controllers/admin/themes.php:1149
 msgid "Please fax your completed survey to:"
 msgstr ""
 
@@ -4421,7 +4421,7 @@ msgid "Question code:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:547
-#: application/controllers/admin/themes.php:1132
+#: application/controllers/admin/themes.php:1126
 msgid "*"
 msgstr ""
 
@@ -4430,7 +4430,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:606
 #: application/controllers/admin/printablesurvey.php:665
 #: application/controllers/admin/printablesurvey.php:839
-#: application/controllers/admin/themes.php:1136
+#: application/controllers/admin/themes.php:1130
 msgid "Please choose *only one* of the following:"
 msgstr ""
 
@@ -6313,74 +6313,74 @@ msgstr ""
 msgid "Not a broken theme!"
 msgstr ""
 
-#: application/controllers/admin/themes.php:847
+#: application/controllers/admin/themes.php:841
 msgid "Invalid theme name"
 msgstr ""
 
-#: application/controllers/admin/themes.php:861
+#: application/controllers/admin/themes.php:855
 msgid "Could not open file "
 msgstr ""
 
-#: application/controllers/admin/themes.php:866
+#: application/controllers/admin/themes.php:860
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/themes.php:1049
+#: application/controllers/admin/themes.php:1043
 msgid "Invalid screen name"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1096
+#: application/controllers/admin/themes.php:1090
 #: tmp/runtime/twig_cache/b4/b482524abbeba90eaaec351348a0fa3f40351aeab82f8cdf5f34dcd92c7e29e9.php:55
 msgid "How many roads must a man walk down?"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1098
+#: application/controllers/admin/themes.php:1092
 #: application/models/TemplateManifest.php:403
 #: application/models/TemplateManifest.php:413
 msgid "This is some helpful text."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1107
+#: application/controllers/admin/themes.php:1101
 msgid "Hint when response is valid"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1143
+#: application/controllers/admin/themes.php:1137
 msgid "This is a sample question text. The user was asked to pick an entry."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1144
+#: application/controllers/admin/themes.php:1138
 msgid "This is some help text for this question."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1156
+#: application/controllers/admin/themes.php:1150
 msgid "Submit your survey."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1160
+#: application/controllers/admin/themes.php:1154
 msgid "This is the survey end message."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1182
+#: application/controllers/admin/themes.php:1176
 msgid "Question group name"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1183
+#: application/controllers/admin/themes.php:1177
 msgid "Question group description"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1271
+#: application/controllers/admin/themes.php:1265
 msgid "LimeSurvey theme editor"
 msgstr ""
 
-#: application/controllers/admin/themes.php:1275
+#: application/controllers/admin/themes.php:1269
 msgid "Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1302
+#: application/controllers/admin/themes.php:1296
 msgid "Demo mode: Uploading templates is disabled."
 msgstr ""
 
-#: application/controllers/admin/themes.php:1348
+#: application/controllers/admin/themes.php:1342
 msgid "Template '%s' does already exist."
 msgstr ""
 
@@ -7037,36 +7037,36 @@ msgstr ""
 msgid "The survey in which you are trying to participate does not seem to exist."
 msgstr ""
 
-#: application/controllers/survey/index.php:175
+#: application/controllers/survey/index.php:179
 msgid "Access code mismatch"
 msgstr ""
 
-#: application/controllers/survey/index.php:176
+#: application/controllers/survey/index.php:180
 msgid "The access code you provided doesn't match the one in your session."
 msgstr ""
 
-#: application/controllers/survey/index.php:180
-#: application/controllers/survey/index.php:220
-#: application/controllers/survey/index.php:272
+#: application/controllers/survey/index.php:184
+#: application/controllers/survey/index.php:224
+#: application/controllers/survey/index.php:276
 msgid "Click here to start the survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:215
+#: application/controllers/survey/index.php:219
 msgid "Previous session is set to be finished."
 msgstr ""
 
-#: application/controllers/survey/index.php:216
+#: application/controllers/survey/index.php:220
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr ""
 
-#: application/controllers/survey/index.php:321
+#: application/controllers/survey/index.php:325
 msgid "We are sorry but the survey is expired and no longer available."
 msgstr ""
 
-#: application/controllers/survey/index.php:322
-#: application/controllers/survey/index.php:344
-#: application/controllers/survey/index.php:368
-#: application/controllers/survey/index.php:488
+#: application/controllers/survey/index.php:326
+#: application/controllers/survey/index.php:348
+#: application/controllers/survey/index.php:372
+#: application/controllers/survey/index.php:491
 #: application/helpers/replacements_helper.php:146
 #: application/helpers/replacements_helper.php:148
 #: application/helpers/replacements_helper.php:391
@@ -7075,57 +7075,56 @@ msgstr ""
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
-#: application/controllers/survey/index.php:343
+#: application/controllers/survey/index.php:347
 msgid "This survey is not yet started."
 msgstr ""
 
-#: application/controllers/survey/index.php:367
+#: application/controllers/survey/index.php:371
 msgid "You have already completed this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:393
+#: application/controllers/survey/index.php:397
 msgid "You did not provide a name."
 msgstr ""
 
-#: application/controllers/survey/index.php:397
+#: application/controllers/survey/index.php:401
 msgid "You did not provide a password."
 msgstr ""
 
-#: application/controllers/survey/index.php:407
+#: application/controllers/survey/index.php:411
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/index.php:411
+#: application/controllers/survey/index.php:415
 #: application/libraries/Save.php:202 application/libraries/Save.php:360
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/index.php:423
+#: application/controllers/survey/index.php:427
 msgid "There is no matching saved survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:474
+#: application/controllers/survey/index.php:477
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:476
+#: application/controllers/survey/index.php:479
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/index.php:478
+#: application/controllers/survey/index.php:481
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:480
+#: application/controllers/survey/index.php:483
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:483
-#: application/controllers/survey/index.php:504
+#: application/controllers/survey/index.php:486
 msgid "This is a controlled survey. You need a valid access code to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:487
+#: application/controllers/survey/index.php:490
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
@@ -7151,8 +7150,12 @@ msgstr ""
 msgid "Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. "
 msgstr ""
 
-#: application/core/LSSodium.php:112
+#: application/core/LSSodium.php:119
 msgid "Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s."
+msgstr ""
+
+#: application/core/LSSodium.php:137
+msgid "Configuration file already exist"
 msgstr ""
 
 #: application/core/LSUserIdentity.php:59
@@ -9645,15 +9648,15 @@ msgstr ""
 msgid "Inserting the label set failed."
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:184
+#: application/helpers/admin/label_helper.php:178
 msgid "Not all labels were updated successfully."
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:186
+#: application/helpers/admin/label_helper.php:180
 msgid "Labels sucessfully updated"
 msgstr ""
 
-#: application/helpers/admin/label_helper.php:189
+#: application/helpers/admin/label_helper.php:183
 msgid "Can't update labels because you are using duplicated codes"
 msgstr ""
 

@@ -16,6 +16,15 @@
         public $connection;
 
         /**
+        * register some needed or a lot used part
+        */
+        public function init()
+        {
+            parent::init();
+            Yii::import('application.helpers.common_helper', true);
+        }
+
+        /**
          * Call for cron action
          * @param int $interval Minutes for interval
          * @return void

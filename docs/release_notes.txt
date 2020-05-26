@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.4 (build 200520) to 4.2.5 (build 200526) May 26, 2020
+-Fixed issue #16315: Undefined variable $sSeparator (DrunkenPoney_Qc)
+-Fixed issue #16247: Launch console can create new security.php file (Denis Chenu)
+-Fixed issue #16142: Deleting a participant after he/she started the survey keeps the survey available (Denis Chenu)
+-Fixed issue #15856: Removed get_magic_quotes_gpc (Carsten Schmitz)
+
+
 Changes from 4.2.3 (build 200511) to 4.2.4 (build 200520) May 19, 2020
 -Fixed issue #16289: File Upload not working for iOS 13.2 (Jessica Höck)
 -Fixed issue #16153: Random order question attribute - if enabled, no changes can be saved anymore (Olle Harstedt)

@@ -65,7 +65,7 @@ class FileFetcherUploadZip extends FileFetcher
             throw new \Exception('Could not remove old files.');
         }
 
-        return @rename($tempdir, $destdir);
+        return $this->recurseCopy($tempdir, $destdir);
     }
 
     /**
@@ -234,5 +234,32 @@ class FileFetcherUploadZip extends FileFetcher
         } else {
             // All good?
         }
+    }
+
+    /**
+     * Recursively copy source folder $src to destination $dest.
+     *
+     * @param string $src
+     * @param string $dest
+     * @return boolean
+     * @see https://stackoverflow.com/questions/2050859/copy-entire-contents-of-a-directory-to-another-using-php
+     */
+    protected function recurseCopy($src, $dest)
+    {
+        $dir = opendir($src);
+        mkdir($dest);
+        while (false !== ($file = readdir($dir))) {
+            if ($file != '.' && $file != '..') {
+                if (is_dir($src . '/' . $file)) {
+                    $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
+                } else {
+                    copy($src . '/' . $file, $dest . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+
+        // TODO: When should this return false?
+        return true;
     }
 }
