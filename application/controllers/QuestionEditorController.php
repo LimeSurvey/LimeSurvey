@@ -132,6 +132,7 @@ class QuestionEditorController extends LSBaseController
                 'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ',
             ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
+          //  'connectorBaseUrl' => 'questionEditor',
             'connectorBaseUrl' => 'admin/questioneditor',
             'questionSelectorType' => $questionSelectorType,
             'i10N' => [
