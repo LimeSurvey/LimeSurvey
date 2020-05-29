@@ -66,6 +66,7 @@ class LSUserIdentity extends CUserIdentity
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
+                // one_time_password is to be handled properly when writing a Plugin with this event
                 $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
                 $authEvent->set('identity', $this);
                 App()->getPluginManager()->dispatchEvent($authEvent);
