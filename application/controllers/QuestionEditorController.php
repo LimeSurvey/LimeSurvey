@@ -132,8 +132,7 @@ class QuestionEditorController extends LSBaseController
                 'subquestions' => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ',
             ],
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
-          //  'connectorBaseUrl' => 'questionEditor',
-            'connectorBaseUrl' => 'admin/questioneditor',
+            //'connectorBaseUrl' => 'admin/questioneditor', this should not be relevant anymore for the frontend
             'questionSelectorType' => $questionSelectorType,
             'i10N' => [
                 'Create question' => gT('Create question'),
@@ -219,6 +218,8 @@ class QuestionEditorController extends LSBaseController
 
     /**
      * Returns all languages in a specific survey as a JSON document
+     *
+     * todo: is this action still in use?? where in the frontend?
      *
      * @param int $iSurveyId
      *
@@ -552,20 +553,6 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * Renders a JSON document of the question attribute array
-     *
-     * @param int $iQuestionId
-     *
-     * @return void|array
-     * @throws CException
-     */
-    protected function actionGetQuestionAttributeData($iQuestionId = null)
-    {
-        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes((int) $iQuestionId);
-        $this->renderJSON($aQuestionAttributes);
-    }
-
-    /**
      * Returns a json document containing the question types
      *
      * @return void
@@ -577,6 +564,7 @@ class QuestionEditorController extends LSBaseController
 
     /**
      * @todo document me.
+     * @todo is this used in frontend somewherer? can't find it
      *
      * @param string $sQuestionType
      * @return void

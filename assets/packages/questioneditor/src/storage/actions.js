@@ -70,7 +70,6 @@ export default {
                 const postUrl = LS.createUrl(
                     "questionEditor/getQuestionData",
                     {
-                       // sa: "getQuestionData",
                         sid: context.getters.surveyid
                     }
                 );
@@ -142,10 +141,8 @@ export default {
             }),
             new Promise((resolve, reject) => {
                 const postUrl = LS.createUrl(
-                    //window.QuestionEditData.connectorBaseUrl,
                     "questionEditor/getQuestionPermissions",
                     {
-                        //sa: "getQuestionPermissions",
                         sid: context.getters.surveyid
                     }
                 );
@@ -171,10 +168,8 @@ export default {
     getQuestionGeneralSettings: (context, questionTheme = "core") => {
         return new Promise((resolve, reject) => {
             const postUrl = LS.createUrl(
-                //window.QuestionEditData.connectorBaseUrl,
                 "questionEditor/getGeneralOptions",
                 {
-                    //sa: "getGeneralOptions",
                     sid: context.getters.surveyid
                 }
             );
@@ -224,10 +219,8 @@ export default {
     getQuestionAdvancedSettings: context => {
         return new Promise((resolve, reject) => {
             const postUrl = LS.createUrl(
-               // window.QuestionEditData.connectorBaseUrl,
                 "questionEditor/getAdvancedOptions",
                 {
-                    //sa: "getAdvancedOptions",
                     sid: context.getters.surveyid
                 }
             );
@@ -278,10 +271,8 @@ export default {
     },
     getQuestionTypes: context => {
         const postUrl = LS.createUrl(
-            //window.QuestionEditData.connectorBaseUrl,
             "questionEditor/getQuestionTypeList",
             {
-                //sa: "getQuestionTypeList",
                 sid: context.getters.surveyid
             }
             );
@@ -299,10 +290,8 @@ export default {
     reloadQuestion: context => {
         return new Promise((resolve, reject) => {
             const postUrl = LS.createUrl(
-                //window.QuestionEditData.connectorBaseUrl,
                 "questionEditor/reloadQuestionData",
                 {
-                    //sa: "reloadQuestionData",
                     sid: context.getters.surveyid
                 }
             );
@@ -400,10 +389,8 @@ export default {
             });
 
             const postUrl = LS.createUrl(
-              //  window.QuestionEditData.connectorBaseUrl + "/saveQuestionData",
                 "questionEditor/saveQuestionData",
                 {
-                   // sa: "saveQuestionData",
                     gid: context.state.currentQuestion.gid,
                     sid: context.getters.surveyid
                 }
