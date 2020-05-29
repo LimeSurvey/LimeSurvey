@@ -3088,12 +3088,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
 
             // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.
-<<<<<<< HEAD
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('menu_link' => 'index.php?r=admin/survey/sa/rendersidemenulink&subaction=resources'), "name='resources'");
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => '',
+                    'action'    => 'updatesurveylocalsettings',
+                    'template'  => 'editLocalSettings_main_view',
+                    'partial'   => '/admin/survey/subview/accordion/_resources_panel'
+                ),
+                "name='resources'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
-=======
-            $oDB->createCommand()->update('{{surveymenu_entries}}', array('menu_link' => '', 'action' => 'updatesurveylocalsettings', 'template' => 'editLocalSettings_main_view', 'partial' => '/admin/survey/subview/accordion/_resources_panel'), "name='resources'");
->>>>>>> Edited update 427 to the new view.
             $oTransaction->commit();
         }
     } catch (Exception $e) {
