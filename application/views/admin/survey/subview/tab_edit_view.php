@@ -14,6 +14,10 @@ if (isset($data)) {
 
 if (isset($scripts)) {
     echo $scripts;
+
+    $iSurveyID = App()->request->getParam('surveyid');
+    App()->session['FileManagerContent'] = "edit:survey:{$iSurveyID}";
+    initKcfinder();
 }
 
  $cs = Yii::app()->getClientScript();
