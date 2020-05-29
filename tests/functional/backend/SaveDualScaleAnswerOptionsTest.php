@@ -57,9 +57,9 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
-            'admin/questions',
+            'questionEditor/view',
             [
-                'sa'       => 'view',
+                //'sa'       => 'view',
                 'surveyid' => self::$surveyId,
                 'gid'      => $survey->groups[0]->gid,
                 'qid'      => $survey->groups[0]->questions[0]->qid
