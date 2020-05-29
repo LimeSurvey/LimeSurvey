@@ -26,6 +26,7 @@ require_once BASEPATH . 'yii' . EXT;
 require_once APPPATH . 'core/LSYii_Application' . EXT;
 $config = require_once(APPPATH . 'config/internal' . EXT);
 
+
 Yii::$enableIncludePath = false;
 $app = Yii::createApplication('LSYii_Application', $config);
 $app->init();
@@ -39,7 +40,9 @@ Yii::import('application.models.Token', true);
 Yii::import('application.helpers.common_helper', true);
 Yii::import('application.helpers.globalsettings_helper', true);
 Yii::import('application.helpers.qanda_helper', true);
-Yii::import('application.helpers.expressions.*', true);
+Yii::import('application.helpers.expressions.em_core_helper', true);
+Yii::import('application.helpers.expressions.em_manager_helper', true);
+Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.third_party.Twig.TemplateInterface', true);
