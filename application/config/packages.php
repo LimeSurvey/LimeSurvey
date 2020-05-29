@@ -129,6 +129,27 @@ return array(
             'bootstrap',
         )
     ),
+    'ckeditor' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditor',
+        'basePath' => 'core.ckeditor',
+        'js' => array(
+            'ckeditor.js',
+            'config.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        ),
+    ),
+    'ckeditoradditions' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
+        'basePath' => 'core.ckeditoradditions',
+        'js' => array(
+            'ckeditoradditions.js',
+        ),
+        'depends' => array(
+            'ckeditor'
+        )
+    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
