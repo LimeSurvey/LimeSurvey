@@ -84,7 +84,7 @@ class SettingGlobal extends LSActiveRecord
      * Update or set a setting in DB and update current app config if no error happen
      * Return self : then other script can use if($oSetting->hasErrors()) { Do action with $oSetting->getErrors; }
      * @param string $settingname
-     * @param string $settingvalue
+     * @param mixed $settingvalue
      * @return self
      */
     public static function setSetting($settingname, $settingvalue)
