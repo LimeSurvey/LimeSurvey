@@ -42,7 +42,7 @@ $config = array();
 * rootdir
 * Physical disk location for your limesurvey installation
 * Normally you don't have to touch this setting
-* Usage of dirname like intenal.php
+* Usage of dirname like Yii alias done in application/config/internal.php
 */
 $config['rootdir'] = realpath(dirname(dirname(dirname(__FILE__))));
 
