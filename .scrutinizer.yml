@@ -7,7 +7,10 @@ build:
         tests: true
         analysis:
             environment:
-                php: 7.4
+                php:
+                    version: 7.4
+                    pecl_extensions:
+                        - zip
             tests:
                 override: [php-scrutinizer-run]
 filter:
@@ -33,8 +36,6 @@ checks:
         code_rating: true
         duplication: true
         one_class_per_file: true
-        pecl_extensions:
-            - zip
 tools:
     php_cs_fixer:
         enabled:              true
