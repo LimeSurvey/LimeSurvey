@@ -45,19 +45,27 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * Renders the main view for questioneditor.
      * Main view function prepares the necessary global js parts and renders the HTML for the question editor
      *
      * @param integer $surveyid
      * @param integer $gid
      * @param integer $qid
      * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on structure tab.
+     *
+     * @return void
+     *
      * @throws CException
-     * @throws CHttpException
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure'){
         $aData = array();
         $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
+
+        if($oSurvey === null){
+            throw new CHttpException(500, "Survey not found $iSurveyID");
+        }
+
         $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->getQuestionObject($qid, null, $gid);
         App()->getClientScript()->registerPackage('questioneditor');
@@ -249,8 +257,6 @@ class QuestionEditorController extends LSBaseController
         }
 
         $questionData = App()->request->getPost('questionData', []);
-        // TODO: Unused variable
-        $isNewQuestion = false;
         $questionCopy = (boolean) App()->request->getPost('questionCopy');
         $questionCopySettings = App()->request->getPost('copySettings', []);
         $questionCopySettings = array_map( function($value) {return !!$value;}, $questionCopySettings);
@@ -259,8 +265,6 @@ class QuestionEditorController extends LSBaseController
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
         if ($oQuestion == null || $questionCopy == true) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
-            // TODO: Unused variable
-            $isNewQuestion = true;
         } else {
             $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
         }
@@ -301,7 +305,7 @@ class QuestionEditorController extends LSBaseController
                 );
             } elseif (array_key_exists('clear_default', $questionData['generalSettings'])
                 && $questionData['generalSettings']['clear_default']['formElementValue'] == 'Y') {
-                SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type'], '');
+                SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
             // If set, store subquestions
@@ -342,7 +346,7 @@ class QuestionEditorController extends LSBaseController
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, $aQuestionAttributeData['question_template']);
-        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
+        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null);
 
         // Return a JSON document with the newly stored question data
         $this->renderJSON(
@@ -745,8 +749,8 @@ class QuestionEditorController extends LSBaseController
     /**
      * It returns a preformatted array of advanced settings.
      *
-     * @param null $iQuestionId
-     * @param null $sQuestionType
+     * @param int $iQuestionId
+     * @param string $sQuestionType
      * @param string $question_template
      * @return array
      * @throws CException

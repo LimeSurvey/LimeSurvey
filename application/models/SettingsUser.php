@@ -107,14 +107,13 @@ class SettingsUser extends LSActiveRecord
      * Deletes user setting
      *
      * @param string $stg_name
-     * @param integer $stg_value
      * @param integer $uid | Can be omitted to just take the currently logged in users id
      * @param string $entity | optional defaults to 'null'
      * @param integer $entity_id | optional defaults to 'null'
      * @return boolean Deleting success/failure
      */
 
-    public static function deleteUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null)
+    public static function deleteUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
     {
         if ($uid === null) { $uid = Yii::app()->user->getId(); }
 
