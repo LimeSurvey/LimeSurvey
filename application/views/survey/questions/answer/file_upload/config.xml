@@ -154,7 +154,7 @@
             <category>Other</category>
             <sortorder>134</sortorder>
             <inputtype>text</inputtype>
-            <default>png, gif, doc, odt, jpg, pdf, png, heic</default>
+            <default>png, gif, doc, odt, jpg, jpeg, pdf, png, heic</default>
             <help>Allowed file types in comma separated format. e.g. pdf,doc,odt</help>
             <caption>Allowed file types</caption>
             <i18n></i18n>

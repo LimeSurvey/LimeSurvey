@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.5 (build 200526) to 4.2.6 (build 200602) June 2, 2020
+-Fixed issue: JPEG is now allowed in questions with fileupload type. (Jessica Höck)
+-Fixed issue #15924: Can not send invitations to imported participants where emailstatus IS NULL (#1395) (Roman Anasal)
+
+
 Changes from 4.2.4 (build 200520) to 4.2.5 (build 200526) May 26, 2020
 -Fixed issue #16315: Undefined variable $sSeparator (DrunkenPoney_Qc)
 -Fixed issue #16247: Launch console can create new security.php file (Denis Chenu)
