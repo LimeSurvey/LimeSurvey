@@ -487,6 +487,7 @@
           // Anyway, it doesn't do any harm.
 
           iframe.setAttribute('id', id);
+          iframe.setAttribute('srcdoc', this._settings.action);
           iframe.style.display = 'none';
           document.body.appendChild(iframe);
           return iframe;
