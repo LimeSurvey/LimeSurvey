@@ -45,7 +45,7 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * Renders the main view for questioneditor.
+     * Renders the main view for question editor.
      * Main view function prepares the necessary global js parts and renders the HTML for the question editor
      *
      * @param integer $surveyid
@@ -57,12 +57,13 @@ class QuestionEditorController extends LSBaseController
      *
      * @throws CException
      */
-    public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure'){
+    public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
+    {
         $aData = array();
         $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-        if($oSurvey === null){
+        if ($oSurvey === null) {
             throw new CHttpException(500, "Survey not found $iSurveyID");
         }
 
@@ -259,7 +260,12 @@ class QuestionEditorController extends LSBaseController
         $questionData = App()->request->getPost('questionData', []);
         $questionCopy = (boolean) App()->request->getPost('questionCopy');
         $questionCopySettings = App()->request->getPost('copySettings', []);
-        $questionCopySettings = array_map( function($value) {return !!$value;}, $questionCopySettings);
+        $questionCopySettings = array_map(
+            function ($value) {
+                return !!$value;
+            },
+            $questionCopySettings
+        );
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
@@ -345,7 +351,12 @@ class QuestionEditorController extends LSBaseController
         $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, $oQuestion->gid, $aQuestionAttributeData['question_template']);
+        $aQuestionGeneralOptions = $this->getGeneralOptions(
+            $oQuestion->qid,
+            null,
+            $oQuestion->gid,
+            $aQuestionAttributeData['question_template']
+        );
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null);
 
         // Return a JSON document with the newly stored question data
@@ -398,13 +409,22 @@ class QuestionEditorController extends LSBaseController
      * @return void
      * @throws CException
      */
-    public function actionReloadQuestionData($iQuestionId = null, $type = null, $gid = null, $question_template = 'core')
-    {
+    public function actionReloadQuestionData(
+        $iQuestionId = null,
+        $type = null,
+        $gid = null,
+        $question_template = 'core'
+    ) {
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
 
         $aCompiledQuestionData = $this->getCompiledQuestionData($oQuestion);
-        $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, $type, $oQuestion->gid, $question_template);
+        $aQuestionGeneralOptions = $this->getGeneralOptions(
+            $oQuestion->qid,
+            $type,
+            $oQuestion->gid,
+            $question_template
+        );
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, $type, $question_template);
 
         $aLanguages = [];
@@ -451,7 +471,7 @@ class QuestionEditorController extends LSBaseController
         $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
         $question_template = 'core'
     ) {
-        $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId,$sQuestionType,$gid,$question_template);
+        $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $question_template);
 
         $this->renderJSON($aGeneralOptionsArray);
     }
@@ -630,7 +650,7 @@ class QuestionEditorController extends LSBaseController
     }
 
 
-    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++   */
+    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ?*/
 
     /**
      * Creates a question object
@@ -647,7 +667,8 @@ class QuestionEditorController extends LSBaseController
      */
     private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
-        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid'); //todo: this should be done in the action directly
+        //todo: this should be done in the action directly
+        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if ($oQuestion == null) {
@@ -676,14 +697,16 @@ class QuestionEditorController extends LSBaseController
      * @return void|array
      * @throws CException
      */
-    public function getGeneralOptions($iQuestionId = null, $sQuestionType = null, $gid = null, $question_template = 'core')
-    {
+    public function getGeneralOptions(
+        $iQuestionId = null,
+        $sQuestionType = null,
+        $gid = null,
+        $question_template = 'core'
+    ) {
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid);
-        $aGeneralOptionsArray = $oQuestion
+        return $oQuestion
             ->getDataSetObject()
             ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
-
-        return $aGeneralOptionsArray;
     }
 
     /**
@@ -754,6 +777,7 @@ class QuestionEditorController extends LSBaseController
      * @param string $question_template
      * @return array
      * @throws CException
+     * @throws Exception
      */
     private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
     {
@@ -762,7 +786,8 @@ class QuestionEditorController extends LSBaseController
 
         return $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
             $oQuestion,
-            $question_template);
+            $question_template
+        );
     }
 
     /**
@@ -772,7 +797,8 @@ class QuestionEditorController extends LSBaseController
      * @param $oQuestion
      * @return array
      */
-    private function getCompiledSurveyInfo($oQuestion) {
+    private function getCompiledSurveyInfo($oQuestion)
+    {
         $oSurvey = $oQuestion->survey;
         $aQuestionTitles = $oCommand = Yii::app()->db->createCommand()
             ->select('title')
@@ -814,10 +840,10 @@ class QuestionEditorController extends LSBaseController
             App()->getConfig('preselectquestiontype')
         );
 
-        if(isset($aQuestionData['same_default'])){
-            if($aQuestionData['same_default'] == 1){
+        if (isset($aQuestionData['same_default'])) {
+            if ($aQuestionData['same_default'] == 1) {
                 $aQuestionData['same_default'] =0;
-            }else{
+            } else {
                 $aQuestionData['same_default'] =1;
             }
         }
@@ -893,10 +919,10 @@ class QuestionEditorController extends LSBaseController
     {
         //todo something wrong in frontend ... (?what is wrong?)
 
-        if(isset($aQuestionData['same_default'])){
-            if($aQuestionData['same_default'] == 1){
+        if (isset($aQuestionData['same_default'])) {
+            if ($aQuestionData['same_default'] == 1) {
                 $aQuestionData['same_default'] =0;
-            }else{
+            } else {
                 $aQuestionData['same_default'] =1;
             }
         }
@@ -970,14 +996,12 @@ class QuestionEditorController extends LSBaseController
             }
             if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
                 $oQuestion->$sAttributeKey = $aAttributeValueArray['formElementValue'];
-            } else {
-                if (!QuestionAttribute::model()->setQuestionAttribute(
-                    $oQuestion->qid,
-                    $sAttributeKey,
-                    $aAttributeValueArray['formElementValue']
-                )) {
-                    throw new CHttpException(500, gT("Could not store general options"));
-                }
+            } elseif (!QuestionAttribute::model()->setQuestionAttribute(
+                $oQuestion->qid,
+                $sAttributeKey,
+                $aAttributeValueArray['formElementValue']
+            )) {
+                throw new CHttpException(500, gT("Could not store general options"));
             }
         }
 
@@ -1030,21 +1054,18 @@ class QuestionEditorController extends LSBaseController
                             throw new CHttpException(500, gT("Could not store advanced options"));
                         }
                     }
-                } else {
-                    if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                } elseif (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
                         $oQuestion->$sAttributeKey = $newValue;
-                    } else {
-                        if (!QuestionAttribute::model()->setQuestionAttribute(
-                            $oQuestion->qid,
-                            $sAttributeKey,
-                            $newValue
-                        )) {
-                            throw new CHttpException(500, gT("Could not store advanced options"));
-                        }
-                    }
+                } elseif (!QuestionAttribute::model()->setQuestionAttribute(
+                    $oQuestion->qid,
+                    $sAttributeKey,
+                    $newValue
+                )) {
+                    throw new CHttpException(500, gT("Could not store advanced options"));
                 }
             }
         }
+
 
         if (!$oQuestion->save()) {
             throw new CHttpException(500, gT("Could not store advanced options"));
@@ -1108,13 +1129,13 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * @todo document me.
-     *
      * @param Question $oQuestion
      * @param array $dataSet
+     * @param bool $isCopyProcess
      * @return boolean
-     * @throws CException
      * @throws CHttpException
+     * @todo document me.
+     *
      */
     private function storeSubquestions(&$oQuestion, $dataSet, $isCopyProcess = false)
     {
@@ -1124,7 +1145,7 @@ class QuestionEditorController extends LSBaseController
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
-                } else if(!$oQuestion->survey->isActive) {
+                } elseif (!$oQuestion->survey->isActive) {
                     $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
                     $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
                 }
@@ -1197,14 +1218,14 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @param Question $oQuestion
+     * @param array $dataSet
+     * @param bool $isCopyProcess
+     * @return boolean
+     * @throws CHttpException
      * @todo document me
      *
      *
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @return boolean
-     * @throws CException
-     * @throws CHttpException
      */
     private function storeAnswerOptions(&$oQuestion, $dataSet, $isCopyProcess = false)
     {
