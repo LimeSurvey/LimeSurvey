@@ -893,6 +893,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * @todo document me.
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param null $iQuestionGroupId ID of group
      *
      * @return array|mixed|QuestionGroup|null
@@ -1010,6 +1012,8 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * Renders template(s) wrapped in header and footer
+     *
+     * REFACTORED in QuestionGroupsController
      *
      * @param string  $sAction      Current action, the folder to fetch views from
      * @param array   $aViewUrls    View url(s)

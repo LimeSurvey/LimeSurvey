@@ -4,7 +4,13 @@
 class QuestionEditorController extends LSBaseController
 {
 
-
+    /**
+     * It's import to have the accessRules set (security issue).
+     * Only logged in users should have access to actions. All other permissions
+     * should be checked in the action itself.
+     *
+     * @return array
+     */
     public function accessRules()
     {
         return array(
@@ -650,7 +656,7 @@ class QuestionEditorController extends LSBaseController
     }
 
 
-    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ?*/
+    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
     /**
      * Creates a question object

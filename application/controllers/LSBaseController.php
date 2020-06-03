@@ -9,7 +9,7 @@
  */
 class LSBaseController extends LSYii_Controller
 {
-    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here ...
+    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here
     /** @var null  this is needed for the preview rendering inside the questioneditor */
     public $sTemplate = null;
 
