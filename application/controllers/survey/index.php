@@ -488,9 +488,6 @@ class index extends CAction
                         null,
                         array($sError)
                     );
-            } else {
-                // Must never happen : unset invalid token for the second time
-                $token = null;
             }
         }
 
