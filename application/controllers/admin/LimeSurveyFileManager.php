@@ -318,7 +318,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $destdir = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
         $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
-        $fullfilepath = $destdir . $filename;
+        $fullfilepath = $destdir . DIRECTORY_SEPARATOR . $filename;
 
         if ($this->checkTargetExists($fullfilepath) && Yii::app()->getConfig('overwritefiles') == 0) {
             $ext = pathinfo($fullfilepath, PATHINFO_EXTENSION);
