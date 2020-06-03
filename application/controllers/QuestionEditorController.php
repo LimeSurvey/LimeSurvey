@@ -4,7 +4,13 @@
 class QuestionEditorController extends LSBaseController
 {
 
-
+    /**
+     * It's import to have the accessRules set (security issue).
+     * Only logged in users should have access to actions. All other permissions
+     * should be checked in the action itself.
+     *
+     * @return array
+     */
     public function accessRules()
     {
         return [
@@ -191,17 +197,16 @@ class QuestionEditorController extends LSBaseController
                 '__SCRIPTHELP'                                                                                 => gT(
                     "This optional script field will be wrapped,"
                     . " so that the script is correctly executed after the question is on the screen."
-                    . " If you do not have the correct permissions, this will be ignored"
-                ),
-                "noCodeWarning"                                                                                =>
+                    . " If you do not have the correct permissions, this will be ignored"),
+                "noCodeWarning" =>
                     gT("Please put in a valid code. Only letters and numbers are allowed and it has to start with a letter. For example [Question1]"),
-                "alreadyTaken"                                                                                 =>
+                "alreadyTaken" =>
                     gT("This code is already used - duplicate codes are not allowed."),
-                "codeTooLong"                                                                                  =>
+                "codeTooLong" =>
                     gT("A question code cannot be longer than 20 characters."),
                 "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes." =>
                     gT("Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."),
-                "Question cannot be stored. Please check the answer options for duplicates or empty codes."    =>
+                "Question cannot be stored. Please check the answer options for duplicates or empty codes." =>
                     gT("Question cannot be stored. Please check the answer options for duplicates or empty codes."),
             ],
         ];
@@ -461,6 +466,8 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param int $gid
@@ -469,8 +476,6 @@ class QuestionEditorController extends LSBaseController
      *
      * @return void|array
      * @throws CException
-     * @todo document me
-     *
      */
     public function actionGetGeneralOptions(
         $iQuestionId = null,
@@ -594,11 +599,11 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * @param string $sQuestionType
-     * @return void
      * @todo document me.
      * @todo is this used in frontend somewherer? can't find it
      *
+     * @param string $sQuestionType
+     * @return void
      */
     public function actionGetQuestionTypeInformation($sQuestionType)
     {
@@ -1116,7 +1121,7 @@ class QuestionEditorController extends LSBaseController
 
 
 
-    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ? */
+    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ?*/
 
 
     /**
@@ -1415,6 +1420,8 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param int $gid
@@ -1422,8 +1429,6 @@ class QuestionEditorController extends LSBaseController
      *
      * @return void|array
      * @throws CException
-     * @todo document me
-     *
      */
     public function getGeneralOptions(
         $iQuestionId = null,
@@ -1438,11 +1443,11 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * @param Question $oQuestion
-     * @return array
      * @todo document me.
      * @todo move this function somewhere else, this should not be part of controller ... (e.g. model)
      *
+     * @param Question $oQuestion
+     * @return array
      */
     private function getCompiledQuestionData(&$oQuestion)
     {
@@ -1693,12 +1698,12 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
      * @throws CHttpException
-     * @todo document me
-     *
      */
     private function applyI10N(&$oQuestion, $dataSet)
     {
@@ -1721,12 +1726,12 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
      * @throws CHttpException
-     * @todo document me
-     *
      */
     private function unparseAndSetGeneralOptions(&$oQuestion, $dataSet)
     {
@@ -1755,12 +1760,12 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
      * @throws CHttpException
-     * @todo document me
-     *
      */
     private function unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
     {
@@ -1899,11 +1904,11 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me.
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return void
-     * @todo document me.
-     *
      * @todo PHPDoc description
      */
     private function cleanSubquestions(&$oQuestion, &$dataSet)
@@ -1933,13 +1938,13 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return boolean
      * @throws CHttpException
-     * @todo document me
-     *
-     *
      */
     private function applyI10NSubquestion($oQuestion, $dataSet)
     {
@@ -2008,11 +2013,11 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param Question $oQuestion
      * @param array $dataSet
      * @return void
-     * @todo document me
-     *
      */
     private function cleanAnsweroptions(&$oQuestion, &$dataSet)
     {
@@ -2042,14 +2047,14 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
+     * @todo document me
+     *
      * @param Answer $oAnswer
      * @param Question $oQuestion
      * @param array $dataSet
      *
      * @return boolean
      * @throws CHttpException
-     * @todo document me
-     *
      */
     private function applyAnswerI10N($oAnswer, $oQuestion, $dataSet)
     {
