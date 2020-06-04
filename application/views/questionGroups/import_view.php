@@ -1,6 +1,11 @@
 <?php
 /**
  * Display the result of the exportation
+ *
+ *
+ * @var array $aImportResults
+ * @var string $sExtension
+ * @var int $surveyid
  */
 ?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -36,7 +41,8 @@
                     
                     <!-- button -->
                     <p>
-                        <a href="<?php echo $this->createUrl('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>" class="btn btn-default btn-lg" ><?php eT("Go to question group") ?></a>                         
+                        <a href="<?php echo $this->createUrl('questionGroups/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>"
+                           class="btn btn-default btn-lg" ><?php eT("Go to question group") ?></a>
                     </p>
                 </div>                                 
         </div>

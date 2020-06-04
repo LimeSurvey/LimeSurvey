@@ -31,6 +31,8 @@ class questiongroups extends Survey_Common_Action
      * questiongroup::import()
      * Function responsible to import a question group.
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @access public
      * @return void
      * @throws CHttpException
@@ -120,6 +122,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * Import a question group
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param integer $surveyid
      *
      * @throws CHttpException
@@ -155,6 +159,9 @@ class questiongroups extends Survey_Common_Action
     /**
      * questiongroup::add()
      * Load add new question group screen.
+     *
+     * REFACTORED in QuestionGroupsController
+     *
      * @return
      */
     public function add($surveyid)
@@ -164,6 +171,8 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * Insert the new group to the database
+     *
+     * REFACTORED in QuestionGroupsController
      *
      * @access public
      * @param int $surveyid
@@ -294,6 +303,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * View the current question list.
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param integer $surveyid           Survey ID
      * @param integer $gid                Group ID
      * @param string  $landOnSideMenuTab  Name of side menu tab. Default behavior is to land on the structure tab.
@@ -399,6 +410,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * @todo document me.
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param $surveyid
      * @param null $iQuestionGroupId
      */
@@ -482,6 +495,8 @@ class questiongroups extends Survey_Common_Action
      * @todo document me.
      * @todo unused $surveyid param
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param $surveyid         integer ID of survey
      * @param $iQuestionGroupId integer ID of question group
      *
@@ -506,6 +521,8 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * @todo document me.
+     *
+     * REFACTORED in QuestionGroupsController
      *
      * @param integer $sid ID of survey
      *
