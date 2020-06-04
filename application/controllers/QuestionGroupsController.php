@@ -548,6 +548,8 @@ class QuestionGroupsController extends LSBaseController
      *
      * @param integer $sid ID of survey
      *
+     * @throws CException
+     *
      */
     public function actionSaveQuestionGroupData($sid)
     {
@@ -557,21 +559,21 @@ class QuestionGroupsController extends LSBaseController
 
         $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroup['gid']);
         if ($oQuestionGroup == null) {
-            $oQuestionGroup = $this->_newQuestionGroup($questionGroup);
+            $oQuestionGroup = $this->newQuestionGroup($iSurveyId, $questionGroup);
         } else {
-            $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup, $questionGroup);
+            $oQuestionGroup = $this->editQuestionGroup($oQuestionGroup, $questionGroup);
         }
 
         $landOnSideMenuTab = 'structure';
-        $sRedirectUrl = $this->getController()->createUrl(
-            'admin/questiongroups/sa/view/',
+        $sRedirectUrl = $this->createUrl(
+            'questionGroups/view/',
             [
                 'surveyid' => $iSurveyId,
                 'gid' => $oQuestionGroup->gid,
                 'landOnSideMenuTab' => $landOnSideMenuTab]
         );
 
-        $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
+        $success = $this->applyI10N($oQuestionGroup, $questionGroupI10N);
 
         $aQuestionGroup = $oQuestionGroup->attributes;
         LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
@@ -590,6 +592,116 @@ class QuestionGroupsController extends LSBaseController
             ]
         );
         App()->close();
+    }
+
+    /**
+     * Load editing of a question group screen.
+     *
+     * @access public
+     * @param int $surveyid
+     * @param int $gid
+     *
+     * @return void
+     * @throws CHttpException
+     */
+    public function actionEdit($surveyid, $gid)
+    {
+        $surveyid = $iSurveyID = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
+        $gid = sanitize_int($gid);
+        $aData = array();
+
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            App()->session['FileManagerContext'] = "edit:group:{$surveyid}";
+
+            App()->loadHelper('admin/htmleditor');
+            App()->loadHelper('surveytranslator');
+
+            // TODO: This is not an array, but a string "en"
+            $aBaseLanguage = $survey->language;
+
+            $aLanguages = $survey->allLanguages;
+
+            $grplangs = array_flip($aLanguages);
+
+            // Check out the intgrity of the language versions of this group
+            $egresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid));
+            foreach ($egresult as $esrow) {
+                $esrow = $esrow->attributes;
+
+                // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
+                if (!in_array($esrow['language'], $aLanguages)) {
+                    QuestionGroupL10n::model()->deleteAllByAttributes(
+                        array('gid' => $gid, 'language' => $esrow['language'])
+                    );
+                } else {
+                    $grplangs[$esrow['language']] = 'exists';
+                }
+
+                if ($esrow['language'] == $aBaseLanguage) {
+                    $basesettings = $esrow;
+                }
+            }
+
+            // Create groups in missing languages
+            foreach ($grplangs as $key => $value) {
+                if ($value != 'exists') {
+                    $basesettings['language'] = $key;
+                    $groupLS = new QuestionGroupL10n;
+                    foreach ($basesettings as $k => $v) {
+                        // TODO: undefined variable $group
+                        $group->$k = $v;
+                    }
+                    $groupLS->save();
+                }
+            }
+            $first = true;
+            $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
+            foreach ($aLanguages as $sLanguage) {
+                $oResult = QuestionGroupL10n::model()->findByAttributes(array('gid' => $gid, 'language' => $sLanguage));
+                $aData['aGroupData'][$sLanguage] = array_merge($oResult->attributes, $oQuestionGroup->attributes);
+                $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+                if ($first) {
+                    $aTabTitles[$sLanguage] .= ' ('.gT("Base language").')';
+                    $first = false;
+                }
+            }
+            $aData['oQuestionGroup'] = $oQuestionGroup;
+            $aData['sidemenu']['questiongroups'] = true;
+            $aData['questiongroupbar']['buttonspreview'] = true;
+            $aData['questiongroupbar']['savebutton']['form'] = true;
+            $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
+            $aData['questiongroupbar']['closebutton']['url'] = 'questionGroups/view/surveyid/'.$surveyid.'/gid/'.$gid; // Close button
+
+            $aData['topBar']['sid'] = $iSurveyID;
+            $aData['topBar']['gid'] = $gid;
+            $aData['topBar']['showSaveButton'] = true;
+            $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
+            $aData['subaction'] = gT('Edit group');
+            $aData['surveyid'] = $surveyid;
+            $aData['gid'] = $gid;
+            $aData['tabtitles'] = $aTabTitles;
+            $aData['aBaseLanguage'] = $aBaseLanguage;
+
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title.":".$iSurveyID.")";
+
+            $aData['sidemenu']['state'] = false;
+            $aData['sidemenu']['explorer']['state'] = true;
+            $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+            $aData['sidemenu']['explorer']['qid'] = false;
+
+            $this->aData = $aData;
+            $this->render('editGroup_view', [
+                'tabtitles' => $this->aData['tabtitles'],
+                'gid' => $this->aData['gid'],
+                'aGroupData' => $this->aData['aGroupData'],
+                'aBaseLanguage' => $this->aData['aBaseLanguage']
+            ]);
+
+        } else {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
     }
 
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
@@ -624,7 +736,6 @@ class QuestionGroupsController extends LSBaseController
      */
     private function newQuestionGroup($iSurveyId, $aQuestionGroupData = null)
     {
-       // $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $aQuestionGroupData = array_merge([
@@ -661,6 +772,58 @@ class QuestionGroupsController extends LSBaseController
         }
 
         return $oQuestionGroup;
+    }
+
+    /**
+     * Method to store and filter questionGroupData for editing a questionGroup
+     *
+     * @param QuestionGroup $oQuestionGroup
+     * @param array $aQuestionGroupData
+     *
+     * @return QuestionGroup
+     *
+     * @throws CException
+     */
+    private function editQuestionGroup(&$oQuestionGroup, $aQuestionGroupData)
+    {
+        $oQuestionGroup->setAttributes($aQuestionGroupData, false);
+        if ($oQuestionGroup == null) {
+            throw new CException("Object update failed, input array malformed or invalid");
+        }
+
+        $saved = $oQuestionGroup->save();
+        if ($saved == false) {
+            throw new CException(
+                "Object update failed, couldn't save. ERRORS:"
+                .print_r($oQuestionGroup->getErrors(), true)
+            );
+        }
+        return $oQuestionGroup;
+    }
+
+    /**
+     * Stores questiongroup languages.
+     *
+     * @param QuestionGroup $oQuestionGroup
+     * @param array $dataSet array with languages
+     * @return bool true if ALL languages could be safed, false otherwise
+     */
+    private function applyI10N(&$oQuestionGroup, $dataSet)
+    {
+        $storeValid = true;
+
+        foreach ($dataSet as $sLanguage => $aI10NBlock) {
+            $i10N = QuestionGroupL10n::model()->findByAttributes(
+                ['gid' => $oQuestionGroup->gid,'language' => $sLanguage]
+            );
+            $i10N->setAttributes([
+                'group_name' => $aI10NBlock['group_name'],
+                'description' => $aI10NBlock['description'],
+            ], false);
+            $storeValid = $storeValid && $i10N->save();
+        }
+
+        return $storeValid;
     }
 
 }
