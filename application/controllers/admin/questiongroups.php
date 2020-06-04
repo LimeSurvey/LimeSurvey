@@ -575,6 +575,8 @@ class questiongroups extends Survey_Common_Action
      * questiongroup::edit()
      * Load editing of a question group screen.
      *
+     * REFACTORED in QuestionGroupController
+     *
      * @access public
      * @param int $surveyid
      * @param int $gid
@@ -931,6 +933,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * Method to store and filter questionData for a new question
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param $aQuestionGroupData
      *
      * @return QuestionGroup
@@ -980,6 +984,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * Method to store and filter questionGroupData for editing a questionGroup
      *
+     * REFACTORED in QuestionGroupsController
+     *
      * @param $oQuestionGroup
      * @param $aQuestionGroupData
      *
@@ -1005,6 +1011,10 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
+     *
+     * REFACTORED in QuestionGroupsController
+     *
+     *
      * @param $oQuestionGroup
      * @param $dataSet
      * @return bool
@@ -1030,7 +1040,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsController in beforeRender
      *
      * @param string  $sAction      Current action, the folder to fetch views from
      * @param array   $aViewUrls    View url(s)
