@@ -4,8 +4,18 @@ build:
             - true
 
     nodes:
-        tests: true
+        tests:
+            environment:
+                php:
+                    version: 7.4
+                    pecl_extensions:
+                        - zip
         analysis:
+            environment:
+                php:
+                    version: 7.4
+                    pecl_extensions:
+                        - zip
             tests:
                 override: [php-scrutinizer-run]
 filter:
@@ -84,4 +94,3 @@ coding_style:
         upper_lower_casing:
             constants:
                 true_false_null: lower
-                
