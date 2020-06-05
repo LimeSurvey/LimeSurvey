@@ -149,7 +149,7 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
         // survey inactive
         $import_group_button = [
             'id'    => 'import',
-            'url'   => $this->createUrl("admin/questiongroups/sa/importview/surveyid/$sid"),
+            'url'   => $this->createUrl("questionGroupsAdministration/importview/surveyid/$sid"),
             'icon'  => 'icon-import',
             'name'  => gT("Import group"),
             'class' => ' btn-default ',
@@ -192,7 +192,7 @@ if ($hasDeletePermission) {
             $buttons['delete_current_question_group'] = [
                 'id' => 'delete_current_question_group',
                 'url' => '#',
-                'dataurl' => $this->createUrl("admin/questiongroups/sa/delete/", ["asJson" => true]),
+                'dataurl' => $this->createUrl("questionGroupsAdministration/delete/", ["asJson" => true]),
                 'postdata' => json_encode(['gid' => $gid, 'surveyid' => $sid]),
                 'type' => 'confirm',
                 'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),

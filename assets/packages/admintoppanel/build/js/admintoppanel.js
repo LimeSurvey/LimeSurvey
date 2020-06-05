@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "87510aa14ce3a80ce2a3";
+/******/ 	var hotCurrentHash = "a247ce26cf6b01b4c628";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -31226,7 +31226,7 @@ __webpack_require__.r(__webpack_exports__);
   getTopBarButtonsGroup: function getTopBarButtonsGroup(context) {
     context.commit('clean');
     return new Promise(function (resolve, reject) {
-      _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
+      _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('questionGroupsAdministration/getQuestionGroupTopBar', {
         sid: context.state.sid || LS.reparsedParameters().combined.sid,
         gid: context.state.gid || LS.reparsedParameters().combined.gid || 0
       })).then(function (data) {

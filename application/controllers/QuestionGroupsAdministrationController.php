@@ -1,9 +1,8 @@
 <?php
 
 
-class QuestionGroupsController extends LSBaseController
+class QuestionGroupsAdministrationController extends LSBaseController
 {
-
 
     /**
      * It's import to have the accessRules set (security issue).
@@ -22,7 +21,7 @@ class QuestionGroupsController extends LSBaseController
             ),
             array(
                 'allow',
-                'actions' => array('view'),
+                'actions' => array('view','delete'),
                 'users' => array('@'), //only login users
             ),
             array('deny'), //always deny all actions not mentioned above
@@ -83,6 +82,7 @@ class QuestionGroupsController extends LSBaseController
 
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
+        $aData['sid'] = $aData['surveyid']; //importend for frontend to render topbar
         $aData['gid'] = $gid;
         $aData['grow'] = $grow;
 
@@ -112,6 +112,7 @@ class QuestionGroupsController extends LSBaseController
             'surveyid' => $iSurveyID,
             'gid' => $gid,
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
+            //todo: changes in js has to be done
             'connectorBaseUrl' => $this->createUrl(
                 'admin/questiongroups',
                 ['sid' => $iSurveyID, 'sa' => '']
@@ -165,9 +166,11 @@ class QuestionGroupsController extends LSBaseController
      * Render view to add new question group.
      * Redirects to the action view
      *
+     * todo: this could be a call to the action view directly ?!?
+     *
      * @param int $surveyid
      */
-    public function add($surveyid)
+    public function actionAdd($surveyid)
     {
         $this->actionView($surveyid, null, 'structure');
     }
@@ -200,11 +203,9 @@ class QuestionGroupsController extends LSBaseController
 
             if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
                 $fatalerror = sprintf(
-                        gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                        getMaximumFileUploadSize()
-                        / 1024
-                        / 1024
-                    )
+                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                    getMaximumFileUploadSize() / 1024 / 1024
+                )
                     .'<br>';
             } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                 $fatalerror = gT(
@@ -221,7 +222,7 @@ class QuestionGroupsController extends LSBaseController
             if (isset($fatalerror)) {
                 @unlink($sFullFilepath);
                 App()->user->setFlash('error', $fatalerror);
-                $this->redirect(array('questionGroups/importview/surveyid/'.$surveyid));
+                $this->redirect(array('questionGroupsAdministration/importview/surveyid/'.$surveyid));
             }
 
             App()->loadHelper('admin/import');
@@ -235,7 +236,7 @@ class QuestionGroupsController extends LSBaseController
                 );
             } else {
                 App()->user->setFlash('error', gT("Unknown file extension"));
-                $this->redirect(array('questionGroups/importview/surveyid/'.$surveyid));
+                $this->redirect(array('questionGroupsAdministration/importview/surveyid/'.$surveyid));
             }
             LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
             fixLanguageConsistency($iSurveyID);
@@ -243,7 +244,7 @@ class QuestionGroupsController extends LSBaseController
             if (isset($aImportResults['fatalerror'])) {
                 unlink($sFullFilepath);
                 App()->user->setFlash('error', $aImportResults['fatalerror']);
-                $this->redirect(array('questionGroups/importview/surveyid/'.$surveyid));
+                $this->redirect(array('questionGroupsAdministration/importview/surveyid/'.$surveyid));
             }
 
             unlink($sFullFilepath);
@@ -267,8 +268,8 @@ class QuestionGroupsController extends LSBaseController
     }
 
     /**
-     * Import a question group. If user has no permission for that, it redirects to#
-     * list of questionGroups
+     * Import a question group. If user has no permission for that, it redirects to
+     * list of questionGroupsAdministration
      *
      * @param integer $surveyid
      *
@@ -327,7 +328,7 @@ class QuestionGroupsController extends LSBaseController
                 $newGroupID = $oGroup->gid;
             } else {
                 App()->setFlashMessage(CHtml::errorSummary($oGroup), 'error');
-                $this->redirect(array("questionGroups/add/surveyid/$surveyid"));
+                $this->redirect(array("questionGroupsAdministration/add/surveyid/$surveyid"));
             }
             $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
             foreach ($sSurveyLanguages as $sLanguage) {
@@ -351,10 +352,10 @@ class QuestionGroupsController extends LSBaseController
             );
             if (App()->request->getPost('close-after-save') === 'true') {
                 $this->redirect(
-                    array("questionGroups/view/surveyid/$surveyid/gid/$newGroupID")
+                    array("questionGroupsAdministration/view/surveyid/$surveyid/gid/$newGroupID")
                 );
             } elseif (App()->request->getPost('saveandnew', '') !== '') {
-                $this->redirect(array("questionGroups/add/surveyid/$surveyid"));
+                $this->redirect(array("questionGroupsAdministration/add/surveyid/$surveyid"));
             } elseif (App()->request->getPost('saveandnewquestion', '') !== '') {
                 $this->redirect(
                     array("admin/questions/sa/newquestion/",
@@ -363,7 +364,7 @@ class QuestionGroupsController extends LSBaseController
             } else {
                 // After save, go to edit
                 $this->redirect(
-                    array("questionGroups/edit/surveyid/$surveyid/gid/$newGroupID")
+                    array("questionGroupsAdministration/edit/surveyid/$surveyid/gid/$newGroupID")
                 );
             }
         } else {
@@ -387,9 +388,6 @@ class QuestionGroupsController extends LSBaseController
      */
     public function actionDelete($iSurveyId = null, $iGroupId = null, $asJson = false)
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete questions."));
-        }
         if (is_null($iGroupId)) {
             $iGroupId = App()->getRequest()->getPost('gid');
         }
@@ -399,7 +397,9 @@ class QuestionGroupsController extends LSBaseController
         }
         /* Test the surveyid from question, not from submitted value */
         $iSurveyId = $oQuestionGroup->sid;
-
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete')) {
+            throw new CHttpException(403, gT("You are not authorized to delete questions."));
+        }
         if (!App()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
@@ -417,8 +417,9 @@ class QuestionGroupsController extends LSBaseController
                     'deletedGroups' => $iGroupsDeleted,
                     'message' => ($success ?gT('The question group was deleted.') : gT('Group could not be deleted')),
                     'redirect' => $this->createUrl(
-                        'admin/survey/sa/listquestiongroups/',
-                        ['surveyid' => $iSurveyId]
+                      //  'admin/survey/sa/listquestiongroups/',
+                        'questionGroupsAdministration/view/surveyid/' . $iSurveyId,
+                        //['surveyid' => $iSurveyId]
                     )
                 ]
             );
@@ -566,7 +567,7 @@ class QuestionGroupsController extends LSBaseController
 
         $landOnSideMenuTab = 'structure';
         $sRedirectUrl = $this->createUrl(
-            'questionGroups/view/',
+            'questionGroupsAdministration/view/',
             [
                 'surveyid' => $iSurveyId,
                 'gid' => $oQuestionGroup->gid,
@@ -601,6 +602,8 @@ class QuestionGroupsController extends LSBaseController
      * @param int $surveyid
      * @param int $gid
      *
+     * @deprecated this one goes now to action view (as the sidemenu does)
+     *
      * @return void
      * @throws CHttpException
      */
@@ -625,6 +628,9 @@ class QuestionGroupsController extends LSBaseController
             $grplangs = array_flip($aLanguages);
 
             // Check out the intgrity of the language versions of this group
+            /**
+             *  this part is old. Languages are deleted when deleting from generalsettings ...
+             *
             $egresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid));
             foreach ($egresult as $esrow) {
                 $esrow = $esrow->attributes;
@@ -655,6 +661,8 @@ class QuestionGroupsController extends LSBaseController
                     $groupLS->save();
                 }
             }
+             * **/
+
             $first = true;
             $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
             foreach ($aLanguages as $sLanguage) {
@@ -671,7 +679,7 @@ class QuestionGroupsController extends LSBaseController
             $aData['questiongroupbar']['buttonspreview'] = true;
             $aData['questiongroupbar']['savebutton']['form'] = true;
             $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
-            $aData['questiongroupbar']['closebutton']['url'] = 'questionGroups/view/surveyid/'.$surveyid.'/gid/'.$gid; // Close button
+            $aData['questiongroupbar']['closebutton']['url'] = 'questionGroupsAdministration/view/surveyid/'.$surveyid.'/gid/'.$gid; // Close button
 
             $aData['topBar']['sid'] = $iSurveyID;
             $aData['topBar']['gid'] = $gid;
@@ -702,6 +710,211 @@ class QuestionGroupsController extends LSBaseController
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
+    }
+
+    /**
+     * Reorder the questiongroups based on the new order in the adminsidepanel
+     *
+     * @param integer $surveyid
+     *
+     * @return false|null|string|string[]
+     * @throws CException
+     */
+    public function actionUpdateOrder($surveyid)
+    {
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $success = true;
+        $grouparray  = [];
+        if (!$oSurvey->isActive) {
+            $grouparray = App()->request->getPost('grouparray', []);
+            if (!empty($grouparray)) {
+                foreach ($grouparray as $aQuestiongroup) {
+                    //first set up the ordering for questiongroups
+                    $oQuestiongroups = QuestionGroup::model()->findAll(
+                        "gid=:gid AND sid=:sid",
+                        [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]
+                    );
+                    array_map(
+                        function ($oQuestiongroup) use ($aQuestiongroup, $success) {
+                            $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                            // TODO: unused variable $success
+                            $success = $success && $oQuestiongroup->save();
+                        },
+                        $oQuestiongroups
+                    );
+
+                    $aQuestiongroup['questions'] = isset($aQuestiongroup['questions'])
+                        ? $aQuestiongroup['questions']
+                        : [];
+
+                    foreach ($aQuestiongroup['questions'] as $aQuestion) {
+                        $aQuestions = Question::model()->findAll(
+                            "qid=:qid AND sid=:sid",
+                            [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]
+                        );
+                        array_walk(
+                            $aQuestions,
+                            function ($oQuestion) use ($aQuestion, $success) {
+                                $oQuestion->question_order = $aQuestion['question_order'];
+                                $oQuestion->gid = $aQuestion['gid'];
+                                if (safecount($oQuestion->subquestions) > 0) {
+                                    $aSubquestions = $oQuestion->subquestions;
+                                    array_walk(
+                                        $aSubquestions,
+                                        function ($oSubQuestion) use ($aQuestion, $success) {
+                                            $oSubQuestion->gid = $aQuestion['gid'];
+                                            $success = $success && $oSubQuestion->save(true);
+                                        }
+                                    );
+                                }
+                                $success = $success && $oQuestion->save(true);
+                            }
+                        );
+                    }
+                }
+            }
+
+            QuestionGroup::model()->cleanOrder($surveyid);
+
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => $success,
+                        'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
+                    ],
+                ),
+                false,
+                false
+            );
+        }
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success' => false,
+                    'message' => gT("You can't reorder in an active survey"),
+                    'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
+                ],
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Provides an interface for updating a group
+     *
+     * @access public
+     * @param int $gid
+     * @return void
+     */
+    public function actionUpdate($gid)
+    {
+        $gid = (int) $gid;
+        $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
+        $surveyid = $group->sid;
+        $survey = Survey::model()->findByPk($surveyid);
+
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            App()->loadHelper('surveytranslator');
+
+            foreach ($survey->allLanguages as $grplang) {
+                if (isset($grplang) && $grplang != "") {
+                    $group_name = $_POST['group_name_'.$grplang];
+                    $group_description = $_POST['description_'.$grplang];
+
+                    $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
+                    $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
+
+                    // Fix bug with FCKEditor saving strange BR types
+                    $group_name = fixCKeditorText($group_name);
+                    $group_description = fixCKeditorText($group_description);
+
+                    $aData = array(
+                        'randomization_group' => $_POST['randomization_group'],
+                        'grelevance' => $_POST['grelevance'],
+                    );
+                    $group = QuestionGroup::model()->findByPk($gid);
+                    foreach ($aData as $k => $v) {
+                        $group->$k = $v;
+                    }
+
+                    $group->save();
+
+                    $aData = array(
+                        'group_name' => $group_name,
+                        'description' => $group_description,
+                    );
+                    $condition = array(
+                        'language' => $grplang,
+                        'gid' => $gid,
+                    );
+                    $oGroupLS = QuestionGroupL10n::model()->findByAttributes($condition);
+                    foreach ($aData as $k => $v) {
+                        $oGroupLS->$k = $v;
+                    }
+                    $oGroupLS->save();
+                }
+            }
+
+            Yii::app()->setFlashMessage(gT("Question group successfully saved."));
+
+            if (App()->request->getPost('close-after-save') === 'true') {
+                $this->redirect(
+                    array('questionGroupsAdministration/view/surveyid/'.$surveyid.'/gid/'.$gid)
+                );
+            }
+
+            $this->redirect(array('questionGroupsAdministration/edit/surveyid/'.$surveyid.'/gid/'.$gid));
+        } else {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+    }
+
+    /**
+     * @todo document me.
+     *
+     * @param integer $sid ID of survey
+     * @param null    $gid ID of group
+     *
+     * @return mixed
+     * @throws CException
+     */
+    public function actionGetQuestionGroupTopBar($sid, $gid = null)
+    {
+        $oSurvey = Survey::model()->findByPk($sid);
+        $oQuestionGroup = null;
+        if ($gid) {
+            $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
+            $sumcount  = safecount($oQuestionGroup->questions);
+        } else {
+            $gid = 0;
+            $sumcount = 0;
+        }
+
+        $activated = $oSurvey->active;
+        $languagelist = $oSurvey->allLanguages;
+        $ownsSaveButton = true;
+        $ownsSaveAndCloseButton = true;
+
+        return $this->renderPartial(
+            '/admin/survey/topbar/question_group_topbar',
+            array(
+                'oSurvey' => $oSurvey,
+                'oQuestionGroup' => $oQuestionGroup,
+                'sid'     => $oSurvey->sid,
+                'gid'     => $gid,
+                'sumcount4' => $sumcount,
+                'languagelist' => $languagelist,
+                'activated' => $activated,
+                'ownsSaveButton'         => $ownsSaveButton,
+                'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
+            ),
+            false,
+            false
+        );
     }
 
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */

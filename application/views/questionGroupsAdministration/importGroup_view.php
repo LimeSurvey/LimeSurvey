@@ -2,7 +2,7 @@
 /**
  * Import a group view
  *
- * @var QuestionGroupsController $this
+ * @var QuestionGroupsAdministrationController $this
  * @var int $surveyid
  */
 
@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
     <div class="row">
         <div class="col-lg-12">
             <!-- form -->
-            <?php echo CHtml::form(array("questionGroups/import"), 'post', array(
+            <?php echo CHtml::form(array("questionGroupsAdministration/import"), 'post', array(
                 'id'=>'importgroup',
                 'name'=>'importgroup',
                 'class'=>'form30 ',

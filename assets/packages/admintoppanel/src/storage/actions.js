@@ -26,7 +26,7 @@ export default {
     getTopBarButtonsGroup: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
+            ajax.methods.$_get(LS.createUrl('questionGroupsAdministration/getQuestionGroupTopBar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 gid: context.state.gid || LS.reparsedParameters().combined.gid || 0
             }))

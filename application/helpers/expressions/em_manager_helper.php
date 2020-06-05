@@ -6179,7 +6179,7 @@
             /////////////////////////////////////////////////////////
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                $editlink = Yii::app()->getController()->createUrl('questionGroupsAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                 $debug_message .= '<br />[G#' . $LEM->currentGroupSeq . ']'
                 . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                 . "[<a href='$editlink'>"
@@ -9763,7 +9763,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupText= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                    $editlink = Yii::app()->getController()->createUrl('questionGroupsAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                     if($bGroupHaveError)
                     {
                         $errClass='text-danger';

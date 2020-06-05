@@ -612,7 +612,7 @@ function getGroupListLang($gid, $language, $surveyid)
         $aAttributes = $oGroup->attributes;
         $groupselecter .= "<option";
         if ($aAttributes['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
-        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$aAttributes['gid']);
+        $link = Yii::app()->getController()->createUrl("/questionGroupsAdministration/view/surveyid/".$surveyid."/gid/".$aAttributes['gid']);
         $groupselecter .= " value='{$link}'>";
         $groupselecter .= htmlspecialchars(strip_tags($oGroup->questiongroupl10ns[$language]->group_name));
         $groupselecter .= "</option>\n";
