@@ -185,7 +185,7 @@ class RenderListRadio extends QuestionBaseRenderer
         $this->inputnames[] = $this->sSGQA;
         $this->sCoreClass .= " ".$sCoreClasses;
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 

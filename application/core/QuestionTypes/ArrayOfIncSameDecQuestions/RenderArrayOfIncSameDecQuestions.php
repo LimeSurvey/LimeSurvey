@@ -37,7 +37,7 @@ class RenderArrayOfIncSameDecQuestions extends QuestionBaseRenderer
         $answer = '';
         $inputnames = [];
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 
