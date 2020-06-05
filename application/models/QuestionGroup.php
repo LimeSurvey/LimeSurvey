@@ -275,7 +275,7 @@ class QuestionGroup extends LSActiveRecord
 
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
-            $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+            $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
             $url .= '/'.$this->sid.'/gid/'.$this->gid;
             $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><i class="fa fa-list-alt " ></i></a>';
         }
@@ -286,7 +286,7 @@ class QuestionGroup extends LSActiveRecord
             if (is_null($condarray)) {
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
                     .'<button class="btn btn-default" '
-                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
+                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
                     .' data-target="#confirmation-modal"'
                     .' role="button"'
                     .' data-toggle="modal"'

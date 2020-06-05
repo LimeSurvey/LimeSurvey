@@ -1,6 +1,6 @@
 <?php
 /**
- * @var QuestionGroupsController $this
+ * @var QuestionGroupsAdministrationController $this
  * @var array $jsData
  * @var int $gid
  */

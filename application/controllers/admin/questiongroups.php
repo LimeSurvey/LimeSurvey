@@ -31,7 +31,7 @@ class questiongroups extends Survey_Common_Action
      * questiongroup::import()
      * Function responsible to import a question group.
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @access public
      * @return void
@@ -122,7 +122,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Import a question group
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param integer $surveyid
      *
@@ -160,7 +160,7 @@ class questiongroups extends Survey_Common_Action
      * questiongroup::add()
      * Load add new question group screen.
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @return
      */
@@ -172,7 +172,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Insert the new group to the database
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @access public
      * @param int $surveyid
@@ -303,7 +303,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * View the current question list.
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param integer $surveyid           Survey ID
      * @param integer $gid                Group ID
@@ -410,7 +410,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * @todo document me.
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param $surveyid
      * @param null $iQuestionGroupId
@@ -495,7 +495,7 @@ class questiongroups extends Survey_Common_Action
      * @todo document me.
      * @todo unused $surveyid param
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param $surveyid         integer ID of survey
      * @param $iQuestionGroupId integer ID of question group
@@ -522,7 +522,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * @todo document me.
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param integer $sid ID of survey
      *
@@ -684,6 +684,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * Reorder the questiongroups based on the new order in the adminsidepanel
      *
+     * Refactored in QuestionGroupsAdministrationController
+     *
      * @param integer $surveyid
      *
      * @return void
@@ -773,6 +775,9 @@ class questiongroups extends Survey_Common_Action
     /**
      * Reorder the questiongroups based on the new order in the adminsidepanel
      *
+     *
+     * NOT REFACTORED (is not used anymore ...)
+     *
      * @param integer $surveyid ID of survey
      *
      * @return void
@@ -794,6 +799,8 @@ class questiongroups extends Survey_Common_Action
 
     /**
      * Provides an interface for updating a group
+     *
+     * Refactored in QuestionGroupsAdministrationController
      *
      * @access public
      * @param int $gid
@@ -868,6 +875,8 @@ class questiongroups extends Survey_Common_Action
     /**
      * @todo document me.
      *
+     * REFACTORED in QuestionGroupsAdministrationController
+     *
      * @param integer $sid ID of survey
      * @param null    $gid ID of group
      *
@@ -912,7 +921,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * @todo document me.
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param null $iQuestionGroupId ID of group
      *
@@ -933,7 +942,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Method to store and filter questionData for a new question
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param $aQuestionGroupData
      *
@@ -984,7 +993,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Method to store and filter questionGroupData for editing a questionGroup
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param $oQuestionGroup
      * @param $aQuestionGroupData
@@ -1012,7 +1021,7 @@ class questiongroups extends Survey_Common_Action
 
     /**
      *
-     * REFACTORED in QuestionGroupsController
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      *
      * @param $oQuestionGroup
@@ -1040,7 +1049,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * REFACTORED in QuestionGroupsController in beforeRender
+     * REFACTORED in QuestionGroupsAdministrationController in beforeRender
      *
      * @param string  $sAction      Current action, the folder to fetch views from
      * @param array   $aViewUrls    View url(s)

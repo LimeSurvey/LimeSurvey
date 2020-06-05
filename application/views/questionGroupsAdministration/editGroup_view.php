@@ -33,7 +33,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <?php echo CHtml::form(
-                    array("questionGroups/update/gid/{$gid}"),
+                    array("questionGroupsAdministration/update/gid/{$gid}"),
                     'post',
                     array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 ')
                 ); ?>

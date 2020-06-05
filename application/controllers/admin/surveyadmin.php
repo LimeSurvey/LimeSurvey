@@ -563,7 +563,7 @@ class SurveyAdmin extends Survey_Common_Action
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
                 $curGroup['group_name'] = $group->questiongroupl10ns[$baselang]->group_name;
-                $curGroup['link'] = $this->getController()->createUrl("questionGroups/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
+                $curGroup['link'] = $this->getController()->createUrl("questionGroupsAdministration/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
                 $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], 'parent_qid'=>0), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
                 foreach ($group->aQuestions as $question) {

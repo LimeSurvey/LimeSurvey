@@ -36,7 +36,7 @@
                     
                     <!-- button -->
                     <p>
-                        <a href="<?php echo $this->createUrl('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>" class="btn btn-default btn-lg" ><?php eT("Go to question group") ?></a>                         
+                        <a href="<?php echo $this->createUrl('questionGroupsAdministration/view/surveyid/'.$surveyid.'/gid/'.$aImportResults['newgid']) ?>" class="btn btn-default btn-lg" ><?php eT("Go to question group") ?></a>
                     </p>
                 </div>                                 
         </div>

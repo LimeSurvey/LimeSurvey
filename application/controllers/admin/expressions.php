@@ -124,7 +124,7 @@ class Expressions extends Survey_Common_Action
 
         if ($gid !== null && $qid === null) {
             $gid = sanitize_int($gid);
-            $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
+            $aData['questiongroupbar']['closebutton']['url'] = 'questionGroupsAdministration/view/surveyid/'.$sid.'/gid/'.$gid;
             $aData['gid'] = $gid;
         }
         

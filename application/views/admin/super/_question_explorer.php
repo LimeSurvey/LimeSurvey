@@ -79,7 +79,7 @@
                             <?php endif;?>
                         <div class="col-sm-1">
                             <!-- add question to this group -->
-                            <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Group summary');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
+                            <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Group summary');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/questionGroupsAdministration/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                 <span class="fa fa-list"></span>
                             </a>
                         </div>
