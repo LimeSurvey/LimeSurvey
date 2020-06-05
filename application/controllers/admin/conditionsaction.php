@@ -112,7 +112,7 @@ class conditionsaction extends Survey_Common_Action
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
-        $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
+        $aData['questionbar']['closebutton']['url'] = 'questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
         $aData['questionbar']['buttons']['conditions'] = true;
 
         switch ($subaction) {

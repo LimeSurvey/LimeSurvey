@@ -64,6 +64,7 @@ class AdminController extends LSYii_Controller
      * Shows a nice error message to the world
      *
      * todo REFACTORING is this still in use? can't find any call in an action or a view ...
+     * todo its used multiple times getController->error, all calls should be replaceable by setFlashMessage
      *
      * @access public
      * @param string $message The error message

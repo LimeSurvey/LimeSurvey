@@ -6934,7 +6934,7 @@
             /////////////////////////////////////////////////////////
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
+                $editlink = App()->getController()->createUrl('questionEditor/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
                 $debug_qmessage .= '--[Q#' . $qInfo['qseq'] . ']'
                 . "[<a href='$editlink'>"
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
@@ -10144,12 +10144,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                 if ($varNameErrorMsg == '')
                 {
-                    $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+                    $editlink = App()->getController()->createUrl('questionEditor/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
                     $questionRow .= $rootVarName;
                 }
                 else
                 {
-                    $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
+                    $editlink = App()->getController()->createUrl('questionEditor/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
                     $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";

@@ -130,7 +130,7 @@ class Expressions extends Survey_Common_Action
         
         if ($qid !== null) {
             $qid = sanitize_int($qid);
-            $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
+            $aData['questionbar']['closebutton']['url'] = 'questionEditor/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
             $aData['qid'] = $qid;
         }
 

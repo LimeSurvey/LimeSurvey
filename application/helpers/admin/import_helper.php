@@ -591,12 +591,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 }
 
 /**
-* This function imports a LimeSurvey .lsq question XML file
-*
-* @param string $sFullFilePath  The full filepath of the uploaded file
-* @param integer $iNewSID The new survey id
-* @param mixed $newgid The new question group id -the question will always be added after the last question in the group
-*/
+ * This function imports a LimeSurvey .lsq question XML file
+ *
+ * @param string $sFullFilePath The full filepath of the uploaded file
+ * @param integer $iNewSID The new survey id
+ * @param $iNewGID
+ * @param bool[] $options
+ * @return array
+ * @throws CException
+ */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename'=>false,'translinkfields'=>true))
 {
     $sBaseLanguage = Survey::model()->findByPk($iNewSID)->language;

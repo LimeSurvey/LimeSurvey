@@ -87,7 +87,7 @@
                         <?php else: ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__question--detail" class="pjax animate" href="<?php echo App()->createUrl('/admin/questions/sa/view/', ['surveyid' => $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]); ?>">
+                                    <a id="breadcrumb__question--detail" class="pjax animate" href="<?php echo App()->createUrl('questionEditor/view/', ['surveyid' => $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]); ?>">
                                         <?php echo $oQuestion->title; ?>
                                     </a>
                                 </div>

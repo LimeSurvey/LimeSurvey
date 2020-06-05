@@ -280,7 +280,7 @@ class database extends Survey_Common_Action
         LimeExpressionManager::SetDirtyFlag();
 
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
-            $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
         $this->getController()->redirect(array('admin/questions/sa/editdefaultvalues/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
     }
@@ -387,7 +387,7 @@ class database extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
         }
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
-            $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
         $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
     }
@@ -565,7 +565,7 @@ class database extends Survey_Common_Action
         }
 
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
-            $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
 
         $this->getController()->redirect(array('/admin/questions/sa/subquestions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
@@ -830,7 +830,7 @@ class database extends Survey_Common_Action
 
         if ($closeAfterSave) {
             // Redirect to summary
-            $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         } else {
             // Redirect to edit
             $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
@@ -1523,7 +1523,7 @@ class database extends Survey_Common_Action
         }
         //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
+        $redirectLink = $this->getController()->createUrl('questionEditor/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
         if (Yii::app()->request->getPost('saveandnew', '') != '') {
             $redirectLink = $this->getController()->createUrl('admin/questions/sa/newquestion/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
         }

@@ -410,7 +410,7 @@ if ($ownsImportButton) {
     if ($oSurvey->active === 'N') {
         // survey inactive
         $buttons['import'] = [
-            'url' => $this->createUrl("admin/questions/sa/importView/", ["surveyid" => $sid]),
+            'url' => $this->createUrl("questionEditor/importView/", ["surveyid" => $sid]),
             'class' => 'btn-default',
             'id' => 'import-button',
             'icon' => 'icon-import',

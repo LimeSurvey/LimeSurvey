@@ -29,7 +29,9 @@ use \LimeSurvey\Helpers\questionHelper;
 class questions extends Survey_Common_Action
 {
 
-
+    /**
+     * REFACTORED IN QuestionEditorController
+     */
     public function view($surveyid, $gid, $qid)
     {
         //todo change the url for action view in QuestionEditorController OR better remove this action completely ...
@@ -40,6 +42,7 @@ class questions extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED IN QuestionEditorController
      * Display import view
      */
     public function importView($groupid = null, $surveyid)
@@ -65,8 +68,8 @@ class questions extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED IN QuestionEditorController
      * Function responsible to import a question.
-     *
      * @access public
      * @return void
      */
@@ -113,7 +116,7 @@ class questions extends Survey_Common_Action
             if ($fatalerror != '') {
                 unlink($sFullFilepath);
                 App()->setFlashMessage($fatalerror, 'error');
-                $this->getController()->redirect('admin/questions/sa/importView/surveyid/'.$iSurveyID);
+                $this->getController()->redirect('questionEditor/importView/surveyid/'.$iSurveyID);
                 return;
             }
 
@@ -137,7 +140,7 @@ class questions extends Survey_Common_Action
 
             if (isset($aImportResults['fatalerror'])) {
                 App()->setFlashMessage($aImportResults['fatalerror'], 'error');
-                $this->getController()->redirect('admin/questions/sa/importView/surveyid/'.$iSurveyID);
+                $this->getController()->redirect('questionEditor/importView/surveyid/'.$iSurveyID);
                 return;
             }
 
@@ -344,7 +347,7 @@ class questions extends Survey_Common_Action
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
+        $aData['questiongroupbar']['closebutton']['url'] = 'questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
 
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
@@ -560,7 +563,7 @@ class questions extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
-        $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid; // Close button
+        $aData['questiongroupbar']['closebutton']['url'] = 'questionEditor/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid; // Close button
 
         ///////////
         // sidemenu
@@ -1499,10 +1502,10 @@ class questions extends Survey_Common_Action
             return;
         }
 
-        Yii::app()->user->setFlash($success?'success':'error', $message);
-        Yii::app()->getController()->redirect(
-            Yii::app()->getController()->createUrl(
-                "admin/questions/sa/view/",
+        App()->user->setFlash($success?'success':'error', $message);
+        App()->getController()->redirect(
+            App()->getController()->createUrl(
+                "questionEditor/view/",
                 ['surveyid' => $oQuestion->sid, 'gid'=> $oQuestion->gid, "qid" => $oQuestion->qid]
             )
         );

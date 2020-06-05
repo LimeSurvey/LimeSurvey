@@ -1,6 +1,6 @@
 <?php
 
-/* @deprecated moved to layouts/sidemenu */
+/* @deprecated moved to layouts/sidemenulayouts/sidemenu */
 //todo should be removed when all controllers have been refactored
 
    /**
@@ -9,6 +9,7 @@
     */
 ?>
 <?php
+    // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
     if (
         $sideMenuBehaviour == 'alwaysClosed'
@@ -33,7 +34,7 @@
         $createQuestionLink = "";
     }
     
-    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
+    $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : 'structure');
     
     $menuObjectArray =  [
         "side" => [],

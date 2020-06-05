@@ -5,6 +5,7 @@
     */
 ?>
 <?php
+    // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
     if (
         $sideMenuBehaviour == 'alwaysClosed'

@@ -610,8 +610,7 @@ class Question extends LSActiveRecord
 
     public function getbuttons()
     {
-        $url         = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
-        $url        .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+        $url         = App()->createUrl("questionEditor/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $editurl     = Yii::app()->createUrl("questionEditor/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");

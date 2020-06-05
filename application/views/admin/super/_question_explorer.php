@@ -109,7 +109,7 @@
                                             </div>
                                             <?php else: ?>
                                             <!-- Other questions -->
-                                            <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" class="question-link" >
+                                            <a href="<?php echo $this->createUrl("questionEditor/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" class="question-link" >
                                                 <span class="question-collapse-title">
                                                     <span class="fa fa-list"></span>
                                                     <strong>

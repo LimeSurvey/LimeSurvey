@@ -522,7 +522,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
             }
 
-            $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
+            $aData['last_question_link'] = $this->getController()->createUrl("questionEditor/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
         } else {
             $aData['showLastQuestion'] = false;
         }
