@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-05-25 09:26:54+00:00\n"
+"POT-Creation-Date: 2020-06-05 04:22:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5661,12 +5661,12 @@ msgstr ""
 msgid "You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/core/LSUserIdentity.php:139
+#: application/core/LSUserIdentity.php:140
 #: application/core/Survey_Common_Action.php:441
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
-#: application/core/LSUserIdentity.php:146
+#: application/core/LSUserIdentity.php:147
 msgid "Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."
 msgstr ""
 
