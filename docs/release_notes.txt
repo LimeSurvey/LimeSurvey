@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.18 (build 200603) to 3.22.19 (build 200605) June 5, 2020
+-Fixed issue: Typo in name of a CSS file #1427 (KaiHerlemann)
+-Fixed issue [Security] #16356: Update jquery to fix XSS vulnerability (Eddy Lackmann)
+-Fixed issue #16214: date picker question didn't work with specific language (Denis Chenu)
+
+
 Changes from 3.22.17 (build 200525) to 3.22.18 (build 200603) June 2, 2020
 -Fixed issue #16346: File Upload modal not working correctly in latest Chromium 83.0.4103.61 (Patrick Teichmann)
 
