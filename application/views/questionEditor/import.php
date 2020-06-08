@@ -26,7 +26,6 @@
                     <?php endif; ?>
                     <li><?php echo gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
                 </ul>
-                </p>
                 <?php if (!empty($aImportResults['importwarnings'])): ?>
                     <h2 class="warning"><?php eT("Warnings"); ?>:</h2>
                     <ul class="list-unstyled">
@@ -39,7 +38,7 @@
                 <?php endif; ?>
                 <p class="text-info"><?php eT("Question import is complete.") ?></p>
                 <p>
-                    <a href="<?php echo $this->createUrl('questionEditor/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>" class="btn btn-default btn-lg"/><?php eT("Go to question") ?></a>
+                    <a href="<?php echo $this->createUrl('questionEditor/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $aImportResults['newqid']) ?>" class="btn btn-default btn-lg"><?php eT("Go to question") ?></a>
                 </p>
             </div>
         </div>

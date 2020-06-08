@@ -342,7 +342,7 @@ class AdminController extends LSYii_Controller
         'roles'            => 'PermissiontemplatesController',
         'questiongroups'   => 'questiongroups',
         'questions'        => 'questions',
-        'questioneditor'   => 'questionedit',
+//        'questioneditor'   => 'questionedit',
         'questionthemes'   => 'questionthemes',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',

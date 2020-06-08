@@ -341,7 +341,7 @@ if ($hasUpdatePermission) {
 
     if ($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
         $buttons['default_values'] = [
-            'url' => $this->createUrl("admin/questions/sa/editdefaultvalues", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+            'url' => $this->createUrl("questionEditor/editdefaultvalues", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
             'name' => gT("Edit default anwers"),
             'id' => 'default_value_button',
             'icon' => 'icon-defaultanswers',

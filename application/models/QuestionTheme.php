@@ -358,13 +358,15 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns an Array of all questionthemes and their metadata
      *
+     * @param bool $core
+     * @param bool $custom
+     * @param bool $user
      * @return array
-     * @throws Exception
      */
-    public function getAllQuestionMetaData()
+    public function getAllQuestionMetaData($core = true, $custom = true, $user = true)
     {
         $questionsMetaData = $aBrokenQuestionThemes = [];
-        $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths();
+        $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths($core, $custom, $user);
         if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
             foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
                 foreach ($questionConfigFilePaths as $questionConfigFilePath) {

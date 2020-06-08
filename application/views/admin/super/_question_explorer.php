@@ -1,11 +1,12 @@
 <?php
 /**
-* This view render the question explorer
-*
-* @var $sidemenu
-* @var $aGroups
-* @var $iSurveyId
-*/
+ * TODO: is this used ?? Patrick 04.06.20
+ * This view render the question explorer
+ *
+ * @var $sidemenu
+ * @var $aGroups
+ * @var $iSurveyId
+ */
 ?>
 
 <!-- State when group is loaded : for JavaScript-->
