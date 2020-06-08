@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.2.7 (build 200604) to 4.2.8 (build 200608) June 8, 2020
+-Fixed issue #16210: Time limit not working LimeSurvey CE 4.2.1(Jelle-S)
+-Fixed issue #16364: validator assigned to non existent field (Michał Frankiewicz)
+-Fixed issue #16214: date picker question didn't work with specific language (Denis Chenu)
+
+
 Changes from 4.2.6 (build 200602) to 4.2.7 (build 200604) June 4, 2020
 -Fixed issue #16356: Update jquery to fix XSS vulnerability (rhtenhove)
 -Fixed issue #16352: missing directory separator in uploaded file path (Michał Frankiewicz)
