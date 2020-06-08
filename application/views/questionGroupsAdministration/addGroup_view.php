@@ -33,7 +33,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
         </ul>
 
         <!-- form -->
-        <?php echo CHtml::form(array("admin/questiongroups/sa/insert/surveyid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30 ')); ?>
+        <?php echo CHtml::form(array("questionGroupsAdministration/insert/surveyid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30 ')); ?>
 
             <!-- tab content -->
             <div class="tab-content">

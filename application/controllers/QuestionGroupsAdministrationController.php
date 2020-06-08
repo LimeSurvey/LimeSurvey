@@ -112,11 +112,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
             'surveyid' => $iSurveyID,
             'gid' => $gid,
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
-            //todo: changes in js has to be done
+            /*  todo: changes in js has to be done, not needed anymore
             'connectorBaseUrl' => $this->createUrl(
                 'admin/questiongroups',
                 ['sid' => $iSurveyID, 'sa' => '']
-            ),
+            ),*/
             'openQuestionUrl' => $this->createUrl(
                 'questionEditor/view/',
                 ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']
@@ -900,7 +900,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $ownsSaveAndCloseButton = true;
 
         return $this->renderPartial(
-            '/admin/survey/topbar/question_group_topbar',
+            'question_group_topbar',
             array(
                 'oSurvey' => $oSurvey,
                 'oQuestionGroup' => $oQuestionGroup,
