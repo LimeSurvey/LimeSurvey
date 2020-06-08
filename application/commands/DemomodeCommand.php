@@ -104,6 +104,7 @@ class DemomodeCommand extends CConsoleCommand
         $sBaseUploadDir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'upload';
 
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'surveys', false, ['index.html']);
+        SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'global', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'templates', false);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'survey', false, ['index.html']);
         SureRemoveDir($sBaseUploadDir.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'question', false);
