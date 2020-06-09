@@ -177,6 +177,7 @@ class questions extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED IN QuestionEditorController
      * Load edit default values of a question screen
      *
      * @access public
