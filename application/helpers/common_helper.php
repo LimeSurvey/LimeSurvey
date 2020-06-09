@@ -3790,7 +3790,7 @@ function fixLanguageConsistency($sid, $availlangs = '')
 
     // Fix subquestions where the scale id is different between languages
     // First find all affected question IDs
-    $query = "SELECT q.qid FROM {{questions}} q JOIN  {{questions}} r ON q.qid=r.qid WHERE q.parent_qid<>0 AND q.scale_id<>r.scale_id GROUP BY qid";
+    $query = "SELECT q.qid FROM {{questions}} q JOIN  {{questions}} r ON q.qid=r.qid WHERE q.parent_qid<>0 AND q.scale_id<>r.scale_id GROUP BY q.qid";
     $result = Yii::app()->db->createCommand($query)->queryColumn();
     foreach ($result as $questionID) {
         // Get the question in base language
