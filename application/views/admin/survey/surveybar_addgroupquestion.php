@@ -19,11 +19,11 @@
             </button>
         </span>
     <?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'create')): ?>
-        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/$oSurvey->sid"); ?>" role="button">
+        <a class="btn btn-default" href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/$oSurvey->sid"); ?>" role="button">
             <span class="icon-add"></span>
             <?php eT("Add new group"); ?>
         </a>
-        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/questiongroups/sa/importview/surveyid/$oSurvey->sid"); ?>" role="button">
+        <a class="btn btn-default" href="<?php echo $this->createUrl("questionGroupsAdministration/importview/surveyid/$oSurvey->sid"); ?>" role="button">
 
             <span class="icon-import"></span>
             <?php eT("Import a group"); ?>

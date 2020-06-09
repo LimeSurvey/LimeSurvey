@@ -417,7 +417,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     'deletedGroups' => $iGroupsDeleted,
                     'message' => ($success ?gT('The question group was deleted.') : gT('Group could not be deleted')),
                     'redirect' => $this->createUrl(
-                        'questionGroupsAdministration/view/',
+                        'admin/survey/sa/listquestiongroups/',
                         ['surveyid' => $iSurveyId]
                     )
                 ]

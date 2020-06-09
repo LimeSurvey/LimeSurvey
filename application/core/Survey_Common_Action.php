@@ -731,7 +731,7 @@ class Survey_Common_Action extends CAction
                 $aData['questiongroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
-            $this->getController()->renderPartial("/admin/survey/QuestionGroups/questiongroupbar_view", $aData);
+            $this->getController()->renderPartial("/questionGroupsAdministration/questiongroupbar_view", $aData);
         }
     }
 
@@ -1021,7 +1021,7 @@ class Survey_Common_Action extends CAction
     private function _listquestiongroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
-            $this->getController()->renderPartial("/admin/survey/QuestionGroups/listquestiongroups", $aData);
+            $this->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
         }
     }
 

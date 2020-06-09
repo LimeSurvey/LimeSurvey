@@ -496,7 +496,7 @@ class LayoutHelper
     public function renderListQuestionGroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
-            Yii::app()->getController()->renderPartial("/admin/survey/QuestionGroups/listquestiongroups", $aData);
+            Yii::app()->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
         }
     }
 
