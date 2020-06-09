@@ -64,7 +64,6 @@ $layoutHelper->updatenotification();
 $layoutHelper->notifications();
 
 //// Here the main content views.
-//Rendered through /admin/survey/QuestionGroups/listquestiongroups
 //$this->_listquestiongroups($aData);
 $layoutHelper->renderListQuestionGroups($aData);
 

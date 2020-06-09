@@ -269,7 +269,7 @@ class QuestionGroup extends LSActiveRecord
         // Group edition
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
+            $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
             $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><i class="fa fa-pencil " ></i></a>';
         }
 
