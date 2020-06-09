@@ -32,16 +32,19 @@
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
                                     <div class="form-group col-sm-12">
                                         <label class=" control-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
-                                            <?php $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf(gT('Default answer for scale %s:'), $scale_id) : printf(gT('Default answer value:'), $scale_id) ?>
+                                            <?php $qtproperties[$questionrow['type']]['answerscales'] > 1
+                                                ? printf(gT('Default answer for scale %s:'), $scale_id)
+                                                : printf(gT('Default answer value:'), $scale_id) ?>
                                         </label>
                                         <div class="col-sm-12">
-                                            <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
+                                            <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'
+                                                    id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                                 <option value=''<?php echo is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
                                                     <?php eT('<No default value>') ?>
                                                 </option>
                                                 <?php foreach ($opts['answers'] as $answer) {
-                                                    $sAnswer = $answer->answerl10ns[$language]->answer;
-                                                    $answer = $answer->attributes;
+                                                    $sAnswer          = $answer->answerl10ns[$language]->answer;
+                                                    $answer           = $answer->attributes;
                                                     $answer['answer'] = $sAnswer;
                                                     ?>
                                                     <option <? echo $answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '' ?> value="<?php echo $answer['code'] ?>">
@@ -57,7 +60,8 @@
                                                 <?php eT("Default value for option 'Other':") ?>
                                             </label>
                                             <div class="col-sm-12">
-                                                <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>' value='<?php echo $langopts[$language][$questionrow['type']]['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
+                                                <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>'
+                                                       value='<?php echo $langopts[$language][$questionrow['type']]['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                             </div>
                                         </div>
                                     <?php endif; ?>
@@ -93,9 +97,12 @@
                                                     <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                 </label>
                                                 <div class="col-sm-12">
-                                                    <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                                    <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
+                                                            id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                         <?php foreach ($aSubquestion['options'] as $value => $label) : ?>
-                                                            <option value="<?php echo $value ?>"<?php echo($value == $aSubquestion['defaultvalue'] ? ' selected="selected"' : ''); ?>><?php echo $label ?></option>
+                                                            <option value="<?php echo $value ?>"<?php echo($value == $aSubquestion['defaultvalue'] ? ' selected="selected"' : ''); ?>>
+                                                                <?php echo $label ?>
+                                                            </option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
@@ -111,7 +118,7 @@
                                                 </label>
                                                 <div class="col-sm-12">
                                                         <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
-                                                                              id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'><?php echo $aSubquestion['defaultvalue'] ?></textarea>
+                                                                  id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'><?php echo $aSubquestion['defaultvalue'] ?></textarea>
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
@@ -132,10 +139,10 @@
                                  * This is fast insert rewrite of this view follows
                                  */
                                 $widgetOptions = [
-                                    'language'     => $language,
-                                    'questionrow'  => $questionrow,
+                                    'language' => $language,
+                                    'questionrow' => $questionrow,
                                     'qtproperties' => $qtproperties,
-                                    'langopts'     => $langopts,
+                                    'langopts' => $langopts,
                                 ];
                                 $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', ['widgetOptions' => $widgetOptions]);
                                 ?>
@@ -145,9 +152,8 @@
                                             <?php eT("Default value:") ?>
                                         </label>
                                         <div class="col-sm-12">
-                                            <textarea <?php echo $hasUpdatePermission; ?> cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>' id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
-                                                <?php echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?>
-                                            </textarea>
+                                            <textarea <?php echo $hasUpdatePermission; ?> cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
+                                                                                          id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>test</textarea>
                                         </div>
                                     </div>
                                 <?php endif;  //temporary solution?>
