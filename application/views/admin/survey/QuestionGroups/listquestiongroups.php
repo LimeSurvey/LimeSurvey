@@ -9,7 +9,7 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <h3><?php eT('Pages in this survey'); ?></h3>
+    <h3><?php eT('Groups in this survey'); ?></h3>
     <div class="row">
         <div class="col-lg-12 ls-flex ls-flex-row">
             <div class="ls-flex-item text-left">
@@ -32,7 +32,7 @@
                     ),
                 )); ?>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT('Search by page name:'), 'group_name', array('class'=>' control-label text-right')); ?>
+                        <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>' control-label text-right')); ?>
                         <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                     </div>
                     <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
@@ -63,21 +63,21 @@
 
                     // Group Id
                     array(
-                        'header'=>gT('Page ID'),
+                        'header'=>gT('Group ID'),
                         'name'=>'group_id',
                         'value'=>'$data->gid'
                     ),
 
                     // Group Order
                     array(
-                        'header'=>gT('Page order'),
+                        'header'=>gT('Group order'),
                         'name'=>'group_order',
                         'value'=>'$data->group_order'
                     ),
 
                     // Group Name
                     array(
-                        'header'=>gT('Page name'),
+                        'header'=>gT('Group name'),
                         'name'=>'group_name',
                         'value'=>'$data->primaryTitle',
                         'htmlOptions' => array('class' => 'col-md-2'),

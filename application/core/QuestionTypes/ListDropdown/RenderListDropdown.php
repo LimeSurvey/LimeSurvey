@@ -216,7 +216,7 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         $inputnames[] = $this->sSGQA;
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
         $this->registerAssets();
