@@ -33,8 +33,8 @@ return [
 
     // adding elements to survey
     ['addQuestion', ['route'=>'questions/sa/newquestion/surveyid/{SID}']],
-    ['addQuestionGroup', ['route'=>'questiongroups/sa/add/surveyid/{SID}']],
-    ['importQuestionGroup', ['route'=>'questiongroups/sa/importview/surveyid/{SID}']],
+    ['addQuestionGroup', ['route'=>'questionGroupsAdministration/add/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['importQuestionGroup', ['route'=>'questionGroupsAdministration/importview/surveyid/{SID}', 'noAdminInFront' => true]],
     ['addQuota', ['route'=>'quotas/sa/newquota/surveyid/{SID}']],
 
     ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
