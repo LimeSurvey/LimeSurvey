@@ -49,7 +49,7 @@
                 </button>
             </span>
         <?php else :?>
-            <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid);
+            <a class="btn btn-default" href='<?php echo $this->createUrl("questionEditor/view/surveyid/".$oSurvey->sid);
     ?>' role="button">
                 <span class="icon-add"></span>
                 <?php eT("Add new question"); ?>

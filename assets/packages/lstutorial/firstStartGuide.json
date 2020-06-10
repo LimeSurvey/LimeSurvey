@@ -196,7 +196,7 @@ steps: [
     },
     { //18
         element: '#title',
-        path: RegExp(filterUrl('admin/questions/sa/newquestion', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
+        path: RegExp(filterUrl('questionEditor/view', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
         placement: 'top',
         title: 'The title of your question.',
         content: `<p>This title is normally not shown to your participants, still it is absolutely necessary and has to be unique for the survey.</p>
@@ -206,7 +206,7 @@ steps: [
     },
     { //19
         element: '#cke_question_en',
-        path: RegExp(filterUrl('admin/questions/sa/newquestion', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
+        path: RegExp(filterUrl('questionEditor/view', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
         placement: 'top',
         title: 'The actual question text.',
         content: `<p>The content of this box is the actual question text shown to your participants.</p>
@@ -215,7 +215,7 @@ steps: [
     },
     { //20
         element: '#cke_help_en',
-        path: RegExp(filterUrl('admin/questions/sa/newquestion', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
+        path: RegExp(filterUrl('questionEditor/view', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
         placement: 'top',
         title: 'An additional help text for your question.',
         content: `<p>You can add some additional helptext to your question.</p>
@@ -224,7 +224,7 @@ steps: [
     },
     {  //21
         element: '#questionTypeContainer',
-        path: RegExp(filterUrl('admin/questions/sa/newquestion', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
+        path: RegExp(filterUrl('questionEditor/view', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
         backdrop: true,
         placement: 'left',
         title: 'Set your questions type.',
@@ -236,7 +236,7 @@ steps: [
     },
     { //22
         element: '#save-button',
-        path: RegExp(filterUrl('admin/questions/sa/newquestion', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
+        path: RegExp(filterUrl('questionEditor/view', {'surveyid': '[0-9]{4,25}', 'gid': '[0-9]{1,25}'})),
         placement: 'bottom',
         title: 'Now save the created question',
         content: `<p>Next we will create subquestions and answer options.</p>
@@ -275,7 +275,7 @@ steps: [
     },
     { //25
         element: '#rowcontainer',
-        path: RegExp(filterUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
+        path: RegExp(filterUrl('questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
         placement: 'top',
         title: 'Edit subquestions',
         content: `<p>Here you may add some subquestions for your question.</p>
@@ -286,7 +286,7 @@ steps: [
     },
     { //26
         element: '#rowcontainer>tr:first-of-type .btnaddanswer',
-        path: RegExp(filterUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
+        path: RegExp(filterUrl('questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
         placement: 'top',
         title: 'Add subquestion row',
         content: `<p>Click on this little plus to add another subquestion to your question.</p>
@@ -295,7 +295,7 @@ steps: [
     },
     { //27
         element: '#save-button',
-        path: RegExp(filterUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
+        path: RegExp(filterUrl('questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
         placement: 'bottom',
         title: 'Now save the subquestions',
         content: `<p>You may save empty subquestions, but that would not be of any use.</p>
@@ -323,7 +323,7 @@ steps: [
     },
     { //28
         element: '#rowcontainer',
-        path: RegExp(filterUrl('admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
+        path: RegExp(filterUrl('questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
         placement: 'top',
         title: 'Edit answer options',
         content: `<p>As you can see, answer options and subquestions really don't differ so much.</p>
@@ -332,7 +332,7 @@ steps: [
     },
     { //30
         element: '#save-button',
-        path: RegExp(filterUrl('admin/questions/sa/subquestions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
+        path: RegExp(filterUrl('questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')),
         placement: 'bottom',
         title: 'Now save the answer options',
         content: '<p>Click on save or next to proceed</p>',

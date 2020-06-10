@@ -200,7 +200,7 @@ class questiongroups extends Survey_Common_Action
                 sprintf(
                     gT('You can now %sadd a question%s in this group.'),
                     '<a href="'
-                    .App()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID")
+                    .App()->createUrl("questionEditor/view/surveyid/$surveyid/gid/$newGroupID")
                     .'">',
                     '</a>'
                 ),
@@ -214,7 +214,7 @@ class questiongroups extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/questiongroups/sa/add/surveyid/$surveyid"));
             } elseif (App()->request->getPost('saveandnewquestion', '') !== '') {
                 $this->getController()->redirect(
-                    array("admin/questions/sa/newquestion/",
+                    array("questionEditor/view/",
                         'surveyid' => $surveyid, 'gid' => $newGroupID)
                 );
             } else {

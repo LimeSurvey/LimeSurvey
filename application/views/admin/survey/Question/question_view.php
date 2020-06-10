@@ -1,5 +1,5 @@
 <?php
-/** @var Question $oQuestion */
+/** @var Question $oQuestion
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo (int) $qid;?>)</small></div>
@@ -265,9 +265,9 @@
 
 <?php
 App()->getClientScript()->registerScript(
-    'activatePanelClickable', 
-    'LS.pageLoadActions.panelClickable()', 
-    LSYii_ClientScript::POS_POSTSCRIPT 
-)
+    'activatePanelClickable',
+    'LS.pageLoadActions.panelClickable()',
+    LSYii_ClientScript::POS_POSTSCRIPT
+)*/
 ?>
 

@@ -1,5 +1,5 @@
 <?php
-// DO NOT REMOVE This is for automated testing to validate we see that page
+/** DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('editAnswerOptions');
 ?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -49,7 +49,7 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
             );
 
-            /*
+
             $aData = array(
                 'anslangs'  => $anslangs,
                 'results'   => $results,
@@ -69,12 +69,13 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 'has_permissions' => Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create'),
                 'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
             );
-             */
 
-            echo App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/answerOptionsEdit_view', $aData); ?> 
+
+            echo App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/answerOptionsEdit_view', $aData); ?>
 
             </form>
 
         </div>
     </div>
 </div>
+ */ ?>

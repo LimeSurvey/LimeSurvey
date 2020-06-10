@@ -59,6 +59,10 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
+        if (is_null($qid) && !Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
         $aData = [];
         $iSurveyID = (int)$surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -740,7 +744,7 @@ class QuestionEditorController extends LSBaseController
         // load import_helper and import the file
         App()->loadHelper('admin/import');
         $aImportResults = [];
-        if (strtolower($sExtension) == 'lsq') {
+        if (strtolower($sExtension) === 'lsq') {
             $aImportResults = XMLImportQuestion(
                 $sFullFilepath,
                 $iSurveyID,
@@ -857,6 +861,40 @@ class QuestionEditorController extends LSBaseController
         $this->render('editdefaultvalues', $aData);
     }
 
+    /**
+     * Add a new question
+     *
+     * @param $surveyid int the sid
+     * @param $gid      int Group ID
+     *
+     * @return string html
+     * @deprecated use action view in QuestionEditorController
+     *
+     */
+    public function actionNewQuestion($surveyid, $gid = null)
+    {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+        $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
+
+        if (is_null($gid)) {
+            $gid = $survey->groups[0]->gid;
+        }
+        return $this->redirect(
+            App()->createUrl(
+                'questionEditor/view',
+                [
+                    'surveyid'          => $surveyid,
+                    'gid'               => $gid,
+                    'landOnSideMenuTab' => 'structure'
+                ]
+            )
+        );
+    }
+
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ? */
 
 
@@ -903,9 +941,8 @@ class QuestionEditorController extends LSBaseController
                         ]
                     );
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['answers'] = $answerresult;
-                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['answers'] = $answerresult;
 
-                    if ($aQuestionAttributes['other'] == 'Y') {
+                    if ($aQuestionAttributes['other'] === 'Y') {
                         $defaultvalue = DefaultValue::model()->with('defaultvaluel10ns')->find(
                             'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultvaluel10ns.language =:language',
                             [
@@ -1396,7 +1433,7 @@ class QuestionEditorController extends LSBaseController
 
                 if (is_array($newValue)) {
                     foreach ($newValue as $lngKey => $content) {
-                        if ($lngKey == 'expression') {
+                        if ($lngKey === 'expression') {
                             continue;
                         }
                         if (!QuestionAttribute::model()->setQuestionAttributeWithLanguage(

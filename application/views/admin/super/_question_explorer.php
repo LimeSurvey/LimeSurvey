@@ -65,7 +65,7 @@
                         if (!$bSurveyIsActive && Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
                             <div class="col-sm-1" id="questions-container-<?php echo $aGroup->gid; ?>">
                                 <!-- add question to this group -->
-                                <a  data-toggle="tooltip" data-placement="top" style="padding: 0" title="<?php eT('Add a question to this group');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
+                                <a  data-toggle="tooltip" data-placement="top" style="padding: 0" title="<?php eT('Add a question to this group');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/questionEditor/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
                                     <span class="fa fa-plus-sign"></span>
                                 </a>
                             </div>
