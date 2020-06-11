@@ -29,10 +29,6 @@
  */
 class Answer extends LSActiveRecord
 {
-    private $oldCode;
-    private $oldQid;
-    private $oldScaleId;
-    
     /**
      * @inheritdoc
      * @return Answer
@@ -79,10 +75,15 @@ class Answer extends LSActiveRecord
         return array(
             array('qid', 'numerical', 'integerOnly'=>true),
             array('code', 'length', 'min' => 1, 'max'=>5),
-            // Unicity of key
+            // Unicity of code
             array(
-                'code',
-                'checkUniqueness',
+                'code', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
+                    'condition' => 'qid=:qid AND scale_id=:scale_id',
+                    'params' => array(
+                        ':qid' => $this->qid,
+                        ':scale_id' => $this->scale_id
+                    )
+                ),
                 'message' => gT('Answer codes must be unique by question.')
             ),
             array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
@@ -104,24 +105,6 @@ class Answer extends LSActiveRecord
             ->where(array('and', 'qid='.$qid))
             ->order('code asc')
             ->query();
-    }
-
-    public function checkUniqueness($attribute, $params)
-    {
-        if($this->code !== $this->oldCode || $this->qid !== $this->oldQid || $this->scale_id !== $this->oldScaleId)
-        {
-            $model = self::model()->find('code = ? AND qid = ? AND scale_id = ?', array($this->code, $this->qid, $this->scale_id));
-            if($model != null)
-                $this->addError('code','Answer codes must be unique by question');
-        }   
-    }
-
-    protected function afterFind()
-    {
-        parent::afterFind();
-        $this->oldCode = $this->code;
-        $this->oldQid = $this->qid;
-        $this->oldScaleId = $this->scale_id;
     }
 
     /**
@@ -262,6 +245,4 @@ class Answer extends LSActiveRecord
         }
         return $arr;
     }
-    
-    
 }

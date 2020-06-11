@@ -1273,12 +1273,14 @@ class questionedit extends Survey_Common_Action
                         "Answer option code cannot be empty"
                     );
                 }
+                $aAnswerOptionDataSet['scale_id'] = intval($iScaleId);
                 $oAnswer->setAttributes($aAnswerOptionDataSet);
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
                     throw new CHttpException(
                         500,
                         "Answer option couldn't be saved. Error: "
+                        . print_r($oAnswer->getAttributes(), true)
                         . print_r($oAnswer->getErrors(), true)
                     );
                 }
