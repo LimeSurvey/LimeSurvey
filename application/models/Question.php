@@ -631,7 +631,7 @@ class Question extends LSActiveRecord
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
                 ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
-                            . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
+                            . convertGETtoPOST(Yii::app()->createUrl("questionEditor/delete/", ["qid" => $this->qid]))
                         ."});'>"
                     .' <i class="text-danger fa fa-trash"></i>
                 </a>';

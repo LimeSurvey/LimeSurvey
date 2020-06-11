@@ -862,37 +862,99 @@ class QuestionEditorController extends LSBaseController
     }
 
     /**
-     * Add a new question
+     * Delete multiple questions.
+     * Called by ajax from question list.
+     * Permission check is done by questions::delete()
      *
-     * @param $surveyid int the sid
-     * @param $gid      int Group ID
-     *
-     * @return string html
-     * @deprecated use action view in QuestionEditorController
-     *
+     * @return void
+     * @throws CException
      */
-    public function actionNewQuestion($surveyid, $gid = null)
+    public function actionDeleteMultiple()
     {
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
-            App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(App()->request->urlReferrer);
-        }
-        $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $aQids = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults = [];
 
-        if (is_null($gid)) {
-            $gid = $survey->groups[0]->gid;
+        foreach ($aQids as $iQid) {
+            $oQuestion = Question::model()->with('questionl10ns')->findByPk($iQid);
+            $oSurvey = Survey::model()->findByPk($oQuestion->sid);
+            $sBaseLanguage = $oSurvey->language;
+
+            if (is_object($oQuestion)) {
+                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0);
+                $result = $this->actionDelete($iQid, true);
+                $aResults[$iQid]['result'] = $result['status'];
+            }
         }
-        return $this->redirect(
-            App()->createUrl(
-                'questionEditor/view',
+
+        App()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', ['aResults' => $aResults, 'successLabel' => gT('Deleted')]);
+    }
+
+    /**
+     * Function responsible for deleting a question.
+     *
+     * @access public
+     * @param int $surveyid
+     * @param int $qid
+     * @param int $gid
+     * @param bool $massAction
+     * @return array|void
+     * @throws CDbException
+     * @throws CHttpException
+     */
+    public function actionDelete($qid = null, $massAction = false)
+    {
+        if (is_null($qid)) {
+            $qid = Yii::app()->getRequest()->getPost('qid');
+        }
+        $oQuestion = Question::model()->findByPk($qid);
+        if (empty($oQuestion)) {
+            throw new CHttpException(404, gT("Invalid question id"));
+        }
+        /* Test the surveyid from question, not from submitted value */
+        $surveyid = $oQuestion->sid;
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
+            throw new CHttpException(403, gT("You are not authorized to delete questions."));
+        }
+        if (!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
+
+        // Check if any other questions have conditions which rely on this question. Don't delete if there are.
+        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
+        $oConditions = Condition::model()->findAllByAttributes(['cqid' => $qid]);
+        $iConditionsCount = count($oConditions);
+        // There are conditions dependent on this question
+        if ($iConditionsCount) {
+            $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
+            Yii::app()->setFlashMessage($sMessage, 'error');
+            $this->redirect(['admin/survey/sa/listquestions/surveyid/' . $surveyid]);
+        } else {
+            QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
+            $result = $oQuestion->delete();
+            $sMessage = gT("Question was successfully deleted.");
+        }
+
+        if ($massAction) {
+            return [
+                'message' => $sMessage,
+                'status'  => $result
+            ];
+        }
+
+        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
+        if (Yii::app()->request->isAjaxRequest) {
+            $this->renderJSON(
                 [
-                    'surveyid'          => $surveyid,
-                    'gid'               => $gid,
-                    'landOnSideMenuTab' => 'structure'
+                    'status'   => true,
+                    'message'  => $sMessage,
+                    'redirect' => $redirect
                 ]
-            )
-        );
+            );
+        }
+        Yii::app()->session['flashmessage'] = $sMessage;
+        $this->redirect($redirect);
     }
 
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ? */

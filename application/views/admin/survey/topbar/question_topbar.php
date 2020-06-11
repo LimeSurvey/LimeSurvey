@@ -281,8 +281,8 @@ if ($hasDeletePermission && $oSurvey->active === 'N') {
     // Delete Button
     $buttons['delete'] = [
         'url' => '#',
-        'dataurl' => $this->createUrl("admin/questions/sa/delete/"),
-        'postdata' => json_encode(["surveyid" => $sid, "qid" => $qid, "gid" => $gid]),
+        'dataurl' => $this->createUrl("questionEditor/delete/"),
+        'postdata' => json_encode(["qid" => $qid]),
         'name' => gT("Delete"),
         'type' => 'confirm',
         'id' => 'delete_button',

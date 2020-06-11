@@ -35,7 +35,7 @@
             // li element
             'type' => 'action',
             'action' => 'delete',
-            'url' => App()->createUrl('/admin/questions/sa/deleteMultiple/'),
+            'url' => App()->createUrl('questionEditor/deleteMultiple/'),
             'iconClasses' => 'text-danger fa fa-trash',
             'text' => gT('Delete'),
             'grid-reload' => 'yes',

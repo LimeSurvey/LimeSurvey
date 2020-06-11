@@ -937,33 +937,35 @@ class questions extends Survey_Common_Action
 //    }
 
     /**
+     * REFACTORED IN QuestionEditorController
      * Delete multiple questions.
      * Called by ajax from question list.
      * Permission check is done by questions::delete()
      * @return string HTML
      */
-    public function deleteMultiple()
-    {
-        $aQids = json_decode(Yii::app()->request->getPost('sItems'));
-        $aResults     = array();
-
-        foreach ($aQids as $iQid) {
-
-            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
-            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
-            $sBaseLanguage  = $oSurvey->language;
-
-            if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0);
-                $result = $this->delete($oQuestion->sid, $iQid, $oQuestion->gid, true);
-                $aResults[$iQid]['result'] = $result['status'];
-            }
-        }
-
-        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults, 'successLabel'=>gT('Deleted')));
-    }
+//    public function deleteMultiple()
+//    {
+//        $aQids = json_decode(Yii::app()->request->getPost('sItems'));
+//        $aResults     = array();
+//
+//        foreach ($aQids as $iQid) {
+//
+//            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
+//            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
+//            $sBaseLanguage  = $oSurvey->language;
+//
+//            if (is_object($oQuestion)) {
+//                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0);
+//                $result = $this->delete($oQuestion->sid, $iQid, $oQuestion->gid, true);
+//                $aResults[$iQid]['result'] = $result['status'];
+//            }
+//        }
+//
+//        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults, 'successLabel'=>gT('Deleted')));
+//    }
 
     /**
+     * REFACTORED IN QuestionEditorController
      * Function responsible for deleting a question.
      *
      * @access public
@@ -971,75 +973,75 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid=null, $qid=null, $gid = 0, $massAction = false)
-    {
-        if(is_null($qid)) {
-            $qid = Yii::app()->getRequest()->getPost('qid');
-        }
-        if($gid === 0) {
-            $gid = Yii::app()->getRequest()->getPost('gid');
-        }
-        $oQuestion = Question::model()->findByPk($qid);
-        if(empty($oQuestion)) {
-            throw new CHttpException(404, gT("Invalid question id"));
-        }
-        /* Test the surveyid from question, not from submitted value */
-        $surveyid = $oQuestion->sid;
-        if(!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete questions."));
-        }
-        if(!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
-
-        $gid_search = sanitize_int($gid); // gid from search filter
-        if ($gid_search == 0){
-            $gid_search = null;
-        }
-
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
-
-        // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
-        $ccresult = Condition::model()->findAllByAttributes(array('cqid' => $qid));
-        $cccount = count($ccresult);
-        // There are conditions dependent on this question
-        if ($cccount) {
-            $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-            if (!$ajax) {
-                Yii::app()->setFlashMessage($sMessage, 'error');
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
-            } else {
-                return array('status'=>false, 'message'=>$sMessage);
-            }
-        } else {
-            QuestionL10n::model()->deleteAllByAttributes(array('qid' => $qid));
-            $result = $oQuestion->delete();
-        }
-
-        $sMessage = gT("Question was successfully deleted.");
-
-        if ($massAction) {
-            return [
-                'message' => $sMessage,
-                'status' => $result
-            ];
-        }
-
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
-        if (Yii::app()->request->isAjaxRequest) {
-            $this->renderJSON(
-                [
-                    'status'=>true,
-                    'message'=>$sMessage,
-                    'redirect' => $redirect
-                ]
-            );
-            return;
-        }
-        Yii::app()->session['flashmessage'] = $sMessage;
-        $this->getController()->redirect($redirect);
-    }
+//    public function delete($surveyid=null, $qid=null, $gid = 0, $massAction = false)
+//    {
+//        if(is_null($qid)) {
+//            $qid = Yii::app()->getRequest()->getPost('qid');
+//        }
+//        if($gid === 0) {
+//            $gid = Yii::app()->getRequest()->getPost('gid');
+//        }
+//        $oQuestion = Question::model()->findByPk($qid);
+//        if(empty($oQuestion)) {
+//            throw new CHttpException(404, gT("Invalid question id"));
+//        }
+//        /* Test the surveyid from question, not from submitted value */
+//        $surveyid = $oQuestion->sid;
+//        if(!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
+//            throw new CHttpException(403, gT("You are not authorized to delete questions."));
+//        }
+//        if(!Yii::app()->getRequest()->isPostRequest) {
+//            throw new CHttpException(405, gT("Invalid action"));
+//        }
+//
+//        $gid_search = sanitize_int($gid); // gid from search filter
+//        if ($gid_search == 0){
+//            $gid_search = null;
+//        }
+//
+//        LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
+//
+//        // Check if any other questions have conditions which rely on this question. Don't delete if there are.
+//        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
+//        $ccresult = Condition::model()->findAllByAttributes(array('cqid' => $qid));
+//        $cccount = count($ccresult);
+//        // There are conditions dependent on this question
+//        if ($cccount) {
+//            $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
+//            if (!$ajax) {
+//                Yii::app()->setFlashMessage($sMessage, 'error');
+//                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+//            } else {
+//                return array('status'=>false, 'message'=>$sMessage);
+//            }
+//        } else {
+//            QuestionL10n::model()->deleteAllByAttributes(array('qid' => $qid));
+//            $result = $oQuestion->delete();
+//        }
+//
+//        $sMessage = gT("Question was successfully deleted.");
+//
+//        if ($massAction) {
+//            return [
+//                'message' => $sMessage,
+//                'status' => $result
+//            ];
+//        }
+//
+//        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
+//        if (Yii::app()->request->isAjaxRequest) {
+//            $this->renderJSON(
+//                [
+//                    'status'=>true,
+//                    'message'=>$sMessage,
+//                    'redirect' => $redirect
+//                ]
+//            );
+//            return;
+//        }
+//        Yii::app()->session['flashmessage'] = $sMessage;
+//        $this->getController()->redirect($redirect);
+//    }
 
 
     /// TODO: refactore multiple function to call the model, and then push all the common stuff to a model function for a dry code
