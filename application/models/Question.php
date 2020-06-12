@@ -1050,29 +1050,6 @@ class Question extends LSActiveRecord
     /**
      * @return QuestionAttribute[]
      */
-    public function getQuestionAttributes()
-    {
-        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $sLanguage;
-        $value = EmCacheHelper::get($cacheKey);
-        if ($value !== false) {
-            return $value;
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('qid=:qid');
-        $criteria->addCondition('(language=:language OR language IS NULL)');
-        $criteria->params = [':qid'=>$this->qid];
-        $criteria->params = [':language'=>$this->language];
-        $aQuestionAttributes = QuestionAttribute::model()->findAll($criteria);
-
-        EmCacheHelper::set($cacheKey, $aQuestionAttributes);
-
-        return $aQuestionAttributes;
-    }
-
-    /**
-     * @return QuestionAttribute[]
-     */
     public function getQuestionAttribute($sAttribute)
     {
         $criteria = new CDbCriteria();
