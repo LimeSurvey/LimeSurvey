@@ -112,13 +112,14 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'File formats' => '.'.gT(implode(", .", $this->allowedFileExtensions))
         ];
 
-        Yii::app()->getClientScript()->registerPackage('filemanager');
-        $aData['jsData'] = [
-            'surveyid' => $surveyid,
-            'i10N' => $aTranslate,
-            'allowedFileTypes' => $this->allowedFileExtensions,
-            'baseUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => '']),
-        ];
+        // Commented this out, cause its not needed anymore (filemanager will be a beta feature).
+        //Yii::app()->getClientScript()->registerPackage('filemanager');
+        //$aData['jsData'] = [
+          //  'surveyid' => $surveyid,
+          //  'i10N' => $aTranslate,
+          //  'allowedFileTypes' => $this->allowedFileExtensions,
+          //  'baseUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => '']),
+        //];
         $renderView = $surveyid == null ? 'view' : 'surveyview';
 
         if ($surveyid !== null) {
@@ -462,7 +463,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
 
         $urlFormat = Yii::app()->getUrlManager()->getUrlFormat();
-        $getFileLink = Yii::app()->createUrl('admin/filemanager/sa/getZipFile');
+        //$getFileLink = Yii::app()->createUrl('admin/filemanager/sa/getZipFile'); // Commented it out, cause its not needed anymore. (Filemanager will be a beta feature).
         $_SESSION['__path'] = $zipFilename;
 
         $this->printJsonResponse(

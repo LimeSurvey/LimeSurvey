@@ -24,7 +24,7 @@ export default class LSFileUploadAdapter {
 
                 $.ajax({
                     type: "POST",
-                    url: LS.createUrl('admin/filemanager/sa/uploadFile'),
+                   // url: LS.createUrl('admin/filemanager/sa/uploadFile'), // Commented it out, cause its not needed anymore (Filemanager will be a beta feature).
                     data: formData,
                     xhr: () => {
                         var myXhr = $.ajaxSettings.xhr();

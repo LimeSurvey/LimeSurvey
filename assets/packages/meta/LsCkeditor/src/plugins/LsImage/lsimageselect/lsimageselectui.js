@@ -48,7 +48,7 @@ export default class ImageSelectUI extends Plugin {
  		const editor = this.editor;
         return new Promise((resolve,reject) => {
             $.ajax({
-                url: LS.createUrl('admin/filemanager/sa/getFilesForSurvey'),
+               // url: LS.createUrl('admin/filemanager/sa/getFilesForSurvey'), // Commented it out, cause its not needed anymore (Filemanager will be a beta feature).
                 data: LS.ld.merge({},editor.config.get('lsExtension:ajaxOptions')),
                 success: resolve,
                 error: reject

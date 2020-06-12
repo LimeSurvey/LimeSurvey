@@ -47,7 +47,7 @@ class emailtemplates extends Survey_Common_Action
         // EmailTemplateData
         $aData['jsData'] = [
             'surveyid' => $iSurveyId,
-            'getFileUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => 'getFileList']),
+            //'getFileUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => 'getFileList']), // Marked as comment, perhaps we will need this for the beta feature (filemanager).
             'surveyFolder' => 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId,
             'validatorUrl' => $this->getController()->createUrl(
                 'admin/validate', 
