@@ -1126,8 +1126,13 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl("admin/survey/sa/view/", ['surveyid' => $iSurveyID]); // Close button
-        $aData['topBar']['showSaveButton'] = true;
 
+        if ($subaction === 'resources') {
+            $aData['topBar']['showSaveButton'] = false;
+        } else {
+            $aData['topBar']['showSaveButton'] = true;
+        }
+        
         $aData['optionsOnOff'] = array(
             'Y' => gT('On', 'unescaped'),
             'N' => gT('Off', 'unescaped'),
