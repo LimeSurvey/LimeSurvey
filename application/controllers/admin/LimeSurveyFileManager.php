@@ -19,6 +19,7 @@
  *
  * @package    LimeSurvey
  * @subpackage Backend
+ * @deprecated (Filemanager (self-made) is now an beta feature (will be implemented in the future))
  */
 class LimeSurveyFileManager extends Survey_Common_Action
 {
