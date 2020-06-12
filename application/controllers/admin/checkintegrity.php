@@ -1075,9 +1075,8 @@ class CheckIntegrity extends Survey_Common_Action
                 );
                 if ($info['parent_qid'] != 0) {
                     $info['questionSummaryLink'] = Yii::app()->getController()->createUrl(
-                        'admin/questions',
+                        'questionEditor/view',
                         [
-                            'sa' => 'subquestions',
                             'surveyid' => $info['sid'],
                             'gid' => $info['gid'],
                             'qid' => $info['parent_qid']

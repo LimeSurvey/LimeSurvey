@@ -893,9 +893,7 @@ class QuestionEditorController extends LSBaseController
      * Function responsible for deleting a question.
      *
      * @access public
-     * @param int $surveyid
      * @param int $qid
-     * @param int $gid
      * @param bool $massAction
      * @return array|void
      * @throws CDbException
@@ -957,8 +955,249 @@ class QuestionEditorController extends LSBaseController
         $this->redirect($redirect);
     }
 
+    /**
+     * Change the question group/order position of multiple questions
+     *
+     * @throws CException
+     */
+    public function actionSetMultipleQuestionGroup()
+    {
+        $aQids = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
+        $iGid = Yii::app()->request->getPost('group_gid'); // New Group ID  (can be same group for a simple position change)
+        $iQuestionOrder = Yii::app()->request->getPost('questionposition'); // Wanted position
+
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $iGid]); // The New Group object
+        $oSurvey = $oQuestionGroup->survey; // The Survey associated with this group
+
+        if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
+            // If survey is active it should not be possible to update
+            if ($oSurvey->active == 'N') {
+                if ($iQuestionOrder == "") {
+                    // If asked "at the end"
+                    $iQuestionOrder = (getMaxQuestionOrder($oQuestionGroup->gid));
+                }
+                self::changeMultipleQuestionPositionAndGroup($aQids, $iQuestionOrder, $oQuestionGroup);
+            }
+        }
+    }
+
+    /**
+     * Change the Questions mandatory state
+     */
+    public function actionChangeMultipleQuestionMandatoryState()
+    {
+        $aQids = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
+        $iSid = (int)Yii::app()->request->getPost('sid');
+        $sMandatory = Yii::app()->request->getPost('mandatory', 'N');
+
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
+            self::setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid);
+        }
+    }
+
+    /**
+     * Change the "other" option for applicable question types
+     */
+    public function actionChangeMultipleQuestionOtherState()
+    {
+        $aQids = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
+        $iSid = (int)Yii::app()->request->getPost('sid');
+        $sOther = (Yii::app()->request->getPost('other') === 'true') ? 'Y' : 'N';
+
+        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
+            self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+        }
+    }
+
+    /**
+     * Change attributes for multiple questions
+     */
+    public function actionChangeMultipleQuestionAttributes()
+    {
+        $aQidsAndLang        = json_decode($_POST['sItems']); // List of question ids to update
+        $iSid                = Yii::app()->request->getPost('sid'); // The survey (for permission check)
+        $aAttributesToUpdate = json_decode($_POST['aAttributesToUpdate']); // The list of attributes to updates
+        // TODO 1591979134468: this should be get from the question model
+        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']); // The valid question types for those attributes
+
+        // Calling th model
+        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
+    }
+
+    /**
+     * Loads the possible Positions where a Question could be inserted to
+     *
+     * @param $gid
+     * @param string $classes
+     * @return CWidget|mixed|void
+     * @throws Exception
+     */
+    public function actionAjaxLoadPositionWidget($gid, $classes = '')
+    {
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' =>$gid]);
+        if (is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')) {
+            $aOptions = [
+                'display'           => 'form_group',
+                'oQuestionGroup'    => $oQuestionGroup,
+
+            ];
+
+            // TODO: Better solution: Hard-code allowed CSS classes.
+            if ($classes != '' && $this->isValidCSSClass($classes)) {
+                $aOptions['classes'] = $classes;
+            }
+
+            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', $aOptions);
+        }
+        return;
+    }
+
+    /**
+     * render selected items for massive action widget
+     * @throws CException
+     */
+
+    public function actionRenderItemsSelected()
+    {
+        $aQids = json_decode(Yii::app()->request->getPost('$oCheckedItems')); ;
+        $aResults     = [];
+        $tableLabels  = [gT('Question ID'),gT('Question title') ,gT('Status')];
+
+        foreach ($aQids as $sQid) {
+            $iQid        = (int)$sQid;
+            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
+            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
+            $sBaseLanguage  = $oSurvey->language;
+
+            if (is_object($oQuestion)) {
+                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0),0,100);
+                $aResults[$iQid]['result'] = 'selected';
+            }
+        }
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+            [
+                'aResults'     =>  $aResults,
+                'successLabel' =>  gT('Selected'),
+                'tableLabels'  =>  $tableLabels
+            ]
+        );
+    }
+
+
+
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ? */
 
+
+    /**
+     * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
+     *
+     * @param string $class
+     * @return bool
+     */
+    protected function isValidCSSClass($class)
+    {
+        $class = str_replace(['-', '_'], '', $class);
+        return ctype_alnum($class);
+    }
+
+    /**
+     * Set the other state for selected Questions
+     *
+     * @param array $aQids All question id's affected
+     * @param string $sOther the "other" value 'Y' or 'N'
+     * @param int $iSid survey id
+     */
+    public static function setMultipleQuestionOtherState($aQids, $sOther, $iSid)
+    {
+        foreach ($aQids as $sQid) {
+            $iQid = (int)$sQid;
+            $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
+            // Only set the other state for question types that have this attribute
+            if (($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
+                || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN)
+                || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
+                || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)) {
+                $oQuestion->other = $sOther;
+                $oQuestion->save();
+            }
+        }
+    }
+
+    /**
+     * Set the mandatory state for selected Questions
+     *
+     * @param array $aQids All question id's affected
+     * @param string $sMandatory The mandatory va
+     * @param int $iSid survey id
+     */
+    public static function setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid)
+    {
+        foreach ($aQids as $sQid) {
+            $iQid = (int)$sQid;
+            $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
+            // These are the questions types that have no mandatory property - so ignore them
+            if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+                $oQuestion->mandatory = $sMandatory;
+                $oQuestion->save();
+            }
+        }
+    }
+
+    /**
+     * Change the question group/order position of multiple questions
+     *
+     * @param array $aQids all question id's affected
+     * @param int $iQuestionOrder the desired position
+     * @param QuestionGroup $oQuestionGroup the desired QuestionGroup
+     * @throws CException
+     */
+    public static function changeMultipleQuestionPositionAndGroup($aQids, $iQuestionOrder, $oQuestionGroup)
+    {
+        $oTransaction = Yii::app()->db->beginTransaction();
+        try {
+            // Now, we push each question to the new question group
+            // And update positions
+            foreach ($aQids as $sQid) {
+                // Question basic infos
+                $iQid = (int)$sQid;
+                $oQuestion = Question::model()->findByAttributes(['qid' => $iQid]); // Question object
+                $oldGid = $oQuestion->gid; // The current GID of the question
+                $oldOrder = $oQuestion->question_order; // Its current order
+
+                // First, we update all the positions of the questions in the current group of the question
+                // If they were after the question, we must decrease by one their position
+                Question::model()->updateCounters(
+                    ['question_order' => -1],
+                    [
+                        'condition' => 'gid=:gid AND question_order>=:order',
+                        'params'    => [':gid' => $oldGid, ':order' => $oldOrder]
+                    ]
+                );
+
+                // Then, we must update all the position of the question in the new group of the question
+                // If they will be after the question, we must increase their position
+                Question::model()->updateCounters(
+                    ['question_order' => 1],
+                    [
+                        'condition' => 'gid=:gid AND question_order>=:order',
+                        'params'    => [':gid' => $oQuestionGroup->gid, ':order' => $iQuestionOrder]
+                    ]
+                );
+
+                // Then we move all the questions with the request QID (same question in different langagues) to the new group, with the righ postion
+                Question::model()->updateAll(['question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid], 'qid=:qid', [':qid' => $iQid]);
+                // Then we update its subquestions
+                Question::model()->updateAll(['gid' => $oQuestionGroup->gid], 'parent_qid=:parent_qid', [':parent_qid' => $iQid]);
+
+                $iQuestionOrder++;
+            }
+            $oTransaction->commit();
+        } catch (Exception $e) {
+            $oTransaction->rollback();
+        }
+    }
 
     /**
      * @param int $iSurveyID
@@ -992,7 +1231,10 @@ class QuestionEditorController extends LSBaseController
                             ':language'    => $language,
                         ]
                     );
-                    $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
+                    $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
+                        $language,
+                        $defaultvalue->defaultvaluel10ns
+                    ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
                     $answerresult = Answer::model()->with('answerl10ns')->findAll(
@@ -1014,7 +1256,10 @@ class QuestionEditorController extends LSBaseController
                                 ':language'    => $language,
                             ]
                         );
-                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
+                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
+                            $language,
+                            $defaultvalue->defaultvaluel10ns
+                        ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
                         $aDefaultValues[$language][$aQuestionAttributes['type']]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
@@ -1059,7 +1304,10 @@ class QuestionEditorController extends LSBaseController
                                     ':language'    => $language
                                 ]
                             );
-                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
+                        $defaultvalue = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
+                            $language,
+                            $defaultvalue->defaultvaluel10ns
+                        ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
 
                         $question = $aSubquestion->questionl10ns[$language]->question;
                         $aSubquestion = $aSubquestion->attributes;
@@ -1084,7 +1332,10 @@ class QuestionEditorController extends LSBaseController
                             ':language'    => $language,
                         ]
                     );
-                $aDefaultValues[$language][$aQuestionAttributes['type']][0] = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists($language, $defaultvalue->defaultvaluel10ns) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
+                $aDefaultValues[$language][$aQuestionAttributes['type']][0] = !empty($defaultvalue->defaultvaluel10ns) && array_key_exists(
+                    $language,
+                    $defaultvalue->defaultvaluel10ns
+                ) ? $defaultvalue->defaultvaluel10ns[$language]->defaultvalue : null;
             }
         }
 

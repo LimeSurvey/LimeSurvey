@@ -45,7 +45,7 @@
             'modalType' => 'yes-no',
             'keepopen' => 'yes',
             'showSelected'  => 'yes',
-            'selectedUrl'   => App()->createUrl('/admin/questions/sa/renderItemsSelected/'),       
+            'selectedUrl'   => App()->createUrl('questionEditor/renderItemsSelected/'),
             'sModalTitle' => gT('Delete question(s)'),
             'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );
@@ -56,7 +56,7 @@
             // li element
             'type' => 'action',
             'action' => 'set-group-position',
-            'url' => App()->createUrl('/admin/questions/sa/setMultipleQuestionGroup/'),
+            'url' => App()->createUrl('questionEditor/setMultipleQuestionGroup/'),
             'iconClasses' => 'fa fa-folder-open',
             'text' => gT('Set question group and position'),
             'grid-reload' => 'yes',
@@ -77,7 +77,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-mandatory',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleMandatory/'),
+        'url' => App()->createUrl('questionEditor/changeMultipleQuestionMandatoryState/'),
         'iconClasses' => 'fa fa-asterisk text-danger',
         'text' => gT('Set "Mandatory" state'),
         'grid-reload' => 'yes',
@@ -97,7 +97,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-css',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
+        'url' => App()->createUrl('questionEditor/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-css3',
         'text' => gT('Set CSS class'),
         'grid-reload' => 'yes',
@@ -117,7 +117,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-statistics',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
+        'url' => App()->createUrl('questionEditor/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-bar-chart',
         'text' => gT('Set statistics options'),
         'grid-reload' => 'yes',
@@ -147,13 +147,13 @@
 
     if(!$oSurvey->isActive) {
         // Set other
-        // DEPEND IF SURVEY IS ACTIVE !!!! (checked by /admin/questions/sa/setMultipleOther/ )
+        // DEPEND IF SURVEY IS ACTIVE !!!! (checked by questionEditor/changeMultipleQuestionOtherState )
         // TODO: don't show that action if survey is active
         $aActions[] = array(
             // li element
             'type' => 'action',
             'action' => 'set-other',
-            'url' => App()->createUrl('/admin/questions/sa/setMultipleOther/'),
+            'url' => App()->createUrl('questionEditor/changeMultipleQuestionOtherState'),
             'iconClasses' => 'fa fa-dot-circle-o',
             'text' => gT('Set "Other" state'),
             'grid-reload' => 'yes',
@@ -174,7 +174,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-subquestions-answers-sort',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
+        'url' => App()->createUrl('questionEditor/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-sort',
         'text' => gT('Present subquestions/answer options in random order'),
         'grid-reload' => 'yes',

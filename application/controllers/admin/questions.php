@@ -884,7 +884,6 @@ class questions extends Survey_Common_Action
 //        return $html;
 //    }
 
-
     /**
      * REFACTORED IN QuestionEditorController
      * Add a new question
@@ -1043,169 +1042,174 @@ class questions extends Survey_Common_Action
 //        $this->getController()->redirect($redirect);
 //    }
 
-
-    /// TODO: refactore multiple function to call the model, and then push all the common stuff to a model function for a dry code
-
     /**
+     * REFACTORED IN QuestionEditorController
      * Change the question group/order position of multiple questions
      *
      */
-    public function setMultipleQuestionGroup()
-    {
-        $aQidsAndLang   = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
-        $iGid           = Yii::app()->request->getPost('group_gid'); // New Group ID  (can be same group for a simple position change)
-        $iQuestionOrder = Yii::app()->request->getPost('questionposition'); // Wanted position
-
-        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$iGid)); // The New Group object
-        $oSurvey        = $oQuestionGroup->survey; // The Survey associated with this group
-
-        if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
-            if ($oSurvey->active == 'N') {
-// If survey is active it should not be possible to update
-                if ($iQuestionOrder == "") {
-// If asked "at the endd"
-                    $iQuestionOrder = (getMaxQuestionOrder($oQuestionGroup->gid));
-
-                    // We get the last question order, so we want the number just after it
-                    // Unless it's 0
-                    if ($iQuestionOrder > 0) {
-                        $iQuestionOrder++;
-                    }
-
-                }
-
-                // Now, we push each question to the new question group
-                // And update positions
-                foreach ($aQidsAndLang as $sQidAndLang) {
-                    // Question basic infos
-                    $aQidAndLang = explode(',', $sQidAndLang);
-                    $iQid        = $aQidAndLang[0];
-
-                    $oQuestion = Question::model()->findByAttributes(array('qid' => $iQid)); // Question object
-                    $oldGid    = $oQuestion->gid; // The current GID of the question
-                    $oldOrder  = $oQuestion->question_order; // Its current order
-
-                    // First, we update all the positions of the questions in the current group of the question
-                    // If they were after the question, we must decrease by one their position
-                    $sQuery = "UPDATE {{questions}} SET question_order=question_order-1 WHERE gid=:gid AND question_order >= :order";
-                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$oldGid, ':order'=>$oldOrder))->query();
-
-                    // Then, we must update all the position of the question in the new group of the question
-                    // If they will be after the question, we must increase their position
-                    $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
-                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$oQuestionGroup->gid, ':order'=>$iQuestionOrder))->query();
-
-                    // Then we move all the questions with the request QID (same question in different langagues) to the new group, with the righ postion
-                    Question::model()->updateAll(array('question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid), 'qid=:qid', array(':qid' => $iQid));
-                    // Then we update its subquestions
-                    Question::model()->updateAll(array('gid' => $oQuestionGroup->gid), 'parent_qid=:parent_qid', array(':parent_qid' => $iQid));
-
-                    $iQuestionOrder++;
-                }
-            }
-        }
-    }
-
-
-    public function setMultipleMandatory()
-    {
-        $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
-        $iSid           = Yii::app()->request->getPost('sid');
-        $bMandatory     = Yii::app()->request->getPost('mandatory', 'N');
-
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
-            $oSurvey          = Survey::model()->findByPk($iSid);
-            $aSurveyLanguages = $oSurvey->additionalLanguages;
-            $sBaseLanguage    = $oSurvey->language;
-
-            array_push($aSurveyLanguages, $sBaseLanguage);
-
-            foreach ($aQidsAndLang as $sQidAndLang) {
-                $aQidAndLang = explode(',', $sQidAndLang);
-                $iQid        = $aQidAndLang[0];
-
-                foreach ($aSurveyLanguages as $sAdditionalLanguage) {
-                    $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
-
-                    // These are the questions types that have no mandatory property - so zap it accordingly
-                    if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
-                        $oQuestion->mandatory = $bMandatory;
-                        $oQuestion->save();
-                    }
-                }
-            }
-        }
-    }
-
-    public function setMultipleOther()
-    {
-        $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
-        $iSid           = $_POST['sid'];
-        $bOther = (Yii::app()->request->getPost('other') === 'true') ? 'Y' : 'N';
-
-        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
-            $oSurvey          = Survey::model()->findByPk($iSid);
-            $aSurveyLanguages = $oSurvey->additionalLanguages;
-            $sBaseLanguage    = $oSurvey->language;
-
-            array_push($aSurveyLanguages, $sBaseLanguage);
-
-            foreach ($aQidsAndLang as $sQidAndLang) {
-                $aQidAndLang = explode(',', $sQidAndLang);
-                $iQid        = $aQidAndLang[0];
-
-                foreach ($aSurveyLanguages as $sAdditionalLanguage) {
-                    $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
-
-                    // These are the questions types that have the other option therefore we set everything else to 'No Other'
-                    if (($oQuestion->type == Question::QT_L_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)) {
-                        $oQuestion->other = $bOther;
-                        $oQuestion->save();
-                    }
-
-                }
-            }
-        }
-    }
-
+//    public function setMultipleQuestionGroup()
+//    {
+//        $aQidsAndLang   = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
+//        $iGid           = Yii::app()->request->getPost('group_gid'); // New Group ID  (can be same group for a simple position change)
+//        $iQuestionOrder = Yii::app()->request->getPost('questionposition'); // Wanted position
+//
+//        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$iGid)); // The New Group object
+//        $oSurvey        = $oQuestionGroup->survey; // The Survey associated with this group
+//
+//        if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
+//            if ($oSurvey->active == 'N') {
+//// If survey is active it should not be possible to update
+//                if ($iQuestionOrder == "") {
+//// If asked "at the endd"
+//                    $iQuestionOrder = (getMaxQuestionOrder($oQuestionGroup->gid));
+//
+//                    // We get the last question order, so we want the number just after it
+//                    // Unless it's 0
+//                    if ($iQuestionOrder > 0) {
+//                        $iQuestionOrder++;
+//                    }
+//
+//                }
+//
+//                // Now, we push each question to the new question group
+//                // And update positions
+//                foreach ($aQidsAndLang as $sQidAndLang) {
+//                    // Question basic infos
+//                    $aQidAndLang = explode(',', $sQidAndLang);
+//                    $iQid        = $aQidAndLang[0];
+//
+//                    $oQuestion = Question::model()->findByAttributes(array('qid' => $iQid)); // Question object
+//                    $oldGid    = $oQuestion->gid; // The current GID of the question
+//                    $oldOrder  = $oQuestion->question_order; // Its current order
+//
+//                    // First, we update all the positions of the questions in the current group of the question
+//                    // If they were after the question, we must decrease by one their position
+//                    $sQuery = "UPDATE {{questions}} SET question_order=question_order-1 WHERE gid=:gid AND question_order >= :order";
+//                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$oldGid, ':order'=>$oldOrder))->query();
+//
+//                    // Then, we must update all the position of the question in the new group of the question
+//                    // If they will be after the question, we must increase their position
+//                    $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
+//                    Yii::app()->db->createCommand($sQuery)->bindValues(array(':gid'=>$oQuestionGroup->gid, ':order'=>$iQuestionOrder))->query();
+//
+//                    // Then we move all the questions with the request QID (same question in different langagues) to the new group, with the righ postion
+//                    Question::model()->updateAll(array('question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid), 'qid=:qid', array(':qid' => $iQid));
+//                    // Then we update its subquestions
+//                    Question::model()->updateAll(array('gid' => $oQuestionGroup->gid), 'parent_qid=:parent_qid', array(':parent_qid' => $iQid));
+//
+//                    $iQuestionOrder++;
+//                }
+//            }
+//        }
+//    }
 
     /**
+     * REFACTORED IN QuestionEditorController
+     */
+//    public function setMultipleMandatory()
+//    {
+//        $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
+//        $iSid           = Yii::app()->request->getPost('sid');
+//        $bMandatory     = Yii::app()->request->getPost('mandatory', 'N');
+//
+//        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
+//            $oSurvey          = Survey::model()->findByPk($iSid);
+//            $aSurveyLanguages = $oSurvey->additionalLanguages;
+//            $sBaseLanguage    = $oSurvey->language;
+//
+//            array_push($aSurveyLanguages, $sBaseLanguage);
+//
+//            foreach ($aQidsAndLang as $sQidAndLang) {
+//                $aQidAndLang = explode(',', $sQidAndLang);
+//                $iQid        = $aQidAndLang[0];
+//
+//                foreach ($aSurveyLanguages as $sAdditionalLanguage) {
+//                    $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
+//
+//                    // These are the questions types that have no mandatory property - so zap it accordingly
+//                    if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+//                        $oQuestion->mandatory = $bMandatory;
+//                        $oQuestion->save();
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    /**
+     * REFACTORED IN QuestionEditorController
+     */
+//    public function setMultipleOther()
+//    {
+//        $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
+//        $iSid           = $_POST['sid'];
+//        $bOther = (Yii::app()->request->getPost('other') === 'true') ? 'Y' : 'N';
+//
+//        if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
+//            $oSurvey          = Survey::model()->findByPk($iSid);
+//            $aSurveyLanguages = $oSurvey->additionalLanguages;
+//            $sBaseLanguage    = $oSurvey->language;
+//
+//            array_push($aSurveyLanguages, $sBaseLanguage);
+//
+//            foreach ($aQidsAndLang as $sQidAndLang) {
+//                $aQidAndLang = explode(',', $sQidAndLang);
+//                $iQid        = $aQidAndLang[0];
+//
+//                foreach ($aSurveyLanguages as $sAdditionalLanguage) {
+//                    $oQuestion = Question::model()->findByPk(array("qid"=>$iQid, 'language'=>$sAdditionalLanguage));
+//
+//                    // These are the questions types that have the other option therefore we set everything else to 'No Other'
+//                    if (($oQuestion->type == Question::QT_L_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)) {
+//                        $oQuestion->other = $bOther;
+//                        $oQuestion->save();
+//                    }
+//
+//                }
+//            }
+//        }
+//    }
+
+    /**
+     * REFACTORED IN QuestionEditorController
      * Set attributes for multiple questions
      */
-    public function setMultipleAttributes()
-    {
-        $aQidsAndLang        = json_decode($_POST['sItems']); // List of question ids to update
-        $iSid                = Yii::app()->request->getPost('sid'); // The survey (for permission check)
-        $aAttributesToUpdate = json_decode($_POST['aAttributesToUpdate']); // The list of attributes to updates
-        // TODO: this should be get from the question model
-        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']); // The valid question types for thoses attributes
-
-        // Calling th model
-        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
-    }
-
-
-
-    public function ajaxReloadPositionWidget($gid, $classes = '')
-    {
-        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
-        if (is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')) {
-            $aOptions = array(
-                        'display'           => 'form_group',
-                        'oQuestionGroup'    => $oQuestionGroup,
-
-            );
-
-            // TODO: Better solution: Hard-code allowed CSS classes.
-            if ($classes != '' && $this->isValidCSSClass($classes)) {
-                $aOptions['classes'] = $classes;
-            }
-
-            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', $aOptions);
-        }
-    }
+//    public function setMultipleAttributes()
+//    {
+//        $aQidsAndLang        = json_decode($_POST['sItems']); // List of question ids to update
+//        $iSid                = Yii::app()->request->getPost('sid'); // The survey (for permission check)
+//        $aAttributesToUpdate = json_decode($_POST['aAttributesToUpdate']); // The list of attributes to updates
+//        // TODO: this should be get from the question model
+//        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']); // The valid question types for thoses attributes
+//
+//        // Calling th model
+//        QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
+//    }
 
     /**
+     * REFACTORED IN QuestionEditorController
+     */
+//    public function ajaxReloadPositionWidget($gid, $classes = '')
+//    {
+//        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
+//        if (is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')) {
+//            $aOptions = array(
+//                        'display'           => 'form_group',
+//                        'oQuestionGroup'    => $oQuestionGroup,
+//
+//            );
+//
+//            // TODO: Better solution: Hard-code allowed CSS classes.
+//            if ($classes != '' && $this->isValidCSSClass($classes)) {
+//                $aOptions['classes'] = $classes;
+//            }
+//
+//            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', $aOptions);
+//        }
+//    }
+
+    /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * This function prepares the data for the advanced question attributes view
      *
      * @access public
@@ -1213,223 +1217,231 @@ class questions extends Survey_Common_Action
      * @todo is this deprecated??
      * @throws CException
      */
-    public function ajaxquestionattributes()
-    {
-        $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
-        $qid                = (int) Yii::app()->request->getParam('qid', 0);
-        $type               = Yii::app()->request->getParam('question_type');
-        $sQuestionTemplate  = Yii::app()->request->getParam('question_template', '');
-        $sOldQuestionTemplate  = Yii::app()->request->getParam('old_question_template', '');
-        $oSurvey = Survey::model()->findByPk($surveyid);
-
-        if ($oSurvey === null) {
-            App()->end();
-        }
-
-        $aLanguages = $oSurvey->allLanguages;
-        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
-
-        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible
-        if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
-            // get old custom question theme attributes
-            $aOldQuestionThemeAttributes = QuestionTheme::getQuestionThemeAttributeValues($type, $sOldQuestionTemplate);
-            if (!empty($aOldQuestionThemeAttributes)){
-                foreach ($aOldQuestionThemeAttributes as $key => $value) {
-                    unset($aAttributesWithValues[$value['name']]);
-                }
-            }
-        }
-        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
-        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
-                $themeAttributes = QuestionTheme::getQuestionThemeAttributeValues($type, $sQuestionTemplate);
-                $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
-        }
-        uasort($aAttributesWithValues, 'categorySort');
-        unset($aAttributesWithValues['question_template']);
-
-        $aAttributesPrepared = array();
-        foreach ($aAttributesWithValues as $aAttribute) {
-            //Set default for a new question
-            if(empty($aAttribute['value']) && $qid===0) {
-                //Empty strings are arrays because of some reason no one understands.
-                $aAttribute['value'] = is_array($aAttribute['default']) ? '' : $aAttribute['default'];
-            }
-
-            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $sQuestionTemplate VARIABLE IS SET
-            if (!empty($sQuestionTemplate) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
-                $aAttribute['value'] = $sQuestionTemplate;
-                $aAttributesPrepared[] = $aAttribute;
-            } elseif (isset($aAttribute['i18n']) && $aAttribute['i18n'] == false) {
-                $aAttributesPrepared[] = $aAttribute;
-            } else {
-                foreach ($aLanguages as $sLanguage) {
-                    $aAttributeModified = $aAttribute;
-                    $aAttributeModified['name'] = $aAttributeModified['name'].'_'.$sLanguage;
-                    $aAttributeModified['language'] = $sLanguage;
-                    if (isset($aAttributeModified[$sLanguage]['value'])) {
-                        $aAttributeModified['value'] = $aAttributeModified[$sLanguage]['value'];
-                    } else {
-                        $aAttributeModified['value'] = $aAttributeModified['default'];
-                    }
-                    $aAttributesPrepared[] = $aAttributeModified;
-                }
-            }
-        }
-
-        $aData = [];
-        $aData['bIsActive'] = ($oSurvey->active == 'Y');
-        $aData['attributedata'] = $aAttributesPrepared;
-        $aData['aQuestionTemplates'] = \QuestionTemplate::getQuestionTemplateList($type);
-
-        $this->getController()->renderPartial('/admin/survey/Question/advanced_settings_view', $aData);
-    }
+//    public function ajaxquestionattributes()
+//    {
+//        $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
+//        $qid                = (int) Yii::app()->request->getParam('qid', 0);
+//        $type               = Yii::app()->request->getParam('question_type');
+//        $sQuestionTemplate  = Yii::app()->request->getParam('question_template', '');
+//        $sOldQuestionTemplate  = Yii::app()->request->getParam('old_question_template', '');
+//        $oSurvey = Survey::model()->findByPk($surveyid);
+//
+//        if ($oSurvey === null) {
+//            App()->end();
+//        }
+//
+//        $aLanguages = $oSurvey->allLanguages;
+//        $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
+//
+//        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible
+//        if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
+//            // get old custom question theme attributes
+//            $aOldQuestionThemeAttributes = QuestionTheme::getQuestionThemeAttributeValues($type, $sOldQuestionTemplate);
+//            if (!empty($aOldQuestionThemeAttributes)){
+//                foreach ($aOldQuestionThemeAttributes as $key => $value) {
+//                    unset($aAttributesWithValues[$value['name']]);
+//                }
+//            }
+//        }
+//        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
+//        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
+//                $themeAttributes = QuestionTheme::getQuestionThemeAttributeValues($type, $sQuestionTemplate);
+//                $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
+//        }
+//        uasort($aAttributesWithValues, 'categorySort');
+//        unset($aAttributesWithValues['question_template']);
+//
+//        $aAttributesPrepared = array();
+//        foreach ($aAttributesWithValues as $aAttribute) {
+//            //Set default for a new question
+//            if(empty($aAttribute['value']) && $qid===0) {
+//                //Empty strings are arrays because of some reason no one understands.
+//                $aAttribute['value'] = is_array($aAttribute['default']) ? '' : $aAttribute['default'];
+//            }
+//
+//            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $sQuestionTemplate VARIABLE IS SET
+//            if (!empty($sQuestionTemplate) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
+//                $aAttribute['value'] = $sQuestionTemplate;
+//                $aAttributesPrepared[] = $aAttribute;
+//            } elseif (isset($aAttribute['i18n']) && $aAttribute['i18n'] == false) {
+//                $aAttributesPrepared[] = $aAttribute;
+//            } else {
+//                foreach ($aLanguages as $sLanguage) {
+//                    $aAttributeModified = $aAttribute;
+//                    $aAttributeModified['name'] = $aAttributeModified['name'].'_'.$sLanguage;
+//                    $aAttributeModified['language'] = $sLanguage;
+//                    if (isset($aAttributeModified[$sLanguage]['value'])) {
+//                        $aAttributeModified['value'] = $aAttributeModified[$sLanguage]['value'];
+//                    } else {
+//                        $aAttributeModified['value'] = $aAttributeModified['default'];
+//                    }
+//                    $aAttributesPrepared[] = $aAttributeModified;
+//                }
+//            }
+//        }
+//
+//        $aData = [];
+//        $aData['bIsActive'] = ($oSurvey->active == 'Y');
+//        $aData['attributedata'] = $aAttributesPrepared;
+//        $aData['aQuestionTemplates'] = \QuestionTemplate::getQuestionTemplateList($type);
+//
+//        $this->getController()->renderPartial('/admin/survey/Question/advanced_settings_view', $aData);
+//    }
 
     /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * This function prepares the data for label set details
      *
      * @access public
      * @return void
      */
-    public function ajaxlabelsetdetails($lid)
-    {
-
-        $oLabelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $lid)); //$connect->GetArray($query);
-
-        $aResult = [];
-        $aLanguages = [];
-
-        if($oLabelSet !== null) {
-            $aUsedLanguages = explode(' ', $oLabelSet->languages);
-
-            foreach ($aUsedLanguages as $sLanguage) {
-                $aResult[$sLanguage] = array_map(
-                    function($attribute) { return \viewHelper::flatten($attribute); },
-                    $oLabelSet->attributes
-                );
-                foreach ($oLabelSet->labels as $oLabel) {
-                    $aResult[$sLanguage]['labels'][] = $oLabel->getTranslated($sLanguage);
-                };
-                $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
-            };
-        }
-
-        $resultdata = ['results' => $aResult, 'languages' => $aLanguages];
-
-        return Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            array(
-                'data' => [
-                    'success' => count($aResult) > 0,
-                    'results' => $aResult,
-                    'languages' => $aLanguages
-                ],
-            ),
-            false,
-            false
-        );
-    }
+//    public function ajaxlabelsetdetails($lid)
+//    {
+//
+//        $oLabelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $lid)); //$connect->GetArray($query);
+//
+//        $aResult = [];
+//        $aLanguages = [];
+//
+//        if($oLabelSet !== null) {
+//            $aUsedLanguages = explode(' ', $oLabelSet->languages);
+//
+//            foreach ($aUsedLanguages as $sLanguage) {
+//                $aResult[$sLanguage] = array_map(
+//                    function($attribute) { return \viewHelper::flatten($attribute); },
+//                    $oLabelSet->attributes
+//                );
+//                foreach ($oLabelSet->labels as $oLabel) {
+//                    $aResult[$sLanguage]['labels'][] = $oLabel->getTranslated($sLanguage);
+//                };
+//                $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+//            };
+//        }
+//
+//        $resultdata = ['results' => $aResult, 'languages' => $aLanguages];
+//
+//        return Yii::app()->getController()->renderPartial(
+//            '/admin/super/_renderJson',
+//            array(
+//                'data' => [
+//                    'success' => count($aResult) > 0,
+//                    'results' => $aResult,
+//                    'languages' => $aLanguages
+//                ],
+//            ),
+//            false,
+//            false
+//        );
+//    }
 
     /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * This function prepares the data for labelset
      *
      * @access public
      * @return void
      */
-    public function ajaxlabelsetpicker($sid, $match=0)
-    {
-        $criteria = new CDbCriteria;
-        $language = null;
-        if ($match === 1) {
-            $criteria->addCondition('languages LIKE :language');
-            $criteria->params = [':language' => '%'.$language.'%'];
-        }
-
-        $resultdata = LabelSet::model()->findAll($criteria);
-        // $resultdata = [];
-        // create languagespecific array
-        $aResults = [];
-        foreach ($resultdata as $oResult) {
-            $aResults[] = array_map(
-                function($attribute) { return \viewHelper::flatten($attribute); },
-                $oResult->attributes
-            );
-        }
-
-        return Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            array(
-                'data' => [
-                    'success' => count($aResults) > 0,
-                    'labelsets'=> $aResults
-                ],
-            ),
-            false,
-            false
-        );
-    }
-
-    public function ajaxchecklabel()
-    {
-        $iLabelID = (int) Yii::app()->request->getParam('lid');
-        $aNewLanguages = Yii::app()->request->getParam('languages');
-        $bCheckAssessments = Yii::app()->request->getParam('bCheckAssessments', 0);
-        $arLabelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $iLabelID));
-        $iLabelsWithAssessmentValues = Label::model()->count('lid=:lid AND assessment_value<>0', array(':lid' => $iLabelID));
-        $aLabelSetLanguages = explode(' ', $arLabelSet->languages);
-        $aErrorMessages = array();
-        if ($bCheckAssessments && $iLabelsWithAssessmentValues) {
-            $aErrorMessages[] = gT('The existing label set has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
-        }
-        if (count(array_diff($aLabelSetLanguages, $aNewLanguages))) {
-            $aErrorMessages[] = gT('The existing label set has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
-        }
-        if (count($aErrorMessages)) {
-            foreach ($aErrorMessages as $sErrorMessage) {
-                echo  $sErrorMessage.'<br>';
-            }
-            eT('Do you really want to continue?');
-        } else {
-            eT('You are about to replace an existing label set with the current answer options.');
-            echo '<br>';
-            eT('Continue?');
-        }
-    }
+//    public function ajaxlabelsetpicker($sid, $match=0)
+//    {
+//        $criteria = new CDbCriteria;
+//        $language = null;
+//        if ($match === 1) {
+//            $criteria->addCondition('languages LIKE :language');
+//            $criteria->params = [':language' => '%'.$language.'%'];
+//        }
+//
+//        $resultdata = LabelSet::model()->findAll($criteria);
+//        // $resultdata = [];
+//        // create languagespecific array
+//        $aResults = [];
+//        foreach ($resultdata as $oResult) {
+//            $aResults[] = array_map(
+//                function($attribute) { return \viewHelper::flatten($attribute); },
+//                $oResult->attributes
+//            );
+//        }
+//
+//        return Yii::app()->getController()->renderPartial(
+//            '/admin/super/_renderJson',
+//            array(
+//                'data' => [
+//                    'success' => count($aResults) > 0,
+//                    'labelsets'=> $aResults
+//                ],
+//            ),
+//            false,
+//            false
+//        );
+//    }
 
     /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
+     */
+//    public function ajaxchecklabel()
+//    {
+//        $iLabelID = (int) Yii::app()->request->getParam('lid');
+//        $aNewLanguages = Yii::app()->request->getParam('languages');
+//        $bCheckAssessments = Yii::app()->request->getParam('bCheckAssessments', 0);
+//        $arLabelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $iLabelID));
+//        $iLabelsWithAssessmentValues = Label::model()->count('lid=:lid AND assessment_value<>0', array(':lid' => $iLabelID));
+//        $aLabelSetLanguages = explode(' ', $arLabelSet->languages);
+//        $aErrorMessages = array();
+//        if ($bCheckAssessments && $iLabelsWithAssessmentValues) {
+//            $aErrorMessages[] = gT('The existing label set has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
+//        }
+//        if (count(array_diff($aLabelSetLanguages, $aNewLanguages))) {
+//            $aErrorMessages[] = gT('The existing label set has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
+//        }
+//        if (count($aErrorMessages)) {
+//            foreach ($aErrorMessages as $sErrorMessage) {
+//                echo  $sErrorMessage.'<br>';
+//            }
+//            eT('Do you really want to continue?');
+//        } else {
+//            eT('You are about to replace an existing label set with the current answer options.');
+//            echo '<br>';
+//            eT('Continue?');
+//        }
+//    }
+
+    /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * function ajaxValidate
      */
-    public function ajaxValidate($surveyid, $qid = false)
-    {
+//    public function ajaxValidate($surveyid, $qid = false)
+//    {
+//
+//        // Stupid hack since Bootstrap switch is a checkbox and 'other' used to be radio button
+//        // TODO: Longterm, change 'other' to boolean; change the model rules
+//        $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
+//
+//        $iSurveyId = (int) $surveyid;
+//        $iQid = $qid;
+//        $oSurvey = Survey::model()->findByPk($surveyid);
+//        if (empty($oSurvey)) {
+//            Yii::app()->end(); // Or throw error 500
+//        }
+//        // Validate only on default language
+//        if (!$iQid) {
+//            $oQuestion = new Question('insert');
+//            $oQuestion->sid = $iSurveyId;
+//        } else {
+//            $oQuestion = Question::model()->find('qid=:qid', array(":qid"=>$iQid));
+//            if (!$oQuestion) {
+//                    throw new Exception('Invalid question id.');
+//            }
+//        }
+//        $oQuestion->title = App()->request->getParam('title');
+//        $oQuestion->other = App()->request->getParam('other');
+//        $oQuestion->validate();
+//
+//        header('Content-type: application/json');
+//        echo CJSON::encode($oQuestion->getErrors());
+//        Yii::app()->end();
+//    }
 
-        // Stupid hack since Bootstrap switch is a checkbox and 'other' used to be radio button
-        // TODO: Longterm, change 'other' to boolean; change the model rules
-        $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
-
-        $iSurveyId = (int) $surveyid;
-        $iQid = $qid;
-        $oSurvey = Survey::model()->findByPk($surveyid);
-        if (empty($oSurvey)) {
-            Yii::app()->end(); // Or throw error 500
-        }
-        // Validate only on default language
-        if (!$iQid) {
-            $oQuestion = new Question('insert');
-            $oQuestion->sid = $iSurveyId;
-        } else {
-            $oQuestion = Question::model()->find('qid=:qid', array(":qid"=>$iQid));
-            if (!$oQuestion) {
-                    throw new Exception('Invalid question id.');
-            }
-        }
-        $oQuestion->title = App()->request->getParam('title');
-        $oQuestion->other = App()->request->getParam('other');
-        $oQuestion->validate();
-
-        header('Content-type: application/json');
-        echo CJSON::encode($oQuestion->getErrors());
-        Yii::app()->end();
-    }
-     /**
+    /**
+      * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * Todo : update whole view to use CActiveForm
      */
 #    protected function performAjaxValidation($model)
@@ -1442,116 +1454,127 @@ class questions extends Survey_Common_Action
 #    }
 
     /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * @param string $question_type
      * @return string JSON data
      */
-    public function ajaxGetQuestionTemplateList()
-    {
-        $type = Yii::app()->request->getParam('type');
-        $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
-        header('Content-type: application/json');
-        echo CJSON::encode($questionTemplateList);
-        Yii::app()->end();
-    }
+//    public function ajaxGetQuestionTemplateList()
+//    {
+//        $type = Yii::app()->request->getParam('type');
+//        $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
+//        header('Content-type: application/json');
+//        echo CJSON::encode($questionTemplateList);
+//        Yii::app()->end();
+//    }
 
     /**
+     * REFACTORED IN QuestionEditorController
      * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
      *
      * @param string $class
      * @return boolean
      */
-    protected function isValidCSSClass($class)
-    {
-        $class = str_replace(['-', '_'], '', $class);
-        return ctype_alnum($class);
-    }
+//    protected function isValidCSSClass($class)
+//    {
+//        $class = str_replace(['-', '_'], '', $class);
+//        return ctype_alnum($class);
+//    }
 
     /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
-    {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
-    }
+//    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+//    {
+//        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+//    }
 
     /**
+     * WILL BE REMOVED NOT USED, THE NEW IMPLEMENTATION IS BEING USED
      * Show error and redirect back if survey is active
      *
      * @param Survey $survey
      * @return void
      */
-    protected function abortIfSurveyIsActive($survey)
-    {
-        if ($survey->active !== 'N') {
-            Yii::app()->user->setFlash('error', gT("You can't add questions while the survey is active."));
-            $this->getController()->redirect(Yii::app()->request->urlReferrer);
-        }
-    }
-
-    public function saveQuestion($aQuestion, $aSettings, $ajax=false){
-
-        $iQid = $aQuestion['qid'];
-        unset($aQuestion['qid']);
-
-        $oQuestion = (isset($iQid) && $iQid != '') ? Question::model()->findByPk($iQid) : new Question();
-
-        $oQuestion->setAttributes($aQuestion);
-        $success = $oQuestion->save();
-        $message = $success ? gT("Question successfully saved.") : gT("Question could not be saved");
-        if($ajax) {
-            Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => [
-                'success' => $success,
-                'message' => $message
-            ]]);
-            return;
-        }
-
-        App()->user->setFlash($success?'success':'error', $message);
-        App()->getController()->redirect(
-            App()->getController()->createUrl(
-                "questionEditor/view/",
-                ['surveyid' => $oQuestion->sid, 'gid'=> $oQuestion->gid, "qid" => $oQuestion->qid]
-            )
-        );
-    }
+//    protected function abortIfSurveyIsActive($survey)
+//    {
+//        if ($survey->active !== 'N') {
+//            Yii::app()->user->setFlash('error', gT("You can't add questions while the survey is active."));
+//            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+//        }
+//    }
 
     /**
+     * REFACTORED IN QuestionEditorController
+     * @param $aQuestion
+     * @param $aSettings
+     * @param bool $ajax
+     * @throws CException
+     */
+//    public function saveQuestion($aQuestion, $aSettings, $ajax=false){
+//
+//        $iQid = $aQuestion['qid'];
+//        unset($aQuestion['qid']);
+//
+//        $oQuestion = (isset($iQid) && $iQid != '') ? Question::model()->findByPk($iQid) : new Question();
+//
+//        $oQuestion->setAttributes($aQuestion);
+//        $success = $oQuestion->save();
+//        $message = $success ? gT("Question successfully saved.") : gT("Question could not be saved");
+//        if($ajax) {
+//            Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => [
+//                'success' => $success,
+//                'message' => $message
+//            ]]);
+//            return;
+//        }
+//
+//        App()->user->setFlash($success?'success':'error', $message);
+//        App()->getController()->redirect(
+//            App()->getController()->createUrl(
+//                "questionEditor/view/",
+//                ['surveyid' => $oQuestion->sid, 'gid'=> $oQuestion->gid, "qid" => $oQuestion->qid]
+//            )
+//        );
+//    }
+
+    /**
+     * REFACTORED IN QuestionEditorController
      * render selected items for massive action widget
      * @return void
      */
-
-    public function renderItemsSelected()
-    {
-
-        $aQidsAndLang = json_decode(Yii::app()->request->getPost('$oCheckedItems')); ;
-        $aResults     = [];
-        $tableLabels  = array(gT('Question ID'),gT('Question title') ,gT('Status'));
-
-        foreach ($aQidsAndLang as $sQidAndLang) {
-            $aQidAndLang = explode(',', $sQidAndLang);
-            $iQid        = $aQidAndLang[0];
-
-            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
-            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
-            $sBaseLanguage  = $oSurvey->language;
-
-            if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0),0,100);
-                $aResults[$iQid]['result'] = 'selected';
-            }
-        }
-
-        Yii::app()->getController()->renderPartial(
-            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
-            array(
-                'aResults'     =>  $aResults,
-                'successLabel' =>  gT('Selected'),
-                'tableLabels'  =>  $tableLabels
-                )
-        );
-    }
+//    public function renderItemsSelected()
+//    {
+//
+//        $aQidsAndLang = json_decode(Yii::app()->request->getPost('$oCheckedItems')); ;
+//        $aResults     = [];
+//        $tableLabels  = array(gT('Question ID'),gT('Question title') ,gT('Status'));
+//
+//        foreach ($aQidsAndLang as $sQidAndLang) {
+//            $aQidAndLang = explode(',', $sQidAndLang);
+//            $iQid        = $aQidAndLang[0];
+//
+//            $oQuestion      = Question::model()->with('questionl10ns')->findByPk($iQid);
+//            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
+//            $sBaseLanguage  = $oSurvey->language;
+//
+//            if (is_object($oQuestion)) {
+//                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0),0,100);
+//                $aResults[$iQid]['result'] = 'selected';
+//            }
+//        }
+//
+//        Yii::app()->getController()->renderPartial(
+//            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+//            array(
+//                'aResults'     =>  $aResults,
+//                'successLabel' =>  gT('Selected'),
+//                'tableLabels'  =>  $tableLabels
+//                )
+//        );
+//    }
 }
