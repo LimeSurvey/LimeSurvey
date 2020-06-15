@@ -16,7 +16,7 @@ const getAppState = function (userid) {
     const AppStateName = 'limesurveyadminsidepanel';
     const vuexLocal = new VuexPersistence({
         key: 'limesurveyadminsidepanel_'+userid,
-        storage: window.localStorage
+        storage: window.sessionStorage
     });
 
 

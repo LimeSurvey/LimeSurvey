@@ -4,6 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="third_party/vimeo/psalm/src/config.xsd"
     autoloader="tests/phpstan/phpstan_bootstrap.php"
+    errorLevel="2"
 >
     <projectFiles>
         <directory name="application/controllers" />

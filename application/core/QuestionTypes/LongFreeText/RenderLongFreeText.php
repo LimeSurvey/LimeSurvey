@@ -89,7 +89,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
             'placeholder'            => $placeholder,
         ), true);
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 

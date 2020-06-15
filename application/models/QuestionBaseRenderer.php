@@ -26,13 +26,13 @@ abstract class QuestionBaseRenderer extends StaticModel
     public $bPreview;
     public $sCoreClass;
     public $checkconditionFunction = "checkconditions";
-    
+
     protected $aFieldArray;
     protected $aQuestionAttributes;
     protected $aSurveySessionArray;
     protected $mSessionValue;
     protected $sLanguage;
-    
+
     protected $aSubQuestions = [];
     protected $aAnswerOptions = [];
 
@@ -40,7 +40,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected $aScripts = [];
     protected $aScriptFiles = [];
     protected $aStyles = [];
-    
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         $this->aFieldArray = $aFieldArray;
@@ -51,25 +51,25 @@ abstract class QuestionBaseRenderer extends StaticModel
         if(!$this->sLanguage) {
                 $this->sLanguage = $this->oQuestion->survey->language;
         }
-        
+
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
         $this->aSurveySessionArray = @$_SESSION['survey_'.$this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
-        
+
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
-        
+
         if(!empty($this->oQuestion->questionl10ns[$this->sLanguage]->script)){
             $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionl10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
             $this->addScript('QuestionStoredScript-'.$this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
         }
     }
-    
+
     protected function getTimeSettingRender()
     {
         $oQuestion = $this->oQuestion;
         $oSurvey = $this->oQuestion->survey;
-        
+
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js', CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
@@ -104,7 +104,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
         //Render timer
         $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid'=>$oQuestion->qid, 'sWarnId'=>''), true);
-        
+
         $time_limit = $oQuestion->questionattributes['time_limit']['value'];
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
@@ -117,7 +117,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
         $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time'], 0);
         $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
-        
+
 
         //Render timer 2
         $timer_html = Yii::app()->twigRenderer->renderQuestion(
@@ -125,10 +125,10 @@ abstract class QuestionBaseRenderer extends StaticModel
             array('iQid'=>$ia[0], 'sWarnId'=>'_Warning_2'),
             true
         );
-        
+
         $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay'], 1000);
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
-        $time_limit_warning_2_display_time = trim($oQuestion->questionattributes['time_limit_warning_2_display_time'], 0);
+        $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time'], 0);
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style'], '');
         $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
         $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style'], '');
@@ -228,7 +228,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setSubquestions($scale_id = null)
     {
-       
+
         $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
     }
 
@@ -249,7 +249,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getFromSurveySession($sIndex, $default="")
     {
-        return isset($_SESSION['survey_'.$this->oQuestion->sid][$sIndex]) 
+        return isset($_SESSION['survey_'.$this->oQuestion->sid][$sIndex])
             ? $_SESSION['survey_'.$this->oQuestion->sid][$sIndex]
             : $default;
     }
@@ -331,7 +331,7 @@ abstract class QuestionBaseRenderer extends StaticModel
                 }
             }
         }
-    
+
         // Currently null/0/false=> hidden , 1 : disabled
         $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
@@ -359,7 +359,7 @@ abstract class QuestionBaseRenderer extends StaticModel
                 ? null
                 : intval($labelAttributeWidth)
             );
-        
+
         if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
             $sInputContainerWidth = 8;
             $sLabelWidth = 4;
@@ -396,7 +396,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     public function includeKeypad()
     {
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party')."jquery-keypad/jquery.keypad.alt.css");
-        
+
         $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
         $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
         $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
