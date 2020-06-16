@@ -555,7 +555,7 @@ class LsDefaultDataSets
                 'file',
                 'fontawesome',
                 '',
-                //'admin/filemanager', // Commented it out, cause its not needed anymore. (Filemanager (self-made) will be a beta feature).
+                'admin/filemanager',
                 '',
                 '',
                 '',
