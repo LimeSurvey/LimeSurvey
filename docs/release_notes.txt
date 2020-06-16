@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.19 (build 200605) to 3.22.20 (build 200617) June 16, 2020
+-Fixed issue #16372: Unable to save any settings on "General Settings" screen when using MSSQL (Carsten Schmitz)
+-Fixed issue #15063: Left sidebar is not shown with console error Local Storage QuotaExceededError: The quota has been exceeded. (Carsten Schmitz)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Armenian by cdorin
+
+
 Changes from 3.22.18 (build 200603) to 3.22.19 (build 200605) June 5, 2020
 -Fixed issue: Typo in name of a CSS file #1427 (KaiHerlemann)
 -Fixed issue [Security] #16356: Update jquery to fix XSS vulnerability (Eddy Lackmann)
