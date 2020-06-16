@@ -1121,7 +1121,7 @@ class QuestionEditorController extends LSBaseController
 
 
 
-    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ ?*/
+    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
 
     /**
