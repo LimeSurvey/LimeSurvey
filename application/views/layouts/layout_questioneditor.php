@@ -48,11 +48,8 @@ $layoutHelper->renderGeneraltopbar($aData);
 
 echo '<div id="pjax-content" class="col-12">';
 
-//Rendered through /admin/responses/browsemenubar_view
-//$this->_browsemenubar($aData);
-//Rendered through /admin/survey/Question/questionbar_view
-//$this->_organizequestionbar($aData);
-$layoutHelper->renderOrganizeQuestionBar($aData);
+//topbar for questioneditor is now rendered by actionGetQuestionTopbar in QuestionEditorController
+//$layoutHelper->renderOrganizeQuestionBar($aData);
 
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column fill col-12"'

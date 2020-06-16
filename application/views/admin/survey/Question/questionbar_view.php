@@ -1,5 +1,7 @@
 <?php
 $aReplacementData=array();
+
+/** @deprecated this view is deprecated and not used anymore... "question_topbar.php" is used instead */
 ?>
 
 <div class='menubar surveybar' id="questionbarid" style="display:none">

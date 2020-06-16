@@ -471,12 +471,15 @@ class LayoutHelper
     /**
      * Render the save/cancel bar for Organize question groups/questions
      *
+     * @deprecated this topbar is nerver rendered again
+     * actionGetQuestionTopbar in QuestionEditorController is used instead
+     *
      * @param array $aData
      *
      * @since 2014-09-30
      * @author Olle Haerstedt
      */
-    public function renderOrganizeQuestionBar($aData)
+ /**   public function renderOrganizeQuestionBar($aData)
     {
         if (isset($aData['organizebar'])) {
             if (isset($aData['questionbar']['closebutton']['url'])) {
@@ -487,7 +490,7 @@ class LayoutHelper
             $aData['questionbar'] = $aData['organizebar'];
             Yii::app()->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
         }
-    }
+    }*/
 
     /**
      * listquestion groups

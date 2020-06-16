@@ -621,8 +621,7 @@ class QuestionEditorController extends LSBaseController
         $sid = $oQuestion->sid;
         $gid = $oQuestion->gid;
         $qid = $oQuestion->qid;
-        // TODO: Rename Variable for better readability.
-        $qtypes = QuestionType::modelsAttributes();
+        $questionTypes = QuestionType::modelsAttributes();
         // TODO: Rename Variable for better readability.
         $qrrow = $oQuestion->attributes;
         $ownsSaveButton = true;
@@ -635,6 +634,7 @@ class QuestionEditorController extends LSBaseController
         $hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
 
         return $this->renderPartial(
+            //todo move this view to the correct view folder of this controller and remove the other one
             '/admin/survey/topbar/question_topbar',
             [
                 'oSurvey'             => $oQuestion->survey,
@@ -647,7 +647,7 @@ class QuestionEditorController extends LSBaseController
                 'gid'                 => $gid,
                 'qid'                 => $qid,
                 'qrrow'               => $qrrow,
-                'qtypes'              => $qtypes,
+                'qtypes'              => $questionTypes,
                 'ownsSaveButton'      => $ownsSaveButton,
                 'ownsImportButton'    => $ownsImportButton,
             ],
@@ -772,7 +772,7 @@ class QuestionEditorController extends LSBaseController
 
         $aData['aImportResults'] = $aImportResults;
         $aData['sid'] = $iSurveyID;
-        $aData['surveyid'] = $iSurveyID; // todo duplication needed for survey_common_action
+        $aData['surveyid'] = $iSurveyID; // todo needed in function beforeRender in this controller
         $aData['gid'] = $gid;
         $aData['sExtension'] = $sExtension;
 
@@ -835,7 +835,7 @@ class QuestionEditorController extends LSBaseController
             'oQuestion'    => $oQuestion,
             'qid'          => $qid,
             'sid'          => $iSurveyID,
-            'surveyid'     => $iSurveyID, // todo duplication needed for survey_common_action
+            'surveyid'     => $iSurveyID, // todo needed in beforeRender
             'langopts'     => $oDefaultValues,
             'questionrow'  => $oQuestion->attributes,
             'gid'          => $gid,
@@ -853,8 +853,15 @@ class QuestionEditorController extends LSBaseController
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['showCloseButton'] = true;
-        $aData['topBar']['closeButtonUrl'] = $this->createUrl('questionEditor/view/', ['sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]);
-        $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update') ? '' : 'disabled="disabled" readonly="readonly"';
+        $aData['topBar']['closeButtonUrl'] = $this->createUrl(
+            'questionEditor/view/',
+            ['sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
+        );
+        $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'update'
+        ) ? '' : 'disabled="disabled" readonly="readonly"';
         $aData['oSurvey'] = $oSurvey;
 
         $this->aData = $aData;
@@ -880,13 +887,20 @@ class QuestionEditorController extends LSBaseController
             $sBaseLanguage = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0);
+                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText(
+                    $oQuestion->questionl10ns[$sBaseLanguage]->question,
+                    true,
+                    0
+                );
                 $result = $this->actionDelete($iQid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
         }
 
-        App()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', ['aResults' => $aResults, 'successLabel' => gT('Deleted')]);
+        $this->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            ['aResults' => $aResults, 'successLabel' => gT('Deleted')]
+        );
     }
 
     /**
@@ -963,7 +977,8 @@ class QuestionEditorController extends LSBaseController
     public function actionSetMultipleQuestionGroup()
     {
         $aQids = json_decode(Yii::app()->request->getPost('sItems')); // List of question ids to update
-        $iGid = Yii::app()->request->getPost('group_gid'); // New Group ID  (can be same group for a simple position change)
+        // New Group ID  (can be same group for a simple position change)
+        $iGid = Yii::app()->request->getPost('group_gid');
         $iQuestionOrder = Yii::app()->request->getPost('questionposition'); // Wanted position
 
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $iGid]); // The New Group object
@@ -1011,6 +1026,8 @@ class QuestionEditorController extends LSBaseController
 
     /**
      * Change attributes for multiple questions
+     * ajax request (this is a massive action for questionlists view)
+     *
      */
     public function actionChangeMultipleQuestionAttributes()
     {
@@ -1018,7 +1035,7 @@ class QuestionEditorController extends LSBaseController
         $iSid                = Yii::app()->request->getPost('sid'); // The survey (for permission check)
         $aAttributesToUpdate = json_decode($_POST['aAttributesToUpdate']); // The list of attributes to updates
         // TODO 1591979134468: this should be get from the question model
-        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']); // The valid question types for those attributes
+        $aValidQuestionTypes = str_split($_POST['aValidQuestionTypes']); //The valid question types for those attributes
 
         // Calling th model
         QuestionAttribute::model()->setMultiple($iSid, $aQidsAndLang, $aAttributesToUpdate, $aValidQuestionTypes);
@@ -1035,7 +1052,8 @@ class QuestionEditorController extends LSBaseController
     public function actionAjaxLoadPositionWidget($gid, $classes = '')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' =>$gid]);
-        if (is_a($oQuestionGroup, 'QuestionGroup') && Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')) {
+        if (is_a($oQuestionGroup, 'QuestionGroup') &&
+            Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')) {
             $aOptions = [
                 'display'           => 'form_group',
                 'oQuestionGroup'    => $oQuestionGroup,
@@ -1047,7 +1065,10 @@ class QuestionEditorController extends LSBaseController
                 $aOptions['classes'] = $classes;
             }
 
-            return App()->getController()->widget('ext.admin.survey.question.PositionWidget.PositionWidget', $aOptions);
+            return App()->getController()->widget(
+                'ext.admin.survey.question.PositionWidget.PositionWidget',
+                $aOptions
+            );
         }
         return;
     }
@@ -1059,7 +1080,7 @@ class QuestionEditorController extends LSBaseController
 
     public function actionRenderItemsSelected()
     {
-        $aQids = json_decode(Yii::app()->request->getPost('$oCheckedItems')); ;
+        $aQids = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
         $aResults     = [];
         $tableLabels  = [gT('Question ID'),gT('Question title') ,gT('Status')];
 
@@ -1070,12 +1091,20 @@ class QuestionEditorController extends LSBaseController
             $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = substr(viewHelper::flatEllipsizeText($oQuestion->questionl10ns[$sBaseLanguage]->question, true, 0),0,100);
+                $aResults[$iQid]['title'] = substr(
+                    viewHelper::flatEllipsizeText(
+                        $oQuestion->questionl10ns[$sBaseLanguage]->question,
+                        true,
+                        0
+                    ),
+                    0,
+                    100
+                );
                 $aResults[$iQid]['result'] = 'selected';
             }
         }
 
-        Yii::app()->getController()->renderPartial(
+        $this->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             [
                 'aResults'     =>  $aResults,
@@ -1186,10 +1215,19 @@ class QuestionEditorController extends LSBaseController
                     ]
                 );
 
-                // Then we move all the questions with the request QID (same question in different langagues) to the new group, with the righ postion
-                Question::model()->updateAll(['question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid], 'qid=:qid', [':qid' => $iQid]);
+                // Then we move all the questions with the request QID (same question in different langagues)
+                // to the new group, with the righ postion
+                Question::model()->updateAll(
+                    ['question_order' => $iQuestionOrder, 'gid' => $oQuestionGroup->gid],
+                    'qid=:qid',
+                    [':qid' => $iQid]
+                );
                 // Then we update its subquestions
-                Question::model()->updateAll(['gid' => $oQuestionGroup->gid], 'parent_qid=:parent_qid', [':parent_qid' => $iQid]);
+                Question::model()->updateAll(
+                    ['gid' => $oQuestionGroup->gid],
+                    'parent_qid=:parent_qid',
+                    [':parent_qid' => $iQid]
+                );
 
                 $iQuestionOrder++;
             }
