@@ -1715,7 +1715,7 @@ function UpdateGroupList($surveyid, $language)
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
 
     // TODO: replace by group model method
-    $query     = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
+    $query     = "SELECT * FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result    = dbExecuteAssoc($query) or safeDie("Couldn't get group list<br />$query<br />"); //Checked
     $groupList = array();
 

@@ -1844,7 +1844,7 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $degquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY {{groups}}.group_order";
+            $degquery = "SELECT * FROM ".Yii::app()->db->quoteTableName('{{groups}}')." g WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY g.group_order";
             $degresult = dbExecuteAssoc($degquery);
             // GROUP NAME
             $aDataentryoutput = '';

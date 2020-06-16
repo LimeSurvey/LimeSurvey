@@ -447,9 +447,9 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithoutQuestions($surveyid)
     {
-        $sQuery = "select count(*) from {{groups}}
-            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
-            where {{groups}}.sid={$surveyid} and qid is null";
+        $sQuery = "select count(*) from ".Yii::app()->db->quoteTableName('{{groups}}')." g
+            left join {{questions}} on  g.gid={{questions}}.gid
+            where g.sid={$surveyid} and qid is null";
         return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 
@@ -460,9 +460,9 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
-        $sQuery = "select count(DISTINCT {{groups}}.gid) from {{groups}}
-            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
-            where {{groups}}.sid={$surveyid} and qid is not null";
+        $sQuery = "select count(DISTINCT g.gid) from ".Yii::app()->db->quoteTableName('{{groups}}')." g
+            left join {{questions}} q on  g.gid=q.gid
+            where g.sid={$surveyid} and qid is not null";
         return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 
