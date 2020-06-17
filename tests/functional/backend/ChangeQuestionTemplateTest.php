@@ -244,7 +244,9 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                     )
                 );
                 $questionEditorButton->click();
-
+                
+                sleep(3);
+                
                 // Check if General Settings Container is there
                 $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated( WebDriverBy::id('uncollapsed-general-settings') ));
                 $generalSettingsContainer = $web->findElement(
