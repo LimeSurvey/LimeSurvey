@@ -209,10 +209,10 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //1: Get each condition's question id
     $conquery = "SELECT {{conditions}}.qid, cqid, {{questions}}.question, "
     . "{{questions}}.gid "
-    . "FROM {{conditions}}, {{questions}}, {{groups}} "
+    . "FROM {{conditions}}, {{questions}}, ".Yii::app()->db->quoteTableName('{{groups}}')." g "
     . "WHERE {{questions}}.sid={$iSurveyID} "
     . "AND {{conditions}}.qid={{questions}}.qid "
-    . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
+    . "AND {{questions}}.gid=g.gid ORDER BY {{conditions}}.qid";
     $conresult = Yii::app()->db->createCommand($conquery)->query()->readAll();
     //2: Check each conditions cqid that it occurs later than the cqid
     foreach ($conresult as $conrow) {
