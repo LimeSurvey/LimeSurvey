@@ -84,7 +84,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
 function checkHasGroup($postsid)
 {
 
-    $groupquery = "SELECT 1 as count from {{groups}} as g WHERE g.sid=$postsid;";
+    $groupquery = "SELECT 1 as count from ".Yii::app()->db->quoteTableName('{{groups}}')." as g WHERE g.sid=$postsid;";
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
 
     if (count($groupresult) == 0) {
@@ -104,7 +104,7 @@ function checkGroup($postsid)
 
 
     $baselang = Survey::model()->findByPk($postsid)->language;
-    $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
+    $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN ".Yii::app()->db->quoteTableName('{{groups}}')." as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
     $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
     foreach ($groupresult as $row) {
 //TIBO

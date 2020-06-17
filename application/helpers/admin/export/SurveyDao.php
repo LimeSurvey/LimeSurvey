@@ -42,7 +42,7 @@ class SurveyDao
         }
 
         //Load groups
-        $sQuery = 'SELECT g.* FROM {{groups}} AS g '.
+        $sQuery = 'SELECT g.* FROM '.Yii::app()->db->quoteTableName('{{groups}}').' AS g '.
         'WHERE g.sid = '.$intId.' AND g.language = \''.$lang.'\' '.
         'ORDER BY g.group_order;';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query()->readAll();
@@ -50,7 +50,7 @@ class SurveyDao
 
         //Load questions
         $sQuery = 'SELECT q.* FROM {{questions}} AS q '.
-        'JOIN {{groups}} AS g ON (q.gid = g.gid and q.language = g.language) '.
+        'JOIN '.Yii::app()->db->quoteTableName('{{groups}}').' AS g ON (q.gid = g.gid and q.language = g.language) '.
         'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
         'ORDER BY g.group_order, q.question_order;';
         $survey->questions = Yii::app()->db->createCommand($sQuery)->query()->readAll();

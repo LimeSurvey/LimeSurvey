@@ -443,7 +443,7 @@ class Question extends LSActiveRecord
     public function getQuestionList($surveyid, $language)
     {
         $query = "SELECT questions.*, question_groups.group_name, question_groups.group_order"
-            ." FROM {{questions}} as questions, {{groups}} as question_groups"
+            ." FROM {{questions}} as questions, ".Yii::app()->db->quoteTableName('{{groups}}')." as question_groups"
             ." WHERE question_groups.gid=questions.gid"
             ." AND question_groups.language=:language1"
             ." AND questions.language=:language2"
