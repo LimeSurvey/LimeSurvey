@@ -398,6 +398,12 @@ $config['bPdfResponseBorder'] = '1'; // Border in responses. Accepts 0:no border
 // If used, the appearance (font size, justification, etc.) may be adjusted by editing td.questionHelpBefore and $helpBeforeBorderBottom of quexml.
 $config['quexmlshowprintablehelp'] = false;
 
+// QueXML-PDF: If set to true, each question in the PDF will be identified by the question title instead of the section and number
+$config['quexmlusequestiontitleasid'] = false;
+
+// QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
+$config['quexmlkeepsurveydateformat'] = false;
+
 $config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
 $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
 
