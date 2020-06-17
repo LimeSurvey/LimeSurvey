@@ -29,16 +29,10 @@ before_script:
     - phpenv config-rm xdebug.ini
 
     # Install LimeSurvey.
-    - wget https://repo.mysql.com//mysql-apt-config_0.8.10-1_all.deb
-    - sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
-    - sudo apt-get update -q
-    - sudo apt-get install -q -y --allow-unauthenticated -o Dpkg::Options::=--force-confnew mysql-server
-    - sudo systemctl restart mysql
-    - sudo mysql_upgrade
     - mysql --version
     - sudo service mysql status
     - touch enabletests
-      # NB: PHPUnit 6.5.* is installed with composer.
+    # NB: PHPUnit 6.5.* is installed with composer.
     - composer install
     - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
@@ -47,9 +41,9 @@ before_script:
     - chmod -R 777 tests/tmp
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
-      # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
-      # TODO: Disable, a lines was added to config file and some tests started to fail.
-      # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
+    # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
+    # TODO: Disable, a lines was added to config file and some tests started to fail.
+    # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
