@@ -3731,7 +3731,7 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
     dbExecuteAssoc($query);
 
     // Remove From QuestionGroup Table
-    $query = "DELETE FROM {{groups}} WHERE sid='{$sid}' AND $sqllang";
+    $query = "DELETE FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$sid}' AND $sqllang";
     dbExecuteAssoc($query);
 
     return true;
@@ -3761,12 +3761,12 @@ function fixLanguageConsistency($sid, $availlangs = '')
         return true; // Survey only has one language
     }
     $baselang = Survey::model()->findByPk($sid)->language;
-    $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
+    $query = "SELECT * FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $group) {
         foreach ($langs as $lang) {
 
-            $query = "SELECT count(gid) FROM {{groups}} WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
+            $query = "SELECT count(gid) FROM ".Yii::app()->db->quoteTableName('{{groups}}')." WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
             $gresult = Yii::app()->db->createCommand($query)->queryScalar();
             if ($gresult < 1) {
                 $data = array(

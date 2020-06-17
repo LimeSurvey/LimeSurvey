@@ -1892,7 +1892,7 @@ function groupGetXMLStructure($xml, $gid)
     buildXMLFromQuery($xml, $cquery, 'conditions');
 
     //Question attributes
-    $iSurveyID = Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
+    $iSurveyID = Yii::app()->db->createCommand("select sid from ".Yii::app()->db->quoteTableName('{{groups}}')." where gid={$gid}")->query()->read();
     $iSurveyID = $iSurveyID['sid'];
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
@@ -1987,7 +1987,7 @@ function questionGetXMLStructure($xml, $gid, $qid)
 
 
     // Question attributes
-    $iSurveyID = Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
+    $iSurveyID = Yii::app()->db->createCommand("select sid from ".Yii::app()->db->quoteTableName('{{groups}}')." where gid={$gid}")->query();
     $iSurveyID = $iSurveyID->read();
     $iSurveyID = $iSurveyID['sid'];
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
