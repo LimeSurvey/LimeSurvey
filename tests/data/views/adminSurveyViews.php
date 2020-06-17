@@ -16,7 +16,7 @@ return [
     ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
     ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
 
-    ['surveyResources', ['route'=>'filemanager/surveyid/{SID}']],
+    //['surveyResources', ['route'=>'filemanager/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
     ['surveyParticipantTokenOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}']],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
