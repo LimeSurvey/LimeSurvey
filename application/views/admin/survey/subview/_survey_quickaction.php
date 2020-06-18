@@ -188,19 +188,19 @@
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
-                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionEditor/view/surveyid/".$oSurvey->sid); ?>">
+                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
                                                 <div class="panel-heading">
                                                     <div class="panel-title h4"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="panel-body-ico">
-                                                        <a  href="<?php echo $this->createUrl("questionEditor/view/surveyid/".$oSurvey->sid); ?>" >
+                                                        <a  href="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>" >
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <span class="sr-only"><?php eT('Add question');?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
-                                                        <p><a href="<?php echo $this->createUrl("questionEditor/view/surveyid/".$oSurvey->sid); ?>"><?php eT("Add new question"); ?></a></p>
+                                                        <p><a href="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>"><?php eT("Add new question"); ?></a></p>
                                                     </div>
                                                 </div>
                                             </div>

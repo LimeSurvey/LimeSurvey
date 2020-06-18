@@ -35,7 +35,7 @@
             // li element
             'type' => 'action',
             'action' => 'delete',
-            'url' => App()->createUrl('questionEditor/deleteMultiple/'),
+            'url' => App()->createUrl('questionAdministration/deleteMultiple/'),
             'iconClasses' => 'text-danger fa fa-trash',
             'text' => gT('Delete'),
             'grid-reload' => 'yes',
@@ -45,7 +45,7 @@
             'modalType' => 'yes-no',
             'keepopen' => 'yes',
             'showSelected'  => 'yes',
-            'selectedUrl'   => App()->createUrl('questionEditor/renderItemsSelected/'),
+            'selectedUrl'   => App()->createUrl('questionAdministration/renderItemsSelected/'),
             'sModalTitle' => gT('Delete question(s)'),
             'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );
@@ -56,7 +56,7 @@
             // li element
             'type' => 'action',
             'action' => 'set-group-position',
-            'url' => App()->createUrl('questionEditor/setMultipleQuestionGroup/'),
+            'url' => App()->createUrl('questionAdministration/setMultipleQuestionGroup/'),
             'iconClasses' => 'fa fa-folder-open',
             'text' => gT('Set question group and position'),
             'grid-reload' => 'yes',
@@ -77,7 +77,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-mandatory',
-        'url' => App()->createUrl('questionEditor/changeMultipleQuestionMandatoryState/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
         'iconClasses' => 'fa fa-asterisk text-danger',
         'text' => gT('Set "Mandatory" state'),
         'grid-reload' => 'yes',
@@ -97,7 +97,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-css',
-        'url' => App()->createUrl('questionEditor/changeMultipleQuestionAttributes/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-css3',
         'text' => gT('Set CSS class'),
         'grid-reload' => 'yes',
@@ -117,7 +117,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-statistics',
-        'url' => App()->createUrl('questionEditor/changeMultipleQuestionAttributes/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-bar-chart',
         'text' => gT('Set statistics options'),
         'grid-reload' => 'yes',
@@ -153,7 +153,7 @@
             // li element
             'type' => 'action',
             'action' => 'set-other',
-            'url' => App()->createUrl('questionEditor/changeMultipleQuestionOtherState'),
+            'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
             'iconClasses' => 'fa fa-dot-circle-o',
             'text' => gT('Set "Other" state'),
             'grid-reload' => 'yes',
@@ -174,7 +174,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-subquestions-answers-sort',
-        'url' => App()->createUrl('questionEditor/changeMultipleQuestionAttributes/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-sort',
         'text' => gT('Present subquestions/answer options in random order'),
         'grid-reload' => 'yes',

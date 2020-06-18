@@ -19,7 +19,7 @@
                             foreach ($failedcheck as $fc)
                             { ?>
 
-                            <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo App()->getController()->createUrl('questionEditor/view/surveyid/'.$surveyid.'/gid/'.$fc[3].'/qid/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
+                            <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo App()->getController()->createUrl('questionAdministration/view/surveyid/'.$surveyid.'/gid/'.$fc[3].'/qid/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
                             <?php }
                         }
 

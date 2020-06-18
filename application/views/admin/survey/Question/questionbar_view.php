@@ -118,7 +118,7 @@ $aReplacementData=array();
                 <button class="btn btn-default"
                    data-toggle="modal"
                    data-target="#confirmation-modal"
-                   data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionEditor/delete/", ["qid" => $qid])); ?>'
+                   data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid])); ?>'
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
                     <span class="fa fa-trash text-danger"></span>
@@ -166,7 +166,7 @@ $aReplacementData=array();
 
             <!-- Default Values -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
-                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('questionEditor/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('questionAdministration/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit default answers"); ?>
                     </a>

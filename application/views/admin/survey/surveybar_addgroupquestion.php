@@ -49,12 +49,12 @@
                 </button>
             </span>
         <?php else :?>
-            <a class="btn btn-default" href='<?php echo $this->createUrl("questionEditor/view/surveyid/".$oSurvey->sid);
+            <a class="btn btn-default" href='<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid);
     ?>' role="button">
                 <span class="icon-add"></span>
                 <?php eT("Add new question"); ?>
             </a>
-            <a class="btn btn-default" href='<?php echo $this->createUrl("questionEditor/importView/surveyid/".$oSurvey->sid); ?>' role="button">
+            <a class="btn btn-default" href='<?php echo $this->createUrl("questionAdministration/importView/surveyid/".$oSurvey->sid); ?>' role="button">
                 <span class="icon-import"></span>
                 <?php eT("Import a question"); ?>
             </a>

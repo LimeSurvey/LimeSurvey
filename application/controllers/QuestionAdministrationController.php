@@ -1,7 +1,7 @@
 <?php
 
 
-class QuestionEditorController extends LSBaseController
+class QuestionAdministrationController extends LSBaseController
 {
 
     /**
@@ -151,7 +151,6 @@ class QuestionEditorController extends LSBaseController
                 'subquestions'  => SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ',
             ],
             'startInEditView'      => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
-            //'connectorBaseUrl' => 'admin/questioneditor', this should not be relevant anymore for the frontend
             'questionSelectorType' => $questionSelectorType,
             'i10N'                 => [
                 'Create question'                                                                              => gT('Create question'),
@@ -354,7 +353,7 @@ class QuestionEditorController extends LSBaseController
                 gT('Question has been stored, but an error happened: ') . "\n" . $ex->getMessage(),
                 0,
                 App()->createUrl(
-                    'questionEditor/view/',
+                    'questionAdministration/view/',
                     ["surveyid" => $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]
                 )
             );
@@ -389,7 +388,7 @@ class QuestionEditorController extends LSBaseController
                 'successDetail'      => $setApplied,
                 'questionId'         => $oQuestion->qid,
                 'redirect'           => $this->createUrl(
-                    'questionEditor/view/',
+                    'questionAdministration/view/',
                     [
                         'surveyid' => $iSurveyId,
                         'gid'      => $oQuestion->gid,
@@ -639,8 +638,7 @@ class QuestionEditorController extends LSBaseController
         $hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
 
         return $this->renderPartial(
-            //todo move this view to the correct view folder of this controller and remove the other one
-            '/admin/survey/topbar/question_topbar',
+            'question_topbar',
             [
                 'oSurvey'             => $oQuestion->survey,
                 'sid'                 => $sid,
@@ -742,7 +740,7 @@ class QuestionEditorController extends LSBaseController
         if ($fatalerror != '') {
             unlink($sFullFilepath);
             App()->setFlashMessage($fatalerror, 'error');
-            $this->redirect('questionEditor/importView/surveyid/' . $iSurveyID);
+            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
             return;
         }
 
@@ -761,7 +759,7 @@ class QuestionEditorController extends LSBaseController
             );
         } else {
             App()->setFlashMessage(gT('Unknown file extension'), 'error');
-            $this->redirect('questionEditor/importView/surveyid/' . $iSurveyID);
+            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
             return;
         }
 
@@ -769,7 +767,7 @@ class QuestionEditorController extends LSBaseController
 
         if (isset($aImportResults['fatalerror'])) {
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
-            $this->redirect('questionEditor/importView/surveyid/' . $iSurveyID);
+            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
             return;
         }
 
@@ -785,7 +783,7 @@ class QuestionEditorController extends LSBaseController
             App()->setFlashMessage(gT("Question imported successfully"), 'success');
             $this->redirect(
                 App()->createUrl(
-                    'questionEditor/view/',
+                    'questionAdministration/view/',
                     [
                         'surveyid' => $iSurveyID,
                         'gid'      => $gid,
@@ -848,7 +846,7 @@ class QuestionEditorController extends LSBaseController
         ];
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['questiongroupbar']['closebutton']['url'] = 'questionEditor/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid; // Close button
+        $aData['questiongroupbar']['closebutton']['url'] = 'questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid; // Close button
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
@@ -859,7 +857,7 @@ class QuestionEditorController extends LSBaseController
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['showCloseButton'] = true;
         $aData['topBar']['closeButtonUrl'] = $this->createUrl(
-            'questionEditor/view/',
+            'questionAdministration/view/',
             ['sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
         );
         $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission(

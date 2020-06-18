@@ -262,7 +262,7 @@ class QuestionGroup extends LSActiveRecord
 
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("questionEditor/view/surveyid/$this->sid/gid/$this->gid");
+            $url = Yii::app()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid");
             $button .= '<a class="btn btn-default list-btn '.($surveyIsActive ? 'disabled' : '').' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><i class="fa fa-plus " ></i></a>';
         }
 

@@ -280,9 +280,9 @@ class database extends Survey_Common_Action
         LimeExpressionManager::SetDirtyFlag();
 
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
-            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
-        $this->getController()->redirect(['questionEditor/editdefaultvalues/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID]);
+        $this->getController()->redirect(['questionAdministration/editdefaultvalues/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID]);
     }
 
     /**
@@ -831,10 +831,10 @@ class database extends Survey_Common_Action
 
         if ($closeAfterSave) {
             // Redirect to summary
-            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         } else {
             // Redirect to edit
-            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
             // This works too: $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
@@ -1524,9 +1524,9 @@ class database extends Survey_Common_Action
         }
         //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        $redirectLink = $this->getController()->createUrl('questionEditor/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
+        $redirectLink = $this->getController()->createUrl('questionAdministration/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
         if (Yii::app()->request->getPost('saveandnew', '') != '') {
-            $redirectLink = $this->getController()->createUrl('questionEditor/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
+            $redirectLink = $this->getController()->createUrl('questionAdministration/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
         }
 
         $this->getController()->redirect($redirectLink);

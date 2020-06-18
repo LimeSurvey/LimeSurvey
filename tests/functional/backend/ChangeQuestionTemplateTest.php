@@ -62,7 +62,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl(
-                'questionEditor/view',
+                'questionAdministration/view',
                 array( 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
             );
             $web = self::$webDriver;
@@ -148,7 +148,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             // Go to edit question page.
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('questionEditor/view', array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
+            $url = $urlMan->createUrl('questionAdministration/view', array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
             $actualWebDriver = self::$webDriver->get($url);
 
             $this->assertNotNull($actualWebDriver, 'The WebDriver is null');
@@ -176,7 +176,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl(
-                'questionEditor/view',
+                'questionAdministration/view',
                 array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
             );
             $web = self::$webDriver;
@@ -228,7 +228,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl(
-                'questionEditor/view',
+                'questionAdministration/view',
                 array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
             );
             $web = self::$webDriver;
