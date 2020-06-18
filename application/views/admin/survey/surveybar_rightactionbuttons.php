@@ -27,7 +27,7 @@
                 //Save and new button
                 $paramArray = array();
                 $paramArray["surveyid"] = $surveyid;
-                $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", $paramArray);
+                $saveAndNewLink = $this->createUrl("questionGroupsAdministration/add/", $paramArray);
                 $saveAndAddQuestionLink = $this->createUrl("questionEditor/view/", $paramArray);
             ?>
 

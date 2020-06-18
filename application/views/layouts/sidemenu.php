@@ -24,7 +24,7 @@
     $createQuestionLink = "questionEditor/view/surveyid/".$surveyid;
     $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
-    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
+    $updateOrderLink =  $this->createUrl("questionGroupsAdministration/updateOrder/", ["surveyid" =>  $surveyid]);
 
     $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
     if ($activated || !$createPermission) {

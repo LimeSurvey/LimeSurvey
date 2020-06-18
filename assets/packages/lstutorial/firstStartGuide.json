@@ -155,7 +155,7 @@ steps: [
     },
     { //14
         element: '#group_name_en',
-        path: RegExp(filterUrl('/admin/questiongroups/sa/add', {'surveyid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/questiongroups/sa/add', {'surveyid': '[0-9]{4,25}'})),
         placement: 'bottom',
         title: 'Put in the title to your question group',
         content: `<p>The title will be visible to your participants and cannot be empty</p>
