@@ -864,6 +864,7 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$oQuestion->language]->attributes));
         }
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
+        $aQuestionAttributes['answercode'] = $aQuestionAttributes['answervalue']; // Must keep original code for -oth- and maybe other 
         if ((in_array($oQuestion->type, ["!", "L", "O", "F", "H"]))
             || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) ) {
 
