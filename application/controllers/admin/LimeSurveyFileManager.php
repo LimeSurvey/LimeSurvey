@@ -341,6 +341,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return;
         }
 
+        App()->loadLibrary('CommonStorage');
         
         if($ext == 'zip') {
             App()->loadLibrary('admin.pclzip');
@@ -367,6 +368,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 $this->throwError();
                 return;
             }
+            CommonStorage::upload_file($fullfilepath);
             $message = sprintf(gT("File %s uploaded"), $filename);
             $linkToImage = Yii::app()->baseUrl . '/' . $folder . '/' . $filename;
         }
