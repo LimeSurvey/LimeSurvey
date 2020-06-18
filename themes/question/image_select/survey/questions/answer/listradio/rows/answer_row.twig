@@ -13,7 +13,6 @@
  * @var code
  * @var answer
  * @var checkedState
- * @var sCheckconditionFunction
  * @var myfname
  * @var sValue
  **** Additional attributes:
@@ -43,9 +42,9 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
             id="answer{{ name}}{{ code }}"
             value="{{code}}"
             {{ checkedState }}
-            onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
+            onclick='cancelBubbleThis(event); checkconditions(this.value, this.name, this.type)'
         />
-        <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
+        <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event);'>
 
          <img class="unforce-height" src="{{ answer }}" 
          style="{%if question_template_attribute.fix_width > 1%} 
