@@ -784,8 +784,9 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $gquery = "SELECT *
-    FROM {{groups}}
+    FROM $quotedGroups
     WHERE sid=$iSurveyID
     ORDER BY gid";
     buildXMLFromQuery($xmlwriter, $gquery);
@@ -1858,8 +1859,9 @@ function groupGetXMLStructure($xml, $gid)
     $gid = sanitize_paranoid_string($gid);
 
     // QuestionGroup
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $gquery = "SELECT *
-    FROM {{groups}}
+    FROM $quotedGroups
     WHERE gid=$gid";
     buildXMLFromQuery($xml, $gquery);
 

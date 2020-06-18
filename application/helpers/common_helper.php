@@ -3537,7 +3537,8 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, group_name, description from {{groups}}
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+    $sql = "SELECT gid, language, group_name, description from $quotedGroups
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = dbExecuteAssoc($sql) or safeDie("Can't read groups table in transInsertAns"); // Checked
 
@@ -3781,7 +3782,8 @@ function fixLanguageConsistency($sid, $availlangs = '')
 
                 );
                 switchMSSQLIdentityInsert('groups', true);
-                Yii::app()->db->createCommand()->insert('{{groups}}', $data);
+                $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+                Yii::app()->db->createCommand()->insert($quotedGroups, $data);
                 switchMSSQLIdentityInsert('groups', false);
             }
         }

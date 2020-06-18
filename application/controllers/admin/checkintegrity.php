@@ -800,7 +800,8 @@ class CheckIntegrity extends Survey_Common_Action
         /*     Check questions                                                */
         /**********************************************************************/
         $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid LEFT JOIN {{groups}} g ON t.gid=g.gid';
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $oCriteria->join = "LEFT JOIN {{surveys}} s ON t.sid=s.sid LEFT JOIN $quotedGroups g ON t.gid=g.gid";
         $oCriteria->condition = '(g.gid IS NULL) OR (s.sid IS NULL)';
         $questions = Question::model()->findAll($oCriteria);
         foreach ($questions as $question) {
@@ -1018,10 +1019,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     protected function checkGroupOrderDuplicates()
     {
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $sQuery = "
             SELECT
                 g.sid
-            FROM {{groups}} g
+            FROM $quotedGroups g
             JOIN {{surveys}} s ON s.sid = g.sid
             WHERE g.language = s.language
             GROUP BY g.sid
@@ -1047,6 +1049,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     protected function checkQuestionOrderDuplicates()
     {
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $sQuery = "
             SELECT
                 q.sid,
@@ -1054,7 +1057,7 @@ class CheckIntegrity extends Survey_Common_Action
                 q.parent_qid,
                 q.scale_id
             FROM {{questions}} q
-            JOIN {{groups}} g ON q.gid = g.gid
+            JOIN $quotedGroups g ON q.gid = g.gid
             JOIN {{surveys}} s ON s.sid = q.sid
             WHERE q.language = s.language AND g.language = s.language
             GROUP BY q.sid, q.gid, q.parent_qid, q.scale_id

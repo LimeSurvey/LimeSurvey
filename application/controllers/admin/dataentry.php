@@ -456,7 +456,8 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper('database');
 
             //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-            $fnquery = "SELECT * FROM {{questions}}, {{groups}} g, {{surveys}} WHERE
+            $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+            $fnquery = "SELECT * FROM {{questions}}, $quotedGroups g, {{surveys}} WHERE
             {{questions}}.gid=g.gid AND
             {{questions}}.language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
             {{questions}}.sid={{surveys}}.sid AND {{questions}}.sid='$surveyid'

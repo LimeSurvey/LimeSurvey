@@ -144,7 +144,8 @@ class Statistics_userController extends SurveyController
          * only show questions where question attribute "public_statistics" is set to "1"
          */
 
-        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, $quotedGroups g, {{question_attributes}} qa
                     WHERE g.gid = q.gid AND g.language = :lang1 AND q.language = :lang2 AND q.sid = :surveyid AND q.qid = qa.qid AND q.parent_qid = 0 AND qa.attribute = 'public_statistics'";
         $databasetype = Yii::app()->db->getDriverName();
         if ($databasetype == 'mssql' || $databasetype == "sqlsrv" || $databasetype == "dblib") {

@@ -38,7 +38,8 @@ class DemomodeCommand extends CConsoleCommand
         //Truncate most of the tables 
         $truncatableTables = ['{{assessments}}', '{{answers}}','{{boxes}}', '{{conditions}}', '{{defaultvalues}}', '{{labels}}', '{{labelsets}}', '{{groups}}', '{{questions}}', '{{surveys}}', '{{surveys_languagesettings}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{quota}}', '{{quota_members}}', '{{quota_languagesettings}}', '{{question_attributes}}', '{{user_groups}}', '{{user_in_groups}}', '{{templates}}', '{{template_configuration}}', '{{participants}}', '{{participant_attribute_names}}', '{{participant_attribute_names_lang}}', '{{participant_attribute_values}}', '{{participant_shares}}', '{{settings_user}}', '{{failed_login_attempts}}', '{{saved_control}}', '{{survey_links}}'];
         foreach ($truncatableTables as $table) {
-            $actquery = "truncate table ".$table;
+            $quotedTable = Yii::app()->db->quoteTableName($table);
+            $actquery = "truncate table ".$quotedTable;
             Yii::app()->db->createCommand($actquery)->execute();
         }
         //Now delete the basics in all other tables 

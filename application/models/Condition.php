@@ -230,8 +230,9 @@ class Condition extends LSActiveRecord
      */
     public function getConditionCount($qid, $language, Condition $scenarionr)
     {
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $query = "SELECT count(*) as recordcount
-            FROM {{conditions}} c, {{questions}} q, {{groups}} g
+            FROM {{conditions}} c, {{questions}} q, $quotedGroups g
             WHERE c.cqid=q.qid "
                     ."AND q.gid=g.gid "
                     ."AND q.parent_qid=0 "
@@ -257,8 +258,9 @@ class Condition extends LSActiveRecord
      */
     public function getConditions($qid, $language, Condition $scenarionr)
     {
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $query = "SELECT c.cid, c.scenario, c.cqid, c.cfieldname, c.method, c.value, q.type
-            FROM {{conditions}} c, {{questions}} q, {{groups}} g
+            FROM {{conditions}} c, {{questions}} q, $quotedGroups g
             WHERE c.cqid=q.qid "
                     ."AND q.gid=g.gid "
                     ."AND q.parent_qid=0 "
