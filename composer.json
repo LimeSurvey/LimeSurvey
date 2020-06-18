@@ -30,6 +30,7 @@
 		}
 	},
 	"require": {
+		"google/cloud-storage": "^1.21"
 	},
     "config": {
         "vendor-dir": "third_party",
