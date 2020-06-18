@@ -1411,7 +1411,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
                     'delayOnElement' => "{element: 'element'}",
-                    'path' => ['questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
+                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'bottom',
                     'redirect' => false,
                     'prev' => '-1',
@@ -1425,7 +1425,7 @@ class LsDefaultDataSets
                 ."<p class='bg-warning alert'>".gT('Please add at least two subquestions')."</p>",
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer>tr:first-of-type .btnaddanswer',
-                    'path' => ['questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
+                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'left',
                     'redirect' => false,
                 ))
@@ -1438,7 +1438,7 @@ class LsDefaultDataSets
                 ."<p class='bg-warning alert'>".gT("Save and close now and let's edit the answer options.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#save-and-close-button',
-                    'path' => ['questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
+                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'left',
                     'reflex' => true,
                     'redirect' => false,
@@ -1484,7 +1484,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',
                     'delayOnElement' => "{element: 'element'}",
-                    'path' => ['questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
+                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'bottom',
                     'redirect' => false,
                     'prev' => '-1',
@@ -1497,7 +1497,7 @@ class LsDefaultDataSets
                 'content' => gT("Click on 'Save and close' or 'Next' to proceed."),
                 'settings' => json_encode(array(
                     'element' => '#save-and-close-button',
-                    'path' => ['questionEditor/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
+                    'path' => ['questionAdministration/view/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}'],
                     'placement' => 'left',
                     'reflex' => true,
                     'redirect' => false,

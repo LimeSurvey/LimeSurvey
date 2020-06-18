@@ -28,7 +28,7 @@
                 $paramArray = array();
                 $paramArray["surveyid"] = $surveyid;
                 $saveAndNewLink = $this->createUrl("questionGroupsAdministration/add/", $paramArray);
-                $saveAndAddQuestionLink = $this->createUrl("questionEditor/view/", $paramArray);
+                $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
             <a class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" role="button">
@@ -51,7 +51,7 @@
                     $paramArray["gid"] = $gid;
                 }
 
-                $saveAndNewLink = $this->createUrl("questionEditor/view/", $paramArray);
+                $saveAndNewLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>
 
             <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">

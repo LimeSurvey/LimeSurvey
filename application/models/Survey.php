@@ -1456,7 +1456,7 @@ class Survey extends LSActiveRecord
         $sEditUrl     = App()->createUrl("/admin/survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/".$this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
         $sAddGroup    = App()->createUrl("/questionGroupsAdministration/add/surveyid/".$this->sid);
-        $sAddquestion = App()->createUrl("/questionEditor/view/surveyid/".$this->sid);
+        $sAddquestion = App()->createUrl("/questionAdministration/view/surveyid/".$this->sid);
 
         $button = '';
 

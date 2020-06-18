@@ -524,7 +524,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
             }
 
-            $aData['last_question_link'] = $this->getController()->createUrl("questionEditor/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
+            $aData['last_question_link'] = $this->getController()->createUrl("questionAdministration/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
         } else {
             $aData['showLastQuestion'] = false;
         }
@@ -571,8 +571,8 @@ class SurveyAdmin extends Survey_Common_Action
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
-                        $curQuestion['link'] = $this->getController()->createUrl("questionEditor/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
-                        $curQuestion['editLink'] = $this->getController()->createUrl("questionEditor/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['link'] = $this->getController()->createUrl("questionAdministration/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['editLink'] = $this->getController()->createUrl("questionAdministration/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['hidden'] = isset($question->questionattributes['hidden']) && !empty($question->questionattributes['hidden']->value);
                         $questionText = isset($question->questionl10ns[$baselang])
                             ? $question->questionl10ns[$baselang]->question
@@ -2142,7 +2142,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab)
     {
-        $url = 'questionEditor/view/';
+        $url = 'questionAdministration/view/';
         $params = [
             'surveyid' => $sid, 
             'gid'      => $gid, 

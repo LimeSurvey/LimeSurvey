@@ -281,7 +281,7 @@ if ($hasDeletePermission && $oSurvey->active === 'N') {
     // Delete Button
     $buttons['delete'] = [
         'url' => '#',
-        'dataurl' => $this->createUrl("questionEditor/delete/"),
+        'dataurl' => $this->createUrl("questionAdministration/delete/"),
         'postdata' => json_encode(["qid" => $qid]),
         'name' => gT("Delete"),
         'type' => 'confirm',
@@ -314,7 +314,7 @@ if ($hasCopyPermission && $oSurvey->active === 'N') {
 
     // Copy Button
     $buttons['copy'] = [
-        'data-url' => $this->createUrl("questionEditor/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+        'data-url' => $this->createUrl("questionAdministration/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
         'triggerEvent' => 'copyQuestion',
         'name' => gT("Copy"),
         'icon' => 'icon-copy',
@@ -340,7 +340,7 @@ if ($hasUpdatePermission) {
 
     if ($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
         $buttons['default_values'] = [
-            'url' => $this->createUrl("questionEditor/editdefaultvalues", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+            'url' => $this->createUrl("questionAdministration/editdefaultvalues", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
             'name' => gT("Edit default anwers"),
             'id' => 'default_value_button',
             'icon' => 'icon-defaultanswers',
@@ -358,7 +358,7 @@ if ($qid == 0) {
     $paramArray["surveyid"] = $sid;
     $saveAndNewLink = $this->createUrl("questionGroupsAdministration/add/", ["surveyid" => $sid]);
     $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
-    $saveAndAddQuestionLink = $this->createUrl("questionEditor/view/", $paramArray);
+    $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
     
     $saveButton = [
         'id' => 'save',
@@ -409,7 +409,7 @@ if ($ownsImportButton) {
     if ($oSurvey->active === 'N') {
         // survey inactive
         $buttons['import'] = [
-            'url' => $this->createUrl("questionEditor/importView/", ["surveyid" => $sid]),
+            'url' => $this->createUrl("questionAdministration/importView/", ["surveyid" => $sid]),
             'class' => 'btn-default',
             'id' => 'import-button',
             'icon' => 'icon-import',

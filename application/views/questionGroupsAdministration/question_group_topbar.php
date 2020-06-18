@@ -247,7 +247,7 @@ if ($ownsSaveButton == true) {
     $saveAndNewLink = $this->createUrl("questionGroupsAdministration/add/", ["surveyid" => $sid]);
 
     $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
-    $saveAndAddQuestionLink = $this->createUrl("questionEditor/view/", $paramArray);
+    $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
 
     $saveButton = [
         'name' => gT('Save'),

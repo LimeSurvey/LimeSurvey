@@ -21,7 +21,7 @@
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     //$createQuestionGroupLink = $this->createUrl("/questionGroupsAdministration/add/", ["surveyid" =>  $surveyid]);
     $createQuestionGroupLink = "questionGroupsAdministration/add/surveyid/".$surveyid;
-    $createQuestionLink = "questionEditor/view/surveyid/".$surveyid;
+    $createQuestionLink = "questionAdministration/view/surveyid/".$surveyid;
     $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
     $updateOrderLink =  $this->createUrl("questionGroupsAdministration/updateOrder/", ["surveyid" =>  $surveyid]);

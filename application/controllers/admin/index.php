@@ -71,7 +71,7 @@ class Index extends Survey_Common_Action
                     if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
                         $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
                     }
-                    $aData['last_question_link'] = $this->getController()->createUrl("questionEditor/view/surveyid/$sid/gid/$gid/qid/$qid");
+                    $aData['last_question_link'] = $this->getController()->createUrl("questionAdministration/view/surveyid/$sid/gid/$gid/qid/$qid");
                 } else {
                     $aData['showLastQuestion'] = false;
                 }

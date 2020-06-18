@@ -136,11 +136,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
             'gid' => $gid,
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'openQuestionUrl' => $this->createUrl(
-                'questionEditor/view/',
+                'questionAdministration/view/',
                 ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']
             ),
             'createQuestionUrl' => $this->createUrl(
-                "questionEditor/view/",
+                "questionAdministration/view/",
                 ["surveyid" =>  $surveyid, 'gid' => $gid]
             ),
             'i10N' => [

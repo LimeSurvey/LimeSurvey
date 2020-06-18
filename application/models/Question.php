@@ -610,10 +610,10 @@ class Question extends LSActiveRecord
 
     public function getbuttons()
     {
-        $url         = App()->createUrl("questionEditor/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+        $url         = App()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-        $editurl     = Yii::app()->createUrl("questionEditor/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+        $editurl     = Yii::app()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->survey->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
@@ -631,7 +631,7 @@ class Question extends LSActiveRecord
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
                 ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
-                            . convertGETtoPOST(Yii::app()->createUrl("questionEditor/delete/", ["qid" => $this->qid]))
+                            . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
                         ."});'>"
                     .' <i class="text-danger fa fa-trash"></i>
                 </a>';

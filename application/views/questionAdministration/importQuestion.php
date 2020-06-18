@@ -3,7 +3,7 @@
  * This view display the page to add a new question to a controller, and to choose its group.
  * TODO : It will have to be merged with other question function such as "edit" or "copy".
  *
- * @var $this QuestionEditorController
+ * @var $this QuestionAdministrationController
  * @var $gid int|null groupID
  * @var $sid int surveyID
  */
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-lg-12">
             <?php echo CHtml::form(
-                ["questionEditor/import"],
+                ["questionAdministration/import"],
                 'post',
                 [
                     'id'       => 'importquestion',
