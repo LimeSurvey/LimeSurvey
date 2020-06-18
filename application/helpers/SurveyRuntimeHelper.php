@@ -101,8 +101,8 @@ class SurveyRuntimeHelper
         }
 
         if (!$this->previewgrp && !$this->previewquestion) {
-            $this->checkForDataSecurityAccepted();
             $this->initMove(); // main methods to init session, LEM, moves, errors, etc
+            $this->checkForDataSecurityAccepted();
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
