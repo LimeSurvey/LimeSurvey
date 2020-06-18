@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <div class="form-group">
                     <label class="control-label"><?php eT("Survey data policy checkbox label:"); ?></label>
                     <div class="">
-                        <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice_label'],array('class'=>'form-control','size'=>"80",'id'=>"dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
+                        <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice_label'],array('class'=>'form-control','size'=>"80",'maxlength'=>192,'id'=>"dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                     </div>
                 </div>
             </div>
