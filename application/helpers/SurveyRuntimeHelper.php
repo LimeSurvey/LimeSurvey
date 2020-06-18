@@ -102,7 +102,7 @@ class SurveyRuntimeHelper
 
         if (!$this->previewgrp && !$this->previewquestion) {
             $this->initMove(); // main methods to init session, LEM, moves, errors, etc
-            $this->checkForDataSecurityAccepted();
+            $this->checkForDataSecurityAccepted(); // must be called after initMove to allow LEM to be initialized
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
@@ -1142,7 +1142,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
-            // Link to Public statistics 
+            // Link to Public statistics
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;
