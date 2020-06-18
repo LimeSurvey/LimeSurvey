@@ -872,8 +872,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
-
-
+        $aQuestionAttributes['answercode'] = $aQuestionAttributes['answervalue']; // Must keep original code for -oth- and maybe other 
         if ((in_array($oQuestion->type, ["!", "L", "O", "F", "H"]))
             || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) ) {
 
