@@ -15,7 +15,7 @@ App()->getClientScript()->registerScript(
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
-    <?php echo CHtml::form(array("admin/questiongroups/sa/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup',
+    <?php echo CHtml::form(array("questionGroupsAdministration/update/gid/{$gid}"), 'post', array('id'=>'frmeditgroup',
         'name'=>'frmeditgroup', 'class'=>'form30 ', 'data-isvuecomponent' => 1)); ?>
         <input type="submit" class="hidden" name="triggerSubmitQuestionGroupEditor"
                id="triggerSubmitQuestionGroupEditor" />

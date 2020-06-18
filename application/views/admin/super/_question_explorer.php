@@ -41,7 +41,7 @@
                                 data-toggle="tooltip"
                                 data-placement="bottom"
                                 title="<?php eT('Add a group');?>"
-                                href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
+                                href="<?php echo $this->createUrl("/questionGroupsAdministration/add/surveyid/$iSurveyId"); ?>">
                                 <span class="fa fa-plus-sign"></span>
                                 <?php eT('Add group');?>
                             </a>

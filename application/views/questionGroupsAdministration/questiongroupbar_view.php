@@ -72,7 +72,7 @@
                         </a>
                     <?php endif; ?>
                     <?php if (isset($questiongroupbar['importbutton']) && $questiongroupbar['importbutton']): ?>
-                        <a class="btn btn-default" href="<?php echo App()->createUrl('admin/questiongroups/sa/importview/surveyid/' . $surveyid); ?>" role="button">
+                        <a class="btn btn-default" href="<?php echo App()->createUrl('questionGroupsAdministration/importview/surveyid/' . $surveyid); ?>" role="button">
                             <span class="icon-import"></span>
                             <?php eT('Import a group'); ?>
                         </a>
@@ -102,7 +102,7 @@
                         <?php if (empty($condarray)):?>
                             <!-- can delete group and question -->
                             <button class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal"
-                                data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?>'
+                                data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?>'
                                 data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>

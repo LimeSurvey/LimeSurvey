@@ -141,19 +141,19 @@
 
                                     <!-- Add group -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>">
+                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="panel-heading">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
-                                                    <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>" >
+                                                    <a  href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
+                                                    <p><a href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
