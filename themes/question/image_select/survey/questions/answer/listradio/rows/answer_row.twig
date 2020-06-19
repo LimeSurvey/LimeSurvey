@@ -34,7 +34,7 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
 </p>#}
 
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item imageselect-listitem {{ extra_class }}' {{ sDisplayStyle }} >
+<li id='javatbd{{ myfname }}' class='question-item answer-item radio-item imageselect-titem {{ extra_class }}' {{ sDisplayStyle }} >
     <div class="imageselect-container">
         <input
             class="imageselect-checkbox"
@@ -43,7 +43,6 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
             id="answer{{ name}}{{ code }}"
             value="{{code}}"
             {{ checkedState }}
-            onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
         />
         <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
 

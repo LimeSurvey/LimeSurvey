@@ -16,10 +16,14 @@
     id="answer{{ name }}"
     value=""
     {{ check_ans }}
-    onclick="if (document.getElementById('answer{{ name }}othertext') != null) document.getElementById('answer{{ name }}othertext').value='';{{ checkconditionFunction }}(this.value, this.name, this.type)"
     />
     <label for="answer{{ name }}" class="control-label radio-label">
         {{ gT('No answer') }}
     </label>
 </li>
+<script>
+    $("#answer{{ name }}").on("click",function(){
+        $("#answer{{ name }}othertext").val("").trigger("keyup");
+    });
+</script>
 <!-- endof answer_row_noanswer -->
