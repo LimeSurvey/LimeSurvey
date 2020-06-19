@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-06-15 13:14:20+00:00\n"
+"POT-Creation-Date: 2020-06-19 14:46:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1159,9 +1159,9 @@ msgstr ""
 #: application/controllers/UploaderController.php:306
 #: application/controllers/admin/dataentry.php:910
 #: application/controllers/admin/responses.php:250
-#: application/helpers/common_helper.php:1507
-#: application/helpers/common_helper.php:1756
-#: application/helpers/export_helper.php:1241
+#: application/helpers/common_helper.php:1508
+#: application/helpers/common_helper.php:1757
+#: application/helpers/export_helper.php:1242
 #: application/views/admin/dataentry/content_view.php:223
 #: tmp/runtime/twig_cache/5b/5b5c8a827a68b16d1f49bcac3e8e7850622d98f37b5bcbdd684b8b40bcea6822.php:127
 #: tmp/runtime/twig_cache/5b/5b5c8a827a68b16d1f49bcac3e8e7850622d98f37b5bcbdd684b8b40bcea6822.php:204
@@ -1245,8 +1245,8 @@ msgstr ""
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:78
 #: application/helpers/common_helper.php:173
 #: application/helpers/common_helper.php:622
-#: application/helpers/common_helper.php:4265
-#: application/helpers/common_helper.php:4314
+#: application/helpers/common_helper.php:4272
+#: application/helpers/common_helper.php:4321
 #: application/helpers/qanda_helper.php:708
 #: application/helpers/qanda_helper.php:1301
 #: application/helpers/qanda_helper.php:3744
@@ -2731,7 +2731,7 @@ msgid "No matching survey"
 msgstr ""
 
 #: application/controllers/admin/checkintegrity.php:743
-#: application/controllers/admin/checkintegrity.php:807
+#: application/controllers/admin/checkintegrity.php:808
 msgid "No matching group"
 msgstr ""
 
@@ -2743,31 +2743,31 @@ msgstr ""
 msgid "The related survey is missing."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:819
+#: application/controllers/admin/checkintegrity.php:820
 msgid "There is no matching survey."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:831
+#: application/controllers/admin/checkintegrity.php:832
 msgid "There is no matching user %s in group %s."
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:872
+#: application/controllers/admin/checkintegrity.php:873
 msgid "responses"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:877
+#: application/controllers/admin/checkintegrity.php:878
 msgid "timings"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:898
+#: application/controllers/admin/checkintegrity.php:899
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:951
+#: application/controllers/admin/checkintegrity.php:952
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/checkintegrity.php:1007
+#: application/controllers/admin/checkintegrity.php:1008
 msgid "Some automatic fixes were already applied."
 msgstr ""
 
@@ -3036,8 +3036,8 @@ msgstr ""
 #: application/helpers/export_helper.php:345
 #: application/helpers/export_helper.php:354
 #: application/helpers/export_helper.php:358
-#: application/helpers/export_helper.php:1842
-#: application/helpers/export_helper.php:1863
+#: application/helpers/export_helper.php:1843
+#: application/helpers/export_helper.php:1864
 #: application/helpers/expressions/em_manager_helper.php:3717
 #: application/helpers/expressions/em_manager_helper.php:3721
 #: application/helpers/questionHelper.php:64
@@ -3180,7 +3180,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1218
 #: application/helpers/common_helper.php:1003
 #: application/helpers/export_helper.php:360
-#: application/helpers/export_helper.php:1863
+#: application/helpers/export_helper.php:1864
 #: application/helpers/expressions/em_manager_helper.php:3723
 #: application/helpers/userstatistics_helper.php:1176
 #: application/views/admin/dataentry/content_view.php:692
@@ -3215,8 +3215,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1002
 #: application/helpers/export_helper.php:355
 #: application/helpers/export_helper.php:359
-#: application/helpers/export_helper.php:1842
-#: application/helpers/export_helper.php:1863
+#: application/helpers/export_helper.php:1843
+#: application/helpers/export_helper.php:1864
 #: application/helpers/expressions/em_manager_helper.php:3718
 #: application/helpers/expressions/em_manager_helper.php:3722
 #: application/helpers/questionHelper.php:63
@@ -3357,7 +3357,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1233
 #: application/helpers/common_helper.php:1008
 #: application/helpers/export_helper.php:363
-#: application/helpers/export_helper.php:1868
+#: application/helpers/export_helper.php:1869
 #: application/helpers/expressions/em_manager_helper.php:3726
 #: application/helpers/userstatistics_helper.php:1188
 #: application/views/admin/dataentry/content_view.php:716
@@ -3373,7 +3373,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1234
 #: application/helpers/common_helper.php:1010
 #: application/helpers/export_helper.php:364
-#: application/helpers/export_helper.php:1868
+#: application/helpers/export_helper.php:1869
 #: application/helpers/expressions/em_manager_helper.php:3727
 #: application/helpers/userstatistics_helper.php:1189
 #: application/views/admin/dataentry/content_view.php:717
@@ -3389,7 +3389,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1235
 #: application/helpers/common_helper.php:1009
 #: application/helpers/export_helper.php:365
-#: application/helpers/export_helper.php:1868
+#: application/helpers/export_helper.php:1869
 #: application/helpers/expressions/em_manager_helper.php:3728
 #: application/helpers/userstatistics_helper.php:1190
 #: application/views/admin/dataentry/content_view.php:718
@@ -3398,12 +3398,12 @@ msgid "Decrease"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1483
-#: application/helpers/common_helper.php:1591
+#: application/helpers/common_helper.php:1592
 msgid "Scale 1"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:1484
-#: application/helpers/common_helper.php:1615
+#: application/helpers/common_helper.php:1616
 msgid "Scale 2"
 msgstr ""
 
@@ -3432,7 +3432,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1319
 #: application/helpers/common_helper.php:995
 #: application/helpers/export_helper.php:350
-#: application/helpers/export_helper.php:1847
+#: application/helpers/export_helper.php:1848
 #: application/helpers/expressions/em_manager_helper.php:3714
 #: application/helpers/userstatistics_helper.php:1269
 #: application/views/admin/dataentry/content_view.php:103
@@ -3451,7 +3451,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1320
 #: application/helpers/common_helper.php:994
 #: application/helpers/export_helper.php:351
-#: application/helpers/export_helper.php:1847
+#: application/helpers/export_helper.php:1848
 #: application/helpers/expressions/em_manager_helper.php:3713
 #: application/helpers/userstatistics_helper.php:1270
 #: application/views/admin/dataentry/content_view.php:104
@@ -3474,12 +3474,12 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:2378
 #: application/helpers/common_helper.php:976
 #: application/helpers/common_helper.php:1023
-#: application/helpers/common_helper.php:1473
-#: application/helpers/common_helper.php:1781
-#: application/helpers/export_helper.php:1139
-#: application/helpers/export_helper.php:1149
-#: application/helpers/export_helper.php:1279
-#: application/helpers/export_helper.php:1296
+#: application/helpers/common_helper.php:1474
+#: application/helpers/common_helper.php:1782
+#: application/helpers/export_helper.php:1140
+#: application/helpers/export_helper.php:1150
+#: application/helpers/export_helper.php:1280
+#: application/helpers/export_helper.php:1297
 #: application/helpers/qanda_helper.php:1672
 #: application/helpers/questionHelper.php:700
 #: application/helpers/questionHelper.php:711
@@ -3499,7 +3499,7 @@ msgstr ""
 #: application/models/Question.php:880
 #: application/models/QuestionBaseDataSet.php:285
 #: application/models/SurveyDynamic.php:839
-#: application/models/SurveyDynamic.php:896
+#: application/models/SurveyDynamic.php:895
 #: application/views/admin/dataentry/content_view.php:175
 #: application/views/admin/dataentry/content_view.php:179
 #: application/views/admin/dataentry/content_view.php:199
@@ -3792,8 +3792,8 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:883
 #: application/helpers/LayoutHelper.php:136
 #: application/helpers/common_helper.php:622
-#: application/helpers/common_helper.php:4267
-#: application/helpers/common_helper.php:4316
+#: application/helpers/common_helper.php:4274
+#: application/helpers/common_helper.php:4323
 #: application/helpers/questionHelper.php:1208
 #: application/views/admin/dataentry/content_view.php:250
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:23
@@ -5190,7 +5190,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:200
 #: application/helpers/common_helper.php:1280
-#: application/helpers/common_helper.php:2804
+#: application/helpers/common_helper.php:2805
 #: application/models/SurveyLink.php:235 application/models/Token.php:85
 #: application/models/TokenDynamic.php:715
 #: application/views/admin/dataentry/caption_view.php:36
@@ -5198,7 +5198,7 @@ msgid "Access code"
 msgstr ""
 
 #: application/controllers/admin/responses.php:201
-#: application/helpers/common_helper.php:2784
+#: application/helpers/common_helper.php:2785
 #: application/models/Participant.php:241
 #: application/models/ParticipantShare.php:224 application/models/Token.php:81
 #: application/models/TokenDynamic.php:681
@@ -5211,7 +5211,7 @@ msgid "First name"
 msgstr ""
 
 #: application/controllers/admin/responses.php:202
-#: application/helpers/common_helper.php:2789
+#: application/helpers/common_helper.php:2790
 #: application/models/Participant.php:242
 #: application/models/ParticipantShare.php:219 application/models/Token.php:82
 #: application/models/TokenDynamic.php:689
@@ -5296,7 +5296,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:921
 #: application/controllers/admin/responses.php:935
-#: application/helpers/common_helper.php:1903
+#: application/helpers/common_helper.php:1904
 msgid "Total time"
 msgstr ""
 
@@ -9487,35 +9487,35 @@ msgstr ""
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:90
+#: application/helpers/admin/activate_helper.php:91
 msgid "This survey does not contain any question groups."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:111
+#: application/helpers/admin/activate_helper.php:113
 msgid "This group does not contain any question(s)."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:163
+#: application/helpers/admin/activate_helper.php:165
 msgid "This question has missing subquestions."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:175
+#: application/helpers/admin/activate_helper.php:177
 msgid "This question has missing answer options."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:190
+#: application/helpers/admin/activate_helper.php:192
 msgid "This question does not have a question 'type' set."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:205
+#: application/helpers/admin/activate_helper.php:207
 msgid "This question requires answers, but none are set."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:219
+#: application/helpers/admin/activate_helper.php:221
 msgid "This question requires a second answer set but none is set."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:263
+#: application/helpers/admin/activate_helper.php:265
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr ""
 
@@ -10126,27 +10126,27 @@ msgstr ""
 msgid "Referrer URL"
 msgstr ""
 
-#: application/helpers/common_helper.php:1644
+#: application/helpers/common_helper.php:1645
 msgid "Rank %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:1804
+#: application/helpers/common_helper.php:1805
 msgid "Other comment"
 msgstr ""
 
-#: application/helpers/common_helper.php:1909
+#: application/helpers/common_helper.php:1910
 msgid "Group time"
 msgstr ""
 
-#: application/helpers/common_helper.php:1915
+#: application/helpers/common_helper.php:1916
 msgid "Question time"
 msgstr ""
 
-#: application/helpers/common_helper.php:2135
+#: application/helpers/common_helper.php:2136
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:2794
+#: application/helpers/common_helper.php:2795
 #: application/models/Participant.php:243
 #: application/models/ParticipantShare.php:229
 #: application/models/SavedControl.php:186 application/models/Token.php:83
@@ -10156,185 +10156,185 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2799 application/models/Token.php:84
+#: application/helpers/common_helper.php:2800 application/models/Token.php:84
 #: application/models/TokenDynamic.php:706
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2809 application/models/Token.php:86
+#: application/helpers/common_helper.php:2810 application/models/Token.php:86
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2814 application/models/Token.php:88
+#: application/helpers/common_helper.php:2815 application/models/Token.php:88
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2819 application/models/Token.php:89
+#: application/helpers/common_helper.php:2820 application/models/Token.php:89
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2824 application/models/Token.php:90
+#: application/helpers/common_helper.php:2825 application/models/Token.php:90
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:2829 application/models/Token.php:92
+#: application/helpers/common_helper.php:2830 application/models/Token.php:92
 #: application/models/TokenDynamic.php:766
 msgid "Uses left"
 msgstr ""
 
-#: application/helpers/common_helper.php:4097
+#: application/helpers/common_helper.php:4104
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4396
+#: application/helpers/common_helper.php:4403
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4397
+#: application/helpers/common_helper.php:4404
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4398
+#: application/helpers/common_helper.php:4405
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4399
+#: application/helpers/common_helper.php:4406
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4400
+#: application/helpers/common_helper.php:4407
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4401
+#: application/helpers/common_helper.php:4408
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4402
+#: application/helpers/common_helper.php:4409
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4403
+#: application/helpers/common_helper.php:4410
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4404
+#: application/helpers/common_helper.php:4411
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4405
+#: application/helpers/common_helper.php:4412
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4406
+#: application/helpers/common_helper.php:4413
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4407
+#: application/helpers/common_helper.php:4414
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4408
+#: application/helpers/common_helper.php:4415
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4409
+#: application/helpers/common_helper.php:4416
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4410
+#: application/helpers/common_helper.php:4417
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4411
+#: application/helpers/common_helper.php:4418
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4412
+#: application/helpers/common_helper.php:4419
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4413
+#: application/helpers/common_helper.php:4420
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4414
+#: application/helpers/common_helper.php:4421
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4415
+#: application/helpers/common_helper.php:4422
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4416
+#: application/helpers/common_helper.php:4423
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4417
+#: application/helpers/common_helper.php:4424
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4418
+#: application/helpers/common_helper.php:4425
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4419
+#: application/helpers/common_helper.php:4426
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4420
+#: application/helpers/common_helper.php:4427
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4421
+#: application/helpers/common_helper.php:4428
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4422
+#: application/helpers/common_helper.php:4429
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4423
+#: application/helpers/common_helper.php:4430
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4424
+#: application/helpers/common_helper.php:4431
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4425
+#: application/helpers/common_helper.php:4432
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4426
+#: application/helpers/common_helper.php:4433
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4427
+#: application/helpers/common_helper.php:4434
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4428
+#: application/helpers/common_helper.php:4435
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4429
+#: application/helpers/common_helper.php:4436
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4430
+#: application/helpers/common_helper.php:4437
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4431
+#: application/helpers/common_helper.php:4438
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4435
+#: application/helpers/common_helper.php:4442
 msgid "(Automatic)"
 msgstr ""
 
-#: application/helpers/export_helper.php:1485
+#: application/helpers/export_helper.php:1486
 msgid "Only answer the following question if:"
 msgstr ""
 
