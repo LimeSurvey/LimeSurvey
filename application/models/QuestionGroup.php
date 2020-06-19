@@ -457,7 +457,7 @@ class QuestionGroup extends LSActiveRecord
         $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $sQuery = "select count(DISTINCT $quotedGroups.gid) from $quotedGroups
             left join {{questions}} on  $quotedGroups.gid={{questions}}.gid
-            where $quotedGroups and qid is not null";
+            where $quotedGroups.sid ={$surveyid} and qid is not null";
         $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
         EmCacheHelper::set($cacheKey, $result);
