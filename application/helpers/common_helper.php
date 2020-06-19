@@ -3324,7 +3324,7 @@ return strlen($a) < strlen($b); });
 
     # translate 'description' INSERTANS tags in groups
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $sql = "SELECT g.gid, language, group_name, description from $quoteG g
+    $sql = "SELECT g.gid, language, group_name, description from $quotedGroups g
     join {{group_l10ns}} l on g.gid=l.gid
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = Yii::app()->db->createCommand($sql)->query();
