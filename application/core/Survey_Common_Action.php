@@ -280,7 +280,7 @@ class Survey_Common_Action extends CAction
                 }
             } else {
                 switch ($sViewKey) {
-                    //// We'll use some Bootstrap alerts, and call them inside each correct view.
+                    // We'll use some Bootstrap alerts, and call them inside each correct view.
                     // Message
                     case 'message' :
                         if (empty($viewUrl['class'])) {

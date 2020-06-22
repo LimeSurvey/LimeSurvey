@@ -459,6 +459,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load complete view of survey properties and actions specified by $iSurveyID
      *
+     * REFACTORED in SurveyAdministrationController
+     *
      * @param mixed $iSurveyID Given Survey ID
      * @param mixed $gid       Given Group ID
      * @param mixed $qid       Given Question ID
