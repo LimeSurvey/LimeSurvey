@@ -80,6 +80,7 @@
             <category>Display</category>
             <sortorder>90</sortorder>
             <inputtype>integer</inputtype>
+            <min>-1</min>
             <default>-1</default>
             <help>Fix width of the images to this value. Leave empty to not change them.</help>
             <caption>Fix width</caption>
