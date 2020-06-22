@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.0 (build 200616) to 4.3.1 (build 200623) June 22, 2020
+-Fixed issue: Various SQL errors when running on MySQL 8 (Olle Harstedt)
+-Fixed issue [security] #16396: Multiple self-stored XSS in printanswer (Denis Chenu)
+-Fixed issue [security] #15452: (self) reflecting XSS in print answer view : Array/text (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by jbfloripa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: French (France) by jayce
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, CTFang
+#Updated translation: Chinese (Simplified) by NSRCRUC
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.2.8 (build 200608) to 4.3.0 (build 200616) June 16, 2020
 +New feature #15999: Extend list_participants to allow compare conditions (Olle Harstedt)
 +New feature #16263: New config setting for date format and question code in queXML (Olle Haerstedt)
