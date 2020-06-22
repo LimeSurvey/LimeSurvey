@@ -544,6 +544,9 @@ class LayoutHelper
 
     /**
      * Survey summary
+     *
+     * @deprecated implementation now in SurveyAdministrationController
+     *
      * @param array $aData
      */
     public function renderSurveySummary($aData)
@@ -562,13 +565,13 @@ class LayoutHelper
      * todo: here are to many things that should be done in controller ...
      *
      * @param array $aData
-     */
+     *
     private function _surveysummary($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
         $aSurveyInfo = getSurveyInfo($iSurveyID);
-        /** @var Survey $oSurvey */
+        /** @var Survey $oSurvey
         $oSurvey = $aData['oSurvey'];
         $activated = $aSurveyInfo['active'];
 
@@ -709,6 +712,7 @@ class LayoutHelper
             'sideMenuOpen' => true
         ));
     }
+    */
 
     /**
      * todo: document me...

@@ -63,7 +63,7 @@ $layoutHelper->updatenotification();
 //$this->_notifications();
 $layoutHelper->notifications();
 
-//// Here the main content views.
+// Here the main content views.
 //$this->_listquestiongroups($aData);
 $layoutHelper->renderListQuestionGroups($aData);
 
@@ -75,7 +75,7 @@ $layoutHelper->renderListQuestions($aData);
 //Rendered through /admin/super/sidebody
 //With content of /admin/survey/surveySummary_view
 //$this->_nsurveysummary($aData);
-$layoutHelper->renderSurveySummary($aData);
+//$layoutHelper->renderSurveySummary($aData); this is handled now in SurveyAdministrationController
 
 
 echo $content;
