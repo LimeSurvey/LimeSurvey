@@ -126,22 +126,32 @@ class SurveyAdministrationController extends LSBaseController
         if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
             $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         }
-        $this->_surveysummary($aData);
 
-        $this->render('survey', [
+        $this->surveysummary($aData);
 
+        /*
+         * $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
+        Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
+            'content' => $content,
+            'sideMenuOpen' => true
+        ));
+        */
+
+        $this->aData = $aData;
+        $this->render('sidebody', [
+            //'content' => $content,
+            'sideMenuOpen' => true
         ]);
-        //$this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
     /**
-     * Show survey summary
+     * Adds some other important adata variables for frontend
      *
      * this function comes from Layouthelper
      *
-     * @param array $aData
+     * @param array $aData pointer to array (this array will be changed here!!)
      */
-    private function _surveysummary($aData)
+    private function surveysummary(&$aData)
     {
         $iSurveyID = $aData['surveyid'];
 
@@ -281,12 +291,15 @@ class SurveyAdministrationController extends LSBaseController
 
         Yii::app()->getClientScript()->registerPackage('surveysummary');
 
+        /*
+        return $aData;
+
         $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
             'content' => $content,
             'sideMenuOpen' => true
         ));
+        */
     }
-
 
 }
