@@ -938,7 +938,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     buildXMLFromQuery($xml, $aquery, $sXMLTableTagName);
     $xml->endElement(); // close columns
     $xml->endDocument();
-    if ($sFileName = '') {
+    if ($sFileName == '') {
         return $xml->outputMemory(true);
     } else {
         return $bOK;
