@@ -814,6 +814,8 @@ class database extends Survey_Common_Action
         $languagelist = $oSurvey->additionalLanguages;
         $languagelist[] = $oSurvey->language;
 
+        $saveSurvey = true;
+
         Yii::app()->loadHelper('database');
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update')) {
@@ -881,129 +883,137 @@ class database extends Survey_Common_Action
                     if (count($data) > 0) {
                         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
                         $oSurveyLanguageSetting->setAttributes($data);
-                        $oSurveyLanguageSetting->save(); // save the change to database
+                        // Save the change to database
+                        if (!$oSurveyLanguageSetting->save()) { 
+                            $saveSurvey = false;
+                            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurveyLanguageSetting,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+                            break;
+                        }
                     }
                 }
             }
         }
-        ////////////////////////////////////////////////////////////////////////////////////
-        // General settings (copy / paste from surveyadmin::update)
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
-            // Preload survey
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $aOldAttributes = $oSurvey->attributes;
-            // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
-            $pluginSettings = App()->request->getPost('plugin', array());
-            foreach ($pluginSettings as $plugin => $settings) {
-                $settingsEvent = new PluginEvent('newSurveySettings');
-                $settingsEvent->set('settings', $settings);
-                $settingsEvent->set('survey', $iSurveyID);
-                App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
-            }
 
-            /* Start to fix some param before save (TODO : use models directly ?) */
-            /* Date management */
-            Yii::app()->loadHelper('surveytranslator');
-            $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
-            Yii::app()->loadLibrary('Date_Time_Converter');
+        if ($saveSurvey) {
+            ////////////////////////////////////////////////////////////////////////////////////
+            // General settings (copy / paste from surveyadmin::update)
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
+                // Preload survey
+                $oSurvey = Survey::model()->findByPk($iSurveyID);
+                $aOldAttributes = $oSurvey->attributes;
+                // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
+                $pluginSettings = App()->request->getPost('plugin', array());
+                foreach ($pluginSettings as $plugin => $settings) {
+                    $settingsEvent = new PluginEvent('newSurveySettings');
+                    $settingsEvent->set('settings', $settings);
+                    $settingsEvent->set('survey', $iSurveyID);
+                    App()->getPluginManager()->dispatchEvent($settingsEvent, $plugin);
+                }
 
-            $unfilteredStartdate = App()->request->getPost('startdate', null);
-            $startdate = $this->_filterEmptyFields($oSurvey, 'startdate');
-            if ($unfilteredStartdate === null) {
-                // Not submitted.
-            } elseif (trim($unfilteredStartdate) == "") {
-                $oSurvey->startdate = "";
-            } else {
+                /* Start to fix some param before save (TODO : use models directly ?) */
+                /* Date management */
+                Yii::app()->loadHelper('surveytranslator');
+                $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i');
-                $startdate = $datetimeobj->convert("Y-m-d H:i:s");
-                $oSurvey->startdate = $startdate;
-            }
 
-            $unfilteredExpires = App()->request->getPost('expires', null);
-            $expires = $this->_filterEmptyFields($oSurvey, 'expires');
-            if ($unfilteredExpires === null) {
-                // Not submitted.
-            } elseif (trim($unfilteredExpires) == "") {
-                // Must not convert if empty.
-                $oSurvey->expires = "";
-            } else {
-                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i');
-                $expires = $datetimeobj->convert("Y-m-d H:i:s");
-                $oSurvey->expires = $expires;
-            }
+                $unfilteredStartdate = App()->request->getPost('startdate', null);
+                $startdate = $this->_filterEmptyFields($oSurvey, 'startdate');
+                if ($unfilteredStartdate === null) {
+                    // Not submitted.
+                } elseif (trim($unfilteredStartdate) == "") {
+                    $oSurvey->startdate = "";
+                } else {
+                    Yii::app()->loadLibrary('Date_Time_Converter');
+                    $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i');
+                    $startdate = $datetimeobj->convert("Y-m-d H:i:s");
+                    $oSurvey->startdate = $startdate;
+                }
 
-            $oSurvey->assessments = $this->_filterEmptyFields($oSurvey, 'assessments');
+                $unfilteredExpires = App()->request->getPost('expires', null);
+                $expires = $this->_filterEmptyFields($oSurvey, 'expires');
+                if ($unfilteredExpires === null) {
+                    // Not submitted.
+                } elseif (trim($unfilteredExpires) == "") {
+                    // Must not convert if empty.
+                    $oSurvey->expires = "";
+                } else {
+                    $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i');
+                    $expires = $datetimeobj->convert("Y-m-d H:i:s");
+                    $oSurvey->expires = $expires;
+                }
 
-            if ($oSurvey->active != 'Y') {
-                $oSurvey->anonymized = $this->_filterEmptyFields($oSurvey, 'anonymized');
-                $oSurvey->savetimings = $this->_filterEmptyFields($oSurvey, 'savetimings');
-                $oSurvey->datestamp = $this->_filterEmptyFields($oSurvey, 'datestamp');
-                $oSurvey->ipaddr = $this->_filterEmptyFields($oSurvey, 'ipaddr');
-                $oSurvey->refurl = $this->_filterEmptyFields($oSurvey, 'refurl');
-            }
+                $oSurvey->assessments = $this->_filterEmptyFields($oSurvey, 'assessments');
 
-            $oSurvey->publicgraphs = $this->_filterEmptyFields($oSurvey, 'publicgraphs');
-            $oSurvey->usecookie = $this->_filterEmptyFields($oSurvey, 'usecookie');
-            $oSurvey->allowregister = $this->_filterEmptyFields($oSurvey, 'allowregister');
-            $oSurvey->allowsave = $this->_filterEmptyFields($oSurvey, 'allowsave');
-            $oSurvey->navigationdelay = (int) $this->_filterEmptyFields($oSurvey, 'navigationdelay');
-            $oSurvey->printanswers = $this->_filterEmptyFields($oSurvey, 'printanswers');
-            $oSurvey->publicstatistics = $this->_filterEmptyFields($oSurvey, 'publicstatistics');
-            $oSurvey->autoredirect = $this->_filterEmptyFields($oSurvey, 'autoredirect');
+                if ($oSurvey->active != 'Y') {
+                    $oSurvey->anonymized = $this->_filterEmptyFields($oSurvey, 'anonymized');
+                    $oSurvey->savetimings = $this->_filterEmptyFields($oSurvey, 'savetimings');
+                    $oSurvey->datestamp = $this->_filterEmptyFields($oSurvey, 'datestamp');
+                    $oSurvey->ipaddr = $this->_filterEmptyFields($oSurvey, 'ipaddr');
+                    $oSurvey->refurl = $this->_filterEmptyFields($oSurvey, 'refurl');
+                }
 
-            // save into the database only if global settings are off
-            if (getGlobalSetting('showxquestions') === 'choose'){
-                $oSurvey->showxquestions = $this->_filterEmptyFields($oSurvey, 'showxquestions');
-            }
-            if (getGlobalSetting('showgroupinfo') === 'choose'){
-                $oSurvey->showgroupinfo = $this->_filterEmptyFields($oSurvey, 'showgroupinfo');
-            }
-            if (getGlobalSetting('showqnumcode') === 'choose'){
-                $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
-            }
-            if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
-                $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
-            }
-            $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
-            $oSurvey->showsurveypolicynotice = $this->_filterEmptyFields($oSurvey, 'showsurveypolicynotice');
-            $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
-            $oSurvey->questionindex = (int) $this->_filterEmptyFields($oSurvey, 'questionindex');
-            $oSurvey->nokeyboard = $this->_filterEmptyFields($oSurvey, 'nokeyboard');
-            $oSurvey->showprogress = $this->_filterEmptyFields($oSurvey, 'showprogress');
-            $oSurvey->listpublic = $this->_filterEmptyFields($oSurvey, 'listpublic');
-            $oSurvey->htmlemail = $this->_filterEmptyFields($oSurvey, 'htmlemail');
-            $oSurvey->sendconfirmation = $this->_filterEmptyFields($oSurvey, 'sendconfirmation');
-            $oSurvey->tokenanswerspersistence = $this->_filterEmptyFields($oSurvey, 'tokenanswerspersistence');
-            $oSurvey->alloweditaftercompletion = $this->_filterEmptyFields($oSurvey, 'alloweditaftercompletion');
-            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
-            $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey, 'emailresponseto');
-            $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey, 'emailnotificationto');
-            $googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
-            $oSurvey->googleanalyticsapikeysetting = $googleanalyticsapikeysetting;
+                $oSurvey->publicgraphs = $this->_filterEmptyFields($oSurvey, 'publicgraphs');
+                $oSurvey->usecookie = $this->_filterEmptyFields($oSurvey, 'usecookie');
+                $oSurvey->allowregister = $this->_filterEmptyFields($oSurvey, 'allowregister');
+                $oSurvey->allowsave = $this->_filterEmptyFields($oSurvey, 'allowsave');
+                $oSurvey->navigationdelay = (int) $this->_filterEmptyFields($oSurvey, 'navigationdelay');
+                $oSurvey->printanswers = $this->_filterEmptyFields($oSurvey, 'printanswers');
+                $oSurvey->publicstatistics = $this->_filterEmptyFields($oSurvey, 'publicstatistics');
+                $oSurvey->autoredirect = $this->_filterEmptyFields($oSurvey, 'autoredirect');
 
-            if ($googleanalyticsapikeysetting == "Y") {
-                $oSurvey->googleanalyticsapikey = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikey');
-            } elseif ($googleanalyticsapikeysetting == "G") {
-                $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-            } elseif ($googleanalyticsapikeysetting == "N") {
-                $oSurvey->googleanalyticsapikey = "";
-            }
+                // save into the database only if global settings are off
+                if (getGlobalSetting('showxquestions') === 'choose'){
+                    $oSurvey->showxquestions = $this->_filterEmptyFields($oSurvey, 'showxquestions');
+                }
+                if (getGlobalSetting('showgroupinfo') === 'choose'){
+                    $oSurvey->showgroupinfo = $this->_filterEmptyFields($oSurvey, 'showgroupinfo');
+                }
+                if (getGlobalSetting('showqnumcode') === 'choose'){
+                    $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
+                }
+                if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
+                    $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
+                }
+                $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
+                $oSurvey->showsurveypolicynotice = $this->_filterEmptyFields($oSurvey, 'showsurveypolicynotice');
+                $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
+                $oSurvey->questionindex = (int) $this->_filterEmptyFields($oSurvey, 'questionindex');
+                $oSurvey->nokeyboard = $this->_filterEmptyFields($oSurvey, 'nokeyboard');
+                $oSurvey->showprogress = $this->_filterEmptyFields($oSurvey, 'showprogress');
+                $oSurvey->listpublic = $this->_filterEmptyFields($oSurvey, 'listpublic');
+                $oSurvey->htmlemail = $this->_filterEmptyFields($oSurvey, 'htmlemail');
+                $oSurvey->sendconfirmation = $this->_filterEmptyFields($oSurvey, 'sendconfirmation');
+                $oSurvey->tokenanswerspersistence = $this->_filterEmptyFields($oSurvey, 'tokenanswerspersistence');
+                $oSurvey->alloweditaftercompletion = $this->_filterEmptyFields($oSurvey, 'alloweditaftercompletion');
+                $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
+                $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey, 'emailresponseto');
+                $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey, 'emailnotificationto');
+                $googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikeysetting');
+                $oSurvey->googleanalyticsapikeysetting = $googleanalyticsapikeysetting;
 
-            $oSurvey->googleanalyticsstyle = $this->_filterEmptyFields($oSurvey, 'googleanalyticsstyle');
+                if ($googleanalyticsapikeysetting == "Y") {
+                    $oSurvey->googleanalyticsapikey = $this->_filterEmptyFields($oSurvey, 'googleanalyticsapikey');
+                } elseif ($googleanalyticsapikeysetting == "G") {
+                    $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
+                } elseif ($googleanalyticsapikeysetting == "N") {
+                    $oSurvey->googleanalyticsapikey = "";
+                }
 
-            $tokenlength = $this->_filterEmptyFields($oSurvey, 'tokenlength');
-            $oSurvey->tokenlength = (int) (($tokenlength < 5 || $tokenlength > 36) ? 15 : $tokenlength);
+                $oSurvey->googleanalyticsstyle = $this->_filterEmptyFields($oSurvey, 'googleanalyticsstyle');
 
-            $event = new PluginEvent('beforeSurveySettingsSave');
-            $event->set('modifiedSurvey', $oSurvey);
-            App()->getPluginManager()->dispatchEvent($event);
-            $aAfterApplyAttributes = $oSurvey->attributes;
+                $tokenlength = $this->_filterEmptyFields($oSurvey, 'tokenlength');
+                $oSurvey->tokenlength = (int) (($tokenlength < 5 || $tokenlength > 36) ? 15 : $tokenlength);
 
-            if ($oSurvey->save()) {
-                Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
-            } else {
-                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+                $event = new PluginEvent('beforeSurveySettingsSave');
+                $event->set('modifiedSurvey', $oSurvey);
+                App()->getPluginManager()->dispatchEvent($event);
+                $aAfterApplyAttributes = $oSurvey->attributes;
+
+                if ($oSurvey->save()) {
+                    Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+                } else {
+                    Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+                }
             }
         }
 
