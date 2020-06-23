@@ -953,12 +953,12 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     foreach ($surveylanguages as $surveylanguage) {
         $xml->writeElement('language', $surveylanguage);
     }
+    $xml->endElement();
     surveyGetXMLStructure($iSurveyID, $xml, $exclude);
     // survey theme configuration - db values
     surveyGetThemeConfiguration($iSurveyID, $xml, false, 'themes');
     // survey theme configuration - inherited values
     surveyGetThemeConfiguration($iSurveyID, $xml, true, 'themes_inherited');
-    $xml->endElement(); // close columns
     $xml->endDocument();
     return $xml->outputMemory(true);
 }
