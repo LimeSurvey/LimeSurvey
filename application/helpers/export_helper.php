@@ -953,7 +953,6 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     foreach ($surveylanguages as $surveylanguage) {
         $xml->writeElement('language', $surveylanguage);
     }
-    $xml->endElement();
     surveyGetXMLStructure($iSurveyID, $xml, $exclude);
     // survey theme configuration - db values
     surveyGetThemeConfiguration($iSurveyID, $xml, false, 'themes');
