@@ -561,6 +561,9 @@
 
                 if (// For Safari
                     iframe.src == "javascript:'%3CHtml%3E%3C/html%3E';" ||
+                    // For Chrome
+                    iframe.src == "javascript:false" ||
+                    iframe.src == "javascript:false;" ||
                     // For FF, IE
                     iframe.src == "javascript:'<html></html>';"){
                         // First time around, do not delete.
