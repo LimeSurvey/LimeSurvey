@@ -30,9 +30,11 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Initiates the survey action, checks for superadmin permission
      *
+     * todo REFACTORING do we need this?
+     *
      * @param CController $controller Controller
      * @param string      $id         ID
-     * 
+     *
      * @access public
      */
     public function __construct($controller, $id)
@@ -42,6 +44,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Loads list of surveys and its few quick properties.
+     *
+     * REFACTORED in SurveyAdministrationController
      *
      * @access public
      * @return void
@@ -53,7 +57,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Delete multiple survey
-     * 
+     *
      * @return void
      */
     public function deleteMultiple()

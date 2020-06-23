@@ -80,9 +80,13 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] =
+            $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveyid'] = $iSurveyID;
-        $aData['display']['surveysummary'] = true;  //todo this is set because ONLY this leads to render the view surveySummary_view
+        $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
+
+        //NOTE this is set because ONLY this leads to render the view surveySummary_view, no need to use in anymore
+       // $aData['display']['surveysummary'] = true;
 
         // Last survey visited
         $setting_entry = 'last_survey_'. App()->user->getId();
@@ -129,14 +133,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $this->surveysummary($aData);
 
-        /*
-         * $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
-        Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
-            'content' => $content,
-            'sideMenuOpen' => true
-        ));
-        */
-
         $this->aData = $aData;
         $this->render('sidebody', [
             //'content' => $content,
@@ -145,11 +141,55 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
+     * Loads list of surveys and its few quick properties.
+     *
+     * @access public
+     * @return void
+     */
+    public function actionIndex()
+    {
+        $this->redirect(
+            array(
+                'admin/survey/sa/listsurveys' //todo change this link
+            )
+        );
+    }
+
+    /**
+     * List Surveys.
+     *
+     * @return void
+     */
+    public function actionListsurveys()
+    {
+        Yii::app()->loadHelper('surveytranslator');
+        $aData = array();
+        $aData['issuperadmin'] = false;
+
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $aData['issuperadmin'] = true;
+        }
+        $aData['model'] = new Survey('search');
+        $aData['groupModel'] = new SurveysGroups('search');
+        $aData['fullpagebar']['button']['newsurvey'] = true;
+
+        $this->render('listSurveys_view', $aData);
+
+        //$this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
+    }
+
+    /** ************************************************************************************************************ */
+    /**                      The following functions could be moved to model or service classes                      */
+    /** **********************************************************************************************************++ */
+
+    /**
      * Adds some other important adata variables for frontend
      *
-     * this function comes from Layouthelper
+     * this function came from Layouthelper
      *
      * @param array $aData pointer to array (this array will be changed here!!)
+     *
+     * @throws CException
      */
     private function surveysummary(&$aData)
     {

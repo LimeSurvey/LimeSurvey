@@ -264,7 +264,8 @@ class Survey_Common_Action extends CAction
         if (!empty($sAction)) {
                     $sViewPath .= $sAction.'/';
         }
-        ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
+        //TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..],
+        //todo and then call to function such as $this->_nsurveysummary($aData);
         // Load views
         $content = "";
 
