@@ -150,7 +150,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         $this->redirect(
             array(
-                'admin/survey/sa/listsurveys' //todo change this link
+                'surveyAdministration/listsurveys'
             )
         );
     }
@@ -174,8 +174,176 @@ class SurveyAdministrationController extends LSBaseController
         $aData['fullpagebar']['button']['newsurvey'] = true;
 
         $this->render('listSurveys_view', $aData);
+    }
 
-        //$this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
+    /**
+     * Delete multiple survey
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionDeleteMultiple()
+    {
+        $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults = array();
+        foreach ($aSurveys as $iSurveyID) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+                $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = Survey::model()->deleteSurvey($iSurveyID);
+            }
+        }
+        $this->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Deleted')
+            )
+        );
+    }
+
+    /**
+     * Render selected items for massive action
+     *
+     * @return void
+     */
+    public function actionRenderItemsSelected()
+    {
+        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
+        $aResults = [];
+        $tableLabels= array(gT('Survey ID'),gT('Survey title') ,gT('Status'));
+        foreach ($aSurveys as $iSurveyID) {
+            if (!is_numeric($iSurveyID)) {
+                continue;
+            }
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+                $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = 'selected';
+            }
+        }
+
+        $this->renderPartial(
+            'ext.admin.grid.MassiveActionsWidget.views._selected_items',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Selected'),
+                'tableLabels'  => $tableLabels
+            )
+        );
+    }
+
+    /**
+     *
+     * @param int    $iSurveyID  Given Survey ID
+     * @param string $sSubAction Given Subaction
+     *
+     * @return void
+     *
+     * @todo Add TypeDoc.
+     */
+    public function actionRegenerateQuestionCodes($iSurveyID, $sSubAction)
+    {
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
+            $this->redirect(array('surveyAdministration/view', 'surveyid'=>$iSurveyID));
+        }
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if ($oSurvey->isActive) {
+            Yii::app()->setFlashMessage(gT("You can't update question code for an active survey."), 'error');
+            $this->redirect(array('surveyAdministration/view', 'surveyid'=>$iSurveyID));
+        }
+        //Automatically renumbers the "question codes" so that they follow
+        //a methodical numbering method
+        $iQuestionNumber = 1;
+        $iGroupNumber    = 0;
+        $iGroupSequence  = 0;
+        $oQuestions      = Question::model()
+            ->with(['group', 'questionl10ns'])
+            ->findAll(
+                array(
+                    'select' => 't.qid,t.gid',
+                    'condition' => "t.sid=:sid and questionl10ns.language=:language and parent_qid=0",
+                    'order' => 'group.group_order, question_order',
+                    'params' => array(':sid' => $iSurveyID, ':language' => $oSurvey->language)
+                )
+            );
+
+        foreach ($oQuestions as $oQuestion) {
+            if ($sSubAction == 'bygroup' && $iGroupNumber != $oQuestion->gid) {
+                //If we're doing this by group, restart the numbering when the group number changes
+                $iQuestionNumber = 1;
+                $iGroupNumber    = $oQuestion->gid;
+                $iGroupSequence++;
+            }
+            $sNewTitle = (($sSubAction == 'bygroup') ? ('G'.$iGroupSequence) : '')."Q".
+                str_pad($iQuestionNumber, 5, "0", STR_PAD_LEFT);
+            Question::model()->updateAll(array('title'=>$sNewTitle), 'qid=:qid', array(':qid'=>$oQuestion->qid));
+            $iQuestionNumber++;
+            $iGroupNumber = $oQuestion->gid;
+        }
+        Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        $this->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
+    }
+
+    /**
+     * This function prepares the view for a new survey
+     *
+     * @return void
+     */
+    public function actionNewSurvey()
+    {
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        $survey = new Survey();
+        // set 'inherit' values to survey attributes
+        $survey->setToInherit();
+
+        $this->_registerScriptFiles();
+        Yii::app()->loadHelper('surveytranslator');
+        $esrow = $this->_fetchSurveyInfo('newsurvey');
+        Yii::app()->loadHelper('admin/htmleditor');
+
+        //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
+        $aData                = $this->_generalTabNewSurvey();
+        $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
+        $aData['esrow']       = $esrow;
+
+        $aData['oSurvey'] = $survey;
+        $aData['bShowAllOptions'] = true;
+        $aData['bShowInherited'] = true;
+        $oSurveyOptions = $survey;
+        $oSurveyOptions->bShowRealOptionValues = false;
+        $oSurveyOptions->setOptions();
+        $aData['oSurveyOptions'] = $oSurveyOptions->oOptionLabels;
+
+        $aData['optionsOnOff'] = array(
+            'Y' => gT('On', 'unescaped'),
+            'N' => gT('Off', 'unescaped'),
+        );
+
+        //Prepare the edition panes
+        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
+        $aData['datasecdata']               = array_merge($aData, $this->_getDataSecurityEditData($survey));
+        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
+        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
+        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
+        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
+        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens($esrow));
+
+        $aViewUrls[] = 'newSurvey_view';
+
+        $arrayed_data                                              = array();
+        $arrayed_data['oSurvey']                                   = $survey;
+        $arrayed_data['data']                                      = $aData;
+        $arrayed_data['title_bar']['title']                        = gT('New survey');
+        $arrayed_data['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
+        $arrayed_data['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
+
+        $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
 
     /** ************************************************************************************************************ */

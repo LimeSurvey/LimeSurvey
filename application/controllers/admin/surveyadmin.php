@@ -58,6 +58,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Delete multiple survey
      *
+     * Refactored in SurveyAdministrationController
+     *
      * @return void
      */
     public function deleteMultiple()
@@ -83,6 +85,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Render selected items for massive action
+     *
+     * Refactored in SurveyAdministrationController
      * 
      * @return void
      */
@@ -114,7 +118,9 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * List Surveys.
-     * 
+     *
+     * Refactored in SurveyAdministrationController
+     *
      * @return void
      */
     public function listsurveys()
@@ -136,6 +142,8 @@ class SurveyAdmin extends Survey_Common_Action
      * 
      * @param int    $iSurveyID  Given Survey ID
      * @param string $sSubAction Given Subaction
+     *
+     * Refactored in SurveyAdministrationController
      * 
      * @return void
      *
@@ -188,6 +196,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * This function prepares the view for a new survey
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @return void
      */

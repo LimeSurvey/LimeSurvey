@@ -65,7 +65,7 @@
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
-                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                <a style="" href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
                     <span class="fa fa-list" ></span>
                     <?php eT("Surveys");?>
                 </a>

@@ -285,7 +285,7 @@ if (!$isActive && $hasSurveyContentPermission) {
 
     // Straight
     $buttons['straight'] = [
-        'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/straight"),
+        'url' => $this->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"),
         'icon' => 'icon-resetsurveylogic',
         'name' => gT('Straight'),
         'id' => 'straight'
@@ -294,7 +294,7 @@ if (!$isActive && $hasSurveyContentPermission) {
 
     // By Question Group
     $buttons['by_question_group'] = [
-        'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
+        'url' => $this->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"),
         'name' => gT('By question group'),
         'icon' => 'icon-resetsurveylogic',
         'id' => 'by_question_group'
