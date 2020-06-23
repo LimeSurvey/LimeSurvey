@@ -828,9 +828,6 @@ class database extends Survey_Common_Action
             Yii::app()->setFlashMessage($ex->getMessage(), "error");
         }
 
-        /* Reload $oSurvey (language are fixed : need it ?) */
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-
         // Url params in json
         if (Yii::app()->request->getPost('allurlparams',false)!==false) {
             $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
