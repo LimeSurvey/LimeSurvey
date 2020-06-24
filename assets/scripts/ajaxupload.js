@@ -509,7 +509,7 @@
             // "This page contains both secure and nonsecure items"
             // Anyway, it doesn't do any harm.
             iframe.setAttribute('id', id);
-            iframe.setAttribute('srcdoc', this._settings.action);
+            // iframe.setAttribute('srcdoc', this._settings.action);
 
             iframe.style.display = 'none';
             document.body.appendChild(iframe);
@@ -561,9 +561,6 @@
 
                 if (// For Safari
                     iframe.src == "javascript:'%3CHtml%3E%3C/html%3E';" ||
-                    // For Chrome
-                    iframe.src == "javascript:false" ||
-                    iframe.src == "javascript:false;" ||
                     // For FF, IE
                     iframe.src == "javascript:'<html></html>';"){
                         // First time around, do not delete.
