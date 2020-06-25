@@ -1496,6 +1496,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load survey information based on $action.
      * survey::_fetchSurveyInfo()
+     *
+     * REFACRORED
      * 
      * @param string $action    Given Action
      * @param int    $iSurveyID Given Survey ID
@@ -1522,6 +1524,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load "General" tab of new survey screen.
      * survey::_generalTabNewSurvey()
+     *
+     * REFACTORED
      *
      * @return array
      */
@@ -1556,6 +1560,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Returns Data for general template.
+     *
+     * REFACTORED
      * 
      * @param integer $iSurveyID Given Survey ID
      *
@@ -1586,6 +1592,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns Date for Data Security Edit.
      * tab_edit_view_datasecurity
      * editDataSecurityLocalSettings_view
+     *
+     * REFACTORED
      * 
      * @param Survey $survey Given Survey
      * 
@@ -1622,6 +1630,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Returns data for text edit.
      *
+     * REFACROED
+     *
      * @param Survey $survey Given Survey.
      * 
      * @return array
@@ -1657,6 +1667,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns Data for Tab General Edit Survey.
      * survey::_generalTabEditSurvey()
      * Load "General" tab of edit survey screen.
+     *
+     * REFACTORED
      * 
      * @param Survey $survey Given Survey
      * 
@@ -1694,6 +1706,8 @@ class SurveyAdmin extends Survey_Common_Action
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
      *
+     * REFACTORED
+     *
      * @param mixed $esrow ?
      * 
      * @return array
@@ -1727,6 +1741,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns the data for Tab Notification and Data Management.
      * survey::_tabNotificationDataManagement()
      * Load "Notification & data management" tab.
+     *
+     * REFACTORED
      * 
      * @param mixed $esrow ?
      * 
@@ -1743,6 +1759,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns the data for Tab Tokens.
      * survey::_tabTokens()
      * Load "Tokens" tab.
+     *
+     * REFACTORED
      * 
      * @param mixed $esrow ?
      * 
@@ -1948,6 +1966,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Executes registerScriptFile for all needed script/style files
+     *
+     * REFACTORED in SurveyAdministration
      *
      * @return void
      */

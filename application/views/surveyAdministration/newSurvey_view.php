@@ -1,7 +1,7 @@
 <?php
 /**
  * Create survey
- * @var AdminController $this
+ * @var SurveyAdministrationController $this
  * @var Survey $oSurvey
  */
 

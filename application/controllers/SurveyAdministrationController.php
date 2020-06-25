@@ -143,6 +143,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Loads list of surveys and its few quick properties.
      *
+     * todo: this could be a direct call to actionListsurveys
+     *
      * @access public
      * @return void
      */
@@ -302,14 +304,17 @@ class SurveyAdministrationController extends LSBaseController
         // set 'inherit' values to survey attributes
         $survey->setToInherit();
 
-        $this->_registerScriptFiles();
+        App()->getClientScript()->registerPackage('jquery-json');
+        App()->getClientScript()->registerPackage('bootstrap-switch');
         Yii::app()->loadHelper('surveytranslator');
-        $esrow = $this->_fetchSurveyInfo('newsurvey');
         Yii::app()->loadHelper('admin/htmleditor');
 
+        $esrow = $this->fetchSurveyInfo('newsurvey');
+
+
         //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
-        $aData                = $this->_generalTabNewSurvey();
-        $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
+        $aData                = $this->generalTabNewSurvey();
+        $aData                = array_merge($aData, $this->getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
 
         $aData['oSurvey'] = $survey;
@@ -326,13 +331,13 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         //Prepare the edition panes
-        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
-        $aData['datasecdata']               = array_merge($aData, $this->_getDataSecurityEditData($survey));
-        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
-        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
-        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens($esrow));
+        $aData['edittextdata']              = array_merge($aData, $this->getTextEditData($survey));
+        $aData['datasecdata']               = array_merge($aData, $this->getDataSecurityEditData($survey));
+        $aData['generalsettingsdata']       = array_merge($aData, $this->generalTabEditSurvey($survey));
+        $aData['presentationsettingsdata']  = array_merge($aData, $this->tabPresentationNavigation($esrow));
+        $aData['publicationsettingsdata']   = array_merge($aData, $this->tabPublicationAccess($survey));
+        $aData['notificationsettingsdata']  = array_merge($aData, $this->tabNotificationDataManagement($esrow));
+        $aData['tokensettingsdata']         = array_merge($aData, $this->tabTokens($esrow));
 
         $aViewUrls[] = 'newSurvey_view';
 
@@ -343,7 +348,10 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
         $arrayed_data['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
 
-        $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
+        $this->aData = $aData;
+        $this->render('newSurvey_view', $this->aData);
+
+        //$this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
 
     /** ************************************************************************************************************ */
@@ -508,6 +516,251 @@ class SurveyAdministrationController extends LSBaseController
             'sideMenuOpen' => true
         ));
         */
+    }
+
+    /**
+     * Load survey information based on $action.
+     * survey::_fetchSurveyInfo()
+     *
+     * @param string $action    Given Action
+     * @param int    $iSurveyID Given Survey ID
+     *
+     * @return void | array
+     *
+     * @deprecated use Survey objects instead
+     */
+    private function fetchSurveyInfo($action, $iSurveyID = null)
+    {
+        if ($action == 'newsurvey') {
+            $oSurvey = new Survey;
+        } elseif ($action == 'editsurvey' && $iSurveyID) {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+        }
+
+        if (isset($oSurvey)) {
+            $attribs = $oSurvey->attributes;
+            $attribs['googleanalyticsapikeysetting'] = $oSurvey->getGoogleanalyticsapikeysetting();
+            return $attribs;
+        }
+    }
+
+    /**
+     * Load "General" tab of new survey screen.
+     * survey::_generalTabNewSurvey()
+     *
+     * @return array
+     */
+    private function generalTabNewSurvey()
+    {
+        // use survey option inheritance
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $owner = $user->attributes;
+        $owner['full_name'] = 'inherit';
+        $owner['email'] = 'inherit';
+        $owner['bounce_email'] = 'inherit';
+
+        $aData = [];
+        $aData['action'] = "newsurvey";
+        $aData['owner'] = $owner;
+        $aLanguageDetails = getLanguageDetails(Yii::app()->session['adminlang']);
+        $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
+        $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
+        $aRadixPointData = [];
+        foreach (getRadixPointData() as $index => $radixptdata) {
+            $aRadixPointData[$index] = $radixptdata['desc'];
+        }
+        $aData['aRadixPointData'] = $aRadixPointData;
+
+        foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) {
+            $aDateFormatData[$index] = $dateformatdata['dateformat'];
+        }
+        $aData['aDateFormatData'] = $aDateFormatData;
+
+        return $aData;
+    }
+
+    /**
+     * Returns Data for general template.
+     *
+     * @param integer $iSurveyID Given Survey ID
+     *
+     * @return array
+     */
+    private function getGeneralTemplateData($iSurveyID)
+    {
+        $aData = [];
+        $aData['surveyid'] = $iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (empty($oSurvey)) {
+            $oSurvey = new Survey;
+        }
+        $inheritOwner = empty($oSurvey->oOptions->ownerLabel) ? $oSurvey->owner_id : $oSurvey->oOptions->ownerLabel;
+        $users = getUserList();
+        $aData['users'] = array();
+        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+        $aData['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
+        return $aData;
+    }
+
+    /**
+     * Returns data for text edit.
+     *
+     * @param Survey $survey Given Survey.
+     *
+     * @return array
+     */
+    private function getTextEditData($survey)
+    {
+        Yii::app()->getClientScript()->registerScript(
+            "TextEditDataGlobal",
+            "window.TextEditData = {
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
+                isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
+                i10N: {
+                    'Survey title' : '".gT('Survey title')."',
+                    'Date format' : '".gT('Date format')."',
+                    'Decimal mark' : '".gT('Decimal mark')."',
+                    'End url' : '".gT('End url')."',
+                    'URL description (link text)' : '".gT('URL description (link text)')."',
+                    'Description' : '".gT('Description')."',
+                    'Welcome' : '".gT('Welcome')."',
+                    'End message' : '".gT('End message')."'
+                }
+            };",
+            LSYii_ClientScript::POS_BEGIN
+        );
+
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('textelements');
+        $aData = $aTabTitles = $aTabContents = array();
+        return $aData;
+    }
+
+    /**
+     * Returns Date for Data Security Edit.
+     * tab_edit_view_datasecurity
+     * editDataSecurityLocalSettings_view
+     *
+     * @param Survey $survey Given Survey
+     *
+     * @return array
+     */
+    private function getDataSecurityEditData($survey)
+    {
+        Yii::app()->getClientScript()->registerScript(
+            "DataSecTextEditDataGlobal",
+            "window.DataSecTextEditData = {
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey', ['sid' => $survey->sid, 'sa' => ''])."',
+                isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
+                i10N: {
+                    'Survey data policy checkbox label:' : '".gT('Survey data policy checkbox label:')."',
+                    'Survey data policy error message:' : '".gT('Survey data policy error message:')."',
+                    'Survey data policy message:' : '".gT('Survey data policy message:')."',
+                    'Don\'t show:' : '".gT('Don\'t show')."',
+                    'Inline text' : '".gT('Inline text')."',
+                    'Collapsible text' : '".gT('Collapsible text')."',
+                    '__INFOTEXT' : '".gT('If you want to specify a link to the survey data policy, 
+                    set "Show survey policy text with mandatory checkbox" to "Collapsible text" and use the 
+                    placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the "Survey data policy checkbox 
+                    label" field to define the link that opens the policy popup. If there is no placeholder given, 
+                    there will be an appendix.')."',
+                    'Deactivated' : '".gT('Deactivated')."',
+                    'Activated' : '".gT('Activated')."'
+                }
+            };",
+            LSYii_ClientScript::POS_BEGIN
+        );
+
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('datasectextelements');
+        $aData = $aTabTitles = $aTabContents = array();
+        return $aData;
+    }
+
+    /**
+     * Returns Data for Tab General Edit Survey.
+     * survey::_generalTabEditSurvey()
+     * Load "General" tab of edit survey screen.
+     *
+     * @param Survey $survey Given Survey
+     *
+     * @return mixed
+     */
+    private function generalTabEditSurvey($survey)
+    {
+        $aData['survey'] = $survey;
+        return $aData;
+    }
+
+    /**
+     * Returns data for tab Presentation navigation.
+     * survey::_tabPresentationNavigation()
+     * Load "Presentation & navigation" tab.
+     *
+     * @param mixed $esrow ?
+     *
+     * @return array
+     */
+    private function tabPresentationNavigation($esrow)
+    {
+        $aData = [];
+        $aData['esrow'] = $esrow;
+        return $aData;
+    }
+
+    /**
+     * Returns the data for Tab Publication Access control.
+     * survey::_tabPublicationAccess()
+     * Load "Publication * access control" tab.
+     *
+     * @param Survey $survey Given Survey
+     *
+     * @return array
+     */
+    private function tabPublicationAccess($survey)
+    {
+        $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData = [];
+        $aData['dateformatdetails'] = $aDateFormatDetails;
+        $aData['survey'] = $survey;
+        return $aData;
+    }
+
+    /**
+     * Returns the data for Tab Notification and Data Management.
+     * survey::_tabNotificationDataManagement()
+     * Load "Notification & data management" tab.
+     *
+     * @param mixed $esrow ?
+     *
+     * @return array
+     */
+    private function tabNotificationDataManagement($esrow)
+    {
+        $aData = [];
+        $aData['esrow'] = $esrow;
+        return $aData;
+    }
+
+    /**
+     * Returns the data for Tab Tokens.
+     * survey::_tabTokens()
+     * Load "Tokens" tab.
+     *
+     * @param mixed $esrow ?
+     *
+     * @return array
+     */
+    private function tabTokens($esrow)
+    {
+        $aData = [];
+        $aData['esrow'] = $esrow;
+        return $aData;
     }
 
 }
