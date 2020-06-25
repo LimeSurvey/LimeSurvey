@@ -1863,7 +1863,7 @@ function groupGetXMLStructure($xml, $gid)
     $gquery = "SELECT *
     FROM $quotedGroups
     WHERE gid=$gid";
-    buildXMLFromQuery($xml, $gquery);
+    buildXMLFromQuery($xml, $gquery, 'groups');
 
     // Questions table
     $qquery = "SELECT *
