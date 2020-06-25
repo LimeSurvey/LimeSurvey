@@ -34,6 +34,38 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.0 (build 200616) to 4.3.1 (build 200623) June 22, 2020
+-Fixed issue: Various SQL errors when running on MySQL 8 (Olle Harstedt)
+-Fixed issue [security] #16396: Multiple self-stored XSS in printanswer (Denis Chenu)
+-Fixed issue [security] #15452: (self) reflecting XSS in print answer view : Array/text (Denis Chenu)
+#Updated translation: Portuguese (Brazil) by jbfloripa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: French (France) by jayce
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, CTFang
+#Updated translation: Chinese (Simplified) by NSRCRUC
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.2.8 (build 200608) to 4.3.0 (build 200616) June 16, 2020
++New feature #15999: Extend list_participants to allow compare conditions (Olle Harstedt)
++New feature #16263: New config setting for date format and question code in queXML (Olle Haerstedt)
+-Fixed issue #16215: no import button in page Import responses from a deactivated survey table (Eddy Lackmann)
+-Fixed issue #16082: Drop semi live preview mode from question editor (Jessica Höck)
+-Fixed issue #15063: Left sidebar is not shown with console error Local Storage QuotaExceededError: The quota has been exceeded. (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: French (France) by arnaud21, b00z00, DenisChenu, GuillaumeZ6, jayce
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, slansky, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.2.7 (build 200604) to 4.2.8 (build 200608) June 8, 2020
 -Fixed issue #16210: Time limit not working LimeSurvey CE 4.2.1(Jelle-S)
 -Fixed issue #16364: validator assigned to non existent field (Michał Frankiewicz)

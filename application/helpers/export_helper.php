@@ -827,16 +827,17 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $gquery = "SELECT *
-    FROM {{groups}}
+    FROM $quotedGroups
     WHERE sid=$iSurveyID
     ORDER BY gid";
-    buildXMLFromQuery($xmlwriter, $gquery);
+    buildXMLFromQuery($xmlwriter, $gquery,'groups');
 
     // QuestionGroup L10n
     $gquery = "SELECT *
     FROM {{group_l10ns}}
-    JOIN {{groups}} on {{groups.gid}}={{group_l10ns}}.gid
+    JOIN $quotedGroups on $quotedGroups.gid={{group_l10ns}}.gid
     WHERE sid=$iSurveyID
     ORDER BY {{group_l10ns}}.gid";
     buildXMLFromQuery($xmlwriter, $gquery);
@@ -1946,16 +1947,17 @@ function groupGetXMLStructure($xml, $gid)
     $gid = sanitize_paranoid_string($gid);
 
     // QuestionGroup
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $gquery = "SELECT *
-    FROM {{groups}}
-    WHERE {{groups}}.gid=$gid";
+    FROM $quotedGroups
+    WHERE $quotedGroups.gid=$gid";
     buildXMLFromQuery($xml, $gquery, 'groups');
 
     // QuestionGroup localization
     $gquery = "SELECT *
     FROM {{group_l10ns}}
-    JOIN {{groups}} ON {{group_l10ns}}.gid = {{groups}}.gid
-    WHERE {{groups}}.gid=$gid";
+    JOIN $quotedGroups ON {{group_l10ns}}.gid = $quotedGroups.gid
+    WHERE $quotedGroups.gid=$gid";
     buildXMLFromQuery($xml, $gquery, 'group_l10ns');
 
     // Questions table
@@ -2003,7 +2005,8 @@ function groupGetXMLStructure($xml, $gid)
     buildXMLFromQuery($xml, $cquery, 'conditions');
 
     //Question attributes
-    $iSurveyID = Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+    $iSurveyID = Yii::app()->db->createCommand("select sid from $quotedGroups where gid={$gid}")->query()->read();
     $iSurveyID = $iSurveyID['sid'];
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
     $platform = Yii::app()->db->getDriverName();
@@ -2126,7 +2129,8 @@ function questionGetXMLStructure($xml, $gid, $qid)
     buildXMLFromQuery($xml, $aquery);
 
     // Question attributes
-    $iSurveyID = Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+    $iSurveyID = Yii::app()->db->createCommand("select sid from $quotedGroups where gid={$gid}")->query();
     $iSurveyID = $iSurveyID->read();
     $iSurveyID = $iSurveyID['sid'];
     $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
