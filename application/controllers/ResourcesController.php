@@ -16,7 +16,6 @@ class ResourcesController extends LSBaseController
      */
     public function actionRenderResources(int $surveyID, string $menuAction) : void
     {
-        $aViewsUrl = [];
         $aData = [];
 
         $surveyID = (int) $surveyID;
