@@ -18,6 +18,10 @@ class MysqlSchema extends CMysqlSchema
             $options = 'DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
         }
 
+        if (Yii::app()->getConfig('forceMyISAM') === true) {
+            $options .= ' ENGINE=MyISAM';
+        }
+
         // Below copied from parent.
         $cols = array();
         foreach ($columns as $name => $type) {
