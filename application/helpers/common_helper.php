@@ -618,7 +618,7 @@ function getGroupListLang($gid, $language, $surveyid)
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid);
+        $link = Yii::app()->getController()->createUrl("/surveyAdministration/view/surveyid/".$surveyid);
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='{$link}'>".gT("None")."</option>\n"; }
     }
     return $groupselecter;

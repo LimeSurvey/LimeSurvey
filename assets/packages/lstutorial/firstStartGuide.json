@@ -87,7 +87,7 @@ steps: [
     },
     { //9
         element: '#sidebar',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid' : '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid' : '[0-9]{4,25}'})),
         placement: 'right',
         backdrop: true,
         title: 'The sidebar',
@@ -104,7 +104,7 @@ steps: [
     },
     { //10
         element: '#adminsidepanel__sidebar--selectorSettingsButton',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid' : '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid' : '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
         title: 'The settings tab with the surveymenu',
@@ -115,7 +115,7 @@ steps: [
     },
     { //11
         element: '#surveybarid',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid' : '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid' : '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
         title: 'The top-bar',
@@ -127,7 +127,7 @@ steps: [
     },
     { //12
         element: '#adminsidepanel__sidebar--selectorStructureButton',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid' : '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid' : '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
         title: 'The surveystructure',
@@ -142,7 +142,7 @@ steps: [
     },
     { //13
         element: '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'right',
         title: 'Let\'s add another questiongroup',
         content: '<p>Click on the add questiongroup button</p>',
@@ -250,7 +250,7 @@ steps: [
     },
     { //23
         element: '#questionbarid',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
         title: 'The question bar',
@@ -260,7 +260,7 @@ steps: [
     },
     { //24
         element: '#adminsidepanel__topbar--selectorAddSubquestions',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'bottom',
         title: 'Add some subquestions to your question',
         content: `<p>The array question is a question that creates a matrix for the participant.</p>
@@ -309,7 +309,7 @@ steps: [
     },
     { //28
         element: '#adminsidepanel__topbar--selectorAddAnswerOptions',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'bottom',
         title: 'Add some answer options to your question',
         content: `<p>Now that we've got some subquestions we have to add answer options as well</p>
@@ -345,7 +345,7 @@ steps: [
     },
     { //31
         element: '.selector__topbar--previewSurvey',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         placement: 'bottom',
         title: 'Preview survey',
         content: `<p>Now is the time to preview your first survey.</p>
@@ -356,7 +356,7 @@ steps: [
     },
     { //32
         element: '#breadcrumb-container',
-        path: RegExp(filterUrl('/admin/survey/sa/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
+        path: RegExp(filterUrl('/surveyAdministration/view', {'surveyid': '[0-9]{4,25}', 'gid':'[0-9]{1,25}', 'qid': '[0-9]{4,25}'})),
         backdrop: true,
         placement: 'bottom',
         title: 'Easy navigation with the breadcrumbs',

@@ -92,7 +92,7 @@ class translate extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
         if(Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid; // Close button
+            $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$surveyid; // Close button
             $aData['topBar']['showSaveButton'] = true;
         }
 

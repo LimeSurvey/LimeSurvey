@@ -1090,7 +1090,7 @@ class Survey extends LSActiveRecord
 
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
+            $running = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
         }
         // If it's active, then we check if not expired
         elseif ($this->expires != '' || $this->startdate != '') {
@@ -1111,9 +1111,9 @@ class Survey extends LSActiveRecord
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'), $sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'), $sStop).'</span></a>';
-            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'), $sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'), $sStop).'</span></a>';
-            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'), $sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'), $sStart).'</span></a>';
+            $sIconRunning = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'), $sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'), $sStop).'</span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'), $sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'), $sStop).'</span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'), $sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'), $sStart).'</span></a>';
 
             // Icon parsing
             if ($bExpired || $bWillRun) {
@@ -1125,7 +1125,7 @@ class Survey extends LSActiveRecord
         }
         // If it's active, and doesn't have expire date, it's running
         else {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span><span class="sr-only">'.gT('Active').'"</span></a>';
+            $running = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span><span class="sr-only">'.gT('Active').'"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
 

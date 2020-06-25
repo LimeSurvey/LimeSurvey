@@ -23,7 +23,7 @@ class LsDefaultDataSets
                 'list',
                 'fontawesome',
                 '',
-                'admin/survey/sa/view',
+                'surveyAdministration/view',
                 '',
                 '',
                 '',
@@ -1146,7 +1146,7 @@ class LsDefaultDataSets
                 .gT('All important settings can be reached in this sidebar.').'<br/>'
                 .gT('The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
                 'settings' => json_encode(array(
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
                     'delayOnElement' => "{element: 'element'}",
                     'element' => '#sidebar',
                     'placement' => 'right',
@@ -1165,7 +1165,7 @@ class LsDefaultDataSets
                 .gT('If you want to know more about them, check our manual.'),
                 'settings' => json_encode(array(
                     'element' => '#adminsidepanel__sidebar--selectorSettingsButton',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
                 ))
@@ -1178,7 +1178,7 @@ class LsDefaultDataSets
                 .gT('This bar will change as you move through the functionalities. The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.'),
                 'settings' => json_encode(array(
                     'element' => '#surveybarid',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
                 ))
@@ -1190,7 +1190,7 @@ class LsDefaultDataSets
                 'content' => gT('This is the structure view of your survey. Here you can see all your groups and questions.'),
                 'settings' => json_encode(array(
                     'element' => '#adminsidepanel__sidebar--selectorStructureButton',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
                     'onShow' => "(function(tour){
@@ -1207,7 +1207,7 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT("Click on the 'Add group' button").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'right',
                     'reflex' => true,
                     'redirect' => false,
@@ -1295,7 +1295,7 @@ class LsDefaultDataSets
                         maxDelay: 2500
                     }",
                     'delay' => 500,
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'left',
                     'redirect' => false,
                 ))
@@ -1310,7 +1310,7 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT("Please type in a code that consists only of letters and numbers, and doesn't start with a number.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#title',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'top',
                     'redirect' => false,
                     'prev' => '-1',
@@ -1323,7 +1323,7 @@ class LsDefaultDataSets
                 'content' => gT('The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
                 'settings' => json_encode(array(
                     'element' => '#cke_question_en',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'top',
                     'redirect' => false,
                 ))
@@ -1335,7 +1335,7 @@ class LsDefaultDataSets
                 'content' => gT('You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.'),
                 'settings' => json_encode(array(
                     'element' => '#cke_help_en',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'top',
                     'redirect' => false,
                 ))
@@ -1348,7 +1348,7 @@ class LsDefaultDataSets
                     .gT('Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter.'),
                 'settings' => json_encode(array(
                     'element' => '#save-button',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'left',
                     'reflex' => true,
                     'redirect' => false,
@@ -1369,7 +1369,7 @@ class LsDefaultDataSets
                     .gT('The availability of options is related to the type of question you previously chose.'),
                 'settings' => json_encode(array(
                     'element' => '#questionbarid',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'backdrop' => false,
                     'redirect' => false,
@@ -1391,7 +1391,7 @@ class LsDefaultDataSets
                         maxDelay: 1000
                     }",
                     'placement' => 'bottom',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
@@ -1462,7 +1462,7 @@ class LsDefaultDataSets
                         element: '#adminpanel__topbar--selectorAddAnswerOptions',
                         maxDelay: 1000
                     }",
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
@@ -1522,7 +1522,7 @@ class LsDefaultDataSets
                         element: '.selector__topbar--previewSurvey',
                         maxDelay: 1000
                     }",
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
                     'prev' => '-1',
@@ -1537,7 +1537,7 @@ class LsDefaultDataSets
                 .'<p class="alert bg-warning">'.gT("Click on the name of your survey to get back to the survey settings overview.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#breadcrumb__survey--overview',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
@@ -1558,7 +1558,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#ls-activate-survey',
                     'delayOnElement' => "{element: 'element'}",
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,

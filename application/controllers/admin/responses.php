@@ -73,7 +73,7 @@ class responses extends Survey_Common_Action
             $this->getController()->redirect(array("admin/index"));
         } elseif ($thissurvey['active'] != 'Y') {
             App()->session['flashmessage'] = gT("This survey has not been activated. There are no results to browse.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.

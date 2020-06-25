@@ -120,7 +120,7 @@ class Expressions extends Survey_Common_Action
 
         $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle()." (".gT("ID").":".$sid.")";
 
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$sid;
 
         if ($gid !== null && $qid === null) {
             $gid = sanitize_int($gid);

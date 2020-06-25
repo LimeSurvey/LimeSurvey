@@ -1106,7 +1106,7 @@ class database extends Survey_Common_Action
         } else {
             ////////////////////////////////////////
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
             }
 
             $referrer = Yii::app()->request->urlReferrer;
@@ -1255,7 +1255,7 @@ class database extends Survey_Common_Action
         // Abort if survey is active
         if ($survey->active !== 'N') {
             Yii::app()->setFlashMessage(gT("You can't insert a new question when the survey is active."), 'error');
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/".$survey->sid), "refresh");
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/".$survey->sid), "refresh");
         }
 
         if (strlen(Yii::app()->request->getPost('title')) < 1) {

@@ -21,7 +21,7 @@
                 <p>
                     <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
                     <br /><br />
-                    <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
+                    <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('surveyAdministration/view/surveyid/'.$surveyid); ?>', '_top')" />
                     <br /><br />
                 </p>
                 <p>
@@ -51,7 +51,7 @@
                 <p>
                     <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
                     <br /><br />
-                    <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
+                    <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('surveyAdministration/view/surveyid/'.$surveyid); ?>', '_top')" />
                     <br /><br />
 
                     <?php if(isset($thisid) && Permission::model()->hasSurveyPermission($surveyid, 'responses','read')): ?>

@@ -316,7 +316,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getSurveyIdLink()
     {
-        $url = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/'.$this->survey_id);
+        $url = Yii::app()->getController()->createUrl('surveyAdministration/view/surveyid/'.$this->survey_id);
         $link = CHtml::link($this->survey_id, $url);
         return $link;
     }

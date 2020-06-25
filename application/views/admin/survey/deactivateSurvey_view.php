@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="jumbotron message-box" style="border: none;">
-                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>" class="btn btn-danger btn-lg">
+                    <a href="<?php echo Yii::app()->createUrl('surveyAdministration/view/surveyid/'.$surveyid);?>" class="btn btn-danger btn-lg">
                         <?php eT('Cancel');?>
                     </a>
                 </div>
@@ -105,7 +105,7 @@
                 <p><?php eT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"); ?>
                 </p>
                 <p>
-                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>" class="btn btn-default btn-lg">
+                    <a href="<?php echo Yii::app()->createUrl('surveyAdministration/view/surveyid/'.$surveyid);?>" class="btn btn-default btn-lg">
                         <?php eT('Close');?>
                     </a>
                 </p>

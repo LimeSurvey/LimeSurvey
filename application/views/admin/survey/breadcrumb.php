@@ -17,7 +17,7 @@
                         <?php if (!isset($oQuestionGroup)): ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid]); ?>">
+                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/surveyAdministration/view/', ['surveyid' => $oSurvey->sid]); ?>">
                                     <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?>
                                         (<?php echo $oSurvey->sid; ?>)
                                     </a>
@@ -26,7 +26,7 @@
                         <?php else: ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'.$oSurvey->sid); ?>">
+                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/surveyAdministration/view/surveyid/'.$oSurvey->sid); ?>">
                                     <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?>
                                     </a>
                                 </div>
@@ -41,7 +41,7 @@
                             <?php /* else: ?>
                                 <li>
                                     <div>
-                                        <a id="breadcrumb__survey--subaction-<?php echo strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
+                                        <a id="breadcrumb__survey--subaction-<?php echo strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/surveyAdministration/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
                                             <?php echo gT($sSubaction);?>
                                         </a>
                                     </div>

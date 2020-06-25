@@ -190,7 +190,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         Yii::app()->setFlashMessage(gT("Question codes were successfully regenerated."));
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+        $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
     }
 
 
@@ -772,7 +772,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['aSurveysettings']                 = getSurveyInfo($iSurveyID);
         $aData['surveyid']                        = $iSurveyID;
         $aData['title_bar']['title']              = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyID; // Close button
 
         // Fire event beforeSurveyDeactivate
         $beforeSurveyDeactivate = new PluginEvent('beforeSurveyDeactivate');
@@ -793,7 +793,7 @@ class SurveyAdmin extends Survey_Common_Action
         if (Yii::app()->request->getPost('ok') == '') {
             if (!tableExists('survey_'.$iSurveyID)) {
                 $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}"));
+                $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
             }
             $aData['surveyid'] = $iSurveyID;
             $aData['date']     = $date;
@@ -955,7 +955,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $allowregister = $survey->isAllowRegister;
                 $onclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
                 $closedOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
-                $noOnclickAction = "window.location.href='".(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."'";
+                $noOnclickAction = "window.location.href='".(Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$iSurveyID))."'";
 
                 $activationData = array(
                     'iSurveyID'=>$iSurveyID,
@@ -1141,7 +1141,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl("admin/survey/sa/view/", ['surveyid' => $iSurveyID]); // Close button
+        $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;
@@ -1290,7 +1290,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['aImportResults'] = $aImportResults;
                 $aData['action'] = $action;
                 if (isset($aImportResults['newsid'])) {
-                    $aData['sLink'] = $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$aImportResults['newsid']);
+                    $aData['sLink'] = $this->getController()->createUrl('surveyAdministration/view/surveyid/'.$aImportResults['newsid']);
                     $aData['sLinkApplyThemeOptions'] = 'admin/survey/sa/applythemeoptions/surveyid/'.$aImportResults['newsid'];
                 }
             }
@@ -1344,7 +1344,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             $closeAfterSave = $request->getPost('close-after-save') === 'true';
             if ($closeAfterSave) {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
             } else {
                 $this->_showReorderForm($iSurveyID);
             }
@@ -1397,7 +1397,7 @@ class SurveyAdmin extends Survey_Common_Action
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;
-        $aData['organizebar']['closebuttonright']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
+        $aData['organizebar']['closebuttonright']['url'] = $this->getController()->createUrl("surveyAdministration/view/", array('surveyid' => $iSurveyID));
         $aData['organizebar']['saveandclosebuttonright']['url'] = true;
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
@@ -1855,7 +1855,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         Yii::app()->session['flashmessage'] = gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         Survey::model()->expire($iSurveyID);
-        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+        $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
     }
 
     /**
@@ -2124,7 +2124,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL($iNewSurveyid, $iNewGroupID, $iNewQuestionID, $landOnSideMenuTab);
             } else {
                 $redirecturl = $this->getController()->createUrl(
-                    'admin/survey/sa/view/',
+                    'surveyAdministration/view/',
                     ['surveyid'=>$iNewSurveyid]
                 );
                 Yii::app()->setFlashMessage($warning.gT("Your new survey was created."), 'info');
@@ -2536,7 +2536,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $oSurveyConfig->save();
             }
         }
-        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+        $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
     }
 
     /**
