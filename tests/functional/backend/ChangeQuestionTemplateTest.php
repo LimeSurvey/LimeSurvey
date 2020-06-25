@@ -245,7 +245,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 );
                 $questionEditorButton->click();
                 
-                sleep(3);
+                sleep(10);
                 
                 // Check if General Settings Container is there
                 $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated( WebDriverBy::id('uncollapsed-general-settings') ));
@@ -267,7 +267,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findByCss('#question_template option[value=bootstrap_buttons]');
             $option->click();
             
-            sleep(3);
+            sleep(5);
 
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
@@ -279,7 +279,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
             $option->click();
  
-            sleep(3);
+            sleep(5);
             
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
@@ -293,7 +293,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             );
             $this->assertNotNull($scopeApplyBaseStyleContainer);
 
-            sleep(3);
+            sleep(5);
 
             // Check if Display theme options link exists
             try {
