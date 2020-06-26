@@ -284,6 +284,9 @@ class Template extends LSActiveRecord
      */
     public static function getTemplatePath($sTemplateName = "")
     {
+        // Make sure template name is valid
+        $sTemplateName = self::templateNameFilter($sTemplateName);
+
         static $aTemplatePath = array();
         if (isset($aTemplatePath[$sTemplateName])) {
             return $aTemplatePath[$sTemplateName];
@@ -367,6 +370,9 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateURL($sTemplateName = "")
     {
+        // Make sure template name is valid
+        $sTemplateName = self::templateNameFilter($sTemplateName);
+
         static $aTemplateUrl = array();
         if (isset($aTemplateUrl[$sTemplateName])) {
             return $aTemplateUrl[$sTemplateName];
