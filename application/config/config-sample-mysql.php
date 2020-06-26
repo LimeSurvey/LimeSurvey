@@ -62,8 +62,6 @@ return array(
         // 'force_xmlsettings_for_survey_rendering' => true, // Uncomment if you want to force the use of the XML file rather than DB (for easy theme development)
         // 'use_asset_manager'=>true, // Uncomment if you want to use debug mode and asset manager at the same time
         // Update default LimeSurvey config here
-        'forceMyISAM' => false, // Set this to true to always specify ENGINE=MyISAM when creating tables. This can be useful if you're using MySQL replication, which ignores the default engine variable.
-        // If you have large survey tables (i.e lots of questions) in MyISAM, those cause issues if your replication is set to default to InnoDB. By specifying the engine in the CREATE TABLE statement, replication will pick this up and use MyISAM.
     )
 );
 /* End of file config.php */
