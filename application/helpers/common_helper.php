@@ -3782,8 +3782,7 @@ function fixLanguageConsistency($sid, $availlangs = '')
 
                 );
                 switchMSSQLIdentityInsert('groups', true);
-                $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-                Yii::app()->db->createCommand()->insert($quotedGroups, $data);
+                Yii::app()->db->createCommand()->insert('{{groups}}', $data);
                 switchMSSQLIdentityInsert('groups', false);
             }
         }
