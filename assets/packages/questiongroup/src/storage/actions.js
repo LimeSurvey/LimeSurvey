@@ -60,7 +60,7 @@ export default {
                     'iQuestionGroupId' : window.QuestionGroupEditData.gid,
                 }
             ).then((result) => {
-                context.commit('setQuestionList', result.data);
+                context.commit('setQuestionList', result.data.questions);
                 resolve(true);
             })
             .catch((error) => {

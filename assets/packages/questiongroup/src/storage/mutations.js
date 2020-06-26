@@ -13,7 +13,7 @@ export default {
         state.currentQuestionGroupI10N = newValue;
     },
     setQuestionList : (state, newValue) => {
-        state.questionList = pickBy(newValue, (questionData,key) => {return key !== 'debug'});
+        state.questionList = newValue;
     },
     setPermissions : (state, newValue) => {
         state.permissions = newValue;
