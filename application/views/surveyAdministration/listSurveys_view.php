@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('listSurveys');
         <div id="surveys" class="tab-pane active">
             <?php if(Permission::model()->hasGlobalPermission('surveys','create')):?>
                 <div class="col-12">
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" role="button">
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" role="button">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create a new survey");?>
                     </a>

@@ -817,7 +817,7 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-        $returnArray[] = ['position' => 1, 'url' => 'admin/survey/sa/newsurvey', 'title' => gT('Create survey'), 'ico' => 'icon-add', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 1, 'url' => 'surveyAdministration/newSurvey', 'title' => gT('Create survey'), 'ico' => 'icon-add', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => gT('List surveys'), 'ico' => 'icon-list', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
         $returnArray[] = ['position' => 3, 'url' => 'admin/globalsettings', 'title' => gT('Global settings'), 'ico' => 'icon-settings', 'desc' => gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'icon-shield', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
@@ -1055,7 +1055,7 @@ class LsDefaultDataSets
                 .gT("Your participants will see this title in the browser's title bar and on the welcome screen.")
                 ."<p class='bg-warning alert'>".gT("You have to put in at least a title for the survey to be saved.").'</p>',
                 'settings' => json_encode(array(
-                    'path' => ['/admin/survey/sa/newsurvey'],
+                    'path' => ['/surveyAdministration/newSurvey'],
                     'delayOnElement' => "{
                         element: '#surveyls_title',
                         maxDelay: 1000
@@ -1079,7 +1079,7 @@ class LsDefaultDataSets
                 .gT("Describe your survey, but do not ask any question yet."),
                 'settings' => json_encode(array(
                     'element' => '#cke_description',
-                    'path' => ['/admin/survey/sa/newsurvey'],
+                    'path' => ['/surveyAdministration/newSurvey'],
                     'placement' => 'top',
                     'redirect' => false,
                 ))
@@ -1091,7 +1091,7 @@ class LsDefaultDataSets
                 'content' => gT("We will be creating a question group and a question in this tutorial. There is need to automatically create them."),
                 'settings' => json_encode(array(
                     'element' => '.bootstrap-switch-id-createsample',
-                    'path' => ['/admin/survey/sa/newsurvey'],
+                    'path' => ['/surveyAdministration/newSurvey'],
                     'redirect' => false,
                 ))
             ),
@@ -1103,7 +1103,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#cke_welcome',
                     'placement' => 'top',
-                    'path' => ['/admin/survey/sa/newsurvey'],
+                    'path' => ['/surveyAdministration/newSurvey'],
                     'redirect' => false,
                 ))
             ),
@@ -1114,7 +1114,7 @@ class LsDefaultDataSets
                 'content' => gT("This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."),
                 'settings' => json_encode(array(
                     'element' => '#cke_endtext',
-                    'path' => ['/admin/survey/sa/newsurvey'],
+                    'path' => ['/surveyAdministration/newSurvey'],
                     'placement' => 'top',
                     'redirect' => false,
                 ))
@@ -1126,7 +1126,7 @@ class LsDefaultDataSets
                 'content' => gT("You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."),
                 'settings' => json_encode(array(
                     'element' => '#save-form-button',
-                    'path' => ['/admin/survey/sa/newsurvey'],
+                    'path' => ['/surveyAdministration/newSurvey'],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,

@@ -198,7 +198,7 @@ class SurveyAdmin extends Survey_Common_Action
      * This function prepares the view for a new survey
      *
      * REFACTORED in SurveyAdministrationController
-     * 
+     *
      * @return void
      */
     public function newsurvey()

@@ -754,7 +754,8 @@
         }
 
         /**
-        * Set the SurveyId - really checks whether the survey you're about to work with is new, and if so, clears the LEM cache
+        * Set the SurveyId - really checks whether the survey you're about
+         * to work with is new, and if so, clears the LEM cache
         * @param integer|null $sid
         */
         public static function SetSurveyId($sid=NULL)

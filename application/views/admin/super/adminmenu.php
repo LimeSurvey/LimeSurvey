@@ -79,21 +79,21 @@
                          <?php if (Permission::model()->hasGlobalPermission('surveys','create')): ?>
                          <!-- Create a new survey -->
                          <li>
-                             <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
+                             <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>">
                                  <?php eT("Create");?>
                              </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
-                           <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
+                           <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey/tab/import"); ?>">
                                <?php eT("Import");?>
                            </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
-                           <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
+                           <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey/tab/copy"); ?>">
                                <?php eT("Copy");?>
                            </a>
                          </li>
