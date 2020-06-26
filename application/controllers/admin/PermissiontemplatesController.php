@@ -313,7 +313,7 @@ class PermissiontemplatesController extends Survey_Common_Action
         }
 
         $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success', 
+            '/userManagement/partial/success',
             [
                 'sMessage' => gT('Roles successfully deleted'), 
                 'sDebug' => json_encode($success, JSON_PRETTY_PRINT), 
