@@ -971,6 +971,12 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
 
+        // If trying to retrieve main question ($getComment = false), retrieve comment in a new attribute
+        // Check if $getComment = false to avoid endless recursivity
+        if ($oQuestion->type=='O'&&!$getComment) {
+            $aQuestionAttributes['comment'] = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions, true, true);
+        }
+
         return $aQuestionAttributes;
     }
 
