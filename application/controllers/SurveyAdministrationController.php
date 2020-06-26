@@ -36,7 +36,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     protected function beforeRender($view)
     {
-        if (isset($this->aData['surveyid'])) {
+        if (!empty($aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
 
             // Needed to evaluate EM expressions in question summary
@@ -45,6 +45,8 @@ class SurveyAdministrationController extends LSBaseController
             LimeExpressionManager::StartProcessingPage(false, true);
 
             $this->layout = 'layout_questioneditor';
+        } else {
+            $this->layout = 'main';
         }
 
         return parent::beforeRender($view);
@@ -349,9 +351,9 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
 
         $this->aData = $aData;
-        $this->render('newSurvey_view', $this->aData);
-
-        //$this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
+        $this->render('newSurvey_view', [
+            'data' => $arrayed_data['data']
+        ]);
     }
 
     /** ************************************************************************************************************ */
