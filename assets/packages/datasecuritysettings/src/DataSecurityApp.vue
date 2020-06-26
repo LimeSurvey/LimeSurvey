@@ -5,16 +5,19 @@ import LanguageSelector from './components/subcomponents/_languageSelector.vue';
 import ClassicEditor from '../../meta/LsCkeditor/src/LsCkEditorClassic.js';
 import runAjax from './mixins/runAjax.js';
 import Aceeditor from './helperComponents/AceEditor';
+import TypeCounter from './helperComponents/TypeCounter.vue'
 
 export default {
     name: 'lsnextdataseceditor',
     mixins: [runAjax],
     components: {
         'language-selector' : LanguageSelector,
-        Aceeditor
+        Aceeditor,
+        TypeCounter,
     },
     data() {
         return {
+            maxDataSecLabelLength: 192,
             datasecmessageEditorObject: ClassicEditor,
             datasecmessageEditorData : {
                 'lsExtension:fieldtype': 'survey-datasec', 
@@ -34,7 +37,10 @@ export default {
             set(newValue) { this.$store.commit('setShowsurveypolicynotice', newValue); }
         },
         currentDataseclabel: {
-            get() { return this.$store.state.dataseclabel[this.$store.state.activeLanguage]; },
+            get() {
+                var value = this.$store.state.dataseclabel[this.$store.state.activeLanguage];
+                return value === null ? '' : value;
+            },
             set(newValue) { this.$store.commit('setDataseclabelForCurrentLanguage', newValue); }
         },
         currentDatasecmessage: {
@@ -43,7 +49,14 @@ export default {
         },
         languageChangerEnabled() {
             return LS.ld.size(this.$store.state.languages) > 1;
-        }
+        },
+        textTooLong() {
+            return this.currentDataseclabel.length > this.maxDataSecLabelLength;
+        },
+        inputValid() {
+            return !this.textTooLong;
+        },
+
     },
     methods: {
         applyHotkeys() {
@@ -175,9 +188,23 @@ ${scriptContent}
                     />
                 </div>
                 <div class="row scoped-editor-row">
-                    <div class="col-sm-6 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                    <div class="col-sm-6 ls-space margin top-5 bottom-5 scope-contains-ckeditor">
                         <label for="inputdataseclabel" class="">{{ "Survey data policy checkbox label:" | translate }}:</label>
-                        <input type="text" id="inputdataseclabel" name="surveyls_policy_notice_label" class="form-control" v-model="currentDataseclabel"  />
+                        <div class="scoped-keep-in-line">
+                            <input
+                                type="text"
+                                id="inputdataseclabel" 
+                                name="surveyls_policy_notice_label" 
+                                :maxlength="this.maxDataSecLabelLength" 
+                                class="form-control has-counter" 
+                                v-model="currentDataseclabel"  
+                            />
+                            <type-counter 
+                                :countable="currentDataseclabel.length"
+                                :max-value="this.maxDataSecLabelLength"
+                                :valid="inputValid"
+                            />
+                        </div>
                     </div>
                     <div class="col-sm-6 ls-space margin top-5 bottom-5 ">
                         <div class="col-sm-12 well" v-html="translate('__INFOTEXT')" />
@@ -224,6 +251,16 @@ ${scriptContent}
         margin: 0.5rem auto;
         display: block
     }
+}
+
+.scoped-keep-in-line {
+    display: block;
+    white-space: nowrap;
+    position: relative;
+}
+
+input.has-counter {
+    padding-right: 36px;
 }
 </style>
 
