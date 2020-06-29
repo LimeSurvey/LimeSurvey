@@ -13,7 +13,6 @@
  * @var code
  * @var answer
  * @var checkedState
- * @var sCheckconditionFunction
  * @var myfname
  * @var sValue
  **** Additional attributes:
@@ -34,7 +33,7 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
 </p>#}
 
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item imageselect-listitem {{ extra_class }}' {{ sDisplayStyle }} >
+<li id='javatbd{{ myfname }}' class='question-item answer-item radio-item imageselect-listitem {{ extra_class }}' {{ sDisplayStyle }} >
     <div class="imageselect-container">
         <input
             class="imageselect-checkbox"
@@ -43,13 +42,12 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
             id="answer{{ name}}{{ code }}"
             value="{{code}}"
             {{ checkedState }}
-            onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
         />
-        <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
+        <label for="answer{{ name }}{{ code }}" class="imageselect-label">
 
-         <img class="unforce-height" src="{{ answer }}" 
-         style="{%if question_template_attribute.fix_width > 1%} 
-            width: {{question_template_attribute.fix_width}}px 
+         <img class="unforce-height" src="{{ answer }}"
+         style="{%if question_template_attribute.fix_width > 1%}
+            width: {{question_template_attribute.fix_width}}px
             {% endif %} {%if question_template_attribute.fix_height > 1%}
             height: {{question_template_attribute.fix_height}}px
             {% endif %}"/>
@@ -64,9 +62,9 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
 </li>
 <script>
     var imageselectjs_{{name}} = new IMAGESELECT("{{ name}}{{ code }}", {
-        keepAspect: {{question_template_attribute.keep_aspect ? 'true' : 'false'}}, 
+        keepAspect: {{question_template_attribute.keep_aspect ? 'true' : 'false'}},
         horizontalScroll: {{question_template_attribute.horizontal_scroll ? 'true' : 'false'}},
         crop_or_resize: {{question_template_attribute.crop_or_resize ? true : false}}
-        }); 
+        });
 </script>
 <!-- end of answer_row -->
