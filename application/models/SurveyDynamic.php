@@ -849,7 +849,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
 
-        if ($getCommentOnly === true) {
+        if ($getCommentOnly) {
             $fieldname .= 'comment';
         }
 
@@ -973,7 +973,7 @@ class SurveyDynamic extends LSActiveRecord
 
         // If trying to retrieve main question ($getCommentOnly = false), retrieve comment in a new attribute
         // Check if $getCommentOnly = false to avoid endless recursivity
-        if ($oQuestion->type=='O'&&!$getCommentOnly) {
+        if ($oQuestion->type == 'O' && !$getCommentOnly) {
             $aQuestionAttributes['comment'] = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions, true, true);
         }
 
