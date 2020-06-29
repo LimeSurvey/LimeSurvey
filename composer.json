@@ -2,7 +2,7 @@
 	"name" : "limesurvey/limesurvey",
 	"description" : "The most popular FOSS online survey tool on the web",
 	"homepage" : "https://www.limesurvey.org/",
-	"license" : "GPL 2.0",
+	"license": "GPL-2.0-only",
 	"authors" : [{
 			"name" : "LimeSurvey Team",
 			"email" : "support@limesurvey.org",
