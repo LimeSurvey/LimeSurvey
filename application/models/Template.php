@@ -293,6 +293,10 @@ class Template extends LSActiveRecord
         }
 
         $oTemplate = self::model()->findByPk($sTemplateName);
+        if (empty($oTemplate))
+        {
+            throw new \Exception("Survey theme {$sTemplateName} not found.", 1);
+        }
 
         if (self::isStandardTemplate($sTemplateName)) {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
