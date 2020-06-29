@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.23 (build 200626) to 3.22.24 (build 200630) June 29, 2020
+-Fixed issue #16316: Condition for list radio questions with question design "image_select" broken for questions on the same page (Gabriel Jenik)
+#Updated translation: German by xibit12
+
+
 Changes from 3.22.22 (build 200625) to 3.22.23 (build 200626) June 26, 2020
 -Fixed issue: Various SQL errors when running on MySQL 8 (Olle Haerstedt)
 -Fixed issue #16415: Can't upload files with Google Chrome (#1445) (Gabriel Jenik)
