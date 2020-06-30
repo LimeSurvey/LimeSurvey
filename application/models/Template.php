@@ -284,6 +284,9 @@ class Template extends LSActiveRecord
      */
     public static function getTemplatePath($sTemplateName = "")
     {
+        if (!self::checkIfTemplateExists($sTemplateName)) {
+            throw new \CException("Invalid {$sTemplateName} template directory");
+        }
         static $aTemplatePath = array();
         if (isset($aTemplatePath[$sTemplateName])) {
             return $aTemplatePath[$sTemplateName];
@@ -367,6 +370,9 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateURL($sTemplateName = "")
     {
+        if (!self::checkIfTemplateExists($sTemplateName)) {
+            throw new \CException("Invalid {$sTemplateName} template directory");
+        }
         static $aTemplateUrl = array();
         if (isset($aTemplateUrl[$sTemplateName])) {
             return $aTemplateUrl[$sTemplateName];
