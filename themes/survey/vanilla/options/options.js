@@ -16,11 +16,11 @@ var ThemeOptions = function(){
 
     /////////////////
     // Define methods run on startup
-    
+
     // #TemplateConfiguration_options is the id of the Options field in advanced option
     // getter for generalInherit
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
-    
+
     //parse the options as set in the advanced form
     var parseOptionObject = function(){
         // If no general inherit, then pass the value of the "Options" field in advanced option to the object optionObject
@@ -34,9 +34,9 @@ var ThemeOptions = function(){
     // Show/Hide fields on generalInherit
     // To hide a simple option on generalInherit: just add the class "action_hide_on_inherit" to the rows continaing it
     var startupGeneralInherit = function(){
-        
+
         if(!inheritPossible) return false;
-        
+
         if (generalInherit()){
             $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
             $('.action_hide_on_inherit').addClass('hidden');
@@ -58,7 +58,7 @@ var ThemeOptions = function(){
             if($(item).prop('disabled')){
                 $(item).val((inheritPossible ? 'inherit' : false));
             }
-            
+
             optionObject[$(item).attr('name')] = $(item).val();
         });
 
@@ -67,7 +67,7 @@ var ThemeOptions = function(){
             if($(item).prop('disabled')){
                 $(item).val((inheritPossible ? 'inherit' : false));
             }
-            
+
             if($(item).attr('type') == 'radio'){
                 if($(item).prop('checked')){
                     optionObject[$(item).attr('name')] = $(item).val();
@@ -82,7 +82,7 @@ var ThemeOptions = function(){
 
         $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
     };
-    
+
     ///////////////
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
@@ -100,7 +100,7 @@ var ThemeOptions = function(){
         }
         return itemValue;
     }
-    
+
     //Set value and propagate to bootstrapSwitch
     var setAndPropageteToSwitch = function(item){
         $(item).prop('checked', true).trigger('change');
@@ -120,13 +120,13 @@ var ThemeOptions = function(){
             $(item).val(itemValue);
         });
     };
-    
+
     // Generate the state of switches (On/Off/Inherit)
     var parseParentSwitchFields = function(){
         globalForm.find('.selector_option_radio_field').each(function(i,item){
-            
+
             var itemValue = parseOptionValue(item, 'off');
-            
+
             //if it is a radio selector, check it and propagate the change to bootstrapSwitch
             if($(item).val() == itemValue){
                 setAndPropageteToSwitch(item);
@@ -137,7 +137,7 @@ var ThemeOptions = function(){
     var prepareFontField = function(){
         var currentPackageObject = 'inherit';
         optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
-        
+
         if( optionObject.font !== 'inherit' ){
             $('#simple_edit_options_font').val(optionObject.font);
         }
@@ -162,7 +162,7 @@ var ThemeOptions = function(){
                 }
 
                 // disabled this part to always be able to click on "Preview image" button
-                /* 
+                /*
                 if ($(selectorItem).hasClass('selector_image_selector')) {
                     $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
@@ -174,9 +174,9 @@ var ThemeOptions = function(){
 
     // hotswapping the fields
     var hotSwapFields = function(){
-        
-        globalForm.find('.selector_option_value_field').on('change', function(evt){ 
-            updateFieldSettings(); 
+
+        globalForm.find('.selector_option_value_field').on('change', function(evt){
+            updateFieldSettings();
         });
 
         globalForm.find('.selector_option_radio_field').on('change', updateFieldSettings);
@@ -197,8 +197,8 @@ var ThemeOptions = function(){
 
     var hotswapFontField = function(){
         $('#simple_edit_options_font').on('change', function(evt){
-            var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' 
-                ? JSON.parse($('#TemplateConfiguration_packages_to_load').val()) 
+            var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit'
+                ? JSON.parse($('#TemplateConfiguration_packages_to_load').val())
                 : $(this).data('inheritvalue');
 
             if($('#simple_edit_options_font').val() === 'inherit'){
@@ -223,10 +223,10 @@ var ThemeOptions = function(){
     // -- These methods are triggered on events. Please see `bind´ method for more information
     var onSaveButtonClickAction = function(evt){
         evt.preventDefault();
-    
+
         if(generalInherit()){
             $('#TemplateConfiguration_options').val('inherit');
-            $('#template-options-form').find('button[type=submit]').trigger('click'); // submit the form
+            $('#template-options-form').trigger('submit'); // submit the form
         } else {
             //Create a copy of the inherent optionObject
             var newOptionObject = $.extend(true, {}, optionObject);
@@ -235,7 +235,7 @@ var ThemeOptions = function(){
             //now write the newly created object to the correspondent field as a json string
             $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
             //and submit the form
-            $('#template-options-form').find('button[type=submit]').trigger('click');
+            $('#template-options-form').trigger('submit');
         }
     };
 
@@ -244,7 +244,7 @@ var ThemeOptions = function(){
     // Instance methods
     var bind = function(){
         //if the save button is clicked write everything into the template option field and send the form
-        $('.action_update_options_string_button').on('click', onSaveButtonClickAction);
+        $('.action_update_options_string_button, #theme-options--submit').on('click', onSaveButtonClickAction);
 
         //Bind the hotwaps
         hotSwapParentRadioButtons();
@@ -252,7 +252,7 @@ var ThemeOptions = function(){
         hotswapGeneralInherit();
         hotswapFontField();
     };
-    
+
     var run = function(){
         parseOptionObject();
 
@@ -266,7 +266,7 @@ var ThemeOptions = function(){
     };
 
     return run;
-    
+
 };
 
 var prepare = function(){
@@ -278,7 +278,7 @@ var prepare = function(){
 
     var themeOptionStarter = new ThemeOptions();
     themeOptionStarter();
-    
+
     setTimeout(function(){deferred.resolve()},650);
     return deferred.promise();
 };
