@@ -334,7 +334,7 @@ export default {
                                         :class="{'question-hidden' : question.hidden}" 
                                         :style="{ width: itemWidth }"
                                     >
-                                        [{{question.title}}] &rsaquo; {{ question.question_flat }} 
+                                        [{{question.title}}] &rsaquo; <span v-html="question.question_flat"></span>
                                     </span> 
                                 </a>
                             </li>
