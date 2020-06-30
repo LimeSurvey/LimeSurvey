@@ -285,7 +285,9 @@ class Template extends LSActiveRecord
     public static function getTemplatePath($sTemplateName = "")
     {
         // Make sure template name is valid
-        $sTemplateName = self::templateNameFilter($sTemplateName);
+        if (!self::checkIfTemplateExists($sTemplateName)) {
+            throw new \CException("Invalid {$sTemplateName} template directory");
+        }
 
         static $aTemplatePath = array();
         if (isset($aTemplatePath[$sTemplateName])) {
@@ -293,9 +295,8 @@ class Template extends LSActiveRecord
         }
 
         $oTemplate = self::model()->findByPk($sTemplateName);
-        if (empty($oTemplate))
-        {
-            throw new \Exception("Survey theme {$sTemplateName} not found.", 1);
+        if (empty($oTemplate)) {
+            throw new \CException("Survey theme {$sTemplateName} not found.", 1);
         }
 
         if (self::isStandardTemplate($sTemplateName)) {
@@ -375,7 +376,9 @@ class Template extends LSActiveRecord
     public static function getTemplateURL($sTemplateName = "")
     {
         // Make sure template name is valid
-        $sTemplateName = self::templateNameFilter($sTemplateName);
+        if (!self::checkIfTemplateExists($sTemplateName)) {
+            throw new \CException("Invalid {$sTemplateName} template directory");
+        }
 
         static $aTemplateUrl = array();
         if (isset($aTemplateUrl[$sTemplateName])) {

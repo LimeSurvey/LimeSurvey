@@ -1260,8 +1260,8 @@ class export extends Survey_Common_Action
     private function _exportPrintableHtmls($iSurveyID, $readFile = true)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = substr(Template::getTemplateURL($oSurvey->template), 1);
-        $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
+        $assetsDir = substr(Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
+        $fullAssetsDir = Template::getTemplatePath($oSurvey->templateEffectiveName);
         $aLanguages = $oSurvey->getAllLanguages();
 
         Yii::import('application.helpers.common_helper', true);
@@ -1322,7 +1322,7 @@ class export extends Survey_Common_Action
         $file = "$tempdir/questionnaire_{$oSurvey->getPrimaryKey()}_{$language}.html";
 
         // remove first slash to get local path for local storage for template assets
-        $templateDir = Template::getTemplateURL($oSurvey->template);
+        $templateDir = Template::getTemplateURL($oSurvey->templateEffectiveName);
         $response = str_replace($templateDir, substr($templateDir, 1), $response);
 
         file_put_contents($file, $response);
