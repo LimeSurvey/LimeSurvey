@@ -226,7 +226,7 @@ var ThemeOptions = function(){
     
         if(generalInherit()){
             $('#TemplateConfiguration_options').val('inherit');
-            $('#template-options-form').find('button[type=submit]').trigger('click'); // submit the form
+            $('#template-options-form').trigger('submit'); // submit the form
         } else {
             //Create a copy of the inherent optionObject
             var newOptionObject = $.extend(true, {}, optionObject);
@@ -235,7 +235,7 @@ var ThemeOptions = function(){
             //now write the newly created object to the correspondent field as a json string
             $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
             //and submit the form
-            $('#template-options-form').find('button[type=submit]').trigger('click');
+            $('#template-options-form').trigger('submit');
         }
     };
 
@@ -244,7 +244,7 @@ var ThemeOptions = function(){
     // Instance methods
     var bind = function(){
         //if the save button is clicked write everything into the template option field and send the form
-        $('.action_update_options_string_button').on('click', onSaveButtonClickAction);
+        $('.action_update_options_string_button, #theme-options--submit').on('click', onSaveButtonClickAction);
 
         //Bind the hotwaps
         hotSwapParentRadioButtons();
