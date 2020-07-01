@@ -55,7 +55,7 @@ $this->renderPartial('super/fullpagebar_view', array(
                                             <tr class="odd">
                                                 <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
                                                 <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
-                                                <td class="col-md-3"><?php echo $oTemplate->config->metadata->description; ?></td>
+                                                <td class="col-md-3"><?php echo $oTemplate->description; ?></td>
                                                 <td class="col-md-2"><?php eT('XML themes');?></td>
                                                 <td class="col-md-2"><?php echo $oTemplate->config->metadata->extends; ?></td>
                                                 <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>

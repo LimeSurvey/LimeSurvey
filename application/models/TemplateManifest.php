@@ -1352,7 +1352,33 @@ class TemplateManifest extends TemplateConfiguration
         return $sTemplateNames;
     }
 
+    /**
+     * Twig statements can be used in Theme description
+     * Override method from TemplateConfiguration to use the description from the XML
+     */
+    public function getDescription()
+    {
+        $sDescription = $this->config->metadata->description;
 
+        // If wrong Twig in manifest, we don't want to block the whole list rendering
+        // Note: if no twig statement in the description, twig will just render it as usual
+        try {
+            $sDescription = Yii::app()->twigRenderer->convertTwigToHtml($this->config->metadata->description);
+        } catch (\Exception $e) {
+            // It should never happen, but let's avoid to anoy final user in production mode :)
+            if (YII_DEBUG) {
+                Yii::app()->setFlashMessage(
+                    "Twig error in template " .
+                    $this->sTemplateName .
+                    " description <br> Please fix it and reset the theme <br>" .
+                    $e,
+                    'error'
+                );
+            }
+        }
+
+        return $sDescription;
+    }
 
     /**
      * PHP getter magic method.
