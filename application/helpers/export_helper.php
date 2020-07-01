@@ -698,7 +698,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 {
     $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
 
-    preg_match('/\bfrom\b\s*{{(\w+)}}/i', $Query, $MatchResults);
+    preg_match('/\bfrom\b\s*`?{{(\w+)}}`?/i', $Query, $MatchResults);
     if ($tagname != '') {
         $TableName = $tagname;
     } else {
