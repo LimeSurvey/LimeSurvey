@@ -1397,7 +1397,7 @@ function do_list_dropdown($ia)
 
     //Time Limit Code
     if (trim($aQuestionAttributes['time_limit']) != '') {
-        return_timer_script($aQuestionAttributes, $ia);
+        $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
     //End Time Limit Code
 
