@@ -1355,6 +1355,7 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Twig statements can be used in Theme description
      * Override method from TemplateConfiguration to use the description from the XML
+     * @return string description from the xml
      */
     public function getDescription()
     {
@@ -1370,8 +1371,7 @@ class TemplateManifest extends TemplateConfiguration
                 Yii::app()->setFlashMessage(
                     "Twig error in template " .
                     $this->sTemplateName .
-                    " description <br> Please fix it and reset the theme <br>" .
-                    $e,
+                    " description <br> Please fix it and reset the theme <br>" . $e->getMessage(),
                     'error'
                 );
             }
