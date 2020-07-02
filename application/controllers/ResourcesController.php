@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ * @class ResourcesController 
  */
 class ResourcesController extends LSBaseController
 {
@@ -113,7 +113,8 @@ class ResourcesController extends LSBaseController
 
         $aViewsUrls[] = $template;
 
-        $this->_renderWrappedTemplate('survey', $aViewsUrls, $aData);
+		// TODO: Whats in $aViewsUrls
+        $this->render('survey', $aData);
     }
 
     /**
