@@ -349,7 +349,7 @@ class index extends CAction
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
         //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
         $sCookieName = "LS_".$surveyid."_STATUS";
-        if (isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($param['newtest']) || $param['newtest'] != "Y")) {
+        if (!$previewmode && isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($param['newtest']) || $param['newtest'] != "Y")) {
 
             $aErrors  = array(gT('Error'));
             $aMessage = array(
