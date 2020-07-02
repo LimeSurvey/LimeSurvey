@@ -1437,7 +1437,6 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Twig statements can be used in Theme description
      * Override method from TemplateConfiguration to use the description from the XML
-     * 
      * @return string description from the xml
      */
     public function getDescription()
