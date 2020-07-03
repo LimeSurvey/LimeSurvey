@@ -1966,7 +1966,7 @@ class quexmlpdf extends pdf
                     }
                 }
 
-                if (Yii::app()->getConfig('quexmlusequestiontitleasid') == true) {
+                if (Yii::app()->getConfig('quexmlusequestiontitleasid')) {
                     $qtmp['title'] = ((string) $qu->response->attributes()->varName).$this->questionTitleSuffix;
                 } else {
                     $qtmp['title'] = $sl.$qcount.$this->questionTitleSuffix;
