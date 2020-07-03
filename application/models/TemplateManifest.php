@@ -844,20 +844,33 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Change the date inside the DOMDocument
+     * Used only when copying/extend a survey
      * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
      * @param string        $sDate         The wanted date, if empty the current date with config time adjustment will be used
      */
     public static function changeDateInDOM($oNewManifest, $sDate = '')
     {
-        $date           = (empty($date)) ?dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $date;
+        $sDate           = (empty($date)) ? dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")) : $date;
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
-        $oOldDateNode   = $ometadata->getElementsByTagName('creationDate')->item(0);
+        if($ometadata->getElementsByTagName('creationDate')) {
+            $oOldDateNode   = $ometadata->getElementsByTagName('creationDate')->item(0);
+        }
         $oNvDateNode    = $oNewManifest->createElement('creationDate', $sDate);
-        $ometadata->replaceChild($oNvDateNode, $oOldDateNode);
-        $oOldUpdateNode = $ometadata->getElementsByTagName('lastUpdate')->item(0);
+        if(empty($oOldDateNode)) {
+            $ometadata->appendChild($oNvDateNode);
+        } else {
+            $ometadata->replaceChild($oNvDateNode, $oOldDateNode);
+        }
+        if($ometadata->getElementsByTagName('lastUpdate')) {
+            $oOldUpdateNode   = $ometadata->getElementsByTagName('lastUpdate')->item(0);
+        }
         $oNvDateNode    = $oNewManifest->createElement('lastUpdate', $sDate);
-        $ometadata->replaceChild($oNvDateNode, $oOldUpdateNode);
+        if(empty($oOldUpdateNode)) {
+            $ometadata->appendChild($oNvDateNode);
+        } else {
+            $ometadata->replaceChild($oNvDateNode, $oOldUpdateNode);
+        }
     }
 
     /**
