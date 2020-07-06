@@ -7,8 +7,16 @@ class ResourcesController extends LSBaseController
 {
 
     /**
+     * @param string $view View
+     * @return bool
+     */
+    public function beforeRender(string $view): bool {
+
+    }
+
+    /**
      * Renders the view for Resources Tab.
-     * 
+     *  
      * @param int    $surveyID   Survey ID
      * @param string $menuAction Menu Action
      * 
@@ -89,6 +97,10 @@ class ResourcesController extends LSBaseController
         $titleForTitleBar  = $survey->currentLanguageSettings->surveyls_title . " (" - gT('ID') . ":" . $surveyID . ")";
         $url = 'admin/survey/sa/view/';
 
+        $aData['oSurvey'] = $survey;
+        $aData['oSurveyOptions'] = $survey->oOptionLabels;
+        $aData['bShowInherited'] = $survey->showInherited;
+        $aData['bShowAllOptions'] = true;
         $aData['surveyid']   = $surveyID;
         $aData['menuaction'] = $menuAction;
         $aData['template']   = $template;
@@ -113,7 +125,6 @@ class ResourcesController extends LSBaseController
 
         $aViewsUrls[] = $template;
 
-		// TODO: Whats in $aViewsUrls
         $this->render('survey', $aData);
     }
 
