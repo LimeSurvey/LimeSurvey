@@ -3084,6 +3084,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 427) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -3101,6 +3102,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldVersion < 428) {
+            // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => '',
+                    'action'    => 'actionRenderResourcesView',
+                    'template'  => 'editLocalSettings_main_view',
+                    'partial'   => '/admin/survey/subview/accordion/_resources_panel',
+                )
+            );
+
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
