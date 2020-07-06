@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.24 (build 200630) to 3.22.25 (build 200706) July 6, 2020
+-Fixed issue #16430: Testing a question will not be possible if admin participated in the survey (#1459) (Gabriel Jenik)
+-Fixed issue #16375: Theme with valid config.xml (according to manual) can not be extendable (Denis Chenu)
+-Fixed issue #15985: Print answers: list with comments, comments not printed (#1448) (Gabriel Jenik)
+-Fixed issue #15890: Overview of uninstalled themes shows incorrectly parsed theme description (#1464) (Gabriel Jenik)
+#Updated translation: Ukrainian by VikaDidashko
+#Updated translation: Hebrew by cdorin
+#Updated translation: French (France) by DenisChenu, b00z00
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Croatian by DenisChenu
+
+
 Changes from 3.22.23 (build 200626) to 3.22.24 (build 200630) June 29, 2020
 -Fixed issue #16316: Condition for list radio questions with question design "image_select" broken for questions on the same page (Gabriel Jenik)
 #Updated translation: German by xibit12
