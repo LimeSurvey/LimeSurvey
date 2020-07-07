@@ -5,12 +5,36 @@
  */
 class ResourcesController extends LSBaseController
 {
-
     /**
+     * Only logged in users should have access to actions.
+     * All other permissions should be checked in the action itself.
+     * 
+     * @return array
+     */
+    public function accessRules()
+    {
+        return [
+            [
+                'allow',
+                'actions' => [],
+                'users'   => ['*'], // everybody
+            ],
+            [
+                'allow',
+                'actions' => ['view'],
+                'users' => ['@'], // only login users
+            ],
+            ['deny'],   // always deny all actions not mentioned above
+        ];
+    }
+
+    /**  
+     * Before Render Method.
+     *
      * @param string $view View
      * @return bool
      */
-    public function beforeRender(string $view): bool {
+    protected function beforeRender(string $view): bool {
 
     }
 
@@ -135,7 +159,7 @@ class ResourcesController extends LSBaseController
      * 
      * @return array
      */
-    private function getGeneralTempalteData(Survey $survey): array
+    private function getGeneralTemplateData(Survey $survey): array
     {   
         $aData = [];
     
