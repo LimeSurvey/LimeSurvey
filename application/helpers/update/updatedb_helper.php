@@ -3103,7 +3103,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-        if ($iOldVersion < 428) {
+        if ($iOldDBVersion < 428) {
             // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update(
