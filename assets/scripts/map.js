@@ -356,6 +356,9 @@ function resetMap(qID) {
         marker.setPosition(markerLatLng);
         google.maps.event.trigger(currentMap, 'resize')
         currentMap.setCenter(markerLatLng);
+    } else if (osmaps[question]) {
+        var currentMap = osmaps[question];
+        currentMap.invalidateSize();
     }
 }
 
