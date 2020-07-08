@@ -20,11 +20,14 @@
     import SettingColumns from '../_inputtypes/columns.vue';
     import StubSet from '../_inputtypes/stub.vue';
 
+    import EventChild from '../../mixins/eventChild.js';
+
     export default {
         name: "settings-tab",
         props: {
             readonly : {type: Boolean, default: false}
         },
+        mixins: [EventChild],
         data(){
             return {
                 aComponentArray : [
@@ -105,13 +108,21 @@
             },
             isReadonly(setting) {
                 return (this.readonly || (setting.disableInActive && this.surveyActive));
+            },
+            toggleEditMode(){
+                if(this.readonly) {
+                    this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+                }
             }
         }
     }
 </script>
 
 <template>
-    <div class="col-sm-12">
+    <div 
+        class="col-sm-12" 
+        @dblclick="toggleEditMode"
+    >
         <div class="list-group scoped-custom-list-group">
             <div 
                 class="list-group-item question-option-advanced-setting-block" 
