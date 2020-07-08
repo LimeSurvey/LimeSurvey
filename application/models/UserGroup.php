@@ -476,9 +476,12 @@ class UserGroup extends LSActiveRecord
         $oUserFrom = User::model()->findByPk(Yii::app()->session['loginID']);
         $fromName = empty($oUserFrom->full_name) ? $oUserFrom->users_name : $oUserFrom->full_name;
         $mailer->setFrom($oUserFrom->email, $fromName);
-        //todo: this will send user in cc amountNumberOfUsers (spaming the email of user ...)
+        
+        // Add the sender to the list of users in order to receive a copy
         if ($copy == 1) {
-            $mailer->addCC($oUserFrom->email, $fromName);
+            $oAuxUserInGroup = new UserInGroup();
+            $oAuxUserInGroup->users = $oUserFrom;
+            $usersInGroup[] = $oAuxUserInGroup;
         }
         $mailer->Subject = $subject;
         $body = str_replace("\n.", "\n..", $body);

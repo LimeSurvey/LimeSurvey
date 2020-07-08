@@ -430,9 +430,10 @@ class QuestionGroup extends LSActiveRecord
             return $value;
         }
 
-        $sQuery = "select count(*) from {{groups}}
-            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
-            where {{groups}}.sid={$surveyid} and qid is null";
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $sQuery = "select count(*) from $quotedGroups
+            left join {{questions}} on  $quotedGroups.gid={{questions}}.gid
+            where $quotedGroups.sid={$surveyid} and qid is null";
         $result =  Yii::app()->db->createCommand($sQuery)->queryScalar();
 
         EmCacheHelper::set($cacheKey, $result);
@@ -453,9 +454,10 @@ class QuestionGroup extends LSActiveRecord
             return $value;
         }
 
-        $sQuery = "select count(DISTINCT {{groups}}.gid) from {{groups}}
-            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
-            where {{groups}}.sid={$surveyid} and qid is not null";
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $sQuery = "select count(DISTINCT $quotedGroups.gid) from $quotedGroups
+            left join {{questions}} on  $quotedGroups.gid={{questions}}.gid
+            where $quotedGroups.sid ={$surveyid} and qid is not null";
         $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
         EmCacheHelper::set($cacheKey, $result);

@@ -3547,8 +3547,8 @@ class quexmlpdf extends pdf
             }
 
             //draw the response boxes
-            $arraySize = count($subquestions);
-            for ($j = 0; $j < $arraySize; $j++) {
+            $subquestionCount = count($subquestions);
+            for ($j = 0; $j < $subquestionCount; $j++) {
                 $s = $subquestions[$j];
 
                 if ($i == 0) {

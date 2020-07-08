@@ -501,7 +501,7 @@ class questiongroups extends Survey_Common_Action
             $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionl10ns);
         });
 
-        $this->renderJSON($aQuestions);
+        $this->renderJSON(['questions' => $aQuestions]);
     }
 
     /**

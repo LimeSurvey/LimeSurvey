@@ -200,8 +200,8 @@ class SurveyRuntimeHelper
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
         if (!$this->previewgrp && !$this->previewquestion) {
-            $this->checkForDataSecurityAccepted();
             $this->initMove(); // main methods to init session, LEM, moves, errors, etc
+            $this->checkForDataSecurityAccepted(); // must be called after initMove to allow LEM to be initialized
             if (EmCacheHelper::useCache()) {
                 $this->aSurveyInfo['emcache'] = true;
             }
@@ -1020,7 +1020,7 @@ class SurveyRuntimeHelper
                 $this->sMove = 'movesubmit';
                 $this->aMoveResult['finished'] = true;
             }
-            
+
             if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false) {
                 // then there are errors, so don't finalize the survey
                 $this->sMove = "movenext"; // so will re-display the survey
@@ -1260,7 +1260,7 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
-            // Link to Public statistics 
+            // Link to Public statistics
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;

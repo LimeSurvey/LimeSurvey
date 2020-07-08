@@ -284,12 +284,20 @@ class Template extends LSActiveRecord
      */
     public static function getTemplatePath($sTemplateName = "")
     {
+        // Make sure template name is valid
+        if (!self::checkIfTemplateExists($sTemplateName)) {
+            throw new \CException("Invalid {$sTemplateName} template directory");
+        }
+
         static $aTemplatePath = array();
         if (isset($aTemplatePath[$sTemplateName])) {
             return $aTemplatePath[$sTemplateName];
         }
 
         $oTemplate = self::model()->findByPk($sTemplateName);
+        if (empty($oTemplate)) {
+            throw new \CException("Survey theme {$sTemplateName} not found.", 1);
+        }
 
         if (self::isStandardTemplate($sTemplateName)) {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
@@ -367,6 +375,11 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateURL($sTemplateName = "")
     {
+        // Make sure template name is valid
+        if (!self::checkIfTemplateExists($sTemplateName)) {
+            throw new \CException("Invalid {$sTemplateName} template directory");
+        }
+
         static $aTemplateUrl = array();
         if (isset($aTemplateUrl[$sTemplateName])) {
             return $aTemplateUrl[$sTemplateName];

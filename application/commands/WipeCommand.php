@@ -38,7 +38,8 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{labelsets}}";
             Yii::app()->db->createCommand($actquery)->execute();
-            $actquery = "truncate table {{groups}}";
+            $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+            $actquery = "truncate table $quotedGroups";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{questions}}";
             Yii::app()->db->createCommand($actquery)->execute();
