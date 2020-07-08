@@ -28,7 +28,7 @@ class QuestionEditorController extends LSBaseController
      * @param string $view
      * @return bool
      */
-    protected function beforeRender($view)
+    protected function beforeRender(string $view)
     {
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
@@ -57,7 +57,7 @@ class QuestionEditorController extends LSBaseController
      *
      * @throws CException
      */
-    public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
+    public function actionView(int $surveyid, int $gid = null, int $qid = null, $landOnSideMenuTab = 'structure')
     {
         $aData = array();
         $iSurveyID = (int) $surveyid;
@@ -234,7 +234,7 @@ class QuestionEditorController extends LSBaseController
      *
      * @return void
      */
-    public function actionGetPossibleLanguages($iSurveyId)
+    public function actionGetPossibleLanguages(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $aLanguages = Survey::model()->findByPk($iSurveyId)->allLanguages;
@@ -249,7 +249,7 @@ class QuestionEditorController extends LSBaseController
      * @return void
      * @throws CException
      */
-    public function actionSaveQuestionData($sid)
+    public function actionSaveQuestionData(int $sid)
     {
         $iSurveyId = (int) $sid;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
@@ -410,10 +410,10 @@ class QuestionEditorController extends LSBaseController
      * @throws CException
      */
     public function actionReloadQuestionData(
-        $iQuestionId = null,
-        $type = null,
-        $gid = null,
-        $question_template = 'core'
+        int $iQuestionId = null,
+        string $type = null,
+        int $gid = null,
+        string $question_template = 'core'
     ) {
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
@@ -465,9 +465,9 @@ class QuestionEditorController extends LSBaseController
      * @throws CException
      */
     public function actionGetGeneralOptions(
-        $iQuestionId = null,
-        $sQuestionType = null,
-        $gid = null,
+        int $iQuestionId = null,
+        string $sQuestionType = null,
+        int $gid = null,
         $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
         $question_template = 'core'
     ) {
@@ -490,8 +490,8 @@ class QuestionEditorController extends LSBaseController
      * @throws CException
      */
     public function actionGetAdvancedOptions(
-        $iQuestionId = null,
-        $sQuestionType = null,
+        int $iQuestionId = null,
+        string $sQuestionType = null,
         $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
         $question_template = 'core'
     ) {
@@ -519,7 +519,7 @@ class QuestionEditorController extends LSBaseController
      * @return void
      * @throws CException
      */
-    public function actionGetQuestionData($iQuestionId = null, $gid = null, $type = null)
+    public function actionGetQuestionData(int $iQuestionId = null, int $gid = null, string $type = null)
     {
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
@@ -559,7 +559,7 @@ class QuestionEditorController extends LSBaseController
      * @return void
      * @throws CException
      */
-    public function actionGetQuestionPermissions($iQuestionId = null)
+    public function actionGetQuestionPermissions(int $iQuestionId = null)
     {
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId);
@@ -593,7 +593,7 @@ class QuestionEditorController extends LSBaseController
      * @param string $sQuestionType
      * @return void
      */
-    public function actionGetQuestionTypeInformation($sQuestionType)
+    public function actionGetQuestionTypeInformation(string $sQuestionType)
     {
         $aTypeInformations = QuestionType::modelsAttributes();
         $aQuestionTypeInformation = $aTypeInformations[$sQuestionType];
@@ -608,7 +608,7 @@ class QuestionEditorController extends LSBaseController
      * @return false|null|string|string[]
      * @throws CException
      */
-    public function actionGetQuestionTopbar($qid = null)
+    public function actionGetQuestionTopbar(int $qid = null)
     {
         $oQuestion = $this->getQuestionObject($qid);
         $sid = $oQuestion->sid;
@@ -665,7 +665,7 @@ class QuestionEditorController extends LSBaseController
      * @return Question
      * @throws CException
      */
-    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
+    private function getQuestionObject(int $iQuestionId = null, string $sQuestionType = null, int $gid = null)
     {
         //todo: this should be done in the action directly
         $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
@@ -698,9 +698,9 @@ class QuestionEditorController extends LSBaseController
      * @throws CException
      */
     public function getGeneralOptions(
-        $iQuestionId = null,
-        $sQuestionType = null,
-        $gid = null,
+        int $iQuestionId = null,
+        string $sQuestionType = null,
+        int $gid = null,
         $question_template = 'core'
     ) {
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid);
@@ -779,7 +779,7 @@ class QuestionEditorController extends LSBaseController
      * @throws CException
      * @throws Exception
      */
-    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
+    private function getAdvancedOptions(int $iQuestionId = null, string $sQuestionType = null, string $question_template = 'core')
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
