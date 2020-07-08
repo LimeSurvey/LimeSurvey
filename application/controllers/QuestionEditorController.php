@@ -268,7 +268,7 @@ class QuestionEditorController extends LSBaseController
         );
 
         // Store changes to the actual question data, by either storing it, or updating an old one
-        $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
+        $oQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $questionData['question']['qid']]);
         if ($oQuestion == null || $questionCopy == true) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
         } else {
@@ -348,7 +348,7 @@ class QuestionEditorController extends LSBaseController
         }
 
         // Compile the newly stored data to update the FE
-        $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $oQuestion->qid]);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions(
@@ -669,7 +669,7 @@ class QuestionEditorController extends LSBaseController
     {
         //todo: this should be done in the action directly
         $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
-        $oQuestion = Question::model()->findByPk($iQuestionId);
+        $oQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $iQuestionId]);
 
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
@@ -1142,7 +1142,7 @@ class QuestionEditorController extends LSBaseController
         $this->cleanSubquestions($oQuestion, $dataSet);
         foreach ($dataSet as $aSubquestions) {
             foreach ($aSubquestions as $aSubquestionDataSet) {
-                $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
+                $oSubQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $oQuestion->sid, ':qid' => $aSubquestionDataSet['qid']]);
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
                 } elseif (!$oQuestion->survey->isActive) {
