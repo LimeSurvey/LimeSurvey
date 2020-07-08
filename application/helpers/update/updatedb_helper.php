@@ -3110,12 +3110,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => '',
-                    'action'    => 'actionRenderResourcesView',
+                    'action'    => 'actionRenderResources',
                     'template'  => 'editLocalSettings_main_view',
                     'partial'   => '/admin/survey/subview/accordion/_resources_panel',
                 )
             );
 
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
     } catch (Exception $e) {
