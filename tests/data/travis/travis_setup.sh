@@ -55,5 +55,5 @@ sudo service apache2 restart
 wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
 wget "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz"
 tar xvzf geckodriver-v0.23.0-linux64.tar.gz
-export MOZ_HEADLESS=1
-java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false 2> /dev/null &
+chmod -R 776 tmp/ upload/ tests/tmp
+MOZ_HEADLESS=1 java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false

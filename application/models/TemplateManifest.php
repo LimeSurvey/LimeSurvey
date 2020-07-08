@@ -983,7 +983,7 @@ class TemplateManifest extends TemplateConfiguration
         $sConfigPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
 
         // First we get the XML file
-        libxml_disable_entity_loader(false);
+        $oldState = libxml_disable_entity_loader(false);
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
         self::deleteEngineInDom($oNewManifest);
@@ -995,7 +995,7 @@ class TemplateManifest extends TemplateConfiguration
 
         $oNewManifest->save($sConfigPath."/config.xml");
 
-        libxml_disable_entity_loader(true);
+        libxml_disable_entity_loader($oldState);
     }
 
     /**
