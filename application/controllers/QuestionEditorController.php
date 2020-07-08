@@ -28,7 +28,7 @@ class QuestionEditorController extends LSBaseController
      * @param string $view
      * @return bool
      */
-    protected function beforeRender(string $view)
+    protected function beforeRender($view)
     {
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
