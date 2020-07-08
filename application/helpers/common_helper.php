@@ -1376,8 +1376,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $qtypes = Question::typeList();
 
     // Main query
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $aquery = "SELECT g.*, q.*, gls.*, qls.*, qa.attribute, qa.value"
-    ." FROM {{groups}} g"
+    ." FROM $quotedGroups g"
     .' JOIN {{questions}} q on q.gid=g.gid '
     .' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
     .' JOIN {{question_l10ns}} qls on qls.qid=q.qid '
@@ -3321,7 +3322,8 @@ return strlen($a) < strlen($b); });
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT g.gid, language, group_name, description from {{groups}} g
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+    $sql = "SELECT g.gid, language, group_name, description from $quotedGroups g
     join {{group_l10ns}} l on g.gid=l.gid
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = Yii::app()->db->createCommand($sql)->query();
@@ -3537,8 +3539,9 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
     }
 
     // Remove From Questions Table
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $sQuery = "SELECT ls.id from {{group_l10ns}} ls 
-            JOIN {{groups}} g on ls.gid=g.gid
+            JOIN $quotedGroups g on ls.gid=g.gid
             WHERE sid={$iSurveyID} AND {$sqllang}";
     $result = Yii::app()->db->createCommand($sQuery)->queryAll();
     foreach ($result as $row) {
@@ -3568,7 +3571,8 @@ function fixLanguageConsistency($sid, $availlangs = '')
         return true; // Survey only has one language
     }
     $baselang = Survey::model()->findByPk($sid)->language;
-    $query = "SELECT * FROM {{groups}} g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+    $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $group) {
         foreach ($langs as $lang) {
@@ -3775,13 +3779,14 @@ function getGroupDepsForConditions($sid, $depgid = "all", $targgid = "all", $ind
     if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid = "AND tq2.gid=$targgid"; }
 
     $baselang = Survey::model()->findByPk($sid)->language;
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $condquery = "SELECT tg.gid as depgid, ls.group_name as depgpname, "
     . "tg2.gid as targgid, ls2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
     . "{{conditions}} AS tc, "
     . "{{questions}} AS tq, "
     . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg, "
-    . "{{groups}} AS tg2, "
+    . "$quotedGroups AS tg, "
+    . "$quotedGroups AS tg2, "
     . "{{group_l10ns}} as ls,{{group_l10ns}} as ls2 "
     . "WHERE ls.language='{$baselang}' AND ls2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
@@ -3937,14 +3942,15 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
     $baselang = Survey::model()->findByPk($sid)->language;
 
     // First look for 'my dependencies': questions on which I have set conditions
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
     . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
     . "tc.cid FROM "
     . "{{conditions}} AS tc, "
     . "{{questions}} AS tq, "
     . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg, "
-    . "{{groups}} AS tg2 "
+    . "$quotedGroups AS tg, "
+    . "$quotedGroups AS tg2 "
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
 
@@ -3968,13 +3974,14 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
     }
 
     // Secondly look for 'questions dependent on me': questions that have conditions on my answers
+    $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
     . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
     . "tc.cid FROM {{conditions}} AS tc, "
     . "{{questions}} AS tq, "
     . "{{questions}} AS tq2, "
-    . "{{groups}} AS tg, "
-    . "{{groups}} AS tg2 "
+    . "$quotedGroups AS tg, "
+    . "$quotedGroups AS tg2 "
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
 

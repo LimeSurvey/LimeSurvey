@@ -13,8 +13,10 @@
 
 $config['versionnumber'] = '4.3.0-alpha';
 $config['dbversionnumber'] = 428;
+$config['versionnumber'] = '4.4.0-alpha';
+$config['dbversionnumber'] = 427;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['templateapiversion']  = 3;
-$config['assetsversionnumber'] = '30143';
+$config['assetsversionnumber'] = '30145';
 return $config;
