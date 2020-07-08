@@ -3084,6 +3084,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        /**
+         * Add missing noTablesOnMobile.css to vanilla and bootswatch configs
+         */
+        if ($iOldDBVersion < 427) {
+            $oTransaction = $oDB->beginTransaction();
+            // Update vanilla config
+            $oDB->createCommand()->update(
+                '{{template_configuration}}',
+                [
+                    'files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
+                ],
+                "template_name = 'vanilla' AND files_css != 'inherit'"
+            );
+            // Update bootswatch config
+            $oDB->createCommand()->update(
+                '{{template_configuration}}',
+                [
+                    'files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
+                ],
+                "template_name = 'bootswatch' AND files_css != 'inherit'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
