@@ -60,18 +60,7 @@ class QuestionEditorController extends LSBaseController
 
         $aData = array();
         $iSurveyID = (int) $surveyid;
-
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied. You have no permission to view this survey"));
-            $this->redirect(Yii::app()->request->urlReferrer);
-        }
-
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-
-        if ($oSurvey === null) {
-            throw new CHttpException(500, "Survey not found $iSurveyID");
-        }
-
         $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->getQuestionObject($qid, null, $gid);
         App()->getClientScript()->registerPackage('questioneditor');
@@ -256,10 +245,9 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionSaveQuestionData($sid)
     {
-        $iSurveyId = (int) $sid;
+        $iSurveyId = $sid;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            throw new CHttpException(403);
         }
 
         $questionData = App()->request->getPost('questionData', []);
