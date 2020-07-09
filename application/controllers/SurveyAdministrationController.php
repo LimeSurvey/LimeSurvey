@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\FilterImportedResources;
 
 class SurveyAdministrationController extends LSBaseController
 {
@@ -21,7 +22,8 @@ class SurveyAdministrationController extends LSBaseController
             ],
             [
                 'allow',
-                'actions' => ['view'],
+                'actions' => ['view','delete', 'index', 'insert', 'listsurveys', 'newSurvey',
+                    'regenerateQuestionCode', 'renderItemsSelected'],
                 'users'   => ['@'], //only login users
             ],
             ['deny'], //always deny all actions not mentioned above
@@ -342,23 +344,401 @@ class SurveyAdministrationController extends LSBaseController
         $aData['tokensettingsdata']         = array_merge($aData, $this->tabTokens($esrow));
 
         $aViewUrls[] = 'newSurvey_view';
-
+/*
         $arrayed_data                                              = array();
         $arrayed_data['oSurvey']                                   = $survey;
         $arrayed_data['data']                                      = $aData;
         $arrayed_data['title_bar']['title']                        = gT('New survey');
         $arrayed_data['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
         $arrayed_data['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
+*/
+        $aData['title_bar']['title']                        = gT('New survey');
+        $aData['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
+        $aData['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
 
         $this->aData = $aData;
         $this->render('newSurvey_view', [
-            'data' => $arrayed_data['data']
+            'data' => $aData
         ]);
+    }
+
+    /**
+     * Saves the new survey after the creation screen is submitted
+     *
+     * @param int $iSurveyID The survey id to be used for the new survey.
+     *                       If already taken a new random one will be used.
+     *
+     * @return string
+     */
+    public function actionInsert($iSurveyID = null)
+    {
+        if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            // Check if survey title was set
+            if (Yii::app()->request->getPost('surveyls_title') == '') {
+                $alertError = gT("Survey could not be created because it did not have a title");
+
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => array(
+                            'alertData' => $alertError,
+                            'missingField' => 'surveyls_title'
+                        )
+                    ),
+                    false,
+                    false
+                );
+            }
+
+            Yii::app()->loadHelper("surveytranslator");
+            // If start date supplied convert it to the right format
+            $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
+            $sStartDate = Yii::app()->request->getPost('startdate');
+            if (trim($sStartDate) != '') {
+                Yii::import('application.libraries.Date_Time_Converter');
+                $converter = new Date_Time_Converter($sStartDate, $aDateFormatData['phpdate'].' H:i:s');
+                $sStartDate = $converter->convert("Y-m-d H:i:s");
+            }
+
+            // If expiry date supplied convert it to the right format
+            $sExpiryDate = Yii::app()->request->getPost('expires');
+            if (trim($sExpiryDate) != '') {
+                Yii::import('application.libraries.Date_Time_Converter');
+                $converter = new Date_Time_Converter($sExpiryDate, $aDateFormatData['phpdate'].' H:i:s');
+                $sExpiryDate = $converter->convert("Y-m-d H:i:s");
+            }
+
+            $iTokenLength = (int) Yii::app()->request->getPost('tokenlength');
+            //token length has to be at least 5, otherwise set it to default (15)
+            if ($iTokenLength !== -1) {
+                if ($iTokenLength < 5) {
+                    $iTokenLength = 15;
+                }
+                if ($iTokenLength > 36) {
+                    $iTokenLength = 36;
+                }
+            }
+
+            $aInsertData = array(
+                'expires' => $sExpiryDate,
+                'startdate' => $sStartDate,
+                'template' => App()->request->getPost('template'),
+                'admin' => App()->request->getPost('admin'),
+                'active' => 'N',
+                'anonymized' => App()->request->getPost('anonymized'),
+                'faxto' => App()->request->getPost('faxto'),
+                'format' => App()->request->getPost('format'),
+                'savetimings' => App()->request->getPost('savetimings'),
+                'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
+                'datestamp' => App()->request->getPost('datestamp'),
+                'ipaddr' => App()->request->getPost('ipaddr'),
+                'ipanonymize' => App()->request->getPost('ipanonymize'),
+                'refurl' => App()->request->getPost('refurl'),
+                'usecookie' => App()->request->getPost('usecookie'),
+                'emailnotificationto' => App()->request->getPost('emailnotificationto'),
+                'allowregister' => App()->request->getPost('allowregister'),
+                'allowsave' => App()->request->getPost('allowsave'),
+                'navigationdelay' => App()->request->getPost('navigationdelay'),
+                'autoredirect' => App()->request->getPost('autoredirect'),
+                'showxquestions' => App()->request->getPost('showxquestions'),
+                'showgroupinfo' => App()->request->getPost('showgroupinfo'),
+                'showqnumcode' => App()->request->getPost('showqnumcode'),
+                'shownoanswer' => App()->request->getPost('shownoanswer'),
+                'showwelcome' => App()->request->getPost('showwelcome'),
+                'allowprev' => App()->request->getPost('allowprev'),
+                'questionindex' => App()->request->getPost('questionindex'),
+                'nokeyboard' => App()->request->getPost('nokeyboard'),
+                'showprogress' => App()->request->getPost('showprogress'),
+                'printanswers' => App()->request->getPost('printanswers'),
+                'listpublic' => App()->request->getPost('listpublic'),
+                'htmlemail' => App()->request->getPost('htmlemail'),
+                'sendconfirmation' => App()->request->getPost('sendconfirmation'),
+                'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
+                'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
+                'usecaptcha' => Survey::saveTranscribeCaptchaOptions(),
+                'publicstatistics' => App()->request->getPost('publicstatistics'),
+                'publicgraphs' => App()->request->getPost('publicgraphs'),
+                'assessments' => App()->request->getPost('assessments'),
+                'emailresponseto' => App()->request->getPost('emailresponseto'),
+                'tokenlength' => $iTokenLength,
+                'gsid'  => App()->request->getPost('gsid', '1'),
+                'adminemail' => Yii::app()->request->getPost('adminemail'),
+                'bounce_email' => Yii::app()->request->getPost('bounce_email'),
+
+            );
+
+            $warning = '';
+
+            if (!is_null($iSurveyID)) {
+                $aInsertData['sid'] = $iSurveyID;
+            }
+
+            $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
+            if (!$newSurvey->sid) {
+                safeDie('Survey could not be created.'); // No error management ?
+            }
+            $iNewSurveyid = $newSurvey->sid;
+            // Prepare locale data for surveys_language_settings table
+            $sTitle          = Yii::app()->request->getPost('surveyls_title');
+            $sDescription    = Yii::app()->request->getPost('description');
+            $sWelcome        = Yii::app()->request->getPost('welcome');
+
+            $sTitle          = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
+            $sDescription    = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
+            $sWelcome        = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
+
+            // Fix bug with FCKEditor saving strange BR types
+            $sTitle       = fixCKeditorText($sTitle);
+            $sDescription = fixCKeditorText($sDescription);
+            $sWelcome     = fixCKeditorText($sWelcome);
+
+
+            // Insert base language into surveys_language_settings table
+            $aInsertData = array(
+                'surveyls_survey_id'           => $iNewSurveyid,
+                'surveyls_title'               => $sTitle,
+                'surveyls_description'         => $sDescription,
+                'surveyls_welcometext'         => $sWelcome,
+                'surveyls_language'            => Yii::app()->request->getPost('language'),
+                'surveyls_urldescription'      => Yii::app()->request->getPost('urldescrip', ''),
+                'surveyls_endtext'             => Yii::app()->request->getPost('endtext', ''),
+                'surveyls_url'                 => Yii::app()->request->getPost('url', ''),
+                'surveyls_dateformat'          => (int)Yii::app()->request->getPost('dateformat'),
+                'surveyls_numberformat'        => (int)Yii::app()->request->getPost('numberformat'),
+                'surveyls_policy_notice'       => App()->request->getPost('surveyls_policy_notice'),
+                'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
+            );
+
+            $langsettings = new SurveyLanguageSetting;
+            $langsettings->insertNewSurvey($aInsertData);
+            // Update survey permissions
+            Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+
+            // This will force the generation of the entry for survey group
+            TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
+            $createSample = App()->request->getPost('createsample');
+            $createSampleChecked = ($createSample === 'on');
+
+            // Figure out destination
+            if ($createSampleChecked) {
+                $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
+                $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
+
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created. 
+                We also created a first question group and an example question for you."), 'info');
+                $landOnSideMenuTab   = 'structure';
+                $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
+                    $iNewSurveyid,
+                    $iNewGroupID,
+                    $iNewQuestionID,
+                    $landOnSideMenuTab
+                );
+            } else {
+                $redirecturl = $this->createUrl(
+                    'surveyAdministration/view/',
+                    ['iSurveyID'=>$iNewSurveyid]
+                );
+                Yii::app()->setFlashMessage($warning.gT("Your new survey was created."), 'info');
+            }
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => array(
+                        'redirecturl' => $redirecturl,
+                    )
+                ),
+                false,
+                false
+            );
+        }
+        $this->redirect(Yii::app()->request->urlReferrer);
+    }
+
+    /**
+     * todo: what is this? why do we need it?
+     *(it'S just an js-script alert window rendert here ...)
+     *
+     * @return void
+     * @todo   Document me
+     */
+    public function actionFakebrowser()
+    {
+        $this->renderPartial('/admin/survey/newSurveyBrowserMessage', array());
+    }
+
+    /**
+     * Function responsible to import survey resources from a '.zip' file.
+     *
+     * @access public
+     * @return void
+     */
+    public function actionImportsurveyresources()
+    {
+        $iSurveyID = Yii::app()->request->getPost('surveyid');
+
+        //todo: permission check!!!
+
+        if (!empty($iSurveyID)) {
+            if (Yii::app()->getConfig('demoMode')) {
+                Yii::app()->user->setFlash('error', gT("Demo mode only: Uploading files is disabled in this system."));
+                $this->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+            }
+
+            // Create temporary directory
+            // If dangerous content is unzipped
+            // then no one will know the path
+            Yii::import('application.helpers.common_helper', true);
+            $extractdir  = createRandomTempDir();
+            $zipfilename = $_FILES['the_file']['tmp_name'];
+            $basedestdir = Yii::app()->getConfig('uploaddir')."/surveys";
+            $destdir     = $basedestdir."/$iSurveyID/";
+
+            Yii::app()->loadLibrary('admin.pclzip');
+            $zip = new PclZip($zipfilename);
+
+            if (!is_writeable($basedestdir)) {
+                Yii::app()->user->setFlash('error', sprintf(gT("Incorrect permissions in your %s folder."),
+                    $basedestdir));
+                $this->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+            }
+
+
+            if (!is_dir($destdir)) {
+                mkdir($destdir);
+            }
+
+            $aImportedFilesInfo = array();
+            $aErrorFilesInfo = array();
+
+            if (is_file($zipfilename)) {
+                if ($zip->extract($extractdir) <= 0) {
+                    Yii::app()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed. ").$zip->errorInfo(true));
+                    $this->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+                }
+                // now read tempdir and copy authorized files only
+                $folders = array('flash', 'files', 'images');
+
+                $filteredImportedResources = new FilterImportedResources();
+
+                foreach ($folders as $folder) {
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $filteredImportedResources->filterImportedResources(
+                        $extractdir."/".$folder,
+                        $destdir.$folder
+                    );
+                    $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
+                    $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
+                }
+
+                // Deletes the temp directory
+                rmdirr($extractdir);
+
+                // Delete the temporary file
+                unlink($zipfilename);
+
+                if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
+                    Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid Resources files. Import failed."));
+                    $this->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+                    //todo editlocalsettings does not exist anymore ...
+                }
+            } else {
+                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+                $this->redirect(array('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+            }
+            $aData = array(
+                'aErrorFilesInfo' => $aErrorFilesInfo,
+                'aImportedFilesInfo' => $aImportedFilesInfo,
+                'surveyid' => $iSurveyID
+            );
+            $aData['display']['menu_bars']['surveysummary'] = true;
+
+            $this->aData = $aData;
+            $this->render('importSurveyResources_view', [
+                'aErrorFilesInfo' => $this->aData['aErrorFilesInfo'],
+                'aImportedFilesInfo' => $this->aData['aImportedFilesInfo'],
+            ]);
+        }
     }
 
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */
     /** **********************************************************************************************************++ */
+
+    /**
+     * This method will return the url for the current survey and set
+     * the direction for the sidemenue.
+     *
+     * @param integer $sid               Given Survey ID
+     * @param integer $gid               Given Group ID
+     * @param integer $qid               Given Question ID
+     * @param string  $landOnSideMenuTab Given SideMenuTab
+     *
+     * @return string
+     */
+    public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab)
+    {
+        $url = 'questionAdministration/view/';
+        $params = [
+            'surveyid' => $sid,
+            'gid'      => $gid,
+            'qid'      => $qid,
+            'landOnSideMenuTab'   => $landOnSideMenuTab];
+        return $this->createUrl($url, $params);
+    }
+
+    /**
+     * This private function creates a sample group
+     *
+     * @param int $iSurveyID The survey ID that the sample group will belong to
+     *
+     * @return int
+     */
+    private function createSampleGroup($iSurveyID)
+    {
+        // Now create a new dummy group
+        $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $oGroup = new QuestionGroup();
+        $oGroup->sid = $iSurveyID;
+        $oGroup->group_order = 1;
+        $oGroup->grelevance = '1';
+        $oGroup->save();
+        $oGroupL10ns = new QuestionGroupL10n();
+        $oGroupL10ns->gid = $oGroup->gid;
+        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->language = $sLanguage;
+        $oGroupL10ns->save();
+        LimeExpressionManager::SetEMLanguage($sLanguage);
+        return $oGroup->gid;
+    }
+
+    /**
+     * This private function creates a sample question
+     *
+     * @param int $iSurveyID The survey ID that the sample question will belong to
+     * @param int $iGroupID  The group ID that the sample question will belong to
+     *
+     * @return int
+     */
+    private function createSampleQuestion($iSurveyID, $iGroupID)
+    {
+        // Now create a new dummy question
+        $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $oQuestion = new Question;
+        $oQuestion->sid = $iSurveyID;
+        $oQuestion->gid = $iGroupID;
+        $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
+        $oQuestion->title = 'Q00';
+        $oQuestion->mandatory = 'N';
+        $oQuestion->relevance = '1';
+        $oQuestion->question_order = 1;
+        $oQuestion->save();
+        $oQuestionLS = new QuestionL10n();
+        $oQuestionLS->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
+        $oQuestionLS->help = gt('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->language = $sLanguage;
+        $oQuestionLS->qid = $oQuestion->qid;
+        $oQuestionLS->save();
+        return $oQuestion->qid;
+    }
 
     /**
      * Adds some other important adata variables for frontend

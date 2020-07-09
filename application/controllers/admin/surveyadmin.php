@@ -268,6 +268,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to import survey resources from a '.zip' file.
      *
+     * REFACTORED in surveyadministrationcontroller
+     *
      * @access public
      * @return void
      */
@@ -1980,6 +1982,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Saves the new survey after the creation screen is submitted
      *
+     * REFACTORED in SurveyAdministrationCOntr
+     *
      * @param int $iSurveyID The survey id to be used for the new survey.
      *                       If already taken a new random one will be used.
      * 
@@ -2165,7 +2169,9 @@ class SurveyAdmin extends Survey_Common_Action
     
     /**
      * This method will return the url for the current survey and set 
-     * the direction for the sidemenue. 
+     * the direction for the sidemenue.
+     *
+     * REFACRORED in SurveyAdministrationControl
      * 
      * @param integer $sid               Given Survey ID
      * @param integer $gid               Given Group ID
@@ -2461,6 +2467,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * This private function creates a sample group
+     *
+     * REFACTORED in SurveyAdministrationController
      *
      * @param int $iSurveyID The survey ID that the sample group will belong to
      * 

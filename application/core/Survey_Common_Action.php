@@ -1283,6 +1283,9 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     *
+     * @deprecated use ServiceClass FilterImportedResources instead ... (models/services/)
+     *
      * @param string $extractdir
      * @param string $destdir
      * @return array
