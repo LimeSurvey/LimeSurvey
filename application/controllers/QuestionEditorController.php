@@ -59,8 +59,15 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
+
         $aData = array();
         $iSurveyID = (int) $surveyid;
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied. You have no permission to view this survey"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if ($oSurvey === null) {
