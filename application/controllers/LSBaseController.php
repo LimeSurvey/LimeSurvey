@@ -56,6 +56,72 @@ class LSBaseController extends LSYii_Controller
     }
 
     /**
+     * Validate params validity and read access on survey
+     * @Throw CHttpException
+     * @return void
+     */
+    protected function checkParams()
+    {
+        /* qid and iQuestionId */
+        $qid = $iQuestionId = null;
+        $qid = App()->getRequest()->getParam('qid');
+        $iQuestionId = App()->getRequest()->getParam('iQuestionId');
+        if ($qid && $iQuestionId && $qid != $iQuestionId) {
+            throw new CHttpException(400);
+        }
+        $qid = $qid ? $qid : $iQuestionId;
+        if($qid) {
+            $oQuestion = Question::model()->findByPk($qid);
+            if(!$oQuestion) {
+                throw new CHttpException(404);
+            }
+        }
+        /* gid */
+        $gid = null;
+        $gid = App()->getRequest()->getQuery('gid');
+        if ($gid && $oQuestion && $gid != $oQuestion->gid) {
+            throw new CHttpException(400);
+        }
+        if ($gid) {
+            $oGroup = QuestionGroup::model()->findByPk($gid);
+            if(!$oGroup) {
+                throw new CHttpException(404);
+            }
+        }
+        /* sid, iSurveyId, $surveyid , $surveyID … why use different param name each time */
+        $currentSid = $sid = $iSurveyId = $surveyid = $surveyID = null;
+        $sid = App()->getRequest()->getParam('sid');
+        if ($sid)  {
+            $currentSid = $sid;
+        }
+        $iSurveyId = App()->getRequest()->getParam('iSurveyId');
+        if ($currentSid && $iSurveyId && $currentSid != $iSurveyId) {
+            throw new CHttpException(400);
+        }
+        $currentSid = $currentSid ? $currentSid : $iSurveyId;
+        $surveyid = App()->getRequest()->getParam('surveyid');
+        if ($currentSid && $surveyid && $currentSid != $surveyid) {
+            throw new CHttpException(400);
+        }
+        $currentSid = $currentSid ? $currentSid : $surveyid;
+        $surveyID = App()->getRequest()->getParam('surveyID');
+        if ($currentSid && $surveyID && $currentSid != $surveyID) {
+            throw new CHttpException(400);
+        }
+        $currentSid = $currentSid ? $currentSid : $surveyID;
+        /* Concordence of sid */
+        if ($currentSid && $oQuestion && $currentSid != $oQuestion->sid) {
+            throw new CHttpException(400);
+        }
+        if ($currentSid && $oGroup && $currentSid != $oGroup->sid) {
+            throw new CHttpException(400);
+        }
+        /* Minimal access */
+        if ($currentSid && !Permission::model()->hasSurveyPermission($currentSid, 'survey', 'read')) {
+            throw new CHttpException(403);
+        }
+    }
+    /**
      * This part comes from _renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
      *
      * todo REFACTORING find all actions that set $aData['surveyid'] and change the layout directly in the action
@@ -136,6 +202,7 @@ class LSBaseController extends LSYii_Controller
                 }
             }
         }
+        $this->checkParams();
 
         parent::run($action);
     }

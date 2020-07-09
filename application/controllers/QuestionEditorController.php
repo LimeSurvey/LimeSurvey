@@ -3,8 +3,6 @@
 
 class QuestionEditorController extends LSBaseController
 {
-
-
     public function accessRules()
     {
         return array(
