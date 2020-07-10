@@ -250,10 +250,12 @@ class Question extends LSActiveRecord
 
     /**
      * Fix sort order for questions in a group
+     * All questions in the group will be assigned a sequential question order,
+     * starting in the specified value
      * @param int $gid
-     * @param int $position
+     * @param int $startingOrder   the starting question order.
      */
-    public function updateQuestionOrder($gid, $position = 0)
+    public function updateQuestionOrder($gid, $startingOrder = 1)
     {
         $data = Yii::app()->db->createCommand()->select('qid')
             ->where(array('and', 'gid=:gid', 'parent_qid=0'))
@@ -262,7 +264,7 @@ class Question extends LSActiveRecord
             ->bindParam(':gid', $gid, PDO::PARAM_INT)
             ->query();
 
-        $position = intval($position);
+        $position = intval($startingOrder);
         foreach ($data->readAll() as $row) {
             Yii::app()->db->createCommand()->update(
                 $this->tableName(),
