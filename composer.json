@@ -14,8 +14,8 @@
 	"support" : {
 		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
 		"source" : "https://github.com/LimeSurvey/LimeSurvey",
-		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
-		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
+		"issues" : "https://community.limesurvey.org/bug-tracker/",
+		"forum" : "https://forums.limesurvey.org/"
 	},
 	"autoload": {
 		"psr-4": {

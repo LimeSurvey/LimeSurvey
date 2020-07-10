@@ -56,7 +56,7 @@
         <div id="keyInfosbuttons">
             <br/>
             <?php  if ($serverAnswer->key_infos->remaining_updates!=-999):?>
-                <a class="btn btn-default" href="https://www.limesurvey.org/editions-and-prices/limesurvey-ce/editions-and-prices-community" role="button" aria-disabled="false" target="_blank">
+                <a class="btn btn-default" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
                     <?php eT("Buy a new key"); ?>
                 </a>
             <?php endif; ?>

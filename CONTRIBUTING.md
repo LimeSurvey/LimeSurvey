@@ -9,7 +9,7 @@ top of things.
 
 ## Getting started
 
-* Make sure you have a [LimeSurvey account](https://www.limesurvey.org)
+* Make sure you have a [LimeSurvey account](https://account.limesurvey.org)
 * Make sure you have a [GitHub account](https://github.com/signup/free)
 * Submit a ticket at https://bugs.limesurvey.org for your issue, assuming one does not already exist.
   * Clearly describe the issue including steps to reproduce when it is a bug.
@@ -64,4 +64,4 @@ user-facing strings are marked in new PRs before merging.
 * [Standard for Git commit messages](https://manual.limesurvey.org/Standard_for_Git_commit_messages)
 * [General GitHub documentation](https://help.github.com/)
 * [GitHub pull request documentation](https://help.github.com/articles/creating-a-pull-request/)
-* #limesurvey IRC channel on freenode.org ([Archive](https://www.limesurvey.org/community/irc-logs-limesurvey)
+* #limesurvey IRC channel on freenode.org ([Archive](https://account.limesurvey.org/community/live-chat)

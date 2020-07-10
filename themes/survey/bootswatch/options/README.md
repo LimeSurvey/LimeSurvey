@@ -1,4 +1,4 @@
-![LimeSurvey Logo](https://www.limesurvey.org/images/logos/logo_main.png)
+![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
 # Survey Themes Custom options
 
 Since LimeSurvey 3, Theme providers can now add their own options in a template.
