@@ -55,7 +55,7 @@
                                         <td>{$sTokenField}</td>";
                                         if ($sLanguage == $oSurvey->language)
                                         { ?>
-                                            <td><input type='text' name='description_<?php echo $sTokenField; ?>' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' /></td>
+                                            <td><input type='text' name='description_<?php echo $sTokenField; ?>' class='form-control' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                             <td>
                                                 <?php
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -85,7 +85,7 @@
                                             <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                             <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
                                         }; ?>
-                                        <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
+                                        <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' class='form-control' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                         <td><?php
                                             if ($sLanguage == $oSurvey->language)
                                             {
@@ -98,13 +98,9 @@
                                         ?></td>
                                         <td>
                                         <?php
-                                        if ($examplerow !== false)
+                                        if (!empty($examplerow))
                                         {
                                             echo htmlspecialchars($examplerow[$sTokenField]);
-                                        }
-                                        else
-                                        {
-                                            gT('<no data>');
                                         }
                                         echo "</td>";
                                         echo "</tr>";
