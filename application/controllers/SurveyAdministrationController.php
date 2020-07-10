@@ -38,7 +38,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     protected function beforeRender($view)
     {
-        if (!empty($aData['surveyid'])) {
+        if (!empty($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
 
             // Needed to evaluate EM expressions in question summary
@@ -478,6 +478,7 @@ class SurveyAdministrationController extends LSBaseController
                 safeDie('Survey could not be created.'); // No error management ?
             }
             $iNewSurveyid = $newSurvey->sid;
+            $this->aData['surveyid'] = $newSurvey->sid;; //import to render correct layout in before_render
             // Prepare locale data for surveys_language_settings table
             $sTitle          = Yii::app()->request->getPost('surveyls_title');
             $sDescription    = Yii::app()->request->getPost('description');
@@ -537,6 +538,7 @@ class SurveyAdministrationController extends LSBaseController
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID'=>$iNewSurveyid]
+                   // ['surveyid'=>$iNewSurveyid]
                 );
                 Yii::app()->setFlashMessage($warning.gT("Your new survey was created."), 'info');
             }
@@ -659,6 +661,85 @@ class SurveyAdministrationController extends LSBaseController
         }
     }
 
+    /**
+     * Function to call current Editor Values by Ajax
+     *
+     * @param integer $sid Given Survey ID
+     *
+     * @return JSON
+     */
+    public function actionGetCurrentEditorValues($sid)
+    {
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
+        $updatePermission = $oSurvey == null
+            ? Permission::model()->hasGlobalPermission('surveys', 'create')
+            : Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
+
+        $aLanguages = [];
+        $aReturner = [
+            "surveyTitle" => [],
+            "welcome" => [],
+            "description" => [],
+            "endText" => [],
+            "endUrl" => [],
+            "endUrlDescription" => [],
+            "dateFormat" => [],
+            "decimalDivider" => [],
+            "permissions" => [
+                "update" => $updatePermission,
+                "editorpreset" => Yii::app()->session['htmleditormode'],
+            ]
+        ];
+
+        if ($oSurvey == null) {
+            $defaultLanguage = App()->getConfig('defaultlang');
+            $aLanguageDetails = getLanguageDetails($defaultLanguage);
+            $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
+            $aReturner["surveyTitle"][$defaultLanguage] = "";
+            $aReturner["welcome"][$defaultLanguage] = "";
+            $aReturner["description"][$defaultLanguage] = "";
+            $aReturner["endText"][$defaultLanguage] = "";
+            $aReturner["endUrl"][$defaultLanguage] = "";
+            $aReturner["endUrlDescription"][$defaultLanguage] = "";
+            $aReturner["dateFormat"][$defaultLanguage] = $aLanguageDetails['dateformat'];
+            $aReturner["decimalDivider"][$defaultLanguage] = $aLanguageDetails['radixpoint'];
+
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => [
+                    "textdata" => $aReturner,
+                    "languages" => $aLanguages
+                ]],
+                false,
+                false
+            );
+        }
+
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+            $aReturner["surveyTitle"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_title;
+            $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
+            $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
+            $aReturner["endText"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_endtext;
+            $aReturner["endUrl"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_url;
+            $aReturner["endUrlDescription"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_urldescription;
+            $aReturner["dateFormat"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_dateformat;
+            $aReturner["decimalDivider"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_numberformat;
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "textdata" => $aReturner,
+                "languages" => $aLanguages
+            ]],
+            false,
+            false
+        );
+    }
+
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */
     /** **********************************************************************************************************++ */
@@ -755,6 +836,9 @@ class SurveyAdministrationController extends LSBaseController
 
         $aSurveyInfo = getSurveyInfo($iSurveyID);
         /** @var Survey $oSurvey */
+        if (!isset($aData['oSurvey'])) {
+            $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+        }
         $oSurvey = $aData['oSurvey'];
         $activated = $aSurveyInfo['active'];
 

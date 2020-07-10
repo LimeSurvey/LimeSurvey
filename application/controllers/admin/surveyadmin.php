@@ -2194,6 +2194,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function to call current Editor Values by Ajax
      *
+     * REFACTORED in SurveyAdministrationCon
+     *
      * @param integer $sid Given Survey ID
      *
      * @return JSON

@@ -1,10 +1,15 @@
 <?php
 /**
  * Survey default view
- * @var AdminController $this
+ *
+ * @var SurveyAdministrationController $this
  * @var Survey $oSurvey
  */
  $count= 0;
+
+ if (!isset($iSurveyID)) {
+     $iSurveyID = $oSurvey->sid;
+ }
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveySummary');
