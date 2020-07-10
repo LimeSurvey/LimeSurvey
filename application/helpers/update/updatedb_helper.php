@@ -3113,7 +3113,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'action'    => 'actionRenderResources',
                     'template'  => 'editLocalSettings_main_view',
                     'partial'   => '/admin/survey/subview/accordion/_resources_panel',
-                )
+                ),
+                "name='resources'"
             );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
