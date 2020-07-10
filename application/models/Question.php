@@ -428,7 +428,7 @@ class Question extends LSActiveRecord
         $this->removeFromLastVisited();
 
         if (parent::delete()) {
-            Question::model()->updateQuestionOrder($this->gid, $this->sid);
+            Question::model()->updateQuestionOrder($this->gid);
             return true;
         }
         return false;
