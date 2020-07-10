@@ -25,7 +25,7 @@ You can reach this full page helloWorld module via the URL:
 **index.php?r=admin/HelloWorld/**
 
 You will see:
-![Full page HelloWorld Module](https://www.limesurvey.org/images/github/full-page-hello-world-module.png)
+![Full page HelloWorld Module](https://account.limesurvey.org/images/github/full-page-hello-world-module.png)
 
 For now, it does not require any kind of configuration.
 So if you want to create your own module, just copy/paste the HelloWorld folder, rename the folder, the controller file and the controller class to something else, and it will work out immediately.
@@ -104,7 +104,7 @@ You can reach this full page helloWorld module via the url:
 
 You will see:
 
-![Full page HelloWorld Module](https://www.limesurvey.org/images/github/survey-page-hello-world-module.png)
+![Full page HelloWorld Module](https://account.limesurvey.org/images/github/survey-page-hello-world-module.png)
 
 As you can see, this module offers its own top menu bar (the button "Hello User"), and use the breadcrumb system of survey edition (survey title (654523) => HelloWorld). Again, this breadcrumb system is a home made one, it's not using the Yii one. Again, we hope that in LS5 we can use the Yii Layout + breadcrumb system. In this module, you'll see how the top menu button call an action in the controller, render a specific view, and how you can use the breadcrumb to navigate back to the module landing page.
 
@@ -262,7 +262,7 @@ https://github.com/LimeSurvey/LimeSurvey/blob/bdeeb8edc4eca6d15f219bb1642e6457c4
 
 It says hello to the logged in user, shows unsafely the value of the URL variable "sWho" and invite the user to go back to the module landing page by clicking on the link of the breadcrumb
 
-![Full page HelloWorld Module](https://www.limesurvey.org/images/github/say-hello-user-hello-world-module.png)
+![Full page HelloWorld Module](https://account.limesurvey.org/images/github/say-hello-user-hello-world-module.png)
 
 
 ## That's all for now !

@@ -34,6 +34,40 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.2 (build 200629) to 4.3.3 (build 200707) July 6, 2020
+-Fixed issue #16437: Unable to construct adminsidepanel (Jessica Höck)
+-Fixed issue #16434: Special characters shown as HTML entities in sidebar (Gabriel Jenik)
+-Fixed issue #16431: Overview of uninstalled themes shows incorrectly parsed theme description (Gabriel Jenik)
+-Fixed issue #16397: Switching language without inline policy notice being ticked creates empty responses (Gabriel Jenik)
+-Fixed issue #16394: If text too long, data protection statement text not stored (Gabriel Jenik)
+-Fixed issue #16379: When debug mode is set, there is an error message displayed on User Roles Page  (Gabriel Jenik)
+-Fixed issue #16375: Theme with valid config.xml (according to manual) can not be extendable (Denis Chenu)
+-Fixed issue #16236: Vanilla survey theme options are not saved (Gabriel Jenik)
+-Fixed issue #16219: Testing a question will not be possible if admin participated in the survey (#1458) (Gabriel Jenik)
+-Fixed issue #16096: QueXML PDF doesn't show full checkboxes (#1462) (Gabriel Jenik)
+-Fixed issue #16088: Access group - see question list at the bottom  (Gabriel Jenik)
+-Fixed issue #15940: Export as printable - PHP Notice with debug mode on (Gabriel Jenik)
+-Fixed issue #15903: Sending email to all group users (copy is sent in cc for every user)  (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: French (France) by b00z00
+#Updated translation: Czech by c_schmitz, slansky, VBraun, jelen1, pcerny
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Chinese (Taiwan) (Traditional) by Yeeeeeet, TuTu_chen
+#Updated translation: Arabic by c_schmitz
+
+
+Changes from 4.3.1 (build 200623) to 4.3.2 (build 200629) June 29, 2020
+-Fixed issue: Various SQL errors when running on MySQL 8 (Carsten Schmitz)
+-Fixed issue #15783: Print answers : all is empty (#1442) (Gabriel Jenik)
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: German by eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Simplified) by NSRCRUC
+#Updated translation: Arabic by ymca
+
+
 Changes from 4.3.0 (build 200616) to 4.3.1 (build 200623) June 22, 2020
 -Fixed issue: Various SQL errors when running on MySQL 8 (Olle Harstedt)
 -Fixed issue [security] #16396: Multiple self-stored XSS in printanswer (Denis Chenu)

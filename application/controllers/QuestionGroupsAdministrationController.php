@@ -499,7 +499,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionl10ns);
         });
 
-        $this->renderJSON($aQuestions);
+        $this->renderJSON(['questions' => $aQuestions]);
     }
 
     /**

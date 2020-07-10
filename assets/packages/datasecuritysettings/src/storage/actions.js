@@ -14,7 +14,7 @@ export default {
             .then((result) => {
                     LOG.log('AjaxCall: ',result);
                     context.commit('setShowsurveypolicynotice', parseInt(result.data.showsurveypolicynotice) );
-                    context.commit('setDataseclabel', result.data.textdata.dataseclabel );
+                    context.commit('setDataseclabel', result.data.textdata.dataseclabel);
                     context.commit('setDatasecmessage', result.data.textdata.datasecmessage );
                     context.commit('setDatasecerror', result.data.textdata.datasecerror );
                     

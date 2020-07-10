@@ -16,7 +16,7 @@
             </a>
         </li>
         <li>
-            <a href="https://www.limesurvey.org/community/forums" target="_blank">
+            <a href="https://forums.limesurvey.org" target="_blank">
                 <span class="fa-stack halfed">
                     <span class="fa fa-comment fa-stack-1x" ></span>
                     <span class="fa fa-group fa-inverse fa-stack-1x halfed" ></span>

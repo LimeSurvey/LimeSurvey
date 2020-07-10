@@ -575,7 +575,8 @@ class SurveyAdmin extends Survey_Common_Action
                         $questionText = isset($question->questionl10ns[$baselang])
                             ? $question->questionl10ns[$baselang]->question
                             : '';
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
+                        $decodedQuestionText = htmlspecialchars_decode(viewHelper::flatEllipsizeText($questionText, true));
+                        $curQuestion['question_flat'] = strip_tags($decodedQuestionText);
                         $curGroup['questions'][] = $curQuestion;
                     }
 

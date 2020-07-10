@@ -852,9 +852,10 @@ class User extends LSActiveRecord
         }
 
         //filter for parentUserName
-        $getParentName = Yii::app()->request->getParam('User');
-        $getParentName = $getParentName['parentUserName'];
-        if(isset($getParentName) && $getParentName!==null && $getParentName!==''){
+        // This don't re&ally work : filter stay empty
+        $getUser = Yii::app()->request->getParam('User');
+        if(!empty($getUser['parentUserName'])) {
+            $getParentName = $getUser['parentUserName'];
             $criteria->join = "LEFT JOIN lime_users luparent ON t.parent_id = luparent.uid";
             $criteria->compare('luparent.users_name', $getParentName, true, 'OR');
         }
