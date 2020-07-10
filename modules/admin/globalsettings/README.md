@@ -137,7 +137,7 @@ You can reach it via: **index.php?r=admin/globalsettings/sa/HelloWorld/**
 
 As you can see, it's using its own view, so it's rendered in its own page like if it was a separated module. It's still availabe via the globalsettings route. So it could be a page displayed by clicking on a button or a menu in global setting, it could be an adavanced editing page for some kind of new settings, etc.  
 
-![Full page HelloWorld Module](https://www.limesurvey.org/images/github/full-page-global-setting-extension.png)
+![Full page HelloWorld Module](https://account.limesurvey.org/images/github/full-page-global-setting-extension.png)
 
 ## Extending a method from the GlobalSettings controller
 
@@ -239,7 +239,7 @@ Now, in _overview.php, we show that data:
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L39-L44
 
 Now, if debug mode is on, you should see:
-![Full page Global Settings view overriden](https://www.limesurvey.org/images/github/global-setting-views-override.png)
+![Full page Global Settings view overriden](https://account.limesurvey.org/images/github/global-setting-views-override.png)
 
 ## Conclusion
 
