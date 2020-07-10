@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-07-06 11:05:56+00:00\n"
+"POT-Creation-Date: 2020-07-10 13:49:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -388,7 +388,7 @@ msgid "You are not allowed to print answers."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:161
-#: application/controllers/QuestionEditorController.php:130
+#: application/controllers/QuestionEditorController.php:137
 #: application/controllers/admin/LimeSurveyFileManager.php:109
 #: application/controllers/admin/PluginHelper.php:32
 #: application/controllers/admin/assessments.php:91
@@ -458,18 +458,22 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:147
+#: application/controllers/QuestionEditorController.php:67
+msgid "Access denied. You have no permission to view this survey"
+msgstr ""
+
+#: application/controllers/QuestionEditorController.php:154
 #: application/controllers/admin/questiongroups.php:385
 msgid "Create question"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:148
+#: application/controllers/QuestionEditorController.php:155
 #: application/core/LsDefaultDataSets.php:16
 #: application/views/admin/survey/subview/tabCreate_view.php:47
 msgid "General settings"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:149
+#: application/controllers/QuestionEditorController.php:156
 #: application/controllers/admin/questiongroups.php:387
 #: application/models/Question.php:846 application/models/QuestionType.php:94
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
@@ -478,20 +482,20 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:150
+#: application/controllers/QuestionEditorController.php:157
 #: application/core/LsDefaultDataSets.php:17
 #: application/views/admin/survey/subview/tabCreate_view.php:43
 msgid "Text elements"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:151
+#: application/controllers/QuestionEditorController.php:158
 #: application/controllers/admin/questiongroups.php:383
 #: application/controllers/admin/questiongroups.php:389
 #: application/models/Question.php:858
 msgid "Question type"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:152
+#: application/controllers/QuestionEditorController.php:159
 #: application/controllers/admin/questiongroups.php:388
 #: application/controllers/admin/responses.php:947
 #: application/helpers/admin/statistics_helper.php:4312
@@ -505,12 +509,12 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:153
+#: application/controllers/QuestionEditorController.php:160
 #: application/views/admin/super/_help_menu.php:5
 msgid "Help"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:154
+#: application/controllers/QuestionEditorController.php:161
 #: application/controllers/admin/labels.php:602
 #: application/controllers/admin/questiongroups.php:381
 #: application/controllers/admin/translate.php:564
@@ -521,7 +525,7 @@ msgstr ""
 msgid "Subquestions"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:155
+#: application/controllers/QuestionEditorController.php:162
 #: application/controllers/admin/labels.php:601
 #: application/controllers/admin/questiongroups.php:382
 #: application/controllers/admin/translate.php:580
@@ -529,46 +533,46 @@ msgstr ""
 msgid "Answer options"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:156
+#: application/controllers/QuestionEditorController.php:163
 msgid "Quick add"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:157
+#: application/controllers/QuestionEditorController.php:164
 msgid "Copy subquestions"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:158
+#: application/controllers/QuestionEditorController.php:165
 msgid "Copy answer options"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:159
+#: application/controllers/QuestionEditorController.php:166
 msgid "Copy default answers"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:160
+#: application/controllers/QuestionEditorController.php:167
 msgid "Copy advanced options"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:161
+#: application/controllers/QuestionEditorController.php:168
 msgid "Predefined label sets"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:162
+#: application/controllers/QuestionEditorController.php:169
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:22
 #: tmp/runtime/twig_cache/b9/b995eb09dcaa6e2f25e31e6b9d04dbccc6f1c7986e881d6d819ccb2bb42a6f00.php:159
 #: tmp/runtime/twig_cache/bc/bc6f89472f79007effa489917efe46f39bf653639d18bf9023b925a6d4aa577b.php:543
 msgid "Save as label set"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:163
+#: application/controllers/QuestionEditorController.php:170
 msgid "More languages"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:164
+#: application/controllers/QuestionEditorController.php:171
 msgid "Add subquestion"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:165
+#: application/controllers/QuestionEditorController.php:172
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:63
 #: application/models/TemplateConfiguration.php:785
 #: application/views/admin/export/exportresult_panels/_single-value.php:27
@@ -590,7 +594,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:166
+#: application/controllers/QuestionEditorController.php:173
 #: application/controllers/UserGroupController.php:280
 #: application/controllers/admin/PluginManagerController.php:271
 #: application/controllers/admin/dataentry.php:1210
@@ -658,12 +662,12 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:167
+#: application/controllers/QuestionEditorController.php:174
 #: tmp/runtime/twig_cache/cb/cbe60b3d09d583ace5f4ef566e25dca426f4cc4a479314e719a478095e72fa37.php:227
 msgid "Some example subquestion"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:168
+#: application/controllers/QuestionEditorController.php:175
 #: application/controllers/UploaderController.php:317
 #: application/controllers/admin/surveypermission.php:133
 #: application/controllers/admin/surveypermission.php:468
@@ -704,28 +708,28 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:169
+#: application/controllers/QuestionEditorController.php:176
 msgid "Open editor"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:170
+#: application/controllers/QuestionEditorController.php:177
 msgid "Duplicate"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:171
+#: application/controllers/QuestionEditorController.php:178
 #: application/models/TemplateConfig.php:409
 msgid "No preview available"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:172
+#: application/controllers/QuestionEditorController.php:179
 msgid "Editor"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:173
+#: application/controllers/QuestionEditorController.php:180
 msgid "Quick edit"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:174
+#: application/controllers/QuestionEditorController.php:181
 #: application/controllers/admin/surveyadmin.php:1774
 #: application/controllers/admin/tokens.php:1221
 #: application/controllers/admin/tokens.php:1566
@@ -795,7 +799,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:175
+#: application/controllers/QuestionEditorController.php:182
 #: application/views/admin/labels/_labelviewquickadd_view.php:12
 #: tmp/runtime/twig_cache/8e/8e22d866ed6b977a1cb1020991006b267b59acea9ae68b189e216d11be48ff6c.php:79
 #: tmp/runtime/twig_cache/8e/8e22d866ed6b977a1cb1020991006b267b59acea9ae68b189e216d11be48ff6c.php:135
@@ -804,7 +808,7 @@ msgstr ""
 msgid "Replace"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:176
+#: application/controllers/QuestionEditorController.php:183
 #: application/controllers/admin/assessments.php:120
 #: application/views/admin/globalsettings/_language.php:47
 #: application/views/admin/labels/_labelviewquickadd_view.php:13
@@ -815,39 +819,39 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:177
+#: application/controllers/QuestionEditorController.php:184
 msgid "Select delimiter"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:178
+#: application/controllers/QuestionEditorController.php:185
 #: application/controllers/admin/export.php:260
 #: application/views/admin/participants/importCSV_view.php:56
 #: application/views/admin/token/csvupload.php:43
 msgid "Semicolon"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:179
+#: application/controllers/QuestionEditorController.php:186
 #: application/controllers/admin/export.php:259
 #: application/views/admin/participants/importCSV_view.php:55
 #: application/views/admin/token/csvupload.php:42
 msgid "Comma"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:180
+#: application/controllers/QuestionEditorController.php:187
 #: application/controllers/admin/export.php:261
 msgid "Tab"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:181
+#: application/controllers/QuestionEditorController.php:188
 msgid "New rows"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:182
+#: application/controllers/QuestionEditorController.php:189
 #: application/helpers/questionHelper.php:1225
 msgid "Scale"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:183
+#: application/controllers/QuestionEditorController.php:190
 #: application/controllers/admin/PluginManagerController.php:276
 #: application/views/admin/conditions/conditionshead_view.php:73
 #: application/views/admin/emailtemplates/emailtemplates_view.php:63
@@ -865,39 +869,39 @@ msgstr ""
 msgid "Save and close"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:184
+#: application/controllers/QuestionEditorController.php:191
 msgid "Script"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:185
+#: application/controllers/QuestionEditorController.php:192
 msgid "X-Scale (columns)"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:186
+#: application/controllers/QuestionEditorController.php:193
 msgid "Y-Scale (lines)"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:191
+#: application/controllers/QuestionEditorController.php:198
 msgid "Please put in a valid code. Only letters and numbers are allowed and it has to start with a letter. For example [Question1]"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:193
+#: application/controllers/QuestionEditorController.php:200
 msgid "This code is already used - duplicate codes are not allowed."
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:195
+#: application/controllers/QuestionEditorController.php:202
 msgid "A question code cannot be longer than 20 characters."
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:197
+#: application/controllers/QuestionEditorController.php:204
 msgid "Question cannot be stored. Please check the subquestion codes for duplicates or empty codes."
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:199
+#: application/controllers/QuestionEditorController.php:206
 msgid "Question cannot be stored. Please check the answer options for duplicates or empty codes."
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:256
+#: application/controllers/QuestionEditorController.php:263
 #: application/controllers/UserGroupController.php:366
 #: application/controllers/admin/SurveymenuController.php:51
 #: application/controllers/admin/SurveymenuController.php:111
@@ -929,46 +933,46 @@ msgstr ""
 msgid "Access denied"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:341
+#: application/controllers/QuestionEditorController.php:348
 msgid "Question has been stored, but an error happened: "
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:373
+#: application/controllers/QuestionEditorController.php:380
 msgid "Question successfully copied"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:374
+#: application/controllers/QuestionEditorController.php:381
 msgid "Question successfully stored"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:876
+#: application/controllers/QuestionEditorController.php:883
 msgid "Question creation failed - input was malformed or invalid"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:934
+#: application/controllers/QuestionEditorController.php:941
 msgid "Question update failed, input array malformed or invalid"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:974
+#: application/controllers/QuestionEditorController.php:981
 msgid "Could not store translation"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:1004
-#: application/controllers/QuestionEditorController.php:1009
+#: application/controllers/QuestionEditorController.php:1011
+#: application/controllers/QuestionEditorController.php:1016
 msgid "Could not store general options"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:1054
-#: application/controllers/QuestionEditorController.php:1064
+#: application/controllers/QuestionEditorController.php:1061
 #: application/controllers/QuestionEditorController.php:1071
+#: application/controllers/QuestionEditorController.php:1078
 msgid "Could not store advanced options"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:1213
+#: application/controllers/QuestionEditorController.php:1220
 msgid "Could not store translation for subquestion"
 msgstr ""
 
-#: application/controllers/QuestionEditorController.php:1326
+#: application/controllers/QuestionEditorController.php:1333
 msgid "Could not store translation for answer option"
 msgstr ""
 
