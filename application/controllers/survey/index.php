@@ -578,6 +578,11 @@ class index extends CAction
             initFieldArray($surveyid, $_SESSION['survey_'.$surveyid]['fieldmap']);
         }
 
+        // Reset the question timers in preview
+        if (!$isSurveyActive || $previewmode) {
+            resetQuestionTimers();
+        }
+
         sendCacheHeaders();
 
         //Send local variables to the appropriate survey type
