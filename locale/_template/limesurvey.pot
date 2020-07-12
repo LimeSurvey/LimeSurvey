@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-07-10 13:48:56+00:00\n"
+"POT-Creation-Date: 2020-07-12 05:56:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2552,7 +2552,7 @@ msgstr ""
 #: application/views/admin/themeoptions/update.php:247
 #: application/views/admin/themes/templateeditorbar_view.php:217
 #: application/views/admin/token/browse.php:98
-#: application/views/admin/token/managetokenattributes.php:118
+#: application/views/admin/token/managetokenattributes.php:114
 #: application/views/admin/token/token_bar.php:226
 #: application/views/admin/translate/translatefooter_view.php:3
 #: application/views/admin/user/editusers.php:132
@@ -3191,7 +3191,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1230
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/helpers/SurveyRuntimeHelper.php:1312
-#: application/helpers/frontend_helper.php:2193
+#: application/helpers/frontend_helper.php:2201
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -4828,7 +4828,7 @@ msgid "If you remove this attribute, you will lose all information."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1187
-#: application/views/admin/token/managetokenattributes.php:156
+#: application/views/admin/token/managetokenattributes.php:152
 msgid "Delete attribute"
 msgstr ""
 
@@ -9658,15 +9658,15 @@ msgstr ""
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2192
+#: application/helpers/frontend_helper.php:2200
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2194
+#: application/helpers/frontend_helper.php:2202
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2195
+#: application/helpers/frontend_helper.php:2203
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -20099,31 +20099,27 @@ msgstr ""
 msgid "Example data"
 msgstr ""
 
-#: application/views/admin/token/managetokenattributes.php:107
-msgid "<no data>"
-msgstr ""
-
-#: application/views/admin/token/managetokenattributes.php:128
+#: application/views/admin/token/managetokenattributes.php:124
 msgid "Add/delete survey participant attributes"
 msgstr ""
 
-#: application/views/admin/token/managetokenattributes.php:132
+#: application/views/admin/token/managetokenattributes.php:128
 msgid "There is {n} user attribute field in this survey participants table.|There are {n} user attribute fields in this survey participants table."
 msgstr ""
 
-#: application/views/admin/token/managetokenattributes.php:135
+#: application/views/admin/token/managetokenattributes.php:131
 msgid "Number of attribute fields to add:"
 msgstr ""
 
-#: application/views/admin/token/managetokenattributes.php:141
+#: application/views/admin/token/managetokenattributes.php:137
 msgid "Add fields"
 msgstr ""
 
-#: application/views/admin/token/managetokenattributes.php:150
+#: application/views/admin/token/managetokenattributes.php:146
 msgid "Delete this attribute:"
 msgstr ""
 
-#: application/views/admin/token/managetokenattributes.php:152
+#: application/views/admin/token/managetokenattributes.php:148
 msgid "(None)"
 msgstr ""
 
