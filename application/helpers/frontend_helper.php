@@ -1953,11 +1953,17 @@ function resetTimers()
 }
 
 /**
-* Sets the 'resetQuestionTimers' flag, so timer.js can pick it and unset the localstorage
-*/
+ * Sets the 'resetQuestionTimers' flag, so timer.js can pick it and unset the localstorage
+ *
+ * @return void
+ */
 function resetQuestionTimers()
 {
-    Yii::app()->clientScript->registerScript('resetQuestionTimers', "LSvar.bResetQuestionTimers=true;", LSYii_ClientScript::POS_BEGIN);
+    Yii::app()->clientScript->registerScript(
+        'resetQuestionTimers',
+        'LSvar.bResetQuestionTimers=true;',
+        LSYii_ClientScript::POS_BEGIN
+    );
 }
 
 /**
