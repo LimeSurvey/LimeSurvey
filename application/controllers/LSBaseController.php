@@ -56,15 +56,18 @@ class LSBaseController extends LSYii_Controller
     }
 
     /**
-     * Validate params used for sid, gid and qid
-     * Helper for child using survey and extra param
+     * Validate params used for sid, gid and qid. Validate if qid is included in gid is included in sid.
+     * Validate if final survey exist
      * Currently : used by QuestionEditorController
+     * @param integer|mixed $sid : sid param to be controlled. If invalid (not an integer) : throw a 404
+     * @param integer|mixed $gid : gid param to be controlled. If invalid (not an integer) : throw a 404
+     * @param integer|mixed $qid : qid param to be controlled. If invalid (not an integer) : throw a 404
      * @Throw CHttpException
-     * @return false|integer
+     * @return false|integer the existing sid related to current params.
      */
     protected function getValidatedSurveyId($sid = null, $gid = null, $qid = null)
     {
-        if($qid) {
+        if ($qid) {
             $oQuestion = Question::model()->findByPk($qid);
             if(!$oQuestion) {
                 throw new CHttpException(404);
@@ -85,7 +88,7 @@ class LSBaseController extends LSYii_Controller
         $surveyId = false;
         if ($sid) {
             $oSurvey = Survey::model()->findByPk($sid);
-            if(!$oSurvey) {
+            if (!$oSurvey) {
                 throw new CHttpException(404);
             }
             if ($oQuestion && $sid != $oQuestion->sid) {
@@ -105,8 +108,8 @@ class LSBaseController extends LSYii_Controller
             }
         }
         return $surveyId;
-
     }
+
     /**
      * This part comes from _renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
      *
