@@ -56,70 +56,56 @@ class LSBaseController extends LSYii_Controller
     }
 
     /**
-     * Validate params validity and read access on survey
+     * Validate params used for sid, gid and qid
+     * Helper for child using survey and extra param
+     * Currently : used by QuestionEditorController
      * @Throw CHttpException
-     * @return void
+     * @return false|integer
      */
-    protected function checkParams()
+    protected function getValidateSurveyId($sid = null, $gid = null, $qid = null)
     {
-        /* qid and iQuestionId */
-        $qid = $iQuestionId = null;
-        $qid = App()->getRequest()->getParam('qid');
-        $iQuestionId = App()->getRequest()->getParam('iQuestionId');
-        if ($qid && $iQuestionId && $qid != $iQuestionId) {
-            throw new CHttpException(400);
-        }
-        $qid = $qid ? $qid : $iQuestionId;
         if($qid) {
             $oQuestion = Question::model()->findByPk($qid);
             if(!$oQuestion) {
                 throw new CHttpException(404);
             }
         }
-        /* gid */
-        $gid = null;
-        $gid = App()->getRequest()->getQuery('gid');
-        if ($gid && $oQuestion && $gid != $oQuestion->gid) {
-            throw new CHttpException(400);
-        }
+
         if ($gid) {
             $oGroup = QuestionGroup::model()->findByPk($gid);
             if(!$oGroup) {
                 throw new CHttpException(404);
             }
+            if ($oQuestion && $gid != $oQuestion->gid) {
+                // Try to hack : 400
+                throw new CHttpException(400);
+            }
         }
-        /* sid, iSurveyId, $surveyid , $surveyID … why use different param name each time */
-        $currentSid = $sid = $iSurveyId = $surveyid = $surveyID = null;
-        $sid = App()->getRequest()->getParam('sid');
-        if ($sid)  {
-            $currentSid = $sid;
+
+        $surveyId = false;
+        if ($sid) {
+            $oSurvey = Survey::model()->findByPk($sid);
+            if(!$oSurvey) {
+                throw new CHttpException(404);
+            }
+            if ($oQuestion && $sid != $oQuestion->sid) {
+                // Try to hack : 400
+                throw new CHttpException(400);
+            }
+            if ($oGroup && $sid != $oGroup->sid) {
+                // Try to hack : 400
+                throw new CHttpException(400);
+            }
+            $surveyId = $sid;
+        } else {
+            if ($oQuestion) {
+                $surveyId = $oQuestion->sid;
+            } elseif ($oGroup) {
+                $surveyId = $oGroup->sid;
+            }
         }
-        $iSurveyId = App()->getRequest()->getParam('iSurveyId');
-        if ($currentSid && $iSurveyId && $currentSid != $iSurveyId) {
-            throw new CHttpException(400);
-        }
-        $currentSid = $currentSid ? $currentSid : $iSurveyId;
-        $surveyid = App()->getRequest()->getParam('surveyid');
-        if ($currentSid && $surveyid && $currentSid != $surveyid) {
-            throw new CHttpException(400);
-        }
-        $currentSid = $currentSid ? $currentSid : $surveyid;
-        $surveyID = App()->getRequest()->getParam('surveyID');
-        if ($currentSid && $surveyID && $currentSid != $surveyID) {
-            throw new CHttpException(400);
-        }
-        $currentSid = $currentSid ? $currentSid : $surveyID;
-        /* Concordence of sid */
-        if ($currentSid && $oQuestion && $currentSid != $oQuestion->sid) {
-            throw new CHttpException(400);
-        }
-        if ($currentSid && $oGroup && $currentSid != $oGroup->sid) {
-            throw new CHttpException(400);
-        }
-        /* Minimal access */
-        if ($currentSid && !Permission::model()->hasSurveyPermission($currentSid, 'survey', 'read')) {
-            throw new CHttpException(403);
-        }
+        return $surveyId;
+
     }
     /**
      * This part comes from _renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
@@ -202,8 +188,6 @@ class LSBaseController extends LSYii_Controller
                 }
             }
         }
-        $this->checkParams();
-
         parent::run($action);
     }
 
