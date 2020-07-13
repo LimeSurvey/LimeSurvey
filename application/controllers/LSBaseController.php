@@ -62,7 +62,7 @@ class LSBaseController extends LSYii_Controller
      * @Throw CHttpException
      * @return false|integer
      */
-    protected function getValidateSurveyId($sid = null, $gid = null, $qid = null)
+    protected function getValidatedSurveyId($sid = null, $gid = null, $qid = null)
     {
         if($qid) {
             $oQuestion = Question::model()->findByPk($qid);
@@ -98,9 +98,9 @@ class LSBaseController extends LSYii_Controller
             }
             $surveyId = $sid;
         } else {
-            if ($oQuestion) {
+            if (!empty($oQuestion)) {
                 $surveyId = $oQuestion->sid;
-            } elseif ($oGroup) {
+            } elseif (!empty($oGroup)) {
                 $surveyId = $oGroup->sid;
             }
         }
