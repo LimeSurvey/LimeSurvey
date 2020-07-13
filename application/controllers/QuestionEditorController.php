@@ -692,10 +692,6 @@ class QuestionEditorController extends LSBaseController
     private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
         $iSurveyId = $this->getValidatedSurveyId(null, $gid, $iQuestionId);
-        if(!$iSurveyId) {
-            /* Private function with get param … must move to function call */
-            $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
-        }
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'read')) {
             throw new CHttpException(403);
         }

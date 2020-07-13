@@ -67,13 +67,14 @@ class LSBaseController extends LSYii_Controller
      */
     protected function getValidatedSurveyId($sid = null, $gid = null, $qid = null)
     {
+        $oQuestion = null;
         if ($qid) {
             $oQuestion = Question::model()->findByPk($qid);
             if(!$oQuestion) {
                 throw new CHttpException(404);
             }
         }
-
+        $oGroup = null;
         if ($gid) {
             $oGroup = QuestionGroup::model()->findByPk($gid);
             if(!$oGroup) {
@@ -86,6 +87,10 @@ class LSBaseController extends LSYii_Controller
         }
 
         $surveyId = false;
+        if(is_null($sid)) {
+            /* @todo : rempove this to move to params of function */
+            $sid = App()->request->getParam('sid', App()->request->getParam('surveyid'));
+        }
         if ($sid) {
             $oSurvey = Survey::model()->findByPk($sid);
             if (!$oSurvey) {
