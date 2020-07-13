@@ -296,6 +296,10 @@ export default class TimerConstructor {
         this.intervalObject = null;
         this.warning = 0;
         this.timersessionname = 'timer_question_' + this.option.questionid;
+
+        // Unser timer in local storage if the reset timers flag is set
+        if (LSvar.bResetQuestionTimers) this._unsetTimerInLocalStorage();
+        
         this.timeLeft = this._getTimerFromLocalStorage() || this.option.timer;
         this.disable_next = $("#disablenext-" + this.timersessionname).val();
         this.disable_prev = $("#disableprev-" + this.timersessionname).val();
