@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-07-12 05:57:10+00:00\n"
+"POT-Creation-Date: 2020-07-14 17:38:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4483,7 +4483,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1325
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/helpers/SurveyRuntimeHelper.php:1430
-#: application/helpers/frontend_helper.php:2078
+#: application/helpers/frontend_helper.php:2084
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
 #: application/views/homepageSettings/index.php:16
@@ -11260,15 +11260,15 @@ msgstr ""
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2077
+#: application/helpers/frontend_helper.php:2083
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2079
+#: application/helpers/frontend_helper.php:2085
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2080
+#: application/helpers/frontend_helper.php:2086
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
