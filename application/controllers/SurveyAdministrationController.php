@@ -1084,8 +1084,9 @@ class SurveyAdministrationController extends LSBaseController
     {
         Yii::app()->getClientScript()->registerScript(
             "TextEditDataGlobal",
+            //OLD: connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
             "window.TextEditData = {
-                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('surveyAdministration', ['sid' => $survey->sid])."',
                 isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
                 i10N: {
                     'Survey title' : '".gT('Survey title')."',

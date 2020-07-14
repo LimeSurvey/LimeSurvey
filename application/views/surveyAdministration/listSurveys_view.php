@@ -3,7 +3,7 @@
 * This file render the list of surveys
 * It use the Survey model search method to build the data provider.
 *
-* @var $model  obj    the QuestionGroup model
+* @var $model  Survey
 */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page

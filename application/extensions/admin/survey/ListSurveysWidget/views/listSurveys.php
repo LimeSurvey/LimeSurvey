@@ -145,7 +145,7 @@
                 'itemsCssClass' =>'table-striped',
                 //'htmlOptions'=>array('style'=>'cursor: pointer;'),
                 'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
-                //'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => 'survey-grid',
                 'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
                 'template'  => $this->template,
