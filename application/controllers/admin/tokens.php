@@ -58,7 +58,7 @@ class tokens extends Survey_Common_Action
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) {
-//If no tokens table exists
+            //If no tokens table exists
             $this->_newtokentable($iSurveyId);
         } else {
             $aData['thissurvey'] = $thissurvey;
@@ -2148,7 +2148,42 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken) {
+                        // Dispatch beforeTokenImport event
+                        $params = array(
+                            'csvcharset' => $sUploadCharset,
+                            'filterduplicatetoken' => $bFilterDuplicateToken,
+                            'filterblankemail' => $bFilterBlankEmail,
+                            'allowinvalidemail' => $bAllowInvalidEmail,
+                            'filterduplicatefields' => $aFilterDuplicateFields,
+                            'separator' => $sSeparator,
+                            'showwarningtoken' => Yii::app()->request->getPost('showwarningtoken'),
+                        );
+                        $event = new PluginEvent('beforeTokenImport');
+                        $event->set('importType', 'CSV');
+                        $event->set('surveyId', $iSurveyId);
+                        $event->set('params', $params);
+                        $event->set('recordCount', $iRecordCount);
+                        $event->set('token', $aWriteArray);
+                        App()->getPluginManager()->dispatchEvent($event);
+                        $bPluginReportedError = !is_null($event->get('importValid')) && !$event->get('importValid');
+
+                        if ($bPluginReportedError) {
+                            // If plugin says import is not valid, append the error
+                            $sErrorMessage = $event->get('errorMessage');
+                            if (empty($sErrorMessage)) $sErrorMessage = gT("%s records with other errors");
+                            
+                            $sTokenSpecificErrorMessage = $event->get('tokenSpecificErrorMessage');
+                            if (!empty($sTokenSpecificErrorMessage)) {
+                                $aPluginErrorMessageList[$sErrorMessage][] = $sTokenSpecificErrorMessage;
+                            } else {
+                                $aPluginErrorMessageList[$sErrorMessage][] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, $aWriteArray['firstname'], $aWriteArray['lastname'], $aWriteArray['email']);
+                            }
+                        } else {
+                            // If plugin says import is OK, replace token data from the event
+                            $aWriteArray = $event->get('token');
+                        }
+
+                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken && !$bPluginReportedError) {
                             // unset all empty value
                             foreach ($aWriteArray as $key => $value) {
                                 if ($aWriteArray[$key] == "") {
@@ -2190,6 +2225,7 @@ class tokens extends Survey_Common_Action
                 $aData['aInvalidTokenList'] = $aInvalidTokenList;
                 $aData['aInvalidFormatList'] = $aInvalidFormatList;
                 $aData['aInvalidEmailList'] = $aInvalidEmailList;
+                $aData['aPluginErrorMessageList'] = $aPluginErrorMessageList;
                 $aData['aModelErrorList'] = $aModelErrorList;
                 $aData['iInvalidEmailCount'] = $iInvalidEmailCount;
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
