@@ -308,7 +308,6 @@ class index extends CAction
             $aErrors = array(gT('Error'));
             $aMessage = array(
                 gT("We are sorry but the survey is expired and no longer available."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['adminname'], $thissurvey['adminemail']) /* Maybe better to move this to a global replacement 'surveycontact' */
             );
 
             $event = new PluginEvent('onSurveyDenied');
@@ -330,7 +329,6 @@ class index extends CAction
             $aErrors  = array(gT('Error'));
             $aMessage = array(
                 gT("This survey is not yet started."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['adminname'], $thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
             );
 
             $event = new PluginEvent('onSurveyDenied');
@@ -354,7 +352,6 @@ class index extends CAction
             $aErrors  = array(gT('Error'));
             $aMessage = array(
                 gT("You have already completed this survey."),
-                sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['adminname'], $thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
             );
 
             $event = new PluginEvent('onSurveyDenied');
@@ -473,7 +470,6 @@ class index extends CAction
 
                     $aMessage = array(
                         gT("We are sorry but you are not allowed to enter this survey."),
-                        sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['adminname'], $thissurvey['adminemail'])/* Maybe better to move this to a global replacement 'surveycontact' */
                     );
 
                     $event = new PluginEvent('onSurveyDenied');

@@ -65,7 +65,7 @@
                     {% if aError.contact %}
                         {{ aError.contact }}
                     {% else %}
-                        {{gT("For further information please contact %s:")|format (aSurveyInfo.adminname)}}
+                        {{gT("For further information please contact %s:")|format (aSurveyInfo.admin)}}
                         {% if aSurveyInfo.adminemail %}
                             <br>
                             <a href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
