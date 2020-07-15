@@ -47,7 +47,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'updateTheme',
-                    'url'         =>  App()->createUrl('/admin/survey/sa/changeMultipleTheme/'),
+                    'url'         =>  App()->createUrl('/surveyAdministration/changeMultipleTheme/'),
                     'iconClasses' => 'icon-templates',
                     'text'        =>  gT("Survey theme"),
                     'grid-reload' => 'no',
@@ -66,7 +66,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'updateSurveygroup',
-                    'url'         =>  App()->createUrl('/admin/survey/sa/changeMultipleSurveyGroup/'),
+                    'url'         =>  App()->createUrl('/surveyAdministration/changeMultipleSurveyGroup/'),
                     'iconClasses' => 'fa fa-group',
                     'text'        =>  gT("Survey group"),
                     'grid-reload' => 'yes',

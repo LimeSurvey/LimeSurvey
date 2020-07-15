@@ -258,6 +258,9 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * 
      * @return void
+     *
+     * REFACTORED in SurveyAdministrationController
+     *
      * @todo   Document me
      */
     public function fakebrowser()
@@ -350,6 +353,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Change survey theme for multiple survey at once.
      * Called from survey list massive actions
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @return void
      */
@@ -371,6 +376,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Change survey group for multiple survey at once.
      * Called from survey list massive actions
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @return void
      */
@@ -394,6 +401,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Update the theme of a survey
+     *
+     * REFACTORED in SurveyAdministrationCOntroller
      *
      * @param int     $iSurveyID Survey ID
      * @param string  $template  The survey theme name
@@ -441,6 +450,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Toggles Quick action.
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @return void
      */
@@ -553,6 +564,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get questiongroup with containing questions
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @param int $surveyid Given Survey ID
      * 
@@ -630,6 +643,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get MenuItems with containing questions
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @param int    $surveyid Given Survey ID
      * @param string $position Given Position
@@ -660,6 +675,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Load list question groups view for a specified by $iSurveyID
+     *
+     * REFACTORED in QuestionGroupsAdministrationController
      *
      * @param int $surveyid The survey ID
      * 

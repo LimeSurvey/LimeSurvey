@@ -110,7 +110,7 @@ export default {
 
     getCustomTopbarContent: (context) => {
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
+            ajax.methods.$_get(LS.createUrl('surveyAdministration/getAjaxMenuArray', {
                 position: 'top',
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 saveButton: context.state.showSaveButton

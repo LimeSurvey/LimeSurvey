@@ -17,8 +17,8 @@
         $showSideMenu = true;
     }
     //todo: change urls after refactoring the controllers
-    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
-    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
+    $getQuestionsUrl = $this->createUrl("/surveyAdministration/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
+    $getMenuUrl = $this->createUrl("/surveyAdministration/getAjaxMenuArray/", ["surveyid" => $surveyid]);
     //$createQuestionGroupLink = $this->createUrl("/questionGroupsAdministration/add/", ["surveyid" =>  $surveyid]);
     $createQuestionGroupLink = "questionGroupsAdministration/add/surveyid/".$surveyid;
     $createQuestionLink = "questionAdministration/view/surveyid/".$surveyid;

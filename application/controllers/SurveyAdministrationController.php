@@ -740,9 +740,263 @@ class SurveyAdministrationController extends LSBaseController
         );
     }
 
+    /**
+     * Massive action in ListSurveysWidget ...
+     * Ajax request
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionChangeMultipleTheme()
+    {
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+
+        $sTemplate = App()->request->getPost('theme');
+
+        foreach ($aSIDs as $iSurveyID) {
+            $aResults = $this->changeTemplate($iSurveyID, $sTemplate, $aResults, true);
+        }
+
+        $this->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array('aResults'=>$aResults,'successLabel'=>$sTemplate)
+        );
+    }
+
+    /**
+     * Change survey group for multiple survey at once.
+     * Called from survey list massive actions
+     *
+     * REFACTORED in SurveyAdministrationController
+     *
+     * @return void
+     * @throws CException
+     */
+    public function actionChangeMultipleSurveyGroup()
+    {
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+
+        $iSurveyGroupId = sanitize_int(App()->request->getPost('surveygroupid'));
+
+        foreach ($aSIDs as $iSurveyID) {
+            $oSurvey = Survey::model()->findByPk((int)$iSurveyID);
+            $oSurvey->gsid = $iSurveyGroupId;
+            $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result']= $oSurvey->save();
+        }
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array('aResults'=>$aResults,'successLabel'=>gT("Success"))
+        );
+    }
+
+    /**
+     * Toggles Quick action
+     *
+     *  @return string | null
+     * @throws CException
+     */
+    public function actionToggleQuickAction()
+    {
+        $quickactionstate = (int) SettingsUser::getUserSettingValue('quickaction_state');
+
+        switch ($quickactionstate) {
+            case null:
+            case 0:
+                $save = SettingsUser::setUserSetting('quickaction_state', 1);
+                break;
+            case 1:
+                $save = SettingsUser::setUserSetting('quickaction_state', 0);
+                break;
+            default:
+                $save = null;
+        }
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success' => $save,
+                    'newState'=> SettingsUser::getUserSettingValue('quickaction_state')
+                ],
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * AjaxRequest get questionGroup with containing questions
+     *
+     * @param int $surveyid Given Survey ID
+     *
+     * @return string|string[]
+     * @throws CException
+     */
+    public function actionGetAjaxQuestionGroupArray($surveyid)
+    {
+        $iSurveyID = sanitize_int($surveyid);
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->createUrl('/admin'));
+        }
+
+        $survey    = Survey::model()->findByPk($iSurveyID);
+        $baselang  = $survey->language;
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
+        $lastquestion = getGlobalSetting($setting_entry);
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        $lastquestiongroup = getGlobalSetting($setting_entry);
+
+        $aGroups = QuestionGroup::model()->findAllByAttributes(
+            array('sid' => $iSurveyID),
+            array('order'=>'group_order ASC')
+        );
+        $aGroupViewable = array();
+        if (count($aGroups)) {
+            foreach ($aGroups as $group) {
+                $curGroup = $group->attributes;
+                $curGroup['group_name'] = $group->questiongroupl10ns[$baselang]->group_name;
+                $curGroup['link'] = $this->createUrl(
+                    "questionGroupsAdministration/view",
+                    ['surveyid' => $surveyid, 'gid' => $group->gid]
+                );
+                $group->aQuestions = Question::model()->findAllByAttributes(
+                    array("sid"=>$iSurveyID,
+                          "gid"=>$group['gid'],
+                          'parent_qid'=>0),
+                    array('order'=>'question_order ASC')
+                );
+                $curGroup['questions'] = array();
+                foreach ($group->aQuestions as $question) {
+                    if (is_object($question)) {
+                        $curQuestion = $question->attributes;
+                        $curQuestion['link'] = $this->createUrl(
+                            "questionAdministration/view",
+                            ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]
+                        );
+                        $curQuestion['editLink'] = $this->createUrl(
+                            "questionAdministration/view",
+                            ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]
+                        );
+                        $curQuestion['hidden'] = isset($question->questionattributes['hidden']) &&
+                            !empty($question->questionattributes['hidden']->value);
+                        $questionText = isset($question->questionl10ns[$baselang])
+                            ? $question->questionl10ns[$baselang]->question
+                            : '';
+                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
+                        $curGroup['questions'][] = $curQuestion;
+                    }
+
+                }
+                $aGroupViewable[] = $curGroup;
+            }
+        }
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => array(
+                    'groups' => $aGroupViewable,
+                    'settings' => array(
+                        'lastquestion' => $lastquestion,
+                        'lastquestiongroup' => $lastquestiongroup,
+                    ),
+                )
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Ajaxified get MenuItems with containing questions
+     *
+     * @param int $surveyid Given Survey ID
+     * @param string $position Given Position
+     *
+     * @return string|string[]
+     * @throws CException
+     */
+    public function actionGetAjaxMenuArray($surveyid, $position = '')
+    {
+        $iSurveyID = sanitize_int($surveyid);
+
+        //todo permission check ?!?
+
+        $survey    = Survey::model()->findByPk($iSurveyID);
+        $menus = $survey->getSurveyMenus($position);
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'menues'=> $menus,
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            ),
+            false,
+            false
+        );
+    }
+
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */
     /** **********************************************************************************************************++ */
+
+    /**
+     * Update the theme of a survey
+     *
+     * @param int     $iSurveyID Survey ID
+     * @param string  $template  The survey theme name
+     * @param array   $aResults  If the method is called from changeMultipleTheme(), it will update its array of results
+     * @param boolean $bReturn   Should the method update and return aResults
+     *
+     * @return mixed                 null or array
+     *
+     * @access public
+     */
+    public function changeTemplate($iSurveyID, $template, $aResults = null, $bReturn = false)
+    {
+        $iSurveyID  = sanitize_int($iSurveyID);
+        $sTemplate  = sanitize_dirname($template);
+
+        $survey           = Survey::model()->findByPk($iSurveyID);
+
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+            if (!empty($bReturn)) {
+                $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = false;
+                return $aResults;
+            } else {
+                die('No permission');
+            }
+        }
+
+        $survey->template = $sTemplate;
+        $survey->save();
+
+        $oTemplateConfiguration = $survey->surveyTemplateConfiguration;
+        $oTemplateConfiguration->template_name = $sTemplate;
+        $oTemplateConfiguration->save();
+
+        // This will force the generation of the entry for survey group
+        TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
+
+        if (!empty($bReturn)) {
+            $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result'] = true;
+            return $aResults;
+        }
+    }
 
     /**
      * This method will return the url for the current survey and set
