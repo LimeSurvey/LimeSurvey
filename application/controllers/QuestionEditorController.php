@@ -872,7 +872,7 @@ class QuestionEditorController extends LSBaseController
                 unset($aQuestionData[$sLanguage]);
             }
         } else {
-            $aQuestionData['question_order'] = getMaxQuestionOrder($iQuestionGroupId);
+            $aQuestionData['question_order'] = getMaxQuestionOrder($iQuestionGroupId) + 1;
         }
 
         $oQuestion = new Question();
