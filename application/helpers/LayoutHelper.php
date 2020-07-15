@@ -494,6 +494,9 @@ class LayoutHelper
 
     /**
      * listquestion groups
+     *
+     * @deprecated not used anymore, is rendered directly from actionListquestiongroups
+     *
      * @param array $aData
      */
     public function renderListQuestionGroups(array $aData)

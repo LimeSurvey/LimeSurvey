@@ -198,7 +198,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Load list question groups view for a specified by $iSurveyID
      *
-     * REFACTORED in QuestionGroupsAdministrationController
+     * (this action comes from old surveyadmin controller ...)
      *
      * @param int $surveyid The survey ID
      *
@@ -210,7 +210,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     {
         $iSurveyID = sanitize_int($surveyid);
 
-        //todo permission check ...
+        //todo permission check ...who has permission to see questionGroups?
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -223,7 +223,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData = array();
 
         $aData['surveyid']                                   = $iSurveyID;
-        $aData['display']['menu_bars']['listquestiongroups'] = true;
+        // $aData['display']['menu_bars']['listquestiongroups'] = true; not needed anymore, was just important for function renderListQuestionGroups in Layouthelper
         $aData['sidemenu']['questiongroups']                 = true;
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
@@ -246,7 +246,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $model['language'] = $baselang;
         $aData['model']    = $model;
 
-        $this->_renderWrappedTemplate('survey', array(), $aData);
+        $this->aData = $aData;
+        $this->render('listquestiongroups', [
+
+        ]);
+        //$this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
     /**

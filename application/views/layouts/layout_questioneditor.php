@@ -65,7 +65,7 @@ $layoutHelper->notifications();
 
 // Here the main content views.
 //$this->_listquestiongroups($aData);
-$layoutHelper->renderListQuestionGroups($aData);
+// $layoutHelper->renderListQuestionGroups($aData); this wiöll be rendered directly by actionListquestiongroups
 
 //Rendered through /admin/survey/Question/listquestions
 //$this->_listquestions($aData);

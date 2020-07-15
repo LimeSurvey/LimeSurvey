@@ -303,7 +303,7 @@ class LsDefaultDataSets
                 'th-list',
                 'fontawesome',
                 '',
-                'admin/survey/sa/listquestiongroups',
+                'questionGroupsAdministration/listquestiongroups',
                 '',
                 '',
                 '',

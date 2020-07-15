@@ -3,7 +3,7 @@
 * This file render the list of groups
 * It use the QuestionGroup model search method to build the data provider.
 *
-* @var $model  obj    the QuestionGroup model
+* @var $model  QuestionGroup    the QuestionGroup model
 * @var $surveyid int
 */
 ?>
@@ -14,7 +14,7 @@
         <div class="col-lg-12 ls-flex ls-flex-row">
             <div class="ls-flex-item text-left">
                 <?php App()->getController()->renderPartial(
-                    '/admin/survey/surveybar_addgroupquestion',
+                    '/admin/survey/surveybar_addgroupquestion', //todo this view must be moved to correct position
                     [
                         'surveybar'      => $surveybar,
                         'oSurvey'        => $oSurvey,
@@ -25,7 +25,7 @@
             <div class="ls-flex-item text-right">
                 <!-- Search Box -->
                 <?php $form=$this->beginWidget('TbActiveForm', array(
-                    'action' => Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid),
+                    'action' => Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid),
                     'method' => 'get',
                     'htmlOptions'=>array(
                         'class'=>'form-inline',
@@ -36,7 +36,10 @@
                         <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                     </div>
                     <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                    <a href="<?php echo Yii::app()->createUrl('questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid);?>"
+                       class="btn btn-warning">
+                        <?php eT('Reset');?>
+                    </a>
                 <?php $this->endWidget(); ?>
             </div>
         </div>

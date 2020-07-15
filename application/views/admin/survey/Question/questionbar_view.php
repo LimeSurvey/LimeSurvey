@@ -200,7 +200,7 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
