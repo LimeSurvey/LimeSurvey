@@ -109,7 +109,7 @@ class printablesurvey extends Survey_Common_Action
             //     Yii::app()->getClientScript()->registerCssFile("{$sFullTemplateUrl}{$cssFile}");
             // }
 
-            $arGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid]); //xiao,
+            $arGroups = $oSurvey->groups;
             if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber)) {
                 $surveyfaxto = $surveyfaxnumber; //Use system fax number if none is set in survey.
             }
@@ -155,7 +155,7 @@ class printablesurvey extends Survey_Common_Action
             foreach ($arGroups as $arQuestionGroup) {
                 // ---------------------------------------------------
                 // START doing groups
-                $arQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'gid' => $arQuestionGroup['gid']]);
+                $arQuestions = $arQuestionGroup->questions;
 
                 if (!empty($arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description)) {
                     $group_desc = $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description;
