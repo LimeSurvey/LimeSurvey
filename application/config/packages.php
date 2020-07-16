@@ -421,7 +421,7 @@ return array(
         )
     ),
     'questioneditor' => array(
-        'devBaseUrl' => 'assets/packages/questionAdministration/',
+        'devBaseUrl' => 'assets/packages/questioneditor/',
         'basePath' => 'core.questioneditor',
         'position' =>CClientScript::POS_END,
         'js' => (
