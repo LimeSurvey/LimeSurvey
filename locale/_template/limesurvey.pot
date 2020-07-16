@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-07-14 17:38:47+00:00\n"
+"POT-Creation-Date: 2020-07-16 13:12:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,8 +28,8 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1782
 #: application/controllers/survey/index.php:89
 #: application/controllers/survey/index.php:323
-#: application/controllers/survey/index.php:345
-#: application/controllers/survey/index.php:369
+#: application/controllers/survey/index.php:344
+#: application/controllers/survey/index.php:367
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/helpers/SurveyRuntimeHelper.php:1145
@@ -7068,68 +7068,56 @@ msgstr ""
 msgid "We are sorry but the survey is expired and no longer available."
 msgstr ""
 
-#: application/controllers/survey/index.php:326
-#: application/controllers/survey/index.php:348
-#: application/controllers/survey/index.php:372
-#: application/controllers/survey/index.php:491
-#: application/helpers/replacements_helper.php:146
-#: application/helpers/replacements_helper.php:148
-#: application/helpers/replacements_helper.php:391
-#: application/helpers/replacements_helper.php:393
-#: tmp/runtime/twig_cache/28/289f9cb78e34472cb0af3ed052afd16ed1188da9e1a18ba888f40467e76d8b5d.php:314
-msgid "Please contact %s ( %s ) for further assistance."
-msgstr ""
-
-#: application/controllers/survey/index.php:347
+#: application/controllers/survey/index.php:346
 msgid "This survey is not yet started."
 msgstr ""
 
-#: application/controllers/survey/index.php:371
+#: application/controllers/survey/index.php:369
 msgid "You have already completed this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:397
+#: application/controllers/survey/index.php:394
 msgid "You did not provide a name."
 msgstr ""
 
-#: application/controllers/survey/index.php:401
+#: application/controllers/survey/index.php:398
 msgid "You did not provide a password."
 msgstr ""
 
-#: application/controllers/survey/index.php:411
+#: application/controllers/survey/index.php:408
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/index.php:415
+#: application/controllers/survey/index.php:412
 #: application/libraries/Save.php:202 application/libraries/Save.php:360
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/index.php:427
+#: application/controllers/survey/index.php:424
 msgid "There is no matching saved survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:477
+#: application/controllers/survey/index.php:474
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:479
+#: application/controllers/survey/index.php:476
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/index.php:481
+#: application/controllers/survey/index.php:478
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:483
+#: application/controllers/survey/index.php:480
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:486
+#: application/controllers/survey/index.php:483
 msgid "This is a controlled survey. You need a valid access code to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:490
+#: application/controllers/survey/index.php:487
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
@@ -12749,6 +12737,14 @@ msgstr ""
 
 #: application/helpers/questionHelper.php:1577
 msgid "Display type"
+msgstr ""
+
+#: application/helpers/replacements_helper.php:146
+#: application/helpers/replacements_helper.php:148
+#: application/helpers/replacements_helper.php:391
+#: application/helpers/replacements_helper.php:393
+#: tmp/runtime/twig_cache/28/289f9cb78e34472cb0af3ed052afd16ed1188da9e1a18ba888f40467e76d8b5d.php:314
+msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
 #: application/helpers/replacements_helper.php:193
@@ -24258,10 +24254,6 @@ msgstr ""
 msgid "Reload captcha"
 msgstr ""
 
-#: tmp/runtime/twig_cache/55/550a8060db29ba3879e397101783865c3447917365f1c230787d4bbd6da73742.php:157
-msgid "For further information please contact %s:"
-msgstr ""
-
 #: tmp/runtime/twig_cache/5b/5b5c8a827a68b16d1f49bcac3e8e7850622d98f37b5bcbdd684b8b40bcea6822.php:192
 msgid "Upload your files"
 msgstr ""
@@ -24338,6 +24330,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/95/959ee85958ada2eb3ea7474bec61267bbfd6d227652293cfd1d0a059f4d2adea.php:55
 msgid "Quotas exceeded"
+msgstr ""
+
+#: tmp/runtime/twig_cache/98/98bfac502a8f6270de32c8ef2da2879f716aa71dd37909f646726d5a03f86024.php:157
+msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/99/99fdcaf07515b0b4a89e81b5d13d8a12c49547877f3bccfbdad96f85355f4bfc.php:294
