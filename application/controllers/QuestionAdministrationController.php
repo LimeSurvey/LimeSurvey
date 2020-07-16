@@ -65,12 +65,14 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
-        if (is_null($qid) && !Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+        $aData = [];
+        $iSurveyID = (int)$surveyid;
+
+        if (is_null($qid) && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
-        $aData = [];
-        $iSurveyID = (int)$surveyid;
+
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if ($oSurvey === null) {
@@ -281,6 +283,10 @@ class QuestionAdministrationController extends LSBaseController
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
+        $oQuestion = Question::model()->find(
+            'sid = :sid AND qid = :qid',
+            [':sid' => $iSurveyId, ':qid' => $questionData['question']['qid']]
+        );
         if ($oQuestion == null || $questionCopy == true) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
         } else {
@@ -360,7 +366,8 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // Compile the newly stored data to update the FE
-        $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        //$oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $oQuestion->qid]);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions(
@@ -1400,7 +1407,11 @@ class QuestionAdministrationController extends LSBaseController
     {
         //todo: this should be done in the action directly
         $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
-        $oQuestion = Question::model()->findByPk($iQuestionId);
+        //$oQuestion = Question::model()->findByPk($iQuestionId);
+        $oQuestion = Question::model()->find(
+            'sid = :sid AND qid = :qid',
+            [':sid' => $iSurveyId, ':qid' => $iQuestionId]
+        );
 
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
@@ -1888,6 +1899,10 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($dataSet as $aSubquestions) {
             foreach ($aSubquestions as $aSubquestionDataSet) {
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
+                $oSubQuestion = Question::model()->find(
+                    'sid = :sid AND qid = :qid',
+                    [':sid' => $oQuestion->sid, ':qid' => $aSubquestionDataSet['qid']]
+                );
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
                 } elseif (!$oQuestion->survey->isActive) {

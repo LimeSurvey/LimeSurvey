@@ -65,4 +65,4 @@ user-facing strings are marked in new PRs before merging.
 * [Standard for Git commit messages](https://manual.limesurvey.org/Standard_for_Git_commit_messages)
 * [General GitHub documentation](https://help.github.com/)
 * [GitHub pull request documentation](https://help.github.com/articles/creating-a-pull-request/)
-* #limesurvey IRC channel on freenode.org ([Archive](https://www.limesurvey.org/community/irc-logs-limesurvey)
+* #limesurvey IRC channel on freenode.org ([Archive](https://account.limesurvey.org/community/live-chat)

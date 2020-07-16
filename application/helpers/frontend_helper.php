@@ -1943,13 +1943,27 @@ function killSurveySession($iSurveyID)
 
 /**
 * Resets all question timers by expiring the related cookie - this needs to be called before any output is done
-* @todo Make cookie survey ID aware
+* @todo Deprecated - Question timers no longer use cookies
 */
 function resetTimers()
 {
     $cookie = new CHttpCookie('limesurvey_timers', '');
     $cookie->expire = time() - 3600;
     Yii::app()->request->cookies['limesurvey_timers'] = $cookie;
+}
+
+/**
+ * Sets the 'resetQuestionTimers' flag, so timer.js can pick it and unset the localstorage
+ *
+ * @return void
+ */
+function resetQuestionTimers()
+{
+    Yii::app()->clientScript->registerScript(
+        'resetQuestionTimers',
+        'LSvar.bResetQuestionTimers=true;',
+        LSYii_ClientScript::POS_BEGIN
+    );
 }
 
 /**

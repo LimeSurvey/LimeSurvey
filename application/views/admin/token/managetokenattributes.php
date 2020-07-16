@@ -152,13 +152,9 @@
                                     ?></td>
                                     <td>
                                     <?php
-                                    if ($examplerow !== false)
+                                    if (empty($tokenvalues['coreattribute']) && !empty($examplerow))
                                     {
-                                        //echo htmlspecialchars($examplerow[$sTokenField]);
-                                    }
-                                    else
-                                    {
-                                        gT('<no data>');
+                                        echo CHTml::encode($examplerow[$sTokenField]);
                                     }
                                     echo "</td>";
                                     echo "</tr>";
