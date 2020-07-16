@@ -3102,25 +3102,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ($iOldDBVersion <428) { //REFACTORING surveyadmin to surveyAdministrationController ...
-            $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update(
-                '{{boxes}}',
-                array(
-                    'url' => 'surveyAdministration/listsurveys',
-                ),
-                "url='admin/survey/sa/listsurveys'"
-            );
-            $oDB->createCommand()->update(
-                '{{boxes}}',
-                array(
-                    'url' => 'surveyAdministration/newSurvey',
-                ),
-                "url='admin/survey/sa/newSurvey'"
-            );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
 
         /**
          * Add missing noTablesOnMobile.css to vanilla and bootswatch configs
@@ -3146,6 +3127,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        //todo change number when ready ...
+        if ($iOldDBVersion <428) { //REFACTORING surveyadmin to surveyAdministrationController ...
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{boxes}}',
+                array(
+                    'url' => 'surveyAdministration/listsurveys',
+                ),
+                "url='admin/survey/sa/listsurveys'"
+            );
+            $oDB->createCommand()->update(
+                '{{boxes}}',
+                array(
+                    'url' => 'surveyAdministration/newSurvey',
+                ),
+                "url='admin/survey/sa/newSurvey'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
