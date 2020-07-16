@@ -5,6 +5,9 @@
 *
 * @var $model  QuestionGroup    the QuestionGroup model
 * @var $surveyid int
+* @var $surveybar array
+* @var $oSurvey Survey
+ *
 */
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
@@ -18,7 +21,7 @@
                     [
                         'surveybar'      => $surveybar,
                         'oSurvey'        => $oSurvey,
-                        'surveyHasGroup' => isset($surveyHasGroup) ? $surveyHasGroup : false
+                        'surveyHasGroup' => isset($oSurvey->groups) ? $oSurvey->groups : false
                     ]
                 ); ?>
             </div>

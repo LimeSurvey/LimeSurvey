@@ -223,7 +223,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData = array();
 
         $aData['surveyid']                                   = $iSurveyID;
-        // $aData['display']['menu_bars']['listquestiongroups'] = true; not needed anymore, was just important for function renderListQuestionGroups in Layouthelper
+        $aData['sid'] = $iSurveyID; // important for renderfunctions ...
+        //not needed anymore, was just important for function renderListQuestionGroups in Layouthelper
+       // $aData['display']['menu_bars']['listquestiongroups'] = true;
         $aData['sidemenu']['questiongroups']                 = true;
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
@@ -244,13 +246,15 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $model['sid']      = $iSurveyID;
         $model['language'] = $baselang;
-        $aData['model']    = $model;
+       // $aData['model']    = $model; --> no need here ...
 
         $this->aData = $aData;
         $this->render('listquestiongroups', [
-
+            'model' => $model,
+            'surveyid' => $iSurveyID,
+            'surveybar' => $aData['surveybar'],
+            'oSurvey'   => $survey,
         ]);
-        //$this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
     /**
