@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.26 (build 200714) to 3.22.27 (build 200720) July 20, 2020
+-Fixed issue #16461: Twice contact sentence for some error page (#1469) (Denis Chenu)
+#Updated translation: Spanish (Mexican) by segui
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Simplified) by huangguangc
+
+
 Changes from 3.22.25 (build 200706) to 3.22.26 (build 200714) July 13, 2020
 +New feature #16263: QueXML-PDF: New config setting for date format and question code #1434
 -Fixed issue #16486: Unable to manage participant attribute with debug (Denis Chenu)
