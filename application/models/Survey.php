@@ -870,15 +870,20 @@ class Survey extends LSActiveRecord
     {
         $collapsed = $position==='collapsed';
         //Get the default menus
-        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position,$this);
+        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus(
+            $position,
+            $this
+        );
         //get all survey specific menus
-        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this, $position);
+        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray(
+            $this->surveymenus,
+            $collapsed,
+            $this,
+            $position
+        );
         //merge them
-        $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
-        // var_dump($aDefaultSurveyMenus);
-        // var_dump($aThisSurveyMenues);
 
-        return $aSurveyMenus;
+        return $aDefaultSurveyMenus + $aThisSurveyMenues;
     }
 
     /**

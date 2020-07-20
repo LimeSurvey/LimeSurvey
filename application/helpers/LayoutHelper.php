@@ -356,8 +356,10 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
-        $sumresult1 = Survey::model()->with(array(
-                'languagesettings' => array('condition'=>'surveyls_language=language'))
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array('condition'=>'surveyls_language=language')
+            )
         )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {

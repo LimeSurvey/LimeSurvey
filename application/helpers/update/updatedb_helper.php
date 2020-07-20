@@ -3129,7 +3129,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         //todo change number when ready ...
-        if ($iOldDBVersion <428) { //REFACTORING surveyadmin to surveyAdministrationController ...
+        if ($iOldDBVersion <429) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update(
                 '{{boxes}}',
@@ -3145,7 +3145,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 "url='admin/survey/sa/newSurvey'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'questionGroupsAdministration/listquestiongroups',
+                ),
+                "name='listQuestionGroups'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
