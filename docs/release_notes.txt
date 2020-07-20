@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.4 (build 200713) to 4.3.5 (build 200721) July 20, 2020
+-Fixed issue #16461: Twice contact sentence for some error page (Denis Chenu)
+-Fixed issue #16453: Sometimes we get duplicate question_orders on new questions (#1481) (Gabriel Jenik)
+-Fixed issue #16284: Double clicking on sq/ao/additional & general attributes should switch the page from "question overview" to "question editor" (#1478) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by segui
+#Updated translation: Spanish (Mexican) by rodolfob
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by ushiyasan
+#Updated translation: Hungarian by arubicsek
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Simplified) by microk
+
+
 Changes from 4.3.3 (build 200707) to 4.3.4 (build 200713) July 13, 2020
 -Fixed issue #16486: Unable to manage participant attribute with debug (Denis Chenu)
 -Fixed issue #16469: Any admin user can see any question (Patricia Stelling)
