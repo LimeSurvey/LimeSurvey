@@ -454,6 +454,19 @@ class LayoutHelper
      * @param $aData
      */
     public function renderGeneraltopbar($aData) {
+
+        /*
+        $surveyID = null;
+        if (isset($aData['sid'])) {
+            $surveyID = $aData['sid'];
+        } elseif (isset($aData['surveyid'])) {
+            $surveyID = $aData['surveyid'];
+            //sid must be set ... still in other views ....
+            $aData['sid'] = $surveyID;
+        } else {
+            $aData['sid'] = null;
+        }*/
+
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
             [
