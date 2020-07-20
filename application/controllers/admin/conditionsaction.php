@@ -329,6 +329,8 @@ class conditionsaction extends Survey_Common_Action
 
         $aViewUrls['conditionshead_view'][] = $aData;
 
+        $aData['topBar']['type'] = 'conditions';
+
         $conditionsList = array();
 
         //BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
@@ -2237,5 +2239,43 @@ class conditionsaction extends Survey_Common_Action
         }
 
         return $qcount;
+    }
+
+    /**
+     * Returns Data for Condition Designer Top Bar as JSON.
+     *
+     * @param $sid
+     * @return void
+     * @throws CException
+     */
+    public function getConditionsTopBarData($sid, $gid, $qid)
+    {
+        //$ownsSaveButton = true;
+        //$ownsImportButton = true;
+
+        $hasCopyPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
+        $hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+        $hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+        $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
+        $hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+
+        return $this->getController()->renderPartial(
+            '/admin/survey/topbar/conditions_topbar',
+            array(
+                'sid' => $sid,
+                'hasCopyPermission'   => $hasCopyPermission,
+                'hasUpdatePermission' => $hasUpdatePermission,
+                'hasExportPermission' => $hasExportPermission,
+                'hasDeletePermission' => $hasDeletePermission,
+                'hasReadPermission'   => $hasReadPermission,
+                'gid' => $gid,
+                'qid' => $qid,
+                //'ownsSaveButton' => $ownsSaveButton,
+                //'ownsImportButton' => $ownsImportButton,
+            ),
+            false,
+            false
+        );
+
     }
 }
