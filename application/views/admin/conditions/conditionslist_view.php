@@ -1,29 +1,24 @@
 <?php echo $conditionsoutput;?>
 
-<p class="lead">
-    <?php eT("Only show question"); ?>
-    <strong><?php echo ' ' . $sCurrentQuestionText;?></strong>
-    <?php eT('if:');?>
-    <?php if ($scenariocount > 0): ?>
+<div class="pull-right text-right">
+    <p>        
         <button
-            id='delete-all-conditions'
+            id='quick-add-condition-button'
+            class='btn btn-default condition-header-button'
             data-toggle='modal'
-            data-target='#confirmation-modal'
-            data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
-            data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
-            class='btn btn-warning pull-right condition-header-button'
-            onclick='return false;'
-        >
-            <span class="fa fa-trash"></span>
+            data-target='#quick-add-condition-modal'
+            data-tooltip='true'
+            data-title='<?php eT('Add multiple conditions without a page reload'); ?>'
+            >
+            <span class="fa fa-plus-circle"></span>
             &nbsp;
-            <?php eT('Delete all conditions'); ?>
+            <?php eT('Quick-add conditions'); ?>
         </button>
-    <?php endif; ?>
-    
-    <?php if ($scenariocount > 1): ?>
+
+        <?php if ($scenariocount > 1): ?>
         <button
             id='renumber-scenario'
-            class="btn btn-default pull-right condition-header-button"
+            class="btn btn-default condition-header-button"
             data-toggle='modal'
             data-target='#confirmation-modal'
             data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
@@ -34,21 +29,16 @@
             &nbsp;
             <?php eT("Renumber scenarios");?>
         </button>
-    <?php endif; ?>
+        <?php endif; ?>
+    </p>
+</div>
 
-    <button
-        id='quick-add-condition-button'
-        class='btn btn-default pull-right condition-header-button'
-        data-toggle='modal'
-        data-target='#quick-add-condition-modal'
-        data-tooltip='true'
-        data-title='<?php eT('Add multiple conditions without a page reload'); ?>'
-    >
-        <span class="fa fa-plus-circle"></span>
-        &nbsp;
-        <?php eT('Quick-add conditions'); ?>
-    </button>
+<p class="lead">
+    <?php eT("Only show question"); ?>
+    <strong><?php echo ' ' . $sCurrentQuestionText;?></strong>
+    <?php eT('if:');?>
 </p>
+
 
 <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/deleteallconditions/surveyid/{$surveyid}/gid/{$gid}/qid/{$qid}/"), 'post', array('style'=>'margin-bottom:0;','id'=>'deleteallconditions','name'=>'deleteallconditions'));?>
     <input type='hidden' name='qid' value='<?php echo $qid;?>' />

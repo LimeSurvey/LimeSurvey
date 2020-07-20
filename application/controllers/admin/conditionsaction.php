@@ -596,10 +596,14 @@ class conditionsaction extends Survey_Common_Action
                 $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/no_condition', $aData, true);
             }
 
+            // Conditions List Footer
+            $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditionslist_footer_view', $aData, true);
+
             //// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
             $aViewUrls['afteroutput'] = '</div></div></div>';
 
         }
+
         //END DISPLAY CONDITIONS FOR THIS QUESTION
 
         // Display the copy conditions form
