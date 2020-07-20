@@ -163,6 +163,11 @@ export default {
                 errorHeader = "ERROR RESPONSES";
                 this.slide = false;
                 break;
+            case "conditions":
+                dispatchAction = "getTopBarButtonsConditions";
+                errorHeader = "ERROR CONDITIONS";
+                this.slide = false;
+                break;
             }
             
             this.loading = true;

@@ -1,6 +1,6 @@
 <?php
 $topBarExtra = '';
-$exportdropdownHTML = '';
+$slotbuttonHTML = '';
 $oSurvey = Survey::model()->findByPk($sid);
 if(!isset($respstatsread)) { $respstatsread = false; }
 if(!isset($onelanguage)) { $onelanguage = (safecount($oSurvey->allLanguages)>1); }
@@ -189,7 +189,7 @@ if ($topBar['type'] == 'survey') {
     $topBarExtra = "<div class='btn-group hidden-xs'>
         ".$oExportSelector->getModal()."
     </div>";
-    $exportdropdownHTML = $oExportSelector->getButtonOrSelect(true); 
+    $slotbuttonHTML = $oExportSelector->getButtonOrSelect(true); 
 
     $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget');
 }
@@ -217,11 +217,15 @@ if ($topBar['type'] == 'token') {
     </div><!-- /.modal -->';
 }
 
+if ($topBar['type'] == 'conditions') {
+    $slotbuttonHTML = $questionNavOptions;
+}
+
 echo $topBarExtra;
 
 Yii::app()->getClientScript()->registerScript(
     "SetExportSlotButton", '
-        setTimeout(function(){window.EventBus.$emit("slotbuttonSet", '.json_encode(['html' => $exportdropdownHTML]).');},1);
+        setTimeout(function(){window.EventBus.$emit("slotbuttonSet", '.json_encode(['html' => $slotbuttonHTML]).');},1);
     ', 
     LSYii_ClientScript::POS_POSTSCRIPT 
 );
