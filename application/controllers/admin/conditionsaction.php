@@ -101,6 +101,12 @@ class conditionsaction extends Survey_Common_Action
     {
         $request = Yii::app()->request;
         $iSurveyID = (int) $iSurveyID;
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied. You have no permission to view this survey"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
@@ -114,6 +120,13 @@ class conditionsaction extends Survey_Common_Action
         $aData['subaction'] = gT("Conditions designer");
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
         $aData['questionbar']['buttons']['conditions'] = true;
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+            $aData['hasUpdatePermission'] = true;
+        } else {
+            $aData['hasUpdatePermission'] = false;
+            $subaction = 'conditions';
+        }
 
         switch ($subaction) {
             case 'editconditionsform':

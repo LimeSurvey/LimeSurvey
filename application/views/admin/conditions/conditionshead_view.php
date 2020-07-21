@@ -2,15 +2,17 @@
     <h3>
         <?php eT("Conditions designer"); ?>
         
-        <a class="btn btn-default pjax pull-right condition-header-button <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-            <span class="icon-conditions_add"></span>
-            <?php eT("Add and edit conditions");?>
-        </a>
+        <?php if ($hasUpdatePermission): ?>
+            <a class="btn btn-default pjax pull-right condition-header-button <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <span class="icon-conditions_add"></span>
+                <?php eT("Add and edit conditions");?>
+            </a>
 
-        <a class="btn btn-default pjax pull-right condition-header-button <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-            <span class="icon-copy"></span>
-            <?php eT("Copy conditions");?>
-        </a>
+            <a class="btn btn-default pjax pull-right condition-header-button <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <span class="icon-copy"></span>
+                <?php eT("Copy conditions");?>
+            </a>
+        <?php endif ?>
     </h3>
      <div class="row">
         <div class="col-lg-12 content-right">
