@@ -1,5 +1,6 @@
 <?php echo $conditionsoutput;?>
 
+<?php if ($hasUpdatePermission): ?>
 <div class="pull-right text-right">
     <p>        
         <button
@@ -32,6 +33,7 @@
         <?php endif; ?>
     </p>
 </div>
+<?php endif; ?>
 
 <p class="lead">
     <?php eT("Only show question"); ?>
