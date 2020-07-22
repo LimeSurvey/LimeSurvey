@@ -344,21 +344,23 @@ class SurveyAdministrationController extends LSBaseController
         $aData['tokensettingsdata']         = array_merge($aData, $this->tabTokens($esrow));
 
         $aViewUrls[] = 'newSurvey_view';
-/*
+
         $arrayed_data                                              = array();
         $arrayed_data['oSurvey']                                   = $survey;
         $arrayed_data['data']                                      = $aData;
         $arrayed_data['title_bar']['title']                        = gT('New survey');
         $arrayed_data['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
         $arrayed_data['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
-*/
+
         $aData['title_bar']['title']                        = gT('New survey');
         $aData['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
         $aData['fullpagebar']['closebutton']['url']         = 'admin/index'; // Close button
 
         $this->aData = $aData;
+
+        //this is not the layout
         $this->render('newSurvey_view', [
-            'data' => $aData
+            'arrayed_data' => $arrayed_data
         ]);
     }
 
@@ -511,7 +513,8 @@ class SurveyAdministrationController extends LSBaseController
             );
 
             $langsettings = new SurveyLanguageSetting;
-            $langsettings->insertNewSurvey($aInsertData);
+           $isLanguageSaved = $langsettings->insertNewSurvey($aInsertData);
+
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 

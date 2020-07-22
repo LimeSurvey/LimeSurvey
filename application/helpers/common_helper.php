@@ -111,7 +111,10 @@ function getSurveyList($bReturnArray = false)
             ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
+            if(isset($result->languagesettings[$result->language])) {
+                $surveynames[] = array_merge($result->attributes,
+                    $result->languagesettings[$result->language]->attributes);
+            }
         }
 
         usort($surveynames, function($a, $b)

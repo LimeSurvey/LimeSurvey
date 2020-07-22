@@ -2,7 +2,7 @@
 /**
 * Tab Create content
 * This view display the content for the create tab.
- * @var AdminController $this
+ * @var SurveyAdministrationController $this
  * @var Survey $oSurvey
  *
 */

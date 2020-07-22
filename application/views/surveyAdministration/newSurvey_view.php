@@ -3,7 +3,7 @@
  * Create survey
  * @var SurveyAdministrationController $this
  * @var Survey $oSurvey
- * @var $data array
+ * @var array $arrayed_data
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -12,7 +12,7 @@ echo viewHelper::getViewTestTag('createSurvey');
 ?>
 <!-- new survey view -->
 <?php
-    extract($data);
+    extract($arrayed_data);
     //Yii::app()->loadHelper('admin/htmleditor');
     //PrepareEditorScript(false, $this);
     $active = Yii::app()->request->getParam('tab', 'create');
