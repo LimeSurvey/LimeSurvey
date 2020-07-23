@@ -1030,7 +1030,7 @@ class TemplateConfig extends CActiveRecord
             $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
             $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
             $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
-            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions']);
+            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions'], true);
             $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
@@ -1055,9 +1055,10 @@ class TemplateConfig extends CActiveRecord
      * Convert the values to a json.
      * It checks that the correct values is inserted.
      * @param array|object $oFiled the filed to convert
+     * @param boolean $bConvertEmptyToString formats empty values as empty strings instead of objects.
      * @return string  json
      */
-    public static function formatToJsonArray($oFiled)
+    public static function formatToJsonArray($oFiled, $bConvertEmptyToString = false)
     {
         // encode then decode will convert the SimpleXML to a normal object
         $jFiled = json_encode($oFiled);
@@ -1074,7 +1075,8 @@ class TemplateConfig extends CActiveRecord
             }
         }
 
-
+        // Converts empty objects to empty strings
+        if ($bConvertEmptyToString) $jFiled = str_replace('{}','""',$jFiled);
 
         return $jFiled;
     }

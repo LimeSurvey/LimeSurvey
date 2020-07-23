@@ -1008,7 +1008,13 @@ class TemplateManifest extends TemplateConfiguration
         if (file_exists(realpath($this->xmlFile))) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-            $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+            $oDOMConfig = new DOMDocument;
+            $oDOMConfig->loadXML($sXMLConfigFile);
+            $oXPath = new DOMXpath($oDOMConfig);
+            foreach ($oXPath->query('//comment()') as $oComment) {
+                $oComment->parentNode->removeChild($oComment);
+            }
+            $oXMLConfig = simplexml_import_dom($oDOMConfig);
             foreach ($oXMLConfig->config->xpath("//file") as $oFileName) {
                         $oFileName[0] = get_absolute_path($oFileName[0]);
             }
