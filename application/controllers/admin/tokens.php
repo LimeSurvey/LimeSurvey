@@ -2164,8 +2164,11 @@ class tokens extends Survey_Common_Action
                         $event->set('params', $params);
                         $event->set('recordCount', $iRecordCount);
                         $event->set('token', $aWriteArray);
+                        $event->set('importDone', false);
+                        $event->set('importValid', true);                        
                         App()->getPluginManager()->dispatchEvent($event);
                         $bPluginReportedError = !is_null($event->get('importValid')) && !$event->get('importValid');
+                        $bImportDone = $event->get('importDone');
 
                         if ($bPluginReportedError) {
                             // If plugin says import is not valid, append the error
@@ -2183,7 +2186,7 @@ class tokens extends Survey_Common_Action
                             $aWriteArray = $event->get('token');
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken && !$bPluginReportedError) {
+                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken && !$bPluginReportedError && !$bImportDone) {
                             // unset all empty value
                             foreach ($aWriteArray as $key => $value) {
                                 if ($aWriteArray[$key] == "") {
@@ -2207,9 +2210,10 @@ class tokens extends Survey_Common_Action
                                 $errors = ($oToken->getErrors());
                                 $aModelErrorList[] = sprintf(gT("Line %s : %s"), $iRecordCount, print_r($errors, true));
                             } else {
-                                $iRecordImported++;
+                                $bImportDone = true;
                             }
                         }
+                        if ($bImportDone) $iRecordImported++;
                         $iRecordOk++;
                     }
                     $iRecordCount++;
