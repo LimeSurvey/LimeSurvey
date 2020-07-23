@@ -727,6 +727,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load list questions view for a specified survey by $surveyid
      *
+     * @todo should be refactored in QuestionAdministrationController
+     *
      * @param int $surveyid Goven Survey ID
      * 
      * @return string
@@ -2293,6 +2295,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Method to call current date information by ajax
      *
+     * REFACTORED in SurveyAdministrationController
+     *
      * @param int $sid Given Survey ID
      *
      * @return JSON
@@ -2319,6 +2323,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Method to store data edited in the the text editor component
+     *
+     * * REFACTORED in SurveyAdministrationController
      *
      * @param integer $sid Survey ID
      * 
@@ -2370,6 +2376,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Collect the data necessary for the data security settings and return a JSON document
+     *
+     * REFACTORED in SurveyAdministrationController
      *
      * @param integer $sid Survey ID
      * 
@@ -2435,6 +2443,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Method to store data edited in the the data security text editor component
+     *
+     * REFACTORED in SurveyAdministrationController
      *
      * @param integer $sid Survey ID
      * 
@@ -2515,6 +2525,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * This private function creates a sample question
      *
+     * * REFACTORED in SurveyAdministrationController
+     *
      * @param int $iSurveyID The survey ID that the sample question will belong to
      * @param int $iGroupID  The group ID that the sample question will belong to
      * 
@@ -2545,6 +2557,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * NOT REFACTORED ...(we don't need this anymore)
+     *
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
@@ -2559,6 +2573,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Apply current theme options for imported survey theme
+     *
+     * REFACTORED in SurveAdministartationCOntroller
      *
      * @param integer $iSurveyID The survey ID of imported survey
      * 

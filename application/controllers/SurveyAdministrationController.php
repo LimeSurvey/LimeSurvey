@@ -950,6 +950,325 @@ class SurveyAdministrationController extends LSBaseController
         );
     }
 
+    /**
+     * Method to call current date information by ajax
+     *
+     * @param int $sid Given Survey ID
+     *
+     * @return JSON | string
+     * @throws CException
+     */
+    public function actionGetDateFormatOptions($sid)
+    {
+        $aRawDateFormats = getDateFormatData();
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            [
+                'data' => array_map(
+                    function ($aDateFormats) {
+                        return $aDateFormats['dateformat'];
+                    },
+                    $aRawDateFormats
+                )
+            ],
+            false,
+            false
+        );
+    }
+
+    /**
+     * Method to store data edited in the the text editor component
+     *
+     * @param integer $sid Survey ID
+     *
+     * @return JSON | string
+     * @throws CException
+     */
+    public function actionSaveTextData($sid)
+    {
+        $iSurveyId = (int) $sid;
+        $changes = Yii::app()->request->getPost('changes');
+        $aSuccess = [];
+        foreach ($changes as $sLanguage => $contentChange) {
+            //todo: better not to use sql-statement like this in a foreach (performance!!!)
+            $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(
+                ["surveyls_survey_id" => $iSurveyId, "surveyls_language" => $sLanguage]
+            );
+            if ($oSurveyLanguageSetting == null) {
+                $oSurveyLanguageSetting = new SurveyLanguageSetting();
+                $oSurveyLanguageSetting->surveyls_survey_id = $iSurveyId;
+                $oSurveyLanguageSetting->surveyls_language = $sLanguage;
+            }
+            $oSurveyLanguageSetting->surveyls_title = $contentChange['surveyTitle'];
+            $oSurveyLanguageSetting->surveyls_welcometext = $contentChange['welcome'];
+            $oSurveyLanguageSetting->surveyls_description = $contentChange['description'];
+            $oSurveyLanguageSetting->surveyls_endtext = $contentChange['endText'];
+            $oSurveyLanguageSetting->surveyls_url = $contentChange['endUrl'];
+            $oSurveyLanguageSetting->surveyls_urldescription = $contentChange['endUrlDescription'];
+            $oSurveyLanguageSetting->surveyls_dateformat = $contentChange['dateFormat'];
+            $oSurveyLanguageSetting->surveyls_numberformat = $contentChange['decimalDivider'];
+            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
+            unset($oSurveyLanguageSetting);
+        }
+
+        $success = array_reduce(
+            $aSuccess,
+            function ($carry, $subsuccess) {
+                return $carry = $carry && $subsuccess;
+            },
+            true
+        );
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "success" => $success,
+                "message" => ($success ? gT("Survey texts were saved successfully.") : gT("Error saving survey texts"))
+            ]
+            ],
+            false,
+            false
+        );
+    }
+
+    /**
+     * Collect the data necessary for the data security settings and return a JSON document
+     *
+     * @param integer $sid Survey ID
+     *
+     * @return JSON | string
+     *
+     * @throws CException
+     */
+    public function actionGetDataSecTextSettings($sid = null)
+    {
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
+        $aLanguages = [];
+        $aReturner = [
+            "dataseclabel" => [],
+            "datasecmessage" => [],
+            "datasecerror" => [],
+        ];
+
+        if ($oSurvey == null ) {
+            $defaultLanguage = App()->getConfig('defaultlang');
+            $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
+            $aReturner["datasecmessage"][$defaultLanguage] = "";
+            $aReturner["datasecerror"][$defaultLanguage] = "";
+            $aReturner["dataseclabel"][$defaultLanguage] = "";
+
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => [
+                    "showsurveypolicynotice" => 0,
+                    "textdata" => $aReturner,
+                    "languages" => $aLanguages,
+                    "permissions" => [
+                        "update" => Permission::model()->hasGlobalPermission('surveys', 'create'),
+                        "editorpreset" => Yii::app()->session['htmleditormode'],
+                    ]
+                ]],
+                false,
+                false
+            );
+        }
+
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+            $aReturner["datasecmessage"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_notice;
+            $aReturner["datasecerror"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_error;
+            $aReturner["dataseclabel"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_notice_label;
+        }
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "showsurveypolicynotice" => $oSurvey->showsurveypolicynotice,
+                "textdata" => $aReturner,
+                "languages" => $aLanguages,
+                "permissions" => [
+                    "update" => Permission::model()->hasSurveyPermission($iSurveyId, 'surveysecurity', 'update'),
+                    "editorpreset" => Yii::app()->session['htmleditormode'],
+                ]
+            ]],
+            false,
+            false
+        );
+    }
+
+    /**
+     * Method to store data edited in the the data security text editor component
+     *
+     * @param integer $sid Survey ID
+     *
+     * @return JSON | string
+     *
+     * @throws CException
+     */
+    public function saveDataSecTextData($sid)
+    {
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $changes = Yii::app()->request->getPost('changes', []);
+        $aSuccess = [];
+
+        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $aSuccess[] = $oSurvey->save();
+        foreach ($oSurvey->allLanguages as $sLanguage ) {
+            $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(["surveyls_survey_id" => $iSurveyId, "surveyls_language" => $sLanguage]);
+            if ($oSurveyLanguageSetting == null) {
+                $oSurveyLanguageSetting = new SurveyLanguageSetting();
+                $oSurveyLanguageSetting->surveyls_title = "";
+                $oSurveyLanguageSetting->surveyls_survey_id = $iSurveyId;
+                $oSurveyLanguageSetting->surveyls_language = $sLanguage;
+            }
+
+            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $aSuccess[$sLanguage] = $oSurveyLanguageSetting->save();
+            unset($oSurveyLanguageSetting);
+        }
+
+        $success = array_reduce(
+            $aSuccess,
+            function ($carry, $subsuccess) {
+                return $carry = $carry && $subsuccess;
+            },
+            true
+        );
+
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "success" => $success,
+                "message" => ($success ? gT("Successfully saved privacy policy text") : gT("Error saving privacy policy text"))
+            ]
+            ],
+            false,
+            false
+        );
+    }
+
+    /**
+     * Apply current theme options for imported survey theme
+     *
+     * @param integer $iSurveyID The survey ID of imported survey
+     *
+     * @return void
+     */
+    public function actionApplythemeoptions($iSurveyID = 0)
+    {
+        if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $sTemplateName = $oSurvey->template;
+            $aThemeOptions = json_decode(App()->request->getPost('themeoptions', ''));
+
+            if (!empty($aThemeOptions)) {
+                $oSurveyConfig = TemplateConfiguration::getInstance($sTemplateName, null, $iSurveyID);
+                if ($oSurveyConfig->options === 'inherit') {
+                    $oSurveyConfig->setOptionKeysToInherit();
+                }
+
+                foreach ($aThemeOptions as $key => $value) {
+                    $oSurveyConfig->setOption($key, $value);
+                }
+                $oSurveyConfig->save();
+            }
+        }
+        $this->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
+    }
+
+    /**
+     * Upload an image in directory
+     *
+     * @return json |string
+     *
+     * @throws CException
+     */
+    public function actionUploadimagefile()
+    {
+        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $success = false;
+        $debug = [];
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => gT("You don't have sufficient permissions to upload images in this survey"), 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        $debug[] = $_FILES;
+        if (empty($_FILES)) {
+            $uploadresult = gT("No file was uploaded.");
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
+            $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
+        if ($checkImage['check'] === false) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
+                false,
+                false
+            );
+        }
+        $surveyDir = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID;
+        if (!is_dir($surveyDir)) {
+            @mkdir($surveyDir);
+        }
+        if (!is_dir($surveyDir."/images")) {
+            @mkdir($surveyDir."/images");
+        }
+        $destdir = $surveyDir."/images/";
+        if (!is_writeable($destdir)) {
+            $uploadresult = sprintf(gT("Incorrect permissions in your %s folder."), $destdir);
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+
+        $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
+        $fullfilepath = $destdir.$filename;
+        $debug[] = $destdir;
+        $debug[] = $filename;
+        $debug[] = $fullfilepath;
+        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
+            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+        } else {
+            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+            $success = true;
+        };
+        return $this->renderPartial(
+            '/admin/super/_renderJson',
+            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+            false,
+            false
+        );
+    }
+
+
+
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */
     /** **********************************************************************************************************++ */
@@ -1341,9 +1660,10 @@ class SurveyAdministrationController extends LSBaseController
     {
         Yii::app()->getClientScript()->registerScript(
             "TextEditDataGlobal",
-            //OLD: connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
+            //todo: this has to be changed, also in frontend packages/textelements/...
+            //NEW: connectorBaseUrl: '".Yii::app()->getController()->createUrl('/surveyAdministration/getDateFormatOptions', ['sid' => $survey->sid])."',
             "window.TextEditData = {
-                connectorBaseUrl: '".Yii::app()->getController()->createUrl('surveyAdministration', ['sid' => $survey->sid])."',
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
                 isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
                 i10N: {
                     'Survey title' : '".gT('Survey title')."',
