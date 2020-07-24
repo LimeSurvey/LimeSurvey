@@ -2167,13 +2167,15 @@ class tokens extends Survey_Common_Action
                         $event->set('importDone', false);
                         $event->set('importValid', true);                        
                         App()->getPluginManager()->dispatchEvent($event);
-                        $bPluginReportedError = !is_null($event->get('importValid')) && !$event->get('importValid');
+                        $bPluginReportedError = !$event->get('importValid');
                         $bImportDone = $event->get('importDone');
 
                         if ($bPluginReportedError) {
                             // If plugin says import is not valid, append the error
                             $sErrorMessage = $event->get('errorMessage');
-                            if (empty($sErrorMessage)) $sErrorMessage = gT("%s records with other errors");
+                            if (empty($sErrorMessage)) {
+                                $sErrorMessage = gT("%s records with other errors");
+                            }
                             
                             $sTokenSpecificErrorMessage = $event->get('tokenSpecificErrorMessage');
                             if (!empty($sTokenSpecificErrorMessage)) {
@@ -2213,7 +2215,9 @@ class tokens extends Survey_Common_Action
                                 $bImportDone = true;
                             }
                         }
-                        if ($bImportDone) $iRecordImported++;
+                        if ($bImportDone) {
+                            $iRecordImported++;
+                        }
                         $iRecordOk++;
                     }
                     $iRecordCount++;
