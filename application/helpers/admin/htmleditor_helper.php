@@ -247,7 +247,7 @@
                 ,LimeReplacementFieldsGID : \"".$gID."\"
                 ,LimeReplacementFieldsQID : \"".$qID."\"
                 ,LimeReplacementFieldsAction : \"".$action."\"
-                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
+                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("limereplacementfields/index")."\"
                 ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
                 . $sFileBrowserAvailable
                 . $htmlformatoption

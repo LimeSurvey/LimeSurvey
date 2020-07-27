@@ -11,10 +11,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class limereplacementfields extends Survey_Common_Action
+class LimereplacementfieldsController extends LSBaseController
 {
 
-    public function index()
+    public function actionIndex()
     {
         $surveyid = (int) App()->request->getQuery('surveyid');
         $gid = (int) App()->request->getQuery('gid');
@@ -30,8 +30,9 @@ class limereplacementfields extends Survey_Common_Action
         }
 
         if ($newType) {
-            $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid );
-            return;
+            $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid );
+            
+            return $this->renderPartial('/admin/super/_renderJson', ['data' => $newTypeResponse]);
         }
 
         list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
@@ -62,7 +63,7 @@ class limereplacementfields extends Survey_Common_Action
             $data['replacements'][gT('Survey format')] = $surveyformat;
         }
 
-        $this->getController()->renderPartial('/admin/super/_renderJson', ['data' => $data]);
+        $this->renderPartial('/admin/super/_renderJson', ['data' => $data]);
         return;
     }
 
@@ -429,9 +430,7 @@ class limereplacementfields extends Survey_Common_Action
             $returnArray[gT('Questions')] = $this->collectQuestionReplacements($surveyid, $gid, $qid);
         }
 
-
-        $this->getController()->renderPartial('/admin/super/_renderJson', ['data' => $returnArray]);
-        return;
+        return $returnArray;
     }
 
     private function collectQuestionReplacements($surveyid, $gid = null, $qid = null) {
