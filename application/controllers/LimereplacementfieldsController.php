@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class LimereplacementfieldsController extends LSBaseController
+class LimeReplacementFieldsController extends LSBaseController
 {
 
     public function actionIndex()
