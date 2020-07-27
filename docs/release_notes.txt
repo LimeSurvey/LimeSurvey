@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.27 (build 200720) to 3.22.28 (build 200728) July 27, 2020
+-Fixed issue #16498: Can't run survey with child theme because of enheritance problems. (GabrielJenik)
+#Updated translation: Russian by imnetxiin
+
+
 Changes from 3.22.26 (build 200714) to 3.22.27 (build 200720) July 20, 2020
 -Fixed issue #16461: Twice contact sentence for some error page (#1469) (Denis Chenu)
 #Updated translation: Spanish (Mexican) by segui
