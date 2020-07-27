@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-12">
-        <?php if ($scenariocount > 0): ?>
+        <?php if ($hasUpdatePermission && $scenariocount > 0): ?>
             <button
             id='delete-all-conditions'
             data-toggle='modal'
