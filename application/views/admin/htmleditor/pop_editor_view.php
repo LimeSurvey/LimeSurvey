@@ -51,7 +51,7 @@
                         LimeReplacementFieldsQID : "<?php echo $iQuestionId; ?>",
                         LimeReplacementFieldsType: "<?php echo $sFieldType; ?>",
                         LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
-                        LimeReplacementFieldsPath : "<?php echo $this->createUrl("/admin/limereplacementfields/sa/index"); ?>",
+                        LimeReplacementFieldsPath : "<?php echo $this->createUrl("/limereplacementfields/index"); ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo $htmlformatoption; ?> });
                 }
