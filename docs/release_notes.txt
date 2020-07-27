@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.5 (build 200721) to 4.3.6 (build 200727) July 27, 2020
+-Fixed issue #16526: Expression in subquestion for array dual scale not updated (Denis Chenu)
+-Fixed issue #16149: See survey list - owner column is not correct (GabrielJenik)
+-Fixed issue #16039: Order of items not a numerical order (#1490) (Gabriel Jenik)
+#Updated translation: Ukrainian by imnetxiin
+#Updated translation: Russian by imnetxiin
+#Updated translation: Portuguese (Brazil) by cassiofs
+#Updated translation: Japanese by nomoto
+#Updated translation: German by lsurvey20
+#Updated translation: German (Informal) by lsurvey20
+#Updated translation: Czech by jelen1
+#Updated translation: Croatian by rovinj
+
+
 Changes from 4.3.4 (build 200713) to 4.3.5 (build 200721) July 20, 2020
 -Fixed issue #16461: Twice contact sentence for some error page (Denis Chenu)
 -Fixed issue #16453: Sometimes we get duplicate question_orders on new questions (#1481) (Gabriel Jenik)
