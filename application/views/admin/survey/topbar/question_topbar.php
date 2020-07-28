@@ -272,6 +272,15 @@ if ($hasReadPermission) {
         array_push($topbar['alignment']['left']['buttons'], $buttons_check_logic);
     }
 
+    // Conditions Button
+    $buttons['conditions'] = [
+        'url' => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+        'name' => gT("Condition designer"),
+        'id' => 'conditions_button',
+        'icon' => 'icon-conditions',
+        'class' => ' btn-default',
+    ];
+    array_push($topbar['alignment']['left']['buttons'], $buttons['conditions']);
 }
 
 $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
@@ -328,16 +337,6 @@ if ($hasCopyPermission && $oSurvey->active === 'N') {
 
 if ($hasUpdatePermission) {
     $permissions['update'] = ['update' => $hasUpdatePermission];
-
-    // Conditions Button
-    $buttons['conditions'] = [
-        'url' => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
-        'name' => gT("Condition designer"),
-        'id' => 'conditions_button',
-        'icon' => 'icon-conditions',
-        'class' => ' btn-default',
-    ];
-    array_push($topbar['alignment']['left']['buttons'], $buttons['conditions']);
 
     if ($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
         $buttons['default_values'] = [
