@@ -2124,7 +2124,8 @@ class Participant extends LSActiveRecord
             'language' => $data['language'],
             'blacklisted' => $data['blacklisted'],
             'created_by' => $data['owner_uid'],
-            'owner_uid' => $data['owner_uid']);
+            'owner_uid' => $data['owner_uid'],
+            'created' => date('Y-m-d H:i:s', time()));
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
     }
 
