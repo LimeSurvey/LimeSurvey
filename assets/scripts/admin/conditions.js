@@ -130,10 +130,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     p2.methodId          = '#quick-add-method';
     p2.canswersToSelectId= '#quick-add-canswersToSelectId';
 	$('#quick-add-cquestions').change(p2.fun);
-
-	$('#csrctoken').change(function() {
-		$('#cqid').val(0);
-	});
 	
 	// At editing, if cquestions is set, populate answers
 	if ($('#cquestions').val() != '') {
