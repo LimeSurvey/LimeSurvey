@@ -684,6 +684,7 @@ class conditionsaction extends Survey_Common_Action
             $conditionCfieldname = $p_cquestions;
         } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
             $conditionCfieldname = $p_csrctoken;
+            $p_cqid = 0;  // Reset cqid if condition is based on token attribute
         }
 
         $condition_data = array(
