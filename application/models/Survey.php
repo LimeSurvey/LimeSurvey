@@ -1974,4 +1974,13 @@ return $s->hasTokensTable; });
         return $dataSecurityNoticeLabel;
 
     }
+
+    /**
+     * @return string
+     */
+    public function getOwnerUserName()
+    {
+        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+    }
+
 }
