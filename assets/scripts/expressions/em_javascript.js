@@ -627,7 +627,8 @@ function LEMregexMatch(sRegExp,within)
         var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
         var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1').trim();
         var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11
-        return reg.test(within);
+        var decodedValue = html_entity_decode(within);
+        return reg.test(decodedValue);
     }
     catch (err) {
         return false;
