@@ -1736,10 +1736,14 @@ class questions extends Survey_Common_Action
                 ); 
                 foreach ($oLabelSet->labels as $oLabel) {
                     if($oLabel->language === $sLanguage) {
-                        $aResult[$sLanguage]['labels'][] = array_map(
-                            function($attribute) { return \viewHelper::flatten($attribute); },
-                            $oLabel->attributes
-                        ); 
+                        $aLabels = $oLabel->attributes;
+                        array_walk(
+                            $aLabels,
+                            function(&$attribute, $key) {
+                                $attribute = $key == 'title' ? $attribute : \viewHelper::flatten($attribute); // Don't flatten the label title because it is OK to include HTML
+                            }
+                        );
+                        $aResult[$sLanguage]['labels'][] = $aLabels;
                     }
                 };
                 $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
