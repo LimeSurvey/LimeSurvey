@@ -1255,6 +1255,7 @@ class QuestionEditorController extends LSBaseController
                         "Answer option code cannot be empty"
                     );
                 }
+                $sOldCode = $oAnswer->code;
                 $oAnswer->setAttributes($aAnswerOptionDataSet);
                 $answerSaved = $oAnswer->save();
                 if (!$answerSaved) {
@@ -1264,9 +1265,26 @@ class QuestionEditorController extends LSBaseController
                         . print_r($oAnswer->getErrors(), true)
                     );
                 }
+                // Updating code => update condition with the new code
+                if (isset($sOldCode) && $oAnswer->code !== $sOldCode) {
+                    Condition::model()->updateAll(
+                        array(
+                            'value' => $oAnswer->code
+                        ),
+                        'cqid=:cqid AND value=:value',
+                        array(
+                            ':cqid' => $oAnswer->qid,
+                            ':value' => $sOldCode
+                        )
+                    );
+                }
                 $this->applyAnswerI10N($oAnswer, $oQuestion, $aAnswerOptionDataSet);
             }
         }
+
+        LimeExpressionManager::SetDirtyFlag();
+        LimeExpressionManager::UpgradeConditionsToRelevance($oQuestion->sid);
+
         return true;
     }
 
