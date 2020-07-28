@@ -2435,6 +2435,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Correct permission for survey menu Survey Participants (tokens, not surveysettings).
+         */
+        if ($iOldDBVersion < 360) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [
+                    'permission' => 'tokens',
+                ],
+                'name=\'participants\''
+            );
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>360], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
