@@ -109,6 +109,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 $this->sliderOptionsArray['slider_reversed'] = 'false';
             }
 
+            $this->sliderOptionsArray['slider_showminmax'] = $this->getQuestionAttribute('slider_showminmax');
 
         } else {
             $this->sCoreClasses .= " text-list number-list";
