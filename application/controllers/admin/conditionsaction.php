@@ -677,10 +677,11 @@ class conditionsaction extends Survey_Common_Action
         /** @var string $p_method */
         /** @var array $p_canswers */
         /** @var CHttpRequest $request */
-        /** @var string $editSourceTab */
         extract($args);
 
-        if (isset($p_cquestions) && $p_cquestions != '') {
+        $editSourceTab = $request->getPost('editSourceTab');
+
+        if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $p_cquestions;
         } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
             $conditionCfieldname = $p_csrctoken;
