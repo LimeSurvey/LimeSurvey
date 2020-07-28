@@ -373,6 +373,7 @@ export default {
         },
         // Triggers 
         triggerEditQuestion(force = null){
+            if(!this.allowSwitchEditing) return;
             if(force === null) {
                 this.editQuestion = !this.editQuestion;
             } else {
