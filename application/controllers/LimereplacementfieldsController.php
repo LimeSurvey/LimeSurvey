@@ -14,6 +14,14 @@
 class LimeReplacementFieldsController extends LSBaseController
 {
 
+    /**
+     *
+     * @todo: document me ...
+     *
+     * @return false|string|string[]|null
+     * @throws CException
+     * @throws CHttpException
+     */
     public function actionIndex()
     {
         $surveyid = (int) App()->request->getQuery('surveyid');
@@ -30,12 +38,12 @@ class LimeReplacementFieldsController extends LSBaseController
         }
 
         if ($newType) {
-            $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid );
+            $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid);
             
             return $this->renderPartial('/admin/super/_renderJson', ['data' => $newTypeResponse]);
         }
 
-        list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
+        list($replacementFields, $isInsertAnswerEnabled) = $this->getReplacementFields($fieldtype, $surveyid);
 
         if ($isInsertAnswerEnabled === true) {
             //2: Get all other questions that occur before this question that are pre-determined answer types
@@ -45,8 +53,8 @@ class LimeReplacementFieldsController extends LSBaseController
 
             //Go through each question until we reach the current one
             //error_log(print_r($qrows,true));
-            $questionlist = $this->_getQuestionList($action, $gid, $qid, $fieldmap, $fieldtype, $surveyformat);
-            $childQuestions = $this->_getChildQuestions($questionlist);
+            $questionlist = $this->getQuestionList($action, $gid, $qid, $fieldmap, $fieldtype, $surveyformat);
+            $childQuestions = $this->getChildQuestions($questionlist);
         }
 
         $data = [];
@@ -64,7 +72,6 @@ class LimeReplacementFieldsController extends LSBaseController
         }
 
         $this->renderPartial('/admin/super/_renderJson', ['data' => $data]);
-        return;
     }
 
     /**
@@ -73,7 +80,7 @@ class LimeReplacementFieldsController extends LSBaseController
      * @param string $surveyformat
      * @return array
      */
-    private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
+    private function getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
         $previousQuestion = null;
         $isPreviousPageQuestion = true;
@@ -84,8 +91,8 @@ class LimeReplacementFieldsController extends LSBaseController
                 continue;
             }
 
-            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
-                $isPreviousPageQuestion = $this->_addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
+            if (is_null($qid) || $this->shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
+                $isPreviousPageQuestion = $this->addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
                 $previousQuestion = $question;
             } else {
                 break;
@@ -95,10 +102,13 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     *
+     * @todo: document me ..
+     *
      * @param integer $gid
      * @param integer $qid
      */
-    private function _shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
+    private function shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
     {
         switch ($action) {
             case 'addgroup':
@@ -151,10 +161,13 @@ class LimeReplacementFieldsController extends LSBaseController
     }
 
     /**
+     *
+     * @todo: document me
+     *
      * @param integer $gid
      * @param string $surveyformat
      */
-    private function _addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
+    private function addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
             $isPreviousPageQuestion = true;
@@ -175,7 +188,14 @@ class LimeReplacementFieldsController extends LSBaseController
         return $isPreviousPageQuestion;
     }
 
-    private function _getChildQuestions(array $questions)
+    /**
+     *
+     * @todo: document me
+     *
+     * @param array $questions
+     * @return array
+     */
+    private function getChildQuestions(array $questions)
     {
         $cquestions = array();
 
@@ -200,13 +220,13 @@ class LimeReplacementFieldsController extends LSBaseController
 
     /**
      * Collect the general replacements
-     * 
+     *
      * @param string  $fieldtype The field to collect replacements for
      * @param integer $surveyid  The transferred surveyid
-     * 
+     *
      * @return array
      */
-    private function _getReplacementFields($fieldtype, $surveyid)
+    private function getReplacementFields($fieldtype, $surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         $replFields = array();
@@ -414,17 +434,28 @@ class LimeReplacementFieldsController extends LSBaseController
         }
     }
 
+    /**
+     *
+     *
+     * @todo document me ..
+     *
+     * @param $fieldtype
+     * @param null $surveyid
+     * @param null $gid
+     * @param null $qid
+     * @return array
+     */
     public function getNewTypeResponse($fieldtype, $surveyid = null, $gid = null, $qid = null)
     {
         $returnArray = [];
-        $generalArray = $this->_getReplacementFields($fieldtype, $surveyid);
+        $generalArray = $this->getReplacementFields($fieldtype, $surveyid);
 
         foreach ($generalArray[0] as $key => $value) {
             $returnArray[gT('General')][$key] = [
                 "type" => 'general',
                 "value" => $value
             ];
-        } 
+        }
 
         if ($qid != null || $gid != null || $generalArray[1]) {
             $returnArray[gT('Questions')] = $this->collectQuestionReplacements($surveyid, $gid, $qid);
@@ -433,7 +464,16 @@ class LimeReplacementFieldsController extends LSBaseController
         return $returnArray;
     }
 
-    private function collectQuestionReplacements($surveyid, $gid = null, $qid = null) {
+    /**
+     *
+     * @todo: document me
+     *
+     * @param $surveyid
+     * @param null $gid
+     * @param null $qid
+     * @return array
+     */
+    private function collectQuestionReplacements($surveyid, $gid = null, $qid = null){
         $oSurvey = Survey::model()->findByPk($surveyid);
         $oCurrentQuestion = Question::model()->findByPk($qid);
         $aResult = [];
@@ -454,14 +494,14 @@ class LimeReplacementFieldsController extends LSBaseController
             if ($oCurrentQuestion->parent_qid != 0) {
                 $oCriteria->compare('question_order', '<'.$oCurrentQuestion->parent->question_order);
             } else {
-                $oCriteria->compare('question_order', '<'.$oCurrentQuestion->question_order );
+                $oCriteria->compare('question_order', '<'.$oCurrentQuestion->question_order);
             }
         }
 
         $aQuestions = Question::model()->findAll($oCriteria);
         
-        uasort( 
-            $aQuestions, 
+        uasort(
+            $aQuestions,
             function ($a,$b) {
             if ($a->gid != $b->gid) {
                 return $a->group->group_order < $b->group->group_order ? -1 : 1;
@@ -470,8 +510,8 @@ class LimeReplacementFieldsController extends LSBaseController
         });
 
         foreach ($aQuestions as $oQuestion) {
-            if ($oCurrentQuestion != null && $oCurrentQuestion->qid == $oQuestion->qid) { 
-                continue; 
+            if ($oCurrentQuestion != null && $oCurrentQuestion->qid == $oQuestion->qid) {
+                continue;
             }
 
             if (safecount($oQuestion->subquestions) != 0) {
