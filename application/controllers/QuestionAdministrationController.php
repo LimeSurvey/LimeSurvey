@@ -45,6 +45,8 @@ class QuestionAdministrationController extends LSBaseController
             LimeExpressionManager::StartProcessingPage(false, true);
 
             $this->layout = 'layout_questioneditor';
+        }else{
+            $this->layout = 'main';
         }
 
         return parent::beforeRender($view);
@@ -232,6 +234,71 @@ class QuestionAdministrationController extends LSBaseController
                 'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
             ]
         );
+    }
+
+    /**
+     * Load list questions view for a specified survey by $surveyid
+     *
+     * @param int $surveyid Goven Survey ID
+     *
+     * @return string
+     * @access public
+     * @todo   php warning (Missing return statement)
+     */
+    public function actionListQuestions($surveyid)
+    {
+        $iSurveyID = sanitize_int($surveyid);
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
+        LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
+        LimeExpressionManager::SetSurveyId($iSurveyID);
+        LimeExpressionManager::StartProcessingPage(false, true);
+
+        // Set number of page
+        $pageSize = App()->request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int) $pageSize);
+        }
+
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aData   = array();
+
+        $aData['oSurvey']                               = $oSurvey;
+       // $aData['surveyid']                              = $iSurveyID;
+        $aData['display']['menu_bars']['listquestions'] = true;
+        $aData['sidemenu']['listquestions']             = true;
+        $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
+            "/surveyAdministration/listsurveys"
+        );
+        $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
+        $aData['surveybar']['buttons']['newquestion']   = true;
+
+        $aData["surveyHasGroup"]        = $oSurvey->groups;
+        $aData['subaction']             = gT("Questions in this survey");
+        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title.
+            " (".gT("ID").":".$iSurveyID.")";
+
+        // The DataProvider will be build from the Question model, search method
+        $model = new Question('search');
+        // Global filter
+        if (isset($_GET['Question'])) {
+            $model->setAttributes($_GET['Question'], false);
+        }
+        // Filter group
+        if (isset($_GET['gid'])) {
+            $model->gid = $_GET['gid'];
+        }
+        // Set number of page
+        if (isset($_GET['pageSize'])) {
+            App()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+        $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        // We filter the current survey id
+        $model->sid = $oSurvey->sid;
+        $aData['model'] = $model;
+        $this->aData = $aData;
+
+        $this->render("listquestions", $aData);
     }
 
     /****

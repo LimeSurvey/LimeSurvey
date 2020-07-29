@@ -727,7 +727,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Load list questions view for a specified survey by $surveyid
      *
-     * @todo should be refactored in QuestionAdministrationController
+     * REFACTORED in QuestionAdministrationController
      *
      * @param int $surveyid Goven Survey ID
      * 
@@ -2688,6 +2688,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Returns JSON Data for Token Top Bar.
+     *
+     * REFACTORED in SurveryAdministrationCOntroller
      * 
      * @param int  $sid       Given Survey ID
      * @param bool $onlyclose Close
@@ -2713,6 +2715,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * This Method is returning the Data for Survey Top Bar Component
      * for Vue JS as JSON.
+     *
+     * REFACTORED in SurveyAdministrationController
      * 
      * @param int  $sid        Given Survey ID
      * @param bool $saveButton Renders Save Button

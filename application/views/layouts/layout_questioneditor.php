@@ -69,7 +69,7 @@ $layoutHelper->notifications();
 
 //Rendered through /admin/survey/Question/listquestions
 //$this->_listquestions($aData);
-$layoutHelper->renderListQuestions($aData);
+//$layoutHelper->renderListQuestions($aData);  refactored in QuestionAdministrationController actionListquestions
 
 
 //Rendered through /admin/super/sidebody

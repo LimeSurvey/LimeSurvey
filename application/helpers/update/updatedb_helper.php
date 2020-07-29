@@ -3152,6 +3152,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 "name='listQuestionGroups'"
             );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'questionAdministration/listQuestions',
+                ),
+                "name='listQuestions'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
             $oTransaction->commit();
         }

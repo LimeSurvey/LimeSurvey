@@ -68,7 +68,7 @@ export default {
     getTopBarButtonsTokens: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', {
+            ajax.methods.$_get(LS.createUrl('surveyAdministration/getTokenTopBar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 saveButton: context.state.showSaveButton
             }))

@@ -23,7 +23,10 @@ class SurveyAdministrationController extends LSBaseController
             [
                 'allow',
                 'actions' => ['view','delete', 'index', 'insert', 'listsurveys', 'newSurvey',
-                    'regenerateQuestionCode', 'renderItemsSelected'],
+                    'regenerateQuestionCode', 'renderItemsSelected', 'applythemeoptions',
+                    'changeMultipleSurveyGroup', 'changeMultipleTheme', 'deleteMultiple',
+                    'fakebrowser', 'getAjaxMenuArray', 'getAjaxQuestionGroupArray','getCurrentEditorValues',
+                    'getDataSecTextSettings', 'getDateFormatOptions', ''],
                 'users'   => ['@'], //only login users
             ],
             ['deny'], //always deny all actions not mentioned above
@@ -1262,6 +1265,128 @@ class SurveyAdministrationController extends LSBaseController
         return $this->renderPartial(
             '/admin/super/_renderJson',
             array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Returns JSON Data for Token Top Bar.
+     *
+     * @todo: this should go into tokens controller ...
+     *
+     * @param int  $sid       Given Survey ID
+     * @param bool $onlyclose Close
+     *
+     * @return string
+     */
+    public function actionGetTokenTopBar($sid, $onlyclose = false)
+    {
+        $oSurvey   = Survey::model()->findByPk($sid);
+
+        return $this->renderPartial(
+            'token_bar',
+            array(
+                'oSurvey'     => $oSurvey,
+                'sid'     => $sid,
+                'onlyclose' => !$oSurvey->hasTokensTable
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * This Method is returning the Data for Survey Top Bar Component
+     * for Vue JS as JSON.
+     *
+     * todo: is this still in use? cannot find any usage ...
+     *
+     * @deprecated not used anymore?
+     *
+     * @param int  $sid        Given Survey ID
+     * @param bool $saveButton Renders Save Button
+     *
+     * @return string|string[]|null
+     * @throws CException
+     */
+    public function actionGetSurveyTopbar($sid, $saveButton = false)
+    {
+        $oSurvey                       = Survey::model()->findByPk($sid);
+        $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+        $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
+        $hasDeletePermission           = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
+        $hasSurveyTranslatePermission  = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
+        $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+        $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
+            || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+        $hasResponsesCreatePermission  = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
+        $hasResponsesReadPermission    = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+        $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
+
+        $isActive  = $oSurvey->active == 'Y';
+        $condition = array('sid' => $sid, 'parent_qid' => 0);
+        $sumcount  = Question::model()->countByAttributes($condition);
+        $countLanguage = count($oSurvey->allLanguages);
+        $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
+        $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
+        $expired     = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"),
+                    "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+        $notstarted  = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"),
+                    "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+
+        if (!$isActive) {
+            $context = gT("Preview survey");
+            $contextbutton = 'preview_survey';
+        } else {
+            $context =  gT("Execute survey");
+            $contextbutton = 'execute_survey';
+        }
+
+        $language = $oSurvey->language;
+        $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
+        $oneLanguage     = (count($oSurvey->allLanguages) == 1);
+
+        // Put menu items in tools menu
+        $event = new PluginEvent('beforeToolsMenuRender', $this);
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $extraToolsMenuItems = $event->get('menuItems');
+
+        // Add new menus in survey bar
+        $event = new PluginEvent('beforeSurveyBarRender', $this);
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $beforeSurveyBarRender = $event->get('menus');
+
+        return $this->renderPartial(
+            'survey_topbar',
+            array(
+                'sid' => $sid,
+                'canactivate' => $canactivate,
+                'expired' => $expired,
+                'notstarted' => $notstarted,
+                'context' => $context,
+                'contextbutton' => $contextbutton,
+                'language' => $language,
+                'sumcount' => $sumcount,
+                'hasSurveyContentPermission' => $hasSurveyContentPermission,
+                'countLanguage' => $countLanguage,
+                'hasDeletePermission' => $hasDeletePermission,
+                'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
+                'hasAdditionalLanguages' => $hasAdditionalLanguages,
+                'conditionsCount' => $conditionsCount,
+                'hasSurveyReadPermission' => $hasSurveyReadPermission,
+                'oneLanguage' => $oneLanguage,
+                'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
+                'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
+                'hasResponsesReadPermission'   => $hasResponsesReadPermission,
+                'hasSurveyActivationPermission'   => $hasSurveyActivationPermission,
+                'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
+                'addSaveButton'  => $saveButton,
+                'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
+                'beforeSurveyBarRender' => $beforeSurveyBarRender ?? []
+            ),
             false,
             false
         );
