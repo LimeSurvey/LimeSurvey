@@ -1603,6 +1603,22 @@ class SurveyRuntimeHelper
 
         $this->preview         = ($this->previewquestion || $this->previewgrp);
 
+        if ($this->preview) {
+            // When previewing groups or questions, the survey URL must include the
+            // respective parameters. Otherwise, changing language doesn't work.
+            $surveyUrlParams = array(
+                "action" => $this->param['action'],
+                "sid" => $this->iSurveyid,
+            );
+            if (isset($this->param['gid'])) {
+                $surveyUrlParams['gid'] = $this->param['gid'];
+            }
+            if (isset($this->param['qid'])) {
+                $surveyUrlParams['qid'] = $this->param['qid'];
+            }
+            $this->aSurveyInfo['surveyUrl'] = App()->createUrl("/survey/index", $surveyUrlParams);
+        }
+
         $this->sLangCode       = App()->language;
     }
 
