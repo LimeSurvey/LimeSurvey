@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.28 (build 200728) to 3.22.29 (build 200731) July 30, 2020
+-Fixed issue #16524: Missing item "Survey participants" in Survey Menu under certain survey permissions (GabrielJenik)
+-Fixed issue #16518: Cannot add condition based on Survey participant attributes (GabrielJenik)
+-Fixed issue #16460: Unable to update format or questionindex by plugin (Denis Chenu)
+#Updated translation: Telugu by eddylackmann
+#Updated translation: Spanish (Spain) by segui
+#Updated translation: Spanish (Mexican) by segui
+#Updated translation: Italian by ritapas
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.22.27 (build 200720) to 3.22.28 (build 200728) July 27, 2020
 -Fixed issue #16498: Can't run survey with child theme because of enheritance problems. (GabrielJenik)
 #Updated translation: Russian by imnetxiin
