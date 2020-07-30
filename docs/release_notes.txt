@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.6 (build 200727) to 4.3.7 (build 200730) July 30, 2020
+-Fixed issue #16533: Double clicking on question overiew for read only user navigates to question editor (GabrielJenik)
+-Fixed issue #16380: On clicking on delete user icon from user control screen lands in different page (GabrielJenik)
+-Fixed issue #15978: Multiple numerical input (Equals sum value: Remaining and Total missing) (GabrielJenik)
+-Fixed issue #15945: Cannot add condition based on Survey participant attributes (GabrielJenik)
+#Updated translation: Portuguese (Brazil) by cassiofs
+#Updated translation: Italian by ritapas
+#Updated translation: French (France) by bethencourty
+
+
 Changes from 4.3.5 (build 200721) to 4.3.6 (build 200727) July 27, 2020
 -Fixed issue #16526: Expression in subquestion for array dual scale not updated (Denis Chenu)
 -Fixed issue #16149: See survey list - owner column is not correct (GabrielJenik)
