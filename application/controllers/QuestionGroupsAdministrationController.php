@@ -372,6 +372,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveybar']['savebutton']['text'] = gt('Import');
             $aData['surveyid'] = $surveyid;
+            $aData['sid'] = $surveyid;
             $aData['topBar']['sid'] = $iSurveyID;
             $aData['topBar']['showSaveButton'] = true;
 

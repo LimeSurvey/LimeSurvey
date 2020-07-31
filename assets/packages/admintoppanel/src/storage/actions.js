@@ -47,7 +47,7 @@ export default {
     getTopBarButtonsSurvey: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', {
+            ajax.methods.$_get(LS.createUrl('surveyAdministration/getSurveyTopBar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 saveButton: context.state.showSaveButton
             }))
@@ -112,8 +112,8 @@ export default {
         return new Promise((resolve, reject) => {
             ajax.methods.$_get(LS.createUrl('surveyAdministration/getAjaxMenuArray', {
                 position: 'top',
-                sid: context.state.sid || LS.reparsedParameters().combined.sid,
-                saveButton: context.state.showSaveButton
+                surveyid: context.state.sid || LS.reparsedParameters().combined.sid,
+                //saveButton: context.state.showSaveButton  --> this parameter is not implemented in getAjaxMenuArray ..
             }))
                 .then((data) => {
                     const topbarLeft = context.state.topbar_left_buttons;

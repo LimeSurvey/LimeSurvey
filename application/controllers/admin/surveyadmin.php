@@ -774,6 +774,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to deactivate a survey.
      *
+     * REFACTORED in SurveyAdministration
+     *
      * @param int $iSurveyID Given Survey ID
      * 
      * @return void
@@ -899,6 +901,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Function responsible to activate survey.
+     *
+     * REFACTORED in SurveyAdministrationController
      *
      * @param int $iSurveyID Given Survey ID
      * 

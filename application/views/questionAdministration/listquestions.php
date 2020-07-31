@@ -93,7 +93,7 @@ $baseLanguage = $oSurvey->language;
             <div class="row ls-space margin top-10">
                 <div class="col-lg-12">
                     <?php
-                        $massiveAction = $this->renderPartial(
+                        $massiveAction = Yii::app()->getController()->renderPartial(
                             '/admin/survey/Question/massive_actions/_selector',
                             array('model'=>$model, 'oSurvey'=>$oSurvey),
                             true,

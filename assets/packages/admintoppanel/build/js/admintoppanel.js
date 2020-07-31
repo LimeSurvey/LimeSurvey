@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "acc08bf3bd847ec95a0b";
+/******/ 	var hotCurrentHash = "9681448de63226e152b6";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -31245,7 +31245,7 @@ __webpack_require__.r(__webpack_exports__);
   getTopBarButtonsSurvey: function getTopBarButtonsSurvey(context) {
     context.commit('clean');
     return new Promise(function (resolve, reject) {
-      _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', {
+      _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('surveyAdministration/getSurveyTopBar', {
         sid: context.state.sid || LS.reparsedParameters().combined.sid,
         saveButton: context.state.showSaveButton
       })).then(function (data) {
@@ -31301,8 +31301,8 @@ __webpack_require__.r(__webpack_exports__);
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('surveyAdministration/getAjaxMenuArray', {
         position: 'top',
-        sid: context.state.sid || LS.reparsedParameters().combined.sid,
-        saveButton: context.state.showSaveButton
+        surveyid: context.state.sid || LS.reparsedParameters().combined.sid //saveButton: context.state.showSaveButton  --> this parameter is not implemented in getAjaxMenuArray ..
+
       })).then(function (data) {
         var topbarLeft = context.state.topbar_left_buttons;
         LS.ld.forEach(data, function () {});

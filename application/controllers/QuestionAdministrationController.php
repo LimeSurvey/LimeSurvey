@@ -45,9 +45,10 @@ class QuestionAdministrationController extends LSBaseController
             LimeExpressionManager::StartProcessingPage(false, true);
 
             $this->layout = 'layout_questioneditor';
-        }else{
-            $this->layout = 'main';
         }
+        /*else{
+            $this->layout = 'main';
+        }*/
 
         return parent::beforeRender($view);
     }
@@ -264,7 +265,8 @@ class QuestionAdministrationController extends LSBaseController
         $aData   = array();
 
         $aData['oSurvey']                               = $oSurvey;
-       // $aData['surveyid']                              = $iSurveyID;
+        $aData['surveyid']                              = $iSurveyID;
+        $aData['sid']                                   = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
         $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
