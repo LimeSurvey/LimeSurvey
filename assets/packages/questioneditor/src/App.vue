@@ -254,8 +254,11 @@ export default {
         questionGroupWithId(){
             return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;
         },
+        canEdit(){
+            return this.$store.state.currentQuestionPermissions.update;
+        },
         allowSwitchEditing(){
-            return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
+            return !this.isCreateQuestion && this.canEdit;
         },
         storedEvent() {
             return this.$store.state.storedEvent;
@@ -373,11 +376,14 @@ export default {
         },
         // Triggers 
         triggerEditQuestion(force = null){
-            if(!this.allowSwitchEditing) return;
             if(force === null) {
                 this.editQuestion = !this.editQuestion;
             } else {
                 this.editQuestion = force;
+            }
+            // Check edit permission. If no permission, default to view.
+            if(!this.canEdit) {
+                this.editQuestion = false;
             }
             LS.EventBus.$emit('doFadeEvent', this.editQuestion);
             if(this.editQuestion) {
