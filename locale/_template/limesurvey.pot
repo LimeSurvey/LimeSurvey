@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-07-30 09:37:37+00:00\n"
+"POT-Creation-Date: 2020-08-03 07:45:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1604,28 +1604,28 @@ msgid "Not found"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:514
-#: application/controllers/admin/conditionsaction.php:2046
+#: application/controllers/admin/conditionsaction.php:2047
 msgid "From survey participants table"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:516
-#: application/controllers/admin/conditionsaction.php:2048
+#: application/controllers/admin/conditionsaction.php:2049
 msgid "Non-existing survey participants table"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:532
-#: application/controllers/admin/conditionsaction.php:1393
-#: application/controllers/admin/conditionsaction.php:1443
-#: application/controllers/admin/conditionsaction.php:1484
+#: application/controllers/admin/conditionsaction.php:1394
+#: application/controllers/admin/conditionsaction.php:1444
 #: application/controllers/admin/conditionsaction.php:1485
-#: application/controllers/admin/conditionsaction.php:1502
-#: application/controllers/admin/conditionsaction.php:1531
-#: application/controllers/admin/conditionsaction.php:1568
-#: application/controllers/admin/conditionsaction.php:1576
-#: application/controllers/admin/conditionsaction.php:1585
-#: application/controllers/admin/conditionsaction.php:1591
-#: application/controllers/admin/conditionsaction.php:1610
-#: application/controllers/admin/conditionsaction.php:1622
+#: application/controllers/admin/conditionsaction.php:1486
+#: application/controllers/admin/conditionsaction.php:1503
+#: application/controllers/admin/conditionsaction.php:1532
+#: application/controllers/admin/conditionsaction.php:1569
+#: application/controllers/admin/conditionsaction.php:1577
+#: application/controllers/admin/conditionsaction.php:1586
+#: application/controllers/admin/conditionsaction.php:1592
+#: application/controllers/admin/conditionsaction.php:1611
+#: application/controllers/admin/conditionsaction.php:1623
 #: application/controllers/admin/dataentry.php:1127
 #: application/extensions/questionTypes/listRadio/listRadio.php:217
 #: application/helpers/admin/statistics_helper.php:649
@@ -1682,65 +1682,65 @@ msgstr ""
 msgid "All conditions in this survey have been deleted."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:702
-#: application/controllers/admin/conditionsaction.php:746
-#: application/controllers/admin/conditionsaction.php:803
-#: application/controllers/admin/conditionsaction.php:839
+#: application/controllers/admin/conditionsaction.php:703
+#: application/controllers/admin/conditionsaction.php:747
+#: application/controllers/admin/conditionsaction.php:804
+#: application/controllers/admin/conditionsaction.php:840
 msgid "Could not insert all conditions."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:704
-#: application/controllers/admin/conditionsaction.php:743
-#: application/controllers/admin/conditionsaction.php:805
-#: application/controllers/admin/conditionsaction.php:841
+#: application/controllers/admin/conditionsaction.php:705
+#: application/controllers/admin/conditionsaction.php:744
+#: application/controllers/admin/conditionsaction.php:806
+#: application/controllers/admin/conditionsaction.php:842
 msgid "Condition added."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:707
-#: application/controllers/admin/conditionsaction.php:748
-#: application/controllers/admin/conditionsaction.php:773
-#: application/controllers/admin/conditionsaction.php:808
-#: application/controllers/admin/conditionsaction.php:844
+#: application/controllers/admin/conditionsaction.php:708
+#: application/controllers/admin/conditionsaction.php:749
+#: application/controllers/admin/conditionsaction.php:774
+#: application/controllers/admin/conditionsaction.php:809
+#: application/controllers/admin/conditionsaction.php:845
 msgid "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:945
-#: application/controllers/admin/conditionsaction.php:949
-#: application/controllers/admin/conditionsaction.php:985
+#: application/controllers/admin/conditionsaction.php:946
+#: application/controllers/admin/conditionsaction.php:950
+#: application/controllers/admin/conditionsaction.php:986
 msgid "Could not update condition."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:947
-#: application/controllers/admin/conditionsaction.php:982
+#: application/controllers/admin/conditionsaction.php:948
+#: application/controllers/admin/conditionsaction.php:983
 msgid "Condition updated."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:987
+#: application/controllers/admin/conditionsaction.php:988
 msgid "The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1013
+#: application/controllers/admin/conditionsaction.php:1014
 msgid "All conditions scenarios were renumbered."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1088
+#: application/controllers/admin/conditionsaction.php:1089
 msgid "Condition successfully copied (some were skipped because they were duplicates)"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1090
+#: application/controllers/admin/conditionsaction.php:1091
 msgid "Condition successfully copied"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1093
+#: application/controllers/admin/conditionsaction.php:1094
 msgid "No conditions could be copied (due to duplicates)"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1147
+#: application/controllers/admin/conditionsaction.php:1148
 msgid "All conditions for this question have been deleted."
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1367
-#: application/controllers/admin/conditionsaction.php:1564
+#: application/controllers/admin/conditionsaction.php:1368
+#: application/controllers/admin/conditionsaction.php:1565
 #: application/controllers/admin/dataentry.php:585
 #: application/controllers/admin/dataentry.php:1006
 #: application/controllers/admin/dataentry.php:1063
@@ -1884,7 +1884,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1368
+#: application/controllers/admin/conditionsaction.php:1369
 #: application/controllers/admin/dataentry.php:1066
 #: application/controllers/admin/printablesurvey.php:308
 #: application/controllers/admin/printablesurvey.php:923
@@ -1901,8 +1901,8 @@ msgstr ""
 msgid "Uncertain"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1369
-#: application/controllers/admin/conditionsaction.php:1565
+#: application/controllers/admin/conditionsaction.php:1370
+#: application/controllers/admin/conditionsaction.php:1566
 #: application/controllers/admin/dataentry.php:584
 #: application/controllers/admin/dataentry.php:1009
 #: application/controllers/admin/dataentry.php:1069
@@ -2039,7 +2039,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1373
+#: application/controllers/admin/conditionsaction.php:1374
 #: application/controllers/admin/printablesurvey.php:314
 #: application/controllers/admin/printablesurvey.php:952
 #: application/controllers/admin/printablesurvey.php:964
@@ -2055,7 +2055,7 @@ msgstr ""
 msgid "Increase"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1374
+#: application/controllers/admin/conditionsaction.php:1375
 #: application/controllers/admin/printablesurvey.php:316
 #: application/controllers/admin/printablesurvey.php:953
 #: application/controllers/admin/printablesurvey.php:965
@@ -2071,7 +2071,7 @@ msgstr ""
 msgid "Same"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1375
+#: application/controllers/admin/conditionsaction.php:1376
 #: application/controllers/admin/printablesurvey.php:315
 #: application/controllers/admin/printablesurvey.php:954
 #: application/controllers/admin/printablesurvey.php:966
@@ -2087,33 +2087,33 @@ msgstr ""
 msgid "Decrease"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1455
+#: application/controllers/admin/conditionsaction.php:1456
 #: application/helpers/common_helper.php:1748
 msgid "Scale 1"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1456
+#: application/controllers/admin/conditionsaction.php:1457
 #: application/helpers/common_helper.php:1767
 msgid "Scale 2"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1538
+#: application/controllers/admin/conditionsaction.php:1539
 msgid "Group of checkboxes"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1552
+#: application/controllers/admin/conditionsaction.php:1553
 msgid "Single checkbox"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1555
+#: application/controllers/admin/conditionsaction.php:1556
 msgid "checked"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1556
+#: application/controllers/admin/conditionsaction.php:1557
 msgid "not checked"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1572
+#: application/controllers/admin/conditionsaction.php:1573
 #: application/controllers/admin/dataentry.php:691
 #: application/controllers/admin/printablesurvey.php:295
 #: application/controllers/admin/printablesurvey.php:588
@@ -2132,7 +2132,7 @@ msgstr ""
 msgid "Female"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1573
+#: application/controllers/admin/conditionsaction.php:1574
 #: application/controllers/admin/dataentry.php:692
 #: application/controllers/admin/printablesurvey.php:294
 #: application/controllers/admin/printablesurvey.php:589
@@ -2151,7 +2151,7 @@ msgstr ""
 msgid "Male"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1617
+#: application/controllers/admin/conditionsaction.php:1618
 #: application/controllers/admin/dataentry.php:762
 #: application/controllers/admin/printablesurvey.php:350
 #: application/controllers/admin/printablesurvey.php:644
@@ -2199,16 +2199,16 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1682
+#: application/controllers/admin/conditionsaction.php:1683
 #: application/views/admin/conditions/includes/conditions_edit.php:20
 msgid "Edit condition"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1683
+#: application/controllers/admin/conditionsaction.php:1684
 msgid "Update condition"
 msgstr ""
 
-#: application/controllers/admin/conditionsaction.php:1687
+#: application/controllers/admin/conditionsaction.php:1688
 msgid "Add condition"
 msgstr ""
 
@@ -7864,23 +7864,23 @@ msgstr ""
 msgid "Your have to answer the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1625
+#: application/helpers/SurveyRuntimeHelper.php:1641
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1631
+#: application/helpers/SurveyRuntimeHelper.php:1647
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1641
+#: application/helpers/SurveyRuntimeHelper.php:1657
 msgid "This group is empty"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1660
+#: application/helpers/SurveyRuntimeHelper.php:1676
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1661
+#: application/helpers/SurveyRuntimeHelper.php:1677
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
