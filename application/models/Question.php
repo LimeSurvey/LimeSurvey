@@ -196,6 +196,8 @@ class Question extends LSActiveRecord
 
     /**
      * Rewrites sort order for questions in a group
+     * This is very similar to updateQuestionOrder(). Should lead to same results.
+     * Leaving it for backward compatibility and in case I am missing something about their behaviour.
      *
      * @static
      * @access public
@@ -222,11 +224,14 @@ class Question extends LSActiveRecord
     /**
      * Fix sort order for questions in a group
      * @param int $gid
-     * @param string $language
      * @param int $position
      */
-    public function updateQuestionOrder($gid, $language, $position = 0)
+    public function updateQuestionOrder($gid, $position = 1)
     {
+        // The language is needed to avoid duplicates in the data selection,
+        // so we use the survey's base language
+        $language = QuestionGroup::model()->findByAttributes(array('gid' => $gid))->survey->language;
+
         $data = Yii::app()->db->createCommand()->select('qid')
             ->where(array('and', 'gid=:gid', 'language=:language', 'parent_qid=0'))
             ->order('question_order, title ASC')

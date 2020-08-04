@@ -679,6 +679,22 @@ class database extends Survey_Common_Action
         } else {
             if (!empty($this->iQuestionGroupID)) {
 
+                if ($oldgid != $this->iQuestionGroupID) {
+                    if (getGroupOrder($iSurveyID, $oldgid) > getGroupOrder($iSurveyID, $this->iQuestionGroupID)) {
+                        // TMSW Condition->Relevance:  What is needed here?
+
+                        // Moving question to a 'upper' group
+                        // insert question at the end of the destination group
+                        // this prevent breaking conditions if the target qid is in the dest group
+                        $insertorder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID) + 1;
+                    } else {
+                        // Moving question to a 'lower' group
+                        // insert question at the beginning of the destination group
+                        Question::model()->updateQuestionOrder($this->iQuestionGroupID, 2); // makes 1 spare room for new question at top of dest group
+                        $insertorder = 1;
+                    }
+                }
+
                 $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
                 foreach ($aSurveyLanguages as $qlang) {
                     if (isset($qlang) && $qlang != "") {
@@ -698,6 +714,7 @@ class database extends Survey_Common_Action
                             'other' => $fixedQuestionAttributes['other'],
                             'mandatory' => $fixedQuestionAttributes['mandatory'],
                             'relevance' => $fixedQuestionAttributes['relevance'],
+                            'question_order' => $insertorder,
                         );
 
                         // Update question module
@@ -709,22 +726,6 @@ class database extends Survey_Common_Action
                             $udata['modulename'] = '';
                         }
 
-                        if ($oldgid != $this->iQuestionGroupID) {
-                            if (getGroupOrder($iSurveyID, $oldgid) > getGroupOrder($iSurveyID, $this->iQuestionGroupID)) {
-                                // TMSW Condition->Relevance:  What is needed here?
-
-                                // Moving question to a 'upper' group
-                                // insert question at the end of the destination group
-                                // this prevent breaking conditions if the target qid is in the dest group
-                                $insertorder = getMaxQuestionOrder($this->iQuestionGroupID, $iSurveyID) + 1;
-                                $udata = array_merge($udata, array('question_order' => $insertorder));
-                            } else {
-                                // Moving question to a 'lower' group
-                                // insert question at the beginning of the destination group
-                                shiftOrderQuestions($iSurveyID, $this->iQuestionGroupID, 1); // makes 1 spare room for new question at top of dest group
-                                $udata = array_merge($udata, array('question_order' => 0));
-                            }
-                        }
                         //$condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
                         $oQuestion = Question::model()->findByPk(array("qid"=>$this->iQuestionID, 'language'=>$qlang));
 
@@ -753,9 +754,8 @@ class database extends Survey_Common_Action
                 // Update the group ID on subquestions, too
                 if ($oldgid != $this->iQuestionGroupID) {
                     Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'parent_qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
-                    // if the group has changed then fix the sortorder of old and new group
-                    Question::model()->updateQuestionOrder($oldgid, $iSurveyID);
-                    Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
+                    // if the group has changed then fix the sortorder of old group
+                    Question::model()->updateQuestionOrder($oldgid);
                     // If some questions have conditions set on this question's answers
                     // then change the cfieldname accordingly
                     fixMovedQuestionConditions($this->iQuestionID, $oldgid, $this->iQuestionGroupID);
@@ -1495,7 +1495,6 @@ class database extends Survey_Common_Action
                 LimeExpressionManager::SetDirtyFlag();
                 LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
                 $this->_resetEM();
-                Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
                 Yii::app()->session['flashmessage'] = gT("Question was successfully added.");
 
             }
