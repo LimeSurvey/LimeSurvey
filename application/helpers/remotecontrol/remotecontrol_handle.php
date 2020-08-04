@@ -1809,7 +1809,7 @@ class remotecontrol_handle
                 if ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->encryptSave()) {
+                if ($token->encryptSave(true)) {
                     $aParticipant = $token->getAttributes();
                 } else {
                     $aParticipant["errors"] = $token->errors;
