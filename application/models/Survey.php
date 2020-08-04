@@ -460,7 +460,6 @@ class Survey extends LSActiveRecord
                 ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
             )
             ),
-            'public' => array('condition' => "listpublic = 'Y'"),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
                 ':now3' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
                 ':now4' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
@@ -2075,6 +2074,22 @@ return $s->hasTokensTable; });
     public function getOwnerUserName()
     {
         return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+    }
+
+    /**
+     * Find all public surveys
+     * @return Survey[]
+     */
+    public static function findAllPublic()
+    {
+        $surveys = self::model()->findAll();
+        $surveys = array_filter(
+            $surveys,
+            function($s) {
+                return $s->isListPublic;
+            }
+        );
+        return $surveys;
     }
 
 }
