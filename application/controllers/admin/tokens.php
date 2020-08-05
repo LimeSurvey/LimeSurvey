@@ -424,8 +424,11 @@ class tokens extends Survey_Common_Action
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
                     if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                         $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
-                        if ($sCoreTokenField == 'language' and empty($value)) {
+                        if ($sCoreTokenField == 'language' && empty($value)) {
                             continue;
+                        }
+                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
+                            $value='N';
                         }
                         $aData[$sCoreTokenField] = $value;
                     }
