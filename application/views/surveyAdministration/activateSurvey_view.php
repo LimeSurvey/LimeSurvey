@@ -102,7 +102,7 @@
         <?php eT("Additionally the following settings cannot be changed when the survey is active.");?>
     </strong><br><?php eT("Please check these settings now:");?></p></div>
 
-    <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
+    <?php echo CHtml::form(array("surveyAdministration/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'form-horizontal')); ?>
         <div class='row'>
             <div class="col-sm-4 col-sm-offset-2">
                 <div class='form-group'>

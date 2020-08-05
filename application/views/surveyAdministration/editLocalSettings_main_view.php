@@ -2,11 +2,10 @@
 /**
 * General container for edit survey action
 *
-* @var AdminController $this
+* @var SurveyAdministrationController $this
 * @var Survey $oSurvey
 */
 
-// @todo this file should be deleted after refactoring, it also exists now in views/surveyAdministration
 $templateData['oSurvey'] = $oSurvey;
 $templateData['oSurveyOptions'] = $oSurvey->oOptionLabels;
 $templateData['bShowInherited'] = $oSurvey->showInherited;

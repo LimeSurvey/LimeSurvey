@@ -1,7 +1,8 @@
 <?php
 /**
- * @var AdminController $this
+ * @var SurveyAdministrationController $this
  * @var Survey $survey
+ * @var int $surveyid
  */
 
 ?>
@@ -30,7 +31,7 @@
 
                 </p>
                 <p>
-                    <?php echo CHtml::beginForm($this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"), 'post');?>
+                    <?php echo CHtml::beginForm($this->createUrl("surveyAdministration/delete/surveyid/{$surveyid}"), 'post');?>
                         <input type='hidden' name='delete' value='yes'>
                         <input type='submit'  class="btn btn-lg btn-warning" value='<?php eT("Delete survey"); ?>'>
                         <input type='button'  class="btn btn-lg btn-default" value='<?php eT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("surveyAdministration/view/surveyid/$surveyid") ); ?>', '_top')" />

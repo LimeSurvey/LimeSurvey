@@ -1113,7 +1113,7 @@ class database extends Survey_Common_Action
             if ($referrer) {
                 $this->getController()->redirect(array($referrer));
             } else {
-                $this->getController()->redirect(array('/admin/survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/'.$iSurveyID));
             }
         }
 

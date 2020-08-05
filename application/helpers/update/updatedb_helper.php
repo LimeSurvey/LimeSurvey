@@ -3159,6 +3159,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 "name='listQuestions'"
             );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'generalTabEditSurvey',
+                ),
+                "name='generalsettings'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
             $oTransaction->commit();
         }

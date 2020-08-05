@@ -1589,15 +1589,16 @@ class SurveyAdministrationController extends LSBaseController
 
         Yii::app()->user->setState('sql_'.$iSurveyID, ''); //If user has set some filters for responses from statistics on a previous activation, it must be wiped out
         $aData = array();
+        $aData['oSurvey'] = $survey;
         $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
+        $aData['sid'] = $iSurveyID;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         // Redirect if this is not possible
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y') {
             Yii::app()->setFlashMessage(gT("This survey is already active."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid'=>$iSurveyID));
-
         }
         $qtypes = Question::typeList();
         Yii::app()->loadHelper("admin/activate");
@@ -1615,7 +1616,10 @@ class SurveyAdministrationController extends LSBaseController
             $aData['failedgroupcheck'] = $failedgroupcheck;
             $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
 
-            $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
+            $this->aData = $aData;
+            $this->render('activateSurvey_view', $aData);
+
+            //$this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
         } else {
             if (!is_null($survey)) {
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
@@ -1638,13 +1642,18 @@ class SurveyAdministrationController extends LSBaseController
                 || (isset($aResult['blockFeedback']) && $aResult['blockFeedback'])
             ) {
                 // Got false from plugin, redirect to survey front-page
-                $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyID));
+                $this->redirect(array('surveyAdministration/view', 'surveyid'=>$iSurveyID));
             } else if (isset($aResult['pluginFeedback'])) {
                 // Special feedback from plugin
                 $aViewUrls['output'] = $aResult['pluginFeedback'];
+                //todo which view is rendered here???
+                $this->aData = $aData;
+                $this->render('???', $aData); //todo IMPORTANT before merge refactoring!!!!!!!!!!!!!!!
             } else if (isset($aResult['error'])) {
                 $data['result'] = $aResult;
-                $aViewUrls['output'] = $this->renderPartial('/admin/survey/_activation_error', $data, true);
+               // $aViewUrls['output'] = $this->renderPartial('/admin/survey/_activation_error', $data, true);
+                $this->aData = $aData;
+                $this->render('_activation_error', $data);
             } else {
                 $warning = (isset($aResult['warning'])) ?true:false;
                 $allowregister = $survey->isAllowRegister;
@@ -1660,12 +1669,217 @@ class SurveyAdministrationController extends LSBaseController
                     'closedOnclickAction'=>$closedOnclickAction,
                     'noOnclickAction'=>$noOnclickAction,
                 );
-                $aViewUrls['output'] = $this->renderPartial('/admin/survey/_activation_feedback', $activationData, true);
-
+              //  $aViewUrls['output'] = $this->renderPartial('/admin/survey/_activation_feedback', $activationData, true);
+                $this->aData = $aData;
+                $this->render('_activation_feedback', $activationData);
             }
-            $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+           // $this->aData = $aData;
+           // $this->render('_activation_feedback', $activationData);
+            //$this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
         }
     }
+
+    /**
+     * Function responsible to delete a survey.
+     *
+     * @param int $iSurveyID Given Survey ID
+     *
+     * @return string
+     * @access public
+     */
+    public function actionDelete($iSurveyID)
+    {
+        $iSurveyID = (int) $iSurveyID;
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+        $aData = $aViewUrls = array();
+        $aData['surveyid'] = $iSurveyID;
+        $aData['sid'] = $aData['surveyid'];
+        $survey = Survey::model()->findByPk($iSurveyID);
+
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['sidemenu']['state'] = false;
+        $aData['survey'] = $survey;
+
+       if (Yii::app()->request->getPost("delete") == 'yes'){
+            $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin', 'read');
+            Survey::model()->deleteSurvey($iSurveyID);
+            Yii::app()->session['flashmessage'] = gT("Survey deleted.");
+            $this->redirect(array("admin/index"));
+        }
+
+        $this->aData = $aData;
+        $this->render('deleteSurvey_view', $aData);
+    }
+
+    /**
+     * Remove files not deleted properly.
+     * Purge is only available for surveys that were already deleted but for some reason
+     * left files behind.
+     *
+     * @param int $purge_sid Given ID
+     *
+     * @return void
+     */
+    public function actionPurge($purge_sid)
+    {
+        $purge_sid = (int) $purge_sid;
+        if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
+            $survey = Survey::model()->findByPk($purge_sid);
+            if (empty($survey)) {
+                $result = rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$purge_sid);
+                if ($result) {
+                    Yii::app()->user->setFlash('success', gT('Survey files deleted.'));
+                } else {
+                    Yii::app()->user->setFlash('error', gT('Error: Could not delete survey files.'));
+                }
+            } else {
+                // Should not be possible.
+                Yii::app()->user->setFlash(
+                    'error',
+                    gT('Error: Cannot purge files for a survey that is not deleted. Please delete the survey normally in the survey view.')
+                );
+            }
+        } else {
+            Yii::app()->user->setFlash('error', gT('Access denied'));
+        }
+
+        $this->redirect($this->createUrl('admin/globalsettings'));
+    }
+
+    /**
+     * Takes the edit call from the detailed survey view, which either deletes the survey information
+     *
+     * @todo this function is old and not in use anymore ...
+     *
+     * @return void
+     */
+    private function actionEditSurvey_json()
+    {
+        $operation = Yii::app()->request->getPost('oper');
+        $iSurveyIDs = Yii::app()->request->getPost('id');
+        if ($operation == 'del') {
+            // If operation is delete , it will delete, otherwise edit it
+            foreach (explode(',', $iSurveyIDs) as $iSurveyID) {
+                if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+                    Survey::model()->deleteSurvey($iSurveyID);
+                }
+            }
+        }
+    }
+
+    /**
+     * New system of rendering content
+     * Based on yii submenu rendering
+     *
+     * @param int $iSurveyID Given Survey ID
+     * @param string $subaction Given Subaction
+     *
+     * @return void
+     *
+     * @throws Exception
+     *
+     * @uses self::generalTabEditSurvey()
+     * @uses self::pluginTabSurvey()
+     * @uses self::tabPresentationNavigation()
+     * @uses self::tabPublicationAccess()
+     * @uses self::tabNotificationDataManagement()
+     * @uses self::tabTokens()
+     * @uses self::tabPanelIntegration()
+     * @uses self::tabResourceManagement()
+     *
+     */
+    public function actionRendersidemenulink($surveyid, $subaction)
+    {
+
+        $iSurveyID = (int) $surveyid;
+        $aViewUrls = $aData = [];
+        $menuaction = (string) $subaction;
+        $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['oSurvey'] = $survey;
+        // set values from database to survey attributes
+
+        if (empty($survey)) {
+            throw new Exception('Found no survey with id ' . $iSurveyID);
+        }
+
+        $survey->setOptionsFromDatabase();
+
+        //Get all languages
+        $grplangs = $survey->additionalLanguages;
+        $baselang = $survey->language;
+        array_unshift($grplangs, $baselang);
+
+        //@TODO add language checks here
+        $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name'=>$menuaction));
+
+        if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade))) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
+            $this->redirect(array('surveyAdministration/view', 'surveyid'=>$iSurveyID));
+        }
+
+        $templateData = is_array($menuEntry->data) ? $menuEntry->data : [];
+
+        if (!empty($menuEntry->getdatamethod)) {
+            $templateData = array_merge($templateData, call_user_func_array(
+                array($this, $menuEntry->getdatamethod),
+                array('survey'=>$survey)));
+        }
+
+        $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
+
+        App()->getClientScript()->registerPackage('jquery-json');
+        App()->getClientScript()->registerPackage('bootstrap-switch');
+
+        // override survey settings if global settings exist
+        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !=='choose'?getGlobalSetting('showqnumcode'):$survey->showqnumcode;
+        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !=='choose'?getGlobalSetting('shownoanswer'):$survey->shownoanswer;
+        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !=='2'?getGlobalSetting('showgroupinfo'):$survey->showgroupinfo;
+        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose'?getGlobalSetting('showxquestions'):$survey->showxquestions;
+
+        //Start collecting aData
+        $aData['surveyid'] = $iSurveyID;
+        $aData['sid'] = $iSurveyID;
+        $aData['menuaction'] = $menuaction;
+        $aData['template'] = $menuEntry->template;
+        $aData['templateData'] = $templateData;
+        $aData['surveyls_language'] = $baselang;
+        $aData['action'] = $menuEntry->action;
+        $aData['entryData'] = $menuEntry->attributes;
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['subaction'] = $menuEntry->title;
+        $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['surveybar']['buttons']['view'] = true;
+        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
+        $aData['surveybar']['savebutton']['useformid'] = 'true';
+        $aData['surveybar']['saveandclosebutton']['form'] = true;
+        $aData['topBar']['closeButtonUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+
+        if ($subaction === 'resources') {
+            $aData['topBar']['showSaveButton'] = false;
+        } else {
+            $aData['topBar']['showSaveButton'] = true;
+        }
+
+        $aData['optionsOnOff'] = array(
+            'Y' => gT('On', 'unescaped'),
+            'N' => gT('Off', 'unescaped'),
+        );
+
+        // see table surveymenu_entries->
+        $aViewUrls[] = $menuEntry->template; //this is always the view that should be rendered
+
+        $this->aData = $aData;
+        $this->render($aViewUrls[0], $aData);
+
+        //$this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+    }
+
 
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */

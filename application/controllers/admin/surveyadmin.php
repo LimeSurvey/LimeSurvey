@@ -1001,6 +1001,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to delete a survey.
      *
+     * REFACTORED in SurveyAdministration
+     *
      * @param int $iSurveyID Given Survey ID
      * 
      * @return string
@@ -1039,6 +1041,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Remove files not deleted properly.
      * Purge is only available for surveys that were already deleted but for some reason
      * left files behind.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @param int $purge_sid Given ID
      * 
@@ -1074,6 +1078,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Takes the edit call from the detailed survey view, which either deletes the survey information
+     *
+     * REFACTORED in SurveyAdministration ...
      * 
      * @return void
      */
@@ -1094,6 +1100,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * New system of rendering content
      * Based on yii submenu rendering
+     *
+     * REFACTORED in SurveyAdministration
      *
      * @param int    $iSurveyID Given Survey ID
      * @param string $subaction Given Subaction
