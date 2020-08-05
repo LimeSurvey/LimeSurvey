@@ -37,7 +37,7 @@
         {% for key, ansrow in labels %}
             <tr id="javatbd{{ aQuestions[key].myfname }}" class="answers-list">
                 <th id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
-                    {{ ansrow.answer }}
+                    {{ processString(ansrow.answer) }}
                 </th>
                 {% for i, ld in anscode %}
                     <td class="answer_cell_{{ ld }}{% if ansrow.code=="" %} noanswer-item{% endif %} answer-item radio-item">

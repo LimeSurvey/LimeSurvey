@@ -108,7 +108,7 @@
                 class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
             >
             <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
-                {{ ansrow.answertext }}
+                {{ processString(ansrow.answertext) }}
                 {# Value for expression manager javascript (use id) ; no need to submit #}
                 {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sessionfname0,({
                     'id' : "java"~ansrow.myfid0,

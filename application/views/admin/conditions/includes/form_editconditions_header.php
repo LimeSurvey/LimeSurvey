@@ -219,7 +219,7 @@
                 <div class=''></div>
                 <div class=''>
                     <input type='reset' class='btn btn-default' id='resetForm' value='<?php eT("Clear"); ?>' />
-                    <input type='submit' class='btn btn-default' value='<?php echo $submitLabel; ?>' />
+                    <input type='submit' class='btn btn-success' value='<?php echo $submitLabel; ?>' />
 
                     <input type='hidden' name='sid' value='<?php echo $iSurveyID; ?>' />
                     <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
