@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.8 (build 200803) to 4.3.9 (build 200806) August 6, 2020
+-Fixed issue: When editing a token the date/time format is not properly displayed and handled on "invitation sent" or "reminder sent" field and thus wrong values are saved (Carsten Schmitz)
+-Fixed issue: Renamed Valencian translation to correct term (Carsten Schmitz)
+-Fixed issue #16561: Batch-editing tokens does not set fields properly if "completed", "invitation sent" or "reminder sent" is set to No. (Carsten Schmitz)
+-Fixed issue #16469: Any admin user can see any question (without read right on survey) (Denis Chenu)
+-Fixed issue #16467: Reflected XSS vulnerabilities (Denis Chenu)
+#Updated translation: Ukrainian by imnetxiin
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by gLf
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 4.3.7 (build 200730) to 4.3.8 (build 200803) August 3, 2020
 -Fixed issue #16554: Upgrading from 4.0.1 to 4.3.7, the "Save" button is now missing in question creation (#1528) (Gabriel Jenik)
 -Fixed issue #16521: After updating an answer option, the related condition doesn't get updated (GabrielJenik)
