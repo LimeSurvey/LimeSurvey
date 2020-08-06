@@ -776,10 +776,12 @@ class tokens extends Survey_Common_Action
             }
 
             // completed
-            if (trim($request->getPost('completed')) == 'N') {
+            if (trim($request->getPost('completed')) == 'N' || trim($request->getPost('completed')) == '') {
                 $_POST['completed'] = 'N';
+            } elseif (trim($request->getPost('completed')) == 'Y') {
+                $_POST['completed'] = 'Y';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
+              $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
                 $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
