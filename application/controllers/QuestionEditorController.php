@@ -3,8 +3,6 @@
 
 class QuestionEditorController extends LSBaseController
 {
-
-
     public function accessRules()
     {
         return array(
@@ -59,21 +57,14 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
-
-        $aData = array();
-        $iSurveyID = (int) $surveyid;
-
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied. You have no permission to view this survey"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+        /* Minimal security */
+        $surveyid = $this->getValidatedSurveyId($surveyid, $gid, $qid);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
         }
 
+        $iSurveyID = $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-
-        if ($oSurvey === null) {
-            throw new CHttpException(500, "Survey not found $iSurveyID");
-        }
-
         $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->getQuestionObject($qid, null, $gid);
         App()->getClientScript()->registerPackage('questioneditor');
@@ -243,6 +234,9 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionGetPossibleLanguages($iSurveyId)
     {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $iSurveyId = (int) $iSurveyId;
         $aLanguages = Survey::model()->findByPk($iSurveyId)->allLanguages;
         $this->renderJSON($aLanguages);
@@ -258,10 +252,9 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionSaveQuestionData($sid)
     {
-        $iSurveyId = (int) $sid;
+        $iSurveyId = $sid;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
+            throw new CHttpException(403);
         }
 
         $questionData = App()->request->getPost('questionData', []);
@@ -422,6 +415,11 @@ class QuestionEditorController extends LSBaseController
         $gid = null,
         $question_template = 'core'
     ) {
+        /* Minimal security */
+        $surveyid = $this->getValidatedSurveyId(null, $gid, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
 
@@ -478,8 +476,11 @@ class QuestionEditorController extends LSBaseController
         $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
         $question_template = 'core'
     ) {
+        $surveyid = $this->getValidatedSurveyId(null, $gid, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $question_template);
-
         $this->renderJSON($aGeneralOptionsArray);
     }
 
@@ -502,6 +503,10 @@ class QuestionEditorController extends LSBaseController
         $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
         $question_template = 'core'
     ) {
+        $surveyid = $this->getValidatedSurveyId(null, null, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
         $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
@@ -528,6 +533,10 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionGetQuestionData($iQuestionId = null, $gid = null, $type = null)
     {
+        $surveyid = $this->getValidatedSurveyId(null, $gid, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
 
@@ -568,6 +577,10 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionGetQuestionPermissions($iQuestionId = null)
     {
+        $surveyid = $this->getValidatedSurveyId(null, null, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->getQuestionObject($iQuestionId);
 
@@ -617,6 +630,10 @@ class QuestionEditorController extends LSBaseController
      */
     public function actionGetQuestionTopbar($qid = null)
     {
+        $surveyid = $this->getValidatedSurveyId(null, null, $qid);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $oQuestion = $this->getQuestionObject($qid);
         $sid = $oQuestion->sid;
         $gid = $oQuestion->gid;
@@ -674,8 +691,10 @@ class QuestionEditorController extends LSBaseController
      */
     private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
-        //todo: this should be done in the action directly
-        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
+        $iSurveyId = $this->getValidatedSurveyId(null, $gid, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $oQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $iQuestionId]);
 
         if ($oQuestion == null) {
@@ -710,6 +729,10 @@ class QuestionEditorController extends LSBaseController
         $gid = null,
         $question_template = 'core'
     ) {
+        $surveyid = $this->getValidatedSurveyId(null, $gid, $iQuestionId);
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            throw new CHttpException(403);
+        }
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid);
         return $oQuestion
             ->getDataSetObject()
