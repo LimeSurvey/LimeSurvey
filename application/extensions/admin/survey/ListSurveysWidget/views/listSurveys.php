@@ -42,7 +42,7 @@
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
                         'type' => 'raw',
-                        'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),

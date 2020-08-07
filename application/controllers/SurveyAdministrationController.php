@@ -1775,13 +1775,14 @@ class SurveyAdministrationController extends LSBaseController
      * New system of rendering content
      * Based on yii submenu rendering
      *
-     * @param int $iSurveyID Given Survey ID
-     * @param string $subaction Given Subaction
+     * @param int $surveyid Given Survey ID
+     * @param string $subaction Given subaction (subaction decides which view to render)
      *
      * @return void
      *
      * @throws Exception
      *
+     * The below 'uses' are mentioned
      * @uses self::generalTabEditSurvey()
      * @uses self::pluginTabSurvey()
      * @uses self::tabPresentationNavigation()
@@ -1794,7 +1795,6 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionRendersidemenulink($surveyid, $subaction)
     {
-
         $iSurveyID = (int) $surveyid;
         $aViewUrls = $aData = [];
         $menuaction = (string) $subaction;
@@ -1872,18 +1872,281 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         // see table surveymenu_entries->
-        $aViewUrls[] = $menuEntry->template; //this is always the view that should be rendered
+        //$aViewUrls[] = $menuEntry->template; //this is always the view that should be rendered
 
         $this->aData = $aData;
-        $this->render($aViewUrls[0], $aData);
-
-        //$this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+        $this->render($menuEntry->template, $aData);
     }
+
+    /**
+     * Load ordering of question group screen.
+     * questiongroup::organize()
+     *
+     * @param int $iSurveyID Given Survey ID
+     *
+     * @return void
+     */
+    public function actionOrganize($iSurveyID)
+    {
+        $request = Yii::app()->request;
+
+        $iSurveyID = (int) $iSurveyID;
+
+        $thereIsPostData = $request->getPost('orgdata') !== null;
+        $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
+
+        if (!$userHasPermissionToUpdate) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        if ($thereIsPostData) {
+            // Save the new ordering
+            $this->reorderGroup($iSurveyID);
+
+            $closeAfterSave = $request->getPost('close-after-save') === 'true';
+            if ($closeAfterSave) {
+                $this->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
+            }
+        }
+        $aData = $this->showReorderForm($iSurveyID);
+
+        $this->aData = $aData;
+        $this->render('organizeGroupsAndQuestions_view', $aData);
+    }
+
+    /**
+     * @param int $iSurveyID Given Survey ID.
+     *
+     * @return void
+     * @todo   Add TypeDoc.
+     */
+    public function actionGetUrlParamsJSON($iSurveyID)
+    {
+        $iSurveyID = (int) $iSurveyID;
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
+        $aData = array(
+            'rows' => []
+        );
+        foreach ($aSurveyParameters as $oSurveyParameter) {
+            $row = $oSurveyParameter->attributes;
+
+            if ($oSurveyParameter->targetqid != '') {
+                $row['questionTitle'] = $oSurveyParameter->question->title;
+            }
+
+            if ($oSurveyParameter->targetsqid != '') {
+                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
+            }
+
+            $row['qid'] = $oSurveyParameter->targetqid;
+            $row['sqid'] = $oSurveyParameter->targetsqid;
+            $aData['rows'][] = $row;
+        }
+
+        $aData['page'] = 1;
+        $aData['records'] = count($aSurveyParameters);
+        $aData['total'] = 1;
+
+        echo ls_json_encode($aData);
+    }
+
 
 
     /** ************************************************************************************************************ */
     /**                      The following functions could be moved to model or service classes                      */
     /** **********************************************************************************************************++ */
+
+    /**
+     * Returns data for Tab Resourves.
+     * survey::_tabResourceManagement()
+     * Load "Resources" tab.
+     *
+     * @todo is this new implementation???
+     *
+     * @param Survey $oSurvey Given Survey
+     *
+     * @return array
+     */
+    private function tabResourceManagement($oSurvey)
+    {
+        global $sCKEditorURL; //@todo baaaaah this is really bad ...
+
+        // TAB Uploaded Resources Management
+        $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"".gT('Please select a file to import!', 'js')."\")) { this.form.submit();}'";
+        if (!function_exists("zip_open")) {
+            $ZIPimportAction = " onclick='alert(\"".gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js")."\");'";
+        }
+
+        $disabledIfNoResources = '';
+        if (hasResources($oSurvey->sid, 'survey') === false) {
+            $disabledIfNoResources = " disabled='disabled'";
+        }
+        $aData = [];
+        $aData['ZIPimportAction'] = $ZIPimportAction;
+        $aData['disabledIfNoResources'] = $disabledIfNoResources;
+        $aData['sCKEditorURL'] = $sCKEditorURL;
+        $aData['noform'] = true;
+
+        //KCFINDER SETTINGS
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->loadHelper('admin.htmleditor');
+        initKcfinder();
+
+        return $aData;
+    }
+
+    /**
+     * Show the form for Organize question groups/questions
+     *
+     * @param int $iSurveyID Given Survey ID
+     *
+     * @return array
+     * @todo   Change function name to _showOrganizeGroupsAndQuestions?
+     */
+    private function showReorderForm($iSurveyID)
+    {
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData = [];
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+
+        // Prepare data for the view
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
+        LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
+
+        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $iSurveyID]);
+        $initializedReplacementFields = false;
+
+        $aData['organizebar']['savebuttonright'] = true;
+        $aData['organizebar']['closebuttonright']['url'] = $this->createUrl("surveyAdministration/view/", array('surveyid' => $iSurveyID));
+        $aData['organizebar']['saveandclosebuttonright']['url'] = true;
+        $aData['surveybar']['buttons']['view'] = true;
+        $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
+
+        foreach ($aGrouplist as $iGID => $aGroup) {
+            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
+            if (!$initializedReplacementFields) {
+                templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
+                $initializedReplacementFields = true;
+            }
+
+            $oQuestionData = Question::model()->getQuestions($iSurveyID, $aGroup['gid']);
+
+            $qs = array();
+
+            foreach ($oQuestionData->readAll() as $q) {
+                $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
+                $question = '[{'.$relevance.'}] '.$q['title'];
+                LimeExpressionManager::ProcessString($question, $q['qid']);
+                $q['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                $q['gid'] = $aGroup['gid'];
+                $qs[] = $q;
+            }
+            $aGrouplist[$iGID]['questions'] = $qs;
+            LimeExpressionManager::FinishProcessingGroup();
+        }
+        LimeExpressionManager::FinishProcessingPage();
+
+        $aData['aGroupsAndQuestions'] = $aGrouplist;
+        $aData['surveyid'] = $iSurveyID;
+
+        return $aData;
+    }
+
+    /**
+     * Get the new question organization from the post data.
+     * This function replaces parse_str, since parse_str
+     * is bound by max_input_vars.
+     *
+     * @return array
+     */
+    private function getOrgdata()
+    {
+        $request = Yii::app()->request;
+        $orgdata = $request->getPost('orgdata');
+        $ex = explode('&', $orgdata);
+        $vars = array();
+        foreach ($ex as $str) {
+            list($list, $target) = explode('=', $str);
+            $list = str_replace('list[', '', $list);
+            $list = str_replace(']', '', $list);
+            $vars[$list] = $target;
+        }
+
+        return $vars;
+    }
+
+    /**
+     * Reorder groups and questions
+     *
+     * REFACTORED in SurveyAdministration
+     *
+     * @param int $iSurveyID Given Survey ID
+     *
+     * @return void
+     */
+    private function reorderGroup($iSurveyID)
+    {
+        $grouporder = 1;
+        $orgdata = $this->getOrgdata();
+        foreach ($orgdata as $ID => $parent) {
+            if ($parent == 'root' && $ID[0] == 'g') {
+                QuestionGroup::model()->updateAll(
+                    array('group_order' => $grouporder),
+                    'gid=:gid',
+                    array(':gid' => (int) substr($ID, 1))
+                );
+                $grouporder++;
+            } elseif ($ID[0] == 'q') {
+                $qid = (int) substr($ID, 1);
+                $gid = (int) substr($parent, 1);
+                if (!isset($aQuestionOrder[$gid])) {
+                    $aQuestionOrder[$gid] = 0;
+                }
+
+                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                $oQuestion = Question::model()->findByPk(array("qid"=>$qid, 'language'=>$sBaseLanguage));
+                $oldGid = $oQuestion['gid'];
+                if ($oldGid != $gid) {
+                    fixMovedQuestionConditions($qid, $oldGid, $gid, $iSurveyID);
+                }
+                Question::model()->updateAll(array(
+                    'question_order' => $aQuestionOrder[$gid],
+                    'gid' => $gid),
+                    'qid=:qid',
+                    array(':qid' => $qid)
+                );
+                Question::model()->updateAll(array('gid' => $gid), 'parent_qid=:parent_qid', array(':parent_qid' => $qid));
+                $aQuestionOrder[$gid]++;
+            }
+        }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        Yii::app()->session['flashmessage'] = gT("The new question group/question order was successfully saved.");
+    }
+
+    /**
+     * Returns Data for Plugin tab.
+     * survey::_pluginTabSurvey()
+     * Load "Simple Plugin" page in specific survey.
+     *
+     * @param Survey $survey Given Survey
+     *
+     * @return array
+     *
+     * This method is called via call_user_func in self::rendersidemenulink()
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
+    private function pluginTabSurvey($survey)
+    {
+        $aData = array();
+        $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
+        $beforeSurveySettings->set('survey', $survey->sid);
+        App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
+        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
+        return $aData;
+    }
 
     /**
      * Update the theme of a survey
@@ -2419,6 +2682,53 @@ class SurveyAdministrationController extends LSBaseController
     {
         $aData = [];
         $aData['esrow'] = $esrow;
+        return $aData;
+    }
+
+    /**
+     * Returns the data for Tab Panel Integration.
+     *
+     * @param Survey $survey Given Survey
+     * @param string|null $sLang  Given Language
+     *
+     * @return array
+     */
+    private function tabPanelIntegration($survey, $sLang = null)
+    {
+        $aData = [];
+        $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
+        $aQuestions = [];
+        foreach ($oResult as $aRecord) {
+            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionl10ns[$survey->language]->attributes);
+        }
+
+        $aData['jsData'] = [
+            'i10n' => [
+                'ID' => gT('ID'),
+                'Action' => gT('Action'),
+                'Parameter' => gT('Parameter'),
+                'Target question' => gT('Target question'),
+                'Survey ID' => gT('Survey id'),
+                'Question ID' => gT('Question id'),
+                'Subquestion ID' => gT('Subquestion ID'),
+                'Add URL parameter' => gT('Add URL parameter'),
+                'Edit URL parameter' => gT('Edit URL parameter'),
+                'Add URL parameter' => gT('Add URL parameter'),
+                'Parameter' => gT('Parameter'),
+                'Target question' => gT('Target question'),
+                'No target question' => gT('(No target question)'),
+                'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
+                'No, cancel' => gT('No, cancel'),
+                'Yes, delete' => gT('Yes, delete'),
+                'Save' => gT('Save'),
+                'Cancel' => gT('Cancel'),
+            ],
+            "questionList" => $aQuestions,
+            "surveyid" => $survey->sid,
+            "getParametersUrl" => Yii::app()->createUrl('surveyAdministration/getUrlParamsJson', array('surveyid' => $survey->sid)),
+        ];
+
+        App()->getClientScript()->registerPackage('panelintegration');
         return $aData;
     }
 

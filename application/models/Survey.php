@@ -864,6 +864,8 @@ class Survey extends LSActiveRecord
 
     /**
      * Get surveymenu configuration
+     *
+     * @todo this function can go directly into Surveymenu, why implemted it here?
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
     public function getSurveyMenus($position = '')

@@ -34,8 +34,6 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
     . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
     . '>';
 
-//Rendered through /admin/super/sidemenu
-//$this->_surveysidemenu($aData);
 $layoutHelper->renderSurveySidemenu($aData);
 
 

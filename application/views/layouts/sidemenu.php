@@ -19,7 +19,6 @@
     //todo: change urls after refactoring the controllers
     $getQuestionsUrl = $this->createUrl("/surveyAdministration/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
     $getMenuUrl = $this->createUrl("/surveyAdministration/getAjaxMenuArray/", ["surveyid" => $surveyid]);
-    //$createQuestionGroupLink = $this->createUrl("/questionGroupsAdministration/add/", ["surveyid" =>  $surveyid]);
     $createQuestionGroupLink = "questionGroupsAdministration/add/surveyid/".$surveyid;
     $createQuestionLink = "questionAdministration/view/surveyid/".$surveyid;
     $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
@@ -31,7 +30,6 @@
         $createQuestionGroupLink = "";
         $createQuestionLink = "";
     }
-    
     $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
     
     $menuObjectArray =  [

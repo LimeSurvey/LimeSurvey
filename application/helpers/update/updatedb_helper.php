@@ -3162,10 +3162,74 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
+                    'menu_link' => 'surveyAdministration/view',
+                ),
+                "name='overview'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
                     'getdatamethod' => 'generalTabEditSurvey',
                 ),
                 "name='generalsettings'"
             );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'getTextEditData',
+                ),
+                "name='surveytexts'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'getDataSecurityEditData',
+                ),
+                "name='datasecurity'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPresentationNavigation',
+                ),
+                "name='presentation'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabTokens',
+                ),
+                "name='tokens'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabNotificationDataManagement',
+                ),
+                "name='notification'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPublicationAccess',
+                ),
+                "name='publication'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPanelIntegration',
+                ),
+                "name='panelintegration'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'pluginTabSurvey',
+                ),
+                "name='plugins'"
+            );
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
             $oTransaction->commit();
         }

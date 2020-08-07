@@ -1354,6 +1354,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Load ordering of question group screen.
      * questiongroup::organize()
      *
+     * REFACTORED in SurveyAdministraion
+     *
      * @param int $iSurveyID Given Survey ID
      * 
      * @return void
@@ -1468,6 +1470,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Reorder groups and questions
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @param int $iSurveyID Given Survey ID
      * 
@@ -1508,6 +1512,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Get the new question organization from the post data.
      * This function replaces parse_str, since parse_str
      * is bound by max_input_vars.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @return array
      */
@@ -1718,6 +1724,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns Data for Plugin tab.
      * survey::_pluginTabSurvey()
      * Load "Simple Plugin" page in specific survey.
+     *
+     * Refactored in SurveyAdministration
      * 
      * @param Survey $survey Given Survey
      *
@@ -1757,6 +1765,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns the data for Tab Publication Access control.
      * survey::_tabPublicationAccess()
      * Load "Publication * access control" tab.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @param Survey $survey Given Survey
      * 
@@ -1809,6 +1819,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Returns the data for Tab Panel Integration.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @param Survey $survey Given Survey
      * @param string $sLang  Given Language
@@ -1963,6 +1975,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * @param int $iSurveyID Given Survey ID.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @return void
      * @todo   Add TypeDoc.
