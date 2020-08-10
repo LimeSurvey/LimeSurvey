@@ -2069,4 +2069,12 @@ return $s->hasTokensTable; });
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getOwnerUserName()
+    {
+        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+    }
+
 }
