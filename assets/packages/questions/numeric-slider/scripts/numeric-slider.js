@@ -98,7 +98,10 @@ var LSSlider = function (options) {
         },
         setValue = function (value) {
             value = value || parseFloat(position);
-            if (isNaN(value)) value = ""; // If value is NaN, validation fails while first moving the slider
+            // If value is NaN, validation fails while first moving the slider
+            if (isNaN(value)) {
+                value = "";
+            }
             sliderObject.setValue(value, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
             writeToRootElement(value);
