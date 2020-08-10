@@ -806,6 +806,12 @@
         public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
             LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
+
+            // Get survey ID from question if qid is specified and surveyId is null
+            if(is_null($surveyId) && !empty($qid)) {
+                $surveyId = Question::model()->findByPk($qid)->sid;
+            }
+
             // Cheat and upgrade question attributes here too.
             self::UpgradeQuestionAttributes(true,$surveyId,$qid);
 
