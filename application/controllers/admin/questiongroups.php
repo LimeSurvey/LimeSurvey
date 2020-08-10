@@ -515,6 +515,7 @@ class questiongroups extends Survey_Common_Action
     {
         $questionGroup = App()->request->getPost('questionGroup', []);
         $questionGroupI10N = App()->request->getPost('questionGroupI10N', []);
+        $sScenario = App()->request->getPost('scenario', '');
         $iSurveyId = (int) $sid;
 
         $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroup['gid']);
@@ -525,13 +526,34 @@ class questiongroups extends Survey_Common_Action
         }
 
         $landOnSideMenuTab = 'structure';
-        $sRedirectUrl = $this->getController()->createUrl(
-            'admin/questiongroups/sa/view/',
-            [
-                'surveyid' => $iSurveyId,
-                'gid' => $oQuestionGroup->gid,
-                'landOnSideMenuTab' => $landOnSideMenuTab]
-        );
+        switch ($sScenario) {
+            case 'save-and-new-question':
+                $sRedirectUrl = $this->getController()->createUrl(
+                    'admin/questions/sa/newquestion/',
+                    [
+                        'surveyid' => $iSurveyId,
+                        'gid' => $oQuestionGroup->gid,
+                    ]
+                );
+                break;
+            case 'save-and-new':
+                $sRedirectUrl = $this->getController()->createUrl(
+                    'admin/questiongroups/sa/add/',
+                    [
+                        'surveyid' => $iSurveyId,
+                    ]
+                );
+                break;
+            default:
+                $sRedirectUrl = $this->getController()->createUrl(
+                    'admin/questiongroups/sa/view/',
+                    [
+                        'surveyid' => $iSurveyId,
+                        'gid' => $oQuestionGroup->gid,
+                        'landOnSideMenuTab' => $landOnSideMenuTab
+                    ]
+                );
+        }
 
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
