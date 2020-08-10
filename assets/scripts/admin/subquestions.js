@@ -614,9 +614,12 @@ function lspreview(lid)
                 console.ls.group('ParseLabels');                    
                 $.each(labelSet.labels, function(i,label){
                     console.ls.log('Label', i, label);                
+                    // Label title is not concatenated directly because it may have non-encoded HTML
+                    var $labelTitleDiv = $('<div class="col-md-8"></div>');
+                    $labelTitleDiv.text(label.title);
                     var $listItem = $listItemTemplate.clone();
                     $listItem.append('<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">'+label.code+'</div>');
-                    $listItem.append('<div class="col-md-8">'+(label.title || '')+'</div>');
+                    $listItem.append($labelTitleDiv);
                     $listItem.append('<div class="col-md-1"></div>');
                     $listItem.attr('data-label', JSON.stringify(label));
                     $itemList.append($listItem);
