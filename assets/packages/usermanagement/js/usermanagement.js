@@ -141,16 +141,16 @@ var UserManagement = function () {
         });
     };
 
-    var wirePermissions = function (modal) {
-        var tableObject = $('#UserManagement--userpermissions-table', modal);
+    var wirePermissions = function () {
+        var tableObject = $('#UserManagement--userpermissions-table');
 
-        $(".general-row-selector", modal).on('click', function () {
+        $(".general-row-selector").on('click', function () {
             $(this).removeClass('incomplete-selection');
             bChecked = this.checked;
             $(this).closest('tr').find('input').prop('checked', bChecked);
         });
 
-        $('.specific-permission-selector', modal).on('click', function () {
+        $('.specific-permission-selector').on('click', function () {
             var thisRow = $(this).closest('tr');
             if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.extended input').size()) {
                 thisRow.find('.general-row-selector').prop('checked', true);
@@ -163,11 +163,11 @@ var UserManagement = function () {
             }
         });
 
-        $('#all_superadmin', modal).on(' click', function () {
+        $('#perm_superadmin_read').on(' click', function () {
             tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1);
         })
 
-        $('#UserManagement--userpermissions-table tr', modal).each(function () {
+        $('#UserManagement--userpermissions-table tr').each(function () {
             if ($(this).find('.specific-settings-block input:checked').size() == $(this).closest('tr').find('.specific-settings-block input').size()) {
                 $(this).find('.general-row-selector').prop('checked', true);
                 $(this).find('.general-row-selector').removeClass('incomplete-selection');
@@ -179,14 +179,14 @@ var UserManagement = function () {
             }
         });
 
-        $('#permission-modal-exitForm', modal).on('click', function(e){
+        $('#permission-modal-exitForm').on('click', function(e){
             e.preventDefault();
             triggerModalClose();
         });
     };
 
     var wireMassPermissions = function () {
-        wirePermissions("#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2");
+        wirePermissions();
 
         var oCheckedItems = $('#usermanagement--identity-gridPanel').yiiGridView('getChecked', $('.listActions').data('pk'));
         $('#hereBeUserIds').html('');
@@ -241,10 +241,9 @@ var UserManagement = function () {
     }
 
     var applyModalHtml = function (html) {
-        var modal = '#UserManagement-action-modal';
-        $(modal).find('.modal-content').html(html);
+        $('#UserManagement-action-modal').find('.modal-content').html(html);
         wirePasswordOptions();
-        wirePermissions(modal);
+        wirePermissions();
         wireTemplatePermissions();
         wireRoleSet();
         wireForm();
@@ -283,7 +282,7 @@ var UserManagement = function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
         });
 
-        $('#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2').on('shown.bs.modal', function () {
+        $('#massive-actions-modal-batchPermissions-2').on('shown.bs.modal', function () {
             wireMassPermissions();
         });
     };

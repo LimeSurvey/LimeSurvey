@@ -64,7 +64,6 @@ export default {
     },
     updateQuestiongroups(state, questiongroups) {
         state.questiongroups = questiongroups;
-        $(document).trigger('vue-sidemenu-update-link');
     },
     addToQuestionGroupOpenArray(state, questiongroupToAdd) {
         let tmpArray = state.questionGroupOpenArray;

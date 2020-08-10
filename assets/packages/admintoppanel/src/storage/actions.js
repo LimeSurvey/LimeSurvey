@@ -107,28 +107,6 @@ export default {
         });
     },
 
-    getTopBarButtonsConditions: (context) => {
-        context.commit('clean');
-        return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/conditions/sa/getConditionsTopBarData', {
-                sid: context.state.sid || LS.reparsedParameters().combined.sid,
-                gid: context.state.gid || LS.reparsedParameters().combined.gid || 0,
-                qid: context.state.qid || LS.reparsedParameters().combined.qid || 0
-            }))
-                .then((data) => {
-                    context.commit('clean');
-                    context.commit('setTopBarRight', data.data.topbar.alignment.right.buttons);
-                    context.commit('setTopBarLeft', data.data.topbar.alignment.left.buttons);
-                    context.commit('setTopBarExtendedRight', []);
-                    context.commit('setTopBarExtendedLeft', []);
-                    context.commit('setPermissions', data.data.permissions);
-
-                    resolve(data.data.topbar);
-                })
-                .catch((error) => {reject(error);});
-        });
-    },
-
 
     getCustomTopbarContent: (context) => {
         return new Promise((resolve, reject) => {

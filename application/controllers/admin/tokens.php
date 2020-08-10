@@ -424,11 +424,8 @@ class tokens extends Survey_Common_Action
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
                     if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                         $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
-                        if ($sCoreTokenField == 'language' && empty($value)) {
+                        if ($sCoreTokenField == 'language' and empty($value)){
                             continue;
-                        }
-                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
-                            $value='N';
                         }
                         $aData[$sCoreTokenField] = $value;
                     }
@@ -790,10 +787,8 @@ class tokens extends Survey_Common_Action
             }
 
             // completed
-            if (trim($request->getPost('completed')) == 'N' || trim($request->getPost('completed')) == '') {
+            if (trim($request->getPost('completed')) == 'N') {
                 $_POST['completed'] = 'N';
-            } elseif (trim($request->getPost('completed')) == 'Y') {
-                $_POST['completed'] = 'Y';
             } else {
                 $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'].' H:i');
                 $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');

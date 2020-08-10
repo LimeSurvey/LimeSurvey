@@ -152,8 +152,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['bg']['momentjs'] = 'bg';
 
     // Catalan
-    $supportedLanguages['ca-valencia']['description'] = gT('Valencian');
-    $supportedLanguages['ca-valencia']['nativedescription'] = 'Valenciano';
+    $supportedLanguages['ca-valencia']['description'] = gT('Catalan (Valencian)');
+    $supportedLanguages['ca-valencia']['nativedescription'] = 'Catal&#224; (Valenci&#224;)';
     $supportedLanguages['ca-valencia']['rtl'] = false;
     $supportedLanguages['ca-valencia']['dateformat'] = 1;
     $supportedLanguages['ca-valencia']['radixpoint'] = 1;
@@ -430,14 +430,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kk']['dateformat'] = 1;
     $supportedLanguages['kk']['radixpoint'] = 1;
     $supportedLanguages['kk']['momentjs'] = 'kk';
-
-     // Kannada
-     $supportedLanguages['kn']['description'] = gT('Kannada');
-     $supportedLanguages['kn']['nativedescription'] = '&#3221;&#3240;&#3277;&#3240;&#3233;';
-     $supportedLanguages['kn']['rtl'] = false;
-     $supportedLanguages['kn']['dateformat'] = 2;
-     $supportedLanguages['kn']['radixpoint'] = 0;
-     $supportedLanguages['kn']['momentjs'] = 'kn';
 
     // Kinyarwanda
     $supportedLanguages['rw']['description'] = gT('Kinyarwanda');
@@ -815,14 +807,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['tl']['dateformat'] = 1;
     $supportedLanguages['tl']['radixpoint'] = 1;
     $supportedLanguages['tl']['momentjs'] = 'tl-ph';
-
-    // Telugu
-    $supportedLanguages['te']['description'] = gT('Telugu');
-    $supportedLanguages['te']['nativedescription'] = '&#3108;&#3142;&#3122;&#3137;&#3095;&#3137;';
-    $supportedLanguages['te']['rtl'] = false;
-    $supportedLanguages['te']['dateformat'] = 2;
-    $supportedLanguages['te']['radixpoint'] = 0;
-    $supportedLanguages['te']['momentjs'] = 'te';
     
     // Tajik
     $supportedLanguages['tg']['description'] = gT('Tajik');

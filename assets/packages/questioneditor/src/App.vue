@@ -254,11 +254,8 @@ export default {
         questionGroupWithId(){
             return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;
         },
-        canEdit(){
-            return this.$store.state.currentQuestionPermissions.update;
-        },
         allowSwitchEditing(){
-            return !this.isCreateQuestion && this.canEdit;
+            return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
         },
         storedEvent() {
             return this.$store.state.storedEvent;
@@ -380,10 +377,6 @@ export default {
                 this.editQuestion = !this.editQuestion;
             } else {
                 this.editQuestion = force;
-            }
-            // Check edit permission. If no permission, default to view.
-            if(!this.canEdit) {
-                this.editQuestion = false;
             }
             LS.EventBus.$emit('doFadeEvent', this.editQuestion);
             if(this.editQuestion) {

@@ -101,12 +101,6 @@ class conditionsaction extends Survey_Common_Action
     {
         $request = Yii::app()->request;
         $iSurveyID = (int) $iSurveyID;
-
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied. You have no permission to view this survey"));
-            $this->getController()->redirect(Yii::app()->request->urlReferrer);
-        }
-
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
@@ -120,13 +114,6 @@ class conditionsaction extends Survey_Common_Action
         $aData['subaction'] = gT("Conditions designer");
         $aData['questionbar']['closebutton']['url'] = 'questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
         $aData['questionbar']['buttons']['conditions'] = true;
-
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            $aData['hasUpdatePermission'] = true;
-        } else {
-            $aData['hasUpdatePermission'] = false;
-            $subaction = 'conditions';
-        }
 
         switch ($subaction) {
             case 'editconditionsform':
@@ -341,8 +328,6 @@ class conditionsaction extends Survey_Common_Action
         );
 
         $aViewUrls['conditionshead_view'][] = $aData;
-
-        $aData['topBar']['type'] = 'conditions';
 
         $conditionsList = array();
 
@@ -609,14 +594,10 @@ class conditionsaction extends Survey_Common_Action
                 $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/no_condition', $aData, true);
             }
 
-            // Conditions List Footer
-            $aViewUrls['output'] .= $this->getController()->renderPartial('/admin/conditions/includes/conditionslist_footer_view', $aData, true);
-
             //// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
             $aViewUrls['afteroutput'] = '</div></div></div>';
 
         }
-
         //END DISPLAY CONDITIONS FOR THIS QUESTION
 
         // Display the copy conditions form
@@ -696,15 +677,13 @@ class conditionsaction extends Survey_Common_Action
         /** @var string $p_method */
         /** @var array $p_canswers */
         /** @var CHttpRequest $request */
+        /** @var string $editSourceTab */
         extract($args);
 
-        $editSourceTab = $request->getPost('editSourceTab');
-
-        if (isset($p_cquestions) && $p_cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
+        if (isset($p_cquestions) && $p_cquestions != '') {
             $conditionCfieldname = $p_cquestions;
         } elseif (isset($p_csrctoken) && $p_csrctoken != '') {
             $conditionCfieldname = $p_csrctoken;
-            $p_cqid = 0;  // Reset cqid if condition is based on token attribute
         }
 
         $condition_data = array(
@@ -2256,43 +2235,5 @@ class conditionsaction extends Survey_Common_Action
         }
 
         return $qcount;
-    }
-
-    /**
-     * Returns Data for Condition Designer Top Bar as JSON.
-     *
-     * @param $sid
-     * @return void
-     * @throws CException
-     */
-    public function getConditionsTopBarData($sid, $gid, $qid)
-    {
-        //$ownsSaveButton = true;
-        //$ownsImportButton = true;
-
-        $hasCopyPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
-        $hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
-        $hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
-        $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
-        $hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
-
-        return $this->getController()->renderPartial(
-            '/admin/survey/topbar/conditions_topbar',
-            array(
-                'sid' => $sid,
-                'hasCopyPermission'   => $hasCopyPermission,
-                'hasUpdatePermission' => $hasUpdatePermission,
-                'hasExportPermission' => $hasExportPermission,
-                'hasDeletePermission' => $hasDeletePermission,
-                'hasReadPermission'   => $hasReadPermission,
-                'gid' => $gid,
-                'qid' => $qid,
-                //'ownsSaveButton' => $ownsSaveButton,
-                //'ownsImportButton' => $ownsImportButton,
-            ),
-            false,
-            false
-        );
-
     }
 }

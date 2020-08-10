@@ -340,23 +340,6 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $dynamicTemplate = "/survey/questions/answer/multiplenumeric/rows/dynamic_slider.twig";
         }
 
-        $displaytotal     = false;
-        $equals_num_value = false;
-        if (trim($this->getQuestionAttribute('equals_num_value')) != ''
-        || trim($this->getQuestionAttribute('min_num_value')) != ''
-        || trim($this->getQuestionAttribute('max_num_value')) != ''
-        ) {
-            $qinfo = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid);
-
-            $sumRemainingEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumRemainingEqn'].'}', $this->oQuestion->qid);
-            $sumEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumEqn'].'}', $this->oQuestion->qid);
-
-            if (trim($this->getQuestionAttribute('equals_num_value')) != '') {
-                $equals_num_value = true;
-            }
-            $displaytotal = true;
-        }
-
         $answer .= Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/answer',
             array(
@@ -365,13 +348,6 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 'basename'=>$this->sSGQA,
                 'rowTemplate' => $rowTemplate,
                 'dynamicTemplate' => $dynamicTemplate,
-                'id' => $this->oQuestion->qid,
-                'sumRemainingEqn' => $equals_num_value ? $sumRemainingEqn : '',
-                'sumEqn' => $displaytotal ? $sumEqn : '',
-                'sLabelWidth' => $this->widthArray['sLabelWidth'],
-                'sInputContainerWidth' => $this->widthArray['sInputContainerWidth'],
-                'prefix' => $this->prefix,
-                'suffix' => $this->suffix,
             ), 
             true
         );
