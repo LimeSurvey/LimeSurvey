@@ -1172,7 +1172,7 @@ class QuestionEditorController extends LSBaseController
         $this->cleanSubquestions($oQuestion, $dataSet);
         foreach ($dataSet as $aSubquestions) {
             foreach ($aSubquestions as $aSubquestionDataSet) {
-                $oSubQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $oQuestion->sid, ':qid' => $aSubquestionDataSet['qid']]);
+                $oSubQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $oQuestion->sid, ':qid' => (int)$aSubquestionDataSet['qid']]);
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
                 } elseif (!$oQuestion->survey->isActive) {
