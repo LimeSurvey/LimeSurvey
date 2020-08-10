@@ -225,14 +225,14 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
             Yii::app()->setFlashMessage(gT("you cannot delete yourself."), 'error');
-            $this->redirect('index');
+            $this->redirect(Yii::app()->createUrl("userManagement/index"));
         }
 
         $oUser = User::model()->findByPk($userId);
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
         Yii::app()->setFlashMessage(gT("User successfully deleted."), 'success');
-        $this->redirect('index');
+        $this->redirect(Yii::app()->createUrl("userManagement/index"));
         return;
     }
 
@@ -586,7 +586,7 @@ class UserManagementController extends LSBaseController
         }
 
         Yii::app()->setFlashMessage(gT("Users imported successfully."), 'success');
-        $this->redirect('index');
+        $this->redirect(Yii::app()->createUrl("userManagement/index"));
     }
 
 

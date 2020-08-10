@@ -1,51 +1,18 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php eT("Conditions designer"); ?>
+        
+        <?php if ($hasUpdatePermission): ?>
+            <a class="btn btn-default pjax pull-right condition-header-button <?php if(isset($questionbar['buttons']['condition']['edit']) && $questionbar['buttons']['condition']['edit']){ echo 'active'; }?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <span class="icon-conditions_add"></span>
+                <?php eT("Add and edit conditions");?>
+            </a>
 
-        <?php if ($scenariocount > 0): ?>
-            <button
-                id='delete-all-conditions'
-                data-toggle='modal'
-                data-target='#confirmation-modal'
-                data-message='<?php eT('Are you sure you want to delete all conditions for this question?', 'js'); ?>'
-                data-onclick='(function() { document.getElementById("deleteallconditions").submit(); })'
-                class='btn btn-warning pull-right condition-header-button'
-                onclick='return false;'
-            >
-                <span class="fa fa-trash"></span>
-                &nbsp;
-                <?php eT('Delete all conditions'); ?>
-            </button>
-        <?php endif; ?>
-
-        <?php if ($scenariocount > 1): ?>
-            <button
-                id='renumber-scenario'
-                class="btn btn-default pull-right condition-header-button"
-                data-toggle='modal'
-                data-target='#confirmation-modal'
-                data-message='<?php eT('Are you sure you want to renumber the scenarios with incrementing numbers beginning from 1?', 'js'); ?>'
-                data-onclick='(function() { document.getElementById("toplevelsubaction").value="renumberscenarios"; document.getElementById("deleteallconditions").submit();})'
-                onclick='return false;'
-            >
-                <span class="icon-renumber"></span>
-                &nbsp;
-                <?php eT("Renumber scenarios");?>
-            </button>
-        <?php endif; ?>
-
-        <button
-            id='quick-add-condition-button'
-            class='btn btn-default pull-right condition-header-button'
-            data-toggle='modal'
-            data-target='#quick-add-condition-modal'
-            data-tooltip='true'
-            data-title='<?php eT('Add multiple conditions without a page reload'); ?>'
-        >
-            <span class="fa fa-plus-circle"></span>
-            &nbsp;
-            <?php eT('Quick-add conditions'); ?>
-        </button>
+            <a class="btn btn-default pjax pull-right condition-header-button <?php if(isset($questionbar['buttons']['condition']['copyconditionsform'])){echo 'active';}?>" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <span class="icon-copy"></span>
+                <?php eT("Copy conditions");?>
+            </a>
+        <?php endif ?>
     </h3>
      <div class="row">
         <div class="col-lg-12 content-right">

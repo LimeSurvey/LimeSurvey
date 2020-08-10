@@ -111,7 +111,7 @@ class AdminViewsTest extends TestBaseClassView
             );
 
         }
-        $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
+        $view['route'] = ReplaceFields($view['route'], ['{QID}'=> 0,'{GID}'=> 0,'{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);
     }
 

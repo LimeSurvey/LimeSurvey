@@ -1471,6 +1471,12 @@ __webpack_require__.r(__webpack_exports__);
           errorHeader = "ERROR RESPONSES";
           this.slide = false;
           break;
+
+        case "conditions":
+          dispatchAction = "getTopBarButtonsConditions";
+          errorHeader = "ERROR CONDITIONS";
+          this.slide = false;
+          break;
       }
 
       this.loading = true;
@@ -31284,6 +31290,26 @@ __webpack_require__.r(__webpack_exports__);
     return new Promise(function (resolve, reject) {
       _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/responses/sa/getResponsesTopBarData', {
         sid: context.state.sid || LS.reparsedParameters().combined.sid
+      })).then(function (data) {
+        context.commit('clean');
+        context.commit('setTopBarRight', data.data.topbar.alignment.right.buttons);
+        context.commit('setTopBarLeft', data.data.topbar.alignment.left.buttons);
+        context.commit('setTopBarExtendedRight', []);
+        context.commit('setTopBarExtendedLeft', []);
+        context.commit('setPermissions', data.data.permissions);
+        resolve(data.data.topbar);
+      }).catch(function (error) {
+        reject(error);
+      });
+    });
+  },
+  getTopBarButtonsConditions: function getTopBarButtonsConditions(context) {
+    context.commit('clean');
+    return new Promise(function (resolve, reject) {
+      _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_1__["default"].methods.$_get(LS.createUrl('admin/conditions/sa/getConditionsTopBarData', {
+        sid: context.state.sid || LS.reparsedParameters().combined.sid,
+        gid: context.state.gid || LS.reparsedParameters().combined.gid || 0,
+        qid: context.state.qid || LS.reparsedParameters().combined.qid || 0
       })).then(function (data) {
         context.commit('clean');
         context.commit('setTopBarRight', data.data.topbar.alignment.right.buttons);

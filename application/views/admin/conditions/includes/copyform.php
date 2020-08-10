@@ -22,7 +22,7 @@
         </div>
         <div class='condition-tbl-full'>
             <br/>
-            <input class='btn btn-default' type='submit' value='<?php eT("Copy conditions"); ?>' onclick="prepareCopyconditions(); return true;" />
+            <input class='btn btn-success' type='submit' value='<?php eT("Copy conditions"); ?>' onclick="prepareCopyconditions(); return true;" />
             <input type='hidden' name='subaction' value='copyconditions' />
             <input type='hidden' name='sid' value='<?php echo $iSurveyID; ?>' />
             <input type='hidden' name='gid' value='<?php echo $gid; ?>' />

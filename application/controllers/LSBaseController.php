@@ -56,6 +56,66 @@ class LSBaseController extends LSYii_Controller
     }
 
     /**
+     * Validate params used for sid, gid and qid. Validate if qid is included in gid is included in sid.
+     * Validate if final survey exist
+     * Currently : used by QuestionEditorController
+     * @param integer|mixed $sid : sid param to be controlled. If invalid (not an integer) : throw a 404
+     * @param integer|mixed $gid : gid param to be controlled. If invalid (not an integer) : throw a 404
+     * @param integer|mixed $qid : qid param to be controlled. If invalid (not an integer) : throw a 404
+     * @Throw CHttpException
+     * @return false|integer the existing sid related to current params.
+     */
+    protected function getValidatedSurveyId($sid = null, $gid = null, $qid = null)
+    {
+        $oQuestion = null;
+        if ($qid) {
+            $oQuestion = Question::model()->findByPk($qid);
+            if(!$oQuestion) {
+                throw new CHttpException(404);
+            }
+        }
+        $oGroup = null;
+        if ($gid) {
+            $oGroup = QuestionGroup::model()->findByPk($gid);
+            if(!$oGroup) {
+                throw new CHttpException(404);
+            }
+            if ($oQuestion && $gid != $oQuestion->gid) {
+                // Try to hack : 400
+                throw new CHttpException(400);
+            }
+        }
+
+        $surveyId = false;
+        if(is_null($sid)) {
+            /* @todo : rempove this to move to params of function */
+            $sid = App()->request->getParam('sid', App()->request->getParam('surveyid'));
+        }
+        if ($sid) {
+            $oSurvey = Survey::model()->findByPk($sid);
+            if (!$oSurvey) {
+                throw new CHttpException(404);
+            }
+            if ($oQuestion && $sid != $oQuestion->sid) {
+                // Try to hack : 400
+                throw new CHttpException(400);
+            }
+            if ($oGroup && $sid != $oGroup->sid) {
+                // Try to hack : 400
+                throw new CHttpException(400);
+            }
+            $surveyId = $sid;
+        } else {
+            if (!empty($oQuestion)) {
+                $surveyId = $oQuestion->sid;
+            } elseif (!empty($oGroup)) {
+                $surveyId = $oGroup->sid;
+            }
+        }
+        return $surveyId;
+    }
+
+    /**
      * This part comes from _renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
      *
      * todo REFACTORING find all actions that set $aData['surveyid'] and change the layout directly in the action
@@ -136,7 +196,6 @@ class LSBaseController extends LSYii_Controller
                 }
             }
         }
-
         parent::run($action);
     }
 
