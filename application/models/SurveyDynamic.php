@@ -900,7 +900,10 @@ class SurveyDynamic extends LSActiveRecord
             });
 
             if($oSelectedAnswerOption !== null){
-                $aQuestionAttributes['answeroption'] = $oSelectedAnswerOption->attributes;
+                $aQuestionAttributes['answeroption'] = array_merge(
+                    $oSelectedAnswerOption->attributes,
+                    $oSelectedAnswerOption->answerl10ns[$sLanguage]->attributes
+                );
             } elseif ($oQuestion->other == 'Y'){
                 $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$sLanguage]) ? $attributes['other_replace_text'][$sLanguage] : gT("Other");
                 $aQuestionAttributes['answeroption']['answer'] = isset($oResponses[$fieldname.'other']) ? $oResponses[$fieldname.'other'] : null;
