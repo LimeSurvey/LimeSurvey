@@ -812,13 +812,32 @@ class UserManagementController extends LSBaseController
         $aPermissions = Yii::app()->request->getPost('Permission', []);
         $results = [];
         foreach ($userIds as $iUserId) {
-            $results[$iUserId] = $this->applyPermissionFromArray($iUserId, $aPermissions);
+            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
             $oUser = User::model()->findByPk($iUserId);
             $oUser->modified = date('Y-m-d H:i:s');
-            $results[$iUserId]['save'] = $oUser->save();
+            $results[$iUserId]['result'] = $oUser->save();
+            $results[$iUserId]['title'] = $oUser->users_name;
+            foreach ($aPermissionsResults as $aPermissionsResult) {
+                if (!$aPermissionsResult['success']) {
+                    $results[$iUserId]['result'] = false;
+                    break;
+                }
+            }
+            if (!$results[$iUserId]['result']) {
+                $results[$iUserId]['error'] = gT('Error');
+            }
         }
 
-        return $this->renderPartial('partial/permissionsuccess', ['results' => $results, "noButton" => true]);
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $results,
+                'successLabel' => gT('Saved successfully'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
     }
 
     /**
