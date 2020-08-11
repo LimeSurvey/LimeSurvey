@@ -109,6 +109,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 $this->sliderOptionsArray['slider_reversed'] = 'false';
             }
 
+            $this->sliderOptionsArray['slider_showminmax'] = $this->getQuestionAttribute('slider_showminmax');
 
         } else {
             $this->sCoreClasses .= " text-list number-list";
@@ -155,6 +156,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         foreach ($this->aSubQuestions[0] as $oSubquestion) {
             $myfname = $this->sSGQA.$oSubquestion->title;
             $sSubquestionText = $this->setDefaultIfEmpty($oSubquestion->questionl10ns[$this->sLanguage]->question, "&nbsp;");
+            $labelText = $sSubquestionText;
 
             // color code missing mandatory questions red
             $alert = (
@@ -174,7 +176,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     'prefixclass'            => 'numeric',
                     'alert'                  => $alert,
                     'theanswer'              => $sSubquestionText,
-                    'labelText'              => $sSubquestionText,
+                    'labelText'              => $labelText,
                     'labelname'              => 'answer'.$myfname,
                     'myfname'                => $myfname,
                     'dispVal'                => $dispVal,
@@ -247,7 +249,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                         'labelname'              => 'answer'.$myfname,
                         'alert'                  => $alert,
                         'theanswer'              => $theanswer,
-                        'labelText'              => $sSubquestionText,
+                        'labelText'              => $labelText,
                         'myfname'                => $myfname,
                         'dispVal'                => $dispVal,
                         'sliderleft'             => $sliderleft,

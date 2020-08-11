@@ -82,9 +82,9 @@ export default {
         eventSet() {
             this.event = null;
         },
-        submitCurrentState(redirect = false, redirectUrl = false) {
+        submitCurrentState(redirect = false, redirectUrl = false, scenario = false) {
             this.loading = true;
-            this.$store.dispatch('saveQuestionGroupData').then(
+            this.$store.dispatch('saveQuestionGroupData', scenario).then(
                 (result) => {
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
@@ -146,7 +146,14 @@ export default {
 
         LS.EventBus.$off('componentFormSubmit');
         LS.EventBus.$on('componentFormSubmit', (payload) => {
-            this.submitCurrentState((payload.id == '#save-and-close-button'), payload.url != '#' ? payload.url : false);
+            let redirect = (payload.id == 'save-and-close-button' ||
+                            payload.id == 'save-and-new-question-button' ||
+                            payload.id == 'save-and-new-button');
+            this.submitCurrentState(
+                redirect, 
+                payload.url != '#' ? payload.url : false, 
+                payload.scenario || ''
+            );
         });
         
         if(window.QuestionGroupEditData.startInEditView) {

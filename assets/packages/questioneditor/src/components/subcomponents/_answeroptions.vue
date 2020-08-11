@@ -58,7 +58,7 @@
                             <input
                                 type='text'
                                 class="form-control"
-                                maxlength='20'
+                                maxlength='5'
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :name="'code_'+answeroption.sortorder+'_'+answeroptionscale" 
