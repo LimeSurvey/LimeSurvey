@@ -220,7 +220,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['topBar']['importquestion'] = true;
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['savebuttonform'] = 'frmeditgroup';
-        $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/' . $iSurveyID; // Close button
+        $aData['topBar']['closebuttonurl'] = '/questionAdministration/listquestions/surveyid/' . $iSurveyID; // Close button
 
         if ($landOnSideMenuTab !== '') {
             $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
@@ -746,7 +746,7 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyID = (int)$surveyid;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
             App()->session['flashmessage'] = gT("We are sorry but you don't have permissions to do this.");
-            $this->redirect(['admin/survey/sa/listquestions/surveyid/' . $iSurveyID]);
+            $this->redirect(['questionAdministration/listquestions/surveyid/' . $iSurveyID]);
         }
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData = [];
@@ -1020,7 +1020,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($iConditionsCount) {
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
-            $this->redirect(['admin/survey/sa/listquestions/surveyid/' . $surveyid]);
+            $this->redirect(['questionAdministration/listquestions/surveyid/' . $surveyid]);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
             $result = $oQuestion->delete();
@@ -1034,7 +1034,7 @@ class QuestionAdministrationController extends LSBaseController
             ];
         }
 
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
+        $redirect = Yii::app()->createUrl('questionAdministration/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [

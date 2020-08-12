@@ -24,7 +24,7 @@ if (!$isActive) {
     // activate
     if ($canactivate) {
         $buttons['activate_survey'] = [
-            'url' => $this->createUrl("admin/survey/sa/activate/surveyid/$sid"),
+            'url' => $this->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]),
             'name' => gT('Activate this survey'),
             'id' => 'ls-activate-survey',
             'class' => 'btn-success',
@@ -47,7 +47,7 @@ if (!$isActive) {
     // <!-- Stop survey -->
     if ($canactivate) {
         $buttons['stop_survey'] = [
-            'url' => $this->createUrl("admin/survey/sa/deactivate/surveyid/$sid"),
+            'url' => $this->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]),
             'class' => 'btn-danger btntooltip',
             'icon' => 'fa fa-stop-circle',
             'id' => 'ls-stop-survey',
@@ -149,7 +149,7 @@ $buttonsgroup['tools'] = [
 
 if ($hasDeletePermission) {
     $buttons['delete_survey'] = [
-        'url' => $this->createUrl("admin/survey/sa/delete/surveyid/{$sid}"),
+        'url' => $this->createUrl("surveyAdministration/delete/" , ['iSurveyID' => $sid]),
         'icon' => 'fa fa-trash',
         'name' => gT('Delete survey'),
         'id' => 'delete_button',

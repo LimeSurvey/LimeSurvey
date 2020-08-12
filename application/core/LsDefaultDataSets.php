@@ -1,6 +1,9 @@
 <?php
 /**
  * A collection of default data sets, like surveymenus, surveymenuentries, and tutorials
+ *
+ * This class is important for installation (all datasets will be inserted to database tables and
+ * to reset to a default setting (if user want to...)
  */
 class LsDefaultDataSets
 {
@@ -275,7 +278,7 @@ class LsDefaultDataSets
                 'list',
                 'fontawesome',
                 '',
-                'admin/survey/sa/listquestions',
+                'questionAdministration/listQuestions',
                 '',
                 '',
                 '',
@@ -611,7 +614,7 @@ class LsDefaultDataSets
                 'play',
                 'fontawesome',
                 '',
-                'admin/survey/sa/activate',
+                'surveyAdministration/activate',
                 '',
                 '',
                 '',
@@ -639,7 +642,7 @@ class LsDefaultDataSets
                 'stop',
                 'fontawesome',
                 '',
-                'admin/survey/sa/deactivate',
+                'surveyAdministration/deactivate',
                 '',
                 '',
                 '',
@@ -846,7 +849,7 @@ class LsDefaultDataSets
         App()->setLanguage('en');
         $returnArray = [];
         $returnArray[] = ['position' => 1, 'url' => 'surveyAdministration/newSurvey', 'title' => gT('Create survey'), 'ico' => 'icon-add', 'desc' => gT('Create a new survey'), 'page' => 'welcome', 'usergroup' => '-2'];
-        $returnArray[] = ['position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => gT('List surveys'), 'ico' => 'icon-list', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
+        $returnArray[] = ['position' => 2, 'url' => 'surveyAdministration/listsurveys', 'title' => gT('List surveys'), 'ico' => 'icon-list', 'desc' => gT('List available surveys'), 'page' => 'welcome', 'usergroup' => '-1'];
         $returnArray[] = ['position' => 3, 'url' => 'admin/globalsettings', 'title' => gT('Global settings'), 'ico' => 'icon-settings', 'desc' => gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'icon-shield', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 5, 'url' => 'https://account.limesurvey.org/limestore', 'title' => 'LimeStore', 'ico' => 'fa fa-cart-plus', 'desc' => gT('LimeSurvey extension marketplace'), 'page' => 'welcome', 'usergroup' => '-2'];
@@ -1586,7 +1589,7 @@ class LsDefaultDataSets
                 'settings' => json_encode(array(
                     'element' => '#ls-activate-survey',
                     'delayOnElement' => "{element: 'element'}",
-                    'path' => ['/surveyAdministration/view', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/view', ['iSurveyID' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
@@ -1612,7 +1615,7 @@ class LsDefaultDataSets
                         element: '#activateSurvey__basicSettings--proceed',
                         maxDelay: 1000
                     }",
-                    'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/activate', ['iSurveyID' => '[0-9]{4,25}']],
                     'placement' => '',
                     'reflex' => true,
                     'redirect' => false,
@@ -1639,7 +1642,7 @@ class LsDefaultDataSets
                         element: '#activateTokenTable__selector--no',
                         maxDelay: 1000
                     }",
-                    'path' => ['/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}']],
+                    'path' => ['/surveyAdministration/activate', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,

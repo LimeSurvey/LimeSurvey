@@ -156,7 +156,7 @@
                     // li element
                     'type'        => 'action',
                     'action'      => 'expire',
-                    'url'         =>  App()->createUrl('/admin/survey/sa/expireMultipleSurveys/'),
+                    'url'         =>  App()->createUrl('/surveyAdministration/expireMultipleSurveys/'),
                     'iconClasses' => 'icon-expired',
                     'text'        =>  gT("Set expiry date"),
                     'grid-reload' => 'yes',

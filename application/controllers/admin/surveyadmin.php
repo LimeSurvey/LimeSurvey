@@ -1196,6 +1196,8 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * Function responsible to import/copy a survey based on $action.
      *
+     * REFACTORED in SurveyAdministration
+     *
      * @access public
      * @return void
      */
@@ -1392,6 +1394,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Called via ajax request from survey summary quick action "Show questions group by group".
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @param int    $iSurveyID Given Survey ID
      * @param string $format    Given Format
@@ -1412,6 +1416,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Show the form for Organize question groups/questions
+     *
+     * REFACTORED in SurveyAdministration
      *
      * @param int $iSurveyID Given Survey ID
      * 
@@ -1870,6 +1876,8 @@ class SurveyAdmin extends Survey_Common_Action
      * Returns data for Tab Resourves.
      * survey::_tabResourceManagement()
      * Load "Resources" tab.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @param Survey $oSurvey Given Survey
      * 
@@ -1904,7 +1912,9 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * 
+     *
+     * * REFACTORED in SurveyAdministration
+     *
      * @param int $iSurveyID Given Survey ID
      * 
      * @return void
@@ -1923,7 +1933,9 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * 
+     *
+     * REFACTORED in SurveyAdministration
+     *
      * @return void
      * 
      * @todo Add TypeDoc.
@@ -1942,6 +1954,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Action to set expiry date to multiple surveys.
+     *
+     * REFACTORED in SurveyAdministration
      * 
      * @return void
      */
@@ -2631,6 +2645,8 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Upload an image in directory
+     *
+     * REFACTORED in SurveAdministartationCOntroller
      * 
      * @return json
      */

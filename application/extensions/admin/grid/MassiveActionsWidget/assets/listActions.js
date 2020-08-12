@@ -309,9 +309,9 @@ function getDefaultDateTimePickerSettings() {
 
     //Switch between path and get based routing
     if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
-        var url = "/index.php?r=admin/survey&sa=datetimesettings";
+        var url = "/index.php?r=surveyAdministration/datetimesettings";
     } else {
-        var url = "/index.php/admin/survey/sa/datetimesettings";
+        var url = "/index.php/surveyAdministration/datetimesettings";
     }
     var mydata = [];
     $.ajaxSetup({
