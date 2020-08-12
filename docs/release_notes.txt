@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.22.210 (build 200804) to 3.23.0 (build 200813) August 12, 2020
+-Fixed issue: When editing a token the date/time format is not properly displayed and handled on "invitation sent" or "reminder sent" field and thus wrong values are saved (Carsten Schmitz)
+-Fixed issue: Renamed Valencian translation to correct term (Carsten Schmitz)
+-Fixed issue #16569: Welcome page show again if cookies are enable and survey is already done (#1539) (Gabriel Jenik)
+-Fixed issue #16561: Batch-editing tokens does not set fields properly if "completed", "invitation sent" or "reminder sent" is set to No. (Carsten Schmitz)
+-Fixed issue #16329: html not allowed in a labelset? (#1501) (Gabriel Jenik)
+-Fixed issue #16273 - Validation regex including unicode characters fails (#1499) (Gabriel Jenik)
+-Fixed issue #15951: No creation date when importing participants to CPDB (#1502) (Gabriel Jenik)
+-Fixed issue #14218: hover OK button on confirm hide the OK (#1540) (Gabriel Jenik)
+#Updated translation: German by c_schmitz
+
+
 Changes from 3.22.29 (build 200731) to 3.22.210 (build 200804) August 3, 2020
 -Fixed issue #16535: Changing language at question preview leads to loading the wrong page (GabrielJenik)
 -Fixed issue #16520: For specific screen navigation, condition is not saved properly (GabrielJenik)
