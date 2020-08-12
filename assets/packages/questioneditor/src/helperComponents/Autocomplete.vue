@@ -124,6 +124,7 @@ export default {
         border: 1px solid #212121;
         background-color: #fff;
         list-style: none;
+        max-height: 290px;
     }
     .scoped-autocomplete-list-item {
         &:hover,&.selected { background-color: #dedede; }
