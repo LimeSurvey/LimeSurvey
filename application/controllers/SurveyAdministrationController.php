@@ -1681,14 +1681,12 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function responsible to delete a survey.
      *
-     * @param int $iSurveyID Given Survey ID
-     *
      * @return string
      * @access public
      */
-    public function actionDelete($iSurveyID)
+    public function actionDelete()
     {
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = $this->getSurveyIdFromGetRequest();
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);

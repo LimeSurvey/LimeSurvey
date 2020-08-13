@@ -846,6 +846,8 @@ class database extends Survey_Common_Action
      */
     private function actionUpdateSurveyLocaleSettings($iSurveyID)
     {
+
+        //@todo  here is something wrong ...
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $languagelist = $oSurvey->additionalLanguages;
         $languagelist[] = $oSurvey->language;
