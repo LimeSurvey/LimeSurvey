@@ -419,15 +419,12 @@
 <?php App()->getClientScript()->registerScript("Tokens:MassActionUpdateView_Scripts", "
 
    var bindBSSwitch = function(formGroup){
-       console.log(\"bindBSSwitch run on:\",formGroup);
-    //Script to update the completed settings
-    formGroup.find('.YesNoSwitch').on('switchChange.bootstrapSwitch', function(e, state){
-        
-        formGroup.find('.selector_datechange').css('display', (state ? '' : 'none'));
-        //formGroup.find('.selector_submitField').val(state ? 'Y' : 'N');
-
-    });
-   };
+        console.log(\"bindBSSwitch run on:\",formGroup);
+        //Script to update the completed settings
+        formGroup.find('.YesNoSwitch').on('switchChange.bootstrapSwitch', function(e, state){        
+            formGroup.find('.selector_datechange').css('display', (state ? '' : 'none'));
+        });
+    };
 
    var bindDatepicker = function(myFormGroup){
     myFormGroup.find('.action_datepickerUpdateHiddenField').on('change dp.change', function(){
