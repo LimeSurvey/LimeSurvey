@@ -45,12 +45,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <?php echo CHtml::form(array("admin/survey/sa/expire/surveyid/{$surveyid}/"), 'post'); ?>
+                                <?php echo CHtml::form(array("surveyAdministration/expire/surveyid/{$surveyid}/"), 'post'); ?>
                                 <p><input class="btn btn-default"  type='submit' value='<?php eT("Expire survey"); ?>'/></p>
                                 </form>
                             </td>
                             <td>
-                                <?php echo CHtml::form(array("admin/survey/sa/deactivate/surveyid/{$surveyid}/"), 'post'); ?>
+                                <?php echo CHtml::form(array("surveyAdministration/deactivate/surveyid/{$surveyid}/"), 'post'); ?>
                                 <p><input  class="btn btn-default" type='submit' value='<?php eT("Deactivate survey"); ?>'/></p>
                                 <input type='hidden' value='Y' name='ok' />
                                 </form>

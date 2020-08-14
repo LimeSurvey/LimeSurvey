@@ -257,16 +257,19 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     *
-     * @param int $iSurveyID Given Survey ID
-     * @param string $sSubAction Given Subaction
+     * Regeerates the question code
+     * Automatically renumbers the "question codes" so that they follow
+     * a methodical numbering method.
      *
      * @return void
      *
      * @todo Add TypeDoc.
      */
-    public function actionRegenerateQuestionCodes($iSurveyID, $sSubAction)
+    public function actionRegenerateQuestionCodes()
     {
+        $iSurveyID = $this->getSurveyIdFromGetRequest();
+        $sSubAction = Yii::app()->request->getParam('subaction');
+
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
@@ -276,6 +279,13 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->setFlashMessage(gT("You can't update question code for an active survey."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
+
+        //check subaction
+        if(!($sSubAction ==='straight' || $sSubAction === 'bygroup')){
+            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup."), 'error');
+            $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
+        }
+
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
         $iQuestionNumber = 1;
@@ -1438,19 +1448,17 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function responsible to deactivate a survey.
      *
-     * @param int $iSurveyID Given Survey ID
-     *
      * @return void
      * @access public
      */
-    public function actionDeactivate($iSurveyID = null)
+    public function actionDeactivate()
     {
+        $iSurveyID = $this->getSurveyIdFromGetRequest();
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-            die('No permission');
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-        $iSurveyID = Yii::app()->request->getPost('sid', $iSurveyID);
-        $iSurveyID = sanitize_int($iSurveyID);
         $survey = Survey::model()->findByPk($iSurveyID);
         $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $aData = array();
@@ -1563,7 +1571,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $this->aData = $aData;
         $this->render('deactivateSurvey_view', $aData);
-        //$this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
     }
 
 
@@ -1574,12 +1581,13 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      * @access public
+     * @throws CException
      */
     public function actionActivate($iSurveyID)
     {
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-            die();
-            //todo error message for user ...
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
         }
 
         $iSurveyID = (int) $iSurveyID;
@@ -1617,8 +1625,6 @@ class SurveyAdministrationController extends LSBaseController
 
             $this->aData = $aData;
             $this->render('activateSurvey_view', $aData);
-
-            //$this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
         } else {
             if (!is_null($survey)) {
                 $survey->anonymized = Yii::app()->request->getPost('anonymized');
@@ -1645,12 +1651,11 @@ class SurveyAdministrationController extends LSBaseController
             } else if (isset($aResult['pluginFeedback'])) {
                 // Special feedback from plugin
                 $aViewUrls['output'] = $aResult['pluginFeedback'];
-                //todo which view is rendered here???
+                //check if feedback is given to user ...
                 $this->aData = $aData;
-                $this->render('???', $aData); //todo IMPORTANT before merge refactoring!!!!!!!!!!!!!!!
+                $this->render('_activation_feedback', $aData);
             } else if (isset($aResult['error'])) {
                 $data['result'] = $aResult;
-               // $aViewUrls['output'] = $this->renderPartial('/admin/survey/_activation_error', $data, true);
                 $this->aData = $aData;
                 $this->render('_activation_error', $data);
             } else {
@@ -1668,13 +1673,9 @@ class SurveyAdministrationController extends LSBaseController
                     'closedOnclickAction'=>$closedOnclickAction,
                     'noOnclickAction'=>$noOnclickAction,
                 );
-              //  $aViewUrls['output'] = $this->renderPartial('/admin/survey/_activation_feedback', $activationData, true);
                 $this->aData = $aData;
                 $this->render('_activation_feedback', $activationData);
             }
-           // $this->aData = $aData;
-           // $this->render('_activation_feedback', $activationData);
-            //$this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
         }
     }
 
@@ -2141,18 +2142,16 @@ class SurveyAdministrationController extends LSBaseController
 
 
     /**
-     *
-     * @param int $iSurveyID Given Survey ID
+     * Expires the survey.
      *
      * @return void
-     * @todo   Add TypeDoc.
      */
-    public function actionExpire($iSurveyID)
+    public function actionExpire()
     {
-        $iSurveyID = (int)$iSurveyID;
+        $iSurveyID = $this->getSurveyIdFromGetRequest();
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
-            $this->redirect(array('admin/survey', 'sa' => 'view', 'surveyid' => $iSurveyID));
+            $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
         Yii::app()->session['flashmessage'] = gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         Survey::model()->expire($iSurveyID);
@@ -2260,7 +2259,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     private function tabResourceManagement($oSurvey)
     {
-        global $sCKEditorURL; //@todo baaaaah this is really bad ...
+        global $sCKEditorURL;
 
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"".gT('Please select a file to import!', 'js')."\")) { this.form.submit();}'";
