@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-08-06 09:36:35+00:00\n"
+"POT-Creation-Date: 2020-08-14 09:26:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3682,31 +3682,31 @@ msgstr ""
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1816
+#: application/controllers/admin/questions.php:1820
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1816
+#: application/controllers/admin/questions.php:1820
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1819
+#: application/controllers/admin/questions.php:1823
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1819
+#: application/controllers/admin/questions.php:1823
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1825
+#: application/controllers/admin/questions.php:1829
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1827
+#: application/controllers/admin/questions.php:1831
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1829
+#: application/controllers/admin/questions.php:1833
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:106
@@ -3716,7 +3716,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1926
+#: application/controllers/admin/questions.php:1930
 #: application/views/admin/super/_question_explorer.php:74
 msgid "You can't add questions while the survey is active."
 msgstr ""
