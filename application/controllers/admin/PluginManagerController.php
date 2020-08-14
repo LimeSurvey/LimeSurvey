@@ -113,6 +113,12 @@ class PluginManagerController extends Survey_Common_Action
                 'sa' => 'installPluginFromFile'
             ]
         );
+        $aData['scanFilesUrl'] = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'scanFiles',
+            ]
+        );
         $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
         $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
 
