@@ -164,11 +164,12 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Loads list of surveys and its few quick properties.
      *
-     * todo: this could be a direct call to actionListsurveys
+     * @deprecated not used anymore (let it here for a while to see if bugs come up)
      *
      * @access public
      * @return void
      */
+    /**
     public function actionIndex()
     {
         $this->redirect(
@@ -176,7 +177,7 @@ class SurveyAdministrationController extends LSBaseController
                 'surveyAdministration/listsurveys'
             )
         );
-    }
+    }*/
 
     /**
      * List Surveys.
@@ -263,7 +264,6 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      *
-     * @todo Add TypeDoc.
      */
     public function actionRegenerateQuestionCodes()
     {
@@ -394,10 +394,11 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Saves the new survey after the creation screen is submitted
      *
-     * @param int $iSurveyID The survey id to be used for the new survey.
+     * @param int|null $iSurveyID The survey id to be used for the new survey.
      *                       If already taken a new random one will be used.
      *
      * @return string
+     * @throws CException
      */
     public function actionInsert($iSurveyID = null)
     {
@@ -568,7 +569,6 @@ class SurveyAdministrationController extends LSBaseController
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
-                // ['surveyid'=>$iNewSurveyid]
                 );
                 Yii::app()->setFlashMessage($warning . gT("Your new survey was created."), 'info');
             }
@@ -591,7 +591,7 @@ class SurveyAdministrationController extends LSBaseController
      *(it'S just an js-script alert window rendert here ...)
      *
      * @return void
-     * @todo   Document me
+     * @throws CException
      */
     public function actionFakebrowser()
     {
@@ -607,8 +607,10 @@ class SurveyAdministrationController extends LSBaseController
     public function actionImportsurveyresources()
     {
         $iSurveyID = Yii::app()->request->getPost('surveyid');
-
-        //todo: permission check!!!
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
 
         if (!empty($iSurveyID)) {
             if (Yii::app()->getConfig('demoMode')) {
@@ -671,13 +673,13 @@ class SurveyAdministrationController extends LSBaseController
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
                     Yii::app()->user->setFlash('error',
                         gT("This ZIP archive contains no valid Resources files. Import failed."));
-                    $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
-                    //todo editlocalsettings does not exist anymore ...
+                    $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
                 }
             } else {
-                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
+                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. 
+                This may be caused by incorrect permissions for the application /tmp folder."),
                     'error');
-                $this->redirect(array('surveyAdministration/editlocalsettings/surveyid/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/view/' . $iSurveyID));
             }
             $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
@@ -700,6 +702,7 @@ class SurveyAdministrationController extends LSBaseController
      * @param integer $sid Given Survey ID
      *
      * @return JSON
+     * @throws CException
      */
     public function actionGetCurrentEditorValues($sid)
     {
@@ -806,8 +809,6 @@ class SurveyAdministrationController extends LSBaseController
      * Change survey group for multiple survey at once.
      * Called from survey list massive actions
      *
-     * REFACTORED in SurveyAdministrationController
-     *
      * @return void
      * @throws CException
      */
@@ -868,6 +869,8 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * AjaxRequest get questionGroup with containing questions
+     *
+     * @todo this could go to the questiongroupAdministrationController
      *
      * @param int $surveyid Given Survey ID
      *
@@ -955,6 +958,8 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Ajaxified get MenuItems with containing questions
+     *
+     * @todo this could go into surveymenucontroller
      *
      * @param int $surveyid Given Survey ID
      * @param string $position Given Position
@@ -1072,7 +1077,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Collect the data necessary for the data security settings and return a JSON document
      *
-     * @param integer $sid Survey ID
+     * @param integer|null $sid Survey ID
      *
      * @return JSON | string
      *
@@ -1450,6 +1455,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      * @access public
+     * @throws CException
      */
     public function actionDeactivate()
     {
@@ -1824,7 +1830,7 @@ class SurveyAdministrationController extends LSBaseController
 
         if (!empty($menuEntry->getdatamethod)) {
             $templateData = array_merge($templateData, call_user_func_array(
-                array($this, $menuEntry->getdatamethod),
+                array($this, $menuEntry->getdatamethod), //info: getdatamethod is the name of a function here in this controller!!!
                 array('survey'=>$survey)));
         }
 
@@ -1868,9 +1874,6 @@ class SurveyAdministrationController extends LSBaseController
             'Y' => gT('On', 'unescaped'),
             'N' => gT('Off', 'unescaped'),
         );
-
-        // see table surveymenu_entries->
-        //$aViewUrls[] = $menuEntry->template; //this is always the view that should be rendered
 
         $this->aData = $aData;
         $this->render($menuEntry->template, $aData);
@@ -1922,7 +1925,6 @@ class SurveyAdministrationController extends LSBaseController
     public function actionGetUrlParamsJSON($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
         $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
         $aData = array(
             'rows' => []

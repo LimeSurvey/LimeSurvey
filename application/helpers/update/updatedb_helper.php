@@ -3169,6 +3169,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
+                    'menu_link' => 'surveyAdministration/activate',
+                ),
+                "name='activateSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/deactivate',
+                ),
+                "name='deactivateSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
                     'getdatamethod' => 'generalTabEditSurvey',
                 ),
                 "name='generalsettings'"
