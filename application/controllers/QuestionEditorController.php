@@ -1262,7 +1262,7 @@ class QuestionEditorController extends LSBaseController
         $this->cleanAnsweroptions($oQuestion, $dataSet);
         foreach ($dataSet as $aAnswerOptions) {
             foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
-                foreach ([sortorder, aid, qid, scale_id] as $key) {
+                foreach (['sortorder', 'aid', 'qid', 'scale_id'] as $key) {
                     $aAnswerOptionDataSet[$key] = (int) $aAnswerOptionDataSet[$key];
                 }
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
