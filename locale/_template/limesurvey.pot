@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-08-14 09:26:34+00:00\n"
+"POT-Creation-Date: 2020-08-17 11:51:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -592,7 +592,7 @@ msgstr ""
 
 #: application/controllers/QuestionEditorController.php:164
 #: application/controllers/UserGroupController.php:280
-#: application/controllers/admin/PluginManagerController.php:271
+#: application/controllers/admin/PluginManagerController.php:277
 #: application/controllers/admin/dataentry.php:1210
 #: application/controllers/admin/labels.php:223
 #: application/controllers/admin/surveyadmin.php:1775
@@ -848,7 +848,7 @@ msgid "Scale"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:181
-#: application/controllers/admin/PluginManagerController.php:276
+#: application/controllers/admin/PluginManagerController.php:282
 #: application/views/admin/conditions/conditionshead_view.php:40
 #: application/views/admin/emailtemplates/emailtemplates_view.php:63
 #: application/views/admin/super/fullpagebar_view.php:29
@@ -2136,12 +2136,12 @@ msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:69
 #: application/controllers/admin/PluginManagerController.php:93
-#: application/controllers/admin/PluginManagerController.php:139
-#: application/controllers/admin/PluginManagerController.php:180
-#: application/controllers/admin/PluginManagerController.php:222
-#: application/controllers/admin/PluginManagerController.php:248
-#: application/controllers/admin/PluginManagerController.php:328
-#: application/controllers/admin/PluginManagerController.php:666
+#: application/controllers/admin/PluginManagerController.php:145
+#: application/controllers/admin/PluginManagerController.php:186
+#: application/controllers/admin/PluginManagerController.php:228
+#: application/controllers/admin/PluginManagerController.php:254
+#: application/controllers/admin/PluginManagerController.php:334
+#: application/controllers/admin/PluginManagerController.php:672
 #: application/controllers/admin/dataentry.php:257
 #: application/controllers/admin/participantsaction.php:58
 #: application/controllers/admin/participantsaction.php:2555
@@ -2154,51 +2154,51 @@ msgstr ""
 msgid "Found %s plugins in file system"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:117
+#: application/controllers/admin/PluginManagerController.php:123
 msgid "Return to plugin manager"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:157
+#: application/controllers/admin/PluginManagerController.php:163
 msgid "Plugin was activated."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:163
+#: application/controllers/admin/PluginManagerController.php:169
 msgid "Failed to activate the plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:168
+#: application/controllers/admin/PluginManagerController.php:174
 msgid "Found no plugin, or plugin already active."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:193
+#: application/controllers/admin/PluginManagerController.php:199
 msgid "Plugin was deactivated."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:199
+#: application/controllers/admin/PluginManagerController.php:205
 msgid "Failed to deactivate the plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:204
+#: application/controllers/admin/PluginManagerController.php:210
 msgid "Found no plugin, or plugin not active."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:230
+#: application/controllers/admin/PluginManagerController.php:236
 msgid "Could not load plugin"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:235
+#: application/controllers/admin/PluginManagerController.php:241
 msgid "Found no configuration file for this plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:240
+#: application/controllers/admin/PluginManagerController.php:246
 msgid "The plugin was not found."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:257
+#: application/controllers/admin/PluginManagerController.php:263
 msgid "The plugin settings were saved."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:282
+#: application/controllers/admin/PluginManagerController.php:288
 #: application/controllers/admin/SurveysGroupsController.php:67
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
@@ -2278,71 +2278,71 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:294
+#: application/controllers/admin/PluginManagerController.php:300
 msgid "Return to plugin list"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:339
+#: application/controllers/admin/PluginManagerController.php:345
 msgid "Reset load error for plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:341
+#: application/controllers/admin/PluginManagerController.php:347
 msgid "Could not update plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:345
+#: application/controllers/admin/PluginManagerController.php:351
 msgid "Found no plugin with id %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:368
+#: application/controllers/admin/PluginManagerController.php:374
 msgid "Found no plugin with name %s"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:381
+#: application/controllers/admin/PluginManagerController.php:387
 msgid "Plugin was installed."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:413
+#: application/controllers/admin/PluginManagerController.php:419
 msgid "Found no plugin with id %d."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:421
+#: application/controllers/admin/PluginManagerController.php:427
 msgid "Plugin uninstalled."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:423
+#: application/controllers/admin/PluginManagerController.php:429
 msgid "Could not uninstall plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:447
+#: application/controllers/admin/PluginManagerController.php:453
 msgid "Could not fetch files."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:479
+#: application/controllers/admin/PluginManagerController.php:485
 msgid "Could not read plugin configuration file."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:484
+#: application/controllers/admin/PluginManagerController.php:490
 msgid "The plugin is not compatible with your version of LimeSurvey."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:532
+#: application/controllers/admin/PluginManagerController.php:538
 msgid "The plugin was successfully updated. You might need to deactivate it and activate it again to apply changes."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:538
+#: application/controllers/admin/PluginManagerController.php:544
 msgid "The plugin was successfully installed. You need to activate it before you can use it."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:545
+#: application/controllers/admin/PluginManagerController.php:551
 msgid "The plugin could not be installed or updated:"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:565
+#: application/controllers/admin/PluginManagerController.php:571
 msgid "Installation aborted."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:596
+#: application/controllers/admin/PluginManagerController.php:602
 #: application/controllers/admin/labels.php:73
 #: application/controllers/admin/surveyadmin.php:285
 #: application/controllers/admin/surveyadmin.php:2579
@@ -2350,11 +2350,11 @@ msgstr ""
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:607
+#: application/controllers/admin/PluginManagerController.php:613
 msgid "Plugin '%s' does already exist."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:623
+#: application/controllers/admin/PluginManagerController.php:629
 msgid "Demo mode: Uploading plugins is disabled."
 msgstr ""
 
@@ -14216,7 +14216,7 @@ msgstr ""
 
 #: application/models/QuestionTheme.php:270
 #: application/models/TemplateManifest.php:674
-#: application/views/admin/pluginmanager/scanFilesResult.php:13
+#: application/views/admin/pluginmanager/scanFilesResult.php:28
 #: application/views/admin/pluginmanager/uploadConfirm.php:76
 msgid "Install"
 msgstr ""
@@ -18357,10 +18357,12 @@ msgid "Install ZIP"
 msgstr ""
 
 #: application/views/admin/pluginmanager/index.php:69
+#: application/views/admin/pluginmanager/scanFilesResult.php:9
 msgid "Scan files for available plugins"
 msgstr ""
 
 #: application/views/admin/pluginmanager/index.php:73
+#: application/views/admin/pluginmanager/scanFilesResult.php:13
 msgid "Scan files"
 msgstr ""
 
@@ -18412,23 +18414,23 @@ msgstr ""
 msgid "Plugin manager - scanned files"
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:11
+#: application/views/admin/pluginmanager/scanFilesResult.php:26
 msgid "Install this plugin"
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:20
+#: application/views/admin/pluginmanager/scanFilesResult.php:35
 msgid "Plugin is not compatible with your LimeSurvey version."
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:23
+#: application/views/admin/pluginmanager/scanFilesResult.php:38
 msgid "Missing configuration file."
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:26
+#: application/views/admin/pluginmanager/scanFilesResult.php:41
 msgid "Load error. Please contact the plugin author."
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:29
+#: application/views/admin/pluginmanager/scanFilesResult.php:44
 msgid "Delete this plugin from the file system"
 msgstr ""
 
