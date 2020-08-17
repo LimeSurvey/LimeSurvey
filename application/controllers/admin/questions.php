@@ -960,9 +960,12 @@ class questions extends Survey_Common_Action
      * @access public
      * @param int $surveyid
      * @param int $qid
+     * @param int $qid
+     * @param int $massAction
+     * @param string  $redirectTo Redirect to question list ('questionlist' or empty), or group overview ('groupoverview').
      * @return array
      */
-    public function delete($surveyid=null, $qid=null, $gid = 0, $massAction = false)
+    public function delete($surveyid=null, $qid=null, $gid = 0, $massAction = false, $redirectTo = null)
     {
         if(is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
@@ -988,6 +991,29 @@ class questions extends Survey_Common_Action
             $gid_search = null;
         }
 
+        if (empty($redirectTo)) {
+            $redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
+        }
+
+        if ($redirectTo == 'groupoverview') {
+            $redirect = Yii::app()->createUrl(
+                'admin/questiongroups/sa/view/',
+                [
+                    'surveyid' => $surveyid,
+                    'gid' => $gid,
+                    'landOnSideMenuTab' => 'structure'
+                ]
+            );
+        } else {
+            $redirect = Yii::app()->createUrl(
+                'admin/survey/sa/listquestions/',
+                [
+                    'surveyid' => $surveyid,
+                    'landOnSideMenuTab' => 'settings'
+                ]
+            );
+        }
+
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
         // Check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -999,7 +1025,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             if (!$ajax) {
                 Yii::app()->setFlashMessage($sMessage, 'error');
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect($redirect);
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }
@@ -1017,7 +1043,6 @@ class questions extends Survey_Common_Action
             ];
         }
 
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [
