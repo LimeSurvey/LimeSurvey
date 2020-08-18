@@ -543,7 +543,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $landOnSideMenuTab = 'structure';
         switch ($sScenario) {
             case 'save-and-new-question':
-                $sRedirectUrl = $this->getController()->createUrl(
+                $sRedirectUrl = $this->createUrl(
                     // TODO: Double check
                     'questionAdministration/view/',
                     [
@@ -553,7 +553,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 );
                 break;
             case 'save-and-new':
-                $sRedirectUrl = $this->getController()->createUrl(
+                $sRedirectUrl = $this->createUrl(
                     'questionGroupsAdministration/add/',
                     [
                         'surveyid' => $iSurveyId,
@@ -561,7 +561,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 );
                 break;
             default:
-                $sRedirectUrl = $this->getController()->createUrl(
+                $sRedirectUrl = $this->createUrl(
                     'questionGroupsAdministration/view/',
                     [
                         'surveyid' => $iSurveyId,
