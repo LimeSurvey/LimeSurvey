@@ -108,8 +108,11 @@ class printablesurvey extends Survey_Common_Action
             // foreach ($aCssFiles as $cssFile) {
             //     Yii::app()->getClientScript()->registerCssFile("{$sFullTemplateUrl}{$cssFile}");
             // }
-
-            $arGroups = QuestionGroup::model()->findAllByAttributes(['sid' => $surveyid]); //xiao,
+            $oGroupsCriteria = new CDbCriteria();
+            $oGroupsCriteria->condition = "sid = :sid";
+            $oGroupsCriteria->params = array(':sid' => $surveyid);
+            $oGroupsCriteria->order = "group_order";
+            $arGroups = QuestionGroup::model()->findAll($oGroupsCriteria); //xiao,
             if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber)) {
                 $surveyfaxto = $surveyfaxnumber; //Use system fax number if none is set in survey.
             }
