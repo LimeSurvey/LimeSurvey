@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.10 (build 200812) to 4.3.11 (build 200817) August 17, 2020
+-Fixed issue #16566: We cannot create multiple choice questions   (Gabriel Jenik)
+-Fixed issue #16483: Adding condition triggers bulk update for complete database (Gabriel Jenik)
+-Fixed issue #16335: Cannot see more label sets if the list is long (Gabriel Jenik)
+-Fixed issue #16326: Statistics filters do not reflect percentages and totals (Gabriel Jenik)
+-Fixed issue #16206: Slider tip indicates false error (Gabriel Jenik)
+-Fixed issue #15929: Missing button to scan files at plugin overview at LS4  (Gabriel Jenik)
+-Fixed issue #15864: When deleting a question at LS 4 the system switches to the "Settings" menu (Gabriel Jenik)
+#Updated translation: Korean by zist21
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Danish by pedesjensen, Mikkel, c_schmitz
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Taiwan) (Traditional) by scott306lr
+
+
 Changes from 4.3.9 (build 200806) to 4.3.10 (build 200812) August 12, 2020
 -Fixed issue #16550: Answer option code is not limited to 5 characters (#1541) (Gabriel Jenik)
 -Fixed issue #16539: "Structure" should be shown when editing conditions (via the condition designer) (#1522) (Gabriel Jenik)
