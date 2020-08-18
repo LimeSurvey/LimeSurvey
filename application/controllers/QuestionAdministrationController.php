@@ -923,7 +923,7 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CDbException
      * @throws CHttpException
      */
-    public function actionDelete($qid = null, $gid = null, $massAction = false, $redirectTo = null)
+    public function actionDelete($qid = null, $massAction = false, $redirectTo = null)
     {
         if (is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
@@ -949,7 +949,7 @@ class QuestionAdministrationController extends LSBaseController
 				'questionGroupsAdministration/view/',
 				[
 					'surveyid' => $surveyid,
-					'gid' => $gid,
+					'gid' => $oQuestion->gid,
 					'landOnSideMenuTab' => 'structure'
 				]
 			);
