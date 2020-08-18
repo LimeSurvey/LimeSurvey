@@ -282,10 +282,9 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         // Store changes to the actual question data, by either storing it, or updating an old one
-        $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',
-            [':sid' => $iSurveyId, ':qid' => $questionData['question']['qid']]
+            [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
         );
         if ($oQuestion == null || $questionCopy == true) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
@@ -367,7 +366,7 @@ class QuestionAdministrationController extends LSBaseController
 
         // Compile the newly stored data to update the FE
         //$oNewQuestion = Question::model()->findByPk($oQuestion->qid);
-        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $oQuestion->qid]);
+        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => (int) $oQuestion->qid]);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions(
@@ -1410,7 +1409,7 @@ class QuestionAdministrationController extends LSBaseController
         //$oQuestion = Question::model()->findByPk($iQuestionId);
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',
-            [':sid' => $iSurveyId, ':qid' => $iQuestionId]
+            [':sid' => $iSurveyId, ':qid' => (int) $iQuestionId]
         );
 
         if ($oQuestion == null) {
@@ -1901,7 +1900,7 @@ class QuestionAdministrationController extends LSBaseController
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 $oSubQuestion = Question::model()->find(
                     'sid = :sid AND qid = :qid',
-                    [':sid' => $oQuestion->sid, ':qid' => $aSubquestionDataSet['qid']]
+                    [':sid' => $oQuestion->sid, ':qid' => (int) $aSubquestionDataSet['qid']]
                 );
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
