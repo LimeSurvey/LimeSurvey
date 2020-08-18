@@ -35,8 +35,8 @@ class SurveysController extends LSYii_Controller
         $this->sTemplate = $oTemplate->sTemplateName;
 
         $aData = array(
-            'publicSurveys'     => Survey::model()->active()->open()->with('languagesettings')->findAllPublic(),
-            'futureSurveys'     => Survey::model()->active()->registration()->with('languagesettings')->findAllPublic(),
+            'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
+            'futureSurveys'     => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
             'oTemplate'         => $oTemplate,
             'sSiteName'         => Yii::app()->getConfig('sitename'),
             'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
