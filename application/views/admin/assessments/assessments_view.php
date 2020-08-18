@@ -53,7 +53,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
                             )
                         ),
-                        //'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
+                        'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
                         'htmlOptions' => array('class'=> 'table-responsive'),
                         'itemsCssClass' => 'table table-responsive table-striped',
                         'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
