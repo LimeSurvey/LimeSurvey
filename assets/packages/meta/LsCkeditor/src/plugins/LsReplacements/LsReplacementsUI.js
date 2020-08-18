@@ -64,7 +64,7 @@ export default class LsReplacementsUI extends Plugin {
         const editor = this.editor;
         return new Promise((resolve,reject) => {
             $.ajax({
-                url: LS.createUrl('admin/limereplacementfields'),
+                url: LS.createUrl('limereplacementfields/index'),
                 data: LS.ld.merge({},{'newtype': 1, 'fieldtype': editor.config.get('lsExtension:fieldtype')}, editor.config.get('lsExtension:ajaxOptions'), data),
                 success: resolve,
                 error: reject

@@ -18,7 +18,7 @@
             $data['csrfToken']                  = Yii::app()->request->csrfToken;
             $data['csrfTokenData']              = array(Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken);
             $data['language']                   = Yii::app()->language;
-            $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
+            $data['replacementFields']['path']  = App()->createUrl("limereplacementfields/index");
             $json = json_encode($data, JSON_FORCE_OBJECT);
             $script = "LS.data = $json;\n"
                     . "LS.lang = {
