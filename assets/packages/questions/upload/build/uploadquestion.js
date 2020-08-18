@@ -703,7 +703,6 @@
           toDeleteFlag = true; // Fix IE mixed content issue
 
           iframe.src = "javascript:'<html></html>';";
-          removeNode(iframe);
         });
       },
 
@@ -727,10 +726,7 @@
         } // sending request
 
 
-        var iframe = this._createIframe(); // Get response from iframe and fire onComplete event when ready
-
-
-        this._getResponse(iframe, file);
+        var iframe = this._createIframe();
 
         var form = this._createForm(iframe); // assuming following structure
         // div -> input type='file'
@@ -745,7 +741,10 @@
         removeNode(form);
         form = null;
         removeNode(this._input);
-        this._input = null; // get ready for next request
+        this._input = null; // Get response from iframe and fire onComplete event when ready
+
+        this._getResponse(iframe, file); // get ready for next request
+
 
         this._createInput();
       }
@@ -788,7 +787,6 @@
           var uploadFrame = $('#uploader' + _this.fieldname);
           window.currentUploadHandler.saveAndExit(_this.fieldname, _this.show_title, _this.show_comment, 1);
           uploadFrame.html('');
-          triggerEmRelevance();
           return true;
         });
         this.$el.off('click.lsuploadquestion');
@@ -1232,7 +1230,10 @@
   }
 
   window.getUploadHandler = function (qid, options) {
-    window.currentUploadHandler = new uploadHandler(qid, options);
+    if (!window.currentUploadHandler) {
+      window.currentUploadHandler = new uploadHandler(qid, options);
+    }
+
     window.currentUploadHandler.init();
     return window.currentUploadHandler;
   };
