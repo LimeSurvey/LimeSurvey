@@ -208,8 +208,8 @@ class UserGroupController extends LSBaseController
             if ($action == "editusergroupindb") {
                 $ugid = (int) $_POST['ugid'];
 
-                $groupName = $_POST['name'];
-                $groupDescription = $_POST['description'];
+                $groupName = flattenText($_POST['name'], false, true, 'UTF-8');
+                $groupDescription = flattenText($_POST['description']);
                 if (UserGroup::model()->updateGroup($groupName, $groupDescription, $ugid)) {
                     Yii::app()->session['flashmessage'] = gT("User group successfully saved!");
                     $aData['ugid'] = $ugid;
