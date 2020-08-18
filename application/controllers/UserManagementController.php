@@ -849,7 +849,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchAddGroup()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
