@@ -27,6 +27,7 @@ class UploadQuestionController {
             const uploadFrame = $('#uploader' + this.fieldname);
             window.currentUploadHandler.saveAndExit(this.fieldname, this.show_title, this.show_comment, 1);
             uploadFrame.html('');
+            triggerEmRelevance();
             return true;
 
         });
