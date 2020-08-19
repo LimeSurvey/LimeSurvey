@@ -244,9 +244,11 @@ $topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['
 
 // Save and Close Button
 if ($ownsSaveButton == true) {
+    // TODO: Not used?
     $saveAndNewLink = $this->createUrl("questionGroupsAdministration/add/", ["surveyid" => $sid]);
 
     $paramArray = $gid != null ? [ "surveyid" => $sid, 'gid' => $gid] : [ "surveyid" => $sid ];
+    // TODO: Not used?
     $saveAndAddQuestionLink = $this->createUrl("questionAdministration/view/", $paramArray);
 
     $saveButton = [
@@ -263,7 +265,7 @@ if ($ownsSaveButton == true) {
         'id' => 'save-and-new-button',
         'name' => gT('Save and add group'),
         'icon' => 'fa fa-plus-square',
-        'url' => $saveAndNewLink,
+        'scenario' => 'save-and-new',
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
@@ -273,7 +275,7 @@ if ($ownsSaveButton == true) {
         'id' => 'save-and-new-question-button',
         'icon' => 'fa fa-plus',
         'name' => gT('Save and add question'),
-        'url' => $saveAndAddQuestionLink,
+        'scenario' => 'save-and-new-question',
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];

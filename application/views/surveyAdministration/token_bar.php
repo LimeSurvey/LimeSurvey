@@ -211,7 +211,7 @@ if (!$onlyclose) {
             $isDisabled = true;
         }
 
-        if (($oSurvey->bounceprocessing != 'N' || ($oSurvey->bounceprocessing == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))) {
+        if (!($oSurvey->bounceprocessing != 'N' || ($oSurvey->bounceprocessing == 'G' && getGlobalSetting('bounceaccounttype') != 'off'))) {
             $errorMessages[] = gT("Bounce processing is deactivated either application-wide or for this survey in particular.");
             $isDisabled = true;
         }

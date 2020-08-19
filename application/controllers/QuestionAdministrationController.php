@@ -46,9 +46,6 @@ class QuestionAdministrationController extends LSBaseController
 
             $this->layout = 'layout_questioneditor';
         }
-        /*else{
-            $this->layout = 'main';
-        }*/
 
         return parent::beforeRender($view);
     }
@@ -351,10 +348,9 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         // Store changes to the actual question data, by either storing it, or updating an old one
-        $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',
-            [':sid' => $iSurveyId, ':qid' => $questionData['question']['qid']]
+            [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
         );
         if ($oQuestion == null || $questionCopy == true) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
@@ -436,7 +432,7 @@ class QuestionAdministrationController extends LSBaseController
 
         // Compile the newly stored data to update the FE
         //$oNewQuestion = Question::model()->findByPk($oQuestion->qid);
-        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => $oQuestion->qid]);
+        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => (int) $oQuestion->qid]);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions(
@@ -988,11 +984,12 @@ class QuestionAdministrationController extends LSBaseController
      * @access public
      * @param int $qid
      * @param bool $massAction
+     * @param string $redirectTo Redirect to question list ('questionlist' or empty), or group overview ('groupoverview')
      * @return array|void
      * @throws CDbException
      * @throws CHttpException
      */
-    public function actionDelete($qid = null, $massAction = false)
+    public function actionDelete($qid = null, $massAction = false, $redirectTo = null)
     {
         if (is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
@@ -1010,6 +1007,28 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(405, gT("Invalid action"));
         }
 
+		if (empty($redirectTo)) {
+			$redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
+		}
+		if ($redirectTo == 'groupoverview') {
+			$redirect = Yii::app()->createUrl(
+				'questionGroupsAdministration/view/',
+				[
+					'surveyid' => $surveyid,
+					'gid' => $oQuestion->gid,
+					'landOnSideMenuTab' => 'structure'
+				]
+			);
+		} else {
+			$redirect = Yii::app()->createUrl(
+				'admin/survey/sa/listquestions/',
+				[
+					'surveyid' => $surveyid,
+					'landOnSideMenuTab' => 'settings'
+				]
+			);
+		}
+
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
         // Check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -1020,6 +1039,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($iConditionsCount) {
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
+            $this->redirect($redirect);
             $this->redirect(['questionAdministration/listquestions/surveyid/' . $surveyid]);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
@@ -1479,7 +1499,7 @@ class QuestionAdministrationController extends LSBaseController
         //$oQuestion = Question::model()->findByPk($iQuestionId);
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',
-            [':sid' => $iSurveyId, ':qid' => $iQuestionId]
+            [':sid' => $iSurveyId, ':qid' => (int) $iQuestionId]
         );
 
         if ($oQuestion == null) {
@@ -1970,7 +1990,7 @@ class QuestionAdministrationController extends LSBaseController
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 $oSubQuestion = Question::model()->find(
                     'sid = :sid AND qid = :qid',
-                    [':sid' => $oQuestion->sid, ':qid' => $aSubquestionDataSet['qid']]
+                    [':sid' => $oQuestion->sid, ':qid' => (int) $aSubquestionDataSet['qid']]
                 );
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);

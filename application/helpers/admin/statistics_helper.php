@@ -1521,7 +1521,7 @@ class statistics_helper
                     elseif ($al[0] == "NoAnswer") {
                         foreach ($oResponses as $oResponse){
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn == ''){
+                            if ($oResponse->$sResponseColumn === ''){
                                 $row += 1;
                             }
                         }
@@ -1573,7 +1573,7 @@ class statistics_helper
                     //  ==> value is NULL
                     foreach ($oResponses as $oResponse){
                         $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' '){
+                        if ($oResponse->$sResponseColumn === '' || $oResponse->$sResponseColumn == ' '){
                             $row += 1;
                         }
                     }
@@ -2242,6 +2242,12 @@ class statistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $criteria->addCondition("submitdate is not null");
         }
+
+        //check for any "sql" that has been passed from another script
+        if (!empty($sql)) {
+            $criteria->addCondition($sql);
+        }
+
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach($oResponses as $key => $oResponse){
@@ -2301,7 +2307,7 @@ class statistics_helper
                     elseif ($al[0] == "NoAnswer") {
                         foreach ($oResponses as $oResponse){
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn == ''){
+                            if ($oResponse->$sResponseColumn === ''){
                                 $row += 1;
                             }
                         }
@@ -2352,16 +2358,13 @@ class statistics_helper
                     //  ==> value is NULL
                     foreach ($oResponses as $oResponse){
                         $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' '){
+                        if ($oResponse->$sResponseColumn === '' || $oResponse->$sResponseColumn == ' '){
                             $row += 1;
                         }
                     }
                 }
 
             }
-
-            //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {$query .= " AND $sql"; }
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero

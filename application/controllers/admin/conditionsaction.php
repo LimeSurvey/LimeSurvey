@@ -109,6 +109,7 @@ class conditionsaction extends Survey_Common_Action
 
         $aData = [];
         $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
