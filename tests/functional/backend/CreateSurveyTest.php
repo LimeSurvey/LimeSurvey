@@ -75,7 +75,8 @@ class CreateSurveyTest extends TestBaseClassWeb
             // Go to main page.
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('admin');
+            $url = $urlMan->createUrl('');
+
             self::$webDriver->get($url);
 
             sleep(1);
