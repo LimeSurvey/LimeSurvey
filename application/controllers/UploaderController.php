@@ -325,8 +325,8 @@ class UploaderController extends SurveyController
         $oTemplate = Template::model()->getInstance('', $surveyid);
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . '../packages/questions/upload/build/uploadquestion.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . '../packages/questions/upload/src/ajaxupload.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . 'questions/upload/build/uploadquestion.js');
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . 'questions/upload/src/ajaxupload.js');
 
         $header = getHeader($meta);
 
