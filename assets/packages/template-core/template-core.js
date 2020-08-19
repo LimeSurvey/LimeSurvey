@@ -114,6 +114,8 @@ var TemplateCoreClass = function () {
                 }, data);
                 if (data.style == 'hidden') {
                     $(this).closest(".question-container").removeClass("ls-hidden");
+                    // Show bootstrap button container
+                    $(this).closest(".bootstrap-buttons-div").removeClass("ls-hidden");
                 }
             });
             $(".question-container:not(.ls-hidden)").on('relevance:off', "[id^='javatbd']", function (event, data) {
@@ -127,6 +129,8 @@ var TemplateCoreClass = function () {
                     if ($(questionContainer).find("[id^='javatbd']").filter(':not(.ls-hidden)').length == 0) {
                         $(questionContainer).addClass("ls-hidden");
                     }
+                    // Hide bootstrap button container
+                    $(this).closest(".bootstrap-buttons-div").addClass("ls-hidden");
                 }
             });
         },
