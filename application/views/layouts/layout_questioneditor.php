@@ -10,9 +10,7 @@ $layoutHelper = new LayoutHelper();
 //All paths relative from /application/views
 
 $layoutHelper->showHeaders($aData, false);
-//$this->_showHeaders($aData, false);
 
-//$this->_showadminmenu($aData);
 $layoutHelper->showadminmenu($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
@@ -46,35 +44,13 @@ $layoutHelper->renderGeneraltopbar($aData);
 
 echo '<div id="pjax-content" class="col-12">';
 
-//topbar for questioneditor is now rendered by actionGetQuestionTopbar in QuestionEditorController
-//$layoutHelper->renderOrganizeQuestionBar($aData);
-
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column fill col-12"'
     . '>';
 
 //Rendered through /admin/update/_update_notification
-//$this->_updatenotification();
 $layoutHelper->updatenotification();
-
-//Rendered through /notifications/notifications
-//$this->_notifications();
 $layoutHelper->notifications();
-
-// Here the main content views.
-//$this->_listquestiongroups($aData);
-// $layoutHelper->renderListQuestionGroups($aData); this will be rendered directly by actionListquestiongroups
-
-//Rendered through /admin/survey/Question/listquestions
-//$this->_listquestions($aData);
-//$layoutHelper->renderListQuestions($aData);  refactored in QuestionAdministrationController actionListquestions
-
-
-//Rendered through /admin/super/sidebody
-//With content of /admin/survey/surveySummary_view
-//$this->_nsurveysummary($aData);
-//$layoutHelper->renderSurveySummary($aData); this is handled now in SurveyAdministrationController
-
 
 echo $content;
 

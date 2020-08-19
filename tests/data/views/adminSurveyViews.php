@@ -12,20 +12,20 @@ return [
 
     // Survey main menu
     ['surveyGeneralSettings', ['route'=>'surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/{SID}', 'noAdminInFront' => true]],
-    ['surveyTexts', ['route'=>'surveyAdministration/rendersidemenulink/subaction/surveytexts/surveyid/{SID}'], 'noAdminInFront' => true],
+    ['surveyTexts', ['route'=>'surveyAdministration/rendersidemenulink/subaction/surveytexts/surveyid/{SID}', 'noAdminInFront' => true ]],
     ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
     ['surveyPresentationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/presentation/surveyid/{SID}', 'noAdminInFront' => true]],
 
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
-    ['surveyParticipantTokenOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/tokens/surveyid/{SID}'], 'noAdminInFront' => true],
+    ['surveyParticipantTokenOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/tokens/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
     ['surveyAssessments', ['route'=>'assessments/sa/index/surveyid/{SID}']],
-    ['surveyNotificationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/notification/surveyid/{SID}'], 'noAdminInFront' => true],
-    ['surveyPublicationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/publication/surveyid/{SID}'], 'noAdminInFront' => true],
+    ['surveyNotificationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/notification/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyPublicationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/publication/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
-    ['surveyPanelIntegration', ['route'=>'surveyAdministration/rendersidemenulink/subaction/panelintegration/surveyid/{SID}'], 'noAdminInFront' => true],
-    ['surveyPlugins', ['route'=>'surveyAdministration/rendersidemenulink/subaction/plugins/surveyid/{SID}'], 'noAdminInFront' => true],
-    ['surveyListQuestions', ['route'=>'questionAdministration/listquestions/surveyid/{SID}'], 'noAdminInFront' => true],
+    ['surveyPanelIntegration', ['route'=>'surveyAdministration/rendersidemenulink/subaction/panelintegration/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyPlugins', ['route'=>'surveyAdministration/rendersidemenulink/subaction/plugins/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyListQuestions', ['route'=>'questionAdministration/listquestions/surveyid/{SID}', 'noAdminInFront' => true]],
 
     // going deeper -------------------------------------
     // --------------------------------------------------

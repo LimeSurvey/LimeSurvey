@@ -1021,7 +1021,7 @@ class QuestionAdministrationController extends LSBaseController
 			);
 		} else {
 			$redirect = Yii::app()->createUrl(
-				'admin/survey/sa/listquestions/',
+				'surveyAdministration/listQuestions/',
 				[
 					'surveyid' => $surveyid,
 					'landOnSideMenuTab' => 'settings'
@@ -1053,8 +1053,6 @@ class QuestionAdministrationController extends LSBaseController
                 'status'  => $result
             ];
         }
-
-        $redirect = Yii::app()->createUrl('questionAdministration/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [

@@ -349,7 +349,7 @@ class AdminController extends LSYii_Controller
         'responses'        => 'responses',
         'saved'            => 'saved',
         'statistics'       => 'statistics',
-        'survey'           => 'surveyadmin',
+      //  'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
         'usermanagement'   => 'UserManagement',

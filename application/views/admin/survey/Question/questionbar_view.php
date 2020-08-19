@@ -1,7 +1,9 @@
 <?php
 $aReplacementData=array();
 
-/** @deprecated this view is deprecated and not used anymore... "question_topbar.php" is used instead */
+/** @deprecated this view is deprecated and not used anymore... "question_topbar.php" is used instead
+    @deprecated don't delete it now (maybe we will reuse after vue.js is deleted ...)
+ */
 ?>
 
 <div class='menubar surveybar' id="questionbarid" style="display:none">
