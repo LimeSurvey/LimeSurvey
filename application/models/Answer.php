@@ -108,7 +108,7 @@ class Answer extends LSActiveRecord
 
     public function checkUniqueness($attribute, $params)
     {
-        if($this->code !== $this->oldCode || $this->qid !== $this->oldQid || $this->scale_id !== $this->oldScaleId)
+        if($this->code !== $this->oldCode || $this->qid != $this->oldQid || $this->scale_id != $this->oldScaleId)
         {
             $model = self::model()->find('code = ? AND qid = ? AND scale_id = ?', array($this->code, $this->qid, $this->scale_id));
             if($model != null)
