@@ -109,6 +109,10 @@ class UserManagementController extends LSBaseController
         }
 
         $aUser = Yii::app()->request->getParam('User');
+        // Sanitize full name to prevent XSS attack
+        if (isset($aUser['full_name'])) {
+            $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
+        }
         $passwordTest = Yii::app()->request->getParam('password_repeat', false);
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
@@ -181,7 +185,7 @@ class UserManagementController extends LSBaseController
         $times = App()->request->getParam('times', 5);
         $passwordSize = (int) App()->request->getParam('passwordsize', 5);
         $passwordSize = $passwordSize < 8 || is_nan($passwordSize) ? 8 : $passwordSize;
-        $prefix = App()->request->getParam('prefix', 'randuser_');
+        $prefix = flattenText(App()->request->getParam('prefix', 'randuser_'));
         $email = App()->request->getParam('email', User::model()->findByPk(App()->user->id)->email);
 
         $randomUsers = [];
