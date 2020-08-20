@@ -3128,6 +3128,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 429) {
+            // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => '',
+                    'action'    => 'updatesurveylocalesettings',
+                    'template'  => 'editLocalSettings_main_view',
+                    'partial'   => '/admin/survey/subview/accordion/_resources_panel',
+                    'getdatamethod' => '_tabResourceManagement'
+                ),
+                "name='resources'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
         //todo change number when ready ...
         if ($iOldDBVersion <429) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
