@@ -60,7 +60,7 @@ export default {
                     'iQuestionGroupId' : window.QuestionGroupEditData.gid
                 })
             ).then((result) => {
-                context.commit('setQuestionList', result.data);
+                context.commit('setQuestionList', result.data.questions);
                 resolve(true);
             })
             .catch((error) => {
@@ -69,14 +69,15 @@ export default {
             });
         });
     },
-    saveQuestionGroupData: (context) => {
-        if (context.state.inTransfer ) {
+    saveQuestionGroupData: (context, scenario='') => {
+        if(context.state.inTransfer ) {
             return Promise.resolve(false);
         }
         
         let transferObject = merge({
             'questionGroup': context.state.currentQuestionGroup,
-            'questionGroupI10N': context.state.currentQuestionGroupI10N
+            'questionGroupI10N': context.state.currentQuestionGroupI10N,
+            'scenario': scenario
         }, window.LS.data.csrfTokenData);
         
         return new Promise((resolve, reject) => {

@@ -575,7 +575,8 @@ class SurveyAdmin extends Survey_Common_Action
                         $questionText = isset($question->questionl10ns[$baselang])
                             ? $question->questionl10ns[$baselang]->question
                             : '';
-                        $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($questionText, true);
+                        $decodedQuestionText = htmlspecialchars_decode(viewHelper::flatEllipsizeText($questionText, true));
+                        $curQuestion['question_flat'] = strip_tags($decodedQuestionText);
                         $curGroup['questions'][] = $curQuestion;
                     }
 
@@ -692,12 +693,13 @@ class SurveyAdmin extends Survey_Common_Action
      * Load list questions view for a specified survey by $surveyid
      *
      * @param int $surveyid Goven Survey ID
+     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on settings tab.
      * 
      * @return string
      * @access public
      * @todo   php warning (Missing return statement)
      */
-    public function listquestions($surveyid)
+    public function listquestions($surveyid, $landOnSideMenuTab = 'settings')
     {
         $iSurveyID = sanitize_int($surveyid);
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
@@ -719,6 +721,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid']                              = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
+        $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
         $aData['surveybar']['returnbutton']['url']      = $this->getController()->createUrl(
             "admin/survey/sa/listsurveys"
         );

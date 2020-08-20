@@ -65,12 +65,14 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionView($surveyid, $gid = null, $qid = null, $landOnSideMenuTab = 'structure')
     {
-        if (is_null($qid) && !Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+        $aData = [];
+        $iSurveyID = (int)$surveyid;
+
+        if (is_null($qid) && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(App()->request->urlReferrer);
         }
-        $aData = [];
-        $iSurveyID = (int)$surveyid;
+
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if ($oSurvey === null) {
@@ -280,7 +282,10 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         // Store changes to the actual question data, by either storing it, or updating an old one
-        $oQuestion = Question::model()->findByPk($questionData['question']['qid']);
+        $oQuestion = Question::model()->find(
+            'sid = :sid AND qid = :qid',
+            [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
+        );
         if ($oQuestion == null || $questionCopy == true) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
         } else {
@@ -360,7 +365,8 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // Compile the newly stored data to update the FE
-        $oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        //$oNewQuestion = Question::model()->findByPk($oQuestion->qid);
+        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => (int) $oQuestion->qid]);
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions(
@@ -912,11 +918,12 @@ class QuestionAdministrationController extends LSBaseController
      * @access public
      * @param int $qid
      * @param bool $massAction
+     * @param string $redirectTo Redirect to question list ('questionlist' or empty), or group overview ('groupoverview')
      * @return array|void
      * @throws CDbException
      * @throws CHttpException
      */
-    public function actionDelete($qid = null, $massAction = false)
+    public function actionDelete($qid = null, $massAction = false, $redirectTo = null)
     {
         if (is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
@@ -934,6 +941,28 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(405, gT("Invalid action"));
         }
 
+		if (empty($redirectTo)) {
+			$redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
+		}
+		if ($redirectTo == 'groupoverview') {
+			$redirect = Yii::app()->createUrl(
+				'questionGroupsAdministration/view/',
+				[
+					'surveyid' => $surveyid,
+					'gid' => $oQuestion->gid,
+					'landOnSideMenuTab' => 'structure'
+				]
+			);
+		} else {
+			$redirect = Yii::app()->createUrl(
+				'admin/survey/sa/listquestions/',
+				[
+					'surveyid' => $surveyid,
+					'landOnSideMenuTab' => 'settings'
+				]
+			);
+		}
+
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
         // Check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -944,7 +973,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($iConditionsCount) {
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
-            $this->redirect(['admin/survey/sa/listquestions/surveyid/' . $surveyid]);
+            $this->redirect($redirect);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
             $result = $oQuestion->delete();
@@ -958,7 +987,6 @@ class QuestionAdministrationController extends LSBaseController
             ];
         }
 
-        $redirect = Yii::app()->createUrl('admin/survey/sa/listquestions/', ['surveyid' => $surveyid]);
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [
@@ -1400,7 +1428,11 @@ class QuestionAdministrationController extends LSBaseController
     {
         //todo: this should be done in the action directly
         $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
-        $oQuestion = Question::model()->findByPk($iQuestionId);
+        //$oQuestion = Question::model()->findByPk($iQuestionId);
+        $oQuestion = Question::model()->find(
+            'sid = :sid AND qid = :qid',
+            [':sid' => $iSurveyId, ':qid' => (int) $iQuestionId]
+        );
 
         if ($oQuestion == null) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
@@ -1888,6 +1920,10 @@ class QuestionAdministrationController extends LSBaseController
         foreach ($dataSet as $aSubquestions) {
             foreach ($aSubquestions as $aSubquestionDataSet) {
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
+                $oSubQuestion = Question::model()->find(
+                    'sid = :sid AND qid = :qid',
+                    [':sid' => $oQuestion->sid, ':qid' => (int) $aSubquestionDataSet['qid']]
+                );
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
                 } elseif (!$oQuestion->survey->isActive) {

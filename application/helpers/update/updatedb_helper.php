@@ -2385,7 +2385,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                             'title' => 'LimeStore',
                             'ico'   => 'fa fa-cart-plus',
                             'desc'  => 'LimeSurvey extension marketplace',
-                            'url'   => 'https://www.limesurvey.org/limestore'
+                            'url'   => 'https://account.limesurvey.org/limestore'
                         ],
                         'id = 5'
                     );
@@ -3084,7 +3084,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
         if ($iOldDBVersion < 427) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -3100,6 +3099,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 "name='resources'"
             );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Add missing noTablesOnMobile.css to vanilla and bootswatch configs
+         */
+        if ($iOldDBVersion < 428) {
+            $oTransaction = $oDB->beginTransaction();
+            // Update vanilla config
+            $oDB->createCommand()->update(
+                '{{template_configuration}}',
+                [
+                    'files_css' => '{"add":["css/base.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
+                ],
+                "template_name = 'vanilla' AND files_css != 'inherit'"
+            );
+            // Update bootswatch config
+            $oDB->createCommand()->update(
+                '{{template_configuration}}',
+                [
+                    'files_css' => '{"add":["css/base.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
+                ],
+                "template_name = 'bootswatch' AND files_css != 'inherit'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 

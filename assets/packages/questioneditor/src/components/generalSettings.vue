@@ -1,6 +1,10 @@
 
 <template>
-    <div class="ls-flex scope-set-min-height scoped-general-settings" :class="collapsedMenu ? 'collapsed' : 'non-collapsed'">
+    <div 
+        class="ls-flex scope-set-min-height scoped-general-settings" 
+        :class="collapsedMenu ? 'collapsed' : 'non-collapsed'" 
+        @dblclick="toggleEditMode"
+    >
         <transition name="slide-fade">
             <div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
                 <div class="panel-heading"> 
@@ -120,6 +124,11 @@ export default {
         },
         isReadonly(setting){
             return this.readonly || (setting.disableInActive && this.surveyActive);
+        },
+        toggleEditMode(){
+            if(this.readonly) {
+                this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+            }
         }
     },
     created(){

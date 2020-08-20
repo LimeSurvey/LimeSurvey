@@ -552,7 +552,7 @@ class Survey extends LSActiveRecord
         $allowedAttributes = array('template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay',
-            'expires','stardate','admin','adminemail','emailnotificationto','emailresponseto');
+            'expires','startdate','admin','adminemail','emailnotificationto','emailresponseto');
         foreach ($allowedAttributes as $attribute) {
             if (!is_null($event->get($attribute))) {
                 $this->{$attribute} = $event->get($attribute);
@@ -833,6 +833,33 @@ class Survey extends LSActiveRecord
     public function getSurveyTemplateConfiguration()
     {
         return TemplateConfiguration::getInstance(null, null, $this->sid);
+    }
+
+    /**
+     * Returns the name of the template to be used for the survey.
+     * It resolves inheritance from group and from default settings.
+     * 
+     * @return string
+     * 
+     * @todo:  Cache this on a private attribute?
+     */
+    public function getTemplateEffectiveName()
+    {
+        // Fetch template name from model
+        // This was already filtered on afterFind, so if the one at load time is not valid, will be replaced by default one
+        // If it is "inherit", means it will inherit from group, so we will replace it.
+        $sTemplateName = $this->template;
+
+        // if it is "inherit", get template name form group
+        if ($sTemplateName == 'inherit') {            
+            if (!empty($this->oOptions->template)) {
+                $sTemplateName = $this->oOptions->template;
+            } else {
+                throw new CException("Unable to get a template name from group for survey {$this->sid}");
+            }
+        }  
+        
+        return $sTemplateName;
     }
 
     /**
@@ -2040,6 +2067,14 @@ return $s->hasTokensTable; });
         foreach ($settings as $key => $value){
             $this->$key = $value;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getOwnerUserName()
+    {
+        return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
     }
 
 }

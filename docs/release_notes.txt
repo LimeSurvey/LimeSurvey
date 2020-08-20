@@ -34,6 +34,163 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.10 (build 200812) to 4.3.11 (build 200817) August 17, 2020
+-Fixed issue #16566: We cannot create multiple choice questions   (Gabriel Jenik)
+-Fixed issue #16483: Adding condition triggers bulk update for complete database (Gabriel Jenik)
+-Fixed issue #16335: Cannot see more label sets if the list is long (Gabriel Jenik)
+-Fixed issue #16326: Statistics filters do not reflect percentages and totals (Gabriel Jenik)
+-Fixed issue #16206: Slider tip indicates false error (Gabriel Jenik)
+-Fixed issue #15929: Missing button to scan files at plugin overview at LS4  (Gabriel Jenik)
+-Fixed issue #15864: When deleting a question at LS 4 the system switches to the "Settings" menu (Gabriel Jenik)
+#Updated translation: Korean by zist21
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Danish by pedesjensen, Mikkel, c_schmitz
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Taiwan) (Traditional) by scott306lr
+
+
+Changes from 4.3.9 (build 200806) to 4.3.10 (build 200812) August 12, 2020
+-Fixed issue #16550: Answer option code is not limited to 5 characters (#1541) (Gabriel Jenik)
+-Fixed issue #16539: "Structure" should be shown when editing conditions (via the condition designer) (#1522) (Gabriel Jenik)
+-Fixed issue #16534: No creation date when importing participants to CPDB (#1529) (Gabriel Jenik)
+-Fixed issue #16531: Validation regex including unicode characters fails (#1521) (Gabriel Jenik)
+-Fixed issue #16529: After deleting a user who owned a survey, the survey list generates a dump (#1513) (Gabriel Jenik)
+-Fixed issue #16508: Can't run survey with child theme because of enheritance problems. (#1523) (Gabriel Jenik)
+-Fixed issue #16269: "Start bounce processing" menu item doesn't work (#1533) (Gabriel Jenik)
+-Fixed issue #16250: Slider for numeric question display text area (#1512) (Gabriel Jenik)
+-Fixed issue #16235: Welcome page show again if cookies are enable and survey is already done (#1538) (Gabriel Jenik)
+-Fixed issue #16205: Slider left/right text and min/max not displayed correctly (#1509) (Gabriel Jenik)
+-Fixed issue #15979: "Save and add group" plus "Save and add question" do not work correctly. (#1515) (Gabriel Jenik)
+-Fixed issue #15939: Update to 4x seems to have changed the Display/Export (#1503) (Gabriel Jenik)
+-Fixed issue #15758: Slider settings not saved (#1504) (Gabriel Jenik)
+
+
+Changes from 4.3.8 (build 200803) to 4.3.9 (build 200806) August 6, 2020
+-Fixed issue: When editing a token the date/time format is not properly displayed and handled on "invitation sent" or "reminder sent" field and thus wrong values are saved (Carsten Schmitz)
+-Fixed issue: Renamed Valencian translation to correct term (Carsten Schmitz)
+-Fixed issue #16561: Batch-editing tokens does not set fields properly if "completed", "invitation sent" or "reminder sent" is set to No. (Carsten Schmitz)
+-Fixed issue #16469: Any admin user can see any question (without read right on survey) (Denis Chenu)
+-Fixed issue #16467: Reflected XSS vulnerabilities (Denis Chenu)
+#Updated translation: Ukrainian by imnetxiin
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by gLf
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+
+
+Changes from 4.3.7 (build 200730) to 4.3.8 (build 200803) August 3, 2020
+-Fixed issue #16554: Upgrading from 4.0.1 to 4.3.7, the "Save" button is now missing in question creation (#1528) (Gabriel Jenik)
+-Fixed issue #16521: After updating an answer option, the related condition doesn't get updated (GabrielJenik)
+-Fixed issue #16519: For specific screen navigation, condition is not saved properly (GabrielJenik)
+-Fixed issue #16509: Permissions are weakly checked on conditions designer (GabrielJenik)
+-Fixed issue #16363: File Upload in LS4 & IE 11 (GabrielJenik)
+-Fixed issue #16127: Copy condition and other buttons missing in top panel (GabrielJenik)
+-Fixed issue #16081: Click on "Add question" located under Structure tab - view does not move to the newly created question. (GabrielJenik)
+-Fixed issue #15860: Changing language at question preview leads to loading the wrong page (GabrielJenik)
+#Updated translation: Ukrainian by imnetxiin
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Croatian by rovinj
+
+
+Changes from 4.3.6 (build 200727) to 4.3.7 (build 200730) July 30, 2020
+-Fixed issue #16533: Double clicking on question overiew for read only user navigates to question editor (GabrielJenik)
+-Fixed issue #16380: On clicking on delete user icon from user control screen lands in different page (GabrielJenik)
+-Fixed issue #15978: Multiple numerical input (Equals sum value: Remaining and Total missing) (GabrielJenik)
+-Fixed issue #15945: Cannot add condition based on Survey participant attributes (GabrielJenik)
+#Updated translation: Portuguese (Brazil) by cassiofs
+#Updated translation: Italian by ritapas
+#Updated translation: French (France) by bethencourty
+
+
+Changes from 4.3.5 (build 200721) to 4.3.6 (build 200727) July 27, 2020
+-Fixed issue #16526: Expression in subquestion for array dual scale not updated (Denis Chenu)
+-Fixed issue #16149: See survey list - owner column is not correct (GabrielJenik)
+-Fixed issue #16039: Order of items not a numerical order (#1490) (Gabriel Jenik)
+#Updated translation: Ukrainian by imnetxiin
+#Updated translation: Russian by imnetxiin
+#Updated translation: Portuguese (Brazil) by cassiofs
+#Updated translation: Japanese by nomoto
+#Updated translation: German by lsurvey20
+#Updated translation: German (Informal) by lsurvey20
+#Updated translation: Czech by jelen1
+#Updated translation: Croatian by rovinj
+
+
+Changes from 4.3.4 (build 200713) to 4.3.5 (build 200721) July 20, 2020
+-Fixed issue #16461: Twice contact sentence for some error page (Denis Chenu)
+-Fixed issue #16453: Sometimes we get duplicate question_orders on new questions (#1481) (Gabriel Jenik)
+-Fixed issue #16284: Double clicking on sq/ao/additional & general attributes should switch the page from "question overview" to "question editor" (#1478) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by segui
+#Updated translation: Spanish (Mexican) by rodolfob
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Japanese by ushiyasan
+#Updated translation: Hungarian by arubicsek
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Simplified) by microk
+
+
+Changes from 4.3.3 (build 200707) to 4.3.4 (build 200713) July 13, 2020
+-Fixed issue #16486: Unable to manage participant attribute with debug (Denis Chenu)
+-Fixed issue #16469: Any admin user can see any question (Patricia Stelling)
+-Fixed issue #16452: When admin previews surveys timer is not reset in between runs (#1476) (Gabriel Jenik)
+-Fixed issue #16412: Unable to manage user with debug set (Denis Chenu)
+-Fixed issue #16204: Arrays (all types) not displayed correctly during survey-taking (mobile phone) (#1473) (Gabriel Jenik)
+#Updated translation: Turkish by sahinsahin
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: German by eddylackmann
+#Updated translation: German (Informal) by eddylackmann
+#Updated translation: French (France) by b00z00
+#Updated translation: Czech by jelen1
+
+
+Changes from 4.3.2 (build 200629) to 4.3.3 (build 200707) July 6, 2020
+-Fixed issue #16437: Unable to construct adminsidepanel (Jessica Höck)
+-Fixed issue #16434: Special characters shown as HTML entities in sidebar (Gabriel Jenik)
+-Fixed issue #16431: Overview of uninstalled themes shows incorrectly parsed theme description (Gabriel Jenik)
+-Fixed issue #16397: Switching language without inline policy notice being ticked creates empty responses (Gabriel Jenik)
+-Fixed issue #16394: If text too long, data protection statement text not stored (Gabriel Jenik)
+-Fixed issue #16379: When debug mode is set, there is an error message displayed on User Roles Page  (Gabriel Jenik)
+-Fixed issue #16375: Theme with valid config.xml (according to manual) can not be extendable (Denis Chenu)
+-Fixed issue #16236: Vanilla survey theme options are not saved (Gabriel Jenik)
+-Fixed issue #16219: Testing a question will not be possible if admin participated in the survey (#1458) (Gabriel Jenik)
+-Fixed issue #16096: QueXML PDF doesn't show full checkboxes (#1462) (Gabriel Jenik)
+-Fixed issue #16088: Access group - see question list at the bottom  (Gabriel Jenik)
+-Fixed issue #15940: Export as printable - PHP Notice with debug mode on (Gabriel Jenik)
+-Fixed issue #15903: Sending email to all group users (copy is sent in cc for every user)  (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: French (France) by b00z00
+#Updated translation: Czech by c_schmitz, slansky, VBraun, jelen1, pcerny
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Chinese (Taiwan) (Traditional) by Yeeeeeet, TuTu_chen
+#Updated translation: Arabic by c_schmitz
+
+
+Changes from 4.3.1 (build 200623) to 4.3.2 (build 200629) June 29, 2020
+-Fixed issue: Various SQL errors when running on MySQL 8 (Carsten Schmitz)
+-Fixed issue #15783: Print answers : all is empty (#1442) (Gabriel Jenik)
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: German by eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Simplified) by NSRCRUC
+#Updated translation: Arabic by ymca
+
+
 Changes from 4.3.0 (build 200616) to 4.3.1 (build 200623) June 22, 2020
 -Fixed issue: Various SQL errors when running on MySQL 8 (Olle Harstedt)
 -Fixed issue [security] #16396: Multiple self-stored XSS in printanswer (Denis Chenu)

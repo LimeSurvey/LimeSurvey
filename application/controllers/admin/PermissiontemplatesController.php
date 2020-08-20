@@ -260,8 +260,8 @@ class PermissiontemplatesController extends Survey_Common_Action
         $oPermissionTemplate->renewed_last = date('Y-m-d H:i:s');
         $save = $oPermissionTemplate->save();
         
-        $html = $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true);
-        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data"=>[
+        $html = $this->getController()->renderPartial('/userManagement/partial/permissionsuccess', ['results' => $results], true);
+        return Yii::app()->getController()->renderPartial('/userManagement/partial/json', ["data"=>[
             'success' => true,
             'html' => $html
         ]]);
@@ -313,7 +313,7 @@ class PermissiontemplatesController extends Survey_Common_Action
         }
 
         $this->getController()->renderPartial(
-            '/admin/usermanagement/partial/success', 
+            '/userManagement/partial/success',
             [
                 'sMessage' => gT('Roles successfully deleted'), 
                 'sDebug' => json_encode($success, JSON_PRETTY_PRINT), 

@@ -15,7 +15,7 @@ class MysqlSchema extends CMysqlSchema
     public function createTable($table, $columns, $options = null)
     {
         if (empty($options)) {
-            $options = 'DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+            $options = 'ENGINE='.Yii::app()->getConfig('mysqlEngine').' DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
         }
 
         // Below copied from parent.

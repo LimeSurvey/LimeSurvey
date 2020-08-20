@@ -1,4 +1,4 @@
-![LimeSurvey Logo](https://www.limesurvey.org/images/logos/logo_main.png)
+![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
 # LimeSurvey Bootstrap Vanilla Survey Theme
 
 ## About
