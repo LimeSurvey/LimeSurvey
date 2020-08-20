@@ -669,7 +669,7 @@ class surveypermission extends Survey_Common_Action
                 Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/view', array('surveyid'=>$surveyid)));
             }
             $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
-            $addsummary .= "</div></div></div>\n";
+            $addsummary .= "</div></div></div></div>\n";
             $aViewUrls['output'] = $addsummary;
         } else {
             $this->getController()->error('Access denied');
