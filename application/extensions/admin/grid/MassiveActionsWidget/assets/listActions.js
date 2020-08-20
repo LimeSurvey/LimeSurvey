@@ -167,6 +167,10 @@ var onClickListAction =  function () {
                 {
                     $postDatas[$(this).attr('name')]=$(this).val();
                 });
+            } else if ($(this).attr('type') == 'checkbox') {
+                if ($(this).prop('checked')) {
+                    $postDatas[$(this).attr('name')]=$(this).val();
+                }
             } else {
                 $postDatas[$(this).attr('name')]=$(this).val();
             }

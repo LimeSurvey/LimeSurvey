@@ -53,7 +53,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
 
                     <!-- checkbox  -->
                     <td>
-                        <input type="checkbox" class="general-row-selector" id='all_<?php echo $sPermissionKey;?>' name='PermissionAll[<?php echo $sPermissionKey;?>]' />
+                        <input type="checkbox" class="general-row-selector custom-data" id='all_<?php echo $sPermissionKey;?>' name='PermissionAll[<?php echo $sPermissionKey;?>]' />
                     </td>
 
                     <!-- CRUD -->
@@ -66,7 +66,7 @@ if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                                 <?php if (!($sPermissionKey=='survey' && $sCRUDKey=='read')): ?>
 
                                     <!-- checkbox -->
-                                    <input type="checkbox"  class="specific-permission-selector" name='Permission[<?php echo $sPermissionKey.']['.$sCRUDKey;?>]' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
+                                    <input type="checkbox"  class="specific-permission-selector custom-data" name='Permission[<?php echo $sPermissionKey.']['.$sCRUDKey;?>]' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
                                         <?php if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
                                             style="visibility:hidden"
                                         <?php endif; ?>/>

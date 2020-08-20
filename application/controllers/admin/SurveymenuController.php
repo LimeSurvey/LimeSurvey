@@ -63,6 +63,13 @@ class SurveymenuController extends Survey_Common_Action
         $success = false;
         if (Yii::app()->request->isPostRequest) {
             $aSurveymenu = Yii::app()->request->getPost('Surveymenu', []);
+            // Sanitize title and description to prevent XSS attack
+            if (isset($aSurveymenu['title'])) {
+                $aSurveymenu['title'] = flattenText($aSurveymenu['title'], false, true);
+            }
+            if (isset($aSurveymenu['description'])) {
+                $aSurveymenu['description'] = flattenText($aSurveymenu['description'], false, true);
+            }
             if ($aSurveymenu['id'] == '') {
                 unset($aSurveymenu['id']);
                 $aSurveymenu['created_at'] = date('Y-m-d H:i:s');
