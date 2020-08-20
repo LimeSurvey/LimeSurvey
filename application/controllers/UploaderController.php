@@ -282,7 +282,6 @@ class UploaderController extends SurveyController
         }
         /* No action */
         $meta = '';
-        //App()->getClientScript()->registerPackage('jquery');
         App()->getClientScript()->registerPackage('question-file-upload');
         
         $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
