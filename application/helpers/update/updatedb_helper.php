@@ -3138,7 +3138,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'action'    => 'updatesurveylocalesettings',
                     'template'  => 'editLocalSettings_main_view',
                     'partial'   => '/admin/survey/subview/accordion/_resources_panel',
-                    'getdatamethod' => '_tabResourceManagement'
+                    'getdatamethod' => 'tabResourceManagement'
                 ),
                 "name='resources'"
             );
@@ -3149,7 +3149,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
 
         //todo change number when ready ...
-        if ($iOldDBVersion <429) { //REFACTORING surveyadmin to surveyAdministrationController ...
+        if ($iOldDBVersion <430) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update(
                 '{{boxes}}',
@@ -3264,7 +3264,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 "name='plugins'"
             );
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
