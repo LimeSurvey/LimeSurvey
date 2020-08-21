@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-08-20 08:51:09+00:00\n"
+"POT-Creation-Date: 2020-08-21 13:48:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -665,7 +665,7 @@ msgid "Some example subquestion"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:166
-#: application/controllers/UploaderController.php:317
+#: application/controllers/UploaderController.php:316
 #: application/controllers/admin/surveypermission.php:133
 #: application/controllers/admin/surveypermission.php:468
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
@@ -1104,7 +1104,7 @@ msgstr ""
 msgid "An unknown error happened when moving file %s to %s."
 msgstr ""
 
-#: application/controllers/UploaderController.php:305
+#: application/controllers/UploaderController.php:304
 #: application/controllers/admin/dataentry.php:907
 #: application/controllers/admin/questiongroups.php:376
 #: application/controllers/admin/responses.php:239
@@ -1125,7 +1125,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: application/controllers/UploaderController.php:306
+#: application/controllers/UploaderController.php:305
 #: application/controllers/admin/dataentry.php:910
 #: application/controllers/admin/responses.php:250
 #: application/helpers/common_helper.php:1508
@@ -1137,7 +1137,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: application/controllers/UploaderController.php:307
+#: application/controllers/UploaderController.php:306
 #: application/controllers/admin/LimeSurveyFileManager.php:83
 #: application/controllers/admin/dataentry.php:913
 #: application/controllers/admin/responses.php:260
@@ -1147,43 +1147,43 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: application/controllers/UploaderController.php:308
+#: application/controllers/UploaderController.php:307
 msgid "Sorry, no more files can be uploaded!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:309
+#: application/controllers/UploaderController.php:308
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr ""
 
-#: application/controllers/UploaderController.php:310
+#: application/controllers/UploaderController.php:309
 msgid "Uploading"
 msgstr ""
 
-#: application/controllers/UploaderController.php:311
+#: application/controllers/UploaderController.php:310
 #: application/views/survey/questions/answer/file_upload/modal-container.php:16
 msgid "Select file"
 msgstr ""
 
-#: application/controllers/UploaderController.php:312
+#: application/controllers/UploaderController.php:311
 msgid "Please upload %s more file(s)."
 msgstr ""
 
-#: application/controllers/UploaderController.php:313
+#: application/controllers/UploaderController.php:312
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
 msgstr ""
 
+#: application/controllers/UploaderController.php:313
 #: application/controllers/UploaderController.php:314
-#: application/controllers/UploaderController.php:315
 msgid "The maximum number of files has been uploaded. You may return back to survey."
 msgstr ""
 
-#: application/controllers/UploaderController.php:316
+#: application/controllers/UploaderController.php:315
 msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
 
-#: application/controllers/UploaderController.php:318
+#: application/controllers/UploaderController.php:317
 #: application/controllers/admin/assessments.php:292
 #: application/models/Assessment.php:103
 #: application/models/SavedControl.php:121
@@ -3108,8 +3108,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:634 application/models/Survey.php:1036
-#: application/models/Survey.php:1044
+#: application/models/Question.php:634 application/models/Survey.php:1035
+#: application/models/Survey.php:1043
 #: application/models/TemplateConfiguration.php:1587
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -3182,7 +3182,7 @@ msgstr ""
 #: application/views/survey/frontpage/clearallForm/form.php:11
 #: application/views/userGroup/usergroups_view.php:147
 #: application/views/userManagement/partial/addedituser.php:55
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:116
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:116
 msgid "Yes"
 msgstr ""
 
@@ -3287,8 +3287,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:634 application/models/Survey.php:1036
-#: application/models/Survey.php:1044
+#: application/models/Question.php:634 application/models/Survey.php:1035
+#: application/models/Survey.php:1043
 #: application/models/TemplateConfiguration.php:1571
 #: application/models/TemplateConfiguration.php:1588
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -3360,7 +3360,7 @@ msgstr ""
 #: application/views/admin/user/personalsettings.php:344
 #: application/views/survey/frontpage/clearallForm/form.php:14
 #: application/views/userManagement/partial/addedituser.php:59
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:116
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:116
 msgid "No"
 msgstr ""
 
@@ -5378,7 +5378,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:437
 #: application/helpers/questionHelper.php:836
 #: application/helpers/userstatistics_helper.php:2628
-#: application/models/Permission.php:676 application/models/Survey.php:1495
+#: application/models/Permission.php:676 application/models/Survey.php:1494
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:18
 #: application/views/admin/export/statistics_view.php:22
@@ -9341,7 +9341,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:162 application/models/Quota.php:100
-#: application/models/Survey.php:1155
+#: application/models/Survey.php:1154
 msgid "Active"
 msgstr ""
 
@@ -9350,7 +9350,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:170 application/models/Survey.php:1120
+#: application/helpers/common_helper.php:170 application/models/Survey.php:1119
 msgid "Inactive"
 msgstr ""
 
@@ -14461,23 +14461,23 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1141
+#: application/models/Survey.php:1140
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1142
+#: application/models/Survey.php:1141
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1143
+#: application/models/Survey.php:1142
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1491
+#: application/models/Survey.php:1490
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:1502
+#: application/models/Survey.php:1501
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -14489,7 +14489,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1504
+#: application/models/Survey.php:1503
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -14499,7 +14499,7 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:1990
+#: application/models/Survey.php:1989
 msgid "Show policy"
 msgstr ""
 
@@ -20832,7 +20832,7 @@ msgid "Automatically load end URL when survey complete:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:30
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:76
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:76
 msgid "Start date/time:"
 msgstr ""
 
@@ -24200,6 +24200,22 @@ msgstr ""
 msgid "Subquestion:"
 msgstr ""
 
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:58
+msgid "Publication and access settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:62
+msgid "Edit publication and access settings"
+msgstr ""
+
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:93
+msgid "Expiration date/time:"
+msgstr ""
+
+#: tmp/runtime/twig_cache/26/263bc78d8b8910c224c19cb6b4a51b183f8e9e3b0de818409721adc916a940b4.php:110
+msgid "Listed publicly:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/27/2740fc23bdb00d1a63d9196e96f14cd5675646f16aea25018560aee7bab3da19.php:324
 msgid "Question by question mode not yet supported."
 msgstr ""
@@ -24383,22 +24399,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/a6/a6bb1e6110af4ba03634cf711d120bbe6baabe523cc23be4d473e9b098a8f883.php:55
 msgid "Show Policy"
-msgstr ""
-
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:58
-msgid "Publication and access settings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:62
-msgid "Edit publication and access settings"
-msgstr ""
-
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:93
-msgid "Expiration date/time:"
-msgstr ""
-
-#: tmp/runtime/twig_cache/a8/a8bca74a80d7d92743d6efb0464f5af0978893bd3132e2d749c753423160af45.php:110
-msgid "Listed publicly:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/b1/b15033d35ab88981cf4de11fc5159aeac18cf624fdd6afd2cbb291fd91c5864d.php:55
