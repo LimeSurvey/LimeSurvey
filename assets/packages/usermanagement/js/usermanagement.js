@@ -282,7 +282,7 @@ var UserManagement = function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
         });
 
-        $('#massive-actions-modal-batchPermissions-2').on('shown.bs.modal', function () {
+        $(document).on('shown.bs.modal', '#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2', function () {
             wireMassPermissions();
         });
     };
