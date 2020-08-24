@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.12 (build 200820) to 4.3.13 (build 200824) August 24, 2020
+-Fixed issue #16217: Survey will not show is the "inherit on" is chosen. (GabrielJenik)
+-Fixed issue #16194: file upload disables other clicks. (GabrielJenik)
+#Updated translation: Japanese by kaorumori
+#Updated translation: Hebrew by c_schmitz, tabakman, cdorin, MeirOverferst1984
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Czech by jelen1
+
+
 Changes from 4.3.11 (build 200817) to 4.3.12 (build 200820) August 20, 2020
 -Fixed issue #16594: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (Permission Roles) (Gabriel Jenik)
 -Fixed issue #16593: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (UserName) (Gabriel Jenik)
