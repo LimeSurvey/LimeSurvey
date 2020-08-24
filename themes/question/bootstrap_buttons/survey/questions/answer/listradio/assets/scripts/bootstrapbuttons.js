@@ -9,5 +9,4 @@ function doBootstrapRadio(){
             $("#answer" + name + "othertext").val('').trigger("change");
         }
     });
-    
 }

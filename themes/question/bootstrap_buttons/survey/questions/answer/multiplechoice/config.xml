@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
     Default configuration for the multiplechoice question template.
 -->
@@ -14,7 +14,7 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>1.1</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the Bootstrap buttons question theme</description>
     </metadata>
