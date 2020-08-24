@@ -32,7 +32,7 @@
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                    <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y');?>">
                         <?php eT("Active surveys");?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
                     </a>
                 </li>
@@ -40,7 +40,7 @@
 
             <!-- List surveys -->
             <li>
-                <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
                     <?php eT("List surveys");?>
                 </a>
             </li>
@@ -102,7 +102,7 @@
                         <?php endif;?>
                          <!-- List surveys -->
                          <li>
-                             <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                             <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
                                  <?php eT("List all");?>
                              </a>
                          </li>
@@ -114,7 +114,7 @@
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                    <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y');?>">
                         <?php eT("Active surveys");?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
                     </a>
                 </li>

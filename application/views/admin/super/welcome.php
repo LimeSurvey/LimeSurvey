@@ -163,16 +163,16 @@ echo viewHelper::getViewTestTag('index');
 
     <!-- Boxes for smartphones -->
     <div class="row  hidden-sm  hidden-md hidden-lg ">
-        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
+        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <div class="panel-title"><?php eT('List surveys');?></div>
             </div>
             <div class="panel-body">
-                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
+                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
             <span class="sr-only"><?php eT('List surveys');?></span>
                 </a><br><br>
-                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys');?></a>
+                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'><?php eT('List surveys');?></a>
             </div>
         </div>
 

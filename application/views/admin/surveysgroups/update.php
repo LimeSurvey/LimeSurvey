@@ -9,7 +9,7 @@
     <?php $this->renderPartial('super/fullpagebar_view', array(
             'fullpagebar' => array(
                 'returnbutton'=>array(
-                    'url'=>'admin/survey/sa/listsurveys#surveygroups',
+                    'url'=>'surveyAdministration/listsurveys#surveygroups',
                     'text'=>gT('Close'),
                 ),
                 'savebutton' => array(
