@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.0 (build 200813) to 3.23.1 (build 200825) August 24, 2020
+-Fixed issue #16536: Batch editing reminder sent date leads to wrong data being added (#1530) (Gabriel Jenik)
+-Fixed issue #15989: Blank page after granting user groups survey permissions. (GabrielJenik)
+#Updated translation: Slovenian by junoslukan
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kazakh by xhoper
+#Updated translation: Italian by ritapas
+#Updated translation: Italian by albertoberton
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Czech by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.22.210 (build 200804) to 3.23.0 (build 200813) August 12, 2020
 -Fixed issue: When editing a token the date/time format is not properly displayed and handled on "invitation sent" or "reminder sent" field and thus wrong values are saved (Carsten Schmitz)
 -Fixed issue: Renamed Valencian translation to correct term (Carsten Schmitz)
