@@ -685,6 +685,7 @@ $config['uploadurl']              = $config['publicurl'].'upload';
 $config['standardthemerooturl']   = $config['publicurl'].'themes/survey'; // Location of the standard themes
 $config['adminscripts']           = $config['publicurl'].'assets/scripts/admin/';
 $config['generalscripts']         = $config['publicurl'].'assets/scripts/';
+$config['packages']               = $config['publicurl'].'packages/';
 $config['third_party']            = $config['publicurl'].'third_party/';
 $config['styleurl']               = $config['publicurl'].'themes/admin/';
 $config['publicstyle']            = $config['publicurl'].$config['assets'].'styles-public/';
