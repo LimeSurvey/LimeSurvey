@@ -4,11 +4,11 @@ import {LOG} from '../mixins/logSystem.js'
 
 export default {
     getDataSet: (context) => {
-            const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getCurrentEditorValues' : '/getCurrentEditorValues';
             return new Promise((resolve, reject) => {
-            ajax.methods.$_get(
-                window.TextEditData.connectorBaseUrl+subAction
-            ).then((result) => {
+                ajax.methods.$_get(LS.createUrl('surveyAdministration/getCurrentEditorValues', {
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid
+                }))
+                .then((result) => {
                 LOG.log('Getting Data', result);
                 context.dispatch('updateObjects', result.data.textdata);
                 context.commit('setLanguages', result.data.languages);
@@ -33,10 +33,10 @@ export default {
         context.commit('setPermissions', newObjectBlock.permissions);
     },
     getDateFormatOptions: (context) => {
-        const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDateFormatOptions' : '/getDateFormatOptions';
-        ajax.methods.$_get(
-            window.TextEditData.connectorBaseUrl+subAction
-        ).then((result) => {
+        ajax.methods.$_get(LS.createUrl('surveyAdministration/getDateFormatOptions', {
+            sid: context.state.sid || LS.reparsedParameters().combined.sid
+        }))
+            .then((result) => {
             context.commit('setDateFormatOptions', result.data);
         })
         .catch((error) => {
@@ -48,7 +48,7 @@ export default {
         _.each(_.keys(context.state.languages), (lngKey) => {
             postObject[lngKey] = {
                 surveyTitle: context.state.surveyTitle[lngKey],
-                welcome: context.state.welcome[lngKey],
+                welcome: context.state.welcome[lngKey] ,
                 description: context.state.description[lngKey],
                 endText: context.state.endText[lngKey],
                 endUrl: context.state.endUrl[lngKey],
@@ -59,8 +59,8 @@ export default {
         });
 
         let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
-        const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveTextData' : '/saveTextData';
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
-        return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+subAction, transferObject);
+
+        return ajax.methods.$_post(LS.createUrl('surveyAdministration/saveTextData' , {'sid' : window.TextEditData.sid}), transferObject);
     }
 };
