@@ -8616,13 +8616,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         public static function UpgradeQuestionAttributes($changeDB=false,$iSurveyID=NULL,$onlythisqid=NULL)
         {
             $LEM =& LimeExpressionManager::singleton();
-            if (is_null($iSurveyID))
+            $aSurveyIDs = array();
+
+            // If survey given, set target surveys.
+            if (!is_null($iSurveyID)) {
+                $aSurveyIDs=array($iSurveyID);
+            }
+
+            // If no surveys fetched but question given, fetch survey from question
+            if (empty($aSurveyIDs) && $onlythisqid) {
+                $oQuestion = Question::model()->find("qid = :qid", array(":qid"=> $onlythisqid);
+                if($oQuestion) {
+                    $aSurveyIDs = array($oQuestion->sid);
+                }
+            }            
+
+            // If no surveys fetched still, go for all surveys
+            if (empty($aSurveyIDs))
             {
                 $sQuery='SELECT sid FROM {{surveys}}';
                 $aSurveyIDs = Yii::app()->db->createCommand($sQuery)->queryColumn();
-            }
-            else{
-                $aSurveyIDs=array($iSurveyID);
             }
 
             $attibutemap = array(
