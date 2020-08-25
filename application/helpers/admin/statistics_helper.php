@@ -444,6 +444,7 @@ function buildSelects($allfields, $surveyid, $language)
 
                 //T - Long Free Text
                 //Q - Multiple Short Text
+                //Equations are also included here (firstletter = T)
                 elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
                     $selectSubs = array();
                     //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
@@ -1122,15 +1123,30 @@ class statistics_helper
 
         }    //end else-if -> multiple numerical types
 
-        //is there some "id", "datestamp" or "D" within the type?
-        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($firstletter == "D")) {
+        //is there some "id" or "datestamp" within the type?
+        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp") {
             /*
-            * DON'T show anything for date questions
-            * because there aren't any statistics implemented yet!
-            *
-            * See bug report #2539 and
-            * feature request #2620
+            * DON'T show anything 
             */
+        }
+
+        //D - Date/Time
+        elseif ($firstletter == "D") {
+            //search for key
+            $fld = substr($rt, 1, strlen($rt));
+            $fielddata = $fieldmap[$fld];
+
+            //get question data
+            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
+            $qtitle = $nresult->title;
+            $qtype = $nresult->type;
+            $qquestion = flattenText($nresult->question);
+
+            $mfield = substr($rt, 1, strlen($rt));
+
+            //Date/time questions are handled the same way as text questions.
+            $alist[] = array("Answer", gT("Answer"), $mfield);
+            $alist[] = array("NoAnswer", gT("No answer"), $mfield);
         }
 
         // NICE SIMPLE SINGLE OPTION ANSWERS
@@ -2261,11 +2277,46 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
                     }
+                }
+                /*
+                * Date/Time question
+                */
+                elseif ($outputs['qtype'] == "D") {
+                    $sDatabaseType = Yii::app()->db->getDriverName();
+
+                    // Date answers
+                    if ($al[0] == "Answer") {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= Yii::app()->db->quoteColumnName($al[2])." IS NOT NULL";
+                    }
+                    //"no answer" handling
+                    elseif ($al[0] == "NoAnswer") {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= Yii::app()->db->quoteColumnName($al[2])." IS NULL";
+                    }
                 } elseif ($outputs['qtype'] == "O") {
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
                     $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
-                    // all other question types
-                } else {
+                }
+                /*
+                * Equation
+                */
+                elseif ($outputs['qtype'] == "*") {
+                    $sDatabaseType = Yii::app()->db->getDriverName();
+
+                    // Equation with non empty result
+                    if ($al[0] == "Answer") {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                    }
+                    //"no answer" handling
+                    elseif ($al[0] == "NoAnswer") {
+                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
+                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                    }
+                }
+                // all other question types
+                else {
 
                     $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
 
@@ -4241,10 +4292,10 @@ class statistics_helper
      */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
-        $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
+        $search['condition'] = "COALESCE(CAST(".Yii::app()->db->quoteColumnName($column)." as char), '') != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
         if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
-            $search['condition'] = "CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
+            $search['condition'] = "COALESCE(CAST(".Yii::app()->db->quoteColumnName($column)." as varchar), '') != ''";
         }
 
         //filter incomplete answers if set
