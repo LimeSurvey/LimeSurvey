@@ -184,7 +184,7 @@ class Plugin extends LSActiveRecord
     /**
      * @return string HTML
      */
-    protected function getActivateButton()
+    public function getActivateButton()
     {
         $activateUrl = App()->getController()->createUrl(
             '/admin/pluginmanager',
@@ -212,7 +212,7 @@ class Plugin extends LSActiveRecord
     /**
      * @return string HTML
      */
-    protected function getDeactivateButton()
+    public function getDeactivateButton()
     {
         $deactivateUrl = App()->getController()->createUrl(
             '/admin/pluginmanager',
