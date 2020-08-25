@@ -1049,7 +1049,7 @@ class UserManagementController extends LSBaseController
             throw new CException("This action is not allowed, and should never happen", 500);
         }
 
-        $aUser['full_name'] = flattenText($aUser['users_name']); //to prevent xss ...
+        $aUser['full_name'] = flattenText($aUser['full_name']); //to prevent xss ...
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {
