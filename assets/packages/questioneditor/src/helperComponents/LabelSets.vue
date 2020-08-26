@@ -30,6 +30,9 @@ export default {
                 const dataSet = merge({},this.template);
                 dataSet[this.$store.state.activeLanguage][this.typedef] = this.currentLanguageValue(label);
                 dataSet[this.typekey] = label.code;
+                if (dataSet['assessment_value'] != undefined && label.assessment_value != undefined) {
+                    dataSet['assessment_value'] = label.assessment_value;
+                }
                 return dataSet;
             });
         }

@@ -34,6 +34,37 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.13 (build 200824) to 4.3.14 (build 200826) August 26, 2020
+-Fixed issue [Security] #16611: not possible anymore to add xss when updating users fullname in usermanagement (Patricia Stelling)
+-Fixed issue #16547: Action buttons don't work on plugin details page (Plugin management) (#1563) (Gabriel Jenik)
+-Fixed issue #16538: Can add 2 survey participantes with the same token with the RPC api (GabrielJenik)
+
+
+Changes from 4.3.12 (build 200820) to 4.3.13 (build 200824) August 24, 2020
+-Fixed issue #16217: Survey will not show is the "inherit on" is chosen. (GabrielJenik)
+-Fixed issue #16194: file upload disables other clicks. (GabrielJenik)
+#Updated translation: Japanese by kaorumori
+#Updated translation: Hebrew by c_schmitz, tabakman, cdorin, MeirOverferst1984
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Czech by jelen1
+
+
+Changes from 4.3.11 (build 200817) to 4.3.12 (build 200820) August 20, 2020
+-Fixed issue #16594: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (Permission Roles) (Gabriel Jenik)
+-Fixed issue #16593: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (UserName) (Gabriel Jenik)
+-Fixed issue #16592: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (User Details) (Gabriel Jenik)
+-Fixed issue #16591: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (Survey Menu) (Gabriel Jenik)
+-Fixed issue #16590: Lime Survey 4.3.10+200812 Stored Cross Site Scripting (User Groups) (Gabriel Jenik)
+-Fixed issue #16573: Others than the survey owners are not allowed to edit questions anymore (Gabriel Jenik)
+-Fixed issue #16507: Mass permissions are not being saved (Gabriel Jenik)
+-Fixed issue #16083: Cannot edit assessments (Dietrich Streifert)
+#Updated translation: Portuguese (Portugal) by dtddecsis
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+
+
 Changes from 4.3.10 (build 200812) to 4.3.11 (build 200817) August 17, 2020
 -Fixed issue #16566: We cannot create multiple choice questions   (Gabriel Jenik)
 -Fixed issue #16483: Adding condition triggers bulk update for complete database (Gabriel Jenik)

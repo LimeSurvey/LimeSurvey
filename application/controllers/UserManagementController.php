@@ -109,6 +109,10 @@ class UserManagementController extends LSBaseController
         }
 
         $aUser = Yii::app()->request->getParam('User');
+        // Sanitize full name to prevent XSS attack
+        if (isset($aUser['full_name'])) {
+            $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
+        }
         $passwordTest = Yii::app()->request->getParam('password_repeat', false);
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
@@ -181,7 +185,7 @@ class UserManagementController extends LSBaseController
         $times = App()->request->getParam('times', 5);
         $passwordSize = (int) App()->request->getParam('passwordsize', 5);
         $passwordSize = $passwordSize < 8 || is_nan($passwordSize) ? 8 : $passwordSize;
-        $prefix = App()->request->getParam('prefix', 'randuser_');
+        $prefix = flattenText(App()->request->getParam('prefix', 'randuser_'));
         $email = App()->request->getParam('email', User::model()->findByPk(App()->user->id)->email);
 
         $randomUsers = [];
@@ -812,13 +816,32 @@ class UserManagementController extends LSBaseController
         $aPermissions = Yii::app()->request->getPost('Permission', []);
         $results = [];
         foreach ($userIds as $iUserId) {
-            $results[$iUserId] = $this->applyPermissionFromArray($iUserId, $aPermissions);
+            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
             $oUser = User::model()->findByPk($iUserId);
             $oUser->modified = date('Y-m-d H:i:s');
-            $results[$iUserId]['save'] = $oUser->save();
+            $results[$iUserId]['result'] = $oUser->save();
+            $results[$iUserId]['title'] = $oUser->users_name;
+            foreach ($aPermissionsResults as $aPermissionsResult) {
+                if (!$aPermissionsResult['success']) {
+                    $results[$iUserId]['result'] = false;
+                    break;
+                }
+            }
+            if (!$results[$iUserId]['result']) {
+                $results[$iUserId]['error'] = gT('Error');
+            }
         }
 
-        return $this->renderPartial('partial/permissionsuccess', ['results' => $results, "noButton" => true]);
+        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $results,
+                'successLabel' => gT('Saved successfully'),
+                'tableLabels' =>  $tableLabels
+            )
+        );
     }
 
     /**
@@ -830,7 +853,7 @@ class UserManagementController extends LSBaseController
      */
     public function actionBatchAddGroup()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -1026,6 +1049,7 @@ class UserManagementController extends LSBaseController
             throw new CException("This action is not allowed, and should never happen", 500);
         }
 
+        $aUser['full_name'] = flattenText($aUser['full_name']); //to prevent xss ...
         $oUser->setAttributes($aUser);
 
         if (isset($aUser['password']) && $aUser['password']) {

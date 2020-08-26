@@ -337,9 +337,7 @@ function escapeHtml(unsafe) {
 }
 
 window.getUploadHandler = function(qid, options){
-    if (!window.currentUploadHandler){
-        window.currentUploadHandler = new uploadHandler(qid, options);
-    }
+    window.currentUploadHandler = new uploadHandler(qid, options);
     window.currentUploadHandler.init();
     return window.currentUploadHandler;
 }
