@@ -239,8 +239,8 @@ class UserManagementController extends LSBaseController
         $message = '';
         $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
         
-        if (is_null($transferTo)) {
-            // If $transferTo is null, check if user owns a survey. 
+        if (empty($transferTo)) {
+            // If $transferTo is empty, check if user owns a survey. 
             // If so, render the "transfer to" selection screen
             $aOwnedSurveys = Survey::model()->findAllByAttributes(array('owner_id' => $userId));
             if (count($aOwnedSurveys)) {
