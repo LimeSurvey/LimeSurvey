@@ -218,7 +218,7 @@ class UserManagementController extends LSBaseController
      * @return void|string
      * @throws CException
      */
-    public function actionDeleteConfirm()
+    public function actionDeleteUser()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return $this->renderPartial(
@@ -228,16 +228,85 @@ class UserManagementController extends LSBaseController
         }
         $userId = Yii::app()->request->getPost('userid');
         if ($userId == Yii::app()->user->id) {
-            Yii::app()->setFlashMessage(gT("you cannot delete yourself."), 'error');
-            $this->redirect(Yii::app()->createUrl("userManagement/index"));
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => false,
+                    'message' => gT("you cannot delete yourself.")
+                ]
+            ]);
+        }
+
+        $message = '';
+        $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
+        
+        if (is_null($transferTo)) {
+            // If $transferTo is null, check if user owns a survey. 
+            // If so, render the "transfer to" selection screen
+            $aOwnedSurveys = Survey::model()->findAllByAttributes(array('owner_id' => $userId));
+            if (count($aOwnedSurveys)) {
+                $postuser = flattenText(Yii::app()->request->getPost("user"));
+                $aUsers = User::model()->findAll();
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    [
+                        "data" => [
+                            'success' => true,
+                            'html' => $this->renderPartial(
+                                'partial/transfersurveys',
+                                [
+                                    'postuserid' => $userId,
+                                    'postuser' => $postuser,
+                                    'current_user' => Yii::app()->user->id,
+                                    'users' => $aUsers,
+                                ],
+                                true
+                            ),
+                        ]
+                    ]
+                );
+            }
+        } else {
+            // If $transferTo is not null, transfer the surveys
+            $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transferTo), 'owner_id='.$userId);
+            if ($iSurveysTransferred) {
+                $sTransferredTo = User::model()->findByPk($transferTo)->users_name;
+                $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo)." ";
+            }
         }
 
         $oUser = User::model()->findByPk($userId);
         //todo REFACTORING user permissions should be deleted also ... (in table permissions)
         $oUser->delete();
-        Yii::app()->setFlashMessage(gT("User successfully deleted."), 'success');
-        $this->redirect(Yii::app()->createUrl("userManagement/index"));
-        return;
+        $message .= gT("User successfully deleted.");
+        return App()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => [
+                'success' => true,
+                'message' => $message,
+            ]
+        ]);
+    }
+
+    /**
+     * Show user delete confirmation
+     *
+     * @return void|string
+     * @throws CException
+     */
+    public function actionDeleteConfirm()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->renderPartial(
+                'partial/error',
+                ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
+            );
+        }
+        $userId = Yii::app()->request->getParam('userid');
+        $sUserName = flattenText(Yii::app()->request->getParam("user"));
+
+        $aData['userId'] = $userId;
+        $aData['sUserName'] = $sUserName;
+
+        return $this->renderPartial('partial/confirmuserdelete', $aData);
     }
 
     /**
