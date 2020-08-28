@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
     *
        */
 
+//@todo this should be a table with values from getLanguageData, then using ONLY the model to get values/arrays from it
 
     /*
     * Internationalization and Localization utilities

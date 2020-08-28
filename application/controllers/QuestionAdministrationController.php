@@ -238,12 +238,13 @@ class QuestionAdministrationController extends LSBaseController
      * Load list questions view for a specified survey by $surveyid
      *
      * @param int $surveyid Goven Survey ID
+     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on settings tab.
      *
      * @return string
      * @access public
      * @todo   php warning (Missing return statement)
      */
-    public function actionListQuestions($surveyid)
+    public function actionListQuestions($surveyid, $landOnSideMenuTab = 'settings')
     {
         $iSurveyID = sanitize_int($surveyid);
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
@@ -266,6 +267,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sid']                                   = $iSurveyID;
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
+        $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
         $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
             "/surveyAdministration/listsurveys"
         );
@@ -1028,6 +1030,7 @@ class QuestionAdministrationController extends LSBaseController
 				]
 			);
 		}
+
 
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 

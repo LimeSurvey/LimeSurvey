@@ -49,6 +49,14 @@ class SurveyAdministrationController extends LSBaseController
         ];
     }
 
+    public function __construct($id, $module = null)
+    {
+        Yii::app()->request->updateNavigationStack();
+        // Make sure viewHelper can be autoloaded
+        Yii::import('application.helpers.viewHelper');
+        parent::__construct($id, $module);
+    }
+
     /**
      * This part comes from _renderWrappedTemplate
      *
@@ -90,7 +98,11 @@ class SurveyAdministrationController extends LSBaseController
 
         // We load the panel packages for quick actions
         $iSurveyID = sanitize_int($iSurveyID);
-        $survey = Survey::model()->findByPk($iSurveyID);
+
+        //todo: first check if survey is new and DO NOT try to access model attributes without isset-check ...
+
+
+        $survey = Survey::model()->findByPk($iSurveyID);  //yii standard is overwritten here ...
         $baselang = $survey->language;
 
         $aData = array('aAdditionalLanguages' => $survey->additionalLanguages);
@@ -101,8 +113,12 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false, true);
 
-        $aData['title_bar']['title'] =
-            $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        if(isset($survey->currentLanguageSettings) && isset($survey->currentLanguageSettings->surveyls_title)) {
+            $aData['title_bar']['title'] =
+                $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        }else{
+            $aData['title_bar']['title'] = 'Unknown_language_title' . " (" . gT("ID") . ":" . $iSurveyID . ")";
+        }
         $aData['surveyid'] = $iSurveyID;
         $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
 
@@ -342,8 +358,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $esrow = $this->fetchSurveyInfo('newsurvey');
 
-
-        //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
         $aData['esrow'] = $esrow;
@@ -363,12 +377,14 @@ class SurveyAdministrationController extends LSBaseController
 
         //Prepare the edition panes
         $aData['edittextdata'] = array_merge($aData, $this->getTextEditData($survey));
-        $aData['datasecdata'] = array_merge($aData, $this->getDataSecurityEditData($survey));
-        $aData['generalsettingsdata'] = array_merge($aData, $this->generalTabEditSurvey($survey));
-        $aData['presentationsettingsdata'] = array_merge($aData, $this->tabPresentationNavigation($esrow));
-        $aData['publicationsettingsdata'] = array_merge($aData, $this->tabPublicationAccess($survey));
-        $aData['notificationsettingsdata'] = array_merge($aData, $this->tabNotificationDataManagement($esrow));
-        $aData['tokensettingsdata'] = array_merge($aData, $this->tabTokens($esrow));
+
+        $defaultLanguage = App()->getConfig('defaultlang');
+
+        $testLanguages = getLanguageDataRestricted(true, 'short');
+
+        $aData['edittextdata']['listLanguagesCode'] = $testLanguages;
+        $aData['edittextdata']['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
+        $aData['edittextdata']['defaultLanguage'] =  getLanguageCodefromLanguage($defaultLanguage);
 
         $aViewUrls[] = 'newSurvey_view';
 
@@ -523,6 +539,11 @@ class SurveyAdministrationController extends LSBaseController
             $sDescription = fixCKeditorText($sDescription);
             $sWelcome = fixCKeditorText($sWelcome);
 
+            $dateFormat = (int) Yii::app()->request->getPost('dateformat');
+            if($dateFormat === null || ($dateFormat<1) || ($dateFormat>12) ){
+                //dateformat is not past correctly from frontend to backend
+                $dateFormat = 1;
+            }
 
             // Insert base language into surveys_language_settings table
             $aInsertData = array(
@@ -534,14 +555,18 @@ class SurveyAdministrationController extends LSBaseController
                 'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip', ''),
                 'surveyls_endtext' => Yii::app()->request->getPost('endtext', ''),
                 'surveyls_url' => Yii::app()->request->getPost('url', ''),
-                'surveyls_dateformat' => (int)Yii::app()->request->getPost('dateformat'),
+                'surveyls_dateformat' => $dateFormat,
                 'surveyls_numberformat' => (int)Yii::app()->request->getPost('numberformat'),
                 'surveyls_policy_notice' => App()->request->getPost('surveyls_policy_notice'),
                 'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
             );
 
             $langsettings = new SurveyLanguageSetting;
-            $isLanguageSaved = $langsettings->insertNewSurvey($aInsertData);
+            //$isLanguageSaved = $langsettings->insertNewSurvey($aInsertData);
+            if(!$langsettings->insertNewSurvey($aInsertData)){ //this has to exist for the survey ...
+                Yii::app()->setFlashMessage($warning . gT("Surveylanguage settings could not be saved."), 'error');
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
 
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
@@ -700,6 +725,8 @@ class SurveyAdministrationController extends LSBaseController
      * Function to call current Editor Values by Ajax
      *
      * @param integer $sid Given Survey ID
+     *
+     * @deprecated was only used for vue.js (ajaxerequest to set textelement fields ...)
      *
      * @return JSON
      * @throws CException
@@ -993,13 +1020,12 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Method to call current date information by ajax
-     *
-     * @param int $sid Given Survey ID
+
      *
      * @return JSON | string
      * @throws CException
      */
-    public function actionGetDateFormatOptions($sid)
+    public function actionGetDateFormatOptions()
     {
         $aRawDateFormats = getDateFormatData();
 
@@ -2832,6 +2858,7 @@ class SurveyAdministrationController extends LSBaseController
                 connectorBaseUrl: '" . Yii::app()->getController()->createUrl('admin/survey/',
                 ['sid' => $survey->sid, 'sa' => '']) . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
+                sid: $survey->sid
                 i10N: {
                     'Survey title' : '" . gT('Survey title') . "',
                     'Date format' : '" . gT('Date format') . "',

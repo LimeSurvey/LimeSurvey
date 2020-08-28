@@ -33,9 +33,10 @@ export default {
         context.commit('setPermissions', newObjectBlock.permissions);
     },
     getDateFormatOptions: (context) => {
-        const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDateFormatOptions' : '/getDateFormatOptions';
+        //const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDateFormatOptions' : '/getDateFormatOptions';
+        //window.TextEditData.connectorBaseUrl+subAction
         ajax.methods.$_get(
-            window.TextEditData.connectorBaseUrl+subAction
+            LS.createUrl('surveyAdministration/getDateFormatOptions')
         ).then((result) => {
             context.commit('setDateFormatOptions', result.data);
         })

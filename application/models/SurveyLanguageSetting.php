@@ -270,8 +270,6 @@ class SurveyLanguageSetting extends LSActiveRecord
         foreach ($data as $k => $v) {
             $lang->$k = $v;
         }
-
-        $bSaveOK = $lang->save();
         return $lang->save();
     }
 }
