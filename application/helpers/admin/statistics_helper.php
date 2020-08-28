@@ -2131,6 +2131,7 @@ class statistics_helper
             if ($outputType == 'html') {
                 // show this block only when we show graphs and are not in the public statics controller
                 if ($usegraph == 1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
+                    $fullLabels = $labels;
                     // We clean the labels
                     $iMaxLabelLength = 0;
                     foreach ($labels as $key => $label) {
@@ -2145,6 +2146,7 @@ class statistics_helper
                     $aData['rt'] = $rt;
                     $aData['qqid'] = $qqid;
                     $aData['labels'] = $labels;
+                    $aData['fullLabels'] = $fullLabels;
                     $aData['charttype'] = $charttype;
                     $aData['sChartname'] = '';
                     $aData['grawdata'] = $grawdata;
@@ -3552,7 +3554,7 @@ class statistics_helper
                 $aData['surveyid'] = $surveyid;
                 $aData['sql'] = $sql;
 
-                $sOutputHTML = '';
+                $sOutputHTML = '<div class="row">';
 
             //let's run through the survey
             $runthrough = $summary;
@@ -3561,7 +3563,7 @@ class statistics_helper
 
             //loop through all selected questions
             $count = 0;
-            $rowOpened = 0;
+            //$rowOpened = 0;
             foreach ($runthrough as $rt) {
                 ////Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
@@ -3571,19 +3573,19 @@ class statistics_helper
                 if (isset($outputs['alist']) && $outputs['alist']) {
 //Make sure there really is an answerlist, and if so:
                     $count = $count + 1;
-                    if ($count == 1) {
-                        $sOutputHTML .= '<div class="row">';
-                        $rowOpened = 1;
-                    }
+                    
 
                     $display = $this->displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguageCode);
                     $sOutputHTML .= $display['statisticsoutput'];
                     $aStatisticsData = array_merge($aStatisticsData, $display['astatdata']);
 
-                    if ($count == 3) {
-                        $sOutputHTML .= '</div>';
-                        $rowOpened = 0;
-                        $count = 0;
+// Add row break after every second column for md size
+                    if ($count % 2 == 0) {
+                        $sOutputHTML .= '<div class="clearfix visible-md-block"></div>';
+                    }
+                    // Add row break after every third column for lg size
+                    if ($count % 3 == 0) {
+                        $sOutputHTML .= '<div class="clearfix visible-lg-block"></div>';
                     }
 
                 }    //end if -> collect and display results
@@ -3595,10 +3597,6 @@ class statistics_helper
 
 
 
-            }
-
-            if ($rowOpened) {
-                    $sOutputHTML .= '</div>';
             }
 
             $sOutputHTML .= '</div>';

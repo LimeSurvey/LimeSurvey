@@ -16,8 +16,8 @@
 <!-- _statisticsoutput_graphs -->
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
-        <div class="row">
-            <div class="col-sm-9 vcenter chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
+        <div class="row custom custom-padding bottom-20">
+            <div class="col-sm-12 vcenter chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
                 data-chartname="<?php echo $sChartname; // The name of the jschart object ?>"
                 data-qid="<?php echo $qqid; // the question id ?>"
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
@@ -30,11 +30,12 @@
                 <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="400" height="300<?php // echo $iCanvaHeight;?>"
                     data-color="<?php echo $color; // the background color for bar, etc. ?>"></canvas>
             </div>
-
-            <!-- legends -->
-            <?php if($charttype=='Pie' || $charttype=='Doughnut'): ?>
-            <div class="legend col-sm-2 vcenter">
-                <?php foreach($labels as $i=>$label): ?>
+        </div>
+        
+        <!-- legends -->
+        <div class="row">
+            <div class="legend col-sm-12 vcenter">
+                <?php foreach($fullLabels as $i=>$label): ?>
                     <?php $colorindex = $color+$i; ?>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-sm-1">
@@ -47,7 +48,6 @@
                     </div>
                 <?php endforeach;?>
             </div>
-            <?php endif; ?>
         </div>
 
 <!-- Buttons to change graph type -->
