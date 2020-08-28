@@ -1809,7 +1809,7 @@ class remotecontrol_handle
                 if ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->encryptSave()) {
+                if ($token->encryptSave(true)) {
                     $aParticipant = $token->getAttributes();
                 } else {
                     $aParticipant["errors"] = $token->errors;
@@ -3089,7 +3089,7 @@ class remotecontrol_handle
      *
      * @param string  $sSessionKey  Auth credentials
      * @param int     $iSurveyID    ID of the Survey
-     * @param int     $sToken       Response token
+     * @param string  $sToken       Response token
      *
      * @return array On success: array containing all uploads of the specified response
      *               On failure: array with error information
