@@ -358,6 +358,8 @@ class SurveyAdministrationController extends LSBaseController
 
         $esrow = $this->fetchSurveyInfo('newsurvey');
 
+
+        //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
         $aData['esrow'] = $esrow;
@@ -1047,7 +1049,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Method to store data edited in the the text editor component
      *
-     * @param integer $sid Survey ID
+     * integer $sid Survey ID
      *
      * @return JSON | string
      * @throws CException
@@ -2854,11 +2856,11 @@ class SurveyAdministrationController extends LSBaseController
             "TextEditDataGlobal",
             //todo: this has to be changed, also in frontend packages/textelements/...
             //NEW: connectorBaseUrl: '".Yii::app()->getController()->createUrl('/surveyAdministration/getDateFormatOptions', ['sid' => $survey->sid])."',
+            //// ['sid' => $survey->sid]) . "',  --> sid should be taken from frontend ...
             "window.TextEditData = {
-                connectorBaseUrl: '" . Yii::app()->getController()->createUrl('admin/survey/',
-                ['sid' => $survey->sid, 'sa' => '']) . "',
+                connectorBaseUrl: '" . Yii::app()->getController()->createUrl('surveyAdministration/') . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
-                sid: $survey->sid
+                sid: $survey->sid, 
                 i10N: {
                     'Survey title' : '" . gT('Survey title') . "',
                     'Date format' : '" . gT('Date format') . "',
@@ -2893,9 +2895,8 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->getClientScript()->registerScript(
             "DataSecTextEditDataGlobal",
             "window.DataSecTextEditData = {
-                connectorBaseUrl: '" . Yii::app()->getController()->createUrl('admin/survey',
-                ['sid' => $survey->sid, 'sa' => '']) . "',
                 isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
+                sid: $survey->sid,
                 i10N: {
                     'Survey data policy checkbox label:' : '" . gT('Survey data policy checkbox label:') . "',
                     'Survey data policy error message:' : '" . gT('Survey data policy error message:') . "',

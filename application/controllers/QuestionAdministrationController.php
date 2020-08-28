@@ -650,11 +650,11 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = $this->getQuestionObject($iQuestionId);
 
         $aPermissions = [
-            "read"         => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
-            "update"       => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
+            "read"         => Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'read'),
+            "update"       => Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update'),
             "editorpreset" => App()->session['htmleditormode'],
             "script"       =>
-                Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
+                Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update')
                 && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
         ];
 
