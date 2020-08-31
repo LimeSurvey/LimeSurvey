@@ -125,12 +125,12 @@ class LabelSet extends LSActiveRecord
     {
 
             // View labelset
-            $url = Yii::app()->createUrl("admin/labels/sa/multieditor/lid/$this->lid");
+            $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
             $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
             // Edit labelset
             if (Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                $url = Yii::app()->createUrl("admin/labels/sa/multieditor/lid/$this->lid");
+                $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
             }
 

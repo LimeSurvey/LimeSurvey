@@ -443,26 +443,6 @@ return array(
             
         )
     ),
-    'labelsets' => array(
-        'devBaseUrl' => 'assets/packages/labelsets/',
-        'basePath' => 'core.labelsets',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/labelsets.js'
-            )
-            : array(
-                'build.min/js/labelsets.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-        )
-    ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
