@@ -9,7 +9,7 @@
 ?>
 <?php
 extract($data);
-//Yii::app()->loadHelper('admin/htmleditor');
+Yii::app()->loadHelper('admin/htmleditor');
 
 
 App()->getClientScript()->registerScript("tabCreate-view-variables", "
