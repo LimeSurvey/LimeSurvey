@@ -87,6 +87,13 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         }
     }
 
+    var ckSettings = {
+        language : '" . sTranslateLangCode2CK(Yii::app()->session['adminlang']) . "',
+        sid : '" . sanitize_int(App()->request->getQuery('sid', 0)) . "',
+        gid : '" . sanitize_int(App()->request->getQuery('gid', 0)) . "',
+        qid : '" . sanitize_int(App()->request->getQuery('qid', 0)) . "',
+        replacementFieldsPath : '" . $this->createUrl("/limereplacementfields/index") . "',
+    }
 ";
 
 Yii::app()->getClientScript()->registerScript('ckEditorPreparingSettings', $script, LSYii_ClientScript::POS_BEGIN);
