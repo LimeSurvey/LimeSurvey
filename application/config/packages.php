@@ -150,6 +150,18 @@ return array(
             'ckeditor'
         )
     ),
+    'modaleditor' => array(
+        'devBaseUrl' => 'assets/packages/modaleditor/',
+        'basePath' => 'core.modaleditor',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'js/modaleditor.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ckeditor',
+        )
+    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
