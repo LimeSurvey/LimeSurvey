@@ -28,5 +28,5 @@
             <?php endif;?>
         </div>
     </div>
-    <?php $this->renderPartial('themeoptions/import_modal',['importModal' => $importModal, 'importTemplate' => $importTemplate, 'themeType' => $themeType]); ?>
+    <?php $this->renderPartial('./import_modal',['importModal' => $importModal, 'importTemplate' => $importTemplate, 'themeType' => $themeType]); ?>
 <?php endif;?>

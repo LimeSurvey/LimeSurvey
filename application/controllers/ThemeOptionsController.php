@@ -38,7 +38,7 @@ class ThemeOptionsController extends LSBaseController
      */
     protected function beforeRender($view) : bool 
     {
-
+        return parent::beforeRender($view);
     }
 
     /**
@@ -326,7 +326,7 @@ class ThemeOptionsController extends LSBaseController
                 $model->save();
 
                 if (isset($_POST['TemplateConfiguration'])) {
-                $model->attributes = $_POST['TemplateConfiguration'];
+                    $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', gT('Theme options saved.'));
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
@@ -460,7 +460,7 @@ class ThemeOptionsController extends LSBaseController
             $aData['importErrorMessage']  = $importErrorMessage;
             $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
-            $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
+            $this->render('index', $aData);
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(App()->createUrl("/admin"));
@@ -618,7 +618,7 @@ class ThemeOptionsController extends LSBaseController
      * @return string | string[] | null
      * @throws CException
      */
-    public function actiongetPreviewTag()
+    public function actionGetPreviewTag()
     {
         $templatename = App()->request->getPost('templatename');
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
