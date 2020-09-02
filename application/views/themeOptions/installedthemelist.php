@@ -7,7 +7,7 @@
     <div class="col-sm-12 content-right">
         <?php
         $massiveAction = App()->getController()->renderPartial(
-            '/admin/themeoptions/massive_action/_selector',
+            './_selector',
             array(
                 'oQuestionTheme' => $oQuestionTheme,
                 'gridID'         => 'questionthemes-grid',
@@ -31,14 +31,6 @@
                     'class'          => 'CCheckBoxColumn',
                     'selectableRows' => '100',
                 ),
-//                    array(
-//                        'header' => gT('Preview'),
-//                        'name' => 'preview',
-//                        'value'=> '$data->preview',
-//                        'type'=>'raw',
-//                        'htmlOptions' => array('class' => 'col-md-1'),
-//                        'filter' => false,
-//                    ),
 
                 array(
                     'header'      => gT('Name'),

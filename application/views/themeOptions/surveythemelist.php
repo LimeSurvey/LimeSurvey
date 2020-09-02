@@ -4,7 +4,7 @@
         
         <?php
         $massiveAction = App()->getController()->renderPartial(
-            '/admin/themeoptions/massive_action/_selector',
+            './_selector',
             array(
                 'oSurveyTheme' => $oSurveyTheme,
                 'gridID' => 'themeoptions-grid',
@@ -51,7 +51,6 @@
                 array(
                     'header' => gT('Description'),
                     'name' => 'template_description',
-                    //'value'=>'$data->template->description',
                     'value'=>'$data->description',
                     'htmlOptions' => array('class' => 'col-md-3'),
                     'type'=>'raw',

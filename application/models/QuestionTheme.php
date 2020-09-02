@@ -253,7 +253,7 @@ class QuestionTheme extends LSActiveRecord
                 'visible' => $bVisible
             ]
         ];
-        $sButtons = App()->getController()->renderPartial('/admin/themeoptions/partials/question_themes/theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
+        $sButtons = App()->getController()->renderPartial('./theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
         return $sButtons;
     }
 

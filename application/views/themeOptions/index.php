@@ -1,6 +1,6 @@
 <?php
     /**
-     * @var AdminController     $this
+     * @var ThemeOptionsController $this
      * @var CActiveDataProvider $dataProvider
      * @var bool                $canImport
      * @var string              $importErrorMessage
@@ -202,7 +202,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                                 <?php if ($oTheme->path == getGlobalSetting('admintheme')):?>
                                                     <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>
                                                 <?php else: ?>
-                                                    <a href="<?php echo Yii::app()->getController()->createUrl("admin/themeoptions/sa/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
+                                                    <a href="<?php echo Yii::app()->getController()->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
                                                         <?php eT("Select");?>
                                                     </a>
                                                 <?php endif; ?>
