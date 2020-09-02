@@ -52,13 +52,10 @@ $codeids = '';
                                 </td>
                                 <?php endif;?>
                             <td>
-                            <div class="input-group">
                                 <input type='text' class=" form-control  " name='title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>' id='title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php
                                 if (array_key_exists($lslanguage, $row->labell10ns)) {
                                     echo HTMLEscape($row->labell10ns[$lslanguage]->title);
                                 }?>" />
-                            </div>
-                                
                             </td>
 
                             <td style='text-align:center;'>
