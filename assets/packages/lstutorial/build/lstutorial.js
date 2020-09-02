@@ -5006,9 +5006,9 @@
           tourObject.debug = window.debugState.backend;
           tourObject.framework = "bootstrap3";
           _actionActiveTour = new Tour(tourObject);
-          window.addEventListener('resize', function () {
-            _actionActiveTour.redraw();
-          });
+          // window.addEventListener('resize', function () {
+          //  _actionActiveTour.redraw();
+          // });
           resolve(_actionActiveTour);
         }, console.ls.err);
       });

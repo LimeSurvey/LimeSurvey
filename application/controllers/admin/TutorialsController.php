@@ -143,7 +143,7 @@ class TutorialsController extends Survey_Common_Action
 
     public function triggerfinished($tid)
     {
-        $oTutorial = Tutorial::model()->find($tid);
+        $oTutorial = Tutorial::model()->find('name=:name',array(':name'=>$tid));
         $oTutorial->setFinished(App()->user->id);
         echo '{"success": true}';
     }
