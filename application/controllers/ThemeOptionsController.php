@@ -80,7 +80,7 @@ class ThemeOptionsController extends LSBaseController
 
                 if ($model->save()) {
                     $this->getController()->redirect(
-                        array('admin/themeoptions/sa/update/id/', $model->id)
+                        array('themeOptions/update/id/', $model->id)
                     );
                 }
 
@@ -95,7 +95,7 @@ class ThemeOptionsController extends LSBaseController
                     gt("We are sorry but you don't have permissions to do this."),
                     'error'
                 );
-                $this->getController()->redirect(array("admin/themeoptions"));
+                $this->getController()->redirect(array("themeOptions"));
             }
         }
     }
@@ -265,13 +265,13 @@ class ThemeOptionsController extends LSBaseController
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->getController()->redirect(array('admin/themeoptions/sa/update/id/'.$model->id));
+                    $this->getController()->redirect(array('themeOptions/update/id/'.$model->id));
                 }
             }
             $this->updateCommon($model);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions"));
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("themeOptions"));
         }
     }
 
@@ -329,7 +329,7 @@ class ThemeOptionsController extends LSBaseController
                     $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
+                    $this->getController()->redirect(Yii::app()->getController()->createUrl("themeOptions/updateSurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
                 }
             }
             $this->updateCommon($model, $sid);
@@ -357,7 +357,7 @@ class ThemeOptionsController extends LSBaseController
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
 
             if ($model->bJustCreated === true && $l === null) {
-                $this->getController()->redirect(App()->getController()->createUrl("/admin/themeoptions/sa/updatesurveygroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
+                $this->getController()->redirect(App()->getController()->createUrl("themeOptions/updateSurveyGroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
             }
 
             if (isset($_POST['TemplateConfiguration'])) {
@@ -392,7 +392,7 @@ class ThemeOptionsController extends LSBaseController
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
-        $this->getController()->redirect(App()->getController()->createUrl("admin/themeoptions#adminthemes"));
+        $this->getController()->redirect(App()->getController()->createUrl("themeOptions#adminthemes"));
     }
 
     /**
@@ -406,7 +406,7 @@ class ThemeOptionsController extends LSBaseController
             $aData = array();
             $oSurveyTheme = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
-            $aData['oQuestionTheme'] =  new QuestionTheme;
+            $aData['oQuestionTheme'] = new QuestionTheme;
             $canImport = true;
             $importErrorMessage = null;
 
@@ -536,14 +536,14 @@ class ThemeOptionsController extends LSBaseController
                 } else {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
                 }
-                $this->getController()->redirect(array("admin/themeoptions#questionthemes"));
+                $this->getController()->redirect(array("themeOptions#questionthemes"));
             } else {
                 TemplateManifest::importManifest($templatename);
-                $this->getController()->redirect(array("admin/themeoptions#surveythemes"));
+                $this->getController()->redirect(array("themeOptions#surveythemes"));
             }
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions"));
         }
     }
 
@@ -571,7 +571,7 @@ class ThemeOptionsController extends LSBaseController
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
-        $this->getController()->redirect(array("admin/themeoptions"));
+        $this->getController()->redirect(array("themeOptions"));
     }
 
     /**
@@ -588,7 +588,7 @@ class ThemeOptionsController extends LSBaseController
             TemplateConfiguration::uninstall($templatename);
             TemplateManifest::importManifest($templatename);
             App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions"));
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(
@@ -694,6 +694,6 @@ class ThemeOptionsController extends LSBaseController
             $aData['subaction'] = gT("Survey theme options");
         }
  
-        $this->render('themeoptions', $aData);
+        $this->render('themeOptions', $aData);
     }
 }

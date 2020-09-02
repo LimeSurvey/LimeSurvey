@@ -240,6 +240,11 @@ class QuestionTheme extends LSActiveRecord
         libxml_disable_entity_loader($bOldEntityLoaderState);
     }
 
+    /**
+     * Returns visibility button.
+     * 
+     * @return string|array
+     */
     public function getVisibilityButton()
     {
         // don't show any buttons if user doesn't have update permission
