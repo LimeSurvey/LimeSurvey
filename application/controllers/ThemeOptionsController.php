@@ -522,7 +522,7 @@ class ThemeOptionsController extends LSBaseController
      * @throws Exception
      * @return void
      */
-    public function importManifest()
+    public function actionImportManifest()
     {
         $templatename = App()->request->getPost('templatename');
         $theme = App()->request->getPost('theme');
@@ -543,12 +543,12 @@ class ThemeOptionsController extends LSBaseController
             }
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("themeOptions"));
+            $this->getController()->redirect(array("themeOptions/index"));
         }
     }
 
     /**
-     * Uninstall.
+     * Uninstalls the theme.
      * 
      * @return void
      */
@@ -571,10 +571,12 @@ class ThemeOptionsController extends LSBaseController
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
-        $this->getController()->redirect(array("themeOptions"));
+        $this->getController()->redirect(array("themeOptions/index"));
     }
 
     /**
+     * Resets the theme.
+     * 
      * @param integer $gsid ID
      * 
      * @return void

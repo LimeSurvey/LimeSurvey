@@ -666,7 +666,8 @@ class TemplateManifest extends TemplateConfiguration
 
             //
 
-        $sLoadLink = CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+        // TODO: Installs Theme (maybe rename importManifest to install ?)
+        $sLoadLink = CHtml::form( array("themeOptions/importManifest/"), 'post', array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
                 "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
                 <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>

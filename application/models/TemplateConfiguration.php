@@ -719,7 +719,7 @@ class TemplateConfiguration extends TemplateConfig
                 array("id" => $this->id)
             );
 
-        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
+        $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
         $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/', array("gsid"=>$gsid));
 
 
