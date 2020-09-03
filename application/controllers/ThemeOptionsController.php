@@ -379,11 +379,11 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Sets admin theme.
      * 
-     * @param string $sAdminTheme Admin theme
+     * @param string $sAdminThemeName Admin theme Name
      * 
      * @return void
      */
-    public function actionSetAdminTheme(string $sAdminTheme) : void
+    public function actionSetAdminTheme(string $sAdminThemeName) : void
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             App()->setFlashMessage(gt("We are sorry but you don't have permissions to do this."), 'error');
@@ -392,7 +392,7 @@ class ThemeOptionsController extends LSBaseController
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
-        $this->getController()->redirect(App()->getController()->createUrl("themeOptions#adminthemes"));
+        $this->redirect(array("themeOptions/index#adminthemes"));
     }
 
     /**
@@ -539,8 +539,7 @@ class ThemeOptionsController extends LSBaseController
                 $this->getController()->redirect(array("themeOptions#questionthemes"));
             } else {
                 TemplateManifest::importManifest($templatename);
-                //$this->getController()->redirect(array("themeOptions#surveythemes"));
-                $this->redirect('themeOptions#surveythemes');
+                $this->redirect(array('themeOptions/index#surveythemes'));
             }
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
