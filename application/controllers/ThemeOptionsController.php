@@ -539,7 +539,8 @@ class ThemeOptionsController extends LSBaseController
                 $this->getController()->redirect(array("themeOptions#questionthemes"));
             } else {
                 TemplateManifest::importManifest($templatename);
-                $this->getController()->redirect(array("themeOptions#surveythemes"));
+                //$this->getController()->redirect(array("themeOptions#surveythemes"));
+                $this->redirect('themeOptions#surveythemes');
             }
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
@@ -571,7 +572,7 @@ class ThemeOptionsController extends LSBaseController
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
 
-        $this->getController()->redirect(array("themeOptions/index"));
+        $this->redirect(array("themeOptions/index"));
     }
 
     /**
