@@ -720,8 +720,7 @@ class TemplateConfiguration extends TemplateConfig
             );
 
         $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
-        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/', array("gsid"=>$gsid));
-
+        $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid"=> (int) $gsid));
 
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'

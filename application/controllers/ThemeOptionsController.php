@@ -591,7 +591,7 @@ class ThemeOptionsController extends LSBaseController
             TemplateConfiguration::uninstall($templatename);
             TemplateManifest::importManifest($templatename);
             App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
-            $this->getController()->redirect(array("themeOptions"));
+            $this->redirect(array("themeOptions/index"));
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(
