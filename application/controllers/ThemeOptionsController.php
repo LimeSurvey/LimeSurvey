@@ -265,13 +265,13 @@ class ThemeOptionsController extends LSBaseController
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->getController()->redirect(array('themeOptions/update/id/'.$model->id));
+                    $this->redirect(array('themeOptions/update/id/'.$model->id));
                 }
             }
             $this->updateCommon($model);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("themeOptions"));
+            $this->redirect(array("themeOptions/index"));
         }
     }
 
@@ -697,6 +697,6 @@ class ThemeOptionsController extends LSBaseController
             $aData['subaction'] = gT("Survey theme options");
         }
  
-        $this->render('themeOptions', $aData);
+        $this->render('update', $aData);
     }
 }

@@ -715,7 +715,7 @@ class TemplateConfiguration extends TemplateConfig
                 array("id" => $this->id, "gsid" => $gsid)
             ) :
             App()->getController()->createUrl(
-                'admin/themeoptions/sa/update',
+                'themeOptions/update',
                 array("id" => $this->id)
             );
 

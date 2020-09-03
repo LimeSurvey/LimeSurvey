@@ -1,5 +1,5 @@
 <?php
-/* @var $this AdminController */
+/* @var $this ThemeOptionsController */
 /* @var $model TemplateConfiguration  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -108,7 +108,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                              */
 
                             if ($aOptionAttributes['optionsPage'] == 'core'){
-                                $this->renderPartial('./themeoptions/options_core', array(
+                                $this->renderPartial('./options_core', array(
                                     'aOptionAttributes' => $aOptionAttributes, 
                                     'aTemplateConfiguration' => $aTemplateConfiguration, 
                                     'oParentOptions' => $oParentOptions, 
