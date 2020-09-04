@@ -1116,6 +1116,11 @@ class Survey_Common_Action extends CAction
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['groups_count'] = $sumcount2;
 
+        $aData['owner'] = "-";
+        if (!is_null($oSurvey->owner)) {
+            $aData['owner'] = flattenText("{$oSurvey->owner->full_name} ({$oSurvey->owner->email})");
+        }
+
         // We get the state of the quickaction
         // If the survey is new (ie: it has no group), it is opened by default
         $quickactionState = SettingsUser::getUserSettingValue('quickaction_state');
