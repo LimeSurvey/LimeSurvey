@@ -3269,6 +3269,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
 
+        if ($iOldDBVersion < 431) {
+            // Update 'Theme Options' Entry (Side Menu Link) in Survey Menu Entries.
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'themeOptions/updateSurvey',
+                ),
+                "name='theme_options'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 431), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
