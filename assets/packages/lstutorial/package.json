@@ -23,7 +23,7 @@
     "eslint-plugin-html": "^3.0.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "node-sass": "^4.6.0",
+    "node-sass": "^4.13.1",
     "rollup": "^1.20.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
