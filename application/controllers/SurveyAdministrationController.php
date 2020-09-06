@@ -422,7 +422,9 @@ class SurveyAdministrationController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             // Check if survey title was set
-            if (Yii::app()->request->getPost('surveyls_title') == '') {
+            $surveyTitle = Yii::app()->request->getPost('surveyls_title');
+            $surveyTitle = trim($surveyTitle);
+            if ($surveyTitle == '') {
                 $alertError = gT("Survey could not be created because it did not have a title");
 
                 return Yii::app()->getController()->renderPartial(
@@ -437,6 +439,9 @@ class SurveyAdministrationController extends LSBaseController
                     false
                 );
             }
+
+            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey('bdfaksdjad', false,
+                'en',1);
 
             Yii::app()->loadHelper("surveytranslator");
             // If start date supplied convert it to the right format

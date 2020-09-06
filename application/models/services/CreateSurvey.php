@@ -55,12 +55,19 @@ class CreateSurvey
 
         $this->survey->gsid = $this->surveyGroup;
 
+        //check realtional tables to be initialised like survey_languagesettings
+        //e.g. the surveyTitle is set in table survey_languagesettings attribute ---> surveyls_title
+
 
         if($this->createExample){
             //... create exampls
         }
 
         return $this->survey;
+    }
+
+    private function initialiseSurveyAttributes(){
+
     }
 
 }
