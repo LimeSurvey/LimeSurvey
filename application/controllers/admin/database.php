@@ -679,6 +679,8 @@ class database extends Survey_Common_Action
         } else {
             if (!empty($this->iQuestionGroupID)) {
 
+                // Question Order
+                $insertorder = $cqr['question_order'];
                 if ($oldgid != $this->iQuestionGroupID) {
                     if (getGroupOrder($iSurveyID, $oldgid) > getGroupOrder($iSurveyID, $this->iQuestionGroupID)) {
                         // TMSW Condition->Relevance:  What is needed here?
