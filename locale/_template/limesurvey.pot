@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-08-21 13:48:58+00:00\n"
+"POT-Creation-Date: 2020-09-02 07:30:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:76
 #: application/controllers/UserManagementController.php:831
-#: application/controllers/UserManagementController.php:1083
+#: application/controllers/UserManagementController.php:1084
 #: application/controllers/admin/dataentry.php:195
 #: application/controllers/admin/dataentry.php:1511
 #: application/controllers/admin/dataentry.php:1512
@@ -1559,16 +1559,16 @@ msgstr ""
 msgid "Role updated"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1076
+#: application/controllers/UserManagementController.php:1077
 msgid "User successfully created"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1084
+#: application/controllers/UserManagementController.php:1085
 #: application/controllers/admin/useraction.php:175
 msgid "Email to %s (%s) failed."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1089
+#: application/controllers/UserManagementController.php:1090
 #: application/controllers/admin/surveyadmin.php:376
 #: application/controllers/admin/useraction.php:172
 #: application/helpers/SurveyRuntimeHelper.php:1139
@@ -1591,29 +1591,29 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1090
+#: application/controllers/UserManagementController.php:1091
 msgid "Username : %s - Email : %s."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1091
+#: application/controllers/UserManagementController.php:1092
 #: application/controllers/admin/useraction.php:170
 msgid "An email with a generated password was sent to the user."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1129
+#: application/controllers/UserManagementController.php:1130
 msgid "You do not have permission for this action."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1140
+#: application/controllers/UserManagementController.php:1141
 #: application/controllers/admin/useraction.php:112
 msgid "A username was not supplied or the username is invalid."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1149
+#: application/controllers/UserManagementController.php:1150
 msgid "A user with this username already exists."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1156
+#: application/controllers/UserManagementController.php:1157
 #: application/controllers/admin/useraction.php:111
 #: application/controllers/admin/useraction.php:122
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:232
@@ -1624,40 +1624,40 @@ msgstr ""
 msgid "Failed to add user"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1157
+#: application/controllers/UserManagementController.php:1158
 #: application/controllers/admin/useraction.php:123
 msgid "Plugin is not active"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1196
-#: application/controllers/UserManagementController.php:1214
+#: application/controllers/UserManagementController.php:1197
+#: application/controllers/UserManagementController.php:1215
 #: application/controllers/admin/useraction.php:144
 msgid "Hello %s,"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1197
+#: application/controllers/UserManagementController.php:1198
 msgid "This is an automated email to notify you that your login credentials for '%s' have been reset."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1198
+#: application/controllers/UserManagementController.php:1199
 msgid "Here are your new credentials."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1207
+#: application/controllers/UserManagementController.php:1208
 msgid "Your login credentials have been reset"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1215
+#: application/controllers/UserManagementController.php:1216
 #: application/controllers/admin/useraction.php:145
 msgid "This is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1216
+#: application/controllers/UserManagementController.php:1217
 #: application/controllers/admin/useraction.php:146
 msgid "You can use now the following credentials to log into the site:"
 msgstr ""
 
-#: application/controllers/UserManagementController.php:1225
+#: application/controllers/UserManagementController.php:1226
 msgid "An account has been created for you"
 msgstr ""
 
@@ -3514,7 +3514,7 @@ msgstr ""
 #: application/models/Question.php:880
 #: application/models/QuestionBaseDataSet.php:285
 #: application/models/SurveyDynamic.php:840
-#: application/models/SurveyDynamic.php:905
+#: application/models/SurveyDynamic.php:908
 #: application/views/admin/dataentry/content_view.php:175
 #: application/views/admin/dataentry/content_view.php:179
 #: application/views/admin/dataentry/content_view.php:199
@@ -18405,16 +18405,6 @@ msgstr ""
 msgid "Active:"
 msgstr ""
 
-#: application/views/admin/pluginmanager/overview.php:77
-#: application/views/admin/quotas/viewquotas_massive_selector.php:37
-msgid "Deactivate"
-msgstr ""
-
-#: application/views/admin/pluginmanager/overview.php:84
-#: application/views/admin/quotas/viewquotas_massive_selector.php:21
-msgid "Activate"
-msgstr ""
-
 #: application/views/admin/pluginmanager/scanFilesResult.php:2
 msgid "Plugin manager - scanned files"
 msgstr ""
@@ -18543,12 +18533,20 @@ msgstr ""
 msgid "Selected quota(s)..."
 msgstr ""
 
+#: application/views/admin/quotas/viewquotas_massive_selector.php:21
+msgid "Activate"
+msgstr ""
+
 #: application/views/admin/quotas/viewquotas_massive_selector.php:28
 msgid "Activate quotas"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_massive_selector.php:29
 msgid "Are you sure you want to activate all selected quotas?"
+msgstr ""
+
+#: application/views/admin/quotas/viewquotas_massive_selector.php:37
+msgid "Deactivate"
 msgstr ""
 
 #: application/views/admin/quotas/viewquotas_massive_selector.php:44
