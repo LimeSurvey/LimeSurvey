@@ -9,7 +9,8 @@
                 <textarea id='htmleditor-modal-textarea' name='htmleditor-modal-textarea'></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-success" id="htmleditor-modal-save"><?php eT("Confirm"); ?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Cancel"); ?></button>
             </div>
         </div>
     </div>

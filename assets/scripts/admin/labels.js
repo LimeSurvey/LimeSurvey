@@ -342,7 +342,7 @@ function createNewLabelTR(alternate, first) {
         + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
     }
 
-    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
+    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\" id=\"title_###lang###_###next###\" type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "</td>";
 
     x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='title_###lang###_###next###' data-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";

@@ -26,11 +26,15 @@ var ModalEditor = function () {
     };
 
     var openModal = function () {
-        // Save original modal content
+        // Save original modal content to restore when closing
         originalContent = $(modalSelector).html();
+
         // Set modal's title
         var title = $(document).find('#htmleditor-modal-title');
         if (modalTitle) title.text(modalTitle);
+
+        $('#htmleditor-modal-save').on('click.modal-editor', modalSave);
+
         $('#htmleditor-modal-textarea').before(loaderSpinner);
         initEditor();
         $(modalSelector).modal('show');
@@ -66,6 +70,12 @@ var ModalEditor = function () {
         editor.setData($(targetField).val());
     };
 
+    var modalSave = function() {
+        $('#htmleditor-modal-save').off('click.modal-editor');
+        updateTargetField();
+        closeModal();
+    }
+
     var updateTargetField = function() {
         var editedtext = '';
         if (['editanswer', 'addanswer', 'editlabel', 'addlabel'].indexOf(fieldType)) {
@@ -90,8 +100,6 @@ var ModalEditor = function () {
 
     var bindModals = function () {
         $(document).on('hide.bs.modal', modalSelector, function () {
-            // TODO: send value to target input control
-            updateTargetField();
             // Restore original modal content
             $(modalSelector).html(originalContent);
         });
