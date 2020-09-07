@@ -931,6 +931,7 @@ class SurveyRuntimeHelper
     private function displayFirstPageIfNeeded()
     {
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
+        $this->aSurveyInfo['move'] = isset($this->sMove) ? $this->sMove : '';
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
 
