@@ -3,7 +3,6 @@
 
 namespace LimeSurvey\Models\Services;
 
-use PHPMailer\PHPMailer\Exception;
 use Survey;
 
 /**
@@ -36,7 +35,7 @@ class CreateSurvey
     /** @var boolean creates example questiongroup and questions */
     private $createExample;
 
-    /** @var  int the surveygroup from which the new survey will inherit values*/
+    /** @var  int the surveygroup from which the new survey will inherit values */
     private $surveyGroup;
 
     /** @var Survey the survey */
@@ -45,34 +44,27 @@ class CreateSurvey
     /**
      * CreateSurvey constructor.
      *
-     * @param string $title  the title of the survey
-     * @param boolean $createExample if true creates example questiongroup and questions
-     * @param string $baseLanguage shortcut for the language like 'en' for english
-     * @param int $surveyGroup the surveygroup from which the new survey will inherit values
+     * @param Survey $survey the survey object
      */
-    public function __construct($title, $createExample, $baseLanguage, $surveyGroup)
+    public function __construct($survey)
     {
-        $this->title = $title;
-        $this->createExample = $createExample;
-        $this->baseLanguage = $baseLanguage;
-        $this->surveyGroup = $surveyGroup;
-        $this->survey = new Survey();
+        $this->survey = $survey;
     }
 
     /**
      * This creates a simple survey with the basic attributes set in constructor.
      *
+     * @param \SimpleSurveyValues $simpleSurveyValues
+     *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason
      */
-    public function createSimple(){
+    public function createSimple($simpleSurveyValues){
 
-        $this->survey->gsid = $this->surveyGroup;
+        $this->survey->gsid = $simpleSurveyValues->getSurveyGroupId();
         try {
             $this->createSurveyId();
             $this->setBaseLanguage();
             $this->initialiseSurveyAttributes();
-
-
 
             if($this->createExample){
                 //... create exampls
@@ -134,12 +126,12 @@ class CreateSurvey
 
         $this->survey->expires = null;
         $this->survey->startdate = null;
-        $this->survey->template = 'inherit'; //which template is this here???
+        $this->survey->template = 'inherit'; //which template is this here ??
         $this->survey->admin = ''; //what to set here ??
         $this->survey->active = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->anonymized = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->faxto = null;
-        $this->survey->format = self::STRING_SHORT_VALUE_INHERIT;
+        $this->survey->format = self::STRING_SHORT_VALUE_INHERIT; //inherits value from survey group
         $this->survey->savetimings = 'N'; //could also be 'I' for inherit from survey group ...
 
        // 'expires' => $sExpiryDate,
@@ -151,6 +143,7 @@ class CreateSurvey
       //          'faxto' => App()->request->getPost('faxto'),
       //          'format' => App()->request->getPost('format'),
      //           'savetimings' => App()->request->getPost('savetimings'),
+        /*
                 'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
                 'datestamp' => App()->request->getPost('datestamp'),
                 'ipaddr' => App()->request->getPost('ipaddr'),
@@ -186,6 +179,7 @@ class CreateSurvey
                 'gsid' => App()->request->getPost('gsid', '1'),
                 'adminemail' => Yii::app()->request->getPost('adminemail'),
                 'bounce_email' => Yii::app()->request->getPost('bounce_email'),
+        */
     }
 
 }

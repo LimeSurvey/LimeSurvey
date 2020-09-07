@@ -440,8 +440,13 @@ class SurveyAdministrationController extends LSBaseController
                 );
             }
 
-            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey('bdfaksdjad', false,
-                'en',1);
+            $simpleSurveyValues = new SimpleSurveyValues();
+            $simpleSurveyValues->setBaseLanguage('en');
+            $simpleSurveyValues->setCreateExample(false);
+            $simpleSurveyValues->setSurveyGroupId((int) App()->request->getPost('gsid', '1'));
+            $simpleSurveyValues->setTitle($surveyTitle);
+
+            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey());
 
             Yii::app()->loadHelper("surveytranslator");
             // If start date supplied convert it to the right format

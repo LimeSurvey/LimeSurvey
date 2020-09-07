@@ -23,7 +23,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  *
  * @property integer $sid Survey ID
  * @property integer $owner_id
- * @property integer $gsid Survey ID
+ * @property integer $gsid survey group id, from which this survey belongs to and inherits values from when set to 'I'
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
  * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
@@ -31,7 +31,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
  * @property string $faxto
- * @property string $format A : All in one, G : Group by group, Q : question by question
+ * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
  * @property string $language Survey base language
