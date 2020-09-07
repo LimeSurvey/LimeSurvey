@@ -111,12 +111,7 @@
      * @param CController $controller
      */
     function PrepareEditorScript($load = false, $controller = null)
-    {
-                
-        App()->getClientScript()->registerPackage('ckeditor'); //
-        App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global sope
-        App()->getClientScript()->registerPackage('modaleditor');
-        
+    {        
         if ($controller == null) {
             $controller = Yii::app()->getController();
         }

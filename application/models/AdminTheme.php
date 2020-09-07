@@ -155,6 +155,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
             App()->getClientScript()->registerPackage('ckeditor'); //
             App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global sope
+            App()->getClientScript()->registerPackage('modaleditor');
         }
 
         $aCssFiles = array();
