@@ -1445,7 +1445,7 @@ class questions extends Survey_Common_Action
             }
         } else {
             Question::model()->deleteAllById($qid);
-            Question::model()->updateSortOrder($oQuestion->gid, $surveyid);
+            Question::model()->updateQuestionOrder($oQuestion->gid);
         }
 
         $sMessage = gT("Question was successfully deleted.");

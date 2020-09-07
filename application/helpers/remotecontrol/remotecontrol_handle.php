@@ -1346,7 +1346,7 @@ class remotecontrol_handle
 
                     DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Question::updateSortOrder($iGroupID, $iSurveyID);
+                    Question::updateQuestionOrder($iGroupID);
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
@@ -1697,7 +1697,7 @@ class remotecontrol_handle
 
                     try {
                         $bSaveResult = $oQuestion->save(); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
+                        Question::model()->updateQuestionOrder($oQuestion->gid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult) {
