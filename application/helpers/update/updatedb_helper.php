@@ -3276,6 +3276,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => 'themeOptions/updateSurvey',
+                    'data'      => '{"render": {"link": { "pjaxed": true, "data": {"sid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'
                 ),
                 "name='theme_options'"
             );
