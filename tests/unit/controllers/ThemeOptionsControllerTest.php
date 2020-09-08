@@ -21,7 +21,7 @@ class ThemeOptionsControllerTest extends TestCase
     public function setUp()
     {
         \Yii::import('application.controllers.ThemeOptionsController', true);
-        $this->controller = new themeoptions();
+        $this->controller = new ThemeOptionsController();
 
     }
 
