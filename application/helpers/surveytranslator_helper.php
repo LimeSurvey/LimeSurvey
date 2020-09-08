@@ -1082,7 +1082,12 @@ function canShowDatePicker($dateformatdetails, $dateformats = null)
     return $showpicker;
 }
 
-
+/**
+ *
+ *
+ * @param string $languagetosearch this is the shortname for the language (e.g. 'en' see array in getLanguageData())
+ * @return int|string
+ */
 function getLanguageCodefromLanguage($languagetosearch)
 {
     $detaillanguages = getLanguageData(false, Yii::app()->session['adminlang']);

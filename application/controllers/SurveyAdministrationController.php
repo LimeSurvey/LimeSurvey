@@ -440,151 +440,31 @@ class SurveyAdministrationController extends LSBaseController
                 );
             }
 
-            $simpleSurveyValues = new SimpleSurveyValues();
-            $simpleSurveyValues->setBaseLanguage('en');
-            $simpleSurveyValues->setCreateExample(false);
+            Yii::app()->loadHelper("surveytranslator");
+
+            $simpleSurveyValues = new \LimeSurvey\Models\Services\SimpleSurveyValues();
+            $baseLanguage = App()->request->getPost('language');
+            $searchForValidLanguage = getLanguageCodefromLanguage($baseLanguage);
+            if($baseLanguage===null) {
+                $baseLanguage = 'en'; //shoulb be const somewhere ... or get chosen language from user
+            }
+            $simpleSurveyValues->setBaseLanguage($baseLanguage);
             $simpleSurveyValues->setSurveyGroupId((int) App()->request->getPost('gsid', '1'));
             $simpleSurveyValues->setTitle($surveyTitle);
 
             $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey());
-
-            Yii::app()->loadHelper("surveytranslator");
-            // If start date supplied convert it to the right format
-            $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
-            $sStartDate = Yii::app()->request->getPost('startdate');
-            if (trim($sStartDate) != '') {
-                Yii::import('application.libraries.Date_Time_Converter');
-                $converter = new Date_Time_Converter($sStartDate, $aDateFormatData['phpdate'] . ' H:i:s');
-                $sStartDate = $converter->convert("Y-m-d H:i:s");
-            }
-
-            // If expiry date supplied convert it to the right format
-            $sExpiryDate = Yii::app()->request->getPost('expires');
-            if (trim($sExpiryDate) != '') {
-                Yii::import('application.libraries.Date_Time_Converter');
-                $converter = new Date_Time_Converter($sExpiryDate, $aDateFormatData['phpdate'] . ' H:i:s');
-                $sExpiryDate = $converter->convert("Y-m-d H:i:s");
-            }
-
-            $iTokenLength = (int)Yii::app()->request->getPost('tokenlength');
-            //token length has to be at least 5, otherwise set it to default (15)
-            if ($iTokenLength !== -1) {
-                if ($iTokenLength < 5) {
-                    $iTokenLength = 15;
-                }
-                if ($iTokenLength > 36) {
-                    $iTokenLength = 36;
-                }
-            }
-
-            $aInsertData = array(
-                'expires' => $sExpiryDate,
-                'startdate' => $sStartDate,
-                'template' => App()->request->getPost('template'),
-                'admin' => App()->request->getPost('admin'),
-                'active' => 'N',
-                'anonymized' => App()->request->getPost('anonymized'),
-                'faxto' => App()->request->getPost('faxto'),
-                'format' => App()->request->getPost('format'),
-                'savetimings' => App()->request->getPost('savetimings'),
-                'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
-                'datestamp' => App()->request->getPost('datestamp'),
-                'ipaddr' => App()->request->getPost('ipaddr'),
-                'ipanonymize' => App()->request->getPost('ipanonymize'),
-                'refurl' => App()->request->getPost('refurl'),
-                'usecookie' => App()->request->getPost('usecookie'),
-                'emailnotificationto' => App()->request->getPost('emailnotificationto'),
-                'allowregister' => App()->request->getPost('allowregister'),
-                'allowsave' => App()->request->getPost('allowsave'),
-                'navigationdelay' => App()->request->getPost('navigationdelay'),
-                'autoredirect' => App()->request->getPost('autoredirect'),
-                'showxquestions' => App()->request->getPost('showxquestions'),
-                'showgroupinfo' => App()->request->getPost('showgroupinfo'),
-                'showqnumcode' => App()->request->getPost('showqnumcode'),
-                'shownoanswer' => App()->request->getPost('shownoanswer'),
-                'showwelcome' => App()->request->getPost('showwelcome'),
-                'allowprev' => App()->request->getPost('allowprev'),
-                'questionindex' => App()->request->getPost('questionindex'),
-                'nokeyboard' => App()->request->getPost('nokeyboard'),
-                'showprogress' => App()->request->getPost('showprogress'),
-                'printanswers' => App()->request->getPost('printanswers'),
-                'listpublic' => App()->request->getPost('listpublic'),
-                'htmlemail' => App()->request->getPost('htmlemail'),
-                'sendconfirmation' => App()->request->getPost('sendconfirmation'),
-                'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
-                'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
-                'usecaptcha' => Survey::saveTranscribeCaptchaOptions(),
-                'publicstatistics' => App()->request->getPost('publicstatistics'),
-                'publicgraphs' => App()->request->getPost('publicgraphs'),
-                'assessments' => App()->request->getPost('assessments'),
-                'emailresponseto' => App()->request->getPost('emailresponseto'),
-                'tokenlength' => $iTokenLength,
-                'gsid' => App()->request->getPost('gsid', '1'),
-                'adminemail' => Yii::app()->request->getPost('adminemail'),
-                'bounce_email' => Yii::app()->request->getPost('bounce_email'),
-
-            );
-
-            $warning = '';
-
-            if (!is_null($iSurveyID)) {
-                $aInsertData['sid'] = $iSurveyID;
-            }
-
-            $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
-            if (!$newSurvey->sid) {
-                safeDie('Survey could not be created.'); // No error management ?
-            }
-            $iNewSurveyid = $newSurvey->sid;
-            $this->aData['surveyid'] = $newSurvey->sid;; //import to render correct layout in before_render
-            // Prepare locale data for surveys_language_settings table
-            $sTitle = Yii::app()->request->getPost('surveyls_title');
-            $sDescription = Yii::app()->request->getPost('description');
-            $sWelcome = Yii::app()->request->getPost('welcome');
-
-            $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
-            $sDescription = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
-            $sWelcome = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
-
-            // Fix bug with FCKEditor saving strange BR types
-            $sTitle = fixCKeditorText($sTitle);
-            $sDescription = fixCKeditorText($sDescription);
-            $sWelcome = fixCKeditorText($sWelcome);
-
-            $dateFormat = (int) Yii::app()->request->getPost('dateformat');
-            if($dateFormat === null || ($dateFormat<1) || ($dateFormat>12) ){
-                //dateformat is not past correctly from frontend to backend
-                $dateFormat = 1;
-            }
-
-            // Insert base language into surveys_language_settings table
-            $aInsertData = array(
-                'surveyls_survey_id' => $iNewSurveyid,
-                'surveyls_title' => $sTitle,
-                'surveyls_description' => $sDescription,
-                'surveyls_welcometext' => $sWelcome,
-                'surveyls_language' => Yii::app()->request->getPost('language'),
-                'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip', ''),
-                'surveyls_endtext' => Yii::app()->request->getPost('endtext', ''),
-                'surveyls_url' => Yii::app()->request->getPost('url', ''),
-                'surveyls_dateformat' => $dateFormat,
-                'surveyls_numberformat' => (int)Yii::app()->request->getPost('numberformat'),
-                'surveyls_policy_notice' => App()->request->getPost('surveyls_policy_notice'),
-                'surveyls_policy_notice_label' => App()->request->getPost('surveyls_policy_notice_label')
-            );
-
-            $langsettings = new SurveyLanguageSetting;
-            //$isLanguageSaved = $langsettings->insertNewSurvey($aInsertData);
-            if(!$langsettings->insertNewSurvey($aInsertData)){ //this has to exist for the survey ...
-                Yii::app()->setFlashMessage($warning . gT("Surveylanguage settings could not be saved."), 'error');
+            $newSurvey = $surveyCreator->createSimple($simpleSurveyValues);
+            if (!$newSurvey) {
+                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
 
-            // Update survey permissions
-            Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
+            $iNewSurveyid = $newSurvey->sid;
+            $this->aData['surveyid'] = $newSurvey->sid; //import to render correct layout in before_render
 
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
+
             $createSample = App()->request->getPost('createsample');
             $createSampleChecked = ($createSample === 'on');
 
@@ -593,7 +473,7 @@ class SurveyAdministrationController extends LSBaseController
                 $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
-                Yii::app()->setFlashMessage($warning . gT("Your new survey was created. 
+                Yii::app()->setFlashMessage(gT("Your new survey was created. 
                 We also created a first question group and an example question for you."), 'info');
                 $landOnSideMenuTab = 'structure';
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
@@ -607,7 +487,7 @@ class SurveyAdministrationController extends LSBaseController
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
                 );
-                Yii::app()->setFlashMessage($warning . gT("Your new survey was created."), 'info');
+                Yii::app()->setFlashMessage(gT("Your new survey was created."), 'info');
             }
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',

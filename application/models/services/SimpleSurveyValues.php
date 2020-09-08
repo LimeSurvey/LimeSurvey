@@ -1,5 +1,7 @@
 <?php
 
+namespace LimeSurvey\Models\Services;
+
 /**
  * Class SimpleSurveyValues
  *
@@ -9,6 +11,7 @@
  *   -- if createExamples (questions and groups) should be created at the beginning
  *   -- the survey group id the survey should belong to (or/and inherit values from)
  *
+ * @package LimeSurvey\Models\DataValueObject
  */
 class SimpleSurveyValues
 {
@@ -18,9 +21,6 @@ class SimpleSurveyValues
 
     /** @var string title of the survey */
     private $title;
-
-    /** @var boolean creates example questiongroup and questions */
-    private $createExample;
 
     /** @var  int the surveygroup from which the new survey will inherit values */
     private $surveyGroupId;
@@ -55,22 +55,6 @@ class SimpleSurveyValues
     public function setTitle(string $title): void
     {
         $this->title = $title;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCreateExample(): bool
-    {
-        return $this->createExample;
-    }
-
-    /**
-     * @param bool $createExample
-     */
-    public function setCreateExample(bool $createExample): void
-    {
-        $this->createExample = $createExample;
     }
 
     /**

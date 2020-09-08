@@ -76,7 +76,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $showwelcome Show welcome screen: (Y/N)
  * @property string $showprogress how progress bar: (Y/N)
  * @property integer $questionindex Show question index / allow jumping (0: diabled; 1: Incremental; 2: Full)
- * @property integer $navigationdelay Navigation delay (seconds)
+ * @property integer $navigationdelay Navigation delay (seconds) (It shows the number of seconds before the previous,
+ * next, and submit buttons are enabled. If none is specified, the option will use the default value, which is "0" (seconds))
  * @property string $nokeyboard Show on-screen keyboard: (Y/N)
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
