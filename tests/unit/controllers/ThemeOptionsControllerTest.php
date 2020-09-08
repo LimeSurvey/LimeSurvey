@@ -2,7 +2,7 @@
 
 namespace ls\tests\controllers;
 
-use themeoptions;
+use ThemeOptionsController;
 use TemplateConfiguration;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +20,7 @@ class ThemeOptionsControllerTest extends TestCase
 
     public function setUp()
     {
-        \Yii::import('application.controllers.admin.themeoptions', true);
+        \Yii::import('application.controllers.ThemeOptionsController', true);
         $this->controller = new themeoptions();
 
     }
