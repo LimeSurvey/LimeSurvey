@@ -32,6 +32,7 @@ class ThemeOptionsControllerTest extends TestCase
 
     /**
      * This test will check if the ajaxmode will be turned off.
+     * @skip
      */
     public function testTurnAjaxModeOffAsDefault()
     {
