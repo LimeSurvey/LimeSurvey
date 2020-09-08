@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.2 (build 200908) to 3.23.3 (build 200909) September 8, 2020
+-Fixed issue #16488: [Hotfix] Reviewing updateQuestionOrder usage (gabrieljenik)
+#Updated translation: Spanish (Spain) by eddylackmann
+#Updated translation: Dutch (Informal) by eddylackmann
+
+
 Changes from 3.23.1 (build 200825) to 3.23.2 (build 200908) September 7, 2020
 -Fixed issue: Minor errors in tutorial (Carsten Schmitz)
 -Fixed issue #16588: False warning about the screen resolution (Gabriel Jenik)
