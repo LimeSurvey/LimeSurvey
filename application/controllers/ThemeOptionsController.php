@@ -61,7 +61,7 @@ class ThemeOptionsController extends LSBaseController
             gT("We are sorry but you don't have permissions to do this"),
             'error'
         );
-        $this->getController()->redirect(App()->createUrl("/admin"));
+        $this->redirect(App()->createUrl("/admin"));
     }
 
     /**
@@ -79,7 +79,7 @@ class ThemeOptionsController extends LSBaseController
                 $model->attributes = $_POST['TemplateOptions'];
 
                 if ($model->save()) {
-                    $this->getController()->redirect(
+                    $this->redirect(
                         array('themeOptions/update/id/', $model->id)
                     );
                 }
@@ -95,7 +95,7 @@ class ThemeOptionsController extends LSBaseController
                     gt("We are sorry but you don't have permissions to do this."),
                     'error'
                 );
-                $this->getController()->redirect(array("themeOptions"));
+                $this->redirect(array("themeOptions"));
             }
         }
     }
@@ -329,13 +329,13 @@ class ThemeOptionsController extends LSBaseController
                     $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->getController()->redirect(Yii::app()->getController()->createUrl("themeOptions/updateSurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
+                    $this->redirect(array("themeOptions/updateSurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
                 }
             }
             $this->updateCommon($model, $sid);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
+            $thi->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
         }
     }
 
@@ -357,7 +357,7 @@ class ThemeOptionsController extends LSBaseController
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
 
             if ($model->bJustCreated === true && $l === null) {
-                $this->getController()->redirect(App()->getController()->createUrl("themeOptions/updateSurveyGroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
+                $this->redirect(array("themeOptions/updateSurveyGroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
             }
 
             if (isset($_POST['TemplateConfiguration'])) {
@@ -365,7 +365,7 @@ class ThemeOptionsController extends LSBaseController
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     App()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->getController()->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
+                    $this->redirect(array("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
                 }
             }
 
@@ -463,7 +463,7 @@ class ThemeOptionsController extends LSBaseController
             $this->render('index', $aData);
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(App()->createUrl("/admin"));
+            $this->redirect(App()->createUrl("/admin"));
         }
     }
 
@@ -489,7 +489,7 @@ class ThemeOptionsController extends LSBaseController
             );
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(App()->createUrl("/admin"));
+            $this->redirect(array("/admin"));
         }
     }
 
@@ -536,14 +536,14 @@ class ThemeOptionsController extends LSBaseController
                 } else {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
                 }
-                $this->getController()->redirect(array("themeOptions#questionthemes"));
+                $this->redirect(array("themeOptions#questionthemes"));
             } else {
                 TemplateManifest::importManifest($templatename);
                 $this->redirect(array('themeOptions/index#surveythemes'));
             }
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("themeOptions/index"));
+            $this->redirect(array("themeOptions/index"));
         }
     }
 
@@ -594,7 +594,7 @@ class ThemeOptionsController extends LSBaseController
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(
-                App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid])
+                array("/admin/surveysgroups/sa/update/", ['id'=>$gsid])
             );
         }
     }
