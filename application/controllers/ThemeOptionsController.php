@@ -131,7 +131,7 @@ class ThemeOptionsController extends LSBaseController
             //set Modal table labels
             $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
 
-            App()->getController()->renderPartial(
+            $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
                 array
                 (
@@ -190,7 +190,7 @@ class ThemeOptionsController extends LSBaseController
             //set Modal table labels
             $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
 
-            App()->getController()->renderPartial(
+            $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
                 array
                 (
@@ -233,7 +233,7 @@ class ThemeOptionsController extends LSBaseController
         //set Modal table labels
         $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
 
-        App()->getController()->renderPartial(
+        $this->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
@@ -372,7 +372,7 @@ class ThemeOptionsController extends LSBaseController
             $this->updateCommon($model);
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
+            $this->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
         }
     }
 
@@ -387,7 +387,7 @@ class ThemeOptionsController extends LSBaseController
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             App()->setFlashMessage(gt("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array('/admin'));
+            $this->redirect(array('/admin'));
         }
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
@@ -593,7 +593,7 @@ class ThemeOptionsController extends LSBaseController
             $this->redirect(array("themeOptions/index"));
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(
+            $this->redirect(
                 array("/admin/surveysgroups/sa/update/", ['id'=>$gsid])
             );
         }
@@ -625,7 +625,7 @@ class ThemeOptionsController extends LSBaseController
         $templatename = App()->request->getPost('templatename');
         $oTemplate = TemplateConfiguration::getInstanceFromTemplateName($templatename);
         $previewTag = $oTemplate->getPreview();
-        return App()->getController()->renderPartial(
+        return $this->renderPartial(
             '/admin/super/_renderJson',
             ['data' => ['image' =>  $previewTag]],
             false,
