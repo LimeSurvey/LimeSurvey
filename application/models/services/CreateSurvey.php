@@ -30,6 +30,9 @@ class CreateSurvey
     /** @var int */
     const INTEGER_VALUE_FOR_INHERIT = -1;
 
+    /** @var int this is the default value for DB table (it corresponds to ) */
+    const DEFAULT_DATE_FORMAT = 1;
+
     /** @var Survey the survey */
     private $survey;
 
@@ -80,20 +83,27 @@ class CreateSurvey
     }
 
     /**
-     *
+     * Insert new entry in surveys_languagesettings (sets surveyid, title, language). All other values
+     * are set to default values (user can change them later in survey administration).
      *
      * @return void
-     * @throws \Exception
+     * @throws \Exception if not possible to save in DB
      */
     private function createRelationSurveyLanguageSettings(){
         $sTitle = html_entity_decode($this->simpleSurveyValues->getTitle(), ENT_QUOTES, "UTF-8");
 
         // Fix bug with FCKEditor saving strange BR types
         $sTitle = fixCKeditorText($sTitle);
-        $dateFormat = 1; //default value
-        if($dateFormat === null || ($dateFormat<1) || ($dateFormat>12) ){
-            //dateformat is not past correctly from frontend to backend
-            $dateFormat = 1;
+
+        // select dateformat/numberformat(radixpoint) in dependency
+        // of chosen language (see surveytranslator_helper getLanguageData()) as default value...
+        $languageSettings = getLanguageData();
+        if(isset($languageSettings[$this->survey->language]['dateformat']) && isset($languageSettings[$this->survey->language]['radixpoint'])){
+            $dateFormat = $languageSettings[$this->survey->language]['dateformat'];
+            $numberFormat = $languageSettings[$this->survey->language]['radixpoint'];
+        }else {
+            $dateFormat = 1; //default value
+            $numberFormat = 0; // set 0 as default ... means '.' see getRadixPointData() in surveytranslator_helper ...
         }
 
         // Insert base language into surveys_language_settings table
@@ -102,12 +112,12 @@ class CreateSurvey
             'surveyls_title' => $sTitle,
             'surveyls_description' => '',
             'surveyls_welcometext' => '',
-            'surveyls_language' => $this->simpleSurveyValues->getBaseLanguage(),
+            'surveyls_language' => $this->survey->language,
             'surveyls_urldescription' => '',
             'surveyls_endtext' => '',
             'surveyls_url' => '',
             'surveyls_dateformat' => $dateFormat,
-            'surveyls_numberformat' => 0, //todo is this the correct default value?
+            'surveyls_numberformat' => $numberFormat,
             'surveyls_policy_notice' => '',
             'surveyls_policy_notice_label' => ''
         );
@@ -125,10 +135,12 @@ class CreateSurvey
      */
     private function setBaseLanguage(){
         $baseLang = $this->simpleSurveyValues->getBaseLanguage();
-        if($baseLang !== null && $baseLang!==''){
-            $this->survey->language = $baseLang;
 
-            //todo: check the shortname of language (e.g. 'en')
+        //check if language exists in our language array...
+        $languageShortNames = getLanguageDataRestricted(true, 'short');
+
+        if(array_key_exists($baseLang, $languageShortNames)){
+            $this->survey->language = $baseLang;
         }else{
             throw new \Exception("Invalid language");
         }

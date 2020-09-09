@@ -63,6 +63,11 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
     }
 }
 
+/**
+ * @param boolean $bOrderByNative
+ * @param string $sLanguageCode
+ * @return mixed
+ */
 function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 {
 
@@ -915,6 +920,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
      *  radix point info about a specific format.
      *
      *  @param int $format Format ID/Number [optional]
+     *
+     * @return integer|array
      */
 function getRadixPointData($format = -1)
 {
@@ -924,6 +931,7 @@ function getRadixPointData($format = -1)
     );
 
     // hack for fact that null sometimes sent to this function
+    //todo then change the hack ...
     if (is_null($format)) {
         $format = 0;
     }
