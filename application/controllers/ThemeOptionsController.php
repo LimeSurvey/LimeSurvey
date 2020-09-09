@@ -38,6 +38,16 @@ class ThemeOptionsController extends LSBaseController
      */
     protected function beforeRender($view) : bool 
     {
+        if (isset($this->aData['surveyid'])) {
+            $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
+
+            // Needed to evaluate EM expressions in question summary
+            // See bug #11845
+            LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
+            LimeExpressionManager::StartProcessingPage(false, true);
+
+            $this->layout = 'layout_questioneditor';
+        }
         return parent::beforeRender($view);
     }
 
@@ -335,7 +345,7 @@ class ThemeOptionsController extends LSBaseController
             $this->updateCommon($model, $sid);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $thi->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
+            $this->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
         }
     }
 
