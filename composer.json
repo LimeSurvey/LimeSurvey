@@ -41,7 +41,6 @@
         "phpunit/dbunit": "^4.0",
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
-        "vimeo/psalm": "dev-master",
         "phpunit/phpunit": "7.5.*"
     }
 }

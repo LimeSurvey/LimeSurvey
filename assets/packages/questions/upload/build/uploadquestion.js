@@ -487,7 +487,6 @@
           // Anyway, it doesn't do any harm.
 
           iframe.setAttribute('id', id);
-          iframe.setAttribute('srcdoc', this._settings.action);
           iframe.style.display = 'none';
           document.body.appendChild(iframe);
           return iframe;
@@ -607,6 +606,7 @@
             toDeleteFlag = true; // Fix IE mixed content issue
 
             iframe.src = "javascript:'<html></html>';";
+            removeNode(iframe);
           });
         },
 
@@ -630,7 +630,10 @@
           } // sending request
 
 
-          var iframe = this._createIframe();
+          var iframe = this._createIframe(); // Get response from iframe and fire onComplete event when ready
+
+
+          this._getResponse(iframe, file);
 
           var form = this._createForm(iframe); // assuming following structure
           // div -> input type='file'
@@ -645,10 +648,7 @@
           removeNode(form);
           form = null;
           removeNode(this._input);
-          this._input = null; // Get response from iframe and fire onComplete event when ready
-
-          this._getResponse(iframe, file); // get ready for next request
-
+          this._input = null; // get ready for next request
 
           this._createInput();
         }
@@ -1102,10 +1102,7 @@
     }
 
     window.getUploadHandler = function (qid, options) {
-      if (!window.currentUploadHandler) {
-        window.currentUploadHandler = new uploadHandler(qid, options);
-      }
-
+      window.currentUploadHandler = new uploadHandler(qid, options);
       window.currentUploadHandler.init();
       return window.currentUploadHandler;
     };
