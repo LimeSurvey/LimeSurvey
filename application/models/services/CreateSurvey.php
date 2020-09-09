@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LimeSurvey\Models\Services;
 
 use Survey;
@@ -56,7 +55,8 @@ class CreateSurvey
      *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason
      */
-    public function createSimple($simpleSurveyValues){
+    public function createSimple($simpleSurveyValues)
+    {
 
         $this->simpleSurveyValues = $simpleSurveyValues;
         $this->survey->gsid = $simpleSurveyValues->getSurveyGroupId();
@@ -65,7 +65,7 @@ class CreateSurvey
             $this->setBaseLanguage();
             $this->initialiseSurveyAttributes();
 
-            if(!$this->survey->save()){
+            if (!$this->survey->save()) {
                 throw new \Exception("Survey value/values are not valid. Not possible to save survey");
             }
 
@@ -74,8 +74,7 @@ class CreateSurvey
 
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(\Yii::app()->session['loginID'], $this->survey->sid);
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -89,7 +88,8 @@ class CreateSurvey
      * @return void
      * @throws \Exception if not possible to save in DB
      */
-    private function createRelationSurveyLanguageSettings(){
+    private function createRelationSurveyLanguageSettings()
+    {
         $sTitle = html_entity_decode($this->simpleSurveyValues->getTitle(), ENT_QUOTES, "UTF-8");
 
         // Fix bug with FCKEditor saving strange BR types
@@ -98,10 +98,10 @@ class CreateSurvey
         // select dateformat/numberformat(radixpoint) in dependency
         // of chosen language (see surveytranslator_helper getLanguageData()) as default value...
         $languageSettings = getLanguageData();
-        if(isset($languageSettings[$this->survey->language]['dateformat']) && isset($languageSettings[$this->survey->language]['radixpoint'])){
+        if (isset($languageSettings[$this->survey->language]['dateformat']) && isset($languageSettings[$this->survey->language]['radixpoint'])) {
             $dateFormat = $languageSettings[$this->survey->language]['dateformat'];
             $numberFormat = $languageSettings[$this->survey->language]['radixpoint'];
-        }else {
+        } else {
             $dateFormat = 1; //default value
             $numberFormat = 0; // set 0 as default ... means '.' see getRadixPointData() in surveytranslator_helper ...
         }
@@ -122,8 +122,8 @@ class CreateSurvey
             'surveyls_policy_notice_label' => ''
         );
 
-        $langsettings = new SurveyLanguageSetting;
-        if(!$langsettings->insertNewSurvey($aInsertData)){
+        $langsettings = new SurveyLanguageSetting();
+        if (!$langsettings->insertNewSurvey($aInsertData)) {
             throw new \Exception('SurveyLanguageSettings could not be created');
         }
     }
@@ -133,15 +133,16 @@ class CreateSurvey
      *
      * @throws \Exception  if $this->baseLanguage is null or empty string
      */
-    private function setBaseLanguage(){
+    private function setBaseLanguage()
+    {
         $baseLang = $this->simpleSurveyValues->getBaseLanguage();
 
         //check if language exists in our language array...
         $languageShortNames = getLanguageDataRestricted(true, 'short');
 
-        if(array_key_exists($baseLang, $languageShortNames)){
+        if (array_key_exists($baseLang, $languageShortNames)) {
             $this->survey->language = $baseLang;
-        }else{
+        } else {
             throw new \Exception("Invalid language");
         }
     }
@@ -153,16 +154,17 @@ class CreateSurvey
      *
      * @throws \Exception
      */
-    private function createSurveyId(){
+    private function createSurveyId()
+    {
         $attempts = 0;
         /* Validate sid : > 1 and unique */
         $this->survey->sid = intval(randomChars(6, '123456789'));
-        while(!$this->survey->validate(array('sid'))) {
+        while (!$this->survey->validate(array('sid'))) {
             $attempts++;
             $this->survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
-            if($attempts > self::ATTEMPTS_CREATE_SURVEY_ID) {
-                throw new \Exception("Unable to get a valid survey id after ". self::ATTEMPTS_CREATE_SURVEY_ID . " attempts");
+            if ($attempts > self::ATTEMPTS_CREATE_SURVEY_ID) {
+                throw new \Exception("Unable to get a valid survey id after " . self::ATTEMPTS_CREATE_SURVEY_ID . " attempts");
             }
         }
     }
@@ -170,7 +172,8 @@ class CreateSurvey
     /**
      *
      */
-    private function initialiseSurveyAttributes(){
+    private function initialiseSurveyAttributes()
+    {
 
         $this->survey->expires = null;
         $this->survey->startdate = null;
@@ -216,5 +219,4 @@ class CreateSurvey
         $this->survey->adminemail = 'inherit';
         $this->survey->bounce_email = 'inherit';
     }
-
 }
