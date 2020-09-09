@@ -66,6 +66,7 @@ class CreateSurvey
             $this->initialiseSurveyAttributes();
 
             if (!$this->survey->save()) {
+                // TODO: Localization?
                 throw new \Exception("Survey value/values are not valid. Not possible to save survey");
             }
 
@@ -73,6 +74,8 @@ class CreateSurvey
             $this->createRelationSurveyLanguageSettings();
 
             // Update survey permissions
+            // TODO: Inject permission model
+            // TODO: Inject app session
             Permission::model()->giveAllSurveyPermissions(\Yii::app()->session['loginID'], $this->survey->sid);
         } catch (\Exception $e) {
             return false;
@@ -122,6 +125,7 @@ class CreateSurvey
             'surveyls_policy_notice_label' => ''
         );
 
+        // TODO: Inject
         $langsettings = new SurveyLanguageSetting();
         if (!$langsettings->insertNewSurvey($aInsertData)) {
             throw new \Exception('SurveyLanguageSettings could not be created');
@@ -170,11 +174,10 @@ class CreateSurvey
     }
 
     /**
-     *
+     * @return void
      */
     private function initialiseSurveyAttributes()
     {
-
         $this->survey->expires = null;
         $this->survey->startdate = null;
         $this->survey->template = 'inherit'; //default template from default group is set to 'fruity'
