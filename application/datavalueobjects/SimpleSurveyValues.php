@@ -36,7 +36,7 @@ class SimpleSurveyValues
     /**
      * @param string $baseLanguage
      */
-    public function setBaseLanguage(string $baseLanguage)
+    public function setBaseLanguage(string $baseLanguage): void
     {
         $this->baseLanguage = $baseLanguage;
     }
@@ -52,7 +52,7 @@ class SimpleSurveyValues
     /**
      * @param string $title
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -68,7 +68,7 @@ class SimpleSurveyValues
     /**
      * @param int $surveyGroupId
      */
-    public function setSurveyGroupId(int $surveyGroupId)
+    public function setSurveyGroupId(int $surveyGroupId): void
     {
         $this->surveyGroupId = $surveyGroupId;
     }
