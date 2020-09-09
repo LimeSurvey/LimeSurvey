@@ -442,7 +442,7 @@ class SurveyAdministrationController extends LSBaseController
 
             Yii::app()->loadHelper("surveytranslator");
 
-            $simpleSurveyValues = new \LimeSurvey\Models\Services\SimpleSurveyValues();
+            $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
             $baseLanguage = App()->request->getPost('language');
             $searchForValidLanguage = getLanguageCodefromLanguage($baseLanguage);
             if($baseLanguage===null) {

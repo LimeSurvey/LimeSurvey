@@ -1,6 +1,6 @@
 <?php
 
-namespace LimeSurvey\Models\Services;
+namespace LimeSurvey\Datavalueobjects;
 
 /**
  * Class SimpleSurveyValues
@@ -11,7 +11,7 @@ namespace LimeSurvey\Models\Services;
  *   -- if createExamples (questions and groups) should be created at the beginning
  *   -- the survey group id the survey should belong to (or/and inherit values from)
  *
- * @package LimeSurvey\Models\DataValueObject
+ * @package LimeSurvey\DataValueObject
  */
 class SimpleSurveyValues
 {
