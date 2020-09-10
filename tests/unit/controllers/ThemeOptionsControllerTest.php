@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ThemeOptionsControllerTest extends TestCase
 {
     /**
-     * @var themeoptions
+     * @var ThemeOptionsController
      */
     private $controller;
 
@@ -22,7 +22,6 @@ class ThemeOptionsControllerTest extends TestCase
     {
         \Yii::import('application.controllers.ThemeOptionsController', true);
         $this->controller = new ThemeOptionsController();
-
     }
 
     public function tearDown()
