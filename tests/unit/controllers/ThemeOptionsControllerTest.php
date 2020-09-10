@@ -31,21 +31,7 @@ class ThemeOptionsControllerTest extends TestCase
     }
 
     /**
-     * Tests if its possible to set an admin theme.
-     */
-    public function testSetAdminTheme()
-    {
-        $adminTheme = 'Apple_Blossom';
-        
-        $this->controller->actionSetAdminTheme($adminTheme);
-        $actualTheme = $this->controller->adminTheme;
-
-        $this->assertEquals($actualTheme, $adminTheme);
-    }
-
-    /**
      * This test will check if the ajaxmode will be turned off.
-     * @skip
      */
     public function testTurnAjaxModeOffAsDefault()
     {
