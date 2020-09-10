@@ -9,7 +9,9 @@
 ?>
 <?php
 extract($data);
-//Yii::app()->loadHelper('admin/htmleditor');
+
+$cs = Yii::app()->getClientScript();
+$cs->registerPackage('bootstrap-select2');
 
 
 App()->getClientScript()->registerScript("tabCreate-view-variables", "
@@ -45,7 +47,67 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
         <div class="grow-10 ls-space padding left-10 right-10">
             <div class="tab-content">
                 <div class="tab-pane active" id="texts" data-count="1">
-                    <?php echo $this->renderPartial('/admin/survey/subview/tab_edit_view', $edittextdata); ?>
+                    <?php //echo $this->renderPartial('/admin/survey/subview/tab_edit_view', $edittextdata); don't use this one ...?>
+                    <?php
+
+                    /**
+                     * @var $aTabTitles
+                     * @var $aTabContents
+                     * @var $has_permissions
+                     * @var $surveyid
+                     * @var $surveyls_language
+                     */
+
+                    if (isset($edittextdata)) {
+                        extract($edittextdata);
+                    }
+                    $cs = Yii::app()->getClientScript();
+                    $cs->registerPackage('bootstrap-select2');
+
+                    ?>
+
+                    <div class="container-center">
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="surveyTitle"><?= gt('Survey title')?></label>
+                                <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" >
+                            </div>
+                            <div class="form-group col-md-4 col-md-6">
+                                <label for="createsample" class="control-label"><?= gt('Create example question group and question?')?></label>
+                                <div>
+                                    <input type="checkbox" name="createsample" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-6" >
+                                <label class="control-label" for="language"><?= gt('Base language')?></label>
+                                <div class="">
+                                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                        'asDropDownList' => true,
+                                        'htmlOptions'=>array('style'=>"width: 100%"),
+                                        'data' => isset($listLanguagesCode) ?  $listLanguagesCode : [],
+                                        'value' => $defaultLanguage, //or better user language ...
+                                        'name' => 'language',
+                                        'pluginOptions' => array()
+                                    ));?>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 col-md-6">
+                                <label class=" control-label" for='gsid'><?php  eT("Survey group:"); ?></label>
+                                <div class="">
+                                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                        'asDropDownList' => true,
+                                        'htmlOptions'=>array('style'=>"width: 100%"),
+                                        'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
+                                        'value' => $oSurvey->gsid,
+                                        'name' => 'gsid',
+                                        'pluginOptions' => array()
+                                    ));?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

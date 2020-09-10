@@ -4,10 +4,12 @@ import {LOG} from '../mixins/logSystem.js'
 
 export default {
     getDataSet: (context) => {
-            const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getCurrentEditorValues' : '/getCurrentEditorValues';
+           //mooooh const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getCurrentEditorValues' : '/getCurrentEditorValues';
             return new Promise((resolve, reject) => {
             ajax.methods.$_get(
-                window.TextEditData.connectorBaseUrl+subAction
+                LS.createUrl('surveyAdministration/getCurrentEditorValues' ,{
+                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
+                })
             ).then((result) => {
                 LOG.log('Getting Data', result);
                 context.dispatch('updateObjects', result.data.textdata);
