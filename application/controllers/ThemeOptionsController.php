@@ -704,6 +704,7 @@ class ThemeOptionsController extends LSBaseController
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey theme options");
             $aData['subaction'] = gT("Survey theme options");
+            $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
         }
         
         $this->aData = $aData;
