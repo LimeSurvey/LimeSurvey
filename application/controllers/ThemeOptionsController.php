@@ -705,7 +705,8 @@ class ThemeOptionsController extends LSBaseController
             $aData['title_bar']['title'] = gT("Survey theme options");
             $aData['subaction'] = gT("Survey theme options");
         }
- 
+        
+        $this->aData = $aData;
         $this->render('update', $aData);
     }
 }
