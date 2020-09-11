@@ -36,7 +36,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return bool
      */
-    protected function beforeRender($view) : bool 
+    protected function beforeRender($view) : bool
     {
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
@@ -67,7 +67,7 @@ class ThemeOptionsController extends LSBaseController
             );
             return;
         }
-        Yii::app()->setFlashMessage(
+        App()->setFlashMessage(
             gT("We are sorry but you don't have permissions to do this"),
             'error'
         );
@@ -101,7 +101,7 @@ class ThemeOptionsController extends LSBaseController
                     )
                 );
             } else {
-                Yii::app()->setFlashMessage(
+                App()->setFlashMessage(
                     gt("We are sorry but you don't have permissions to do this."),
                     'error'
                 );
@@ -130,7 +130,7 @@ class ThemeOptionsController extends LSBaseController
                     $aResults[$template]['title'] = $templatename;
                     $sQuestionThemeName = $model->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
-                } elseif ($gridid == 'themeoptions-grid') {
+                } elseif ($gridid === 'themeoptions-grid') {
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
@@ -142,12 +142,12 @@ class ThemeOptionsController extends LSBaseController
             $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
 
             $this->renderPartial(
-                'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', 
+                'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
                 array
                 (
                     'aResults'     => $aResults,
                     'successLabel' => gT('Has been reset'),
-                    'tableLabels'  => $tableLabels   
+                    'tableLabels'  => $tableLabels
                 )
             );
         } else {
@@ -184,7 +184,7 @@ class ThemeOptionsController extends LSBaseController
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     if (!Template::hasInheritance($templatename)) {
-                        if ($templatename != getGlobalSetting('defaulttheme')) {
+                        if ($templatename != App()->getConfig('defaulttheme')) {
                             $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
                         } else {
                             $aResults[$template]['result'] = false;
@@ -209,7 +209,7 @@ class ThemeOptionsController extends LSBaseController
                     'tableLabels'  => $tableLabels
                 )
             );
-            
+
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
@@ -250,7 +250,7 @@ class ThemeOptionsController extends LSBaseController
                 'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
             )
-        );        
+        );
     }
 
     /**
@@ -274,13 +274,13 @@ class ThemeOptionsController extends LSBaseController
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', gT('Theme options saved.'));
+                    App()->user->setFlash('success', gT('Theme options saved.'));
                     $this->redirect(array('themeOptions/update/id/'.$model->id));
                 }
             }
             $this->updateCommon($model);
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->redirect(array("themeOptions/index"));
         }
     }
@@ -307,9 +307,6 @@ class ThemeOptionsController extends LSBaseController
                     $options = json_encode($optionsJSON);
                     $templateConfiguration->setAttribute('options', $options);
                 }
-            } else {
-                // todo: If its inherited do something else and set pageOptions to '' cause this is rendering string and this is not good. wee need the
-                // todo: json
             }
         }
         return $templateConfiguration;
@@ -338,13 +335,13 @@ class ThemeOptionsController extends LSBaseController
                 if (isset($_POST['TemplateConfiguration'])) {
                     $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', gT('Theme options saved.'));
+                    App()->user->setFlash('success', gT('Theme options saved.'));
                     $this->redirect(array("themeOptions/updateSurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
                 }
             }
             $this->updateCommon($model, $sid);
         } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
         }
     }
@@ -529,7 +526,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Import or install the Theme Configuration into the database.
-     * 
+     *
      * @throws Exception
      * @return void
      */
@@ -662,14 +659,14 @@ class ThemeOptionsController extends LSBaseController
          $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
          $aTemplateConfiguration       = $oModelWithInheritReplacement->getOptionPageAttributes();
          App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
-         
-        if ($aOptionAttributes['optionsPage'] == 'core') {
+
+        if ($aOptionAttributes['optionsPage'] === 'core') {
              App()->clientScript->registerPackage('themeoptions-core');
              $templateOptionPage = '';
         } else {
              $templateOptionPage = $oModelWithInheritReplacement->optionPage;
         }
- 
+
         $oSimpleInheritance = Template::getInstance(
             $oModelWithInheritReplacement->sTemplateName,
             $sid,
@@ -677,27 +674,27 @@ class ThemeOptionsController extends LSBaseController
             null,
             true
         );
-        
+
         $oSimpleInheritance->options = 'inherit';
         $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering(
             $oModelWithInheritReplacement->sTemplateName
         );
         $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
         $oParentOptions = TemplateConfiguration::translateOptionLabels($oParentOptions);
- 
+
         $aData = array(
-            'model' => $model,
+            'model'              => $model,
             'templateOptionPage' => $templateOptionPage,
             'optionInheritedValues' => $oModelWithInheritReplacement->oOptions,
-            'optionCssFiles' => $oModelWithInheritReplacement->files_css,
-            'optionCssFramework' => $oModelWithInheritReplacement->cssframework_css,
+            'optionCssFiles'        => $oModelWithInheritReplacement->files_css,
+            'optionCssFramework'    => $oModelWithInheritReplacement->cssframework_css,
             'aTemplateConfiguration' => $aTemplateConfiguration,
-            'aOptionAttributes' => $aOptionAttributes,
-            'sid' => $sid,
-            'oParentOptions' => $oParentOptions,
+            'aOptionAttributes'      => $aOptionAttributes,
+            'sid'             => $sid,
+            'oParentOptions'  => $oParentOptions,
             'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load
         );
- 
+
         if ($sid !== null) {
             $aData['topBar']['showSaveButton'] = true;
             $aData['surveybar']['buttons']['view'] = true;
@@ -707,7 +704,7 @@ class ThemeOptionsController extends LSBaseController
             $aData['subaction'] = gT("Survey theme options");
             $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
         }
-        
+
         $this->aData = $aData;
         $this->render('update', $aData);
     }
