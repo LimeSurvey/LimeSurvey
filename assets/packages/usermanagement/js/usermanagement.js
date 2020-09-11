@@ -297,7 +297,8 @@ var UserManagement = function () {
         bindModals: bindModals,
         triggerRunAction: triggerRunAction,
         wirePermissions: wirePermissions,
-        wireMassPermissions: wireMassPermissions
+        wireMassPermissions: wireMassPermissions,
+        wireForm: wireForm,
     };
 };
 
