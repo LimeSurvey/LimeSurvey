@@ -31,9 +31,9 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * This part comes from _renderWrappedTemplate
-     * 
+     *
      * @param string $view Name of View
-     * 
+     *
      * @return bool
      */
     protected function beforeRender($view) : bool 
@@ -53,9 +53,9 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Displayed a particular Model.
-     * 
+     *
      * @param int $id ID of model.
-     * 
+     *
      * @return void
      */
     public function actionViewModel(int $id): void
@@ -77,7 +77,7 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Create a new model.
      * If creation is sucessful, the browser will be redirected to the 'view' page.
-     * 
+     *
      * @return void
      */
     public function actionCreate(): void
@@ -112,9 +112,9 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Resets all selected themes from massive action.
-     * 
+     *
      * @return void
-     * @throws Exeption
+     * @throws CException
      */
     public function actionResetMultiple() : void
     {
@@ -157,7 +157,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Uninstalls all selected themes from massive action.
-     * 
+     *
      * @return void
      * @throws Exception
      */
@@ -217,10 +217,10 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Renders selected Items for massive action modal.
-     * 
+     *
      * @return void
+     * @throws CException
      * @throws CHttpException
-     * @throws CEcxeption
      */
     public function actionSelectedItems() : void
     {
@@ -232,9 +232,9 @@ class ThemeOptionsController extends LSBaseController
             $aResults[$template]['title'] = '';
             $model = $this->loadModel($template, $gridid);
 
-            if ($gridid == 'questionthemes-grid') {
+            if ($gridid === 'questionthemes-grid') {
                 $aResults[$template]['title'] = $model->name;
-            } elseif ($gridid == 'themeoptions-grid') {
+            } elseif ($gridid === 'themeoptions-grid') {
                 $aResults[$template]['title'] = $model->template_name;
             }
 
@@ -256,9 +256,9 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Updates a particular model (globally).
      * If update is successful, the browser will be redirected to the 'view' page.
-     * 
+     *
      * @param integer $id ID of the model
-     * 
+     *
      * @return void
      * @throws CException
      * @throws CHttpException
@@ -287,9 +287,9 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * This method turns ajaxmode off as default.
-     * 
+     *
      * @param TemplateConfiguration $templateConfiguration Configuration of Template
-     * 
+     *
      * @return TemplateConfiguration
      */
     private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration) : TemplateConfiguration
@@ -318,9 +318,9 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * 
+     *
      * @param integer $sid ID of model
-     * 
+     *
      * @return void
      */
     public function actionUpdateSurvey(int $sid) : void
@@ -352,11 +352,11 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Updates particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * 
+     *
      * @param integer $id   ID of model.
      * @param integer $gsid ?
      * @param null    $l    ?
-     * 
+     *
      * @return void
      */
     public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null) : void
@@ -388,9 +388,9 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Sets admin theme.
-     * 
+     *
      * @param string $sAdminThemeName Admin theme Name
-     * 
+     *
      * @return void
      */
     public function actionSetAdminTheme(string $sAdminThemeName) : void
@@ -407,7 +407,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Lists all models.
-     * 
+     *
      * @return void
      */
     public function actionIndex() : void
@@ -479,7 +479,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Manages all models.
-     * 
+     *
      * @return void
      */
     public function actionAdmin() : void
@@ -506,11 +506,12 @@ class ThemeOptionsController extends LSBaseController
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, and HTTP exception will be raised.
-     * 
-     * @param int $id     ID
+     *
+     * @param int $id ID
      * @param int $gridid Grid ID
-     * 
+     *
      * @return QuestionTheme | TemplateConfiguration | null
+     * @throws CHttpException
      */
     public function loadModel(int $id, int $gridid = null)
     {
@@ -559,7 +560,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Uninstalls the theme.
-     * 
+     *
      * @return void
      */
     public function actionUninstall() : void
@@ -586,11 +587,11 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Resets the theme.
-     * 
+     *
      * @param integer $gsid ID
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws Exception
      */
     public function actionReset(int $gsid) : void
@@ -611,9 +612,9 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Performs the AJAX validation.
-     * 
+     *
      * @param TemplateOptions $model Model to be validated.
-     * 
+     *
      * @return void
      */
     public function actionPerformAjaxValidation(TemplateOptions $model) : void
@@ -626,7 +627,7 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Preview Tag.
-     * 
+     *
      * @return string | string[] | null
      * @throws CException
      */
@@ -645,11 +646,11 @@ class ThemeOptionsController extends LSBaseController
 
     /**
      * Updates Common.
-     * 
+     *
      * @param TemplateConfiguration $model Template Configuration
      * @param int                   $sid   Survey ID
      * @param int                   $gsid  Survey Group ID
-     * 
+     *
      * @return void
      */
     private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null) : void
