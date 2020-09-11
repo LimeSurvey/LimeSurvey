@@ -62,8 +62,7 @@ class ThemeOptionsController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $this->render(
-                'themeoptions',
-                array('model' => $model)
+                'themeoptions'
             );
             return;
         }
@@ -124,7 +123,9 @@ class ThemeOptionsController extends LSBaseController
 
         if (Permission::model()->hasGlobalPermission('templates', 'updates')) {
             foreach ($aTemplates as $template) {
-                if ($gridid == 'questionthemes-grid') {
+                $model = $this->loadModel($template, $gridid);
+
+                if ($gridid === 'questionthemes-grid') {
                     $templatename = $model->name;
                     $templatefolder = $model->xml_path;
                     $aResults[$template]['title'] = $templatename;
@@ -171,7 +172,7 @@ class ThemeOptionsController extends LSBaseController
             foreach ($aTemplates as $template) {
                 $model = $this->loadModel($template, $gridid);
 
-                if ($gridid == 'questionthemes-grid') {
+                if ($gridid === 'questionthemes-grid') {
                     $aResults[$template]['title'] = $model->name;
                     $templatename = $model->name;
                     $aResults[$template]['title'] = $templatename;
@@ -179,7 +180,7 @@ class ThemeOptionsController extends LSBaseController
                     $aResults[$template]['result'] = isset($aUninstallResult['result']) ? $aUninstallResult['result'] : false;
                     $aResults[$template]['error'] = isset($aUninstallResult['error']) ? $aUninstallResult['error'] : null;
 
-                } elseif ($gridid == 'themeoptions-grid') {
+                } elseif ($gridid === 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
@@ -512,7 +513,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function loadModel(int $id, int $gridid = null)
     {
-        if ($gridid == 'questionthemes-grid') {
+        if ($gridid === 'questionthemes-grid') {
             $model = QuestionTheme::model()->findByPk($id);
         } else {
             $model = TemplateConfiguration::model()->findByPk($id);
@@ -535,7 +536,7 @@ class ThemeOptionsController extends LSBaseController
         $templatename = App()->request->getPost('templatename');
         $theme = App()->request->getPost('theme');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            if ($theme == 'questiontheme') {
+            if ($theme === 'questiontheme') {
                 $templateFolder = App()->request->getPost('templatefolder');
                 $questionTheme = new QuestionTheme();
                 $themeName = $questionTheme->importManifest($templateFolder);
