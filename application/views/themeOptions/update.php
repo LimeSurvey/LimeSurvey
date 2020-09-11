@@ -16,7 +16,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
             <div class='text-right'>
 
                 <?php
-                  $sThemeOptionUrl = App()->createUrl("admin/themeoptions");
+                  $sThemeOptionUrl = App()->createUrl("themeOptions");
                   $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid));
 
                     $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
@@ -63,7 +63,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
         <div class="col-sm-12" id="theme-options-tabs">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <?php 
+                <?php
                     if ($aOptionAttributes['optionsPage'] == 'core'){
                         foreach($aOptionAttributes['categories'] as $key => $category){ ?>
                         <li role="presentation" class="<?php echo $key==0 ? 'active' : 'action_hide_on_inherit'; ?>"><a href="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-toggle="tab"><?php echo $category; ?></a></li>
@@ -109,9 +109,9 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
 
                             if ($aOptionAttributes['optionsPage'] == 'core'){
                                 $this->renderPartial('./options_core', array(
-                                    'aOptionAttributes' => $aOptionAttributes, 
-                                    'aTemplateConfiguration' => $aTemplateConfiguration, 
-                                    'oParentOptions' => $oParentOptions, 
+                                    'aOptionAttributes' => $aOptionAttributes,
+                                    'aTemplateConfiguration' => $aTemplateConfiguration,
+                                    'oParentOptions' => $oParentOptions,
                                     'sPackagesToLoad' => $sPackagesToLoad
                                     )
                                 );
@@ -126,7 +126,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                     ?>
                 </div>
             </form>
-            <div class="tab-content">                    
+            <div class="tab-content">
                 <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" id="advanced">
                     <div class="alert alert-info alert-dismissible" role="alert">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -139,7 +139,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                     </div>
 
                     <?php
-                        $actionBaseUrl = 'admin/themeoptions/sa/update/';
+                        $actionBaseUrl = 'themeOptions/update/';
                         $actionUrlArray = array('id' => $model->id);
 
                         if($model->sid) {
@@ -147,11 +147,11 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                             $actionUrlArray['sid'] = $model->sid;
                             $actionUrlArray['surveyd'] = $model->sid;
                             $actionUrlArray['gsid'] = $model->gsid;
-                            $actionBaseUrl = 'admin/themeoptions/sa/updatesurvey/';
+                            $actionBaseUrl = 'themeOptions/updateSurvey/';
                             }
                         if($model->gsid) {
                             unset($actionUrlArray['id']);
-                            $actionBaseUrl = 'admin/themeoptions/sa/updatesurveygroup/';
+                            $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
                             $actionUrlArray['gsid'] = $model->gsid;
                             $actionUrlArray['id'] = $model->id;
                         }

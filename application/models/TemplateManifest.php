@@ -709,7 +709,7 @@ class TemplateManifest extends TemplateConfiguration
 
         if ($bExtends && !Template::model()->findByPk($bExtends)) {
             Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends), 'error');
-            Yii::app()->getController()->redirect(array("admin/themeoptions"));
+            Yii::app()->getController()->redirect(array("themeOptions/index"));
         }
 
         // Metadas is never inherited
@@ -1382,7 +1382,7 @@ class TemplateManifest extends TemplateConfiguration
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
             $aOptions['categories'] = array();
-            
+
             foreach($oXMLConfig->options->children() as $key  => $option){
                 $aOptions['optionAttributes'][$key]['type'] = !empty($option['type']) ? (string)$option['type'] : '';
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';

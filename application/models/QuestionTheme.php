@@ -242,7 +242,7 @@ class QuestionTheme extends LSActiveRecord
 
     /**
      * Returns visibility button.
-     * 
+     *
      * @return string|array
      */
     public function getVisibilityButton()
@@ -267,7 +267,7 @@ class QuestionTheme extends LSActiveRecord
      */
     public function getManifestButtons()
     {
-        $sLoadLink = CHtml::form(array("/admin/themeoptions/sa/importmanifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
+        $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
             "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
             <input type='hidden' name='theme' value='questiontheme'>
             <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
@@ -299,7 +299,7 @@ class QuestionTheme extends LSActiveRecord
             $aConvertSuccess = self::convertLS3toLS4($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 App()->setFlashMessage($aConvertSuccess['message'], 'error');
-                App()->getController()->redirect(array("admin/themeoptions#questionthemes"));
+                App()->getController()->redirect(array("themeOptions/index#questionthemes"));
             }
         }
 

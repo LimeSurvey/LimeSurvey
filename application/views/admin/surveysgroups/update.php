@@ -45,11 +45,11 @@
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
-                         $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize )); 
+                         $this->renderPartial('themeOptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize ));
                     }
                 ?>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -72,7 +72,7 @@
             $(this).tab('show');
         }
     });
-    
+
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
             $('#surveygrouptabsystem').find('a[href='+window.location.hash+']').trigger('click');

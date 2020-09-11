@@ -711,7 +711,7 @@ class TemplateConfiguration extends TemplateConfig
         $sExtendUrl = App()->getController()->createUrl('admin/themes/sa/templatecopy');
         $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ?
             App()->getController()->createUrl(
-                'admin/themeoptions/sa/updatesurveygroup',
+                'themeOptions/updateSurveyGroup',
                 array("id" => $this->id, "gsid" => $gsid)
             ) :
             App()->getController()->createUrl(
