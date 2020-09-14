@@ -618,7 +618,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param integer $sid Given Survey ID
      *
-     * @deprecated was only used for vue.js (ajaxerequest to set textelement fields ...)
+     * is still used in sidemenu Text elemnts (see vue.js ajaxcall)
      *
      * @return JSON
      * @throws CException
@@ -1064,7 +1064,7 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Method to store data edited in the the data security text editor component
+     * Method to store data edited in the data security text editor component
      *
      * @param integer $sid Survey ID
      *

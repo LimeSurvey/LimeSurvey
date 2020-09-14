@@ -8,9 +8,10 @@ export default {
             return new Promise((resolve, reject) => {
             ajax.methods.$_get(
                 LS.createUrl('surveyAdministration/getCurrentEditorValues' ,{
-                    sid: context.state.sid || LS.reparsedParameters().combined.sid,
+                    sid: window.TextEditData.sid, //context.state.sid || LS.reparsedParameters().combined.sid,
                 })
             ).then((result) => {
+                context.state.sid = window.TextEditData.sid;
                 LOG.log('Getting Data', result);
                 context.dispatch('updateObjects', result.data.textdata);
                 context.commit('setLanguages', result.data.languages);
