@@ -81,7 +81,8 @@ class QuestionAdministrationController extends LSBaseController
 
         $gid = $gid ?? $oSurvey->groups[0]->gid;
         $oQuestion = $this->getQuestionObject($qid, null, $gid);
-        App()->getClientScript()->registerPackage('questioneditor');
+        //App()->getClientScript()->registerPackage('questioneditor');
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
@@ -227,6 +228,7 @@ class QuestionAdministrationController extends LSBaseController
         $this->render(
             'view',
             [
+                'oQuestion' => $oQuestion,
                 'aQuestionTypeList'      => $aData['aQuestionTypeList'],
                 'jsData'                 => $aData['jsData'],
                 'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
