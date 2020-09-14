@@ -228,7 +228,8 @@ class QuestionAdministrationController extends LSBaseController
         $this->render(
             'view',
             [
-                'oQuestion' => $oQuestion,
+                'oQuestion'              => $oQuestion,
+                'oSurvey'                => $oSurvey,
                 'aQuestionTypeList'      => $aData['aQuestionTypeList'],
                 'jsData'                 => $aData['jsData'],
                 'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
