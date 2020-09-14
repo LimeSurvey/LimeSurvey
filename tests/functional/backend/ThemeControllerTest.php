@@ -275,7 +275,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 
-            sleep(1);
+            sleep(2);
 
             // Check that file is last in list.
             $files = $w->findElements(WebDriverBy::className('other-files-filename'));
@@ -288,7 +288,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             $deleteButton->click();
             $w->switchTo()->alert()->accept();
 
-            sleep(2);
+            sleep(3);
 
             // Check that file does not exist in list anymore.
             $files = $w->findElements(WebDriverBy::className('other-files-filename'));
