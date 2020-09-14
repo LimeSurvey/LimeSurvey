@@ -27,4 +27,68 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
 		if($purifier!==null) return $purifier->config;
 	}
 
+	/**
+	 * Get an instance of LSYii_HtmlPurifier configured for XSS filtering
+	 */
+	public static function getXssPurifier() {
+		$instance = new self();
+		$instance->options = array(
+            'AutoFormat.RemoveEmpty'=>false,
+            'Core.NormalizeNewlines'=>false,
+            'CSS.AllowTricky'=>true, // Allow display:none; (and other)
+            'HTML.SafeObject'=>true, // To allow including youtube
+            'Output.FlashCompat'=>true,
+            'Attr.EnableID'=>true, // Allow to set id
+            'Attr.AllowedFrameTargets'=>array('_blank', '_self'),
+            'URI.AllowedSchemes'=>array(
+                'http' => true,
+                'https' => true,
+                'mailto' => true,
+                'ftp' => true,
+                'nntp' => true,
+                'news' => true,
+                )
+        );
+        // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
+
+        // Enable video
+        $config = $instance->getConfig();
+        if (!empty($config)) {
+            $config->set('HTML.DefinitionID', 'html5-definitions');
+            $def = $config->maybeGetRawHTMLDefinition();
+            $max = $config->get('HTML.MaxImgLength');
+            if ($def) {
+            $def->addElement(
+                    'video',   // name
+                    'Inline',  // content set
+                    'Flow', // allowed children
+                    'Common', // attribute collection
+                    array( // attributes
+                        'src' => 'URI',
+                'id' => 'Text',
+                    'poster' => 'Text',
+                        'width' => 'Pixels#' . $max,
+                        'height' => 'Pixels#' . $max,
+                        'controls' => 'Bool#controls',
+                        'autobuffer' => 'Bool#autobuffer',
+                        'autoplay' => 'Bool#autoplay',
+                        'loop' => 'Bool#loop',
+                        'muted' => 'Bool#muted'
+                    )
+                );
+                $def->addElement(
+                    'source',   // name
+                    'Inline',  // content set
+                    'Empty', // allowed children
+                    null, // attribute collection
+                    array( // attributes
+                        'src*' => 'URI',
+                        'type' => 'Enum#video/mp4,video/webm',
+                    )
+                );
+            }
+		}
+		
+		return $instance;
+	}
 }
