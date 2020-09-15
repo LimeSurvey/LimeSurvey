@@ -3897,6 +3897,17 @@ function getQuestDepsForConditions($sid, $gid = "all", $depqid = "all", $targqid
     return null;
 }
 
+/**
+* Escapes a text value for db
+*
+* @param string $value
+* @return string
+*/
+function dbQuoteAll($value)
+{
+    return Yii::app()->db->quoteValue($value);
+}
+
 // TMSW Condition->Relevance:  This function is not needed - could replace with a message from EM output.
 /**
 * checkMoveQuestionConstraintsForConditions()
