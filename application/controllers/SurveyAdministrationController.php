@@ -949,6 +949,22 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyId = (int)$sid;
         $changes = Yii::app()->request->getPost('changes');
         $aSuccess = [];
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => $success,
+                        'message' => gT("No permission"),
+                        'debug' => $debug
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
         foreach ($changes as $sLanguage => $contentChange) {
             //todo: better not to use sql-statement like this in a foreach (performance!!!)
             $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(
