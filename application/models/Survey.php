@@ -548,14 +548,10 @@ class Survey extends LSActiveRecord
         $event = new PluginEvent('afterFindSurvey');
         $event->set('surveyid', $this->sid);
         App()->getPluginManager()->dispatchEvent($event);
-        // set the attributes we allow to be fixed
-        $allowedAttributes = array('template', 'usecookie', 'allowprev',
-            'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
-            'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay',
-            'expires','startdate','admin','adminemail','emailnotificationto','emailresponseto');
-        foreach ($allowedAttributes as $attribute) {
+        $aAttributes = array_keys($this->getAttributes());
+        foreach ($aAttributes as $attribute) {
             if (!is_null($event->get($attribute))) {
-                $this->{$attribute} = $event->get($attribute);
+                $this->setAttribute($attribute,$event->get($attribute));
             }
         }
 

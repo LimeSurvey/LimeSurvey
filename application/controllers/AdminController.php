@@ -340,8 +340,8 @@ class AdminController extends LSYii_Controller
         'pluginmanager'    => 'PluginManagerController',
         'printablesurvey'  => 'printablesurvey',
         'roles'            => 'PermissiontemplatesController',
-        'questiongroups'   => 'questiongroups',
-        'questions'        => 'questions',
+//        'questiongroups'   => 'questiongroups',  refactored to QuestionGroupsAdministration
+//        'questions'        => 'questions',
 //        'questioneditor'   => 'questionedit',
         'questionthemes'   => 'questionthemes',
         'quotas'           => 'quotas',
@@ -352,8 +352,8 @@ class AdminController extends LSYii_Controller
       //  'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
-        'usermanagement'   => 'UserManagement',
-        'usergroups'       => 'usergroups',
+//        'usermanagement'   => 'UserManagement',  refactored to UserManagementController
+//        'usergroups'       => 'usergroups',      refactored to UserGroupController
         'themes'           => 'themes',
         'tokens'           => 'tokens',
         'translate'        => 'translate',
@@ -365,7 +365,6 @@ class AdminController extends LSYii_Controller
         'tutorials'        => 'TutorialsController',
         'tutorialentries'  => 'TutorialEntryController',
         'extensionupdater' => 'ExtensionUpdaterController',
-      //  'filemanager'      => 'LimeSurveyFileManager'  //filemanager not in use anymore (was just experimemtal ...)
         );
     }
 
