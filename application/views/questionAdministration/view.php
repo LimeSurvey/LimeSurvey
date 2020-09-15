@@ -258,20 +258,121 @@ foreach ($aQuestionTypeList as $questionType) {
                     </div>
                     <div key="editorcontent-block" class="col-12">
                         <div class="ls-flex ls-flex-row scope-create-gutter">
-                                <maineditor
-                                    v-show="(editQuestion || isCreateQuestion)"
-                                    :loading="loading"
-                                    :event="event"
-                                    @triggerEvent="triggerEvent"
-                                    @eventSet="eventSet"
-                                ></maineditor>
-                                <questionoverview
-                                    v-show="!(editQuestion || isCreateQuestion)"
-                                    :loading="loading"
-                                    :event="event"
-                                    @triggerEvent="triggerEvent"
-                                    @eventSet="eventSet"
-                                ></questionoverview>
+
+                            <!-- Main editor -->
+                            <div class="ls-flex grow-2">
+                                <div class="col-12">
+                                    <div
+                                        class="panel panel-default col-12 question-option-general-container"
+                                        key="mainPanel"
+                                    >
+                                        <div class="panel-heading">Text elements</div>
+                                        <div class="panel-body">
+                                            <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
+                                                <div class="ls-flex-row">
+                                                    <div class="ls-flex-item grow-2 text-left">
+                                                        <label class="col-sm-12"><?= gT('Question'); ?></label>
+                                                    </div>
+                                                    <div class="ls-flex-item text-right">
+                                                        <button
+                                                            class="btn btn-default btn-xs"
+                                                            @click.prevent="toggleSourceEditQuestion"
+                                                        >
+                                                            <i class="fa fa-file-code-o"></i>
+                                                            <?= gT('Toggle source mode'); ?>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <lsckeditor
+                                                    v-if="!questionEditSource"
+                                                    v-model="currentQuestionQuestion"
+                                                    :editor="editorQuestionObject"
+                                                    :config="editorQuestionConfig"
+                                                    v-on:input="runDebouncedChange"
+                                                ></lsckeditor>
+                                                <aceeditor
+                                                    v-else
+                                                    v-model="currentQuestionQuestion"
+                                                    :showLangSelector="false"
+                                                    :thisId="'questionEditSource'"
+                                                    v-on:input="runDebouncedChange"
+                                                ></aceeditor>
+                                            </div>
+                                            <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
+                                                <div class="ls-flex-row">
+                                                    <div class="ls-flex-item grow-2 text-left">
+                                                        <label class="col-sm-12">{{ 'Help' | translate }}:</label>
+                                                    </div>
+                                                    <div class="ls-flex-item text-right">
+                                                        <button
+                                                            class="btn btn-default btn-xs"
+                                                            @click.prevent="toggleSourceEditHelp"
+                                                        >
+                                                            <i class="fa fa-file-code-o"></i>
+                                                            {{'Toggle source mode'|translate}}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <lsckeditor
+                                                    v-if="!helpEditSource"
+                                                    :editor="editorHelpObject"
+                                                    v-model="currentQuestionHelp"
+                                                    v-on:input="runDebouncedChange"
+                                                    :config="editorHelpConfig"
+                                                ></lsckeditor>
+                                                <aceeditor
+                                                    v-else
+                                                    v-model="currentQuestionHelp"
+                                                    :showLangSelector="false"
+                                                    :thisId="'helpEditSource'"
+                                                    v-on:input="runDebouncedChange"
+                                                ></aceeditor>
+                                            </div>
+                                            <div
+                                                class="col-12 ls-space margin all-5 scope-contains-ckeditor"
+                                                v-if="!!$store.state.currentQuestionPermissions.script"
+                                            >
+                                                <label class="col-sm-6">
+                                                        {{ 'Script' | translate }}:
+                                                </label>
+                                                <div class="col-sm-6 text-right">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="selector--scriptForAllLanguages" 
+                                                        id="selector--scriptForAllLanguages"
+                                                        v-model="scriptForAllLanugages"
+                                                    />&nbsp;
+                                                    <label for="selector--scriptForAllLanguages">
+                                                        {{ 'Set for all languages' | translate }}
+                                                    </label>
+                                                </div>
+                                                <aceeditor
+                                                    v-model="currentQuestionScript"
+                                                    :show-lang-selector="false"
+                                                    base-lang="javascript"
+                                                    :thisId="'helpEditScript'"
+                                                    :showLangSelector="true"
+                                                    v-on:input="runDebouncedChange"
+                                                ></aceeditor>
+                                                <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" key="divideRow">
+                                        <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                                            <hr />
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <questionoverview
+                                v-show="!(editQuestion || isCreateQuestion)"
+                                :loading="loading"
+                                :event="event"
+                                @triggerEvent="triggerEvent"
+                                @eventSet="eventSet"
+                            ></questionoverview>
                             <generalsettings
                                 :event="event"
                                 :readonly="!(editQuestion || isCreateQuestion)"
