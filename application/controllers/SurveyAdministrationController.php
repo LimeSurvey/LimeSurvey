@@ -955,9 +955,9 @@ class SurveyAdministrationController extends LSBaseController
                 '/admin/super/_renderJson',
                 array(
                     'data' => [
-                        'success' => $success,
+                        'success' => false,
                         'message' => gT("No permission"),
-                        'debug' => $debug
+                        'debug' => null
                     ]
                 ),
                 false,
@@ -1020,6 +1020,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionGetDataSecTextSettings($sid = null)
     {
         $iSurveyId = (int)$sid;
+
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $aLanguages = [];
@@ -1091,6 +1092,21 @@ class SurveyAdministrationController extends LSBaseController
     public function actionSaveDataSecTextData($sid)
     {
         $iSurveyId = (int)$sid;
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("No permission"),
+                        'debug' => null
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $changes = Yii::app()->request->getPost('changes', []);
         $aSuccess = [];
