@@ -1388,6 +1388,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['organizebar']['saveandclosebuttonright']['url'] = true;
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
+        $aData['topBar']['showSaveButton'] = true;
 
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
