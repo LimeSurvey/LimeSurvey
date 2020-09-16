@@ -138,7 +138,7 @@ class LsDefaultDataSets
                 'paint-brush',
                 'fontawesome',
                 '',
-                'admin/themeoptions/sa/updatesurvey',
+                'themeOptions/updateSurvey',
                 '',
                 '',
                 '',
@@ -853,13 +853,18 @@ class LsDefaultDataSets
         $returnArray[] = ['position' => 3, 'url' => 'admin/globalsettings', 'title' => gT('Global settings'), 'ico' => 'icon-settings', 'desc' => gT('Edit global settings'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 4, 'url' => 'admin/update', 'title' => gT('ComfortUpdate'), 'ico' => 'icon-shield', 'desc' => gT('Stay safe and up to date'), 'page' => 'welcome', 'usergroup' => '-2'];
         $returnArray[] = ['position' => 5, 'url' => 'https://account.limesurvey.org/limestore', 'title' => 'LimeStore', 'ico' => 'fa fa-cart-plus', 'desc' => gT('LimeSurvey extension marketplace'), 'page' => 'welcome', 'usergroup' => '-2'];
-        $returnArray[] = ['position' => 6, 'url' => 'admin/themeoptions', 'title' => gT('Themes'), 'ico' => 'icon-templates', 'desc' => gT('Themes'), 'page' => 'welcome', 'usergroup' => '-2'];
+        $returnArray[] = ['position' => 6, 'url' => 'themeOptions', 'title' => gT('Themes'), 'ico' => 'icon-templates', 'desc' => gT('Themes'), 'page' => 'welcome', 'usergroup' => '-2'];
 
         App()->setLanguage($sOldLanguage);
         return $returnArray;
 
     }
 
+    /**
+     * Returns Template Configuration Data as Array.
+     * 
+     * @return array
+     */
     public static function getTemplateConfigurationData()
     {
         $returnArray = [];

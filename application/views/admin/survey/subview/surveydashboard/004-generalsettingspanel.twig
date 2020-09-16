@@ -7,7 +7,7 @@
     </div>
     <ul class="list-group">
         <!-- Owner -->
-        
+
         <li class="list-group-item">
             <div class="ls-flex-row col-12">
                 <div class="col-4">
@@ -36,10 +36,10 @@
                     {{ gT("Theme:") }}
                 </div>
                 <div class="col-8">
-                
+
                     {% if templateModel is defined %}
-                        {% if checkPermission('templates','read') %} 
-                            {% set sTemplateOptionsUrl = createUrl("admin/themeoptions/sa/updatesurvey", {'surveyid' : oSurvey.sid} ) %}
+                        {% if checkPermission('templates','read') %}
+                            {% set sTemplateOptionsUrl = createUrl("themeOptions/updateSurvey", {'surveyid' : oSurvey.sid} ) %}
                             {% set sTemplateEditorUrl = createUrl("admin/themes/sa/view", {'templatename' : oSurvey.aOptions['template'] } ) %}
                             {{templateModel.title}} ( {{templateModel.name}})
                             <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Edit theme options")}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
@@ -54,7 +54,7 @@
                     {% endif %}
                     ?>
                 </div>
-                
+
             </div>
         </li>
     </ul>

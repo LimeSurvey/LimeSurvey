@@ -242,7 +242,7 @@ class TemplateConfig extends CActiveRecord
                     ),
                     'error'
                 );
-                App()->getController()->redirect(array("admin/themeoptions"));
+                App()->getController()->redirect(array("themeOptions/index"));
                 break;
             }
             $oRTemplate = $oMotherTemplate;

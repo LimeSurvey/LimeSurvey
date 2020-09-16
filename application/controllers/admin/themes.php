@@ -33,7 +33,7 @@ class themes extends Survey_Common_Action
             parent::runWithParams($params);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions/index"));
         }
     }
 
@@ -72,7 +72,7 @@ class themes extends Survey_Common_Action
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions/index"));
         }
     }
 
@@ -121,7 +121,7 @@ class themes extends Survey_Common_Action
 
         if (!Permission::model()->hasGlobalPermission('templates','export')){
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions/index"));
         }
 
         $tempdir = Yii::app()->getConfig('tempdir');
@@ -195,7 +195,7 @@ class themes extends Survey_Common_Action
             $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions/index"));
         }
     }
 
@@ -231,11 +231,11 @@ class themes extends Survey_Common_Action
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
         $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
         if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
-            $message = $checkImageContent['check'] === false 
-                ? $checkImageContent['uploadresult'] 
+            $message = $checkImageContent['check'] === false
+                ? $checkImageContent['uploadresult']
                 : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
-            $debug = $checkImageContent['check'] === false 
-                ? $checkImageContent['debug'] 
+            $debug = $checkImageContent['check'] === false
+                ? $checkImageContent['debug']
                 : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
@@ -308,7 +308,7 @@ class themes extends Survey_Common_Action
                 ),
                 'error'
             );
-            $this->getController()->redirect(array("admin/themeoptions"));
+            $this->getController()->redirect(array("themeOptions/index"));
         }
 
         // make questiontheme upload folder if it doesnt exist
@@ -386,7 +386,7 @@ class themes extends Survey_Common_Action
                             gT("The ZIP file contains wrong paths"),
                             'error'
                         );
-                        $this->getController()->redirect(array("admin/themeoptions/sa/index/#questionthemes"));
+                        $this->getController()->redirect(array("themeOptions/index#questionthemes"));
                     }
                     $sThemeDirectory = scandir($sPathToThemeDirectory)[2];
                     // install the Question Theme
@@ -397,7 +397,7 @@ class themes extends Survey_Common_Action
                             gT("An error occured while generating the Question theme"),
                             'error'
                         );
-                        $this->getController()->redirect(array("admin/themeoptions/sa/index/#questionthemes"));
+                        $this->getController()->redirect(array("themeOptions/index#questionthemes"));
                     }
                 }
             }
@@ -551,7 +551,7 @@ class themes extends Survey_Common_Action
             $templatedir     = $oEditedTemplate->viewPath;
             $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
             $sPostedFile     = CHtml::decode(App()->request->getPost('filename')); // Filename is encode, need to decode.
-            
+
             if ($sPostedFiletype == 'screen'){
                 $filesdir        = $oEditedTemplate->viewPath;
                 $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
@@ -563,9 +563,9 @@ class themes extends Survey_Common_Action
                 $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
             } else {
                 Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-                $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));        
-            }            
-            
+                $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));
+            }
+
             $the_full_file_path = realpath($filesdir.$sFileToDelete);
             if(substr($the_full_file_path, 0, strlen(realpath($filesdir))) != realpath($filesdir)) {
                 /* User tries to delete a file outside of files dir */
@@ -628,7 +628,7 @@ class themes extends Survey_Common_Action
                         Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
 
-                    $this->getController()->redirect(array('admin/themeoptions'));
+                    $this->getController()->redirect(array('themeOptions/index'));
                 }
             }
         } else {
@@ -653,7 +653,7 @@ class themes extends Survey_Common_Action
 
             if(Template::isStandardTemplate($newname)){
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
-                $this->getController()->redirect(array("admin/themeoptions"));
+                $this->getController()->redirect(array("themeOptions/index"));
             }
 
             if ($newname && $copydir) {
@@ -740,7 +740,7 @@ class themes extends Survey_Common_Action
 
 
         // Redirect with default templatename, editfile and screenname
-        $this->getController()->redirect(array("admin/themeoptions"));
+        $this->getController()->redirect(array("themeOptions/index"));
     }
 
     public function deleteBrokenTheme()
@@ -760,7 +760,7 @@ class themes extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect(array("admin/themeoptions"));
+        $this->getController()->redirect(array("themeOptions/index"));
     }
 
 
@@ -790,7 +790,7 @@ class themes extends Survey_Common_Action
 
         }
 
-        $this->getController()->redirect(array("admin/themeoptions"));
+        $this->getController()->redirect(array("themeOptions"));
     }
 
     /**
@@ -1327,7 +1327,7 @@ class themes extends Survey_Common_Action
     protected function checkDestDir($destdir, $sNewDirectoryName, $themeType)
     {
         if ($themeType == 'question'){
-            $redirectUrl = 'admin/themeoptions#questionthemes';
+            $redirectUrl = 'themeOptions/index#questionthemes';
         } elseif ($themeType == 'survey'){
             $redirectUrl = 'admin/themes/sa/upload';
         } else {

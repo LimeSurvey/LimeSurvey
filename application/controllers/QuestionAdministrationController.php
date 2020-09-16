@@ -31,7 +31,8 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * This part comes from _renderWrappedTemplate
      *
-     * @param string $view
+     * @param string $view View
+     * 
      * @return bool
      */
     protected function beforeRender($view)
@@ -54,10 +55,10 @@ class QuestionAdministrationController extends LSBaseController
      * Renders the main view for question editor.
      * Main view function prepares the necessary global js parts and renders the HTML for the question editor
      *
-     * @param integer $surveyid
-     * @param integer $gid
-     * @param integer $qid
-     * @param string $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on structure tab.
+     * @param integer $surveyid          Survey ID
+     * @param integer $gid               Group ID
+     * @param integer $qid               Question ID
+     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on structure tab.
      *
      * @return void
      *

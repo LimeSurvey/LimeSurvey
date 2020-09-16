@@ -20,7 +20,7 @@
                 //li element
                 'type' => 'action',
                 'action' => 'reset',
-                'url' => App()->createUrl('/admin/themeoptions/sa/resetMultiple/'),
+                'url' => App()->createUrl('themeOptions/resetMultiple/'),
                 'iconClasses' => '',
                 'text' => gT('Reset'),
                 'grid-reload' => 'yes',
@@ -30,7 +30,7 @@
                 'modalType'     => 'yes-no',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
-                'selectedUrl'   => App()->createUrl('/admin/themeoptions/sa/renderSelectedItems/'),
+                'selectedUrl'   => App()->createUrl('themeOptions/renderSelectedItems/'),
                 'yes'           => gT('Reset Themes'),
                 'no'            => gT('Cancel'),
                 'sModalTitle'   => gT('Reset theme'),
@@ -41,7 +41,7 @@
                 //li element
                 'type'        => 'action',
                 'action'      => 'Uninstall',
-                'url'         =>  App()->createUrl('/admin/themeoptions/sa/uninstallMultiple/'),
+                'url'         =>  App()->createUrl('themeOptions/uninstallMultiple/'),
                 'iconClasses' => '',
                 'text'        =>  gT('Uninstall'),
                 'grid-reload' => 'yes',
@@ -51,7 +51,7 @@
                 'modalType'     => 'yes-no',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
-                'selectedUrl'   => App()->createUrl('/admin/themeoptions/sa/renderSelectedItems/'),
+                'selectedUrl'   => App()->createUrl('themeOptions/renderSelectedItems/'),
                 'sModalTitle'   => gT('Uninstall themes'),
                 'htmlModalBody' => gT('Are you sure you want to uninstall the selected themes?'),
             )

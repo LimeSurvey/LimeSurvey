@@ -13,7 +13,7 @@ return [
     // Survey main menu
     ['surveyGeneralSettings', ['route'=>'surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyTexts', ['route'=>'surveyAdministration/rendersidemenulink/subaction/surveytexts/surveyid/{SID}', 'noAdminInFront' => true ]],
-    ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
+    ['surveyTemplateOptionsUpdate', ['route'=>'themeOptions/updateSurvey/sid/{SID}/gsid/1', 'noAdminInFront' => true]],
     ['surveyPresentationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/presentation/surveyid/{SID}', 'noAdminInFront' => true]],
 
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
