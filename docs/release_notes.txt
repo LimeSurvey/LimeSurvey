@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.2 (build 200908) to 3.23.3 (build 200909) September 8, 2020
+-Fixed issue #16488: [Hotfix] Reviewing updateQuestionOrder usage (gabrieljenik)
+#Updated translation: Spanish (Spain) by eddylackmann
+#Updated translation: Dutch (Informal) by eddylackmann
+
+
+Changes from 3.23.1 (build 200825) to 3.23.2 (build 200908) September 7, 2020
+-Fixed issue: Minor errors in tutorial (Carsten Schmitz)
+-Fixed issue #16588: False warning about the screen resolution (Gabriel Jenik)
+-Fixed issue #16528: After deleting a user who owned a survey, the survey list shows an error. (Gabriel Jenik)
+-Fixed issue #15980: No results shown for selected date questions at statistics (GabrielJenik)
+#Updated translation: Slovenian by junoslukan
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Danish by Mikkel
+#Updated translation: Chinese (Taiwan) (Traditional) by imacat
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.23.0 (build 200813) to 3.23.1 (build 200825) August 24, 2020
 -Fixed issue #16536: Batch editing reminder sent date leads to wrong data being added (#1530) (Gabriel Jenik)
 -Fixed issue #15989: Blank page after granting user groups survey permissions. (GabrielJenik)

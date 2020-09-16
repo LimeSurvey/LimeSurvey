@@ -135,9 +135,11 @@
 
             /*
             * all "free text" types (T, U, S)  get the same prefix ("T")
+            * Equations are treated the same way
             */
             case "T": // Long free text
             case "U": // Huge free text
+            case '*': // Equation
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 $myfield2="T$myfield";
                 echo "\t<input type='checkbox'  name='summary[]' value='$myfield2'";
@@ -906,7 +908,6 @@
 
             //Boilerplate questions are only used to put some text between other questions -> no analysis needed
             case "X": //This is a boilerplate question and it has no business in this script
-            case '*': // EQUATION
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 eT("This question type can't be selected.");
                 break;

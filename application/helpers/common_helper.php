@@ -910,7 +910,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
 
-            $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            $thissurvey['owner_username'] = $result->survey->ownerUserName;
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -966,22 +966,31 @@ function groupOrderThenQuestionOrder($a, $b)
 
 //FIXME insert UestionGroup model to here
 /**
- * @param integer $sid
+ * Shifts the sortorder for questions, creating extra spaces at the start of the group
+ * This is an alias for updateQuestionOrder()
+ * 
+ * @param integer $sid SID is not needed anymore, but is left here for backward compatibility
  * @param integer $gid
  * @param integer $shiftvalue
+ * 
+ * @return void
  */
-function shiftOrderQuestions($sid, $gid, $shiftvalue) //Function shifts the sortorder for questions
+function shiftOrderQuestions($sid, $gid, $shiftvalue)
 {
-    $sid = (int) $sid;
     $gid = (int) $gid;
     $shiftvalue = (int) $shiftvalue;
 
-    $baselang = Survey::model()->findByPk($sid)->language;
-
-    Question::model()->updateQuestionOrder($gid, $baselang, $shiftvalue);
+    Question::model()->updateQuestionOrder($gid, $shiftvalue);
 }
 
-function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
+/**
+ * Rewrites the sortorder for groups
+ * 
+ * @param integer $surveyid
+ * 
+ * @return void
+ */
+function fixSortOrderGroups($surveyid)
 {
     $baselang = Survey::model()->findByPk($surveyid)->language;
     QuestionGroup::model()->updateGroupOrder($surveyid, $baselang);
