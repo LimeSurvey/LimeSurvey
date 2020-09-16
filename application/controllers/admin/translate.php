@@ -73,7 +73,8 @@ class translate extends Survey_Common_Action
         $aViewUrls['translateheader_view'][] = $aData;
 
         $tab_names = array("title", "welcome", "group", "question", "subquestion", "answer",
-                        "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
+                        "emailinvite", "emailreminder", "emailconfirmation", "emailregistration",
+                        "emailbasicadminnotification", "emaildetailedadminnotification");
 
         if (!empty($tolang)) {
             // Only save if the administration user has the correct permission
@@ -592,7 +593,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Invitation email subject"),
+                    'description' => gT("Invitation email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "Popup",
                     'associated' => "emailinvitebody"
@@ -622,7 +623,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Reminder email subject"),
+                    'description' => gT("Reminder email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emailreminderbody"
@@ -652,7 +653,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Confirmation email subject"),
+                    'description' => gT("Confirmation email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emailconfirmationbody"
@@ -682,7 +683,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Registration email subject"),
+                    'description' => gT("Registration email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emailregistrationbody"
@@ -712,7 +713,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Confirmation email subject"),
+                    'description' => gT("Confirmation email"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "email_confirmbody"
@@ -728,6 +729,66 @@ class translate extends Survey_Common_Action
                     'gid' => false,
                     'qid' => false,
                     'description' => gT("Confirmation email"),
+                    'HTMLeditorType' => "email",
+                    'HTMLeditorDisplay' => "",
+                    'associated' => ""
+                );
+            break;
+
+            case 'emailbasicadminnotification':
+                $aData = array(
+                    'type' => 1,
+                    'dbColumn' => 'email_admin_notification_subj',
+                    'id1' => '',
+                    'id2' => '',
+                    'gid' => false,
+                    'qid' => false,
+                    'description' => gT("Basic admin notification"),
+                    'HTMLeditorType' => "email",
+                    'HTMLeditorDisplay' => "",
+                    'associated' => "emailbasicadminnotificationbody"
+                );
+            break;
+
+            case 'emailbasicadminnotificationbody':
+                $aData = array(
+                    'type' => 1,
+                    'dbColumn' => 'email_admin_notification',
+                    'id1' => '',
+                    'id2' => '',
+                    'gid' => false,
+                    'qid' => false,
+                    'description' => gT("Basic admin notification"),
+                    'HTMLeditorType' => "email",
+                    'HTMLeditorDisplay' => "",
+                    'associated' => ""
+                );
+            break;
+
+            case 'emaildetailedadminnotification':
+                $aData = array(
+                    'type' => 1,
+                    'dbColumn' => 'email_admin_responses_subj',
+                    'id1' => '',
+                    'id2' => '',
+                    'gid' => false,
+                    'qid' => false,
+                    'description' => gT("Detailed admin notification"),
+                    'HTMLeditorType' => "email",
+                    'HTMLeditorDisplay' => "",
+                    'associated' => "emaildetailedadminnotificationbody"
+                );
+            break;
+
+            case 'emaildetailedadminnotificationbody':
+                $aData = array(
+                    'type' => 1,
+                    'dbColumn' => 'email_admin_responses',
+                    'id1' => '',
+                    'id2' => '',
+                    'gid' => false,
+                    'qid' => false,
+                    'description' => gT("Detailed admin notification"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => ""
@@ -763,6 +824,10 @@ class translate extends Survey_Common_Action
                     case 'emailregistrationbody':
                     case 'email_confirm':
                     case 'email_confirmbody':
+                    case 'emailbasicadminnotification':
+                    case 'emailbasicadminnotificationbody':
+                    case 'emaildetailedadminnotification':
+                    case 'emaildetailedadminnotificationbody':
                         return SurveyLanguageSetting::model()->resetScope()->findAllByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$baselang));
                     case 'group':
                     case 'group_desc':
@@ -809,6 +874,14 @@ class translate extends Survey_Common_Action
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_register_subj'=>$new));
                     case 'emailregistrationbody':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_register'=>$new));
+                    case 'emailbasicadminnotification':
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('email_admin_notification_subj'=>$new));
+                    case 'emailbasicadminnotificationbody':
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('email_admin_notification'=>$new));
+                    case 'emaildetailedadminnotification':
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('email_admin_responses_subj'=>$new));
+                    case 'emaildetailedadminnotificationbody':
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('email_admin_responses'=>$new));
                     case 'email_confirm':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_confirm_subject'=>$new));
                     case 'email_confirmbody':

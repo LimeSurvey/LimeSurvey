@@ -517,7 +517,7 @@ class User extends LSActiveRecord
         $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
-        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm');
+        $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
         
 
         $userDetail = ""
@@ -570,6 +570,13 @@ class User extends LSActiveRecord
         $deleteUserButton = ""
             ."<button 
                 id='UserManagement--delete-".$this->uid."' 
+                class='btn btn-sm btn-danger UserManagement--action--openmodal UserManagement--action--delete' 
+                data-toggle='tooltip' 
+                title='".gT("Delete User")."' 
+                data-href='".$deleteUrl."'><i class='fa fa-trash text-danger'></i></button>";
+        /*$deleteUserButton = ""
+            ."<button 
+                id='UserManagement--delete-".$this->uid."' 
                 class='btn btn-sm btn-danger' 
                 data-toggle='modal' 
                 data-target='#confirmation-modal' 
@@ -582,7 +589,7 @@ class User extends LSActiveRecord
                     <span data-toggle='tooltip' title='".gT("Delete User")."'>
                         <i class='fa fa-trash text-danger'></i>
                     </span>
-              </button>";
+              </button>";*/
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
