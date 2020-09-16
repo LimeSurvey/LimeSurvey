@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.15 (build 200907) to 4.3.16 (build 200915) September 15, 2020
+-Fixed issue #16667: Unable to update format or questionindex by plugin (Denis Chenu)
+-Fixed issue #16181: some strings in italian have characters shown as entities (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by lkikut
+#Updated translation: Spanish (Argentina) by lkikut
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: German (Informal) by jweberhofer
+
+
 Changes from 4.3.14 (build 200826) to 4.3.15 (build 200907) September 7, 2020
 -Fixed issue: Minor errors in tutorial (Carsten Schmitz)
 -Fixed issue #16636: False warning about the screen resolution (Gabriel Jenik)
