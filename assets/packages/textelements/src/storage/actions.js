@@ -4,11 +4,14 @@ import {LOG} from '../mixins/logSystem.js'
 
 export default {
     getDataSet: (context) => {
-            const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getCurrentEditorValues' : '/getCurrentEditorValues';
+           //mooooh const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getCurrentEditorValues' : '/getCurrentEditorValues';
             return new Promise((resolve, reject) => {
             ajax.methods.$_get(
-                window.TextEditData.connectorBaseUrl+subAction
+                LS.createUrl('surveyAdministration/getCurrentEditorValues' ,{
+                    sid: window.TextEditData.sid, //context.state.sid || LS.reparsedParameters().combined.sid,
+                })
             ).then((result) => {
+                context.state.sid = window.TextEditData.sid;
                 LOG.log('Getting Data', result);
                 context.dispatch('updateObjects', result.data.textdata);
                 context.commit('setLanguages', result.data.languages);
@@ -33,9 +36,10 @@ export default {
         context.commit('setPermissions', newObjectBlock.permissions);
     },
     getDateFormatOptions: (context) => {
-        const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDateFormatOptions' : '/getDateFormatOptions';
+        //const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDateFormatOptions' : '/getDateFormatOptions';
+        //window.TextEditData.connectorBaseUrl+subAction
         ajax.methods.$_get(
-            window.TextEditData.connectorBaseUrl+subAction
+            LS.createUrl('surveyAdministration/getDateFormatOptions')
         ).then((result) => {
             context.commit('setDateFormatOptions', result.data);
         })
@@ -61,6 +65,9 @@ export default {
         let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
         const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveTextData' : '/saveTextData';
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
-        return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+subAction, transferObject);
+        return ajax.methods.$_post(
+            window.TextEditData.connectorBaseUrl+subAction+'/sid/' + window.TextEditData.sid,
+            transferObject
+        );
     }
 };

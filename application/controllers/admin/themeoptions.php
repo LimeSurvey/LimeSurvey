@@ -304,7 +304,7 @@ class themeoptions  extends Survey_Common_Action
             $this->updateCommon($model, $sid);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
+            $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$sid));
         }
     }
 

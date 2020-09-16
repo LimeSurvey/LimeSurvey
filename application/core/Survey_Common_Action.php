@@ -264,7 +264,8 @@ class Survey_Common_Action extends CAction
         if (!empty($sAction)) {
                     $sViewPath .= $sAction.'/';
         }
-        ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
+        //TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..],
+        //todo and then call to function such as $this->_nsurveysummary($aData);
         // Load views
         $content = "";
 
@@ -280,7 +281,7 @@ class Survey_Common_Action extends CAction
                 }
             } else {
                 switch ($sViewKey) {
-                    //// We'll use some Bootstrap alerts, and call them inside each correct view.
+                    // We'll use some Bootstrap alerts, and call them inside each correct view.
                     // Message
                     case 'message' :
                         if (empty($viewUrl['class'])) {
@@ -1282,6 +1283,9 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     *
+     * @deprecated use ServiceClass FilterImportedResources instead ... (models/services/)
+     *
      * @param string $extractdir
      * @param string $destdir
      * @return array

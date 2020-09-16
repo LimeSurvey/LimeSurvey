@@ -10,9 +10,7 @@ $layoutHelper = new LayoutHelper();
 //All paths relative from /application/views
 
 $layoutHelper->showHeaders($aData, false);
-//$this->_showHeaders($aData, false);
 
-//$this->_showadminmenu($aData);
 $layoutHelper->showadminmenu($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
@@ -34,8 +32,6 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
     . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
     . '>';
 
-//Rendered through /admin/super/sidemenu
-//$this->_surveysidemenu($aData);
 $layoutHelper->renderSurveySidemenu($aData);
 
 
@@ -48,35 +44,13 @@ $layoutHelper->renderGeneraltopbar($aData);
 
 echo '<div id="pjax-content" class="col-12">';
 
-//topbar for questioneditor is now rendered by actionGetQuestionTopbar in QuestionEditorController
-//$layoutHelper->renderOrganizeQuestionBar($aData);
-
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column fill col-12"'
     . '>';
 
 //Rendered through /admin/update/_update_notification
-//$this->_updatenotification();
 $layoutHelper->updatenotification();
-
-//Rendered through /notifications/notifications
-//$this->_notifications();
 $layoutHelper->notifications();
-
-//// Here the main content views.
-//$this->_listquestiongroups($aData);
-$layoutHelper->renderListQuestionGroups($aData);
-
-//Rendered through /admin/survey/Question/listquestions
-//$this->_listquestions($aData);
-$layoutHelper->renderListQuestions($aData);
-
-
-//Rendered through /admin/super/sidebody
-//With content of /admin/survey/surveySummary_view
-//$this->_nsurveysummary($aData);
-$layoutHelper->renderSurveySummary($aData);
-
 
 echo $content;
 

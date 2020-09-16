@@ -356,8 +356,10 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
-        $sumresult1 = Survey::model()->with(array(
-                'languagesettings' => array('condition'=>'surveyls_language=language'))
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array('condition'=>'surveyls_language=language')
+            )
         )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
@@ -391,7 +393,8 @@ class LayoutHelper
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
             $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
-            Yii::app()->getController()->renderPartial("/admin/super/sidemenu", $aData);
+
+            Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             Yii::app()->getController()->redirect(array("admin/index"));
@@ -452,6 +455,7 @@ class LayoutHelper
      * @param $aData
      */
     public function renderGeneraltopbar($aData) {
+
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
             [
@@ -494,6 +498,9 @@ class LayoutHelper
 
     /**
      * listquestion groups
+     *
+     * @deprecated not used anymore, is rendered directly from actionListquestiongroups
+     *
      * @param array $aData
      */
     public function renderListQuestionGroups(array $aData)
@@ -504,6 +511,9 @@ class LayoutHelper
     }
 
     /**
+     *
+     * @deprecated rendered now directly in QuestionAdministration see action listquestions ...
+     *
      * @param $aData
      * @throws CException
      */
@@ -544,6 +554,9 @@ class LayoutHelper
 
     /**
      * Survey summary
+     *
+     * @deprecated implementation now in SurveyAdministrationController
+     *
      * @param array $aData
      */
     public function renderSurveySummary($aData)
@@ -562,13 +575,13 @@ class LayoutHelper
      * todo: here are to many things that should be done in controller ...
      *
      * @param array $aData
-     */
+     *
     private function _surveysummary($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
         $aSurveyInfo = getSurveyInfo($iSurveyID);
-        /** @var Survey $oSurvey */
+        /** @var Survey $oSurvey
         $oSurvey = $aData['oSurvey'];
         $activated = $aSurveyInfo['active'];
 
@@ -709,6 +722,7 @@ class LayoutHelper
             'sideMenuOpen' => true
         ));
     }
+    */
 
     /**
      * todo: document me...

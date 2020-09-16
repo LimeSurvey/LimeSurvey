@@ -111,7 +111,10 @@ function getSurveyList($bReturnArray = false)
             ->with('languagesettings')
             ->findAll();
         foreach ($surveyidresult as $result) {
-            $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
+            if(isset($result->languagesettings[$result->language])) {
+                $surveynames[] = array_merge($result->attributes,
+                    $result->languagesettings[$result->language]->attributes);
+            }
         }
 
         usort($surveynames, function($a, $b)
@@ -618,7 +621,7 @@ function getGroupListLang($gid, $language, $surveyid)
         $groupselecter .= "</option>\n";
     }
     if ($groupselecter) {
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid);
+        $link = Yii::app()->getController()->createUrl("/surveyAdministration/view/surveyid/".$surveyid);
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$groupselecter; } else {$groupselecter .= "<option value='{$link}'>".gT("None")."</option>\n"; }
     }
     return $groupselecter;
@@ -3895,6 +3898,17 @@ function getQuestDepsForConditions($sid, $gid = "all", $depqid = "all", $targqid
         return $condarray;
     }
     return null;
+}
+
+/**
+* Escapes a text value for db
+*
+* @param string $value
+* @return string
+*/
+function dbQuoteAll($value)
+{
+    return Yii::app()->db->quoteValue($value);
 }
 
 // TMSW Condition->Relevance:  This function is not needed - could replace with a message from EM output.

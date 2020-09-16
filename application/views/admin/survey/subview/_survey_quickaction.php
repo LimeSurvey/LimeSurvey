@@ -22,7 +22,7 @@
     <div id="survey-action-title" class="panel-heading" >
         <div class="row">
             <div class="col-xs-2 col-sm-1">
-                <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>">
+                <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/toggleQuickAction/");?>">
                     <i class="fa <?=($quickactionstate > 0 ?  'fa-caret-up' : 'fa-caret-down')?>"></i>
                 </button>
             </div>
@@ -79,7 +79,7 @@
                                         <button type="button" data-value='G' class="btn btn-default <?php if($oSurvey->format=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
                                         <button type="button" data-value='A' class="btn btn-default <?php if($oSurvey->format=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
                                     </div>
-                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$oSurvey->sid);?>" />
+                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("surveyAdministration/changeFormat/surveyid/".$oSurvey->sid);?>" />
                                     <br/><br/>
 
                                 </div>

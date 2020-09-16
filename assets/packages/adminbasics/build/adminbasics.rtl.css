@@ -116,6 +116,10 @@
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 .draggable-container {
   min-height: 300px;
 }
@@ -223,10 +227,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   min-height: 100px;
 }
 
-#cpdbatt {
-  min-height: 100px;
-}
-
 #selectable .ui-selecting {
   background: #8CCE00;
 }
@@ -289,22 +289,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   padding: 10px;
   border-radius: 3px;
   margin: 8px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
 }
 
 .grid-view .table td.button-column, .grid-view .table th.button-column {
@@ -408,6 +392,22 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
 }
 
 /**

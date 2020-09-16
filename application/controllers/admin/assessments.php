@@ -87,7 +87,7 @@ class Assessments extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $iSurveyID = $aData['surveyid'];
         $survey = Survey::model()->findByPk($iSurveyID);
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyID; // Close button
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['saveandclosebutton']['form'] = true;

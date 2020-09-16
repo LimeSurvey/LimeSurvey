@@ -54,7 +54,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 $modelSettings->owner_id = $model->owner_id;
 
                 if ($modelSettings->save()) {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys').'#surveygroups');
                 }
                 // What happen iof SurveysGroups saved but no SurveysGroupsettings ?
             }
@@ -63,7 +63,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['model'] = $model;
         $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
         $aData['fullpagebar']['returnbutton'] = array(
-            'url'=>'admin/survey/sa/listsurveys#surveygroups',
+            'url'=>'surveyAdministration/listsurveys#surveygroups',
             'text'=>gT('Close'),
         );
 
@@ -92,7 +92,7 @@ class SurveysGroupsController extends Survey_Common_Action
 
                     if ( in_array( $model->gsid, $aParentsGsid  ) ) {
                         Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
-                        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                        $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys').'#surveygroups');
                     }
                 }
 
@@ -111,7 +111,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null){
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys').'#surveygroups');
         }
 
         // Page size
@@ -178,7 +178,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['oSurvey'] = $oSurvey;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null){
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys').'#surveygroups');
         }
 
         // Page size
@@ -216,17 +216,17 @@ class SurveysGroupsController extends Survey_Common_Action
 
         if ($oGroupToDelete->hasSurveys) {
             Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
-            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('surveyAdministration/listsurveys '));
         } elseif ($oGroupToDelete->hasChildGroups) {
             Yii::app()->setFlashMessage(gT("You can't delete a group because one or more groups depend on it as parent!"), 'error');
-            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('surveyAdministration/listsurveys '));
         } else {
             $oGroupToDelete->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax'])) {
                 Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), CHtml::encode($sGroupTitle)), 'success');
-                $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+                $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('surveyAdministration/listsurveys '));
             }
         }
     }

@@ -3,7 +3,7 @@
  * This file render the list of groups
  */
 
-/** @var AdminController $this */
+/** @var QuestionAdministrationController $this */
 /** @var Survey $oSurvey */
 /** @var Question $model */
 
@@ -93,7 +93,7 @@ $baseLanguage = $oSurvey->language;
             <div class="row ls-space margin top-10">
                 <div class="col-lg-12">
                     <?php
-                        $massiveAction = App()->getController()->renderPartial(
+                        $massiveAction = Yii::app()->getController()->renderPartial(
                             '/admin/survey/Question/massive_actions/_selector',
                             array('model'=>$model, 'oSurvey'=>$oSurvey),
                             true,

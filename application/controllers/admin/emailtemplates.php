@@ -22,7 +22,6 @@
 
 class emailtemplates extends Survey_Common_Action
 {
-
     /**
      * Load edit email template screen.
      * @param mixed $iSurveyId
@@ -82,7 +81,7 @@ class emailtemplates extends Survey_Common_Action
                 unset($aData['surveybar']['saveandclosebutton']);
                 $aData['topBar']['showSaveButton'] = false;
             }
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId; // Close button
+            $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyId; // Close button
 
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = gT("Edit email templates");
@@ -151,7 +150,7 @@ class emailtemplates extends Survey_Common_Action
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
             if (Yii::app()->request->getPost('close-after-save') == 'true') {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyId));
             }
 
             $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));

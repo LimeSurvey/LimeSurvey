@@ -101,11 +101,11 @@ class dataentry extends Survey_Common_Action
                 }
             } else {
                 Yii::app()->session['flashmessage'] = gT("This survey is not active. You must activate the survey before attempting to import a VVexport file.");
-                $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+                $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
             }
         } else {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
     }
 
@@ -2126,7 +2126,7 @@ class dataentry extends Survey_Common_Action
             $aData['menu']['close'] = true;
             $aData['topBar']['showSaveButton']  = true;
             $aData['topBar']['showCloseButton'] = true;
-            $aData['topBar']['closeButtonUrl']  = $this->getController()->createUrl("admin/survey/sa/view/", ['surveyid' => $surveyid]);
+            $aData['topBar']['closeButtonUrl']  = $this->getController()->createUrl("surveyAdministration/view/", ['surveyid' => $surveyid]);
             $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }

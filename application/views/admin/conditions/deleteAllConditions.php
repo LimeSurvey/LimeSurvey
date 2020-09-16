@@ -18,7 +18,7 @@
 </button>
 <a
     class='btn btn-default'
-    href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$iSurveyID"); ?>"
+    href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$iSurveyID"); ?>"
 >
     <?php eT('Cancel'); ?>
 </a>

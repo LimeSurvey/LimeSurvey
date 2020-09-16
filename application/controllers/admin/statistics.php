@@ -809,7 +809,7 @@ class statistics extends Survey_Common_Action
         yii::app()->clientScript->registerPackage('jspdf');
         $oSurvey = Survey::model()->findByPk($aData['surveyid']);
 
-        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/" . $aData['surveyid']));
+        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/surveyAdministration/view/surveyid/" . $aData['surveyid']));
 
         $aData['display'] = array();
         $aData['display']['menu_bars'] = false;

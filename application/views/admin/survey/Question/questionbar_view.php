@@ -1,7 +1,9 @@
 <?php
 $aReplacementData=array();
 
-/** @deprecated this view is deprecated and not used anymore... "question_topbar.php" is used instead */
+/** @deprecated this view is deprecated and not used anymore... "question_topbar.php" is used instead
+    @deprecated don't delete it now (maybe we will reuse after vue.js is deleted ...)
+ */
 ?>
 
 <div class='menubar surveybar' id="questionbarid" style="display:none">
@@ -200,7 +202,7 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>

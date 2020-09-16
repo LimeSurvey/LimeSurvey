@@ -116,6 +116,10 @@
   display: none;
 }
 
+#cpdbatt {
+  min-height: 100px;
+}
+
 .draggable-container {
   min-height: 300px;
 }

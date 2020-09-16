@@ -8,7 +8,7 @@
 * @var $allowregister              $survey->allowregister=='Y'
 * @var $onclickAction              convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))
 * @var $closedOnclickAction        convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID))
-* @var $noOnclickAction            convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))
+* @var $noOnclickAction            convertGETtoPOST(Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$iSurveyID))
 *
 */
 ?>

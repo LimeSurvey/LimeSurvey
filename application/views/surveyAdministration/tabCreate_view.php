@@ -2,15 +2,18 @@
 /**
 * Tab Create content
 * This view display the content for the create tab.
- * @var AdminController $this
+ * @var SurveyAdministrationController $this
  * @var Survey $oSurvey
  *
 */
 ?>
 <?php
 extract($data);
+
 Yii::app()->loadHelper('admin/htmleditor');
 
+$cs = Yii::app()->getClientScript();
+$cs->registerPackage('bootstrap-select2');
 
 App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var jsonUrl = '';
@@ -28,74 +31,84 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- Form submited by save button menu bar -->
-<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
+<?php echo CHtml::form(array('surveyAdministration/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <!-- Submit button, needs to be the first item for the script to take it -->
     <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
     <div class="ls-flex-row align-items-center align-content-center">
-        <div class="grow-1 ls-flex-column fill align-items-center align content-center">
-            <!-- Previous pane button -->
-            <button class="btn btn-default" name="navigation_back" id="navigation_back" value="navigation_back"><i class="fa fa-chevron-left" style="font-size:82;"></i></button>
-        </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
                 <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab">
                     <i class="fa fa-file-text-o"></i>&nbsp;
                     <?=gT("Text elements")?></a>
                 </li>
-                <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab">
-                    <i class="fa fa-gears"></i>&nbsp;
-                    <?=gT("General settings")?></a>
-                </li>
-                <li><a class="create_survey_wizard_tabs" data-count="3" href="#datasecurity" data-toggle="tab">
-                    <i class="fa fa-shield"></i>&nbsp;
-                    <?=gT("Data policy settings")?></a>
-                </li>
-                <li><a class="create_survey_wizard_tabs" data-count="4" href="#presentation" data-toggle="tab">
-                    <i class="fa fa-eye-slash"></i>&nbsp;
-                    <?=gT("Presentation & navigation")?></a>
-                </li>
-                <li><a class="create_survey_wizard_tabs" data-count="5" href="#publication" data-toggle="tab">
-                    <i class="fa fa-key"></i>&nbsp;
-                    <?=gT("Publication & access control")?></a>
-                </li>
-                <li><a class="create_survey_wizard_tabs" data-count="6" href="#data-management" data-toggle="tab">
-                    <i class="fa fa-feed"></i>&nbsp;
-                    <?=gT("Notification & data management")?></a>
-                </li>
-                <li><a class="create_survey_wizard_tabs" data-count="7" href="#tokens" data-toggle="tab">
-                    <i class="fa fa-users"></i>&nbsp;
-                    <?=gT("Participant settings")?></a>
-                </li>
             </ul>
-        </div>
-        <div class="grow-1 ls-flex-column fill align-items-center align-content-center">
-            <!-- Next pane button -->
-            <button class="btn" name="navigation_next" id="navigation_next" value="navigation_next"><i class="fa fa-chevron-right" style="font-size:82;"></i></button>
         </div>
     </div>
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
             <div class="tab-content">
                 <div class="tab-pane active" id="texts" data-count="1">
-                    <?php echo $this->renderPartial('/admin/survey/subview/tab_edit_view', $edittextdata); ?>
-                </div>
-                <div class="tab-pane" id="general-settings" data-count="2">
-                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $generalsettingsdata); ?>
-                </div>
-                <div class="tab-pane" id="datasecurity" data-count="3">
-                    <?php echo $this->renderPartial('/admin/survey/subview/tab_edit_view_datasecurity', $datasecdata); ?>
-                </div>
-                <div class="tab-pane" id="presentation" data-count="4">
-                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $presentationsettingsdata); ?>
-                </div>
-                <div class="tab-pane" id="publication" data-count="5">
-                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_publication_panel', $publicationsettingsdata); ?>
-                </div>
-                <div class="tab-pane" id="data-management" data-count="6">
-                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_notification_panel', $notificationsettingsdata); ?>
-                </div>
-                <div class="tab-pane" id="tokens" data-count="7">
-                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_tokens_panel', $tokensettingsdata); ?>
+                    <?php //echo $this->renderPartial('/admin/survey/subview/tab_edit_view', $edittextdata); don't use this one ...?>
+                    <?php
+
+                    /**
+                     * @var $aTabTitles
+                     * @var $aTabContents
+                     * @var $has_permissions
+                     * @var $surveyid
+                     * @var $surveyls_language
+                     */
+
+                    if (isset($edittextdata)) {
+                        extract($edittextdata);
+                    }
+                    $cs = Yii::app()->getClientScript();
+                    $cs->registerPackage('bootstrap-select2');
+
+                    ?>
+
+                    <div class="container-center">
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="surveyTitle"><?= gt('Survey title')?></label>
+                                <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" >
+                            </div>
+                            <div class="form-group col-md-4 col-md-6">
+                                <label for="createsample" class="control-label"><?= gt('Create example question group and question?')?></label>
+                                <div>
+                                    <input type="checkbox" name="createsample" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-6" >
+                                <label class="control-label" for="language"><?= gt('Base language')?></label>
+                                <div class="">
+                                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                        'asDropDownList' => true,
+                                        'htmlOptions'=>array('style'=>"width: 100%"),
+                                        'data' => isset($listLanguagesCode) ?  $listLanguagesCode : [],
+                                        'value' => $defaultLanguage, //or better user language ...
+                                        'name' => 'language',
+                                        'pluginOptions' => array()
+                                    ));?>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 col-md-6">
+                                <label class=" control-label" for='gsid'><?php  eT("Survey group:"); ?></label>
+                                <div class="">
+                                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                        'asDropDownList' => true,
+                                        'htmlOptions'=>array('style'=>"width: 100%"),
+                                        'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
+                                        'value' => $oSurvey->gsid,
+                                        'name' => 'gsid',
+                                        'pluginOptions' => array()
+                                    ));?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
