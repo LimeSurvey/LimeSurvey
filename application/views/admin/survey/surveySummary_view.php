@@ -247,7 +247,7 @@ $surveyid = $oSurvey->sid;
                             <?php eT("Owner:");?>
                         </div>
                         <div class="col-8">
-                                <?php echo flattenText("{$oSurvey->owner->full_name} ({$oSurvey->owner->email})");?>
+                                <?php echo $owner;?>
                         </div>
                     </div>
                 </li>

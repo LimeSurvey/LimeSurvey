@@ -1346,7 +1346,7 @@ class remotecontrol_handle
 
                     DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
-                    Question::updateSortOrder($iGroupID, $iSurveyID);
+                    Question::updateQuestionOrder($iGroupID);
 
                     return (int) $iQuestionID;
                 } catch (Exception $e) {
@@ -1697,7 +1697,7 @@ class remotecontrol_handle
 
                     try {
                         $bSaveResult = $oQuestion->save(); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
+                        Question::model()->updateQuestionOrder($oQuestion->gid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult) {
@@ -2974,7 +2974,7 @@ class remotecontrol_handle
      *
      * @param string  $sSessionKey  Auth credentials
      * @param int     $iSurveyID    ID of the Survey
-     * @param int     $sToken       Response token
+     * @param string  $sToken       Response token
      *
      * @return array On success: array containing all uploads of the specified response
      *               On failure: array with error information
