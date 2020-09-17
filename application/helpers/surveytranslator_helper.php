@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
     *
        */
 
+//@todo this should be a table with values from getLanguageData, then using ONLY the model to get values/arrays from it
 
     /*
     * Internationalization and Localization utilities
@@ -62,6 +63,11 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
     }
 }
 
+/**
+ * @param boolean $bOrderByNative
+ * @param string $sLanguageCode
+ * @return mixed
+ */
 function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 {
 
@@ -914,6 +920,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
      *  radix point info about a specific format.
      *
      *  @param int $format Format ID/Number [optional]
+     *
+     * @return integer|array
      */
 function getRadixPointData($format = -1)
 {
@@ -923,6 +931,7 @@ function getRadixPointData($format = -1)
     );
 
     // hack for fact that null sometimes sent to this function
+    //todo then change the hack ...
     if (is_null($format)) {
         $format = 0;
     }
@@ -1081,7 +1090,12 @@ function canShowDatePicker($dateformatdetails, $dateformats = null)
     return $showpicker;
 }
 
-
+/**
+ *
+ *
+ * @param string $languagetosearch this is the shortname for the language (e.g. 'en' see array in getLanguageData())
+ * @return int|string
+ */
 function getLanguageCodefromLanguage($languagetosearch)
 {
     $detaillanguages = getLanguageData(false, Yii::app()->session['adminlang']);

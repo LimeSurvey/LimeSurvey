@@ -1,6 +1,6 @@
 <?php
     /**
-     * @var AdminController     $this
+     * @var ThemeOptionsController $this
      * @var CActiveDataProvider $dataProvider
      * @var bool                $canImport
      * @var string              $importErrorMessage
@@ -13,7 +13,7 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
 
-$this->renderPartial('super/fullpagebar_view', array(
+$this->renderPartial('../admin/super/fullpagebar_view', array(
 'fullpagebar' => array(
     'returnbutton'=>array(
         'url'=>'index',
@@ -35,8 +35,8 @@ $this->renderPartial('super/fullpagebar_view', array(
 
                 <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
-                <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage, 'importModal' => 'importSurveyModal', 'importTemplate' => 'importSurveyTemplate', 'themeType' => 'survey']); ?>
-                <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme, 'pageSize'=>$pageSize )); ?>
+                <?php $this->renderPartial('./surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage, 'importModal' => 'importSurveyModal', 'importTemplate' => 'importSurveyTemplate', 'themeType' => 'survey']); ?>
+                <?php $this->renderPartial('./surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme, 'pageSize'=>$pageSize )); ?>
 
                 <!-- Available Themes -->
                 <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 ):?>
@@ -202,7 +202,7 @@ $this->renderPartial('super/fullpagebar_view', array(
                                                 <?php if ($oTheme->path == getGlobalSetting('admintheme')):?>
                                                     <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>
                                                 <?php else: ?>
-                                                    <a href="<?php echo Yii::app()->getController()->createUrl("admin/themeoptions/sa/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
+                                                    <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
                                                         <?php eT("Select");?>
                                                     </a>
                                                 <?php endif; ?>
@@ -222,10 +222,10 @@ $this->renderPartial('super/fullpagebar_view', array(
             <div class="col-lg-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
-                <?php $this->renderPartial('themeoptions/surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
-                <?php $this->renderPartial('themeoptions/partials/question_themes/installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <?php $this->renderPartial('./surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
+                <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
                 <!-- Available Quesiton Themes-->
-                <?php $this->renderPartial('themeoptions/partials/question_themes/availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
+                <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
             </div>
         </div>
     </div>

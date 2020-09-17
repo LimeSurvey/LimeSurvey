@@ -666,7 +666,8 @@ class TemplateManifest extends TemplateConfiguration
 
             //
 
-        $sLoadLink = CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+        // TODO: Installs Theme (maybe rename importManifest to install ?)
+        $sLoadLink = CHtml::form( array("themeOptions/importManifest/"), 'post', array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
                 "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
                 <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>
@@ -708,7 +709,7 @@ class TemplateManifest extends TemplateConfiguration
 
         if ($bExtends && !Template::model()->findByPk($bExtends)) {
             Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends), 'error');
-            Yii::app()->getController()->redirect(array("admin/themeoptions"));
+            Yii::app()->getController()->redirect(array("themeOptions/index"));
         }
 
         // Metadas is never inherited
@@ -1381,7 +1382,7 @@ class TemplateManifest extends TemplateConfiguration
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
             $aOptions['categories'] = array();
-            
+
             foreach($oXMLConfig->options->children() as $key  => $option){
                 $aOptions['optionAttributes'][$key]['type'] = !empty($option['type']) ? (string)$option['type'] : '';
                 $aOptions['optionAttributes'][$key]['title'] = !empty($option['title']) ? (string)$option['title'] : '';

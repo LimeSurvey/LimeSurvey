@@ -151,7 +151,7 @@
             <?php eT("This survey is not active. You must activate the survey before attempting to import a VVexport file."); ?>
         </p>
         <p>
-            <a class="btn btn-lg btn-default" href='<?php echo $this->createUrl('admin/survey/sa/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
+            <a class="btn btn-lg btn-default" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
         </p>
     </div>
 

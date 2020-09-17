@@ -31,7 +31,8 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * This part comes from _renderWrappedTemplate
      *
-     * @param string $view
+     * @param string $view View
+     * 
      * @return bool
      */
     protected function beforeRender($view)
@@ -54,10 +55,10 @@ class QuestionAdministrationController extends LSBaseController
      * Renders the main view for question editor.
      * Main view function prepares the necessary global js parts and renders the HTML for the question editor
      *
-     * @param integer $surveyid
-     * @param integer $gid
-     * @param integer $qid
-     * @param string $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on structure tab.
+     * @param integer $surveyid          Survey ID
+     * @param integer $gid               Group ID
+     * @param integer $qid               Question ID
+     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on structure tab.
      *
      * @return void
      *
@@ -218,7 +219,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['topBar']['importquestion'] = true;
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['savebuttonform'] = 'frmeditgroup';
-        $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/' . $iSurveyID; // Close button
+        $aData['topBar']['closebuttonurl'] = '/questionAdministration/listquestions/surveyid/' . $iSurveyID; // Close button
 
         if ($landOnSideMenuTab !== '') {
             $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
@@ -235,6 +236,74 @@ class QuestionAdministrationController extends LSBaseController
                 'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
             ]
         );
+    }
+
+    /**
+     * Load list questions view for a specified survey by $surveyid
+     *
+     * @param int $surveyid Goven Survey ID
+     * @param string  $landOnSideMenuTab Name of the side menu tab. Default behavior is to land on settings tab.
+     *
+     * @return string
+     * @access public
+     * @todo   php warning (Missing return statement)
+     */
+    public function actionListQuestions($surveyid, $landOnSideMenuTab = 'settings')
+    {
+        $iSurveyID = sanitize_int($surveyid);
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
+        LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
+        LimeExpressionManager::SetSurveyId($iSurveyID);
+        LimeExpressionManager::StartProcessingPage(false, true);
+
+        // Set number of page
+        $pageSize = App()->request->getParam('pageSize', null);
+        if ($pageSize != null) {
+            App()->user->setState('pageSize', (int) $pageSize);
+        }
+
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $aData   = array();
+
+        $aData['oSurvey']                               = $oSurvey;
+        $aData['surveyid']                              = $iSurveyID;
+        $aData['sid']                                   = $iSurveyID;
+        $aData['display']['menu_bars']['listquestions'] = true;
+        $aData['sidemenu']['listquestions']             = true;
+        $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
+        $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
+            "/surveyAdministration/listsurveys"
+        );
+        $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
+        $aData['surveybar']['buttons']['newquestion']   = true;
+
+        $aData["surveyHasGroup"]        = $oSurvey->groups;
+        $aData['subaction']             = gT("Questions in this survey");
+        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title.
+            " (".gT("ID").":".$iSurveyID.")";
+
+        // The DataProvider will be build from the Question model, search method
+        $model = new Question('search');
+        // Global filter
+        if (isset($_GET['Question'])) {
+            $model->setAttributes($_GET['Question'], false);
+        }
+        // Filter group
+        if (isset($_GET['gid'])) {
+            $model->gid = $_GET['gid'];
+        }
+        // Set number of page
+        if (isset($_GET['pageSize'])) {
+            App()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+        $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+        // We filter the current survey id
+        $model->sid = $oSurvey->sid;
+        $aData['model'] = $model;
+        $this->aData = $aData;
+
+        $this->render("listquestions", $aData);
     }
 
     /****
@@ -585,11 +654,11 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = $this->getQuestionObject($iQuestionId);
 
         $aPermissions = [
-            "read"         => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
-            "update"       => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
+            "read"         => Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'read'),
+            "update"       => Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update'),
             "editorpreset" => App()->session['htmleditormode'],
             "script"       =>
-                Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
+                Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update')
                 && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
         ];
 
@@ -679,13 +748,13 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyID = (int)$surveyid;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
             App()->session['flashmessage'] = gT("We are sorry but you don't have permissions to do this.");
-            $this->redirect(['admin/survey/sa/listquestions/surveyid/' . $iSurveyID]);
+            $this->redirect(['questionAdministration/listquestions/surveyid/' . $iSurveyID]);
         }
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData = [];
         $aData['sidemenu']['state'] = false;
         $aData['sidemenu']['questiongroups'] = true;
-        $aData['surveybar']['closebutton']['url'] = '/admin/survey/sa/listquestiongroups/surveyid/' . $iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = '/questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyID; // Close button
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['savebutton']['text'] = gt('Import');
         $aData['sid'] = $iSurveyID;
@@ -958,13 +1027,14 @@ class QuestionAdministrationController extends LSBaseController
 			);
 		} else {
 			$redirect = Yii::app()->createUrl(
-				'admin/survey/sa/listquestions/',
+				'surveyAdministration/listQuestions/',
 				[
 					'surveyid' => $surveyid,
 					'landOnSideMenuTab' => 'settings'
 				]
 			);
 		}
+
 
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
@@ -977,6 +1047,7 @@ class QuestionAdministrationController extends LSBaseController
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
             $this->redirect($redirect);
+            $this->redirect(['questionAdministration/listquestions/surveyid/' . $surveyid]);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
             $result = $oQuestion->delete();
@@ -989,7 +1060,6 @@ class QuestionAdministrationController extends LSBaseController
                 'status'  => $result
             ];
         }
-
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderJSON(
                 [

@@ -23,7 +23,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  *
  * @property integer $sid Survey ID
  * @property integer $owner_id
- * @property integer $gsid Survey ID
+ * @property integer $gsid survey group id, from which this survey belongs to and inherits values from when set to 'I'
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
  * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
@@ -31,7 +31,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $adminemail Survey administrator email address
  * @property string $anonymized Whether survey is anonymized or not (Y/N)
  * @property string $faxto
- * @property string $format A : All in one, G : Group by group, Q : question by question
+ * @property string $format A : All in one, G : Group by group, Q : question by question, I : inherit value from survey group
  * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
  * @property string $language Survey base language
@@ -76,7 +76,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $showwelcome Show welcome screen: (Y/N)
  * @property string $showprogress how progress bar: (Y/N)
  * @property integer $questionindex Show question index / allow jumping (0: diabled; 1: Incremental; 2: Full)
- * @property integer $navigationdelay Navigation delay (seconds)
+ * @property integer $navigationdelay Navigation delay (seconds) (It shows the number of seconds before the previous,
+ * next, and submit buttons are enabled. If none is specified, the option will use the default value, which is "0" (seconds))
  * @property string $nokeyboard Show on-screen keyboard: (Y/N)
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
@@ -382,7 +383,9 @@ class Survey extends LSActiveRecord
 
     /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
-     * @param int $surveyId
+     * 
+     * @param int $surveyId Survey ID
+     * 
      * @return boolean|null
      */
     public function expire($surveyId = null)
@@ -399,7 +402,6 @@ class Survey extends LSActiveRecord
             self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
         return null;
-
     }
 
     /** @inheritdoc */
@@ -443,12 +445,6 @@ class Survey extends LSActiveRecord
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
     }
-
-
-    /*  public function defaultScope()
-    {
-        return array('order'=> $this->getTableAlias().'.sid');
-    }    */
 
     /** @inheritdoc */
     public function scopes()
@@ -630,9 +626,9 @@ class Survey extends LSActiveRecord
     {
         $sLanguages = trim($this->additional_languages);
         if ($sLanguages != '') {
-                    return explode(' ', $sLanguages);
+            return explode(' ', $sLanguages);
         } else {
-                    return array();
+            return array();
         }
     }
 
@@ -698,7 +694,7 @@ class Survey extends LSActiveRecord
         // Without token table : all extra attribute are only saved on $this->attributedescriptions
         $allKnowAttributes = $attdescriptiondata;
         // Without token table : all attribute $this->attributedescriptions AND real attribute. @see issue #13924
-        if($this->getHasTokensTable()){
+        if ($this->getHasTokensTable()) {
             $allKnowAttributes = array_intersect_key(
                 ( $attdescriptiondata + Token::model($this->sid)->getAttributes()),
                 Token::model($this->sid)->getAttributes()
@@ -801,7 +797,11 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * @param string $value
+     * Sets Google Analytics API Key Setting.
+     * 
+     * @param string $value Google Analytics Key
+     * 
+     * @return void
      */
     public function setGoogleanalyticsapikeysetting($value)
     {
@@ -825,6 +825,11 @@ class Survey extends LSActiveRecord
         }
     }
 
+    /**
+     * Returns Survey Template Configuration.
+     * 
+     * @return TemplateConfiguration
+     */
     public function getSurveyTemplateConfiguration()
     {
         return TemplateConfiguration::getInstance(null, null, $this->sid);
@@ -859,21 +864,30 @@ class Survey extends LSActiveRecord
 
     /**
      * Get surveymenu configuration
+     *
+     * @todo this function can go directly into Surveymenu, why implemted it here?
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
+     * 
+     * @param string $position Position
+     * 
+     * @return string
      */
     public function getSurveyMenus($position = '')
     {
         $collapsed = $position==='collapsed';
         //Get the default menus
-        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position,$this);
+        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position, $this);
         //get all survey specific menus
-        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this, $position);
+        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray(
+            $this->surveymenus,
+            $collapsed,
+            $this,
+            $position
+        );
         //merge them
         $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
-        // var_dump($aDefaultSurveyMenus);
-        // var_dump($aThisSurveyMenues);
 
-        return $aSurveyMenus;
+        return $aDefaultSurveyMenus + $aThisSurveyMenues;
     }
 
     /**
@@ -887,17 +901,17 @@ class Survey extends LSActiveRecord
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
-        if(isset($aData['wishSID'])) {
+        if (isset($aData['wishSID'])) {
             $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
         }
-        if(empty($aData['sid'])) {
+        if (empty($aData['sid'])) {
             $aData['sid'] = intval(randomChars(6, '123456789'));
         }
         $survey = new self;
         /* Remove NULL value (default for not submitted data ) : insert must leave default if not set in POST */
         $aData = array_filter($aData, function($value) {
-                return !is_null($value);
+            return !is_null($value);
         });
         foreach ($aData as $k => $v) {
             $survey->$k = $v;
@@ -905,11 +919,11 @@ class Survey extends LSActiveRecord
 
         $attempts = 0;
         /* Validate sid : > 1 and unique */
-        while(!$survey->validate(array('sid'))) {
+        while (!$survey->validate(array('sid'))) {
             $attempts++;
             $survey->sid = intval(randomChars(6, '123456789'));
             /* If it's happen : there are an issue in server … (or in randomChars function …) */
-            if($attempts > 50) {
+            if ($attempts > 50) {
                 throw new Exception("Unable to get a valid survey id after 50 attempts");
             }
         }
@@ -1112,7 +1126,7 @@ class Survey extends LSActiveRecord
 
         // If the survey is not active, no date test is needed
         if ($this->active == 'N') {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
+            $running = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
         }
         // If it's active, then we check if not expired
         elseif ($this->expires != '' || $this->startdate != '') {
@@ -1133,9 +1147,9 @@ class Survey extends LSActiveRecord
             $sStart = convertToGlobalSettingFormat($sStart);
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'), $sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'), $sStop).'</span></a>';
-            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'), $sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'), $sStop).'</span></a>';
-            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'), $sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'), $sStart).'</span></a>';
+            $sIconRunning = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'), $sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'), $sStop).'</span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'), $sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'), $sStop).'</span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'), $sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'), $sStart).'</span></a>';
 
             // Icon parsing
             if ($bExpired || $bWillRun) {
@@ -1147,7 +1161,7 @@ class Survey extends LSActiveRecord
         }
         // If it's active, and doesn't have expire date, it's running
         else {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span><span class="sr-only">'.gT('Active').'"</span></a>';
+            $running = '<a href="'.App()->createUrl('/surveyAdministration/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span><span class="sr-only">'.gT('Active').'"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
 
@@ -1475,7 +1489,7 @@ class Survey extends LSActiveRecord
      */
     public function getbuttons()
     {
-        $sEditUrl     = App()->createUrl("/admin/survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/".$this->sid);
+        $sEditUrl     = App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/".$this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
         $sAddGroup    = App()->createUrl("/questionGroupsAdministration/add/surveyid/".$this->sid);
         $sAddquestion = App()->createUrl("/questionAdministration/view/surveyid/".$this->sid);

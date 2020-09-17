@@ -20,8 +20,8 @@ if (isset($scripts)) {
     initKcfinder();
 }
 
- $cs = Yii::app()->getClientScript();
- $cs->registerPackage('bootstrap-select2');
+$cs = Yii::app()->getClientScript();
+$cs->registerPackage('bootstrap-select2');
 
 $adminlang = Yii::app()->session['adminlang'];
 
@@ -30,9 +30,9 @@ $adminlang = Yii::app()->session['adminlang'];
 <div class="container-center">
     <div id="advancedTextEditor">
         <lsnexttexteditor
-            :languagelist="'<?= htmlentities(json_encode(array_merge(["" => ""], getLanguageDataRestricted(false, 'short')))); ?>'"
-            :languagename="'<?= getLanguageNameFromCode($oSurvey->language, false); ?>'"
-            :defaultlanguage="'<?= $adminlang; ?>'"
+                :languagelist="'<?= htmlentities(json_encode(array_merge(["" => ""], getLanguageDataRestricted(false, 'short')))); ?>'"
+                :languagename="'<?= getLanguageNameFromCode($oSurvey->language, false); ?>'"
+                :defaultlanguage="'<?= $adminlang; ?>'"
         />
     </div>
     <div id="textEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center">

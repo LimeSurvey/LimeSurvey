@@ -1,4 +1,9 @@
-<?php if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo)): ?>
+<?php
+
+/** @var $aErrorFilesInfo array */
+/** @var $aImportedFilesInfo array */
+
+if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo)): ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
@@ -72,7 +77,8 @@
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>'
+                               onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
                     </p>
                 </div>
             </div>
@@ -106,7 +112,8 @@
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>'
+                               onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
                     </p>
                 </div>
             </div>

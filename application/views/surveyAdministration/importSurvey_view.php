@@ -119,7 +119,6 @@
             </div>
             </div>
 
-
         <!-- Response import summary -->
         <?php if (isset($aImportResults['responses'])): ?>
             <strong><?php eT("Response import summary"); ?></strong><br />

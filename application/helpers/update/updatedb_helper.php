@@ -3084,6 +3084,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 427) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -3137,12 +3138,150 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'action'    => 'updatesurveylocalesettings',
                     'template'  => 'editLocalSettings_main_view',
                     'partial'   => '/admin/survey/subview/accordion/_resources_panel',
-                    'getdatamethod' => '_tabResourceManagement'
+                    'getdatamethod' => 'tabResourceManagement'
                 ),
                 "name='resources'"
             );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
+        //todo change number when ready ...
+        if ($iOldDBVersion <430) { //REFACTORING surveyadmin to surveyAdministrationController ...
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{boxes}}',
+                array(
+                    'url' => 'surveyAdministration/listsurveys',
+                ),
+                "url='admin/survey/sa/listsurveys'"
+            );
+            $oDB->createCommand()->update(
+                '{{boxes}}',
+                array(
+                    'url' => 'surveyAdministration/newSurvey',
+                ),
+                "url='admin/survey/sa/newSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'questionGroupsAdministration/listquestiongroups',
+                ),
+                "name='listQuestionGroups'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'questionAdministration/listQuestions',
+                ),
+                "name='listQuestions'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/view',
+                ),
+                "name='overview'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/activate',
+                ),
+                "name='activateSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/deactivate',
+                ),
+                "name='deactivateSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'generalTabEditSurvey',
+                ),
+                "name='generalsettings'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'getTextEditData',
+                ),
+                "name='surveytexts'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'getDataSecurityEditData',
+                ),
+                "name='datasecurity'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPresentationNavigation',
+                ),
+                "name='presentation'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabTokens',
+                ),
+                "name='tokens'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabNotificationDataManagement',
+                ),
+                "name='notification'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPublicationAccess',
+                ),
+                "name='publication'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPanelIntegration',
+                ),
+                "name='panelintegration'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'pluginTabSurvey',
+                ),
+                "name='plugins'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
+        if ($iOldDBVersion < 431) {
+            // Update 'Theme Options' Entry (Side Menu Link) in Survey Menu Entries.
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'themeOptions/updateSurvey',
+                    'data'      => '{"render": {"link": { "pjaxed": true, "data": {"sid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'
+                ),
+                "name='theme_options'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 431), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 

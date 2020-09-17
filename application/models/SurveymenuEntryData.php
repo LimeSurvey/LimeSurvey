@@ -5,7 +5,7 @@ class SurveymenuEntryData extends CFormModel
 
     public $rawData = null;
     public $render = null;
-    public $link = "admin/survey/sa/rendersidemenulink";
+    public $link = "surveyAdministration/rendersidemenulink";
     public $linkData  = array();
     public $linkExternal = false;
     public $surveyid  = 0;

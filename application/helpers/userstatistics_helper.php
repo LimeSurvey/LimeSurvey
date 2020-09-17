@@ -2437,7 +2437,7 @@ class userstatistics_helper
                             $this->pdf->AddPage('P', 'A4');
 
                             $this->pdf->titleintopdf($pdfTitle, $titleDesc);
-                            $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$surveyid), 'B', true, 150, 'C', false, false, 0, true);
+                            $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$surveyid), 'B', true, 150, 'C', false, false, 0, true);
 
                             break;
                         case 'html':

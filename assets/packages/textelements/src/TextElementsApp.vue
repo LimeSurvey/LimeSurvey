@@ -246,7 +246,10 @@ ${scriptContent}
                 <div class="form-group col-md-4 col-md-6" v-if="isNewSurvey">
                     <label class="control-label" for="language">{{'Base language' | translate }}</label>
                     <select id="language" name="language" class="form-control">
-                        <option v-for="(language,key) in languageList" :value="key" :key="key">
+                        <option
+                            v-for="(language,key) in languageList"
+                            :value="key"
+                            :key="key">
                             {{language}}
                         </option>
                     </select>

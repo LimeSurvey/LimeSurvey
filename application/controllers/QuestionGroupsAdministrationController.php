@@ -196,6 +196,68 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
+     * Load list question groups view for a specified by $iSurveyID
+     *
+     * (this action comes from old surveyadmin controller ...)
+     *
+     * @param int $surveyid The survey ID
+     *
+     * @return void
+     *
+     * @access public
+     */
+    public function actionListquestiongroups($surveyid)
+    {
+        $iSurveyID = sanitize_int($surveyid);
+
+        //todo permission check ...who has permission to see questionGroups?
+
+        $survey = Survey::model()->findByPk($iSurveyID);
+
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
+        LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
+        LimeExpressionManager::SetSurveyId($iSurveyID);
+        LimeExpressionManager::StartProcessingPage(false, true);
+
+        $aData = array();
+
+        $aData['surveyid']                                   = $iSurveyID;
+        $aData['sid'] = $iSurveyID; // important for renderfunctions ...
+        //not needed anymore, was just important for function renderListQuestionGroups in Layouthelper
+       // $aData['display']['menu_bars']['listquestiongroups'] = true;
+        $aData['sidemenu']['questiongroups']                 = true;
+        $aData['sidemenu']['listquestiongroups']             = true;
+        $aData['surveybar']['buttons']['newgroup']           = true;
+        $aData['title_bar']['title']                         =
+            $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['subaction']                                  = gT("Question groups in this survey");
+
+        $baselang = $survey->language;
+        $model    = new QuestionGroup('search');
+
+        if (isset($_GET['QuestionGroup'])) {
+            $model->attributes = $_GET['QuestionGroup'];
+        }
+
+        if (isset($_GET['pageSize'])) {
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
+        }
+
+        $model['sid']      = $iSurveyID;
+        $model['language'] = $baselang;
+       // $aData['model']    = $model; --> no need here ...
+
+        $this->aData = $aData;
+        $this->render('listquestiongroups', [
+            'model' => $model,
+            'surveyid' => $iSurveyID,
+            'surveybar' => $aData['surveybar'],
+            'oSurvey'   => $survey,
+        ]);
+    }
+
+    /**
      * Function responsible to import a question group.
      *
      * @access public
@@ -209,8 +271,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'import')) {
             App()->user->setFlash('error', gT("Access denied"));
-            //todo: action listquestiongroups could go into this controller ??
-            $this->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid));
+            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid));
         }
 
         if ($action == 'importgroup') {
@@ -307,10 +368,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
 
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid; // Close button
+            $aData['surveybar']['closebutton']['url'] = 'questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveybar']['savebutton']['text'] = gt('Import');
             $aData['surveyid'] = $surveyid;
+            $aData['sid'] = $surveyid;
             $aData['topBar']['sid'] = $iSurveyID;
             $aData['topBar']['showSaveButton'] = true;
 
@@ -323,7 +385,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             ]);
         } else {
             App()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid));
+            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid));
         }
     }
 
@@ -371,7 +433,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     'deletedGroups' => $iGroupsDeleted,
                     'message' => ($success ?gT('The question group was deleted.') : gT('Group could not be deleted')),
                     'redirect' => $this->createUrl(
-                        'admin/survey/sa/listquestiongroups/',
+                        'questionGroupsAdministration/listquestiongroups/',
                         ['surveyid' => $iSurveyId]
                     )
                 ]
@@ -387,7 +449,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
-        $this->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$iSurveyId));
+        $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/'.$iSurveyId));
     }
 
 

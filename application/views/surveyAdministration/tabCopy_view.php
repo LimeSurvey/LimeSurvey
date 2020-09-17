@@ -7,7 +7,7 @@
 <div class="container-fluid col-sm-10 col-md-8">
 <!-- tab copy survey -->
     <!-- copy survey form -->
-    <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30 ')); ?>
+    <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30 ')); ?>
         <div class="ls-flex-column col-md-6">
         <!-- Select survey -->
         <div class="form-group">

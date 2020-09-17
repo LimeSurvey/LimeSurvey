@@ -55,6 +55,7 @@ class database extends Survey_Common_Action
                 'savetimings' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'datestamp' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'ipaddr' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'ipanonymize'=> ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'refurl' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'publicgraphs' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'usecookie' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -846,6 +847,8 @@ class database extends Survey_Common_Action
      */
     private function actionUpdateSurveyLocaleSettings($iSurveyID)
     {
+
+        //@todo  here is something wrong ...
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $languagelist = $oSurvey->additionalLanguages;
         $languagelist[] = $oSurvey->language;
@@ -1106,14 +1109,14 @@ class database extends Survey_Common_Action
         } else {
             ////////////////////////////////////////
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
             }
 
             $referrer = Yii::app()->request->urlReferrer;
             if ($referrer) {
                 $this->getController()->redirect(array($referrer));
             } else {
-                $this->getController()->redirect(array('/admin/survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/'.$iSurveyID));
             }
         }
 
@@ -1255,7 +1258,7 @@ class database extends Survey_Common_Action
         // Abort if survey is active
         if ($survey->active !== 'N') {
             Yii::app()->setFlashMessage(gT("You can't insert a new question when the survey is active."), 'error');
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/".$survey->sid), "refresh");
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/".$survey->sid), "refresh");
         }
 
         if (strlen(Yii::app()->request->getPost('title')) < 1) {
