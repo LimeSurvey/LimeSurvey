@@ -443,9 +443,6 @@ class export extends Survey_Common_Action
                 echo "\xEF\xBB\xBF";
             }
             $sNoAnswerValue = Yii::app()->getRequest()->getPost('noanswervalue');
-            if(!empty($sNoAnswerValue)) {
-                $sNoAnswerValue = '\''.$sNoAnswerValue.'\'';
-            }
             SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue, '\'', false, $sLanguage);
 
             App()->end();
