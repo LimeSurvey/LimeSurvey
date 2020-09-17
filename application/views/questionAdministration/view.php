@@ -9,7 +9,11 @@
 Yii::app()->loadHelper("admin/htmleditor");
 PrepareEditorScript(true, $this);
 
-$aQuestionTypeGroups = array();
+Yii::app()->getClientScript()->registerPackage('jquery-ace'); 
+Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype ='javascript';", CClientScript::POS_HEAD);
+// ace.edit(document.getElementById('editscript'))
+
+$aQuestionTypeGroups = [];
 
 if (App()->session['questionselectormode'] !== 'default') {
     $selectormodeclass = App()->session['questionselectormode'];
@@ -335,15 +339,28 @@ foreach ($aQuestionTypeList as $questionType) {
                                                         <?= gT('Set for all languages'); ?>
                                                     </label>
                                                 </div>
-                                                <aceeditor
+
+                                                <?= CHtml::textArea(
+                                                    'editscript',
+                                                    !empty($editfile) ? file_get_contents($editfile) : '',
+                                                    array(
+                                                        'rows' => '20',
+                                                        'cols' => '40',
+                                                        'data-filetype' => 'javascript',
+                                                        'class' => 'ace default', // . $sTemplateEditorMode,
+                                                        'style' => 'width:100%'
+                                                    )
+                                                ); ?>
+
+                                                <!-- <aceeditor
                                                     v-model="currentQuestionScript"
                                                     :show-lang-selector="false"
                                                     base-lang="javascript"
                                                     :thisId="'helpEditScript'"
                                                     :showLangSelector="true"
                                                     v-on:input="runDebouncedChange"
-                                                ></aceeditor>
-                                                <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
+                                                ></aceeditor> -->
+                                                <p class="alert well">__SCRIPTHELP</p>
                                             </div>
                                         </div>
                                     </div>
