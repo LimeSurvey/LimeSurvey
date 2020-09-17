@@ -287,8 +287,20 @@ foreach ($aQuestionTypeList as $questionType) {
                                                     </div>
                                                 </div>
                                                 <div class="htmleditor input-group">
-                                                    <?php echo CHtml::textArea("question_{$oSurvey->language}",'question',array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")); ?>
-                                                    <?php echo getEditor("question-text","question_".$oSurvey->language, "[".gT("Question:", "js")."](".$oSurvey->language.")",$oSurvey->sid,$oQuestion->gid,$oQuestion->sid,$action = ''); ?>
+                                                    <?= CHtml::textArea(
+                                                        "question_{$oSurvey->language}",
+                                                        $oQuestion->questionl10ns[$oSurvey->language]->question,
+                                                        array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")
+                                                    ); ?>
+                                                    <?= getEditor(
+                                                        "question-text",
+                                                        "question_".$oSurvey->language,
+                                                        "[".gT("Question:","js")."](".$oSurvey->language.")",
+                                                        $oSurvey->sid,
+                                                        $oQuestion->gid,
+                                                        $oQuestion->sid,
+                                                        $action = '');
+                                                    ?>
                                                 </div>
                                                 <aceeditor
                                                     v-else
@@ -301,7 +313,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                             <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
                                                 <div class="ls-flex-row">
                                                     <div class="ls-flex-item grow-2 text-left">
-                                                        <label class="col-sm-12">{{ 'Help' | translate }}:</label>
+                                                    <label class="col-sm-12"><?= gT('Help:'); ?></label>
                                                     </div>
                                                     <div class="ls-flex-item text-right">
                                                         <button
@@ -309,7 +321,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                                             @click.prevent="toggleSourceEditHelp"
                                                         >
                                                             <i class="fa fa-file-code-o"></i>
-                                                            {{'Toggle source mode'|translate}}
+                                                            <?= gT('Toggle source mode'); ?>
                                                         </button>
                                                     </div>
                                                 </div>
