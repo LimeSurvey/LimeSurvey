@@ -334,7 +334,7 @@ class LsDefaultDataSets
                 'icon-organize',
                 'iconclass',
                 '',
-                'admin/survey/sa/organize/',
+                'surveyAdministration/organize/',
                 '',
                 '',
                 '',

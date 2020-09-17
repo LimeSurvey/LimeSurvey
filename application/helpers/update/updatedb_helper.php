@@ -3147,26 +3147,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         
-        /**
-         * Re-add question organizer menu entry
-         */
-        if($iOldDBVersion < 428) {
-            $oTransaction = $oDB->beginTransaction();
-            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
-            foreach($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
-                if ($aSurveymenuentry['name']=='reorder') {
-                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
-                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
-                        SurveymenuEntries::reorderMenu(2);
-                    }
-                    break;
-                }
-            }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }        
-
-
         //todo change number when ready ...
         if ($iOldDBVersion <430) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
@@ -3286,6 +3266,25 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        /**
+         * Re-add question organizer menu entry
+         */
+        if($iOldDBVersion < 431) {
+            $oTransaction = $oDB->beginTransaction();
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+                if ($aSurveymenuentry['name']=='reorder') {
+                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
+                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                        SurveymenuEntries::reorderMenu(2);
+                    }
+                    break;
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 431), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }            
 
 
     } catch (Exception $e) {
