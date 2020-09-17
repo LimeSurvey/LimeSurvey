@@ -276,15 +276,6 @@ foreach ($aQuestionTypeList as $questionType) {
                                                     <div class="ls-flex-item grow-2 text-left">
                                                         <label class="col-sm-12"><?= gT('Question'); ?></label>
                                                     </div>
-                                                    <div class="ls-flex-item text-right">
-                                                        <button
-                                                            class="btn btn-default btn-xs"
-                                                            @click.prevent="toggleSourceEditQuestion"
-                                                        >
-                                                            <i class="fa fa-file-code-o"></i>
-                                                            <?= gT('Toggle source mode'); ?>
-                                                        </button>
-                                                    </div>
                                                 </div>
                                                 <div class="htmleditor input-group">
                                                     <?= CHtml::textArea(
@@ -302,50 +293,36 @@ foreach ($aQuestionTypeList as $questionType) {
                                                         $action = '');
                                                     ?>
                                                 </div>
-                                                <aceeditor
-                                                    v-else
-                                                    v-model="currentQuestionQuestion"
-                                                    :showLangSelector="false"
-                                                    :thisId="'questionEditSource'"
-                                                    v-on:input="runDebouncedChange"
-                                                ></aceeditor>
                                             </div>
                                             <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
                                                 <div class="ls-flex-row">
                                                     <div class="ls-flex-item grow-2 text-left">
-                                                    <label class="col-sm-12"><?= gT('Help:'); ?></label>
-                                                    </div>
-                                                    <div class="ls-flex-item text-right">
-                                                        <button
-                                                            class="btn btn-default btn-xs"
-                                                            @click.prevent="toggleSourceEditHelp"
-                                                        >
-                                                            <i class="fa fa-file-code-o"></i>
-                                                            <?= gT('Toggle source mode'); ?>
-                                                        </button>
+                                                        <label class="col-sm-12"><?= gT('Help:'); ?></label>
                                                     </div>
                                                 </div>
-                                                <lsckeditor
-                                                    v-if="!helpEditSource"
-                                                    :editor="editorHelpObject"
-                                                    v-model="currentQuestionHelp"
-                                                    v-on:input="runDebouncedChange"
-                                                    :config="editorHelpConfig"
-                                                ></lsckeditor>
-                                                <aceeditor
-                                                    v-else
-                                                    v-model="currentQuestionHelp"
-                                                    :showLangSelector="false"
-                                                    :thisId="'helpEditSource'"
-                                                    v-on:input="runDebouncedChange"
-                                                ></aceeditor>
+                                                <div class="htmleditor input-group">
+                                                    <?= CHtml::textArea(
+                                                        "help_".$oSurvey->language,
+                                                        $oQuestion->questionl10ns[$oSurvey->language]->help,
+                                                        array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")
+                                                    ); ?>
+                                                    <?= getEditor(
+                                                        "question-help",
+                                                        "help_".$oSurvey->language,
+                                                        "[".gT("Help:", "js")."](".$oSurvey->language.")",
+                                                        $oSurvey->sid,
+                                                        $oQuestion->gid,
+                                                        $oQuestion->qid,
+                                                        $action = ''
+                                                    ); ?>
+                                                </div>
                                             </div>
                                             <div
                                                 class="col-12 ls-space margin all-5 scope-contains-ckeditor"
                                                 v-if="!!$store.state.currentQuestionPermissions.script"
                                             >
                                                 <label class="col-sm-6">
-                                                        {{ 'Script' | translate }}:
+                                                    <?= gT('Script'); ?>
                                                 </label>
                                                 <div class="col-sm-6 text-right">
                                                     <input 
@@ -355,7 +332,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                                         v-model="scriptForAllLanugages"
                                                     />&nbsp;
                                                     <label for="selector--scriptForAllLanguages">
-                                                        {{ 'Set for all languages' | translate }}
+                                                        <?= gT('Set for all languages'); ?>
                                                     </label>
                                                 </div>
                                                 <aceeditor
