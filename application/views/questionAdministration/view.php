@@ -6,6 +6,9 @@
  * TODO: move logic from the view to controller
  */
 
+Yii::app()->loadHelper("admin/htmleditor");
+PrepareEditorScript(true, $this);
+
 $aQuestionTypeGroups = array();
 
 if (App()->session['questionselectormode'] !== 'default') {
@@ -283,13 +286,10 @@ foreach ($aQuestionTypeList as $questionType) {
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <lsckeditor
-                                                    v-if="!questionEditSource"
-                                                    v-model="currentQuestionQuestion"
-                                                    :editor="editorQuestionObject"
-                                                    :config="editorQuestionConfig"
-                                                    v-on:input="runDebouncedChange"
-                                                ></lsckeditor>
+                                                <div class="htmleditor input-group">
+                                                    <?php echo CHtml::textArea("question_{$oSurvey->language}",'question',array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")); ?>
+                                                    <?php echo getEditor("question-text","question_".$oSurvey->language, "[".gT("Question:", "js")."](".$oSurvey->language.")",$oSurvey->sid,$oQuestion->gid,$oQuestion->sid,$action = ''); ?>
+                                                </div>
                                                 <aceeditor
                                                     v-else
                                                     v-model="currentQuestionQuestion"

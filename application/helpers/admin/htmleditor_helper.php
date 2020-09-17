@@ -127,10 +127,18 @@
         }
     }
 
+    /**
+     * @param ? $fieldtype
+     * @param string $fieldname
+     * @param string $fieldtext
+     * @param int $surveyID
+     * @param int $gID
+     * @param int $qID
+     * @param string $action
+     * @return string
+     */
     function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-
-
         if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
             $surveyID = 'uniq';
         }
