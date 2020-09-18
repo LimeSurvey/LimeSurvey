@@ -10,9 +10,10 @@
 <?php
 extract($data);
 
+Yii::app()->loadHelper('admin/htmleditor');
+
 $cs = Yii::app()->getClientScript();
 $cs->registerPackage('bootstrap-select2');
-
 
 App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var jsonUrl = '';

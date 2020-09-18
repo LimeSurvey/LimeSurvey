@@ -150,6 +150,18 @@ return array(
             'ckeditor'
         )
     ),
+    'modaleditor' => array(
+        'devBaseUrl' => 'assets/packages/modaleditor/',
+        'basePath' => 'core.modaleditor',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'js/modaleditor.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ckeditor',
+        )
+    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
@@ -443,26 +455,6 @@ return array(
             
         )
     ),
-    'labelsets' => array(
-        'devBaseUrl' => 'assets/packages/labelsets/',
-        'basePath' => 'core.labelsets',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/labelsets.js'
-            )
-            : array(
-                'build.min/js/labelsets.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-        )
-    ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -548,7 +540,7 @@ return array(
         )
     ),
 
-    'emailtemplatesold' => array(
+    'emailtemplates' => array(
         'devBaseUrl' => 'assets/packages/emailtemplates/',
         'basePath' => 'core.emailtemplates',
         'position' =>CClientScript::POS_BEGIN,
@@ -560,28 +552,6 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-        )
-    ),
-
-    'emailtemplates' => array(
-        'devBaseUrl' => 'assets/packages/emailtemplates/',
-        'basePath' => 'core.emailtemplates',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/emailtemplates.js'
-            )
-            : array(
-                'build.min/js/emailtemplates.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'ace',
         )
     ),
 
