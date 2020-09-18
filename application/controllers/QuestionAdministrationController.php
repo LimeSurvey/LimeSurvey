@@ -232,6 +232,12 @@ class QuestionAdministrationController extends LSBaseController
                 'answersCount'           => Answer::model()->countByAttributes(array('qid' => $qid)),
                 'subquestionsCount'      => Question::model()->countByAttributes(array('parent_qid' => $qid)),
                 'advancedSettings'       => $this->getAdvancedOptions($oQuestion->qid, $oQuestion->type, 'core'),  // TODO: question_template
+                'generalSettings'        => $this->getGeneralOptions(
+                                                $oQuestion->qid,
+                                                $oQuestion->type,
+                                                $oQuestion->gid,
+                                                'core'  // TODO: question_template
+                                            ),
                 'jsData'                 => $aData['jsData'],
                 'aQuestionTypeList'      => $aData['aQuestionTypeList'],
                 'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']

@@ -607,13 +607,46 @@ foreach ($aQuestionTypeList as $questionType) {
                                 </div>
                             </div>
 
+                            <!-- General settings -->
+                            <div 
+                                class="ls-flex scope-set-min-height scoped-general-settings" 
+                                :class="collapsedMenu ? 'collapsed' : 'non-collapsed'" 
+                                @dblclick="toggleEditMode"
+                            >
+                                <div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
+                                    <div class="panel-heading"> 
+                                        <?= gT('General Settings'); ?>
+                                        <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
+                                            <i class="fa fa-chevron-right" /></i>
+                                        </button>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="list-group">
+                                            <div class="list-group-item question-option-general-setting-block" 
+                                                 v-for="generalSetting in generalSettingOptions" 
+                                                 :key="generalSetting.name">
+                                                <?php foreach ($generalSettings as $setting): ?>
+                                                <pre>
+<?php var_dump($setting); die; ?>
+                                                    <component 
+                                                        v-bind:is="getComponentName(generalSetting.inputtype)" 
+                                                        :elId="generalSetting.formElementId"
+                                                        :elName="generalSetting.formElementName"
+                                                        :elLabel="generalSetting.title"
+                                                        :elHelp="generalSetting.formElementHelp"
+                                                        :currentValue="generalSetting.formElementValue"
+                                                        :elOptions="generalSetting.formElementOptions"
+                                                        :debug="generalSetting"
+                                                        :readonly="isReadonly(generalSetting)"
+                                                        @change="reactOnChange($event, generalSetting)">
+                                                    </component>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <generalsettings
-                                :event="event"
-                                :readonly="!(editQuestion || isCreateQuestion)"
-                                @triggerEvent="triggerEvent"
-                                @eventSet="eventSet"
-                            ></generalsettings>
                         </div>
                         <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
                             <advancedsettings 
