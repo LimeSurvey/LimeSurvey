@@ -504,7 +504,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Question groups"),
                     'HTMLeditorType' => "group",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => "group_desc"
                 );
             break;
@@ -519,7 +519,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Group description"),
                     'HTMLeditorType' => "group_desc",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -534,7 +534,7 @@ class translate extends Survey_Common_Action
                     'qid' => true,
                     'description' => gT("Questions"),
                     'HTMLeditorType' => "question",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => "question_help"
                 );
             break;
@@ -549,7 +549,7 @@ class translate extends Survey_Common_Action
                     'qid' => true,
                     'description' => gT("Question help"),
                     'HTMLeditorType' => "question_help",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -564,7 +564,7 @@ class translate extends Survey_Common_Action
                     'qid' => true,
                     'description' => gT("Subquestions"),
                     'HTMLeditorType' => "question",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -580,7 +580,7 @@ class translate extends Survey_Common_Action
                     'qid' => true,
                     'description' => gT("Answer options"),
                     'HTMLeditorType' => "subquestion",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -593,9 +593,9 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Invitation email"),
+                    'description' => gT("Invitation email subject"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "Popup",
+                    'HTMLeditorDisplay' => "",
                     'associated' => "emailinvitebody"
                 );
             break;
@@ -610,7 +610,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Invitation email"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -623,9 +623,9 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Reminder email"),
+                    'description' => gT("Reminder email subject"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "l",
                     'associated' => "emailreminderbody"
                 );
             break;
@@ -640,7 +640,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Reminder email"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -653,7 +653,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Confirmation email"),
+                    'description' => gT("Confirmation email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emailconfirmationbody"
@@ -670,7 +670,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Confirmation email"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -683,7 +683,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Registration email"),
+                    'description' => gT("Registration email subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emailregistrationbody"
@@ -700,7 +700,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Registration email"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -743,7 +743,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Basic admin notification"),
+                    'description' => gT("Basic admin notification subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emailbasicadminnotificationbody"
@@ -760,7 +760,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Basic admin notification"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -773,7 +773,7 @@ class translate extends Survey_Common_Action
                     'id2' => '',
                     'gid' => false,
                     'qid' => false,
-                    'description' => gT("Detailed admin notification"),
+                    'description' => gT("Detailed admin notification subject"),
                     'HTMLeditorType' => "email",
                     'HTMLeditorDisplay' => "",
                     'associated' => "emaildetailedadminnotificationbody"
@@ -790,7 +790,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Detailed admin notification"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "",
+                    'HTMLeditorDisplay' => "Modal",
                     'associated' => ""
                 );
             break;
@@ -973,12 +973,20 @@ class translate extends Survey_Common_Action
             }
             $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
             $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
+
+            $minHeight = 'auto';
+            if ($amTypeOptions["HTMLeditorDisplay"] == "Popup") {
+                $minHeight = "25px";
+            } else if ($amTypeOptions["HTMLeditorDisplay"] == "Modal") {
+                $minHeight = "30px";
+            }            
             $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
                 array(
                     'class' => 'col-sm-10',
                     'cols' => '75',
                     'rows' => $nrows,
-                    'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')
+                    'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update'),
+                    'style' => "min-height: $minHeight;",                    
                 )
             );
             $htmleditor_data = array(
@@ -1004,12 +1012,16 @@ class translate extends Survey_Common_Action
     private function _loadEditor($htmleditor, $aData)
     {
         $editor_function = "";
+        $displayType = strtolower($htmleditor["HTMLeditorDisplay"]);
 
-        if ($htmleditor["HTMLeditorDisplay"] == "Inline" OR $htmleditor["HTMLeditorDisplay"] == "") {
+        if ($displayType == "inline" || empty($displayType)) {
             $editor_function = "getEditor";
-        } else if ($htmleditor["HTMLeditorDisplay"] == "Popup") {
+        } else if ($displayType == "popup") {
             $editor_function = "getPopupEditor";
             $aData[2] = urlencode($htmleditor['description']);
+        } else if ($displayType == "modal") {
+            $editor_function = "getModalEditor";
+            $aData[2] = $htmleditor['description'];            
         }
 
         return call_user_func_array($editor_function, $aData);

@@ -154,6 +154,8 @@
             return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         } elseif ($htmleditormode == 'inline') {
             return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
+        } elseif ($htmleditormode == 'modal') {
+            return getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         } else {
             return '';
         }
@@ -182,6 +184,20 @@
         . "\t<i class='fa fa-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></i>"
         . "\t<i class='fa fa-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></i>"
         . "</a>\n";
+
+        return $htmlcode;
+    }
+
+    function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
+    {
+
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+            $surveyID = 'uniq';
+        }
+
+        $htmlcode = "<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-toggle='tooltip' data-original-title='" . gT("Open editor") . "'>\n" .
+                    "\t<i class='fa fa-edit' id='{$fieldname}_modal_icon'></i>\n" .
+                    "</a>\n";
 
         return $htmlcode;
     }
