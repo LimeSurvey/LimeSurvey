@@ -1,4 +1,7 @@
 <?php
+
+use LimeSurvey\Datavalueobjects\GeneralOption;
+
 /**
  * This is a base class to enable all question tpyes to extend the general settings.
  * @TODO: Create an xml based solution to use external question type definitions as well
@@ -56,21 +59,21 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Always hide question => if available
         */
         $generalOptions = [
-            'question_template' => $this->getQuestionThemeOption($question_template),
-            'gid' => $this->getQuestionGroupSelector(),
-            'other' => $this->getOtherSwitch(),
-            'mandatory' => $this->getMandatorySetting(),
-            'relevance' => $this->getRelevanceEquationInput(),
-            'encrypted' => $this->getEncryptionSwitch(),
-            'save_as_default' => $this->getSaveAsDefaultSwitch()
+            $this->getQuestionThemeOption($question_template),
+            $this->getQuestionGroupSelector(),
+            $this->getOtherSwitch(),
+            $this->getMandatorySetting(),
+            $this->getRelevanceEquationInput(),
+            $this->getEncryptionSwitch(),
+            $this->getSaveAsDefaultSwitch()
         ];
         
         $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->sQuestionType);
-        if ($userSetting !== null){
-            $generalOptions['clear_default'] = $this->getClearDefaultSwitch();
+        if ($userSetting !== null) {
+            $generalOptions->setClearDefault($this->getClearDefaultSwitch());
         }
 
-        $generalOptions['preg'] = $this->getValidationInput();
+        $generalOptions->setPreg($this->getValidationInput());
 
         // load visible general settings from config.xml
         $sFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
@@ -81,9 +84,8 @@ abstract class QuestionBaseDataSet extends StaticModel
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), TRUE);
             libxml_disable_entity_loader(true);
-
-
         }
+
         foreach ($generalOptions as $key => $generalOption){
             if ((isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute'])) || !isset($aXmlAttributes['attribute'])){
                 $generalOptionsFiltered[$key] = $generalOption;
@@ -369,30 +371,30 @@ abstract class QuestionBaseDataSet extends StaticModel
 
     protected function getSaveAsDefaultSwitch()
     {
-        return [
-                'name' => 'save_as_default',
-                'title' => gT('Save as default values'),
-                'formElementId' => 'save_as_default',
-                'formElementName' => false,
-                'formElementHelp' => gT('All attribute values for this question type will be saved as default'),
-                'inputtype' => 'switch',
-                'formElementValue' => ($this->oQuestion->same_default == 1) ? 'Y' : 'N',
-                'formElementOptions' => [
-                    'classes' => [],
-                    'options' => [
-                        'option' => [
-                            [
-                                'text' => gT("Off"),
-                                'value' => 'N'
-                            ],
-                            [
-                                'text' => gT("On"),
-                                'value' => 'Y'
-                            ],
-                        ]
-                    ],
+        return new GeneralOption(
+            'name' => 'save_as_default',
+            'title' => gT('Save as default values'),
+            'formElementId' => 'save_as_default',
+            'formElementName' => false,
+            'formElementHelp' => gT('All attribute values for this question type will be saved as default'),
+            'inputtype' => 'switch',
+            'formElementValue' => ($this->oQuestion->same_default == 1) ? 'Y' : 'N',
+            'formElementOptions' => [
+                'classes' => [],
+                'options' => [
+                    'option' => [
+                        [
+                            'text' => gT("Off"),
+                            'value' => 'N'
+                        ],
+                        [
+                            'text' => gT("On"),
+                            'value' => 'Y'
+                        ],
+                    ]
                 ],
-            ];
+            ],
+        );
     }
 
     protected function getClearDefaultSwitch()
