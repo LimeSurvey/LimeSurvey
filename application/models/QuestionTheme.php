@@ -54,7 +54,7 @@ class QuestionTheme extends LSActiveRecord
                 'unique',
                 'caseSensitive' => false,
                 'criteria'      => [
-                    'condition' => '`extends`=:extends',
+                    'condition' => 'extends=:extends',
                     'params'    => [
                         ':extends' => $this->extends
                     ]
