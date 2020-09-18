@@ -90,7 +90,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             }
         }
         if($this->getQuestionCount() > 0) {
-            $this->cellwidth = round(($this->columnswidth / $this->getQuestionCount()), 1);
+            $this->cellwidth = round(($this->columnswidth / $this->getAnswerCount()), 1);
         }
         $this->setHeaders();
 
