@@ -466,6 +466,7 @@ class export extends Survey_Common_Action
             echo "SHOW LOCALE.\n";
             echo "PRESERVE LOCALE.\n";
             echo "SET LOCALE='en_UK'.\n";
+            echo "SET DECIMAL=DOT.\n";
 
             echo "GET DATA\n"
             ." /TYPE=TXT\n"

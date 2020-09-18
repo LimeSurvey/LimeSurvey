@@ -71,17 +71,22 @@ function strSplitUnicode($str, $l = 0)
 /**
 * Quotes a string with surrounding quotes and masking inside quotes by doubling them
 * 
-* @param mixed $sText Text to quote
-* @param mixed $sQuoteChar The quote character (User ' for SPSS and " for R)
+* @param string $sText Text to quote
+* @param string $sQuoteChar The quote character (Use ' for SPSS and " for R)
+* @param string $aField General field information from SPSSFieldmap
 */
-function quoteSPSS($sText,$sQuoteChar)
+function quoteSPSS($sText,$sQuoteChar,$aField)
 {            
    $sText=trim($sText);
    if ($sText=='') {
        return '';  
    }
-   if (is_numeric($sText)) {
-       return $sText;
+   if (is_numeric($sText) && $aField['SPSStype']=='F') {
+       $iDecimals=0;
+       if (strpos($aField['size'],'.')>0) {
+         $iDecimals=substr($aField['size'],strpos($aField['size'],'.')+1);
+       }
+       return number_format($sText,$iDecimals);
    }                                          
    return $sQuoteChar.str_replace($sQuoteChar, $sQuoteChar.$sQuoteChar, $sText).$sQuoteChar; 
 }
@@ -121,7 +126,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                 $i = 1;
                 foreach ($fields as $field) {
                     if (!$field['hide']) {
-                        echo quoteSPSS(strtoupper($field['sql_name']),$q);
+                        echo quoteSPSS(strtoupper($field['sql_name']),$q,$field['SPSStype']);
                     }
                     if ($i < $num_fields && !$field['hide']) {
                         echo ',';
@@ -145,96 +150,96 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                 if (isset($row[$fieldno])) {
                     list($year, $month, $day, $hour, $minute, $second) = preg_split('([^0-9])', $row[$fieldno]);
                     if ($year != '' && (int) $year >= 1900) {
-                        echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)),$q);
+                        echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)),$q,$field);
                     } else {
-                        echo quoteSPSS($na,$q);
+                        echo quoteSPSS($na,$q,$field);
                     }
                 } else {
-                    echo quoteSPSS($na,$q);
+                    echo quoteSPSS($na,$q,$field);
                 }
             } else {
                 switch ($field['LStype']) {
                     case 'Y': // Yes/No Question Type
                         switch ($row[$fieldno]) {
                             case 'Y':
-                                echo quoteSPSS('1',$q);
+                                echo quoteSPSS('1',$q,$field);
                                 break;
                             case 'N':
-                                echo quoteSPSS('2',$q);
+                                echo quoteSPSS('2',$q,$field);
                                 break;
                             default:
-                                echo quoteSPSS($na,$q);
+                                echo quoteSPSS($na,$q,$field);
                         }
                         break;
                     case 'G': //Gender
                         switch ($row[$fieldno]) {
                             case 'F':
-                                echo quoteSPSS('1',$q);
+                                echo quoteSPSS('1',$q,$field);
                                 break;
                             case 'M':
-                                echo quoteSPSS('2',$q);
+                                echo quoteSPSS('2',$q,$field);
                                 break;
                             default:
-                                echo quoteSPSS($na,$q);
+                                echo quoteSPSS($na,$q,$field);
                         }
                         break;
                     case 'C': //Yes/No/Uncertain
                         switch ($row[$fieldno]) {
                             case 'Y':
-                                echo quoteSPSS('1',$q);
+                                echo quoteSPSS('1',$q,$field);
                                 break;
                             case 'N':
-                                echo quoteSPSS('2',$q);
+                                echo quoteSPSS('2',$q,$field);
                                 break;
                             case 'U':
-                                echo quoteSPSS('3',$q);
+                                echo quoteSPSS('3',$q,$field);
                                 break;
                             default:
-                                echo quoteSPSS($na,$q);
+                                echo quoteSPSS($na,$q,$field);
                         }
                         break;
                         case 'E': //Increase / Same / Decrease
                         switch ($row[$fieldno]) {
                             case 'I':
-                                echo quoteSPSS('1',$q);
+                                echo quoteSPSS('1',$q,$field);
                                 break;
                             case 'S':
-                                echo quoteSPSS('2',$q);
+                                echo quoteSPSS('2',$q,$field);
                                 break;
                             case 'D':
-                                echo quoteSPSS('3',$q);
+                                echo quoteSPSS('3',$q,$field);
                                 break;
                             default:
-                                echo quoteSPSS($na,$q);
+                                echo quoteSPSS($na,$q,$field);
                         }
                         break;
                         case ':':
                             $aSize = explode(".", $field['size']);
                             if (isset($aSize[1]) && $aSize[1]) {
                                 // We need to add decimal
-                                echo quoteSPSS(number_format($row[$fieldno], $aSize[1], ".", ""),$q);
+                                echo quoteSPSS(number_format($row[$fieldno], $aSize[1], ".", ""),$q,$field);
                             } else {
-                                echo quoteSPSS($row[$fieldno],$q);
+                                echo quoteSPSS($row[$fieldno],$q,$field);
                             }
                             break;
                         case 'P':
                         case 'M':
                             if (substr($field['code'], -7) != 'comment' && substr($field['code'], -5) != 'other') {
                                 if ($row[$fieldno] == 'Y') {
-                                    echo quoteSPSS('1',$q);
+                                    echo quoteSPSS('1',$q,$field);
                                 } elseif (isset($row[$fieldno])) {
-                                    echo quoteSPSS('0',$q);
+                                    echo quoteSPSS('0',$q,$field);
                             } else {
-                                echo quoteSPSS($na,$q);
+                                echo quoteSPSS($na,$q,$field);
                             }
                             break; // Break inside if : comment and other are string to be filtered
                         } // else do default action
                     default:
                         $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                         if (trim($strTmp) != '') {
-                            echo quoteSPSS($strTmp,$q);
+                            echo quoteSPSS($strTmp,$q,$field);
                         } else {
-                            echo quoteSPSS($na,$q);
+                            echo quoteSPSS($na,$q,$field);
                         }
                 }
             }
