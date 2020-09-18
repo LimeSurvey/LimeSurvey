@@ -236,5 +236,9 @@ foreach($systemInfos as $key=>$systemInfo) {
     </div>
 </div>
 
+<?php
+    $this->renderPartial('/admin/htmleditor/modal_editor_partial');
+?>
+
 </body>
 </html>

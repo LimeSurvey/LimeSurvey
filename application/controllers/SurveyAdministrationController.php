@@ -1837,11 +1837,11 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionOrganize($iSurveyID)
+    public function actionOrganize()
     {
         $request = Yii::app()->request;
 
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = $this->getSurveyIdFromGetRequest();
 
         $thereIsPostData = $request->getPost('orgdata') !== null;
         $userHasPermissionToUpdate = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update');
@@ -1863,7 +1863,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData = $this->showReorderForm($iSurveyID);
 
         $this->aData = $aData;
-        $this->render('organizeGroupsAndQuestions_view', $aData);
+        $this->render('/admin/survey/organizeGroupsAndQuestions_view', $aData);
     }
 
     /**
@@ -2250,6 +2250,7 @@ class SurveyAdministrationController extends LSBaseController
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData = [];
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['sid'] = $iSurveyID; //frontend need this to render topbar for the view
 
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
@@ -2264,6 +2265,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['organizebar']['saveandclosebuttonright']['url'] = true;
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
+        $aData['topBar']['showSaveButton'] = true;
 
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
@@ -2814,33 +2816,37 @@ class SurveyAdministrationController extends LSBaseController
      */
     private function getDataSecurityEditData($survey)
     {
-        Yii::app()->getClientScript()->registerScript(
-            "DataSecTextEditDataGlobal",
-            "window.DataSecTextEditData = {
-                isNewSurvey: " . ($survey->getIsNewRecord() ? "true" : "false") . ",
-                sid: $survey->sid,
-                i10N: {
-                    'Survey data policy checkbox label:' : '" . gT('Survey data policy checkbox label:') . "',
-                    'Survey data policy error message:' : '" . gT('Survey data policy error message:') . "',
-                    'Survey data policy message:' : '" . gT('Survey data policy message:') . "',
-                    'Don\'t show:' : '" . gT('Don\'t show') . "',
-                    'Inline text' : '" . gT('Inline text') . "',
-                    'Collapsible text' : '" . gT('Collapsible text') . "',
-                    '__INFOTEXT' : '" . gT('If you want to specify a link to the survey data policy, 
-                    set "Show survey policy text with mandatory checkbox" to "Collapsible text" and use the 
-                    placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the "Survey data policy checkbox 
-                    label" field to define the link that opens the policy popup. If there is no placeholder given, 
-                    there will be an appendix.') . "',
-                    'Deactivated' : '" . gT('Deactivated') . "',
-                    'Activated' : '" . gT('Activated') . "'
-                }
-            };",
-            LSYii_ClientScript::POS_BEGIN
-        );
-
-        App()->getClientScript()->registerPackage('ace');
-        App()->getClientScript()->registerPackage('datasectextelements');
+        Yii::app()->loadHelper("admin/htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
+
+        $aData['scripts'] = PrepareEditorScript(false, $this);
+        $aLanguageData = [];
+
+        foreach ($survey->allLanguages as $i => $sLang) {
+            $aLanguageData = $this->getGeneralTemplateData($survey->sid);
+            // this one is created to get the right default texts fo each language
+            Yii::app()->loadHelper('database');
+            Yii::app()->loadHelper('surveytranslator');
+
+            $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
+
+            $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
+
+            if ($aSurveyLanguageSettings['surveyls_language'] == $survey->language) {
+                $aTabTitles[$sLang] .= ' ('.gT("Base language").')';
+            }
+
+            $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
+            $aLanguageData['action'] = "surveygeneralsettings";
+            $aLanguageData['subaction'] = gT('Add a new question');
+            $aLanguageData['i'] = $i;
+            $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aLanguageData['oSurvey'] = $survey;
+            $aTabContents[$sLang] = $this->renderPartial('/admin/survey/editDataSecurityLocalSettings_view', $aLanguageData, true);
+        }
+
+        $aData['aTabContents'] = $aTabContents;
+        $aData['aTabTitles'] = $aTabTitles;
         return $aData;
     }
 
