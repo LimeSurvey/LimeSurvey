@@ -197,10 +197,6 @@ class QuestionAdministrationController extends LSBaseController
                 'Script'                                                                                       => gT('Script'),
                 'X-Scale (columns)'                                                                            => gT('X-Scale (columns)'),
                 'Y-Scale (lines)'                                                                              => gT('Y-Scale (lines)'),
-                '__SCRIPTHELP'                                                                                 => gT(
-                    "This optional script field will be wrapped,"
-                    . " so that the script is correctly executed after the question is on the screen."
-                    . " If you do not have the correct permissions, this will be ignored"),
                 "noCodeWarning" =>
                     gT("Please put in a valid code. Only letters and numbers are allowed and it has to start with a letter. For example [Question1]"),
                 "alreadyTaken" =>

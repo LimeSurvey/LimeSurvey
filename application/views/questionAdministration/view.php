@@ -11,7 +11,6 @@ PrepareEditorScript(true, $this);
 
 Yii::app()->getClientScript()->registerPackage('jquery-ace'); 
 Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype ='javascript';", CClientScript::POS_HEAD);
-// ace.edit(document.getElementById('editscript'))
 
 $aQuestionTypeGroups = [];
 
@@ -263,11 +262,11 @@ foreach ($aQuestionTypeList as $questionType) {
                             <hr/>
                         </div>
                     </div>
-                    <div key="editorcontent-block" class="col-12">
-                        <div class="ls-flex ls-flex-row scope-create-gutter">
+                    <div key="editorcontent-block" class="col-lg-12">
+                        <div class="">
 
                             <!-- Main editor -->
-                            <div class="ls-flex grow-2">
+                            <div class="">
                                 <div class="col-12">
                                     <div
                                         class="panel panel-default col-12 question-option-general-container"
@@ -321,10 +320,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                                     ); ?>
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-12 ls-space margin all-5 scope-contains-ckeditor"
-                                                v-if="!!$store.state.currentQuestionPermissions.script"
-                                            >
+                                            <div style="height: 300px;">
                                                 <label class="col-sm-6">
                                                     <?= gT('Script'); ?>
                                                 </label>
@@ -344,23 +340,17 @@ foreach ($aQuestionTypeList as $questionType) {
                                                     'editscript',
                                                     !empty($editfile) ? file_get_contents($editfile) : '',
                                                     array(
-                                                        'rows' => '20',
-                                                        'cols' => '40',
+                                                        'id' => 'editscript',
+                                                        'rows' => '10',
+                                                        'cols' => '20',
                                                         'data-filetype' => 'javascript',
                                                         'class' => 'ace default', // . $sTemplateEditorMode,
-                                                        'style' => 'width:100%'
+                                                        'style' => 'width:100%;'
                                                     )
                                                 ); ?>
-
-                                                <!-- <aceeditor
-                                                    v-model="currentQuestionScript"
-                                                    :show-lang-selector="false"
-                                                    base-lang="javascript"
-                                                    :thisId="'helpEditScript'"
-                                                    :showLangSelector="true"
-                                                    v-on:input="runDebouncedChange"
-                                                ></aceeditor> -->
-                                                <p class="alert well">__SCRIPTHELP</p>
+                                                    <p class="alert well">
+                                                        <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                                                    </p>
                                             </div>
                                         </div>
                                     </div>
@@ -404,3 +394,11 @@ foreach ($aQuestionTypeList as $questionType) {
         </form>
     </div>
 </div>
+
+<script>
+jQuery(document).on('ready', function () {
+    $('.ace:not(.none)').ace({
+        'mode' : 'javascript'
+    });
+});
+</script>
