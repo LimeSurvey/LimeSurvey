@@ -3719,6 +3719,8 @@ class statistics_helper
 
             //add filter criteria to SQL
             $query .= implode(" AND ", $selects);
+        } else {
+            unset(Yii::app()->session['statistics_selects_'.$surveyid]);
         }
 
         //get me some data Scotty
