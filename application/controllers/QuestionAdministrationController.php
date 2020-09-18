@@ -222,13 +222,18 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         $this->aData = $aData;
+
         $this->render(
             'view',
             [
                 'oQuestion'              => $oQuestion,
                 'oSurvey'                => $oSurvey,
-                'aQuestionTypeList'      => $aData['aQuestionTypeList'],
+                'questionTypes'          => QuestionType::modelsAttributes(),
+                'answersCount'           => Answer::model()->countByAttributes(array('qid' => $qid)),
+                'subquestionsCount'      => Question::model()->countByAttributes(array('parent_qid' => $qid)),
+                'advancedSettings'       => $this->getAdvancedOptions($oQuestion->qid, $oQuestion->type, 'core'),  // TODO: question_template
                 'jsData'                 => $aData['jsData'],
+                'aQuestionTypeList'      => $aData['aQuestionTypeList'],
                 'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
             ]
         );
