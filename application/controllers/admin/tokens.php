@@ -2104,11 +2104,10 @@ class tokens extends Survey_Common_Action
                             $bInvalidEmail = true;
                             $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']));
                             $iRecordCount++;
-                            $iRecordOk++;
                             continue;
                         }
 
-                        if (!$bInvalidEmail && $bFilterDuplicateToken) {
+                        if ($bFilterDuplicateToken) {
                             $aParams = array();
                             $oCriteria = new CDbCriteria;
                             $oCriteria->condition = "";
