@@ -2099,7 +2099,16 @@ class tokens extends Survey_Common_Action
                         $aWriteArray['lastname'] = isset($aWriteArray['lastname']) ? $aWriteArray['lastname'] : "";
                         $aWriteArray['language'] = isset($aWriteArray['language']) ? $aWriteArray['language'] : $sBaseLanguage;
 
-                        if ($bFilterDuplicateToken) {
+                        // First check if we can skip because the email is blank
+                        if ($bFilterBlankEmail && $aWriteArray['email'] == '') {
+                            $bInvalidEmail = true;
+                            $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']));
+                            $iRecordCount++;
+                            $iRecordOk++;
+                            continue;
+                        }
+
+                        if (!$bInvalidEmail && $bFilterDuplicateToken) {
                             $aParams = array();
                             $oCriteria = new CDbCriteria;
                             $oCriteria->condition = "";
@@ -2119,11 +2128,6 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        //treat blank emails
-                        if (!$bDuplicateFound && $bFilterBlankEmail && $aWriteArray['email'] == '') {
-                            $bInvalidEmail = true;
-                            $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']));
-                        }
                         if (!$bDuplicateFound && $aWriteArray['email'] != '') {
                             $aEmailAddresses = preg_split("/(,|;)/", $aWriteArray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress) {
