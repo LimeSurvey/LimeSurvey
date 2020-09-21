@@ -317,12 +317,12 @@ class ThemeOptionsController extends LSBaseController
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @param integer $sid ID of model
-     *
      * @return void
      */
-    public function actionUpdateSurvey(int $sid) : void
+    public function actionUpdateSurvey() : void
     {
+        $sid = $this->getSurveyIdFromGetRequest();
+
         if (Permission::model()->hasGlobalPermission('templates', 'update') ||
             Permission::model()->hasSurveyPermission($sid,'surveysettings','update'))
             {
@@ -708,5 +708,30 @@ class ThemeOptionsController extends LSBaseController
 
         $this->aData = $aData;
         $this->render('update', $aData);
+    }
+
+    /**
+     * Try to get the get-parameter from request.
+     * At the moment there are three namings for a survey id:
+     * 'sid'
+     * 'surveyid'
+     * 'iSurveyID'
+     *
+     * Returns the id as integer or null if not exists any of them.
+     *
+     * @return int | null
+     *
+     * @todo While refactoring (at some point) this function should be removed and only one unique identifier should be used
+     */
+    private function getSurveyIdFromGetRequest(){
+        $surveyId = Yii::app()->request->getParam('sid');
+        if($surveyId === null){
+            $surveyId = Yii::app()->request->getParam('surveyid');
+        }
+        if($surveyId === null){
+            $surveyId = Yii::app()->request->getParam('iSurveyID');
+        }
+
+        return (int) $surveyId;
     }
 }
