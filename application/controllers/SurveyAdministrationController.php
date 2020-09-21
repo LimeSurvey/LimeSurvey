@@ -453,7 +453,11 @@ class SurveyAdministrationController extends LSBaseController
             $simpleSurveyValues->setTitle($surveyTitle);
 
             $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey());
-            $newSurvey = $surveyCreator->createSimple($simpleSurveyValues);
+            $newSurvey = $surveyCreator->createSimple(
+                $simpleSurveyValues,
+                (int)Yii::app()->user->getId(),
+                Permission::model()
+            );
             if (!$newSurvey) {
                 Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
