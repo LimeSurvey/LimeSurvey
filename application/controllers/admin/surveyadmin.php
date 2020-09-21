@@ -495,32 +495,33 @@ class SurveyAdmin extends Survey_Common_Action
 
         // We get the last question visited by user for this survey
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
-        $lastquestion = getGlobalSetting($setting_entry);
+        $lastquestion = App()->getConfig($setting_entry);
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        $lastquestiongroup = App()->getConfig($setting_entry);
 
-        // We get the list of templates
-
-
-        //$setting_entry = 'last_question_gid'.Yii::app()->user->getId().'_'.$iSurveyID;
-        $lastquestiongroup = getGlobalSetting($setting_entry);
-
+        $aData['showLastQuestion'] = false;
         if ($lastquestion != null && $lastquestiongroup != null) {
             $aData['showLastQuestion'] = true;
             $iQid = $lastquestion;
             $iGid = $lastquestiongroup;
             $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID, 'language' => $baselang));
-
-            $aData['last_question_name'] = $qrrow['title'];
-            if ($qrrow['question']) {
-                $aData['last_question_name'] .= ' : '.$qrrow['question'];
+            if($qrrow) {
+                $aData['last_question_name'] = $qrrow['title'];
+                if ($qrrow['question']) {
+                    $aData['last_question_name'] .= ' : '.$qrrow['question'];
+                }
+                $aData['last_question_link'] = $this->getController()->createUrl(
+                    "admin/questions",
+                    array(
+                        'sa' => 'view',
+                        'surveyid' => $iSurveyID,
+                        'gid' => $gid,
+                        'qid' => $iQid,
+                    )
+                );
             }
-
-            $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
-        } else {
-            $aData['showLastQuestion'] = false;
         }
         $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null, $iSurveyID)->getApiVersion();
-
 
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
