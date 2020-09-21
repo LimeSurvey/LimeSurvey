@@ -263,6 +263,7 @@ class Permission extends LSActiveRecord
         $oEvent->set('aNewPermissions', $aFilteredPermissions);
         $oEvent->set('iSurveyID', $iEntityID);
         $oEvent->set('iUserID', $iUserID);
+        App()->getPluginManager()->dispatchEvent($oEvent);
 
         if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
             Permission::model()->deleteAllByAttributes($condition, "permission <> 'superadmin' AND entity <> 'template'");

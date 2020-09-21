@@ -48,7 +48,7 @@ var ModalEditor = function () {
         oCKeditor = CKEDITOR.replace(
             'htmleditor-modal-textarea',
             {
-                height: '350',
+                height: '200',
                 width:  '98%',
                 toolbarStartupExpanded: true,
                 ToolbarCanCollapse: false,

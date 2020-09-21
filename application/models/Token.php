@@ -199,10 +199,22 @@ abstract class Token extends Dynamic
         $db->createCommand()->createTable($sTableName, $fields, $options);
 
         /**
-         * @todo Check if this random component in the index name is needed.
-         * As far as I (sam) know index names need only be unique per table.
+         * The random component in the index name is needed because MSSQL is being the dorky kid and 
+         * complaining about duplicates when renaming the table and trying to use the same index again 
+         * on a new token table (for example on reactivation)
          */
         $db->createCommand()->createIndex("idx_token_token_{$surveyId}_".rand(1, 50000), $sTableName, 'token');
+        
+        // MSSQL does not support indexes on text fields so not needed here
+        switch (Yii::app()->db->driverName){
+            case 'mysql':
+            case 'mysqli':
+                $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                break;
+            case 'pgsql':
+                $db->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
+                break;
+        }
 
         // Refresh schema cache just in case the table existed in the past, and return if table exist
         return $db->schema->getTable($sTableName, true);

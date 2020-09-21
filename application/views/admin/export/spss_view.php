@@ -26,14 +26,14 @@ echo viewHelper::getViewTestTag('exportSpss');
         </div>
     </div>
     <div class="form-group row">
-        <label for='spssver'  class='col-sm-2  form-control-label'><?php eT("SPSS version:");?></label>
+        <label for='spssver'  class='col-sm-2  form-control-label'><?php eT("Version:");?></label>
         <div class="col-sm-10">
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'spssver',
                 'value'=> $spssver ,
                 'selectOptions'=>array(
-                    "1"=>gT("Prior to 16",'unescaped'),
-                    "2"=>gT("16 or up",'unescaped')
+                    "1"=>gT("SPSS prior to 16 / PSPP",'unescaped'),
+                    "2"=>gT("SPSS v16 or newer",'unescaped')
                 )
             ));?>
         </div>
