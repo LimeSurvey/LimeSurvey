@@ -168,6 +168,19 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
 }
 
 // Right Buttons (only shown for question group
+$hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+if ($hasUpdatePermission) {
+    // Edit Group Button
+    $buttons['edit_question_group'] = [
+        'id' => 'edit_question_group',
+        'url' => $this->createUrl("questionGroupsAdministration/edit/surveyid/{$sid}/gid/{$gid}/"),
+        'name' => gT("Question group editor"),
+        'icon' => 'icon-edit',
+        'class' => ' ',
+    ];
+
+    array_push($topbar['alignment']['right']['buttons'], $buttons['edit_question_group']);
+}
 if ($hasReadPermission) {
     // Check Survey Logic Button
     $buttons['check_survey_logic'] = [
@@ -259,7 +272,17 @@ if ($ownsSaveButton == true) {
         'isSaveButton' => true,
         'class' => 'btn-success',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $saveButton);
+    array_push($topbar['alignment']['right']['buttons'], $saveButton);
+
+    $closeButton = [
+        'name' => gT('Close'),
+        'icon' => 'fa fa-close',
+        'url' => '#',
+        'id' => 'close-button',
+        'isCloseButton' => true,
+        'class' => 'btn-danger',
+    ];
+    array_push($topbar['alignment']['right']['buttons'], $closeButton);
 
     $button_save_and_add_question_group = [
         'id' => 'save-and-new-button',

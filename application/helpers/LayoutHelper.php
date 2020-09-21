@@ -463,7 +463,8 @@ class LayoutHelper
                 'sid' => $aData['sid'],
                 'gid' => $aData['gid'] ?? 0,
                 'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false
+                'showSaveButton' => false,
+                'showCloseButton' => false,
             ],
             $aData['topBar']
         );
@@ -737,7 +738,8 @@ class LayoutHelper
                 'sid' => $aData['sid'],
                 'gid' => $aData['gid'] ?? 0,
                 'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false
+                'showSaveButton' => false,
+                'showCloseButton' => false,
             ],
             $aData['topBar']
         );
