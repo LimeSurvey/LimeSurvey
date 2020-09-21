@@ -335,11 +335,11 @@ class ThemeOptionsController extends LSBaseController
 
                 if (isset($_POST['TemplateConfiguration'])) {
                     $model->attributes = $_POST['TemplateConfiguration'];
-                if ($model->save()) {
-                    App()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->redirect(array("themeOptions/updateSurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
+                    if ($model->save()) {
+                        App()->user->setFlash('success', gT('Theme options saved.'));
+                        $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid));
+                    }
                 }
-            }
             $this->updateCommon($model, $sid);
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
