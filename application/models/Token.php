@@ -311,10 +311,6 @@ abstract class Token extends Dynamic
         foreach ($ntresult as $tkrow) {
             $existingtokens[$tkrow] = true;
         }        
-        // select all existing tokens
-        foreach ($ntresult as $tkrow) {
-            $existingtokens[$tkrow['token']] = true;
-        }
         $newtokencount = 0;
         $invalidtokencount = 0;
         $newtoken = null;
