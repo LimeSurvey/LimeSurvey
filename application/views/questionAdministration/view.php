@@ -625,9 +625,8 @@ foreach ($aQuestionTypeList as $questionType) {
                                             <div class="list-group-item question-option-general-setting-block" 
                                                  v-for="generalSetting in generalSettingOptions" 
                                                  :key="generalSetting.name">
-                                                <?php foreach ($generalSettings as $setting): ?>
-                                                <pre>
-<?php var_dump($setting); die; ?>
+                                                <?php foreach ($generalSettings as $generalOption): ?>
+                                                    <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
                                                     <component 
                                                         v-bind:is="getComponentName(generalSetting.inputtype)" 
                                                         :elId="generalSetting.formElementId"
