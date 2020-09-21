@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.3 (build 200909) to 3.23.4 (build 200922) September 21, 2020
+-Fixed issue: SPSS export - Seed value does not have proper variable name (Carsten Schmitz)
+-Fixed issue: SPSS export - Empty value replacement causing corrupted data fields (Carsten Schmitz)
+-Fixed issue: Participant import with duplicate check very slow when there more than 100k participants (Carsten Schmitz)
+-Fixed issue: Participant import slow when there are many entries with empty email addresses (Carsten Schmitz)
+-Fixed issue: PSPP support (Carsten Schmitz)
+-Fixed issue #Automatic processing will be turned off after (GabrielJenik)
+-Fixed issue #16682: Potential PHP Notice related to lastquestiongroup (Denis Chenu)
+-Fixed issue #16598--Statistics--Criteria-not-cleared-for-text-question-results (GabrielJenik)
+-Fixed issue #16373 : Bootstrap Buttons not aligned when filtered (Denis Chenu)
+#Updated translation: Spanish (Spain) by Joffm, lkikut
+#Updated translation: Spanish (Mexican) by lkikut
+#Updated translation: Spanish (Colombia) by lkikut
+#Updated translation: Spanish (Chile) by lkikut
+#Updated translation: Spanish (Argentina) by lkikut
+#Updated translation: Portuguese (Portugal) by soniagouveia
+#Updated translation: Portuguese (Portugal) by c_schmitz, nostradumusfdx, algarvio, thiagosmartins, mauriciofurtado, holch, fermacedo, lucaspcs, tamiel, soniagouveia
+#Updated translation: Portuguese (Brazil) by femariso
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Simplified) by lacity
+
+
 Changes from 3.23.2 (build 200908) to 3.23.3 (build 200909) September 8, 2020
 -Fixed issue #16488: [Hotfix] Reviewing updateQuestionOrder usage (gabrieljenik)
 #Updated translation: Spanish (Spain) by eddylackmann
