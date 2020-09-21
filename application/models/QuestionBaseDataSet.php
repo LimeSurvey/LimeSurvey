@@ -60,6 +60,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Hide Tip => VERY OFTEN asked for
         - Always hide question => if available
         */
+        // @todo This should be Yii widgets.
         $generalOptions = [
             $this->getQuestionThemeOption($question_template),
             $this->getQuestionGroupSelector(),
