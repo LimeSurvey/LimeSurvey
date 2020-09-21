@@ -515,7 +515,7 @@ class SurveyAdmin extends Survey_Common_Action
                     array(
                         'sa' => 'view',
                         'surveyid' => $iSurveyID,
-                        'gid' => $gid,
+                        'gid' => $iGid,
                         'qid' => $iQid,
                     )
                 );
