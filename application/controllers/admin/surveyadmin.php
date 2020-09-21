@@ -530,28 +530,22 @@ class SurveyAdmin extends Survey_Common_Action
 
         // We get the last question visited by user for this survey
         $setting_entry = 'last_question_'.App()->user->getId().'_'.$iSurveyID;
-        // TODO: getGlobalSetting() DEPRECATED
-        $lastquestion = getGlobalSetting($setting_entry);
+        $lastquestion = App()->getConfig($setting_entry);
         $setting_entry = 'last_question_'.App()->user->getId().'_'.$iSurveyID.'_gid';
-
-        // We get the list of templates
-
-        //$setting_entry = 'last_question_gid'.Yii::app()->user->getId().'_'.$iSurveyID;
-        // TODO: getGlobalSetting() DEPRECATED
-        $lastquestiongroup = getGlobalSetting($setting_entry);
-
+        $lastquestiongroup = App()->getConfig($setting_entry);
+        $aData['showLastQuestion'] = false;
         if ($lastquestion != null && $lastquestiongroup != null) {
             $aData['showLastQuestion'] = true;
             $iQid = $lastquestion;
             $iGid = $lastquestiongroup;
             $qrrow = Question::model()->findByAttributes(array('qid' => $iQid, 'gid' => $iGid, 'sid' => $iSurveyID));
-
-            $aData['last_question_name'] = $qrrow['title'];
-            if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
-                $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
+            if($qrrow) {
+                $aData['last_question_name'] = $qrrow['title'];
+                if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
+                    $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
+                }
+                $aData['last_question_link'] = $this->getController()->createUrl("questionAdministration/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
             }
-
-            $aData['last_question_link'] = $this->getController()->createUrl("questionAdministration/view/surveyid/$iSurveyID/gid/$iGid/qid/$iQid");
         } else {
             $aData['showLastQuestion'] = false;
         }
