@@ -66,7 +66,7 @@ class questionIndexHelper
         $oSurvey = \Survey::model()->findByPk($this->iSurveyId);
         if ($oSurvey) {
             $this->indexType = $oSurvey->questionindex;
-            $this->surveyFormat = $oSurvey->format;
+            $this->surveyFormat = $oSurvey->aOptions['format'];
         } else {
             $this->indexType = 0;
             $this->surveyFormat = null;
