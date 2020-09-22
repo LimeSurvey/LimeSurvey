@@ -810,11 +810,11 @@ class SurveyAdmin extends Survey_Common_Action
             return;
         }
 
-        if (Yii::app()->request->getPost('ok') == '') {
-            if (!tableExists('survey_'.$iSurveyID)) {
-                $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
+        if (!tableExists('survey_'.$iSurveyID)) {
+            $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
                 $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
-            }
+        }
+        if (Yii::app()->request->getPost('ok') == '') {
             $aData['surveyid'] = $iSurveyID;
             $aData['date']     = $date;
             $aData['dbprefix'] = Yii::app()->db->tablePrefix;
