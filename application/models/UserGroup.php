@@ -67,7 +67,7 @@ class UserGroup extends LSActiveRecord
                 'length',
                 'min' => 1,
                 'max' => 20,
-                'tooShort' => gt("Name should be at least have one sign"),
+                'tooShort' => gt("Name can not be empty."),
                 'tooLong' => gt('Failed to add group! Group name length more than 20 characters.')),
         );
     }

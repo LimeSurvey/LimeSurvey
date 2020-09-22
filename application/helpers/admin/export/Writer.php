@@ -298,7 +298,7 @@ abstract class Writer implements IWriter
         foreach ($oSurvey->responses as $response) {
             // prepare the data for decryption
             $sTokenTableName='tokens_'.$oSurvey->id;
-            $aResponse = array();
+            $aResponse = $response;
             if (tableExists($sTokenTableName)) {
                 $oToken = Token::model($oSurvey->id);
                 $oToken->setAttributes($response, false); 
