@@ -249,10 +249,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 null,
                 gT("Use a customized question theme for this question"),
                 $currentSetQuestionTheme,
-                [
-                    'classes' => ['form-control'],
-                    'options' => $aOptionsArray,
-                ]
+                $aOptionsArray
             )
         );
     }
