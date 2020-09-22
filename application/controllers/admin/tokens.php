@@ -383,102 +383,112 @@ class tokens extends Survey_Common_Action
         $aTokenIds = json_decode(Yii::app()->request->getPost('sItems'));
         $iSurveyId = Yii::app()->request->getPost('sid');
         $aResults = array();
+        $bUpdate = true;
 
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
-            // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
-            if (tableExists('{{tokens_' . $iSurveyId . '}}')) {
-
-                // First we create the array of fields to update
-                $aData = array();
-                $aResults['global']['result'] = true;
-                // Valid from
-                if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
-                    if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
-                        $aData['validfrom'] = null;
-                    } else {
-                        $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
-                    }
-                }
-
-                // Valid until
-                if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
-                    if (trim(Yii::app()->request->getPost('validuntil')) == '') {
-                        $aData['validuntil'] = null;
-                    } else {
-                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
-                    }
-                }
-
-                // Email
-                if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
-                    if ($isValid) {
-                        $aData['email'] = Yii::app()->request->getPost('email');
-                    } else {
-                        $aData['email'] = 'lskeep';
-                    }
-                }
-
-                // Core Fields
-                $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'remindercount', 'completed', 'usesleft');
-                foreach ($aCoreTokenFields as $sCoreTokenField) {
-                    if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
-                        $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
-                        if ($sCoreTokenField == 'language' && empty($value)) {
-                            continue;
-                        }
-                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
-                            $value='N';
-                        }
-                        $aData[$sCoreTokenField] = $value;
-                    }
-                }
-
-                // Attibutes fields
-                $attrfieldnames = GetParticipantAttributes($iSurveyId);
-                foreach ($attrfieldnames as $attr_name => $desc) {
-                    if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
-                        $value = flattenText(Yii::app()->request->getPost($attr_name));
-                        if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
-                            $this->getController()->refresh();
-                        }
-                        $aData[$attr_name] = $value;
-                    }
-                }
-
-                if (count($aData) > 0) {
-                    foreach ($aTokenIds as $iTokenId) {
-                        $iTokenId = (int)$iTokenId;
-                        $token = Token::model($iSurveyId)->find('tid=' . $iTokenId);
-
-                        foreach ($aData as $k => $v) {
-                            $token->$k = $v;
-                        }
-
-                        $bUpdateSuccess = $token->update();
-                        if ($bUpdateSuccess) {
-                            $aResults[$iTokenId]['status'] = true;
-                            $aResults[$iTokenId]['message'] = gT('Updated');
-                        } else {
-                            $aResults[$iTokenId]['status'] = false;
-                            $aResults[$iTokenId]['message'] = $token->error;
-                        }
-                    }
-                } else {
-                    $aResults['global']['result'] = false;
-                    $aResults['global']['message'] = gT('Nothing to update');
-                }
-
-            } else {
-                $aResults['global']['result'] = false;
-                $aResults['global']['message'] = gT('No participant table found for this survey!');
-            }
-        } else {
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             $aResults['global']['result'] = false;
             $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
+            $bUpdate = false;
         }
 
+        // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
+        if ($bUpdate && !tableExists('{{tokens_' . $iSurveyId . '}}')) {
+            $aResults['global']['result'] = false;
+            $aResults['global']['message'] = gT('No participant table found for this survey!');
+            $bUpdate = false;
+        }
+
+        // First we create the array of fields to update
+        $aData = array();
+
+        // Email
+        if ($bUpdate && trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
+            $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+            if ($isValid) {
+                $aData['email'] = Yii::app()->request->getPost('email');
+            } else {
+                $aResults['global']['result'] = false;
+                $aResults['global']['message'] = gT('The email address is invalid. It was not updated.');
+                $bUpdate = false;
+            }
+        }
+        
+        // Valid from
+        if ($bUpdate && trim(Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
+            if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
+                $aData['validfrom'] = null;
+            } else {
+                $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+            }
+        }
+
+        // Valid until
+        if ($bUpdate && trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
+            if (trim(Yii::app()->request->getPost('validuntil')) == '') {
+                $aData['validuntil'] = null;
+            } else {
+                $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+            }
+        }
+
+        if ($bUpdate) {
+            // Core Fields
+            $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'remindercount', 'completed', 'usesleft');
+            foreach ($aCoreTokenFields as $sCoreTokenField) {
+                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                    $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+                    if ($sCoreTokenField == 'language' && empty($value)) {
+                        continue;
+                    }
+                    if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
+                        $value='N';
+                    }
+                    $aData[$sCoreTokenField] = $value;
+                }
+            }
+
+            // Attibutes fields
+            $attrfieldnames = GetParticipantAttributes($iSurveyId);
+            foreach ($attrfieldnames as $attr_name => $desc) {
+                if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep') {
+                    $value = flattenText(Yii::app()->request->getPost($attr_name));
+                    if ($desc['mandatory'] == 'Y' && trim($value) == '') {
+                        $aResults['global']['result'] = false;
+                        $aResults['global']['message'] = sprintf(gT('%s cannot be left empty'), $desc['description']);
+                        $bUpdate = false;
+                        break;
+                    }
+                    $aData[$attr_name] = $value;
+                }
+            }
+        }
+
+        if ($bUpdate && count($aData) == 0) {
+            $aResults['global']['result'] = false;
+            $aResults['global']['message'] = gT('Nothing to update');
+            $bUpdate = false;
+        }
+
+        if ($bUpdate) {
+            $aResults['global']['result'] = true;
+            foreach ($aTokenIds as $iTokenId) {
+                $iTokenId = (int)$iTokenId;
+                $token = Token::model($iSurveyId)->find('tid=' . $iTokenId);
+
+                foreach ($aData as $k => $v) {
+                    $token->$k = $v;
+                }
+
+                $bUpdateSuccess = $token->update();
+                if ($bUpdateSuccess) {
+                    $aResults[$iTokenId]['status'] = true;
+                    $aResults[$iTokenId]['message'] = gT('Updated');
+                } else {
+                    $aResults[$iTokenId]['status'] = false;
+                    $aResults[$iTokenId]['message'] = $token->error;
+                }
+            }
+        }
 
         Yii::app()->getController()->renderPartial('/admin/token/massive_actions/_update_results', array('aResults' => $aResults));
 

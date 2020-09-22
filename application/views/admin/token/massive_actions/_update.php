@@ -162,12 +162,19 @@
                             <input class='form-control custom-data selector_submitField action_validate_email' data-targetfield="#massedit_emailstatus" type='text' maxlength='320' size='50' id='massedit_email' name='email' value="lskeep" disabled />
                         </div>
                     </div>
+                </div>
+
+                <!-- Email status -->
+                <div class="form-group">
                     <div class="row">
                         <div class="col-sm-1">
+                            <label class="" >
+                                <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                            </label>
                         </div>
                         <label class="col-sm-3 control-label"  for='massedit_emailstatus'><?php eT("Email status:"); ?></label>
                         <div class="col-sm-8">
-                            <input class='form-control custom-data selector_submitField' type='text' maxlength='320' size='50' id='massedit_emailstatus' name='emailstatus' placeholder='OK' value="lskeep" disabled />
+                            <input class='form-control custom-data selector_submitField' type='text' maxlength='320' size='50' id='massedit_emailstatus' name='emailstatus' placeholder='' value="lskeep" disabled />
                         </div>
                     </div>
                 </div>
