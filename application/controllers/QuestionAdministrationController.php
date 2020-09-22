@@ -1215,6 +1215,29 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
+    /**
+     * Copies a question
+     *
+     */
+    public function actionCopyQuestion(){
+
+        $aData = [];
+        $surveyIDToCopy = (int)Yii::app()->request->getParam('surveyId');
+        $groupID = (int)Yii::app()->request->getParam('groupId');
+        $questionId = (int)Yii::app()->request->getParam('questionId');
+
+        //permission check ...
+        if (!Permission::model()->hasSurveyPermission($surveyIDToCopy, 'surveycontent', 'create')){
+
+        }
+
+        //save the copy ...
+        //or just load form ...
+
+
+        $this->aData = $aData;
+        $this->render('copyQuestionForm', $aData);
+    }
 
 
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
