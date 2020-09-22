@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.4 (build 200922) to 3.23.5 (build 200923) September 22, 2020
+-Fixed issue: SPSS export broken for numbers > 1000 (Carsten Schmitz)
+-Fixed issue: If the participant table is too big the token generation may fail due to memory shortage (Carsten Schmitz)
+-Fixed issue #16633: Error message when changing the data policy message language unless I check the box  (Gabriel Jenik)
+-Fixed issue #15994: Batch-Edit shows "lskeep" after modification of email status (#1584) (Gabriel Jenik)
+
+
+
 Changes from 3.23.3 (build 200909) to 3.23.4 (build 200922) September 21, 2020
 -Fixed issue: SPSS export - Seed value does not have proper variable name (Carsten Schmitz)
 -Fixed issue: SPSS export - Empty value replacement causing corrupted data fields (Carsten Schmitz)
