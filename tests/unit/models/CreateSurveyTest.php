@@ -17,21 +17,41 @@ class CreateSurveyTest extends TestCase
      * Creates a simple survey
      */
     public function testCreateSurvey(){
-        $createSurveyServiceClass = new CreateSurvey(new \Survey(), new \SurveyLanguageSetting());
+        $newLanguageSettingMock = $this->createMock(\SurveyLanguageSetting::class);
+        $newLanguageSettingMock->method('insertNewSurvey')->willReturn(true);
+
+        $surveyMock = $this
+            ->getMockBuilder(\Survey::class)
+            ->setMethods(
+                [
+                    'validate',
+                    'save',
+                    'attributes'
+                ]
+            )
+            ->getMock();
+        $surveyMock->method('validate')->willReturn(true);
+        $surveyMock->method('save')->willReturn(true);
+        $surveyMock->method('attributes')->willReturn(
+            [
+                'sid'
+            ]
+        );
+        $surveyMock->sid = 1;
+
+        $createSurveyServiceClass = new CreateSurvey($surveyMock, $newLanguageSettingMock);
         $simpleValues =  new SimpleSurveyValues();
         $simpleValues->setBaseLanguage('en');
         $simpleValues->setSurveyGroupId('1'); //must exists (this is default, means always exists)
         $simpleValues->setTitle('myNewTestSurvey');
 
-
         \Yii::import('application.helpers.common_helper', true);
         \Yii::app()->loadHelper("surveytranslator");
 
-        $userId = 1; //this id always exists (it'S the admin id ....)
+        $userId = 1; //this id always exists (it's the admin id ....)
 
         $permissionModel =  \Permission::model();
 
         self::assertNotFalse($createSurveyServiceClass->createSimple($simpleValues, $userId, $permissionModel));
     }
-
 }
