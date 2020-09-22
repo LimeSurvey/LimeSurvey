@@ -97,10 +97,20 @@ class EditQuestionTest extends TestBaseClassWeb
 
             switch ($editorMode) {
                 case 'inline':
-                    // Switch to question's CKEditor iframe
-                    self::$webDriver->switchTo()->frame(
-                        self::$webDriver->findElement(WebDriverBy::id('cke_question_en'))->findElement(WebDriverBy::tagName('iframe'))
+                    $iframe = null;
+                    $driver = self::$webDriver;
+                    // Wait for question's CKEditor iframe
+                    self::$webDriver->wait(10)->until(
+                        function () use ($driver, &$iframe) {
+                            $iframeDiv = $driver->findElement(WebDriverBy::id('cke_question_en'));
+                            if (empty($iframeDiv)) return false;
+                            $iframe = $iframeDiv->findElement(WebDriverBy::tagName('iframe'));
+                            return !empty($iframe);
+                        }
                     );
+                    $this->assertNotEmpty($iframe);
+                    // Switch to question's CKEditor iframe
+                    self::$webDriver->switchTo()->frame($iframe);
                     // Edit the question text
                     $question = self::$webDriver->findElement(WebDriverBy::tagName('body'));
                     $question->clear()->sendKeys($newText);
