@@ -452,7 +452,7 @@ class SurveyAdministrationController extends LSBaseController
             $simpleSurveyValues->setSurveyGroupId((int) App()->request->getPost('gsid', '1'));
             $simpleSurveyValues->setTitle($surveyTitle);
 
-            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey());
+            $surveyCreator = new \LimeSurvey\Models\Services\CreateSurvey(new Survey(), new SurveyLanguageSetting());
             $newSurvey = $surveyCreator->createSimple(
                 $simpleSurveyValues,
                 (int)Yii::app()->user->getId(),

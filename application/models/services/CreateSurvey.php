@@ -36,6 +36,9 @@ class CreateSurvey
     /** @var Survey the survey */
     private $survey;
 
+    /** @var SurveyLanguageSetting the new language settings model for the survey*/
+    private $newLanguageSettings;
+
     /** @var \LimeSurvey\Models\Services\SimpleSurveyValues has the simple values for creating a survey */
     private $simpleSurveyValues;
 
@@ -43,10 +46,13 @@ class CreateSurvey
      * CreateSurvey constructor.
      *
      * @param Survey $survey the survey object
+     * @param SurveyLanguageSetting $newLanguageSettings new created SurveyLanguageSettings model
+     *
      */
-    public function __construct($survey)
+    public function __construct($survey, $newLanguageSettings)
     {
         $this->survey = $survey;
+        $this->newLanguageSettings = $newLanguageSettings;
     }
 
     /**
@@ -74,7 +80,7 @@ class CreateSurvey
             }
 
             //check realtional tables to be initialised like survey_languagesettings
-            $this->createRelationSurveyLanguageSettings(new SurveyLanguageSetting());
+            $this->createRelationSurveyLanguageSettings($this->newLanguageSettings);
 
             // Update survey permissions
             $permissionModel->giveAllSurveyPermissions($userID, $this->survey->sid);

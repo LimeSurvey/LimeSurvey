@@ -17,7 +17,7 @@ class CreateSurveyTest extends TestCase
      * Creates a simple survey
      */
     public function testCreateSurvey(){
-        $createSurveyServiceClass = new CreateSurvey(new \Survey());
+        $createSurveyServiceClass = new CreateSurvey(new \Survey(), new \SurveyLanguageSetting());
         $simpleValues =  new SimpleSurveyValues();
         $simpleValues->setBaseLanguage('en');
         $simpleValues->setSurveyGroupId('1'); //must exists (this is default, means always exists)
