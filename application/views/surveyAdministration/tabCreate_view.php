@@ -34,21 +34,11 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 <?php echo CHtml::form(array('surveyAdministration/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <!-- Submit button, needs to be the first item for the script to take it -->
     <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
-    <div class="ls-flex-row align-items-center align-content-center">
-        <div class="grow-10 ls-space padding left-10 right-10">
-            <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
-                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab">
-                    <i class="fa fa-file-text-o"></i>&nbsp;
-                    <?=gT("Text elements")?></a>
-                </li>
-            </ul>
-        </div>
-    </div>
+
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
             <div class="tab-content">
                 <div class="tab-pane active" id="texts" data-count="1">
-                    <?php //echo $this->renderPartial('/admin/survey/subview/tab_edit_view', $edittextdata); don't use this one ...?>
                     <?php
 
                     /**
