@@ -93,7 +93,7 @@ class EditQuestionTest extends TestBaseClassWeb
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
             }
-            sleep(1);
+            sleep(5);
 
             switch ($editorMode) {
                 case 'inline':
