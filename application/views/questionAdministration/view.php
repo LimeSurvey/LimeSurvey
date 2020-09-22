@@ -584,19 +584,19 @@ foreach ($aQuestionTypeList as $questionType) {
                                             <?php foreach ($settings as $setting): ?>
                                                 <tr>
                                                     <td>
-                                                        <?php echo $setting['title'];?>:
+                                                        <?php echo $setting->title; ?>:
                                                     </td>
                                                     <td>
                                                         <?php
-                                                            if (isset($setting['expression']) && $setting['expression'] == 2) {
-                                                                LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $oQuestion->qid);
+                                                            if (isset($setting->expression) && $setting->expression == 2) {
+                                                                LimeExpressionManager::ProcessString('{' . $setting->value . '}', $oQuestion->qid);
                                                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                                             } else {
-                                                                if ($setting['aFormElementOptions']['i18n'] == false) {
-                                                                    echo htmlspecialchars($setting['aFormElementOptions']['value']);
-                                                                } else {
+                                                                //if ($setting->aFormElementOptions->i18n == false) {
+                                                                    //echo htmlspecialchars($setting->aFormElementOptions->value);
+                                                                //} else {
                                                                     //echo htmlspecialchars($setting['aFormElementOptions'][$oSurvey->language]['value']);
-                                                                }
+                                                                //}
                                                             }
                                                         ?>
                                                     </td>

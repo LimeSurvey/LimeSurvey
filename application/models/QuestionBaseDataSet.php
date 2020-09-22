@@ -252,7 +252,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 [
                     'classes' => ['form-control'],
                     'options' => $aOptionsArray,
-                ],
+                ]
             )
         );
     }
@@ -269,7 +269,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             function ($oQuestionGroup) use (&$aGroupOptions){
                 $aGroupOptions[] = new SwitchOption(
                     $oQuestionGroup->gid,
-                    $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name,
+                    $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name
                 );
             }
         );
@@ -286,7 +286,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 [
                     'classes' => ['form-control'],
                     'options' => new SwitchOptions($aGroupOptions)
-                ],
+                ]
             )
         );
         $option->setDisableInActive();
@@ -313,9 +313,9 @@ abstract class QuestionBaseDataSet extends StaticModel
                         [
                             new SwitchOption(gt('Off'), 'N'),
                             new SwitchOption(gt('On'), 'Y')
-                        ],
+                        ]
                     )
-                ],
+                ]
             )
         );
         $option->setDisableInActive();
@@ -343,7 +343,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                             new SwitchOption(gt('On'), 'Y'),
                             new SwitchOption(gt('Soft'), 'S'),
                             new SwitchOption(gt('Off'), 'N')
-                        ],
+                        ]
                     )
                 ]
             )
@@ -401,7 +401,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                             new SwitchOption(gt('On'), 'Y'),
                         ]
                     )
-                ],
+                ]
             )
         );
     }
@@ -428,7 +428,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                             new SwitchOption(gt('On'), 'Y'),
                         ]
                     )
-                ],
+                ]
             )
         );
     }
@@ -464,9 +464,9 @@ abstract class QuestionBaseDataSet extends StaticModel
                     ],
                     'inputGroup' => [
                         'prefix' => '{',
-                        'suffix' => '}',
+                        'suffix' => '}'
                     ]
-                ],
+                ]
             )
         );
     }
@@ -490,7 +490,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                     'inputGroup' => [
                         'prefix' => 'RegExp',
                     ]
-                ],
+                ]
             )
         );
     }
