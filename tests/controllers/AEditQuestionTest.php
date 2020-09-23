@@ -13,7 +13,7 @@ use Facebook\WebDriver\Exception\TimeOutException;
  * @since 2020-09-08
  * @group editquestion
  */
-class EditQuestionTest extends TestBaseClassWeb
+class AEditQuestionTest extends TestBaseClassWeb
 {
     /**
      *
