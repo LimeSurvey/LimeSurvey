@@ -240,7 +240,8 @@ class QuestionAdministrationController extends LSBaseController
                                             ),
                 'jsData'                 => $aData['jsData'],
                 'aQuestionTypeList'      => $aData['aQuestionTypeList'],
-                'aQuestionTypeStateList' => $aData['aQuestionTypeStateList']
+                'aQuestionTypeStateList' => $aData['aQuestionTypeStateList'],
+                'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($aData['aQuestionTypeList'])
             ]
         );
     }
@@ -2201,4 +2202,48 @@ class QuestionAdministrationController extends LSBaseController
         return true;
     }
 
+    /**
+     * @return array
+     */
+    private function getQuestionTypeGroups($aQuestionTypeList)
+    {
+        $aQuestionTypeGroups = [];
+
+        if (App()->session['questionselectormode'] !== 'default') {
+            $selectormodeclass = App()->session['questionselectormode'];
+        } else {
+            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+        }
+        uasort($aQuestionTypeList, "questionTitleSort");
+        foreach ($aQuestionTypeList as $questionType) {
+            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+            if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
+                $aQuestionTypeGroups[$htmlReadyGroup] = array(
+                    'questionGroupName' => $questionType['group']
+                );
+            }
+            $imageName = $questionType['question_type'];
+            if ($imageName == ":") {
+                $imageName = "COLON";
+            } elseif ($imageName == "|") {
+                $imageName = "PIPE";
+            } elseif ($imageName == "*") {
+                $imageName = "EQUATION";
+            }
+            $questionType['type'] = $questionType['question_type'];
+            $questionType['detailpage'] = '
+                <div class="col-sm-12 currentImageContainer">
+                <img src="' . $questionType['image_path'] . '" />
+                </div>';
+            if ($imageName == 'S') {
+                $questionType['detailpage'] = '
+                    <div class="col-sm-12 currentImageContainer">
+                    <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
+                    <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
+                    </div>';
+            }
+            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+        }
+        return $aQuestionTypeGroups;
+    }
 }
