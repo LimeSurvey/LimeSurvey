@@ -565,23 +565,9 @@ foreach ($aQuestionTypeList as $questionType) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="list-group">
-                                                <?php foreach ($generalSettings as $generalOption): ?>
-                                                    <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
-                                                    <!--
-                                                    <component 
-                                                        v-bind:is="getComponentName(generalSetting.inputtype)" 
-                                                        :elId="generalSetting.formElementId"
-                                                        :elName="generalSetting.formElementName"
-                                                        :elLabel="generalSetting.title"
-                                                        :elHelp="generalSetting.formElementHelp"
-                                                        :currentValue="generalSetting.formElementValue"
-                                                        :elOptions="generalSetting.formElementOptions"
-                                                        :debug="generalSetting"
-                                                        :readonly="isReadonly(generalSetting)"
-                                                        @change="reactOnChange($event, generalSetting)">
-                                                    </component>
-                                                    -->
-                                                <?php endforeach; ?>
+                                            <?php foreach ($generalSettings as $generalOption): ?>
+                                                <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>
