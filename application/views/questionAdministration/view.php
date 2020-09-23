@@ -145,6 +145,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                         <div class="col-12 scope-apply-base-style scope-min-height">
                             <div class="container-fluid" v-if="!loading && showAdvancedOptions" id="advanced-options-container">
                                 <div class="row scoped-tablist-container">
+                                    <!--
                                     <template v-if="showSubquestionEdit || showAnswerOptionEdit">
                                         <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
                                             <li 
@@ -161,23 +162,31 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             </li>
                                         </ul>
                                     </template>
+                                    -->
                                     <!-- Advanced settings tabs -->
-                                    <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist" v-if="!hideAdvancedOptions">
-                                        <?php foreach ($advancedSettings as $category => $settings): ?>
-                                            <li 
-                                                v-for="advancedSettingCategory in tabs"
-                                                :key="'tablist-'+advancedSettingCategory"
-                                                :class="$store.state.questionAdvancedSettingsCategory == advancedSettingCategory && currentTabComponent == 'settings-tab' ? 'active' : ''"
-                                            >
-                                                <a href="#" @click.prevent.stop="selectCurrentTab('settings-tab', advancedSettingCategory)" >
+                                    <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
+                                        <?php foreach ($advancedSettings as $category => $_) : ?>
+                                            <li role="presentation">
+                                                <a
+                                                    href="#<?= $category; ?>"
+                                                    aria-controls="<?= $category; ?>"
+                                                    role="tab"
+                                                    data-toggle="tab"
+                                                    >
                                                     <?= $category; ?>
                                                 </a>
-                                                <?php foreach ($settings as $setting): ?>
-                                                    <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
-                                                <?php endforeach; ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
+                                    <div class="tab-content">
+                                    <?php foreach ($advancedSettings as $category => $settings): ?>
+                                        <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
+                                            <?php foreach ($settings as $setting): ?>
+                                                <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
