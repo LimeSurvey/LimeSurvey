@@ -62,6 +62,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl('admin/questions', array('sa'=>'editquestion', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
+            var_dump("testChangeQuestionTemplate: Navigating to " . $url);
             self::$webDriver->get($url);
 
             sleep(1);

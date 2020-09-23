@@ -80,6 +80,7 @@ class TestBaseClass extends TestCase
         if ($result) {
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
+            var_dump("Imported file " . $fileName . " as " . $result['newsid']);
         } else {
             self::assertTrue(false, 'Could not import survey file ' . $fileName);
         }
