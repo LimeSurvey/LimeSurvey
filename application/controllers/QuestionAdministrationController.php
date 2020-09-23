@@ -1222,13 +1222,39 @@ class QuestionAdministrationController extends LSBaseController
     public function actionCopyQuestion(){
 
         $aData = [];
+
+        //load helpers
+        Yii::app()->loadHelper('surveytranslator');
+        Yii::app()->loadHelper('admin.htmleditor');
+
+        //get params from request
         $surveyIDToCopy = (int)Yii::app()->request->getParam('surveyId');
-        $groupID = (int)Yii::app()->request->getParam('groupId');
+        $groupID = (int)Yii::app()->request->getParam('questionGroupId');
         $questionId = (int)Yii::app()->request->getParam('questionId');
 
         //permission check ...
         if (!Permission::model()->hasSurveyPermission($surveyIDToCopy, 'surveycontent', 'create')){
+            Yii::app()->user->setFlash('error', gT("Access denied! You don't have permission to copy a question"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
 
+        $aData['surveyid'] = $surveyIDToCopy;
+        $oSurvey = Survey::model()->findByPk($surveyIDToCopy);
+        $aData['oSurvey'] =
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$groupID));
+        $aData['oQuestionGroup'] = $oQuestionGroup;
+
+        $aData['topBar']['type'] = 'question';
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['questionbar']['buttons']['view'] = true;
+        $aData['display']['menu_bars']['qid_action'] = 'editquestion';
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
+            . " (" . gT("ID") . ":" . $iSurveyID . ")";
+
+        //todo how to set the url of the save btn ...
+
+        if ($landOnSideMenuTab !== '') {
+            $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
         }
 
         //save the copy ...
