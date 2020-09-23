@@ -115,7 +115,7 @@ foreach ($aQuestionTypeList as $questionType) {
                     <!-- TODO: Move to partial -->
                     <div class="row" key="questioncode-block">
                         <div class="form-group col-sm-6 scoped-responsive-fix-height">
-                            <label for="questionCode">Code</label>
+                            <label for="questionCode"><?= gT('Code'); ?></label>
                             <div class="scoped-keep-in-line">
                                 <input
                                     text="text"
@@ -124,14 +124,14 @@ foreach ($aQuestionTypeList as $questionType) {
                                     :maxlength="this.maxQuestionCodeLength"
                                     :required="true"
                                     :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-                                    v-model="currentQuestionCode" 
-                                    @dblclick="triggerEditQuestion" 
                                 />
+                                <!--
                                 <type-counter 
                                     :countable="currentQuestionCode.length"
                                     :max-value="this.maxQuestionCodeLength"
                                     :valid="inputValid"
                                 />
+                                -->
                             </div>
                             <p class="well bg-warning scoped-highten-z" v-if="noCodeWarning!=null">{{noCodeWarning}}</p>
                         </div>
@@ -143,59 +143,24 @@ foreach ($aQuestionTypeList as $questionType) {
                                 <?=$oQuestionSelector->getButtonOrSelect();?>
                                 <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
                             </div>
-                            <input
-                                v-show="!((editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !=='Y')"
-                                type="text"
-                                class="form-control" id="questionTypeVisual"
-                                :readonly="true"
-                                :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"
-                            />
-                            <input
-                                v-if="$store.getters.surveyObject.active !=='Y'"
-                                type="hidden"
-                                id="question_type"
-                                name="type"
-                                :value="$store.state.currentQuestion.type"
-                            />
+                            <input type="text" class="form-control" id="questionTypeVisual" />
+                            <input type="hidden" id="question_type" name="type" />
                         </div>
                     </div>
-                    <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
-                        <div class="col-xs-12" >
-                            <div class="button-toolbar" :id="elId+'-language-selector'">
-                                <div class="btn-group">
-                                    <?php foreach($this->aData['languagelist'] as $lang): ?>
-                                        <button
-                                            :key="language+'-button'"
-                                            class="btn btn-default"
-                                            @click.prevent="setCurrentLanguage(language)"
-                                        >
-                                            <!-- TODO: Mark active class="'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')"-->
-                                            <?= getLanguageNameFromCode($lang, false); ?>
-                                        </button>
-                                    <?php endforeach; ?>
-                                    <!-- TODO: Chunk languages
-                                    <button
-                                        v-if="getInChunks.length > 1"
-                                        class="btn btn-default dropdown-toggle"
-                                        data-toggle="dropdown"
-                                    >
-                                        More Languages
-                                        <span class="caret"></span>
-                                    </button>
-                                     <ul class="dropdown-menu">
-                                        <li
-                                            v-for="(languageTerm, language) in getInChunks[1]"
-                                            :key="language+'-dropdown'"
-                                            @click.prevent="setCurrentLanguage(language)"
-                                        >
-                                            <a href="#">{{ languageTerm }}</a>
-                                        </li>
-                                    </ul>
-                                    -->
-                                </div>
-                            </div>
-                            <hr/>
-                        </div>
+                    <div class="row">
+                        <?php $this->renderPartial(
+                            "languageselector",
+                            [
+                                'data' => $jsData,
+                                'oQuestion'              => $oQuestion,
+                                'oSurvey'                => $oSurvey,
+                                'aStructureArray' => $aQuestionTypeGroups,
+                                'questionTypes' => $aQuestionTypeStateList,
+                                'answersCount'           => $answersCount,
+                                'subquestionsCount'      => $subquestionsCount,
+                                'advancedSettings'       => $advancedSettings
+                            ]
+                        ); ?>
                     </div>
 
                     <div class="col-lg-12">
