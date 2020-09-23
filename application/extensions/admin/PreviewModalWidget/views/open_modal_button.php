@@ -1,22 +1,27 @@
-
-<?php //The button ?>
-
-<div class="btn-group" id="trigger_<?=$this->widgetsJsName?>_button">
-    <button type="button" class="btn <?=join(' ', $this->buttonClasses);?>" data-target="#selector__<?=$this->widgetsJsName?>-modal" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
-        <?php if($this->iconPosition==='front') { ?>
+<!-- The button -->
+<div id="trigger_<?=$this->widgetsJsName?>_button">
+    <button
+        type="button"
+        class="btn btn-block btn-primary"
+        data-target="#selector__<?=$this->widgetsJsName?>-modal"
+        data-toggle="modal"
+        aria-haspopup="true"
+        aria-expanded="false"
+        >
+        <?php if ($this->iconPosition === 'front') : ?>
             <i class="fa fa-folder-open"></i>&nbsp;&nbsp;
-        <?php } ?>
+        <?php endif; ?>
         <span class="buttontext" id="selector__<?=$this->widgetsJsName?>--buttonText">
-            <?=$this->currentSelected?>
-            <?php if(YII_DEBUG):?>
+            <?= $this->currentSelected ?>
+            <?php if (YII_DEBUG) :?>
                 <em class="small">
-                  <?=gT($this->debugKeyCheck)?> <?=$this->value?>
+                  <?= gT($this->debugKeyCheck)?> <?=$this->value?>
                 </em>
             <?php  endif;?>
         </span>
-        <?php if($this->iconPosition==='back') { ?>
+        <?php if ($this->iconPosition === 'back') : ?>
             &nbsp;&nbsp;&nbsp;
             <i class="fa fa-folder-open"></i>           
-        <?php } ?>
+        <?php endif; ?>
     </button>
 </div>

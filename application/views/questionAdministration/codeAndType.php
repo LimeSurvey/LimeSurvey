@@ -44,13 +44,11 @@
     <p class="well bg-warning scoped-highten-z" v-if="noCodeWarning!=null">{{noCodeWarning}}</p>
 </div>
 <div class="form-group col-sm-6 contains-question-selector">
-    <label for="questionCode">Question type</label>
-    <div v-if="$store.getters.surveyObject.active !=='Y'"
-         v-show="(editQuestion || isCreateQuestion)"
-         class="btn-group">
-         <?= $oQuestionSelector->getButtonOrSelect(); ?>
+    <label for="questionCode"><?= gT('Question type'); ?></label>
+    <div class="btn-group" style="width: 100%;">
+        <?= $oQuestionSelector->getButtonOrSelect(); ?>
         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     </div>
-    <input type="text" class="form-control" id="questionTypeVisual" />
+    <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="type" />
 </div>

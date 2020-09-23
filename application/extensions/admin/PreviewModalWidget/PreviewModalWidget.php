@@ -31,7 +31,7 @@ class PreviewModalWidget extends CWidget {
     public $buttonClasses = ['btn-default'];
 
     //The position the icon has in the modal button
-    public $iconPosition = 'back';
+    public $iconPosition = 'front';
 
     //These are pretty standard and may not need to be changed
     public $closeButton = "Close";
