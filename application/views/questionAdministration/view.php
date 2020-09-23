@@ -160,17 +160,9 @@ foreach ($aQuestionTypeList as $questionType) {
                         </div>
                     </div>
                     <div class="row" key="languageselector-block" v-if="this.containsMultipleLanguages">
-                        <languageselector
-                            :elId="'question-language-changer'"
-                            :aLanguages="$store.state.languages"
-                            :parentCurrentLanguage="$store.state.activeLanguage"
-                            @change="selectLanguage"
-                        />
                         <div class="col-xs-12" >
                             <div class="button-toolbar" :id="elId+'-language-selector'">
-                                <div
-                                    class="btn-group"
-                                >
+                                <div class="btn-group">
                                     <?php foreach($this->aData['languagelist'] as $lang): ?>
                                         <button
                                             :key="language+'-button'"
@@ -205,375 +197,142 @@ foreach ($aQuestionTypeList as $questionType) {
                             <hr/>
                         </div>
                     </div>
-                    <div key="editorcontent-block" class="col-lg-12">
-                        <div class="">
 
-                            <!-- Main editor -->
-                            <div class="">
-                                <div class="col-12">
-                                    <div
-                                        class="panel panel-default col-12 question-option-general-container"
-                                        key="mainPanel"
-                                    >
-                                        <div class="panel-heading">Text elements</div>
-                                        <div class="panel-body">
-                                            <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
-                                                <div class="ls-flex-row">
-                                                    <div class="ls-flex-item grow-2 text-left">
-                                                        <label class="col-sm-12"><?= gT('Question'); ?></label>
-                                                    </div>
-                                                </div>
-                                                <div class="htmleditor input-group">
-                                                    <?= CHtml::textArea(
-                                                        "question_{$oSurvey->language}",
-                                                        $oQuestion->questionl10ns[$oSurvey->language]->question,
-                                                        array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")
-                                                    ); ?>
-                                                    <?= getEditor(
-                                                        "question-text",
-                                                        "question_".$oSurvey->language,
-                                                        "[".gT("Question:","js")."](".$oSurvey->language.")",
-                                                        $oSurvey->sid,
-                                                        $oQuestion->gid,
-                                                        $oQuestion->sid,
-                                                        $action = '');
-                                                    ?>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
-                                                <div class="ls-flex-row">
-                                                    <div class="ls-flex-item grow-2 text-left">
-                                                        <label class="col-sm-12"><?= gT('Help:'); ?></label>
-                                                    </div>
-                                                </div>
-                                                <div class="htmleditor input-group">
-                                                    <?= CHtml::textArea(
-                                                        "help_".$oSurvey->language,
-                                                        $oQuestion->questionl10ns[$oSurvey->language]->help,
-                                                        array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")
-                                                    ); ?>
-                                                    <?= getEditor(
-                                                        "question-help",
-                                                        "help_".$oSurvey->language,
-                                                        "[".gT("Help:", "js")."](".$oSurvey->language.")",
-                                                        $oSurvey->sid,
-                                                        $oQuestion->gid,
-                                                        $oQuestion->qid,
-                                                        $action = ''
-                                                    ); ?>
-                                                </div>
-                                            </div>
-                                            <div style="height: 300px;">
-                                                <label class="col-sm-6">
-                                                    <?= gT('Script'); ?>
-                                                </label>
-                                                <div class="col-sm-6 text-right">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="selector--scriptForAllLanguages" 
-                                                        id="selector--scriptForAllLanguages"
-                                                        v-model="scriptForAllLanugages"
-                                                    />&nbsp;
-                                                    <label for="selector--scriptForAllLanguages">
-                                                        <?= gT('Set for all languages'); ?>
-                                                    </label>
-                                                </div>
-
-                                                <?= CHtml::textArea(
-                                                    'editscript',
-                                                    !empty($editfile) ? file_get_contents($editfile) : '',
-                                                    array(
-                                                        'id' => 'editscript',
-                                                        'rows' => '10',
-                                                        'cols' => '20',
-                                                        'data-filetype' => 'javascript',
-                                                        'class' => 'ace default', // . $sTemplateEditorMode,
-                                                    )
-                                                ); ?>
-                                                    <p class="alert well">
-                                                        <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
-                                                    </p>
+                    <div class="col-lg-12">
+                        <!-- Main editor -->
+                        <div class="col-12">
+                            <div class="panel panel-default col-12 question-option-general-container">
+                                <div class="panel-heading">Text elements</div>
+                                <div class="panel-body">
+                                    <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
+                                        <div class="ls-flex-row">
+                                            <div class="ls-flex-item grow-2 text-left">
+                                                <label class="col-sm-12"><?= gT('Question'); ?></label>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" key="divideRow">
-                                        <div class="col-sm-12 ls-space margin top-5 bottom-5">
-                                            <hr />
+                                        <div class="htmleditor input-group">
+                                            <?= CHtml::textArea(
+                                                "question_{$oSurvey->language}",
+                                                $oQuestion->questionl10ns[$oSurvey->language]->question,
+                                                array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")
+                                            ); ?>
+                                            <?= getEditor(
+                                                "question-text",
+                                                "question_".$oSurvey->language,
+                                                "[".gT("Question:","js")."](".$oSurvey->language.")",
+                                                $oSurvey->sid,
+                                                $oQuestion->gid,
+                                                $oQuestion->sid,
+                                                $action = '');
+                                            ?>
                                         </div>
                                     </div>
-                                </div> 
-                            </div>
-
-                            <questionoverview
-                                v-show="!(editQuestion || isCreateQuestion)"
-                                :loading="loading"
-                                :event="event"
-                                @triggerEvent="triggerEvent"
-                                @eventSet="eventSet"
-                            ></questionoverview>
-
-                            <!-- Question summary, TODO: Put in partial view -->
-                            <div class="pagetitle h3">
-                                <?php eT('Question summary'); ?>&nbsp;
-                                <small>
-                                    <em><?= $oQuestion->title; ?></em>&nbsp;
-                                    (ID: <?php echo (int) $oQuestion->qid;?>)
-                                </small>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-12 content-right">
-
-                                    <!-- Summary Table -->
-                                    <table  id='questiondetails'>
-
-                                        <!-- Question Group -->
-                                        <tr>
-                                            <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-                                            <td><em><?php echo flattenText($oQuestion->group->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
-                                        </tr>
-
-                                        <!-- Code -->
-                                        <tr>
-                                            <td>
-                                                <strong>
-                                                    <?php eT("Code:"); ?>
-                                                </strong>
-                                            </td>
-
-                                            <td>
-                                                <?php echo $oQuestion->title; ?>
-                                                <?php if ($oQuestion->type != "X"): ?>
-                                                    <?php if ($oQuestion->mandatory == "Y") :?>
-                                                        : (<i><?php eT("Mandatory Question"); ?></i>)
-                                                    <?php else: ?>
-                                                            : (<i><?php eT("Optional Question"); ?></i>)
-                                                    <?php endif; ?>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Question -->
-                                        <tr>
-                                            <td>
-                                                <strong>
-                                                    <?php eT("Question:"); ?>
-                                                </strong>
-                                            </td>
-                                            <td>
-                                                <?php
-                                                    templatereplace(
-                                                        $oQuestion->questionl10ns[$oSurvey->language]->question,
-                                                        array('QID' => $oQuestion->qid),
-                                                        $aReplacementData,
-                                                        'Unspecified',
-                                                        false,
-                                                        $oQuestion->qid
-                                                    );
-                                                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                                                ?>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Help -->
-                                        <tr>
-                                            <td>
-                                                <strong>
-                                                    <?php eT("Help:"); ?>
-                                                </strong>
-                                            </td>
-                                            <td>
-
-                                                <?php
-                                                    if (trim($oQuestion->questionl10ns[$oSurvey->language]->help) != '')
-                                                    {
-                                                        templatereplace(
-                                                            $oQuestion->questionl10ns[$oSurvey->language]->help,
-                                                            array('QID' => $oQuestion->qid),
-                                                            $aReplacementData,
-                                                            'Unspecified',
-                                                            false,
-                                                            $oQuestion->qid
-                                                        );
-                                                        echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                                                    }
-                                                ?>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Validation -->
-                                        <?php if ($oQuestion->preg):?>
-                                            <tr >
-                                                <td>
-                                                    <strong>
-                                                        <?php eT("Validation:"); ?>
-                                                    </strong>
-                                                </td>
-                                                <td>
-                                                    <?php echo htmlspecialchars($oQuestion->preg); ?>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-
-                                        <!-- Type -->
-                                        <tr>
-                                            <td>
-                                                <strong>
-                                                    <?php eT("Type:"); ?>
-                                                </strong>
-                                            </td>
-                                            <td>
-                                                <?php echo $questionTypes[$oQuestion->type]['description']; ?>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Warning : You need to add answer -->
-                                        <?php if ($answersCount == 0 && $questionTypes[$oQuestion->type]['answerscales'] > 0):?>
-                                        <tr>
-                                            <td>
-                                            </td>
-                                            <td>
-                                                <span class='statusentryhighlight'>
-                                                    <?php eT("Warning"); ?>:
-                                                    <a href='<?php echo $this->createUrl("admin/questions/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'>
-                                                        <?php eT("You need to add answer options to this question"); ?>
-                                                        <span class="icon-answers text-success" title='<?php eT("Edit answer options for this question"); ?>'></span>
-                                                    </a>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <?php endif; ?>
-
-                                        <!--  Warning : You need to add subquestions to this question -->
-                                        <?php  if ($subquestionsCount == 0 && $questionTypes[$oQuestion->type]['subquestions'] > 0): ?>
-                                            <tr>
-                                                <td></td>
-                                                <td>
-                                                    <span class='statusentryhighlight'>
-                                                        <?php eT("Warning"); ?>:
-                                                        <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'>
-                                                            <?php eT("You need to add subquestions to this question"); ?>
-                                                            <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
-                                                        </a>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-
-                                        <!-- Option 'Other' -->
-                                        <?php if ($oQuestion->type == "M" or $oQuestion->type == "P"):?>
-                                            <tr>
-                                                <td>
-                                                    <strong>
-                                                        <?php eT("Option 'Other':"); ?>
-                                                    </strong>
-                                                </td>
-                                                <td>
-                                                    <?php if ($oQuestion->other == "Y"):?>
-                                                        <?php eT("Yes"); ?>
-                                                    <?php else:?>
-                                                        <?php eT("No"); ?>
-                                                    <?php endif; ?>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-
-                                        <!-- Mandatory -->
-                                        <?php if (isset($oQuestion->mandatory) and ($oQuestion->type != "X") and ($oQuestion->type != "|")):?>
-                                            <tr>
-                                                <td>
-                                                    <strong>
-                                                        <?php eT("Mandatory:"); ?>
-                                                    </strong>
-                                                </td>
-                                                <td>
-                                                    <?php if ($oQuestion->mandatory == "Y") : ?>
-                                                        <?php eT("Yes"); ?>
-                                                    <?php else:?>
-                                                        <?php eT("No"); ?>
-                                                    <?php endif;  ?>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-
-                                        <!-- Relevance equation -->
-                                        <?php if (trim($oQuestion->relevance) != ''): ?>
-                                            <tr>
-                                                <td><?php eT("Relevance equation:"); ?></td>
-                                                <td>
-                                                    <?php
-                                                    LimeExpressionManager::ProcessString("{" . $oQuestion->relevance . "}", $oQuestion->qid);    // tests Relevance equation so can pretty-print it
-                                                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-
-                                        <!-- Group Relevance equation -->
-                                        <?php if (trim($oQuestion->group->grelevance)!=''): ?>
-                                            <tr>
-                                                <td><?php eT("Group relevance:"); ?></td>
-                                                <td>
-                                                    <?php
-                                                    LimeExpressionManager::ProcessString("{" . $oQuestion->group->grelevance . "}", $oQuestion->qid);
-                                                    echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-
-                                        <!-- Advanced Settings -->
-                                        <?php foreach ($advancedSettings as $settings): ?>
-                                            <?php foreach ($settings as $setting): ?>
-                                                <tr>
-                                                    <td>
-                                                        <?php echo $setting['title']; ?>:
-                                                    </td>
-                                                    <td>
-                                                        <?php
-                                                            if (isset($setting->expression) && $setting->expression == 2) {
-                                                                LimeExpressionManager::ProcessString('{' . $setting->value . '}', $oQuestion->qid);
-                                                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                                                            } else {
-                                                                //if ($setting->aFormElementOptions->i18n == false) {
-                                                                    //echo htmlspecialchars($setting->aFormElementOptions->value);
-                                                                //} else {
-                                                                    //echo htmlspecialchars($setting['aFormElementOptions'][$oSurvey->language]['value']);
-                                                                //}
-                                                            }
-                                                        ?>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        <?php endforeach; ?>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <!-- General settings -->
-                            <div 
-                                class="ls-flex scope-set-min-height scoped-general-settings" 
-                                :class="collapsedMenu ? 'collapsed' : 'non-collapsed'" 
-                                @dblclick="toggleEditMode"
-                            >
-                                <div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
-                                    <div class="panel-heading"> 
-                                        <?= gT('General Settings'); ?>
-                                        <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
-                                            <i class="fa fa-chevron-right" /></i>
-                                        </button>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="list-group">
-                                            <?php foreach ($generalSettings as $generalOption): ?>
-                                                <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
-                                            <?php endforeach; ?>
+                                    <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
+                                        <div class="ls-flex-row">
+                                            <div class="ls-flex-item grow-2 text-left">
+                                                <label class="col-sm-12"><?= gT('Help:'); ?></label>
+                                            </div>
                                         </div>
+                                        <div class="htmleditor input-group">
+                                            <?= CHtml::textArea(
+                                                "help_".$oSurvey->language,
+                                                $oQuestion->questionl10ns[$oSurvey->language]->help,
+                                                array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")
+                                            ); ?>
+                                            <?= getEditor(
+                                                "question-help",
+                                                "help_".$oSurvey->language,
+                                                "[".gT("Help:", "js")."](".$oSurvey->language.")",
+                                                $oSurvey->sid,
+                                                $oQuestion->gid,
+                                                $oQuestion->qid,
+                                                $action = ''
+                                            ); ?>
+                                        </div>
+                                    </div>
+                                    <div style="height: 300px;">
+                                        <label class="col-sm-6">
+                                            <?= gT('Script'); ?>
+                                        </label>
+                                        <div class="col-sm-6 text-right">
+                                            <input 
+                                                type="checkbox" 
+                                                name="selector--scriptForAllLanguages" 
+                                                id="selector--scriptForAllLanguages"
+                                                v-model="scriptForAllLanugages"
+                                            />&nbsp;
+                                            <label for="selector--scriptForAllLanguages">
+                                                <?= gT('Set for all languages'); ?>
+                                            </label>
+                                        </div>
+
+                                        <?= CHtml::textArea(
+                                            'editscript',
+                                            !empty($editfile) ? file_get_contents($editfile) : '',
+                                            array(
+                                                'id' => 'editscript',
+                                                'rows' => '10',
+                                                'cols' => '20',
+                                                'data-filetype' => 'javascript',
+                                                'class' => 'ace default', // . $sTemplateEditorMode,
+                                            )
+                                        ); ?>
+                                            <p class="alert well">
+                                                <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                                            </p>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" key="divideRow">
+                                <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                                    <hr />
+                                </div>
+                            </div>
+                        </div> 
 
+                        <!-- Question summary, TODO: Put in partial view -->
+                        <div class="pagetitle h3">
+                            <?php eT('Question summary'); ?>&nbsp;
+                            <small>
+                                <em><?= $oQuestion->title; ?></em>&nbsp;
+                                (ID: <?php echo (int) $oQuestion->qid;?>)
+                            </small>
                         </div>
+                        <div class="row">
+                            <?php $this->renderPartial(
+                                "summary",
+                                [
+                                    'data' => $jsData,
+                                    'oQuestion'              => $oQuestion,
+                                    'oSurvey'                => $oSurvey,
+                                    'aStructureArray' => $aQuestionTypeGroups,
+                                    'questionTypes' => $aQuestionTypeStateList,
+                                    'answersCount'           => $answersCount,
+                                    'subquestionsCount'      => $subquestionsCount,
+                                    'advancedSettings'       => $advancedSettings
+                                ]
+                            ); ?>
+                        </div>
+
+                        <!-- General settings -->
+                        <div class="ls-flex scope-set-min-height scoped-general-settings">
+                            <div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
+                                <div class="panel-heading"> 
+                                    <?= gT('General Settings'); ?>
+                                    <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
+                                        <i class="fa fa-chevron-right" /></i>
+                                    </button>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <?php foreach ($generalSettings as $generalOption): ?>
+                                            <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
                             <div class="col-12 scope-apply-base-style scope-min-height">
                                 <div class="container-fluid" v-if="!loading && showAdvancedOptions" id="advanced-options-container">
