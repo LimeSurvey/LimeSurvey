@@ -86,7 +86,7 @@ function quoteSPSS($sText,$sQuoteChar,$aField)
        if (strpos($aField['size'],'.')>0) {
          $iDecimals=substr($aField['size'],strpos($aField['size'],'.')+1);
        }
-       return number_format($sText,$iDecimals);
+       return number_format($sText,$iDecimals,'.','');
    }                                          
    return $sQuoteChar.str_replace($sQuoteChar, $sQuoteChar.$sQuoteChar, $sText).$sQuoteChar; 
 }

@@ -36,6 +36,9 @@ class CreateSurvey
     /** @var Survey the survey */
     private $survey;
 
+    /** @var SurveyLanguageSetting the new language settings model for the survey*/
+    private $newLanguageSettings;
+
     /** @var \LimeSurvey\Models\Services\SimpleSurveyValues has the simple values for creating a survey */
     private $simpleSurveyValues;
 
@@ -43,20 +46,25 @@ class CreateSurvey
      * CreateSurvey constructor.
      *
      * @param Survey $survey the survey object
+     * @param SurveyLanguageSetting $newLanguageSettings new created SurveyLanguageSettings model
+     *
      */
-    public function __construct($survey)
+    public function __construct($survey, $newLanguageSettings)
     {
         $this->survey = $survey;
+        $this->newLanguageSettings = $newLanguageSettings;
     }
 
     /**
-     * This creates a simple survey with the basic attributes set in constructor.
+     * This creates a simple survey with the basic attributes set in param simpleSurveyValues
      *
      * @param SimpleSurveyValues $simpleSurveyValues
+     * @param int $userID the id of user who is creating the survey
+     * @param Permission $permissionModel
      *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason
      */
-    public function createSimple($simpleSurveyValues)
+    public function createSimple($simpleSurveyValues, $userID, $permissionModel)
     {
 
         $this->simpleSurveyValues = $simpleSurveyValues;
@@ -72,12 +80,10 @@ class CreateSurvey
             }
 
             //check realtional tables to be initialised like survey_languagesettings
-            $this->createRelationSurveyLanguageSettings();
+            $this->createRelationSurveyLanguageSettings($this->newLanguageSettings);
 
             // Update survey permissions
-            // TODO: Inject permission model
-            // TODO: Inject app session
-            Permission::model()->giveAllSurveyPermissions(\Yii::app()->session['loginID'], $this->survey->sid);
+            $permissionModel->giveAllSurveyPermissions($userID, $this->survey->sid);
         } catch (\Exception $e) {
             return false;
         }
@@ -89,10 +95,12 @@ class CreateSurvey
      * Insert new entry in surveys_languagesettings (sets surveyid, title, language). All other values
      * are set to default values (user can change them later in survey administration).
      *
+     * @param SurveyLanguageSetting $langsettings
+     *
      * @return void
      * @throws \Exception if not possible to save in DB
      */
-    private function createRelationSurveyLanguageSettings()
+    private function createRelationSurveyLanguageSettings($langsettings)
     {
         $sTitle = html_entity_decode($this->simpleSurveyValues->getTitle(), ENT_QUOTES, "UTF-8");
 
@@ -126,8 +134,6 @@ class CreateSurvey
             'surveyls_policy_notice_label' => ''
         );
 
-        // TODO: Inject
-        $langsettings = new SurveyLanguageSetting();
         if (!$langsettings->insertNewSurvey($aInsertData)) {
             throw new \Exception('SurveyLanguageSettings could not be created');
         }

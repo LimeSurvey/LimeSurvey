@@ -305,15 +305,12 @@ abstract class Token extends Dynamic
             return array(0, 0);
         }
 
-
-        //Add some criteria to select only the token field
-        $criteria = $this->getDbCriteria();
-        $criteria->select = 'token';
-        $ntresult = $this->findAllAsArray($criteria); //Use AsArray to skip active record creation
+        // Do NOT replace the following select with ActiveRecord as it uses too much memory
+        $ntresult=Yii::app()->db->createCommand()->select('token')->from($this->tableName())-> where("token IS NOT NULL and token<>''")->queryColumn();
         // select all existing tokens
         foreach ($ntresult as $tkrow) {
-            $existingtokens[$tkrow['token']] = true;
-        }
+            $existingtokens[$tkrow] = true;
+        }        
         $newtokencount = 0;
         $invalidtokencount = 0;
         $newtoken = null;
