@@ -52,7 +52,6 @@ class AEditQuestionTest extends TestBaseClassWeb
         // Delete survey.
         if (self::$testSurvey) {
             self::$testSurvey->delete();
-            var_dump("AEditQuestionTest: Deleting survey " . self::$testSurvey->sid);
             // NB: Unset so static teardown won't find it.
             self::$testSurvey = null;
         }
@@ -78,7 +77,6 @@ class AEditQuestionTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl('admin/questions', array('sa'=>'editquestion', 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
-            var_dump("testEditQuestionText: Navigating to " . $url);
             self::$webDriver->get($url);
             sleep(1);
 
