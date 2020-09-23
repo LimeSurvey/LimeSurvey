@@ -172,6 +172,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $oQuestionGroup = $this->getQuestionGroupObject($surveyid, $gid);
         $aData['oQuestionGroup'] = $oQuestionGroup;
 
+        $aAdditionalLanguages = $oSurvey->additionalLanguages;
+        $aLanguages = array_merge(array($sBaseLanguage), $aAdditionalLanguages);
+
         /**
          *  TODO: check integrity of the group languages?
          *  
@@ -186,11 +189,14 @@ class QuestionGroupsAdministrationController extends LSBaseController
          */
 
          // Load question group data for each language
-        foreach ($oQuestionGroup->questiongroupl10ns as $sLanguage => $aGroupData) {
-            $aData['aGroupData'][$sLanguage] = $aGroupData->attributes;
-            $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
-            if ($sLanguage == $sBaseLanguage) {
-                $aTabTitles[$sLanguage] .= ' ('.gT("Base language").')';
+        foreach ($aLanguages as $sLanguage) {
+            if(isset($oQuestionGroup->questiongroupl10ns[$sLanguage])) {
+                $aGroupData = $oQuestionGroup->questiongroupl10ns[$sLanguage];
+                $aData['aGroupData'][$sLanguage] = $aGroupData->attributes;
+                $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+                if ($sLanguage == $sBaseLanguage) {
+                    $aTabTitles[$sLanguage] .= ' ('.gT("Base language").')';
+                }
             }
         }
 
