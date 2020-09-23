@@ -10,8 +10,8 @@ class AdvancedSettingWidget extends CWidget
      */
     public function run()
     {
-        if ($this->setting['inputtype'] === 'singleselect') {
-            //echo '<pre>'; var_dump($this->setting); echo '</pre>';die;
+        if ($this->setting['inputtype'] === 'integer') {
+            //echo '<pre>'; var_dump($this->setting); echo '</pre>';
         }
         $this->render($this->setting['inputtype']);
     }

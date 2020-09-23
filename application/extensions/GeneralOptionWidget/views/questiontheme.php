@@ -1,15 +1,10 @@
 <div class="form-row">
-    <i 
-        class="fa fa-question pull-right" 
-        @click="triggerShowHelp=!triggerShowHelp" 
-        v-if="(elHelp.length>0) && !readonly" 
-        :aria-expanded="!triggerShowHelp" 
-        :aria-controls="'help-'+(elName || elId)"
-    ></i>
+    <i class="fa fa-question pull-right"></i>
     <label class="form-label">
         <?= $this->generalOption->title; ?>
     </label>
     <select 
+        class="form-control"
         name="<?= $this->generalOption->name; ?>" 
         id="<?= $this->generalOption->name; ?>" 
     >

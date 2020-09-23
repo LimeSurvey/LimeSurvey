@@ -1,11 +1,5 @@
 <div class="form-row">
-    <i
-        class="fa fa-question pull-right" 
-        @click="triggerShowHelp=!triggerShowHelp" 
-        v-if="(elHelp.length>0) && !readonly" 
-        :aria-expanded="!triggerShowHelp" 
-        :aria-controls="'help-'+(elName || elId)"
-    /></i>
+    <i class="fa fa-question pull-right"></i>
     <label class="form-label" :for="elId">
         <?= $this->setting['title']; ?>
     </label>
@@ -24,4 +18,5 @@
             </option>
         <?php endforeach; ?>
     </select>
+    <div class="question-option-help well" /><?= $this->setting['formElementHelp']; ?></div>
 </div>
