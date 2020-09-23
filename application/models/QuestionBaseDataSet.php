@@ -181,30 +181,33 @@ abstract class QuestionBaseDataSet extends StaticModel
      *
      * @throws Exception when question type attributes are not available
      * @return array
+     * @todo Return data-value objects instead of array
      */
-    public function getPreformattedBlockOfAdvancedSettings($oQuestion,  $sQuestionTheme = null){
+    public function getPreformattedBlockOfAdvancedSettings($oQuestion, $sQuestionTheme = null)
+    {
         $advancedOptionsArray = array();
         $this->oQuestion = $oQuestion;
         $this->sQuestionType = $this->oQuestion->type;
         $this->sLanguage = $this->oQuestion->survey->language;
 
-        //get all attributes for advanced settings (e.g. Subquestions, Attribute, Display, Display Theme options, Logic, Other, Statistics)
+        // Get all attributes for advanced settings (e.g. Subquestions, Attribute, Display, Display Theme options, Logic, Other, Statistics)
         if ($this->oQuestion->qid == null) { //this is only the case if question is new and has not been saved
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
-            if ($userSetting !== null){
+            if ($userSetting !== null) {
                 $advancedOptionsArray = (array) json_decode($userSetting);
             }
         }
+
         if (empty($advancedOptionsArray)) {
-            $questionThemeFromDB = QuestionAttribute::model()->find("qid=:qid AND attribute=:attribute", array('qid'=>$this->oQuestion->qid, 'attribute' => "question_template"));
-            if( $sQuestionTheme === null && $questionThemeFromDB->value !== 'core') {
+            $questionThemeFromDB = QuestionAttribute::model()->find("qid=:qid AND attribute=:attribute", array('qid' => $this->oQuestion->qid, 'attribute' => "question_template"));
+            if ($sQuestionTheme === null && $questionThemeFromDB->value !== 'core') {
                 $sQuestionTheme = $questionThemeFromDB->value;
             }
             $sQuestionTheme = $sQuestionTheme == '' || $sQuestionTheme == 'core' ? null : $sQuestionTheme;
 
             $aQuestionTypeAttributes = QuestionTheme::getQuestionThemeAttributeValues($this->sQuestionType, $sQuestionTheme);
             uasort($aQuestionTypeAttributes, 'categorySort');
-            $questionAttributesValuesFromDB = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$this->oQuestion->qid));
+            $questionAttributesValuesFromDB = QuestionAttribute::model()->findAll("qid=:qid", array('qid' => $this->oQuestion->qid));
 
             foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
                 if ($sAttributeName == 'question_template') {

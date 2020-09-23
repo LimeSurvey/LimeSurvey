@@ -585,6 +585,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @return void|array
      * @throws CException
+     * @todo Delete when Vue is gone?
      */
     public function actionGetAdvancedOptions(
         $iQuestionId = null,
@@ -1633,10 +1634,11 @@ class QuestionAdministrationController extends LSBaseController
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
 
-        return $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
+        $result = $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
             $oQuestion,
             $question_template
         );
+        return $result;
     }
 
     /**

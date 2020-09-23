@@ -584,7 +584,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                             <?php foreach ($settings as $setting): ?>
                                                 <tr>
                                                     <td>
-                                                        <?php echo $setting->title; ?>:
+                                                        <?php echo $setting['title']; ?>:
                                                     </td>
                                                     <td>
                                                         <?php
@@ -622,11 +622,10 @@ foreach ($aQuestionTypeList as $questionType) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="list-group">
-                                            <div class="list-group-item question-option-general-setting-block" 
-                                                 v-for="generalSetting in generalSettingOptions" 
-                                                 :key="generalSetting.name">
+                                            <div class="list-group-item question-option-general-setting-block">
                                                 <?php foreach ($generalSettings as $generalOption): ?>
                                                     <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
+                                                    <!--
                                                     <component 
                                                         v-bind:is="getComponentName(generalSetting.inputtype)" 
                                                         :elId="generalSetting.formElementId"
@@ -639,6 +638,7 @@ foreach ($aQuestionTypeList as $questionType) {
                                                         :readonly="isReadonly(generalSetting)"
                                                         @change="reactOnChange($event, generalSetting)">
                                                     </component>
+                                                    -->
                                                 <?php endforeach; ?>
                                             </div>
                                         </div>
@@ -648,15 +648,45 @@ foreach ($aQuestionTypeList as $questionType) {
 
                         </div>
                         <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                            <advancedsettings 
-                                :event="event" 
-                                v-on:triggerEvent="triggerEvent" 
-                                v-on:eventSet="eventSet" 
-                                :readonly="!(editQuestion || isCreateQuestion)"
-                                :hide-advanced-options="initCopy && copyAdvancedOptions"
-                                :hide-subquestions="initCopy && copyAdvancedOptions"
-                                :hide-answeroptions="initCopy && copyAdvancedOptions"
-                            />
+                            <div class="col-12 scope-apply-base-style scope-min-height">
+                                <div class="container-fluid" v-if="!loading && showAdvancedOptions" id="advanced-options-container">
+                                    <div class="row scoped-tablist-container">
+                                        <template v-if="showSubquestionEdit || showAnswerOptionEdit">
+                                            <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
+                                                <li 
+                                                    v-if="showSubquestionEdit"
+                                                    :class="currentTabComponent == 'subquestions' ? 'active' : ''"
+                                                >
+                                                    <a href="#" @click.prevent.stop="selectCurrentTab('subquestions')" >{{"subquestions" | translate }}</a>
+                                                </li>
+                                                <li 
+                                                    v-if="showAnswerOptionEdit"
+                                                    :class="currentTabComponent == 'answeroptions' ? 'active' : ''"
+                                                >
+                                                    <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
+                                                </li>
+                                            </ul>
+                                        </template>
+                                        <!-- Advanced settings tabs -->
+                                        <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist" v-if="!hideAdvancedOptions">
+                                            <?php foreach ($advancedSettings as $category => $settings): ?>
+                                                <li 
+                                                    v-for="advancedSettingCategory in tabs"
+                                                    :key="'tablist-'+advancedSettingCategory"
+                                                    :class="$store.state.questionAdvancedSettingsCategory == advancedSettingCategory && currentTabComponent == 'settings-tab' ? 'active' : ''"
+                                                >
+                                                    <a href="#" @click.prevent.stop="selectCurrentTab('settings-tab', advancedSettingCategory)" >
+                                                        <?= $category; ?>
+                                                    </a>
+                                                    <?php foreach ($settings as $setting): ?>
+                                                        <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
+                                                    <?php endforeach; ?>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <modals-container @modalEvent="setModalEvent"/>
