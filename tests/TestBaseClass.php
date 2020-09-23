@@ -97,6 +97,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
 
         if (self::$testSurvey) {
+            var_dump(get_class($this) . ": Deleting survey " . self::$testSurvey->sid);
             if (!self::$testSurvey->delete()) {
                 self::assertTrue(
                     false,
