@@ -98,24 +98,9 @@ foreach ($aQuestionTypeList as $questionType) {
 
         <div id="advancedQuestionEditor">
             <div class="container-center scoped-new-questioneditor">
-                <div class="btn-group pull-right clear" v-if="allowSwitchEditing && !loading">
-                        <button
-                            id="questionOverviewButton"
-                            key="questionOverviewButton"
-                            @click.prevent="triggerEditQuestion(false)"
-                            :class="editQuestion ? 'btn-default' : 'btn-primary'"
-                            class="btn ">
-                            Question overview
-                        </button>
-                        <button
-                            id="questionEditorButton"
-                            key="questionEditorButton"
-                            @click.prevent="triggerEditQuestion(true)"
-                            :class="editQuestion ? 'btn-primary' : 'btn-default'"
-                            class="btn "
-                        >
-                            Question editor
-                        </button>
+                <div class="btn-group pull-right clear">
+                    <button id="questionOverviewButton" class="btn btn-default"><?= gT('Question overview'); ?></button>
+                    <button id="questionEditorButton" class="btn btn-default" ><?= gT('Question editor'); ?></button>
                 </div>
                 <div class="pagetitle h3 scoped-unset-pointer-events">
                     <!-- TODO: If create or edit or copy -->
@@ -128,48 +113,6 @@ foreach ($aQuestionTypeList as $questionType) {
                     <!-- {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>-->
                 </div>
                     <!-- TODO: Move to partial -->
-                    <div class="row" key="questioncopy-block" v-if="initCopy">
-                        <div class="form-group col-lg-3 col-sm-6">
-                            <label class="ls-space margin right-5" for="copySubquestions">Copy subquestions</label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'copySubquestions',
-                                'id'=>'copySubquestions',
-                                'value' => Yii::app()->getConfig('copySubquestions'),
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                        </div>
-                        <div class="form-group col-lg-3 col-sm-6">
-                            <label class="ls-space margin right-5" for="copyAnswerOptions">Copy answer options</label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'copyAnswerOptions',
-                                'id'=>'copyAnswerOptions',
-                                'value' => Yii::app()->getConfig('copyAnswerOptions'),
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                        </div>
-                        <div class="form-group col-lg-3 col-sm-6">
-                            <label class="ls-space margin right-5" for="copyDefaultAnswers">Copy default answers</label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'copyDefaultAnswers',
-                                'id'=>'copyDefaultAnswers',
-                                'value' => Yii::app()->getConfig('copyDefaultAnswers'),
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                        </div>
-                        <div class="form-group col-lg-3 col-sm-6">
-                            <label class="ls-space margin right-5" for="copyAdvancedOptions">Copy advanced options</label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => 'copyAdvancedOptions',
-                                'id'=>'copyAdvancedOptions',
-                                'value' => Yii::app()->getConfig('copyAdvancedOptions'),
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                        </div>
-                    </div>
                     <div class="row" key="questioncode-block">
                         <div class="form-group col-sm-6 scoped-responsive-fix-height">
                             <label for="questionCode">Code</label>
@@ -622,7 +565,6 @@ foreach ($aQuestionTypeList as $questionType) {
                                     </div>
                                     <div class="panel-body">
                                         <div class="list-group">
-                                            <div class="list-group-item question-option-general-setting-block">
                                                 <?php foreach ($generalSettings as $generalOption): ?>
                                                     <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
                                                     <!--
@@ -640,7 +582,6 @@ foreach ($aQuestionTypeList as $questionType) {
                                                     </component>
                                                     -->
                                                 <?php endforeach; ?>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
