@@ -86,6 +86,6 @@ before_script:
   
 script:
     # Run tests.
-    - DOMAIN=localhost ./third_party/bin/phpunit
+    - DOMAIN=localhost ./third_party/bin/phpunit --filter EditQuestionTest
 
 
