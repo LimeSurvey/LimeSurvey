@@ -354,7 +354,7 @@ class SurveyAdministrationController extends LSBaseController
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('admin.htmleditor');
+        Yii::app()->loadHelper('admin/htmleditor');
 
         $esrow = $this->fetchSurveyInfo('newsurvey');
 
@@ -1790,8 +1790,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
-        // For Text Elemnts Tab.
-        if ($menuaction === 'surveytexts') {
+        if ($menuaction = 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
             foreach ($languages as $i => $language) {
@@ -1822,7 +1821,6 @@ class SurveyAdministrationController extends LSBaseController
 
             $aData['aTabContents'] = $aTabContents;
             $aData['aTabTitles']   = $aTabTitles;
-            $aData['moreInfo'] = $temp;
         }
 
         App()->getClientScript()->registerPackage('jquery-json');
@@ -2855,7 +2853,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     private function getDataSecurityEditData($survey)
     {
-        Yii::app()->loadHelper("admin.htmleditor");
+        Yii::app()->loadHelper("admin/htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
 
         $aData['scripts'] = PrepareEditorScript(false, $this);
