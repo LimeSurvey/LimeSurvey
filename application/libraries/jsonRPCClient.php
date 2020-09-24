@@ -216,4 +216,9 @@ class jsonRPCClient
     {
         $this->enableCurl = false;
     }
+
+    public function call($method, $params)
+    {
+        return $this->__call($method, $params);
+    }
 }
