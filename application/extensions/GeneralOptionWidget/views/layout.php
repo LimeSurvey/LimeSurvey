@@ -4,6 +4,8 @@
             role="button"
             class="fa fa-question pull-right"
             onclick="jQuery('#general-setting-help-<?= $this->generalOption->name; ?>').slideToggle()"
+            data-toggle="tooltip"
+            title="<?= gT("See help"); ?>"
             ></i>
         <label class="form-label">
             <?= $this->generalOption->title; ?>
