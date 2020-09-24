@@ -247,6 +247,56 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Show form to create new question.
+     *
+     * @param int $surveyid
+     * @return void
+     */
+    public function actionCreate($surveyid)
+    {
+        $surveyid = (int) $surveyid;
+
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(App()->request->urlReferrer);
+        }
+
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new Exception('Internal error: Found no survey with id ' . $surveyid);
+        }
+
+        $oQuestion = $this->getQuestionObject(null, 'T', null);
+
+        Yii::app()->loadHelper("admin/htmleditor");
+        Yii::app()->getClientScript()->registerPackage('ace');
+        Yii::app()->getClientScript()->registerPackage('jquery-ace'); 
+        Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype ='javascript';", CClientScript::POS_HEAD);
+        PrepareEditorScript(true, $this);
+
+        $this->aData['surveyid'] = $surveyid;
+        $this->aData['sid'] = $surveyid;
+        $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+        $this->aData['questionbar']['buttons']['view'] = true;
+        $this->aData['title_bar']['title'] =
+            $oSurvey->currentLanguageSettings->surveyls_title
+            . " (" . gT("ID") . ":" . $surveyid . ")";
+        $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+
+        $this->render(
+            'create',
+            [
+                'oSurvey'                => $oSurvey,
+                'oQuestion'              => $oQuestion,
+                'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
+                'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
+                'advancedSettings'       => $this->getAdvancedOptions(0, 'T', 'core'),  // TODO: question_template
+                'generalSettings'        => $this->getGeneralOptions(0, 'T', 0, 'core')  // TODO: question_template
+            ]
+        );
+    }
+
+    /**
      * Load list questions view for a specified survey by $surveyid
      *
      * @param int $surveyid Goven Survey ID
@@ -1549,9 +1599,10 @@ class QuestionAdministrationController extends LSBaseController
         $question_template = 'core'
     ) {
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid);
-        return $oQuestion
+        $result = $oQuestion
             ->getDataSetObject()
             ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
+        return $result;
     }
 
     /**
