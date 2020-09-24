@@ -39,7 +39,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
         \Yii::app()->session['loginID'] = 1;
 
         // Import survey.
-        $surveyFile =  'tests/data/surveys/limesurvey_survey_573386.lss';
+        $surveyFile =  'tests/data/surveys/limesurvey_survey_573387.lss';
         self::importSurvey($surveyFile);
 
         // Browser login.
