@@ -24,6 +24,7 @@
                             "codeAndType",
                             [
                                 'oSurvey'             => $oSurvey,
+                                'oQuestion'           => $oQuestion,
                                 'aStructureArray'     => $aQuestionTypeGroups,
                                 'questionTypes'       => $aQuestionTypeStateList,
                                 'aQuestionTypeGroups' => $aQuestionTypeGroups
