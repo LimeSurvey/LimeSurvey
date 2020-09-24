@@ -61,16 +61,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                 <div class="row">
                     <?php $this->renderPartial(
                         "languageselector",
-                        [
-                            'data' => $jsData,
-                            'oQuestion'              => $oQuestion,
-                            'oSurvey'                => $oSurvey,
-                            'aStructureArray' => $aQuestionTypeGroups,
-                            'questionTypes' => $aQuestionTypeStateList,
-                            'answersCount'           => $answersCount,
-                            'subquestionsCount'      => $subquestionsCount,
-                            'advancedSettings'       => $advancedSettings
-                        ]
+                        ['oSurvey' => $oSurvey]
                     ); ?>
                 </div>
 

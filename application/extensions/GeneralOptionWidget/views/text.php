@@ -4,7 +4,7 @@
         <?= $this->generalOption->title; ?>
     </label>
     <div class="input-group col-12">
-        <div v-if="hasPrefix" class="input-group-addon">
+        <div class="input-group-addon">
             <?= $this->generalOption->formElement->options['inputGroup']['prefix']; ?>
         </div>
         <input
@@ -19,4 +19,5 @@
             </div>
         <?php endif; ?>
     </div>
+    <div id="general-setting-help-<?= $this->generalOption->name; ?>" class="question-option-help well" /><?= $this->generalOption->formElement->help; ?></div>
 </div>

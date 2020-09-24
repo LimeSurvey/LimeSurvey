@@ -13,6 +13,8 @@ class AdvancedSettingWidget extends CWidget
         if ($this->setting['inputtype'] === 'singleselect') {
             //echo '<pre>'; var_dump($this->setting['aFormElementOptions']['options']); echo '</pre>';
         }
+        echo '<div class="col-lg-6">';
         $this->render($this->setting['inputtype']);
+        echo '</div>';
     }
 }

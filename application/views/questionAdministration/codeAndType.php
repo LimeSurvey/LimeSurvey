@@ -8,11 +8,11 @@
         'debugKeyCheck' => "Type: ",
         'previewWindowTitle' => gT("Preview question type"),
         'groupStructureArray' => $aQuestionTypeGroups,
-        'value' => $oQuestion->type,
+        'value' => $oQuestion->type ?? 'T',
         'debug' => YII_DEBUG,
-        'currentSelected' => Question::getQuestionTypeName($oQuestion->type),
+        'currentSelected' => Question::getQuestionTypeName($oQuestion->type ?? 'T'),
         'optionArray' => [
-            'selectedClass' => Question::getQuestionClass($oQuestion->type),
+            'selectedClass' => Question::getQuestionClass($oQuestion->type ?? 'T'),
             'onUpdate' => [
                 'value',
                 "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"

@@ -12,4 +12,5 @@
             <option value="<?= $option['value']; ?>"><?= $option['text']; ?></option>
         <?php endforeach; ?>
     </select>
+    <div id="general-setting-help-<?= $this->generalOption->name; ?>" class="question-option-help well" /><?= $this->generalOption->formElement->help; ?></div>
 </div>

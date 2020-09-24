@@ -11,7 +11,7 @@
                 <div class="htmleditor input-group">
                     <?= CHtml::textArea(
                         "question_{$oSurvey->language}",
-                        $oQuestion->questionl10ns[$oSurvey->language]->question,
+                        $oQuestion->questionl10ns[$oSurvey->language]->question ?? '',
                         array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")
                     ); ?>
                     <?= getEditor(
@@ -19,8 +19,8 @@
                         "question_".$oSurvey->language,
                         "[".gT("Question:","js")."](".$oSurvey->language.")",
                         $oSurvey->sid,
-                        $oQuestion->gid,
-                        $oQuestion->sid,
+                        $oQuestion->gid ?? 0,
+                        $oQuestion->sid ?? 0,
                         $action = '');
                     ?>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="htmleditor input-group">
                     <?= CHtml::textArea(
                         "help_".$oSurvey->language,
-                        $oQuestion->questionl10ns[$oSurvey->language]->help,
+                        $oQuestion->questionl10ns[$oSurvey->language]->help ?? '',
                         array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")
                     ); ?>
                     <?= getEditor(
@@ -42,8 +42,8 @@
                         "help_".$oSurvey->language,
                         "[".gT("Help:", "js")."](".$oSurvey->language.")",
                         $oSurvey->sid,
-                        $oQuestion->gid,
-                        $oQuestion->qid,
+                        $oQuestion->gid ?? 0,
+                        $oQuestion->qid ?? 0,
                         $action = ''
                     ); ?>
                 </div>
@@ -75,15 +75,10 @@
                         'class' => 'ace default', // . $sTemplateEditorMode,
                     )
                 ); ?>
-                    <p class="alert well">
-                        <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
-                    </p>
+                <p class="alert well">
+                    <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                </p>
             </div>
-        </div>
-    </div>
-    <div class="row" key="divideRow">
-        <div class="col-sm-12 ls-space margin top-5 bottom-5">
-            <hr />
         </div>
     </div>
 </div> 

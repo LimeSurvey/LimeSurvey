@@ -8,4 +8,5 @@
             id="<?= $this->generalOption->name; ?>"
             />
     </div> 
+    <div id="general-setting-help-<?= $this->generalOption->name; ?>" class="question-option-help well" /><?= $this->generalOption->formElement->help; ?></div>
 </div>

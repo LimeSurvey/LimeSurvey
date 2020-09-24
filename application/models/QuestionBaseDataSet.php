@@ -62,13 +62,13 @@ abstract class QuestionBaseDataSet extends StaticModel
         */
         // @todo This should be Yii widgets.
         $generalOptions = [
-            $this->getQuestionThemeOption($question_template),
-            $this->getQuestionGroupSelector(),
-            $this->getOtherSwitch(),
-            $this->getMandatorySetting(),
-            $this->getRelevanceEquationInput(),
-            $this->getEncryptionSwitch(),
-            $this->getSaveAsDefaultSwitch()
+            'question_template' => $this->getQuestionThemeOption($question_template),
+            'gid' => $this->getQuestionGroupSelector(),
+            'other' => $this->getOtherSwitch(),
+            'mandatory' => $this->getMandatorySetting(),
+            'relevance' => $this->getRelevanceEquationInput(),
+            'encrypted' => $this->getEncryptionSwitch(),
+            'save_as_default' => $this->getSaveAsDefaultSwitch()
         ];
         
         $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->sQuestionType);
@@ -90,7 +90,10 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         foreach ($generalOptions as $key => $generalOption){
-            if ((isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute'])) || !isset($aXmlAttributes['attribute'])){
+            if (
+                (isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute']))
+                || !isset($aXmlAttributes['attribute'])
+            ){
                 $generalOptionsFiltered[$key] = $generalOption;
             };
         }

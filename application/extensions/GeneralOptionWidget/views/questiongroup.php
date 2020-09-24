@@ -4,20 +4,14 @@
         <?= $this->generalOption->title; ?>
     </label>
     <select 
-        v-model="curValue"
-        :class="getClasses" 
-        :name="elName || elId" 
-        :id="elId" 
-        :disabled="readonly"
+        class="form-control"
+        name="<?= $this->generalOption->name; ?>"
+        id="<?= $this->generalOption->name; ?>"
     >
-        <option 
-            v-for="(optionObject, i) in elOptions.options"
-            :key="i"
-            :value="simpleValue(optionObject.value)"
-        >
-            {{optionObject.text}}
-        </option>
+        <!-- TODO -->
+        <?php foreach ($this->generalOption->formElement->options['options']->options as $option): ?>
+            <option value="<?= $option->value; ?>"><?= $option->text; ?></option>
+        <?php endforeach; ?>
     </select>
-    <div class="question-option-help well" /><?= $this->generalOption->formElement->help; ?></div>
+    <div id="general-setting-help-<?= $this->generalOption->name; ?>" class="question-option-help well" /><?= $this->generalOption->formElement->help; ?></div>
 </div>
-

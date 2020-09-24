@@ -1,7 +1,7 @@
 <div class="col-xs-12" >
     <div class="button-toolbar" :id="elId+'-language-selector'">
         <div class="btn-group">
-            <?php foreach($this->aData['languagelist'] as $lang): ?>
+            <?php foreach($oSurvey->allLanguages as $lang): ?>
                 <button
                     :key="language+'-button'"
                     class="btn btn-default"
