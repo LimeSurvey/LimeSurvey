@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @var SurveyAdministrationController $this
  * @var $aTabTitles
  * @var $aTabContents
  * @var $has_permissions
@@ -8,8 +9,6 @@
  * @var $surveyls_language
  */
 
- print_r($data['aTabTitles']);
- die();
 if (isset($data)) {
     extract($data);
 }
@@ -26,7 +25,9 @@ $cs = Yii::app()->getClientScript();
 $cs->registerPackage('bootstrap-select2');
 
 $adminlang = Yii::app()->session['adminlang'];
-
+$aTabContents = $this->aData['aTabContents'];
+$aTabTitles   = $this->aData['aTabTitles'];
+$count = $this->aData['temp']['i']; // TODO: Rename it. Just for testing = temp.
 ?>
 <!-- Text Elements Tabs -->
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
