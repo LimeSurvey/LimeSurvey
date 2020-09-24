@@ -194,7 +194,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         if ($this->oQuestion->qid == null) { //this is only the case if question is new and has not been saved
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
             if ($userSetting !== null) {
-                $advancedOptionsArray = (array) json_decode($userSetting);
+                $advancedOptionsArray = (array) json_decode($userSetting, true);
             }
         }
 

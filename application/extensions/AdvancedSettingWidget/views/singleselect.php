@@ -9,11 +9,11 @@
         id="<?= $this->setting['name']; ?>"
     >
         <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option): ?>
-            <option 
-                v-for="(optionObject, i) in elOptions.options.option"
-                :key="i"
-                :value="<?= json_encode($option['value']); ?>"
-            >
+            <?php if (isset($option['value'])): ?>
+                <option value="<?= json_encode($option['value']); ?>">
+            <?php else: ?>
+                <option>
+            <?php endif; ?>
                 <?= $option['text']; ?>
             </option>
         <?php endforeach; ?>
