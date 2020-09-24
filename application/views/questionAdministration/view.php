@@ -12,14 +12,6 @@ Yii::app()->getClientScript()->registerPackage('jquery-ace');
 Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype ='javascript';", CClientScript::POS_HEAD);
 
 ?>
-<?php $this->renderPartial(
-    "_jsVariables",
-    [
-        'data' => $jsData,
-        'aStructureArray' => $aQuestionTypeGroups,
-        'aQuestionTypes' => $aQuestionTypeStateList
-    ]
-); ?>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
@@ -82,23 +74,33 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     ); ?>
                 </div>
 
-                <div class="col-lg-12">
-                    <!-- Main editor -->
-                    <?php $this->renderPartial(
-                        "textElements",
-                        [
-                            'data' => $jsData,
-                            'oQuestion'              => $oQuestion,
-                            'oSurvey'                => $oSurvey,
-                            'aStructureArray' => $aQuestionTypeGroups,
-                            'questionTypes' => $aQuestionTypeStateList,
-                            'answersCount'           => $answersCount,
-                            'subquestionsCount'      => $subquestionsCount,
-                            'advancedSettings'       => $advancedSettings
-                        ]
-                    ); ?>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <!-- Text elements -->
+                        <?php $this->renderPartial(
+                            "textElements",
+                            [
+                                'oQuestion'         => $oQuestion,
+                                'oSurvey'           => $oSurvey,
+                                'aStructureArray'   => $aQuestionTypeGroups,
+                                'questionTypes'     => $aQuestionTypeStateList,
+                                'answersCount'      => $answersCount,
+                                'subquestionsCount' => $subquestionsCount,
+                                'advancedSettings'  => $advancedSettings
+                            ]
+                        ); ?>
+                    </div>
 
-                    <!-- Question summary, TODO: Put in partial view -->
+                    <!-- General settings -->
+                    <div class="col-lg-5">
+                        <div class="ls-flex scope-set-min-height scoped-general-settings">
+                            <?php $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]); ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Question summary -->
                     <div class="pagetitle h3">
                         <?php eT('Question summary'); ?>&nbsp;
                         <small>
@@ -110,86 +112,18 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                         <?php $this->renderPartial(
                             "summary",
                             [
-                                'data' => $jsData,
-                                'oQuestion'              => $oQuestion,
-                                'oSurvey'                => $oSurvey,
-                                'aStructureArray' => $aQuestionTypeGroups,
-                                'questionTypes' => $aQuestionTypeStateList,
-                                'answersCount'           => $answersCount,
-                                'subquestionsCount'      => $subquestionsCount,
-                                'advancedSettings'       => $advancedSettings
+                                'oQuestion'         => $oQuestion,
+                                'oSurvey'           => $oSurvey,
+                                'questionTypes'     => $aQuestionTypeStateList,
+                                'answersCount'      => $answersCount,
+                                'subquestionsCount' => $subquestionsCount,
+                                'advancedSettings'  => $advancedSettings
                             ]
                         ); ?>
                     </div>
 
-                    <!-- General settings -->
-                    <div class="ls-flex scope-set-min-height scoped-general-settings">
-                        <div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
-                            <div class="panel-heading"> 
-                                <?= gT('General Settings'); ?>
-                                <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">
-                                    <i class="fa fa-chevron-right" /></i>
-                                </button>
-                            </div>
-                            <div class="panel-body">
-                                <div class="list-group">
-                                    <?php foreach ($generalSettings as $generalOption): ?>
-                                        <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                        <div class="col-12 scope-apply-base-style scope-min-height">
-                            <div class="container-fluid" v-if="!loading && showAdvancedOptions" id="advanced-options-container">
-                                <div class="row scoped-tablist-container">
-                                    <!--
-                                    <template v-if="showSubquestionEdit || showAnswerOptionEdit">
-                                        <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
-                                            <li 
-                                                v-if="showSubquestionEdit"
-                                                :class="currentTabComponent == 'subquestions' ? 'active' : ''"
-                                            >
-                                                <a href="#" @click.prevent.stop="selectCurrentTab('subquestions')" >{{"subquestions" | translate }}</a>
-                                            </li>
-                                            <li 
-                                                v-if="showAnswerOptionEdit"
-                                                :class="currentTabComponent == 'answeroptions' ? 'active' : ''"
-                                            >
-                                                <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
-                                            </li>
-                                        </ul>
-                                    </template>
-                                    -->
-                                    <!-- Advanced settings tabs -->
-                                    <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
-                                        <?php foreach ($advancedSettings as $category => $_) : ?>
-                                            <li role="presentation">
-                                                <a
-                                                    href="#<?= $category; ?>"
-                                                    aria-controls="<?= $category; ?>"
-                                                    role="tab"
-                                                    data-toggle="tab"
-                                                    >
-                                                    <?= $category; ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                    <div class="tab-content">
-                                    <?php foreach ($advancedSettings as $category => $settings): ?>
-                                        <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
-                                            <?php foreach ($settings as $setting): ?>
-                                                <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    <?php endforeach; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php $this->renderPartial("advancedSettings", ['advancedSettings'  => $advancedSettings]); ?>
                     </div>
                 </div>
             </div>
