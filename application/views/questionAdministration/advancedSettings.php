@@ -22,7 +22,11 @@
             <!-- Advanced settings tabs -->
             <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
                 <?php foreach ($advancedSettings as $category => $_) : ?>
-                    <li role="presentation">
+                    <?php if ($category === 'Display'): ?>
+                        <li role="presentation" class="active">
+                    <?php else: ?>
+                        <li role="presentation">
+                    <?php endif; ?>
                         <a
                             href="#<?= $category; ?>"
                             aria-controls="<?= $category; ?>"
@@ -36,7 +40,11 @@
             </ul>
             <div class="tab-content">
             <?php foreach ($advancedSettings as $category => $settings): ?>
-                <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
+                <?php if ($category === 'Display'): ?>
+                    <div role="tabpanel" class="tab-pane active" id="<?= $category; ?>">
+                <?php else: ?>
+                    <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
+                <?php endif; ?>
                     <?php foreach ($settings as $setting): ?>
                         <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
                     <?php endforeach; ?>
