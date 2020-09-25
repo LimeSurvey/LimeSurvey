@@ -2,6 +2,7 @@
 
 /** @var QuestionAdministrationController $this */
 /** @var Survey $oSurvey */
+/** @var Question $oQuestion*/
 /** @var QuestionGroup $oQuestionGroup */
 
 
@@ -27,11 +28,9 @@
                 '_copyQuestionTabsLanguages',
                 array(
                     'oSurvey' => $oSurvey,
-                    'eqrow' => $eqrow,
-                    'surveyid' => $surveyid,
-                    'gid' => $groupid,
-                    'qid' => $questionId,
-                    'aqresult' => $aqresult,
+                    'oQuestion' => $oQuestion,
+                    'surveyid' => $oSurvey->sid,
+                    //'aqresult' => $aqresult,
                 )
             ); ?>
         </div>
@@ -114,7 +113,7 @@
                                     <label class=" control-label" for='gid'><?php eT("Question group:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" >
-                                            <?php echo getGroupList3($eqrow['gid'], $surveyid); ?>
+                                            <?php echo getGroupList3($oQuestion->gid, $oQuestion->sid); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -134,8 +133,8 @@
             </div>
         </div>
 
-        <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>'/>
-        <input type='hidden' name='surveyId' value='<?php echo $surveyid; ?>'/>
+        <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $oQuestion->qid; ?>'/>
+        <input type='hidden' name='surveyId' value='<?php echo $oQuestion->sid; ?>'/>
         </form>
 
     </div>

@@ -1228,34 +1228,45 @@ class QuestionAdministrationController extends LSBaseController
         Yii::app()->loadHelper('admin.htmleditor');
 
         //get params from request
-        $surveyIDToCopy = (int)Yii::app()->request->getParam('surveyId');
+        $surveyId = (int)Yii::app()->request->getParam('surveyId');
         $groupID = (int)Yii::app()->request->getParam('questionGroupId');
-        $questionId = (int)Yii::app()->request->getParam('questionId');
+        $questionIdToCopy = (int)Yii::app()->request->getParam('questionId');
 
         //permission check ...
-        if (!Permission::model()->hasSurveyPermission($surveyIDToCopy, 'surveycontent', 'create')){
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')){
             Yii::app()->user->setFlash('error', gT("Access denied! You don't have permission to copy a question"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-        $aData['surveyid'] = $surveyIDToCopy;
-        $oSurvey = Survey::model()->findByPk($surveyIDToCopy);
-        $aData['oSurvey'] =
+        $oQuestion = Question::model()->findByAttributes([
+            'sid' => $surveyId,
+            'gid' => $groupID,
+            'qid' => $questionIdToCopy
+        ]);
+        if($oQuestion === null){
+            Yii::app()->user->setFlash('error', gT("Question does not exist."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+
+        $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
+        $aData['sid'] = $surveyId; //important for renderGeneraltopbar()
+        $aData['gid'] = $groupID; //important for renderGeneraltopbar()
+        $aData['qid'] = $questionIdToCopy; //important for renderGeneraltopbar()
+
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        $aData['oSurvey'] = $oSurvey;
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$groupID));
         $aData['oQuestionGroup'] = $oQuestionGroup;
+        $aData['oQuestion'] = $oQuestion;
 
-        $aData['topBar']['type'] = 'question';
+        //array elements for frontend (topbar etc.)
+        $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['topBar']['showSaveButton'] = true;
-        $aData['questionbar']['buttons']['view'] = true;
-        $aData['display']['menu_bars']['qid_action'] = 'editquestion';
+        $aData['topBar']['showSaveButton']['url'] = "hdajhdjsahdjsad";
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
-            . " (" . gT("ID") . ":" . $iSurveyID . ")";
+            . " (" . gT("ID") . ":" . $surveyId . ")";
 
-        //todo how to set the url of the save btn ...
-
-        if ($landOnSideMenuTab !== '') {
-            $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
-        }
 
         //save the copy ...
         //or just load form ...
