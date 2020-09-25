@@ -132,9 +132,9 @@
                 </div>
             </div>
         </div>
-
-        <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $oQuestion->qid; ?>'/>
         <input type='hidden' name='surveyId' value='<?php echo $oQuestion->sid; ?>'/>
+        <input type='hidden' name='questionGroupId' value='<?php echo $oQuestionGroup->gid; ?>'/>
+        <input type='hidden' name='questionId' value='<?php echo $oQuestion->qid; ?>'/>
         </form>
 
     </div>

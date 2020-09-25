@@ -1229,7 +1229,7 @@ class QuestionAdministrationController extends LSBaseController
 
         //get params from request
         $surveyId = (int)Yii::app()->request->getParam('surveyId');
-        $groupID = (int)Yii::app()->request->getParam('questionGroupId');
+        $questionGroupId = (int)Yii::app()->request->getParam('questionGroupId');
         $questionIdToCopy = (int)Yii::app()->request->getParam('questionId');
 
         //permission check ...
@@ -1240,7 +1240,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion = Question::model()->findByAttributes([
             'sid' => $surveyId,
-            'gid' => $groupID,
+            'gid' => $questionGroupId,
             'qid' => $questionIdToCopy
         ]);
         if($oQuestion === null){
@@ -1248,28 +1248,43 @@ class QuestionAdministrationController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
         $aData['sid'] = $surveyId; //important for renderGeneraltopbar()
-        $aData['gid'] = $groupID; //important for renderGeneraltopbar()
+        $aData['gid'] = $questionGroupId; //important for renderGeneraltopbar()
         $aData['qid'] = $questionIdToCopy; //important for renderGeneraltopbar()
 
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aData['oSurvey'] = $oSurvey;
-        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$groupID));
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$questionGroupId));
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['oQuestion'] = $oQuestion;
 
         //array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['showSaveButton']['url'] = "hdajhdjsahdjsad";
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
 
-
-        //save the copy ...
-        //or just load form ...
+        //save the copy ...savecopy (submitbtn pressed ...)
+        $savePressed = Yii::app()->request->getParam('savecopy');
+        if(isset($savePressed) && $savePressed!==null){
+            //todo: copy question ...
+            $newQuestion = new Question();
+            $newQuestion->attributes = $oQuestion->attributes; //copy values from exisiting question
+            $newQuestion->title = Yii::app()->request->getParam('title');
+            $newQuestion->gid = Yii::app()->request->getParam('gid');
+            $newQuestion->qid = null;
+            if($newQuestion->save()){
+                //copy subquestions
+                //copy answer options
+                //copy default answers
+                //copy question settings (generalsettings and advanced settings)
+                App()->user->setFlash('success', gT("Saved copied question"));
+            }else{
+                App()->user->setFlash('error', gT("Could not save copied question"));
+            }
+            //todo: redirect to the copied question
+        }
 
 
         $this->aData = $aData;

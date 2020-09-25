@@ -71,7 +71,8 @@
                         $oSurvey->sid,
                         $oQuestion->gid,
                         $oQuestion->sid,
-                        $action = '');
+                        $action = ''
+                    );
                     ?>
                 </div>
             </div>

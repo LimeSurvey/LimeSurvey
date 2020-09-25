@@ -400,7 +400,6 @@ if ($qid == 0) {
 
 } else {
     // Save Button
-    if()
     $buttons['save'] = [
         'url' => '#',
         'icon' => 'fa fa-floppy-o',
