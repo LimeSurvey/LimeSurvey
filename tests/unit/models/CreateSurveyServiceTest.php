@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 
 
-class CreateSurveyTest extends TestCase
+class CreateSurveyServiceTest extends TestCase
 {
 
     /**
