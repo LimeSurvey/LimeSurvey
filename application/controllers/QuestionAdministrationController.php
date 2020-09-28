@@ -1275,9 +1275,71 @@ class QuestionAdministrationController extends LSBaseController
             $newQuestion->gid = Yii::app()->request->getParam('gid');
             $newQuestion->qid = null;
             if($newQuestion->save()){
+                //copy languages if necessecary
+                $i10N = [];
+                foreach ($oSurvey->allLanguages as $sLanguage) {
+                    $i10N[$sLanguage] = new QuestionL10n();
+                    $i10N[$sLanguage]->setAttributes(
+                        [
+                            'qid'      => $newQuestion->qid,
+                            'language' => $sLanguage,
+                            'question' => '',
+                            'help'     => '',
+                        ],
+                        false
+                    );
+                    $i10N[$sLanguage]->save();
+                }
+
                 //copy subquestions
+                $iscopySubquestions = (int)Yii::app()->request->getParam('copysubquestions');
+                if($iscopySubquestions !== null && $iscopySubquestions===1){
+                    $subquestions = Question::model()->findAllByAttributes(['parent_qid'=> $questionIdToCopy]);
+                    foreach ($subquestions as $subquestion){
+                        $copiedSubquestion = new Question();
+                        $copiedSubquestion->attributes = $subquestion->attributes;
+                        $copiedSubquestion->sid = null; //new question id needed ...
+                        $copiedSubquestion->save();
+                    }
+                }
                 //copy answer options
+                $iscopyAnswerOptions = (int)Yii::app()->request->getParam('copyanswers');
+                if($iscopyAnswerOptions){
+                    $answerOptions = Answer::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
+                    foreach ($answerOptions as $answerOption){
+                        $copiedAnswerOption = new Answer();
+                        $copiedAnswerOption->attributes = $answerOption->attributes;
+                        $copiedAnswerOption->aid = null;
+                        if($copiedAnswerOption->save()){
+                            //copy the languages
+                            foreach ($answerOption->answerl10ns as $answerLanguage) {
+                                $copiedAnswerOptionLanguage = new AnswerL10n();
+                                $copiedAnswerOptionLanguage-> attributes = $answerLanguage->attributes;
+                                $copiedAnswerOptionLanguage->id = null;
+                                $copiedAnswerOptionLanguage->save();
+                            }
+                        }
+                    }
+                }
                 //copy default answers
+                $iscopyDefaultAnswer = (int)Yii::app()->request->getParam('copydefaultanswers');
+                if($iscopyDefaultAnswer){
+                    $defaultAnswers = DefaultValue::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
+                    foreach ($defaultAnswers as $defaultAnswer){
+                        $copiedDefaultAnswer = new DefaultValue();
+                        $copiedDefaultAnswer->attributes = $defaultAnswer->attributes;
+                        $copiedDefaultAnswer->dvid = null;
+                        if($copiedDefaultAnswer->save()){
+                            //copy languages if needed
+                            foreach ($copiedDefaultAnswer->defaultvalueL10ns as $defaultAnswerL10n){
+                                $copieDefaultAnswerLanguage = new DefaultValueL10n();
+                                $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
+                                $copieDefaultAnswerLanguage->id = null;
+                                $copieDefaultAnswerLanguage->save();
+                            }
+                        }
+                    }
+                }
                 //copy question settings (generalsettings and advanced settings)
                 App()->user->setFlash('success', gT("Saved copied question"));
             }else{
@@ -1736,7 +1798,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * todo: move to model or service class
      *
-     * @param array $aQuestionData
+     * @param array $aQuestionData what is inside this array ??
      * @param boolean $subquestion
      * @return Question
      * @throws CHttpException

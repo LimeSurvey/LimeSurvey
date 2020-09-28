@@ -15,6 +15,20 @@
     $sPattern = "^[a-zA-Z][a-zA-Z0-9]*$";
 } ?>
 
+<!-- Question Code -->
+<div class="form-group">
+    <label class=" control-label"  for='title'><?php eT("Code:"); ?></label>
+    <div class="">
+        <?php echo CHtml::textField(
+            "title",
+            $oQuestion->title . 'Copy',
+            array('class'=>'form-control','size'=>"20",'maxlength'=>'20','pattern'=>$sPattern,"autofocus"=>"autofocus",'id'=>"title")
+        );
+        ?>
+        <span class='text-warning'><?php  eT("Required"); ?> </span>
+    </div>
+</div>
+
 <!-- New question language tabs -->
 <ul class="nav nav-tabs" style="margin-right: 8px;" >
     <li role="presentation" class="active">
@@ -32,24 +46,10 @@
 </ul>
 
 <!-- Editors for each languages -->
-<div class="tab-content" v-pre>
+<div class="tab-content" >
 
     <!-- Base Language tab-pane -->
     <div id="<?php echo $oSurvey->language; ?>" class="tab-pane fade in active">
-
-        <!-- Question Code -->
-        <div class="form-group">
-                <label class=" control-label"  for='title'><?php eT("Code:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField(
-                            "title",
-                            $oQuestion->title . 'Copy',
-                            array('class'=>'form-control','size'=>"20",'maxlength'=>'20','pattern'=>$sPattern,"autofocus"=>"autofocus",'id'=>"title")
-                    );
-                    ?>
-                    <span class='text-warning'><?php  eT("Required"); ?> </span>
-                </div>
-        </div>
 
         <div class="panel-body">
             <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
@@ -100,11 +100,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
 </div>
 
 <div id='questionactioncopy' class='extra-action'>
