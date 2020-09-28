@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.17 (build 200921) to 4.3.18 (build 200928) September 28, 2020
+-Fixed issue: SPSS export broken for numbers > 1000 (Carsten Schmitz)
+-Fixed issue: If the participant table is too big the token generation may fail due to memory shortage (Carsten Schmitz)
+-Fixed issue: Accidental double deactivation throws database error (Carsten Schmitz)
+-Fixed issue #16693: Export responses to SPSS button does not work (Carsten Schmitz)
+
+
 Changes from 4.3.16 (build 200915) to 4.3.17 (build 200921) September 21, 2020
 -Fixed issue: SPSS export - Seed value does not have proper variable name (Carsten Schmitz)
 -Fixed issue: SPSS export - Empty value replacement causing corrupted data fields (Carsten Schmitz)
