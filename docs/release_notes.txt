@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.5 (build 200923) to 3.23.6 (build 200929) September 28, 2020
+-Fixed issue: Accidental double deactivation throws database error (Carsten Schmitz)
+-Fixed issue #16647: Can't select seperator for CPDB export - export doesn't recognise text (GabrielJenik)
+
+
 Changes from 3.23.4 (build 200922) to 3.23.5 (build 200923) September 22, 2020
 -Fixed issue: SPSS export broken for numbers > 1000 (Carsten Schmitz)
 -Fixed issue: If the participant table is too big the token generation may fail due to memory shortage (Carsten Schmitz)
