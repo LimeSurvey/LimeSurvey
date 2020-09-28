@@ -27,7 +27,9 @@ $cs->registerPackage('bootstrap-select2');
 $adminlang = Yii::app()->session['adminlang'];
 $aTabContents = $this->aData['aTabContents'];
 $aTabTitles   = $this->aData['aTabTitles'];
-$count = $this->aData['temp']['i']; // TODO: Rename it. Just for testing = temp.
+$count = $this->aData['data']['i'];
+
+PrepareEditorScript(false, $this);
 ?>
 <!-- Text Elements Tabs -->
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
