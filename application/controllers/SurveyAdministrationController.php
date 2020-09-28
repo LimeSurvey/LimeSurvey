@@ -1790,6 +1790,7 @@ class SurveyAdministrationController extends LSBaseController
 
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
+        // For Text Elemnts Tab.
         if ($menuaction = 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
@@ -1821,7 +1822,7 @@ class SurveyAdministrationController extends LSBaseController
 
             $aData['aTabContents'] = $aTabContents;
             $aData['aTabTitles']   = $aTabTitles;
-            $aData['temp'] = $temp;
+            $aData['data'] = $temp;
         }
 
         App()->getClientScript()->registerPackage('jquery-json');
