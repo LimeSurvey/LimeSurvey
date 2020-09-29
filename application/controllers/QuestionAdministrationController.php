@@ -1268,8 +1268,18 @@ class QuestionAdministrationController extends LSBaseController
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if(isset($savePressed) && $savePressed!==null){
-            //todo: copy question ...
-            $newQuestion = new Question();
+            $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
+            $copyQuestionValues->setOSurvey($oSurvey);
+            $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
+            $copyQuestionValues->setQuestionGroupId(Yii::app()->request->getParam('gid'));
+            $copyQuestionValues->setQuestiontoCopy($oQuestion);
+
+            $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
+            $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
+            $copyOptions['copyAnswerOptions'] = (int)Yii::app()->request->getParam('copyanswers') === 1;
+            $copyOptions['copyDefaultAnswers'] = (int)Yii::app()->request->getParam('copydefaultanswers') === 1;
+            if($copyQuestionService->copyQuestion())
+          /*  $newQuestion = new Question();
             $newQuestion->attributes = $oQuestion->attributes; //copy values from exisiting question
             $newQuestion->title = Yii::app()->request->getParam('title');
             $newQuestion->gid = Yii::app()->request->getParam('gid');
@@ -1339,7 +1349,7 @@ class QuestionAdministrationController extends LSBaseController
                             }
                         }
                     }
-                }
+                } */
                 //copy question settings (generalsettings and advanced settings)
                 App()->user->setFlash('success', gT("Saved copied question"));
             }else{

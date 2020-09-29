@@ -15,8 +15,8 @@ class CopyQuestionValues
         /** @var string the question Code */
         private $questionCode;
 
-        /** @var int question Group that the copied question should belong to */
-        private $questionGroup;
+        /** @var int questionGroup id that the copied question should belong to */
+        private $questionGroupId;
 
         /** @var \Survey the survey the question belongs to */
         private $oSurvey;
@@ -43,7 +43,7 @@ class CopyQuestionValues
     /**
      * @return int
      */
-    public function getQuestionGroup(): int
+    public function getQuestionGroupId(): int
     {
         return $this->questionGroup;
     }
@@ -51,7 +51,7 @@ class CopyQuestionValues
     /**
      * @param int $questionGroup
      */
-    public function setQuestionGroup(int $questionGroup): void
+    public function setQuestionGroupId(int $questionGroup): void
     {
         $this->questionGroup = $questionGroup;
     }
