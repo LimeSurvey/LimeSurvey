@@ -40,4 +40,52 @@ class CopyQuestionValues
         $this->questionCode = $questionCode;
     }
 
+    /**
+     * @return int
+     */
+    public function getQuestionGroup(): int
+    {
+        return $this->questionGroup;
+    }
+
+    /**
+     * @param int $questionGroup
+     */
+    public function setQuestionGroup(int $questionGroup): void
+    {
+        $this->questionGroup = $questionGroup;
+    }
+
+    /**
+     * @return \Survey
+     */
+    public function getOSurvey(): \Survey
+    {
+        return $this->oSurvey;
+    }
+
+    /**
+     * @param \Survey $oSurvey
+     */
+    public function setOSurvey(\Survey $oSurvey): void
+    {
+        $this->oSurvey = $oSurvey;
+    }
+
+    /**
+     * @return \Question
+     */
+    public function getQuestiontoCopy(): \Question
+    {
+        return $this->questiontoCopy;
+    }
+
+    /**
+     * @param \Question $questiontoCopy
+     */
+    public function setQuestiontoCopy(\Question $questiontoCopy): void
+    {
+        $this->questiontoCopy = $questiontoCopy;
+    }
+
 }
