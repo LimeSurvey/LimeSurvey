@@ -27,14 +27,14 @@ $cs->registerPackage('bootstrap-select2');
 $adminlang = Yii::app()->session['adminlang'];
 $aTabContents = $this->aData['aTabContents'];
 $aTabTitles   = $this->aData['aTabTitles'];
-$count = $this->aData['data']['i'];
+$count = $this->aData['moreInfo']['i'];
 
 PrepareEditorScript(false, $this);
 ?>
 <!-- Text Elements Tabs -->
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i => $title):?>
-        <li role="presentation" class="<?php if ($count==0) {echo "active"; }?>">
+        <li role="presentation" class="<?php if ($count == 0 || (strpos($title, ' ('.gT("Base language").')'))) {echo "active"; }?>">
             <a data-toggle="tab" href="#edittxtele-<?php echo $count; $count++; ?>">
                 <?php echo $title;?>
             </a>
