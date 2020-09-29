@@ -1822,7 +1822,7 @@ class SurveyAdministrationController extends LSBaseController
 
             $aData['aTabContents'] = $aTabContents;
             $aData['aTabTitles']   = $aTabTitles;
-            $aData['data'] = $temp;
+            $aData['moreInfo'] = $temp;
         }
 
         App()->getClientScript()->registerPackage('jquery-json');
