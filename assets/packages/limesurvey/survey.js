@@ -397,3 +397,11 @@ function updateMandatoryErrorClass(){
     });
 }
 
+function resetQuestionTimers(sid) {
+    var surveyTimersItemName = 'limesurvey_timers_by_sid_' + sid;
+    var timers = JSON.parse(window.localStorage.getItem(surveyTimersItemName) || "[]");
+    timers.forEach(function(timersessionname, idx){
+        window.localStorage.removeItem('limesurvey_timers_' + timersessionname);
+    });
+    window.localStorage.removeItem(surveyTimersItemName);
+}

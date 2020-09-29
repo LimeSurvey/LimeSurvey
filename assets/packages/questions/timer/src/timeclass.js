@@ -15,6 +15,7 @@ export default class TimerConstructor {
     _parseOptions(option) {
         return {
             questionid: option.questionid || null,
+            surveyid: option.surveyid || null,
             timer: option.timer || 0,
             action: option.action || 1,
             warning: option.warning || 0,
@@ -197,6 +198,15 @@ export default class TimerConstructor {
     }
 
     /**
+     * Appends the current timer's qid to the list of timers for the survey
+     */
+    _appendTimerToSurveyTimersList() {
+        var timers = JSON.parse(window.localStorage.getItem(this.surveyTimersItemName) || "[]");
+        if (!timers.includes(this.timersessionname)) timers.push(this.timersessionname);
+        window.localStorage.setItem(this.surveyTimersItemName, JSON.stringify(timers));
+    }
+
+    /**
      * Unsets the timer in localStorage
      */
     _unsetTimerInLocalStorage() {
@@ -281,6 +291,7 @@ export default class TimerConstructor {
             this.finishTimer();
             return;
         }
+        this._appendTimerToSurveyTimersList();
         this._setTimerToLocalStorage(this.timeLeft);
         this._disableNavigation();
         this._setInterval();
@@ -296,6 +307,7 @@ export default class TimerConstructor {
         this.intervalObject = null;
         this.warning = 0;
         this.timersessionname = 'timer_question_' + this.option.questionid;
+        this.surveyTimersItemName = 'limesurvey_timers_by_sid_' + this.option.surveyid;
 
         // Unset timer in local storage if the reset timers flag is set
         if (LSvar.bResetQuestionTimers) this._unsetTimerInLocalStorage();

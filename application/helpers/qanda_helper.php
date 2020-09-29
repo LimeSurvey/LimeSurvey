@@ -607,6 +607,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
         '/survey/questions/question_timer/timer_footer',
         array(
             'iQid'=>$ia[0],
+            'iSid'=>Yii::app()->getConfig('surveyID'),
             'time_limit'=>$time_limit,
             'time_limit_action'=>$time_limit_action,
             'time_limit_warning'=>$time_limit_warning,

@@ -72,6 +72,7 @@ class index extends CAction
 
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
+            resetQuestionTimers($surveyid);
         }
 
         $surveyExists   = ($oSurvey != null);
@@ -576,7 +577,7 @@ class index extends CAction
 
         // Reset the question timers in preview
         if (!$isSurveyActive || $previewmode) {
-            resetQuestionTimers();
+            resetQuestionTimers($surveyid);
         }
 
         sendCacheHeaders();
