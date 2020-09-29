@@ -15,7 +15,7 @@
  * @var $disable
  */
 Yii::app()->getClientScript()->registerScript("TimerQuestion".$iQid, "
-    countdown($iQid, $time_limit, $time_limit_action, $time_limit_warning, $time_limit_warning_2, $time_limit_warning_display_time, $time_limit_warning_2_display_time, '$disable');
+    countdown($iQid, $iSid, $time_limit, $time_limit_action, $time_limit_warning, $time_limit_warning_2, $time_limit_warning_display_time, $time_limit_warning_2_display_time, '$disable');
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
 </div>

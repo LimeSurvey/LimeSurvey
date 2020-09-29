@@ -205,6 +205,7 @@ abstract class QuestionBaseRenderer extends StaticModel
             '/survey/questions/question_timer/timer_footer',
             array(
                 'iQid'=>$oQuestion->qid,
+                'iSid'=>Yii::app()->getConfig('surveyID'),
                 'time_limit'=>$time_limit,
                 'time_limit_action'=>$time_limit_action,
                 'time_limit_warning'=>$time_limit_warning,
