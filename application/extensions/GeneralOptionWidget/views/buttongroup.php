@@ -8,7 +8,7 @@
                 type="radio" 
                 id="'input-'+(elName || elId)+'_'+i" 
                 id="input-<?= $this->generalOption->name; ?>-<?= $i; ?>" 
-                name="<?= $this->generalOption->name; ?>" 
+                name="generalSettings[<?= $this->generalOption->name; ?>]" 
                 value="<?= $option->value; ?>"
             />
             <?= $option->text; ?>

@@ -425,10 +425,11 @@ class QuestionAdministrationController extends LSBaseController
         }
          */
         $questionData = [];
-        $questionData['question'] = (array) $request->getPost('question');
-        $questionData['question']['sid'] = $iSurveyId;
-        $questionData['questionI10N'] = (array) $request->getPost('questionI10N');
-        $questionData['generalSettings'] = (array) $request->getPost('generalSettings');
+        $questionData['question']         = (array) $request->getPost('question');
+        $questionData['question']['sid']  = $iSurveyId;
+        $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
+        $questionData['generalSettings']  = (array) $request->getPost('generalSettings');
+        $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
 
         //echo '<pre>'; var_dump($_POST); echo '</pre>';
         //die;

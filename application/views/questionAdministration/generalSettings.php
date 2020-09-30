@@ -7,8 +7,11 @@
     </div>
     <div class="panel-body">
         <div class="list-group">
-            <?php foreach ($generalSettings as $generalOption): ?>
-                <?php $this->widget('ext.GeneralOptionWidget.GeneralOptionWidget', ['generalOption' => $generalOption]); ?>
+            <?php foreach ($generalSettings as $generalOption) : ?>
+                <?php $this->widget(
+                    'ext.GeneralOptionWidget.GeneralOptionWidget',
+                    ['generalOption' => $generalOption]
+                ); ?>
             <?php endforeach; ?>
         </div>
     </div>

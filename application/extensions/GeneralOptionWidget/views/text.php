@@ -5,10 +5,10 @@
     <input
         type="text"
         class="form-control"
-        name="<?= $this->generalOption->name; ?>" 
+        name="generalSettings[<?= $this->generalOption->name; ?>]" 
         id="<?= $this->generalOption->name; ?>"
     />
-    <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])): ?>
+    <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])) : ?>
         <div class="input-group-addon">
             <?= $this->generalOption->formElement->options['inputGroup']['suffix']; ?>
         </div>
