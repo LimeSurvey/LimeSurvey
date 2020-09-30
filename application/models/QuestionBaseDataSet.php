@@ -271,8 +271,8 @@ abstract class QuestionBaseDataSet extends StaticModel
             $aGroupsToSelect,
             function ($oQuestionGroup) use (&$aGroupOptions){
                 $aGroupOptions[] = new SwitchOption(
-                    $oQuestionGroup->gid,
-                    $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name
+                    $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name,
+                    $oQuestionGroup->gid
                 );
             }
         );

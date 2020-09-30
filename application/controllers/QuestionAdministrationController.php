@@ -427,23 +427,31 @@ class QuestionAdministrationController extends LSBaseController
         $questionData = [];
         $questionData['question'] = (array) $request->getPost('question');
         $questionData['question']['sid'] = $iSurveyId;
+        $questionData['questionI10N'] = (array) $request->getPost('questionI10N');
+        $questionData['generalSettings'] = (array) $request->getPost('generalSettings');
+
+        //echo '<pre>'; var_dump($_POST); echo '</pre>';
+        //die;
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',
             [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
         );
-        if ($oQuestion == null) {
-            $oQuestion = $this->storeNewQuestionData($questionData['question']);
-        } else {
-            $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
-        }
 
         /*
          * Setting up a try/catch scenario to delete a copied/created question,
          * in case the storing of the peripherals breaks
          */
         try {
+            $transaction = Yii::app()->db->beginTransaction();
+
+            if ($oQuestion == null) {
+                $oQuestion = $this->storeNewQuestionData($questionData['question']);
+            } else {
+                $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
+            }
+
             // Apply the changes to general settings, advanced settings and translations
             $setApplied = [];
 
@@ -453,18 +461,6 @@ class QuestionAdministrationController extends LSBaseController
                 $oQuestion,
                 $questionData['generalSettings']
             );
-
-            if (!($$questionCopySettings['copyAdvancedOptions'] == false)) {
-                $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
-                    $oQuestion,
-                    $questionData['advancedSettings']
-                );
-            }
-
-            if (!($$questionCopySettings['copyDefaultAnswers'] == false)) {
-                $setApplied['defaultAnswers'] = $this->copyDefaultAnswers($oQuestion, $questionData['question']['qid']);
-            }
-
 
             // save advanced attributes default values for given question type
             if (array_key_exists('save_as_default', $questionData['generalSettings'])
@@ -499,7 +495,9 @@ class QuestionAdministrationController extends LSBaseController
                     );
                 }
             }
+            $transaction->commit();
         } catch (CException $ex) {
+            $transaction->rollback();
             throw new LSJsonException(
                 500,
                 gT('Question has been stored, but an error happened: ') . "\n" . $ex->getMessage(),
@@ -1768,7 +1766,7 @@ class QuestionAdministrationController extends LSBaseController
         $aQuestionData = array_merge(
             [
                 'sid'        => $iSurveyId,
-                'gid'        => App()->request->getParam('gid'),
+                'gid'        => $aQuestionData['gid'],
                 'type'       => $type,
                 'other'      => 'N',
                 'mandatory'  => 'N',
@@ -1883,7 +1881,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return boolean
      * @throws CHttpException
      */
-    private function applyI10N(&$oQuestion, $dataSet)
+    private function applyI10N($oQuestion, $dataSet)
     {
         foreach ($dataSet as $sLanguage => $aI10NBlock) {
             $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);

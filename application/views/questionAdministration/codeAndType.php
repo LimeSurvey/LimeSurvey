@@ -29,6 +29,7 @@
             text="text"
             class="form-control"
             id="questionCode"
+            name="question[title]"
             :maxlength="this.maxQuestionCodeLength"
             :required="true"
             :readonly="!(editQuestion || isCreateQuestion || initCopy)"

@@ -10,13 +10,13 @@
                 </div>
                 <div class="htmleditor input-group">
                     <?= CHtml::textArea(
-                        "question_{$oSurvey->language}",
+                        "questionI10N[$oSurvey->language][question]",
                         $oQuestion->questionl10ns[$oSurvey->language]->question ?? '',
                         array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")
                     ); ?>
                     <?= getEditor(
-                        "question-text",
-                        "question_".$oSurvey->language,
+                        "questionI10N[$oSurvey->language][question]",
+                        "question_" . $oSurvey->language,
                         "[".gT("Question:","js")."](".$oSurvey->language.")",
                         $oSurvey->sid,
                         $oQuestion->gid ?? 0,
@@ -33,12 +33,12 @@
                 </div>
                 <div class="htmleditor input-group">
                     <?= CHtml::textArea(
-                        "help_".$oSurvey->language,
+                        "questionI10N[$oSurvey->language][help]",
                         $oQuestion->questionl10ns[$oSurvey->language]->help ?? '',
                         array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")
                     ); ?>
                     <?= getEditor(
-                        "question-help",
+                        "questionI10N[$oSurvey->language][help]",
                         "help_".$oSurvey->language,
                         "[".gT("Help:", "js")."](".$oSurvey->language.")",
                         $oSurvey->sid,
@@ -55,7 +55,7 @@
                 <div class="col-sm-6 text-right">
                     <input 
                         type="checkbox" 
-                        name="selector--scriptForAllLanguages" 
+                        name="scriptForAllLanguages"
                         id="selector--scriptForAllLanguages"
                         v-model="scriptForAllLanugages"
                     />&nbsp;
@@ -65,15 +65,15 @@
                 </div>
 
                 <?= CHtml::textArea(
-                    'editscript',
+                    "questionI10N[$oSurvey->language][script]",
                     !empty($editfile) ? file_get_contents($editfile) : '',
-                    array(
-                        'id' => 'editscript',
+                    [
+                        'id' => "questionI10N[{$oSurvey->language}][script]",
                         'rows' => '10',
-                        'cols' => '20',
+                        'cols' => '40',
                         'data-filetype' => 'javascript',
                         'class' => 'ace default', // . $sTemplateEditorMode,
-                    )
+                    ]
                 ); ?>
                 <p class="alert well">
                     <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
