@@ -1,7 +1,7 @@
 <div class="inputtype--toggle-container">
     <input
         type="checkbox"
-        name="<?= $this->setting['name']; ?>"
-        id="<?= $this->setting['name']; ?>"
+        name="advancedSettings[<?= $this->setting['name']; ?>]"
+        id="advancedSettings[<?= $this->setting['name']; ?>]"
         />
 </div> 

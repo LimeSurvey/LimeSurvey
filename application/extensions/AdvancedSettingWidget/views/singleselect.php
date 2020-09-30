@@ -1,12 +1,12 @@
 <select 
     class="form-control" 
-    name="<?= $this->setting['name']; ?>"
-    id="<?= $this->setting['name']; ?>"
+    name="advancedSettings[<?= $this->setting['name']; ?>]"
+    id="advancedSettings[<?= $this->setting['name']; ?>]"
 >
-    <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option): ?>
-        <?php if (isset($option['value'])): ?>
+    <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option) : ?>
+        <?php if (isset($option['value'])) : ?>
             <option value="<?= json_encode($option['value']); ?>">
-        <?php else: ?>
+        <?php else : ?>
             <option>
         <?php endif; ?>
             <?= $option['text']; ?>
