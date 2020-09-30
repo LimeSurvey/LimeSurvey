@@ -13,11 +13,19 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on("ready  pjax:scriptcomplete", function () {
+$(document).on("ready pjax:scriptcomplete", function () {
     // Since save button is not inside the form, we need to trigger it manually.
     $('#save-button').on('click', function(ev) {
         ev.preventDefault();
         $('#edit-question-form').submit();
         return false;
     });
+
+    // Init Ace script editor.
+    $('.ace:not(.none)').ace({
+        'mode' : 'javascript'
+    });
+
+    // Hide help tips by default.
+    $('.question-option-help').hide();
 });

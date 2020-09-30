@@ -67,12 +67,3 @@
         </form>
     </div>
 </div>
-
-<script>
-jQuery(document).on('ready', function () {
-    $('.ace:not(.none)').ace({
-        'mode' : 'javascript'
-    });
-    $('.question-option-help').hide();
-});
-</script>
