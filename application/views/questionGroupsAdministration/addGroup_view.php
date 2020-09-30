@@ -94,3 +94,12 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
        </form>
     </div>
 </div>
+
+<?php
+// Switch topbar to "extended" mode.
+// In this case (question group topbar), the extended mode only includes the save/close buttons
+Yii::app()->getClientScript()->registerScript(
+    "AddGroup_topbar_switch", 'window.EventBus.$emit("doFadeEvent", true);', 
+    LSYii_ClientScript::POS_END
+);
+?>

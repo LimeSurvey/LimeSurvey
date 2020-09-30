@@ -47,8 +47,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
      */
     protected function beforeRender($view)
     {
-        $this->aData['topBar']['type'] = 'group';
-        //$this->aData['topBar']['showSaveButton'] = true;
+        // Set topbar type if not already set
+        if(!isset($this->aData['topBar'])||!isset($this->aData['topBar']['type'])) {
+            $this->aData['topBar']['type'] = 'group';
+        }
         if (empty($this->aData['topBar']['showCloseButton'])) {
             $this->aData['topBar']['showCloseButton'] = false;
         }

@@ -167,20 +167,22 @@ if (($hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'survey
     array_push($topbar['alignment']['left']['buttons'], $import_group_button);
 }
 
-// Right Buttons (only shown for question group
-$hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
-if ($hasUpdatePermission) {
-    // Edit Group Button
-    $buttons['edit_question_group'] = [
-        'id' => 'edit_question_group',
-        'url' => $this->createUrl("questionGroupsAdministration/edit/surveyid/{$sid}/gid/{$gid}/"),
-        'name' => gT("Question group editor"),
-        'icon' => 'icon-edit',
-        'class' => ' ',
+$hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+if ($hasExportPermission) {
+    $permissions['update'] = ['export' => $hasExportPermission];
+
+    $buttons['export'] = [
+        'id' => 'export',
+        'url' => $this->createUrl("admin/export/sa/group/surveyid/$sid/gid/$gid"),
+        'icon' => 'icon-export',
+        'name' => gT("Export current group"),
+        'class' => ' btn-default ',
     ];
 
-    array_push($topbar['alignment']['right']['buttons'], $buttons['edit_question_group']);
+    array_push($topbar['alignment']['left']['buttons'], $buttons['export']);
 }
+
+$hasUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
 if ($hasReadPermission) {
     // Check Survey Logic Button
     $buttons['check_survey_logic'] = [
@@ -191,7 +193,7 @@ if ($hasReadPermission) {
         'class' => ' ',
     ];
 
-    array_push($topbar['alignment']['right']['buttons'], $buttons['check_survey_logic']);
+    array_push($topbar['alignment']['left']['buttons'], $buttons['check_survey_logic']);
 }
 
 $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
@@ -235,25 +237,7 @@ if ($hasDeletePermission) {
         ];
     }
 }
-array_push($topbar['alignment']['right']['buttons'], $buttons['delete_current_question_group']);
-
-$hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
-if ($hasExportPermission) {
-    $permissions['update'] = ['export' => $hasExportPermission];
-
-    $buttons['export'] = [
-        'id' => 'export',
-        'url' => $this->createUrl("admin/export/sa/group/surveyid/$sid/gid/$gid"),
-        'icon' => 'icon-export',
-        'name' => gT("Export current group"),
-        'class' => ' btn-default ',
-    ];
-
-    array_push($topbar['alignment']['right']['buttons'], $buttons['export']);
-}
-
-// TopBar Extended (second TopBar, which will swap if Event triggered)
-$topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['buttons'];
+array_push($topbar['alignment']['left']['buttons'], $buttons['delete_current_question_group']);
 
 // Save and Close Button
 if ($ownsSaveButton == true) {
@@ -273,6 +257,7 @@ if ($ownsSaveButton == true) {
         'class' => 'btn-success',
     ];
     array_push($topbar['alignment']['right']['buttons'], $saveButton);
+    array_push($topbarextended['alignment']['right']['buttons'], $saveButton);
 
     $closeButton = [
         'name' => gT('Close'),
@@ -283,8 +268,9 @@ if ($ownsSaveButton == true) {
         'class' => 'btn-danger',
     ];
     array_push($topbar['alignment']['right']['buttons'], $closeButton);
+    array_push($topbarextended['alignment']['right']['buttons'], $closeButton);
 
-    $button_save_and_add_question_group = [
+    /*$button_save_and_add_question_group = [
         'id' => 'save-and-new-button',
         'name' => gT('Save and add group'),
         'icon' => 'fa fa-plus-square',
@@ -292,9 +278,9 @@ if ($ownsSaveButton == true) {
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_question_group);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_question_group);*/
 
-    $button_save_and_add_new_question = [
+    /*$button_save_and_add_new_question = [
         'id' => 'save-and-new-question-button',
         'icon' => 'fa fa-plus',
         'name' => gT('Save and add question'),
@@ -302,7 +288,7 @@ if ($ownsSaveButton == true) {
         'isSaveButton' => true,
         'class' => 'btn-default',
     ];
-    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_new_question);
+    array_push($topbarextended['alignment']['right']['buttons'], $button_save_and_add_new_question);*/
 
 }
 

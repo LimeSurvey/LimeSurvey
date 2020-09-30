@@ -75,3 +75,12 @@
         </div>
     </div>
 </div>
+
+<?php
+// Reset topbar to "non-extended" mode.
+// If this view wasn't loaded by ajax (ex: from the side menu) this wouldn't be necessary
+Yii::app()->getClientScript()->registerScript(
+    "EditGroup_topbar_switch", 'window.EventBus.$emit("doFadeEvent", false);', 
+    LSYii_ClientScript::POS_END
+);
+?>
