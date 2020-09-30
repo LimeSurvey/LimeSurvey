@@ -1219,7 +1219,8 @@ class QuestionAdministrationController extends LSBaseController
      * Copies a question
      *
      */
-    public function actionCopyQuestion(){
+    public function actionCopyQuestion()
+    {
 
         $aData = [];
 
@@ -1233,7 +1234,7 @@ class QuestionAdministrationController extends LSBaseController
         $questionIdToCopy = (int)Yii::app()->request->getParam('questionId');
 
         //permission check ...
-        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')){
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')) {
             Yii::app()->user->setFlash('error', gT("Access denied! You don't have permission to copy a question"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -1243,7 +1244,7 @@ class QuestionAdministrationController extends LSBaseController
             'gid' => $questionGroupId,
             'qid' => $questionIdToCopy
         ]);
-        if($oQuestion === null){
+        if ($oQuestion === null) {
             Yii::app()->user->setFlash('error', gT("Question does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -1255,7 +1256,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $oSurvey = Survey::model()->findByPk($surveyId);
         $aData['oSurvey'] = $oSurvey;
-        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$questionGroupId));
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['oQuestion'] = $oQuestion;
 
@@ -1267,97 +1268,36 @@ class QuestionAdministrationController extends LSBaseController
 
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
-        if(isset($savePressed) && $savePressed!==null){
+        if (isset($savePressed) && $savePressed !== null) {
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
             $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
-            $copyQuestionValues->setQuestionGroupId(Yii::app()->request->getParam('gid'));
+            $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
 
             $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
             $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
             $copyOptions['copyAnswerOptions'] = (int)Yii::app()->request->getParam('copyanswers') === 1;
             $copyOptions['copyDefaultAnswers'] = (int)Yii::app()->request->getParam('copydefaultanswers') === 1;
-            if($copyQuestionService->copyQuestion())
-          /*  $newQuestion = new Question();
-            $newQuestion->attributes = $oQuestion->attributes; //copy values from exisiting question
-            $newQuestion->title = Yii::app()->request->getParam('title');
-            $newQuestion->gid = Yii::app()->request->getParam('gid');
-            $newQuestion->qid = null;
-            if($newQuestion->save()){
-                //copy languages if necessecary
-                $i10N = [];
-                foreach ($oSurvey->allLanguages as $sLanguage) {
-                    $i10N[$sLanguage] = new QuestionL10n();
-                    $i10N[$sLanguage]->setAttributes(
-                        [
-                            'qid'      => $newQuestion->qid,
-                            'language' => $sLanguage,
-                            'question' => '',
-                            'help'     => '',
-                        ],
-                        false
-                    );
-                    $i10N[$sLanguage]->save();
-                }
-
-                //copy subquestions
-                $iscopySubquestions = (int)Yii::app()->request->getParam('copysubquestions');
-                if($iscopySubquestions !== null && $iscopySubquestions===1){
-                    $subquestions = Question::model()->findAllByAttributes(['parent_qid'=> $questionIdToCopy]);
-                    foreach ($subquestions as $subquestion){
-                        $copiedSubquestion = new Question();
-                        $copiedSubquestion->attributes = $subquestion->attributes;
-                        $copiedSubquestion->sid = null; //new question id needed ...
-                        $copiedSubquestion->save();
-                    }
-                }
-                //copy answer options
-                $iscopyAnswerOptions = (int)Yii::app()->request->getParam('copyanswers');
-                if($iscopyAnswerOptions){
-                    $answerOptions = Answer::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
-                    foreach ($answerOptions as $answerOption){
-                        $copiedAnswerOption = new Answer();
-                        $copiedAnswerOption->attributes = $answerOption->attributes;
-                        $copiedAnswerOption->aid = null;
-                        if($copiedAnswerOption->save()){
-                            //copy the languages
-                            foreach ($answerOption->answerl10ns as $answerLanguage) {
-                                $copiedAnswerOptionLanguage = new AnswerL10n();
-                                $copiedAnswerOptionLanguage-> attributes = $answerLanguage->attributes;
-                                $copiedAnswerOptionLanguage->id = null;
-                                $copiedAnswerOptionLanguage->save();
-                            }
-                        }
-                    }
-                }
-                //copy default answers
-                $iscopyDefaultAnswer = (int)Yii::app()->request->getParam('copydefaultanswers');
-                if($iscopyDefaultAnswer){
-                    $defaultAnswers = DefaultValue::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
-                    foreach ($defaultAnswers as $defaultAnswer){
-                        $copiedDefaultAnswer = new DefaultValue();
-                        $copiedDefaultAnswer->attributes = $defaultAnswer->attributes;
-                        $copiedDefaultAnswer->dvid = null;
-                        if($copiedDefaultAnswer->save()){
-                            //copy languages if needed
-                            foreach ($copiedDefaultAnswer->defaultvalueL10ns as $defaultAnswerL10n){
-                                $copieDefaultAnswerLanguage = new DefaultValueL10n();
-                                $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
-                                $copieDefaultAnswerLanguage->id = null;
-                                $copieDefaultAnswerLanguage->save();
-                            }
-                        }
-                    }
-                } */
-                //copy question settings (generalsettings and advanced settings)
+            $copyOptions['copySettings'] = (int)Yii::app()->request->getParam('copyattributes') === 1;
+            if ($copyQuestionService->copyQuestion($copyOptions)) {
                 App()->user->setFlash('success', gT("Saved copied question"));
-            }else{
+                $newQuestion = $copyQuestionService->getNewCopiedQuestion();
+                $this->redirect(
+                    $this->createUrl('questionAdministration/view/',
+                        array(
+                            'surveyid' => $surveyId,
+                            'gid' => $newQuestion->gid,
+                            'qid' => $newQuestion->qid
+                        )
+                    )
+                );
+                //todo: positions of questions in sidemenu list are not orderd correctly (what has to be done here???)
+            } else {
                 App()->user->setFlash('error', gT("Could not save copied question"));
             }
-            //todo: redirect to the copied question
-        }
 
+        }
 
         $this->aData = $aData;
         $this->render('copyQuestionForm', $aData);
@@ -1366,6 +1306,30 @@ class QuestionAdministrationController extends LSBaseController
 
     /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
+    /**
+     * Try to get the get-parameter from request.
+     * At the moment there are three namings for a survey id:
+     * 'sid'
+     * 'surveyid'
+     * 'iSurveyID'
+     *
+     * Returns the id as integer or null if not exists any of them.
+     *
+     * @return int | null
+     *
+     * @todo While refactoring (at some point) this function should be removed and only one unique identifier should be used
+     */
+    private function getSurveyIdFromGetRequest(){
+        $surveyId = Yii::app()->request->getParam('sid');
+        if($surveyId === null){
+            $surveyId = Yii::app()->request->getParam('surveyid');
+        }
+        if($surveyId === null){
+            $surveyId = Yii::app()->request->getParam('iSurveyID');
+        }
+
+        return (int) $surveyId;
+    }
 
     /**
      * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')

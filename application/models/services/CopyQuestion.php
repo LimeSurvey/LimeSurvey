@@ -16,7 +16,7 @@ class CopyQuestion
 {
 
     /**
-     * @var CopyQuestionValues values needed to copy a question
+     * @var CopyQuestionValues values needed to copy a question (e.g. questioncode, questionGroupId ...)
      */
     private $copyQuestionValues;
 
@@ -57,7 +57,7 @@ class CopyQuestion
         );
         if ($copySuccessful) {
             //copy question languages
-            $this->copyQuestionLanguages($this->newQuestion);
+            $this->copyQuestionLanguages($this->copyQuestionValues->getQuestiontoCopy());
 
             //copy subquestions
             if ($copyOptions['copySubquestions']) {
@@ -72,6 +72,11 @@ class CopyQuestion
             //copy default answers
             if ($copyOptions['copyDefaultAnswers']) {
                 $this->copyQuestionsDefaultAnswers($this->copyQuestionValues->getQuestiontoCopy()->qid);
+            }
+
+            ////copy question settings (generalsettings and advanced settings)
+            if ($copyOptions['copySettings']) {
+                $this->copyQuestionsSettings($this->copyQuestionValues->getQuestiontoCopy()->qid);
             }
         }
         return $copySuccessful;
@@ -101,7 +106,9 @@ class CopyQuestion
     /**
      * Copies the languages of a question.
      *
-     * @param \Question $oQuestion
+     * @param \Question $oQuestion old question from where to copy the languages (see table questions_l10ns)
+     *
+     * @before $this->newQuestion must exist and should not be null
      *
      * @return bool true if all languages could be copied,
      *              false if no language was copied or save failed for one language
@@ -115,6 +122,7 @@ class CopyQuestion
                 $copyLanguage = new \QuestionL10n();
                 $copyLanguage->attributes = $sLanguage->attributes;
                 $copyLanguage->id = null; //new id needed
+                $copyLanguage->qid = $this->newQuestion->qid;
                 $allLanguagesAreCopied = $allLanguagesAreCopied && $copyLanguage->save();
             }
         }
@@ -127,6 +135,8 @@ class CopyQuestion
      *
      * @param int $parentId id of question to be copied
      *
+     * * @before $this->newQuestion must exist and should not be null
+     *
      * @return bool true if all subquestions could be copied&saved, false if a subquestion could not be saved
      */
     private function copyQuestionsSubQuestions($parentId)
@@ -138,9 +148,10 @@ class CopyQuestion
         foreach ($subquestions as $subquestion) {
             $copiedSubquestion = new \Question();
             $copiedSubquestion->attributes = $subquestion->attributes;
-            $copiedSubquestion->parent_qid = $this->newQuestion->sid;
+            $copiedSubquestion->parent_qid = $this->newQuestion->qid;
             $copiedSubquestion->qid = null; //new question id needed ...
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
+            //todo copy the languages here ...
         }
 
         return $areSubquestionsCopied;
@@ -148,6 +159,8 @@ class CopyQuestion
 
     /**
      * Copies the answer options of a question
+     *
+     * * @before $this->newQuestion must exist and should not be null
      *
      * @param int $questionIdToCopy
      */
@@ -158,6 +171,7 @@ class CopyQuestion
             $copiedAnswerOption = new \Answer();
             $copiedAnswerOption->attributes = $answerOption->attributes;
             $copiedAnswerOption->aid = null;
+            $copiedAnswerOption->qid = $this->newQuestion->qid;
             if ($copiedAnswerOption->save()) {
                 //copy the languages
                 foreach ($answerOption->answerl10ns as $answerLanguage) {
@@ -174,9 +188,12 @@ class CopyQuestion
     /**
      * Copies the default answers of the question
      *
+     * * @before $this->newQuestion must exist and should not be null
+     *
      * @param int $questionIdToCopy
      */
-    private function copyQuestionsDefaultAnswers($questionIdToCopy){
+    private function copyQuestionsDefaultAnswers($questionIdToCopy)
+    {
         $defaultAnswers = \DefaultValue::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
         foreach ($defaultAnswers as $defaultAnswer) {
             $copiedDefaultAnswer = new \DefaultValue();
@@ -185,15 +202,44 @@ class CopyQuestion
             $copiedDefaultAnswer->dvid = null;
             if ($copiedDefaultAnswer->save()) {
                 //copy languages if needed
-                foreach ($copiedDefaultAnswer->defaultvalueL10ns as $defaultAnswerL10n) {
-                    $copieDefaultAnswerLanguage = new \DefaultValueL10n();
-                    $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
-                    $copieDefaultAnswerLanguage->dvid = $copiedDefaultAnswer->dvid;
-                    $copieDefaultAnswerLanguage->id = null;
-                    $copieDefaultAnswerLanguage->save();
+                if($copiedDefaultAnswer->defaultvaluel10ns !== null) {
+                    foreach ($copiedDefaultAnswer->defaultvaluel10ns as $defaultAnswerL10n) {
+                        $copieDefaultAnswerLanguage = new \DefaultValueL10n();
+                        $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
+                        $copieDefaultAnswerLanguage->dvid = $copiedDefaultAnswer->dvid;
+                        $copieDefaultAnswerLanguage->id = null;
+                        $copieDefaultAnswerLanguage->save();
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Copies the question settings (general_settings (on the left in questioneditor) and advanced settings (bottom)
+     *
+     * @param $questionIdToCopy
+     *
+     * * @before $this->newQuestion must exist and should not be null
+     *
+     * @return true if settings are copied, false otherwise
+     */
+    private function copyQuestionsSettings($questionIdToCopy)
+    {
+        $settingsFromQuestionToCopy = \QuestionAttribute::model()->findAllByAttributes(['qid' => $questionIdToCopy]);
+        $areSettingsCopied = false;
+        if ($this->newQuestion !== null) {
+            $areSettingsCopied = true;
+            foreach ($settingsFromQuestionToCopy as $settingToCopy) {
+                $newSetting = new \QuestionAttribute();
+                $newSetting->attributes = $settingToCopy->attributes;
+                $newSetting->qaid = null;  //create new id
+                $newSetting->qid = $this->newQuestion->qid;
+                $areSettingsCopied = $areSettingsCopied && $newSetting->save();
+            }
+        }
+
+        return $areSettingsCopied;
     }
 
     /**

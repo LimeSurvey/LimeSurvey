@@ -45,15 +45,15 @@ class CopyQuestionValues
      */
     public function getQuestionGroupId(): int
     {
-        return $this->questionGroup;
+        return $this->questionGroupId;
     }
 
     /**
-     * @param int $questionGroup
+     * @param int $questionGroupId
      */
-    public function setQuestionGroupId(int $questionGroup): void
+    public function setQuestionGroupId(int $questionGroupId): void
     {
-        $this->questionGroup = $questionGroup;
+        $this->questionGroupId = $questionGroupId;
     }
 
     /**
