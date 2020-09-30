@@ -2,15 +2,12 @@
 <div class="side-body">
     <div class="container-fluid">
         <?php echo CHtml::form(
-            array("admin/questionedit/update"),
+            ['questionAdministration/saveQuestionData'],
             'post',
-            array(
-                'class' => 'form30 ',
-                'id' => 'frmeditquestion',
-                'name' => 'frmeditquestion',
-                //'data-isvuecomponent' => 1
-            )
+            ['id'    => 'edit-question-form']
         ); ?>
+            <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
+            <input type="hidden" name="question[qid]" value="0" />
             <div id="advancedQuestionEditor">
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">

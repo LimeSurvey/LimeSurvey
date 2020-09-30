@@ -55,7 +55,7 @@ echo '<div '
                     </li>
                     <li>
                         <div class="topbarbutton">
-                            <a type="button" href="#" class="btn navbar-btn button btn-success">Save</a>
+                            <a id="save-button" type="button" href="#" class="btn navbar-btn button btn-success">Save</a>
                         </div>
                     </li>
                 </ul>

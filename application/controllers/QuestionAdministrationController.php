@@ -270,8 +270,16 @@ class QuestionAdministrationController extends LSBaseController
 
         Yii::app()->loadHelper("admin/htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');
-        Yii::app()->getClientScript()->registerPackage('jquery-ace'); 
-        Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype ='javascript';", CClientScript::POS_HEAD);
+        Yii::app()->getClientScript()->registerPackage('jquery-ace');
+        Yii::app()->getClientScript()->registerScript(
+            'editorfiletype',
+            "editorfiletype ='javascript';",
+            CClientScript::POS_HEAD
+        );
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'questionEditor.js',
+            CClientScript::POS_BEGIN
+        );
         PrepareEditorScript(true, $this);
 
         $this->aData['surveyid'] = $surveyid;
@@ -387,36 +395,45 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * Action called by the FE editor when a save is triggered.
-     *
-     * @param int $sid Survey id
+     * This is called for both new question and update.
      *
      * @return void
      * @throws CException
      */
-    public function actionSaveQuestionData($sid)
+    public function actionSaveQuestionData()
     {
-        $iSurveyId = (int)$sid;
+        $request = App()->request;
+        $iSurveyId = (int) $request->getPost('sid');
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-        $questionData = App()->request->getPost('questionData', []);
-        $questionCopy = (boolean)App()->request->getPost('questionCopy');
-        $questionCopySettings = App()->request->getPost('copySettings', []);
-        $questionCopySettings = array_map(
-            function ($value) {
-                return !!$value;
-            },
-            $questionCopySettings
-        );
+        /**
+         * From Vue component:
+            questionData: {
+            question: context.state.currentQuestion,
+                scaledSubquestions:
+            context.state.currentQuestionSubquestions || [],
+                scaledAnswerOptions:
+            context.state.currentQuestionAnswerOptions || [],
+                questionI10N: context.state.currentQuestionI10N,
+                generalSettings:
+            context.state.currentQuestionGeneralSettings,
+                advancedSettings:
+            context.state.currentQuestionAdvancedSettings
+        }
+         */
+        $questionData = [];
+        $questionData['question'] = (array) $request->getPost('question');
+        $questionData['question']['sid'] = $iSurveyId;
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',
             [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
         );
-        if ($oQuestion == null || $questionCopy == true) {
+        if ($oQuestion == null) {
             $oQuestion = $this->storeNewQuestionData($questionData['question']);
         } else {
             $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
@@ -437,14 +454,14 @@ class QuestionAdministrationController extends LSBaseController
                 $questionData['generalSettings']
             );
 
-            if (!($questionCopy === true && $questionCopySettings['copyAdvancedOptions'] == false)) {
+            if (!($$questionCopySettings['copyAdvancedOptions'] == false)) {
                 $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
                     $oQuestion,
                     $questionData['advancedSettings']
                 );
             }
 
-            if (!($questionCopy === true && $questionCopySettings['copyDefaultAnswers'] == false)) {
+            if (!($$questionCopySettings['copyDefaultAnswers'] == false)) {
                 $setApplied['defaultAnswers'] = $this->copyDefaultAnswers($oQuestion, $questionData['question']['qid']);
             }
 
@@ -463,7 +480,7 @@ class QuestionAdministrationController extends LSBaseController
 
             // If set, store subquestions
             if (isset($questionData['scaledSubquestions'])) {
-                if (!($questionCopy === true && $questionCopySettings['copySubquestions'] == false)) {
+                if (!($$questionCopySettings['copySubquestions'] == false)) {
                     $setApplied['scaledSubquestions'] = $this->storeSubquestions(
                         $oQuestion,
                         $questionData['scaledSubquestions'],
@@ -474,7 +491,7 @@ class QuestionAdministrationController extends LSBaseController
 
             // If set, store answer options
             if (isset($questionData['scaledAnswerOptions'])) {
-                if (!($questionCopy === true && $questionCopySettings['copyAnswerOptions'] == false)) {
+                if (!($questionCopySettings['copyAnswerOptions'] == false)) {
                     $setApplied['scaledAnswerOptions'] = $this->storeAnswerOptions(
                         $oQuestion,
                         $questionData['scaledAnswerOptions'],
@@ -517,10 +534,7 @@ class QuestionAdministrationController extends LSBaseController
                     },
                     true
                 ),
-                'message'            => ($questionCopy === true
-                    ? gT('Question successfully copied')
-                    : gT('Question successfully stored')
-                ),
+                'message'            => gT('Question successfully stored'),
                 'successDetail'      => $setApplied,
                 'questionId'         => $oQuestion->qid,
                 'redirect'           => $this->createUrl(
