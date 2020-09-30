@@ -28,6 +28,8 @@ $script = "
 * See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
 */ 
 $script.="CKEDITOR.on('instanceReady', function(event) {
+        var textareaId = event.editor.element.getId();
+        $('#'+textareaId+'_htmleditor_loader').remove();
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
