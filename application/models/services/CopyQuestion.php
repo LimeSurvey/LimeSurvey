@@ -151,7 +151,13 @@ class CopyQuestion
             $copiedSubquestion->parent_qid = $this->newQuestion->qid;
             $copiedSubquestion->qid = null; //new question id needed ...
             $areSubquestionsCopied = $areSubquestionsCopied && $copiedSubquestion->save();
-            //todo copy the languages here ...
+            foreach ($subquestion->questionl10ns as $subquestLanguage) {
+                $newSubquestLanguage = new \QuestionL10n();
+                $newSubquestLanguage->attributes = $subquestLanguage->attributes;
+                $newSubquestLanguage->qid = $copiedSubquestion->qid;
+                $newSubquestLanguage->id = null;
+                $newSubquestLanguage->save();
+            }
         }
 
         return $areSubquestionsCopied;
@@ -202,15 +208,15 @@ class CopyQuestion
             $copiedDefaultAnswer->dvid = null;
             if ($copiedDefaultAnswer->save()) {
                 //copy languages if needed
-                if($copiedDefaultAnswer->defaultvaluel10ns !== null) {
-                    foreach ($copiedDefaultAnswer->defaultvaluel10ns as $defaultAnswerL10n) {
-                        $copieDefaultAnswerLanguage = new \DefaultValueL10n();
-                        $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
-                        $copieDefaultAnswerLanguage->dvid = $copiedDefaultAnswer->dvid;
-                        $copieDefaultAnswerLanguage->id = null;
-                        $copieDefaultAnswerLanguage->save();
-                    }
+                $defaultValLanguages = \DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultAnswer->dvid]);
+                foreach ($defaultValLanguages as $defaultAnswerL10n) {
+                    $copieDefaultAnswerLanguage = new \DefaultValueL10n();
+                    $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;
+                    $copieDefaultAnswerLanguage->dvid = $copiedDefaultAnswer->dvid;
+                    $copieDefaultAnswerLanguage->id = null;
+                    $copieDefaultAnswerLanguage->save();
                 }
+
             }
         }
     }
