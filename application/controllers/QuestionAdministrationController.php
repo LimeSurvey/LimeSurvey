@@ -426,12 +426,14 @@ class QuestionAdministrationController extends LSBaseController
          */
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
-        $questionData['question']['sid']  = $iSurveyId;
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
         $questionData['generalSettings']  = (array) $request->getPost('generalSettings');
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
+        $questionData['question']['sid']  = $iSurveyId;
+        $questionData['question']['gid']  = $questionData['generalSettings']['gid'];
 
         //echo '<pre>'; var_dump($_POST); echo '</pre>';
+        //echo '<pre>'; var_dump($questionData); echo '</pre>';
         //die;
 
         // Store changes to the actual question data, by either storing it, or updating an old one
@@ -501,11 +503,11 @@ class QuestionAdministrationController extends LSBaseController
             $transaction->rollback();
             throw new LSJsonException(
                 500,
-                gT('Question has been stored, but an error happened: ') . "\n" . $ex->getMessage(),
+                gT('An error happened:') . "\n" . $ex->getMessage(),
                 0,
                 App()->createUrl(
-                    'questionAdministration/view/',
-                    ["surveyid" => $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]
+                    'surveyAdministration/view/',
+                    ["surveyid" => $iSurveyId]
                 )
             );
         }
