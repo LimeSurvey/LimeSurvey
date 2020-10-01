@@ -276,7 +276,7 @@ class PluginManager extends \CApplicationComponent
         $this->shutdownObject->enable();
 
         $result = array();
-        foreach ($this->pluginDirs as $pluginDir) {
+        foreach ($this->pluginDirs as $pluginType => $pluginDir) {
             $currentDir = Yii::getPathOfAlias($pluginDir);
             if (is_dir($currentDir)) {
                 foreach (new \DirectoryIterator($currentDir) as $fileInfo) {
@@ -292,6 +292,15 @@ class PluginManager extends \CApplicationComponent
                             if (file_exists($file) && $this->_checkWhitelist($pluginName)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                                    // getPluginInfo returns false instead of an array when config is not found.
+                                    // So we build an "empty" array
+                                    if (!$result[$pluginName]) {
+                                        $result[$pluginName] = array(
+                                            'extensionConfig' => null,
+                                            'pluginType' => $pluginType,
+                                            'load_error' => 0,
+                                        );
+                                    }
                                 } catch (\Throwable $ex) {
                                     // Load error.
                                     $error = [
@@ -313,7 +322,8 @@ class PluginManager extends \CApplicationComponent
                             $result[$pluginName] = [
                                 'pluginName' => $pluginName,
                                 'load_error' => 1,
-                                'isCompatible' => false
+                                'isCompatible' => false,
+                                'pluginType' => $plugin->plugin_type,
                             ];
                         } else {
                         }
