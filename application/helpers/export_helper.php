@@ -708,7 +708,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
 * @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
 * @param string[] $excludes array of columnames not to include in export
 */
-function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array())
+function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
     $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
 
@@ -731,9 +731,9 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             $criteria->limit = $iChunkSize;
             $criteria->offset = $iStart;
             if ($TableName == 'responses'){
-                $results = Response::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+                $results = Response::model($iSurveyID)->findAll($criteria);
             } elseif ($TableName == 'tokens'){
-                $results = Token::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+                $results = Token::model($iSurveyID)->findAll($criteria);
             }
 
             foreach($results as $row){
@@ -1009,7 +1009,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->endElement();
     $aquery = "SELECT * FROM {{{$sTableName}}}";
 
-    buildXMLFromQuery($xml, $aquery, $sXMLTableTagName);
+    buildXMLFromQuery($xml, $aquery, $sXMLTableTagName, array(), $iSurveyID);
     $xml->endElement(); // close columns
     $xml->endDocument();
     if ($sFileName = '') {
