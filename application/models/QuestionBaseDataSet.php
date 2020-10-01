@@ -36,6 +36,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      */
     public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
     {
+        Yii::import('ext.GeneralOptionWidget.settings.*');
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
         } else {
@@ -62,7 +63,11 @@ abstract class QuestionBaseDataSet extends StaticModel
         */
         // @todo This should be Yii widgets.
         $generalOptions = [
-            'question_template' => $this->getQuestionThemeOption($question_template),
+            'question_template' => QuestionThemeGeneralOption::make(
+                $this->oQuestion,
+                $this->sQuestionType,
+                $question_template
+            ),
             'gid' => $this->getQuestionGroupSelector(),
             'other' => $this->getOtherSwitch(),
             'mandatory' => $this->getMandatorySetting(),
@@ -221,43 +226,6 @@ abstract class QuestionBaseDataSet extends StaticModel
             }
         }
         return $advancedOptionsArray;
-    }
-
-    /**
-     * @param string|null $currentSetQuestionTheme
-     * @return GeneralOption
-     */
-    protected function getQuestionThemeOption($currentSetQuestionTheme = null)
-    {
-        $aQuestionTemplateList = QuestionTemplate::getQuestionTemplateList($this->sQuestionType);
-        $aQuestionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($this->oQuestion->qid, $this->sQuestionType, $this->oQuestion->survey->sid)['question_template'];
-
-        $aOptionsArray = [];
-        foreach ($aQuestionTemplateList as $code => $value) {
-            $aOptionsArray[] = [
-                'value' => $code,
-                'text' => $value['title']
-            ];
-        }
-
-        if ($currentSetQuestionTheme == null) {
-            $currentSetQuestionTheme = (isset($aQuestionTemplateAttributes['value']) && $aQuestionTemplateAttributes['value'] !== '')
-                ? $aQuestionTemplateAttributes['value']
-                : 'core';
-        }
-
-        return new GeneralOption(
-            'question_template',
-            gT('Question theme'),
-            'questiontheme',
-            new FormElement(
-                'question_template',
-                null,
-                gT("Use a customized question theme for this question"),
-                $currentSetQuestionTheme,
-                $aOptionsArray
-            )
-        );
     }
 
     /**
