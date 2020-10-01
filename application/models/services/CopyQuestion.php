@@ -216,7 +216,6 @@ class CopyQuestion
                     $copieDefaultAnswerLanguage->id = null;
                     $copieDefaultAnswerLanguage->save();
                 }
-
             }
         }
     }

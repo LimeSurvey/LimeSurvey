@@ -1221,9 +1221,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionCopyQuestion()
     {
-
         $aData = [];
-
         //load helpers
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
@@ -1296,7 +1294,6 @@ class QuestionAdministrationController extends LSBaseController
             } else {
                 App()->user->setFlash('error', gT("Could not save copied question"));
             }
-
         }
 
         $this->aData = $aData;

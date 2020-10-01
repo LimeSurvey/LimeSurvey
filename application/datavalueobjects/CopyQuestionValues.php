@@ -24,6 +24,25 @@ class CopyQuestionValues
         /** @var \Question the question that should be copied */
         private $questiontoCopy;
 
+        /** @var int the position for the question on the left menu group */
+        private $questionPositionInGroup;
+
+    /**
+     * @return int
+     */
+    public function getQuestionPositionInGroup(): int
+    {
+        return $this->questionPositionInGroup;
+    }
+
+    /**
+     * @param int $questionPositionInGroup
+     */
+    public function setQuestionPositionInGroup(int $questionPositionInGroup): void
+    {
+        $this->questionPositionInGroup = $questionPositionInGroup;
+    }
+
     /**
      * @return string
      */
