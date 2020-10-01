@@ -69,8 +69,8 @@ abstract class QuestionBaseDataSet extends StaticModel
                 $question_template
             ),
             'gid' => $this->getQuestionGroupSelector(),
-            'other' => $this->getOtherSwitch(),
-            'mandatory' => $this->getMandatorySetting(),
+            'other' => new OtherGeneralOption($this->oQuestion),
+            'mandatory' => new MandatoryGeneralOption($this->oQuestion),
             'relevance' => $this->getRelevanceEquationInput(),
             'encrypted' => $this->getEncryptionSwitch(),
             'save_as_default' => $this->getSaveAsDefaultSwitch()
@@ -262,63 +262,6 @@ abstract class QuestionBaseDataSet extends StaticModel
         );
         $option->setDisableInActive();
         return $option;
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getOtherSwitch()
-    {
-        $option = new GeneralOption(
-            'other',
-            gT('Other'),
-            'switch',
-            new FormElement(
-                'other',
-                null,
-                gT('Activate the "other" option for your question'),
-                $this->oQuestion->other,
-                [
-                    'classes' => [],
-                    'options' => new SwitchOptions(
-                        [
-                            new SwitchOption(gt('Off'), 'N'),
-                            new SwitchOption(gt('On'), 'Y')
-                        ]
-                    )
-                ]
-            )
-        );
-        $option->setDisableInActive();
-        return $option;
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getMandatorySetting()
-    {
-        return new GeneralOption(
-            'mandatory',
-            gT('Mandatory'),
-            'buttongroup',
-            new FormElement(
-                'mandatory',
-                null,
-                gT('Makes this question mandatory in your survey. Option "Soft" gives a possibility to skip a question without giving any answer.'),
-                $this->oQuestion->mandatory,
-                [
-                    'classes' => [],
-                    'options' => new SwitchOptions(
-                        [
-                            new SwitchOption(gt('On'), 'Y'),
-                            new SwitchOption(gt('Soft'), 'S'),
-                            new SwitchOption(gt('Off'), 'N')
-                        ]
-                    )
-                ]
-            )
-        );
     }
 
     /**

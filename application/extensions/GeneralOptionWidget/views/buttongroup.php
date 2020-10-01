@@ -1,5 +1,5 @@
 <div class="btn-group col-12" role="group" data-toggle="buttons">
-    <?php foreach ($this->generalOption->formElement->options['options']->options as $i => $option): ?>
+    <?php foreach ($this->generalOption->formElement->options['options'] as $i => $option): ?>
         <label class="btn btn-default">
             <input 
                 type="radio" 

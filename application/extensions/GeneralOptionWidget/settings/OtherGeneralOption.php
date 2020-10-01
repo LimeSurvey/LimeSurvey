@@ -1,0 +1,33 @@
+<?php
+
+use LimeSurvey\Datavalueobjects\GeneralOption;
+use LimeSurvey\Datavalueobjects\FormElement;
+use LimeSurvey\Datavalueobjects\SwitchOption;
+use LimeSurvey\Datavalueobjects\SwitchOptions;
+
+class OtherGeneralOption extends GeneralOption
+{
+    /**
+     * @param Question $question
+     */
+    public function __construct(Question $question)
+    {
+        $this->name = 'other';
+        $this->title = gT('Other');
+        $this->inputType = 'switch';
+        $this->disableInActive = true;
+        $this->formElement = new FormElement(
+            'other',
+            null,
+            gT('Activate the "other" option for your question'),
+            $question->other,
+            [
+                'classes' => [],
+                'options' => [
+                    new SwitchOption(gt('Off'), 'N'),
+                    new SwitchOption(gt('On'), 'Y')
+                ]
+            ]
+        );
+    }
+}
