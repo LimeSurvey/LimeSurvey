@@ -144,7 +144,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         } else {
             $extraanswerwidth = $separatorwidth;
         }
-        $cellwidth = $columnswidth / $this->numrows;
+        $cellwidth = $columnswidth / ($this->numrows ? $this->numrows : 1);
 
         // Header row and colgroups
         $aData['answerwidth'] = $this->answerwidth;
