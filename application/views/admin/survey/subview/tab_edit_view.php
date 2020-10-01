@@ -27,7 +27,7 @@ $cs->registerPackage('bootstrap-select2');
 $adminlang = Yii::app()->session['adminlang'];
 $aTabContents = $this->aData['aTabContents'];
 $aTabTitles   = $this->aData['aTabTitles'];
-$count = $this->aData['moreInfo']['i'];
+$count = 0;
 
 PrepareEditorScript(false, $this);
 ?>
