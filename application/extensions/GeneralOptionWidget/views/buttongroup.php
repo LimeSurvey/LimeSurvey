@@ -3,7 +3,7 @@
         <label class="btn btn-default">
             <input 
                 type="radio" 
-                name="generalSettings[<?= $this->generalOption->name; ?>]" 
+                name="question[<?= $this->generalOption->name; ?>]" 
                 value="<?= $option->value; ?>"
             />
             <?= $option->text; ?>

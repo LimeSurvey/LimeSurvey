@@ -480,7 +480,7 @@ abstract class QuestionBaseDataSet extends StaticModel
     protected function getValidationInput()
     {
         return new GeneralOption(
-            'validation',
+            'preg',
             gT('Input validation'),
             'text',
             new FormElement(

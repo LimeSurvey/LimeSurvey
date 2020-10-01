@@ -426,19 +426,13 @@ class QuestionAdministrationController extends LSBaseController
          */
 
         //echo '<pre>'; var_dump($_POST); echo '</pre>';
-        //echo '<pre>'; var_dump($questionData); echo '</pre>';
         //die;
 
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
-        $questionData['generalSettings']  = (array) $request->getPost('generalSettings');
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
-        $questionData['question']['gid']  = $questionData['generalSettings']['gid'];
-        $questionData['question']['other']  = $questionData['generalSettings']['other'] ?? 'N';
-        $questionData['question']['mandatory']  = $questionData['generalSettings']['mandatory'];
-        $questionData['question']['relevance']  = $questionData['generalSettings']['relevance'];
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->find(
@@ -471,13 +465,13 @@ class QuestionAdministrationController extends LSBaseController
 
             // save advanced attributes default values for given question type
             if (array_key_exists('save_as_default', $questionData['generalSettings'])
-                && $questionData['generalSettings']['save_as_default']['formElementValue'] == 'Y') {
+                && $questionData['generalSettings']['save_as_default'] == 'Y') {
                 SettingsUser::setUserSetting(
                     'question_default_values_' . $questionData['question']['type'],
                     ls_json_encode($questionData['advancedSettings'])
                 );
             } elseif (array_key_exists('clear_default', $questionData['generalSettings'])
-                && $questionData['generalSettings']['clear_default']['formElementValue'] == 'Y') {
+                && $questionData['generalSettings']['clear_default'] == 'Y') {
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
@@ -507,7 +501,8 @@ class QuestionAdministrationController extends LSBaseController
             $transaction->rollback();
             throw new LSJsonException(
                 500,
-                gT('An error happened:') . "\n" . $ex->getMessage(),
+                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL
+                . $ex->getTraceAsString(),
                 0,
                 App()->createUrl(
                     'surveyAdministration/view/',
@@ -1780,6 +1775,7 @@ class QuestionAdministrationController extends LSBaseController
                 'relevance'  => 1,
                 'group_name' => '',
                 'modulename' => '',
+                'encrypted'  => 'N'
             ],
             $aQuestionData
         );

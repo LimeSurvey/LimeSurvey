@@ -6,7 +6,7 @@
     <?php endif; ?>
     <textarea
         class="form-control" 
-        name="generalSettings[<?= $this->generalOption->name; ?>]" 
+        name="question[<?= $this->generalOption->name; ?>]" 
         id="<?= $this->generalOption->name; ?>" 
     ></textarea>
     <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])) : ?>

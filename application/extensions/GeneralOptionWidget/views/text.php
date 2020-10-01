@@ -5,7 +5,7 @@
     <input
         type="text"
         class="form-control"
-        name="generalSettings[<?= $this->generalOption->name; ?>]" 
+        name="question[<?= $this->generalOption->name; ?>]" 
         id="<?= $this->generalOption->name; ?>"
     />
     <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])) : ?>

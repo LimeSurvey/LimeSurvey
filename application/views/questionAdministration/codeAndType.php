@@ -51,5 +51,5 @@
         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
-    <input type="hidden" id="question_type" name="type" />
+    <input type="hidden" id="question_type" name="type" value="<?= $oQuestion->type; ?>" />
 </div>

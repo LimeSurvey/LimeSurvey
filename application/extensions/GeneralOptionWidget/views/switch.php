@@ -2,7 +2,7 @@
     <label class="btn btn-default">
         <input
             type="radio"
-            name="generalSettings[<?= $this->generalOption->name; ?>]"
+            name="question[<?= $this->generalOption->name; ?>]"
             value="Y"
             />
         <?= gT('On'); ?>
@@ -10,7 +10,7 @@
     <label class="btn btn-default">
         <input
             type="radio"
-            name="generalSettings[<?= $this->generalOption->name; ?>]"
+            name="question[<?= $this->generalOption->name; ?>]"
             value="N"
             />
         <?= gT('Off'); ?>

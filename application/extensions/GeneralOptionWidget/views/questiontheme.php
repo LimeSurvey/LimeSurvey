@@ -1,6 +1,6 @@
 <select 
     class="form-control"
-    name="generalSettings[<?= $this->generalOption->name; ?>]"
+    name="question[<?= $this->generalOption->name; ?>]"
     id="<?= $this->generalOption->name; ?>" 
 >
     <?php foreach ($this->generalOption->formElement->options as $option) : ?>
