@@ -424,6 +424,11 @@ class QuestionAdministrationController extends LSBaseController
             context.state.currentQuestionAdvancedSettings
         }
          */
+
+        //echo '<pre>'; var_dump($_POST); echo '</pre>';
+        //echo '<pre>'; var_dump($questionData); echo '</pre>';
+        //die;
+
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
@@ -431,10 +436,9 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
         $questionData['question']['gid']  = $questionData['generalSettings']['gid'];
-
-        //echo '<pre>'; var_dump($_POST); echo '</pre>';
-        //echo '<pre>'; var_dump($questionData); echo '</pre>';
-        //die;
+        $questionData['question']['other']  = $questionData['generalSettings']['other'] ?? 'N';
+        $questionData['question']['mandatory']  = $questionData['generalSettings']['mandatory'];
+        $questionData['question']['relevance']  = $questionData['generalSettings']['relevance'];
 
         // Store changes to the actual question data, by either storing it, or updating an old one
         $oQuestion = Question::model()->find(

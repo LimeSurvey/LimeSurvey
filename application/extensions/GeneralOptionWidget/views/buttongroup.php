@@ -1,13 +1,8 @@
-<div class="btn-group col-12">
+<div class="btn-group col-12" role="group" data-toggle="buttons">
     <?php foreach ($this->generalOption->formElement->options['options']->options as $i => $option): ?>
-        <label
-            class="btn btn-default"
-            type="button"
-            >
+        <label class="btn btn-default">
             <input 
                 type="radio" 
-                id="'input-'+(elName || elId)+'_'+i" 
-                id="input-<?= $this->generalOption->name; ?>-<?= $i; ?>" 
                 name="generalSettings[<?= $this->generalOption->name; ?>]" 
                 value="<?= $option->value; ?>"
             />
