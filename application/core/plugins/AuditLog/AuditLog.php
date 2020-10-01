@@ -337,7 +337,7 @@
         {
             $event = $this->getEvent();
             $iSurveyID=$event->get('iSurveyID');
-            if (!$this->checkSetting('AuditLog_Log_TokenSave') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
+            if (!$this->checkSetting('AuditLog_Log_TokenSave') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
                 return;
             }
 
@@ -615,7 +615,7 @@
             $event = $this->getEvent();
             $oModifiedSurvey = $event->get('modifiedSurvey');
             $iSurveyID = $oModifiedSurvey->sid;
-            if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, false)) {
+            if (!$this->checkSetting('AuditLog_Log_SurveySettings') || !$this->get('auditing', 'Survey', $iSurveyID, true)) {
                 return;
             }
 
