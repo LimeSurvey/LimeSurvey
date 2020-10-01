@@ -228,7 +228,7 @@
             <?php endif;?>
 
             <?php if(isset($token_bar['exportbutton']['form'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-button">
+                <a class="btn btn-success" href="#" role="button" id="export-button" data-submit-form=1>
                     <span class="fa fa fa-export" ></span>
                        <?php eT("Download CSV file"); ?>
                 </a>
