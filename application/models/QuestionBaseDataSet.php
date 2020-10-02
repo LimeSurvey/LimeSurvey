@@ -61,18 +61,18 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Hide Tip => VERY OFTEN asked for
         - Always hide question => if available
         */
-        // @todo This should be Yii widgets.
         $generalOptions = [
             'question_template' => QuestionThemeGeneralOption::make(
                 $this->oQuestion,
                 $this->sQuestionType,
                 $question_template
             ),
-            'gid' => GroupSelectorGeneralOption::make($this->oQuestion, $this->sLanguage),
-            'other' => new OtherGeneralOption($this->oQuestion),
-            'mandatory' => new MandatoryGeneralOption($this->oQuestion),
-            'relevance' => new RelevanceEquationGeneralOption($this->oQuestion),
-            'encrypted' => new EncryptionGeneralOption($this->oQuestion),
+            'gid'             => GroupSelectorGeneralOption::make($this->oQuestion, $this->sLanguage),
+            'other'           => new OtherGeneralOption($this->oQuestion),
+            'mandatory'       => new MandatoryGeneralOption($this->oQuestion),
+            'relevance'       => new RelevanceEquationGeneralOption($this->oQuestion),
+            'encrypted'       => new EncryptionGeneralOption($this->oQuestion),
+            'preg'            => new ValidationGeneralOption($this->oQuestion),
             'save_as_default' => new SaveAsDefaultGeneralOption($this->oQuestion)
         ];
         
@@ -80,8 +80,6 @@ abstract class QuestionBaseDataSet extends StaticModel
         if ($userSetting !== null) {
             $generalOptions['clear_default'] = new ClearDefaultGeneralOption();
         }
-
-        $generalOptions['preg'] = new ValidationGeneralOption($this->oQuestion);
 
         // load visible general settings from config.xml
         $sFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
