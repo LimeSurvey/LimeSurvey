@@ -300,7 +300,7 @@ class Survey extends LSActiveRecord
 
         // Remove from cache
         if (array_key_exists($this->sid, $this->findByPkCache)) {
-            unset $this->findByPkCache[$this->sid];
+            unset ($this->findByPkCache[$this->sid]);
         }
                 
         return true;
