@@ -1,7 +1,20 @@
 <div class="inputtype--toggle-container">
-    <input
-        type="checkbox"
-        name="advancedSettings[<?= $this->setting['name']; ?>]"
-        id="advancedSettings[<?= $this->setting['name']; ?>]"
-        />
-</div> 
+    <div class="btn-group" role="group" data-toggle="buttons">
+        <label class="btn btn-default">
+            <input
+                type="radio"
+                name="question[<?= $this->setting['name']; ?>]"
+                value="Y"
+                />
+            <?= gT('On'); ?>
+        </label>
+        <label class="btn btn-default">
+            <input
+                type="radio"
+                name="question[<?= $this->setting['name']; ?>]"
+                value="N"
+                />
+            <?= gT('Off'); ?>
+        </label>
+    </div>
+</div>
