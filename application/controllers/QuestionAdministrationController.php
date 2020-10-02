@@ -458,6 +458,11 @@ class QuestionAdministrationController extends LSBaseController
 
             $setApplied['questionI10N'] = $this->applyI10N($oQuestion, $questionData['questionI10N']);
 
+            $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
+                $oQuestion,
+                $questionData['advancedSettings']
+            );
+
             $setApplied['question'] = $this->unparseAndSetGeneralOptions(
                 $oQuestion,
                 $questionData['question']
@@ -1949,11 +1954,14 @@ class QuestionAdministrationController extends LSBaseController
     private function unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
     {
         $aQuestionBaseAttributes = $oQuestion->attributes;
+        echo '<pre>'; var_dump($dataSet); echo '</pre>';die;
 
         foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
             if ($sAttributeCategory === 'debug') {
                 continue;
             }
+            echo '<pre>'; var_dump($aAttributeCategorySettings); echo '</pre>';
+            continue;
             foreach ($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
                 if (!isset($aAttributeValueArray['formElementValue'])) {
                     continue;
@@ -1991,6 +1999,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
+        die;
 
 
         if (!$oQuestion->save()) {
