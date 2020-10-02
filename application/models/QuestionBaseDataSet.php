@@ -227,30 +227,6 @@ abstract class QuestionBaseDataSet extends StaticModel
     }
 
     /**
-     * @return GeneralOption
-     */
-    protected function getQuestionGroupSelector()
-    {
-        $option = new GeneralOption(
-            'gid',
-            gT('Question group'),
-            'questiongroup',
-            new FormElement(
-                'gid',
-                null,
-                gT("If you want to change the question group this question is in."),
-                $this->oQuestion->gid,
-                [
-                    'classes' => ['form-control'],
-                    'options' => new SwitchOptions($aGroupOptions)
-                ]
-            )
-        );
-        $option->setDisableInActive();
-        return $option;
-    }
-
-    /**
      * @param $sAttributeKey
      * @param $aAttributeArray
      * @param $formElementValue
