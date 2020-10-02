@@ -71,7 +71,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             'gid' => $this->getQuestionGroupSelector(),
             'other' => new OtherGeneralOption($this->oQuestion),
             'mandatory' => new MandatoryGeneralOption($this->oQuestion),
-            'relevance' => $this->getRelevanceEquationInput(),
+            'relevance' => new RelevanceEquationGeneralOption($this->oQuestion),
             'encrypted' => $this->getEncryptionSwitch(),
             'save_as_default' => $this->getSaveAsDefaultSwitch()
         ];
@@ -342,44 +342,6 @@ abstract class QuestionBaseDataSet extends StaticModel
                             new SwitchOption(gt('On'), 'Y'),
                         ]
                     )
-                ]
-            )
-        );
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getRelevanceEquationInput()
-    {
-        $inputtype = 'textarea';
-        
-        if (count($this->oQuestion->conditions) > 0) {
-            $inputtype = 'text';
-            $content = gT("Note: You can't edit the condition because there are currently conditions set for this question by the condition designer.");
-        }
-
-        return new GeneralOption(
-            'relevance',
-            gT('Condition'),
-            'textarea',
-            new FormElement(
-                'relevance',
-                null,
-                count($this->oQuestion->conditions) > 0 ?
-                ''
-                : gT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer."),
-                $this->oQuestion->relevance,
-                [
-                    'classes' => ['form-control'],
-                    'attributes' => [
-                        'rows' => 1,
-                        'readonly' => count($this->oQuestion->conditions) > 0
-                    ],
-                    'inputGroup' => [
-                        'prefix' => '{',
-                        'suffix' => '}'
-                    ]
                 ]
             )
         );
