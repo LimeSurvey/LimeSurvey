@@ -458,20 +458,20 @@ class QuestionAdministrationController extends LSBaseController
 
             $setApplied['questionI10N'] = $this->applyI10N($oQuestion, $questionData['questionI10N']);
 
-            $setApplied['generalSettings'] = $this->unparseAndSetGeneralOptions(
+            $setApplied['question'] = $this->unparseAndSetGeneralOptions(
                 $oQuestion,
-                $questionData['generalSettings']
+                $questionData['question']
             );
 
             // save advanced attributes default values for given question type
-            if (array_key_exists('save_as_default', $questionData['generalSettings'])
-                && $questionData['generalSettings']['save_as_default'] == 'Y') {
+            if (array_key_exists('save_as_default', $questionData['question'])
+                && $questionData['question']['save_as_default'] == 'Y') {
                 SettingsUser::setUserSetting(
                     'question_default_values_' . $questionData['question']['type'],
                     ls_json_encode($questionData['advancedSettings'])
                 );
-            } elseif (array_key_exists('clear_default', $questionData['generalSettings'])
-                && $questionData['generalSettings']['clear_default'] == 'Y') {
+            } elseif (array_key_exists('clear_default', $questionData['question'])
+                && $questionData['question']['clear_default'] == 'Y') {
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
@@ -1912,7 +1912,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return boolean
      * @throws CHttpException
      */
-    private function unparseAndSetGeneralOptions(&$oQuestion, $dataSet)
+    private function unparseAndSetGeneralOptions($oQuestion, $dataSet)
     {
         $aQuestionBaseAttributes = $oQuestion->attributes;
 
