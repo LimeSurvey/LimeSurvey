@@ -297,6 +297,12 @@ class Survey extends LSActiveRecord
             // Delete all uploaded files.
             rmdirr(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid);
         }
+
+        // Remove from cache
+        if (array_key_exists($this->sid, $this->findByPkCache)) {
+            unset ($this->findByPkCache[$this->sid]);
+        }
+                
         return true;
     }
 
