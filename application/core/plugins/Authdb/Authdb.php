@@ -218,7 +218,9 @@ class Authdb extends AuthPluginBase
             case 'html':
                 $event->set('label', gT("HTML"));
                 break;
-            case 'json':    // Not in the interface, only for RPC
+            case 'json':
+                $event->set('label', gT("JSON"));
+                break;
             default:
                 break;
         }

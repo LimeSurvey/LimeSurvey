@@ -36,8 +36,7 @@ class JsonWriter extends Writer
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        $aJson = [];
-        $aJson[$values[0]] = array_combine($headers, $values);
+        $aJson = array_combine($headers, $values);
         $sJson = json_encode($aJson);
         Yii::log($this->havePrev, 'info', 'info');
         if ($this->havePrev) {
