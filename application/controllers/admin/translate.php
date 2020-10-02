@@ -774,7 +774,7 @@ class translate extends Survey_Common_Action
                     case 'email_confirmbody':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_confirm'=>$new));
                     case 'group':
-                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('group_name' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
+                        return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('group_name' => mb_substr($new,0,100)), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'group_desc':
                         return QuestionGroup::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang), array('description' => $new), 'sid=:sid', array(':sid'=>$iSurveyID));
                     case 'question':
@@ -862,14 +862,18 @@ class translate extends Survey_Common_Action
             }
             $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
             $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
-            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
-                array(
-                    'class' => 'col-sm-10',
-                    'cols' => '75',
-                    'rows' => $nrows,
-                    'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')
-                )
+
+            $aDisplayOptions = array(
+                'class' => 'col-sm-10',
+                'cols' => '75',
+                'rows' => $nrows,
+                'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')
             );
+            if ($type=='group') {
+                $aDisplayOptions['maxlength']=100; 
+            }
+
+            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,$aDisplayOptions);
             $htmleditor_data = array(
                 "edit".$type,
                 $type."_newvalue_".$i,
