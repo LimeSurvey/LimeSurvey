@@ -361,6 +361,8 @@ abstract class Token extends Dynamic
             array('usesleft', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('mpid', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('blacklisted', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('validfrom', 'date','format'=>['yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty'=>true),
+            array('validuntil','date','format'=>['yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty'=>true),
             array('emailstatus', 'default', 'value' => 'OK'),
         );
         foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
