@@ -68,20 +68,20 @@ abstract class QuestionBaseDataSet extends StaticModel
                 $this->sQuestionType,
                 $question_template
             ),
-            'gid' => $this->getQuestionGroupSelector(),
+            'gid' => GroupSelectorGeneralOption::make($this->oQuestion, $this->sLanguage),
             'other' => new OtherGeneralOption($this->oQuestion),
             'mandatory' => new MandatoryGeneralOption($this->oQuestion),
             'relevance' => new RelevanceEquationGeneralOption($this->oQuestion),
-            'encrypted' => $this->getEncryptionSwitch(),
-            'save_as_default' => $this->getSaveAsDefaultSwitch()
+            'encrypted' => new EncryptionGeneralOption($this->oQuestion),
+            'save_as_default' => new SaveAsDefaultGeneralOption($this->oQuestion)
         ];
         
         $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->sQuestionType);
         if ($userSetting !== null) {
-            $generalOptions['clear_default'] = $this->getClearDefaultSwitch();
+            $generalOptions['clear_default'] = new ClearDefaultGeneralOption();
         }
 
-        $generalOptions['preg'] = $this->getValidationInput();
+        $generalOptions['preg'] = new ValidationGeneralOption($this->oQuestion);
 
         // load visible general settings from config.xml
         $sFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
@@ -233,18 +233,6 @@ abstract class QuestionBaseDataSet extends StaticModel
      */
     protected function getQuestionGroupSelector()
     {
-        $aGroupsToSelect = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->oQuestion->sid), array('order'=>'group_order'));
-        $aGroupOptions = [];
-        array_walk(
-            $aGroupsToSelect,
-            function ($oQuestionGroup) use (&$aGroupOptions){
-                $aGroupOptions[] = new SwitchOption(
-                    $oQuestionGroup->questiongroupl10ns[$this->sLanguage]->group_name,
-                    $oQuestionGroup->gid
-                );
-            }
-        );
-
         $option = new GeneralOption(
             'gid',
             gT('Question group'),
@@ -262,113 +250,6 @@ abstract class QuestionBaseDataSet extends StaticModel
         );
         $option->setDisableInActive();
         return $option;
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getEncryptionSwitch()
-    {
-        $option = new GeneralOption(
-            'encrypted',
-            gT('Encrypted'),
-            'switch',
-            new FormElement(
-                'encrypted',
-                null,
-                gT('Store the answers to this question encrypted'),
-                $this->oQuestion->encrypted,
-                [
-                    'classes' => [],
-                    'options' => new SwitchOptions(
-                        [
-                            new SwitchOption(gt('Off'), 'N'),
-                            new SwitchOption(gt('On'), 'Y'),
-                        ]
-                    )
-                ]
-            )
-        );
-        $option->setDisableInActive();
-        return $option;
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getSaveAsDefaultSwitch()
-    {
-        return new GeneralOption(
-            'save_as_default',
-            gT('Save as default values'),
-            'switch',
-            new FormElement(
-                'save_as_default',
-                null,
-                gT('All attribute values for this question type will be saved as default'),
-                $this->oQuestion->same_default == 1 ? 'Y' : 'N',
-                [
-                    'classes' => [],
-                    'options' => new SwitchOptions(
-                        [
-                            new SwitchOption(gt('Off'), 'N'),
-                            new SwitchOption(gt('On'), 'Y'),
-                        ]
-                    )
-                ]
-            )
-        );
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getClearDefaultSwitch()
-    {
-        return new GeneralOption(
-            'clear_default',
-            gT('Clear default values'),
-            'switch',
-            new FormElement(
-                'clear_default',
-                null,
-                gT('Default attribute values for this question type will be cleared'),
-                '',
-                [
-                    'classes' => [],
-                    'options' => new SwitchOptions(
-                        [
-                            new SwitchOption(gt('Off'), 'N'),
-                            new SwitchOption(gt('On'), 'Y'),
-                        ]
-                    )
-                ]
-            )
-        );
-    }
-
-    /**
-     * @return GeneralOption
-     */
-    protected function getValidationInput()
-    {
-        return new GeneralOption(
-            'preg',
-            gT('Input validation'),
-            'text',
-            new FormElement(
-                'preg',
-                null,
-                gT('You can add any regular expression based validation in here'),
-                $this->oQuestion->preg,
-                [
-                    'classes' => ['form-control'],
-                    'inputGroup' => [
-                        'prefix' => 'RegExp',
-                    ]
-                ]
-            )
-        );
     }
 
     /**

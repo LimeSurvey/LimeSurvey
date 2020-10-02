@@ -4,29 +4,29 @@ use LimeSurvey\Datavalueobjects\GeneralOption;
 use LimeSurvey\Datavalueobjects\FormElement;
 use LimeSurvey\Datavalueobjects\SwitchOption;
 
-class OtherGeneralOption extends GeneralOption
+class EncryptionGeneralOption extends GeneralOption
 {
     /**
      * @param Question $question
      */
     public function __construct(Question $question)
     {
-        $this->name = 'other';
-        $this->title = gT('Other');
+        $this-> name = 'encrypted';
+        $this-> title = gT('Encrypted');
         $this->inputType = 'switch';
-        $this->disableInActive = true;
         $this->formElement = new FormElement(
-            'other',
+            'encrypted',
             null,
-            gT('Activate the "other" option for your question'),
-            $question->other,
+            gT('Store the answers to this question encrypted'),
+            $question->encrypted,
             [
                 'classes' => [],
                 'options' => [
                     new SwitchOption(gt('Off'), 'N'),
-                    new SwitchOption(gt('On'), 'Y')
+                    new SwitchOption(gt('On'), 'Y'),
                 ]
             ]
         );
+        $this->setDisableInActive();
     }
 }
