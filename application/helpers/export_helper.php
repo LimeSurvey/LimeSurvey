@@ -2360,17 +2360,13 @@ function CPDBExport($data, $filename)
     header("Content-Disposition: attachment; filename=".$filename.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, no-store, no-cache");
-    $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
+    echo chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF')); // UTF-8 BOM
 
+    $handler = fopen('php://output', 'w');
     foreach ($data as $key=>$value) {
-        foreach ($value as $values) {
-            $tokenoutput .= trim($values).',';
-        }
-        $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
-        $tokenoutput .= "\n";
-
+        fputcsv($handler, $value);
     }
-    echo $tokenoutput;
+    fclose($handler);
     exit;
 }
 
