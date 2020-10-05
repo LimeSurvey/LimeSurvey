@@ -5,7 +5,7 @@
 >
     <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option) : ?>
         <?php if (isset($option['value'])) : ?>
-            <option value="<?= json_encode($option['value']); ?>">
+            <option value="<?= $option['value']; ?>">
         <?php else : ?>
             <option>
         <?php endif; ?>
