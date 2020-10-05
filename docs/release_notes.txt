@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.18 (build 200928) to 4.3.19 (build 201005) October 5, 2020
+-New feature: JSON available as export option for responses (Carsten Schmitz)
+-Fixed issue: RemoteControl API JSON export broken if first field it not response ID (Carsten Schmitz)
+-Fixed issue: Quick translation shows database error when group name too long (Carsten Schmitz)
+-Fixed issue: Importing participant with invalid Valid/ValidUntil date threw database error (Carsten Schmitz)
+-Fixed issue #16672: Can't select seperator for CPDB export - export doesn't recognise text (#1600) (Gabriel Jenik)
+-Fixed issue #16665: Question index not shown if survey mode is set to "inherit"(Gabriel Jenik)
+-Fixed issue #16658: queXMLPDF export shows JS script (Gabriel Jenik)
+-Fixed issue #16635: Timer not working when survey is active (when executing the survey multiple times in the same browser/tab) (Gabriel Jenik)
+-Fixed issue #16665: Question index not shown if survey mode is set to "inherit" (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.17 (build 200921) to 4.3.18 (build 200928) September 28, 2020
 -Fixed issue: SPSS export broken for numbers > 1000 (Carsten Schmitz)
 -Fixed issue: If the participant table is too big the token generation may fail due to memory shortage (Carsten Schmitz)

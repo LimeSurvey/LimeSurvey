@@ -887,7 +887,7 @@ class translate extends Survey_Common_Action
                     case 'email_confirmbody':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_email_confirm'=>$new));
                     case 'group':
-                        return QuestionGroupL10n::model()->updateAll(array('group_name' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
+                        return QuestionGroupL10n::model()->updateAll(array('group_name' => mb_substr($new,0,100)), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'group_desc':
                         return QuestionGroupL10n::model()->updateAll(array('description' => $new), 'gid = :gid and language = :language', array(':gid'=>$id1, ':language'=>$tolang));
                     case 'question':
@@ -989,6 +989,11 @@ class translate extends Survey_Common_Action
                     'style' => "min-height: $minHeight;",                    
                 )
             );
+            if ($type=='group') {
+                $aDisplayOptions['maxlength']=100; 
+            }
+
+            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,$aDisplayOptions);
             $htmleditor_data = array(
                 "edit".$type,
                 $type."_newvalue_".$i,
