@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-09-29 10:10:11+00:00\n"
+"POT-Creation-Date: 2020-10-05 06:24:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1821,8 +1821,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:857 application/models/Survey.php:1067
-#: application/models/Survey.php:1075
+#: application/models/Question.php:857 application/models/Survey.php:1073
+#: application/models/Survey.php:1081
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:642
@@ -1978,8 +1978,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:857 application/models/Survey.php:1067
-#: application/models/Survey.php:1075
+#: application/models/Question.php:857 application/models/Survey.php:1073
+#: application/models/Survey.php:1081
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:643
 #: application/views/admin/dataentry/content_view.php:712
@@ -3964,7 +3964,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:819
 #: application/helpers/userstatistics_helper.php:2664
-#: application/models/Permission.php:102 application/models/Survey.php:1501
+#: application/models/Permission.php:102 application/models/Survey.php:1507
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:18
@@ -7724,7 +7724,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:235 application/models/Quota.php:100
-#: application/models/Survey.php:1169
+#: application/models/Survey.php:1175
 msgid "Active"
 msgstr ""
 
@@ -7733,7 +7733,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:243 application/models/Survey.php:1134
+#: application/helpers/common_helper.php:243 application/models/Survey.php:1140
 msgid "Inactive"
 msgstr ""
 
@@ -12625,23 +12625,23 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1155
+#: application/models/Survey.php:1161
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1156
+#: application/models/Survey.php:1162
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1157
+#: application/models/Survey.php:1163
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1497
+#: application/models/Survey.php:1503
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:1508
+#: application/models/Survey.php:1514
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -12653,7 +12653,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1510
+#: application/models/Survey.php:1516
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -12663,7 +12663,7 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:1956
+#: application/models/Survey.php:1962
 msgid "Show policy"
 msgstr ""
 
@@ -12950,19 +12950,19 @@ msgid "No preview available"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:149
-msgid "Templates Name"
+msgid "Template Name"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:152
-msgid "Files Css"
+msgid "Files CSS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:153
-msgid "Files Js"
+msgid "Files JS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:154
-msgid "Files Print Css"
+msgid "Files Print CSS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:155
@@ -12970,19 +12970,19 @@ msgid "Options"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:156
-msgid "Cssframework Name"
+msgid "CSS framework name"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:157
-msgid "Cssframework Css"
+msgid "CSS framework CSS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:158
-msgid "Cssframework Js"
+msgid "Css framework JS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:159
-msgid "Packages To Load"
+msgid "Packages to load"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:606
