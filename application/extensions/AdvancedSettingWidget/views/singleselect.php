@@ -1,7 +1,7 @@
 <select 
     class="form-control" 
-    name="advancedSettings[<?= $this->setting['name']; ?>]"
-    id="advancedSettings[<?= $this->setting['name']; ?>]"
+    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+    id="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
 >
     <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option) : ?>
         <?php if (isset($option['value'])) : ?>

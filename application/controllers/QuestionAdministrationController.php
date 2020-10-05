@@ -425,9 +425,6 @@ class QuestionAdministrationController extends LSBaseController
         }
          */
 
-        //echo '<pre>'; var_dump($_POST); echo '</pre>';
-        //die;
-
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
@@ -1921,16 +1918,16 @@ class QuestionAdministrationController extends LSBaseController
     {
         $aQuestionBaseAttributes = $oQuestion->attributes;
 
-        foreach ($dataSet as $sAttributeKey => $aAttributeValueArray) {
-            if ($sAttributeKey === 'debug' || !isset($aAttributeValueArray['formElementValue'])) {
+        foreach ($dataSet as $sAttributeKey => $attributeValue) {
+            if ($sAttributeKey === 'debug' || !isset($attributeValue)) {
                 continue;
             }
             if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                $oQuestion->$sAttributeKey = $aAttributeValueArray['formElementValue'];
+                $oQuestion->$sAttributeKey = $attributeValue;
             } elseif (!QuestionAttribute::model()->setQuestionAttribute(
                 $oQuestion->qid,
                 $sAttributeKey,
-                $aAttributeValueArray['formElementValue']
+                $attributeValue
             )) {
                 throw new CHttpException(500, gT("Could not store general options"));
             }
@@ -1951,27 +1948,22 @@ class QuestionAdministrationController extends LSBaseController
      * @return boolean
      * @throws CHttpException
      */
-    private function unparseAndSetAdvancedOptions(&$oQuestion, $dataSet)
+    private function unparseAndSetAdvancedOptions($oQuestion, $dataSet)
     {
         $aQuestionBaseAttributes = $oQuestion->attributes;
-        echo '<pre>'; var_dump($dataSet); echo '</pre>';die;
 
         foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
             if ($sAttributeCategory === 'debug') {
                 continue;
             }
-            echo '<pre>'; var_dump($aAttributeCategorySettings); echo '</pre>';
-            continue;
-            foreach ($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
-                if (!isset($aAttributeValueArray['formElementValue'])) {
-                    continue;
-                }
-                $newValue = $aAttributeValueArray['formElementValue'];
+            foreach ($aAttributeCategorySettings as $sAttributeKey => $attributeValue) {
+                $newValue = $attributeValue;
 
                 // Set default value if empty.
+                // TODO: Default value
                 if ($newValue === ""
-                    && isset($aAttributeValueArray['aFormElementOptions']['default'])) {
-                    $newValue = $aAttributeValueArray['aFormElementOptions']['default'];
+                    && isset($attributeValue['aFormElementOptions']['default'])) {
+                    $newValue = $attributeValue['aFormElementOptions']['default'];
                 }
 
                 if (is_array($newValue)) {
@@ -1999,8 +1991,6 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
-        die;
-
 
         if (!$oQuestion->save()) {
             throw new CHttpException(500, gT("Could not store advanced options"));

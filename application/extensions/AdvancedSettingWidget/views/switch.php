@@ -3,7 +3,7 @@
         <label class="btn btn-default">
             <input
                 type="radio"
-                name="question[<?= $this->setting['name']; ?>]"
+                name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
                 value="Y"
                 />
             <?= gT('On'); ?>
@@ -11,7 +11,7 @@
         <label class="btn btn-default">
             <input
                 type="radio"
-                name="question[<?= $this->setting['name']; ?>]"
+                name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
                 value="N"
                 />
             <?= gT('Off'); ?>

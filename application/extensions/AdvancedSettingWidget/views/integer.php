@@ -11,8 +11,8 @@
     <input 
         type="number" 
         class="form-control" 
-        name="advancedSettings[<?= $this->setting['name']; ?>]"
-        id="advancedSettings[<?= $this->setting['name']; ?>]"
+        name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+        id="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
     />
     <?php if (isset($this->setting['aFormElementOptions']['inputGroup']['suffix'])) : ?>
         <div class="input-group-addon">
