@@ -27,7 +27,14 @@
                             confirm_ok: '".gT('OK')."'
                         }
                     };\n"
-                    . "$.ajaxSetup({data: {".Yii::app()->request->csrfTokenName.": LS.data.csrfToken}});";
+
+                    . "$.ajaxSetup({
+                        beforeSend: function(jqXHR, settings) {
+                            if(settings.method != 'GET') {
+                                {data: {".Yii::app()->request->csrfTokenName.": LS.data.csrfToken}}
+                            }
+                        }
+                    });";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }
