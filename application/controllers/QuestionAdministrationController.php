@@ -280,7 +280,10 @@ class QuestionAdministrationController extends LSBaseController
             App()->getConfig('adminscripts') . 'questionEditor.js',
             CClientScript::POS_BEGIN
         );
-        PrepareEditorScript(true, $this);
+        // TODO: No difference between true and false?
+        PrepareEditorScript(false, $this);
+        App()->session['FileManagerContent'] = "edit:survey:{$surveyid}";
+        initKcfinder();
 
         $this->aData['surveyid'] = $surveyid;
         $this->aData['sid'] = $surveyid;
