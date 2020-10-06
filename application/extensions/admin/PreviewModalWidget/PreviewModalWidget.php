@@ -1,70 +1,132 @@
 <?php
 
-class PreviewModalWidget extends CWidget {
-
-    //The name the widget will be rendered to, please make sure it is unique!
+class PreviewModalWidget extends CWidget
+{
+    /**
+     * The name the widget will be rendered to, please make sure it is unique!
+     * @var string
+     */
     public $widgetsJsName = "";
-    //The title the widgets modal will have
+
+    /**
+     * The title the widgets modal will have
+     * @var string
+     */
     public $modalTitle = "Select please";
-    //If using the grouped view this should be the key to get the group title
+
+    /**
+     * If using the grouped view this should be the key to get the group title
+     * @var string
+     */
     public $groupTitleKey = "title";
-    //If using the grouped view this should be the key of the grouped items array key
+
+    /**
+     * If using the grouped view this should be the key of the grouped items array key
+     * @var string
+     */
     public $groupItemsKey = "items";
-    //Display this with the items key in debug mode
+
+    /**
+     * Display this with the items key in debug mode
+     * @var string
+     */
     public $debugKeyCheck = "Key: ";
-    //The title of the preview window
+
+    /**
+     * The title of the preview window
+     * @var string
+     */
     public $previewWindowTitle = "Preview";
 
-    //Either a group or an items array must be given
+    /**
+     * Either a group or an items array must be given
+     * @var array
+     */
     public $groupStructureArray = [];
+
+    /** @var array */
     public $itemsArray = [];
 
-    //There should be a value set
+    /**
+     * There should be a value set
+     * @var mixed
+     */
     public $value = null;
-    //This may be the value also, but oftentimes you'd want this to be an easy to read title
+
+    /**
+     * This may be the value also, but oftentimes you'd want this to be an easy to read title
+     * @var string
+     */
     public $currentSelected = "";
 
-    //This is the option array that gets fed into the javascript.
+    /**
+     * This is the option array that gets fed into the javascript.
+     * @var array
+     */
     public $optionArray = [];
 
-    //If the button should have any extra classes or modifications.
+    /**
+     * If the button should have any extra classes or modifications.
+     * @var string[]
+     */
     public $buttonClasses = ['btn-default'];
 
-    //The position the icon has in the modal button
+    /**
+     * The position the icon has in the modal button
+     * @var string
+     */
     public $iconPosition = 'front';
 
-    //These are pretty standard and may not need to be changed
+    /**
+     * These are pretty standard and may not need to be changed
+     * @var string
+     */
     public $closeButton = "Close";
+
+    /**
+     * @var string
+     */
     public $selectButton = "Select";
 
-    //RenderType should either be modal, simple, group-simple or group-modal
-    public $renderType;
+    /**
+     * RenderType should either be modal, simple, group-simple or group-modal
+     * @var string
+     */
+    public $renderType = 'modal';
 
+    /**
+     * @var bool
+     */
     public $debug = false;
 
-    public function run() {
+    /**
+     * @return void
+     */
+    public function run()
+    {
         //clean up the widgets name to be js friendly
         $this->widgetsJsName = preg_replace('/[^a-zA-Z0-9_-]/','',$this->widgetsJsName);
         $this->registerScripts();
     }
 
-
     /**
      * @param bool $return
-     *
      * @return string|void
      * @throws CException
      */
-    public function getModal($return=false){
-        if(preg_match("/modal/",$this->renderType)){
-
+    public function getModal($return = false)
+    {
+        if(preg_match("/modal/",$this->renderType)) {
             return $this->render($this->getView(), null, $return);
         }
-        echo "";
-        return;
     }
 
-    public function getButtonOrSelect($return=false){
+    /**
+     * @param bool $return
+     * @return string|void
+     */
+    public function getButtonOrSelect($return = false)
+    {
         if(preg_match("/modal/",$this->renderType)){
             return $this->render("open_modal_button", null, $return);
         }
@@ -72,9 +134,12 @@ class PreviewModalWidget extends CWidget {
         return $this->render($this->view, null, $return);
     }
 
-    public function getView(){
-
-        switch( $this->renderType ) {
+    /**
+     * @return string
+     */
+    public function getView()
+    {
+        switch($this->renderType) {
             case 'simple' : return 'simple_select';
             case 'group-simple' : return 'simple_grouped_select';
             case 'group-modal' : return 'grouped_select_modal';
@@ -83,7 +148,11 @@ class PreviewModalWidget extends CWidget {
         }
     }
 
-    private function registerScripts(){
+    /**
+     * @return void
+     */
+    private function registerScripts()
+    {
         $oClientScript = App()->getClientScript();
         $basePath = dirname(__FILE__) . '/assets/';
 
