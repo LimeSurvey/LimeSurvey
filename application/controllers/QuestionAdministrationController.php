@@ -1296,10 +1296,39 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
+    /**
+     * Get HTML for general settings.
+     * Called with Ajax after question type is selected.
+     *
+     * @param int $surveyId
+     * @param int $questionId Null if new question is being created.
+     * @return void
+     * @todo Question type
+     */
+    public function actionGetGeneralSettingsHTML(int $surveyId, int $questionId = null)
+    {
+        // TODO: Difference between create and update permissions?
+        if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+        // NB: This works even when $questionId is null (get default question values).
+        $question = $this->getQuestionObject($questionId);
+        if ($questionId !== null) {
+            // Can only happen if parameters are manipulated.
+            if ($question->sid !== $surveyId) {
+                throw new CHttpException(405, gT('Invalid action'));
+            }
+        }
+        $generalSettings = $this->getGeneralOptions(
+            $question->qid,
+            $question->type,
+            $question->gid,
+            'core'  // TODO: question_template
+        );
+        $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
+    }
 
-
-    /** ++++++++++++  the following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
-
+    /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
     /**
      * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
@@ -1611,7 +1640,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return void|array
      * @throws CException
      */
-    public function getGeneralOptions(
+    private function getGeneralOptions(
         $iQuestionId = null,
         $sQuestionType = null,
         $gid = null,

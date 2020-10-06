@@ -32,23 +32,24 @@ $(document).on("ready pjax:scriptcomplete", function () {
 
 /**
  * Update question attributes when selecting question type.
- * @param {string} questionType
+ * @param {string} questionType - One-letter string of question type
+ * @param {string} url - URL to controller to fetch new HTML
  * @return {void}
  */
-function updateQuestionAttributes(questionType) {
-    console.log(value);
+function updateQuestionAttributes(questionType, url) {
+    console.log(questionType);
+    console.log(url);
     // If same question type, do nothing.
     // Else, fetch new HTML from server.
-    $.ajax({
+    const request = $.ajax({
         url: url,
-        method: "POST",
+        method: "GET",
         data: {questionType: questionType},
         dataType: "html"
     });
 
     request.done(function(html) {
-        console.log(html);
-        //$( "#log" ).html(msg);
+        $("#general-settings").replaceWith(html);
     });
 
     request.fail(function(jqXHR, textStatus) {
@@ -56,6 +57,5 @@ function updateQuestionAttributes(questionType) {
     });
 }
 
-function updateQuestionTemplateOptions(value) {
-    console.log(value);
+function updateQuestionTemplateOptions(questionType) {
 }

@@ -17,7 +17,9 @@ $oQuestionSelector = $this->beginWidget(
             'selectedClass' => Question::getQuestionClass($oQuestion->type),
             'onUpdate' => [
                 'value',
-                "console.log(value); $('#question_type').val(value); updateQuestionAttributes(value); updateQuestionTemplateOptions(value);"
+                // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
+                "$('#question_type').val(value); updateQuestionAttributes(value, '"
+                . $this->createUrl('questionAdministration/getGeneralSettingsHTML', ['surveyId' => $oQuestion->sid, 'questionId' => $oQuestion->qid]) . "'); updateQuestionTemplateOptions(value);"
             ]
         ]
     ]

@@ -1,4 +1,4 @@
-<div class="panel panel-default question-option-general-container col-12" id="uncollapsed-general-settings" v-if="!loading && !collapsedMenu">
+<div class="panel panel-default question-option-general-container col-12" id="general-settings">
     <div class="panel-heading"> 
         <?= gT('General Settings'); ?>
         <button class="pull-right btn btn-default btn-xs" @click="collapsedMenu=true">

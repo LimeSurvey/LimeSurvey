@@ -2,6 +2,7 @@
 
 /**
  * Used for question type select, display export options.
+ * @todo Split into two widgets?
  */
 class PreviewModalWidget extends CWidget
 {
@@ -165,16 +166,22 @@ class PreviewModalWidget extends CWidget
         //register Assets
         $oClientScript->registerCssFile($sStyleFile);
         $oClientScript->registerScriptFile($sScriptFile, CClientScript::POS_BEGIN);
-        $oClientScript->registerScript('WIDGETSCRIPT--'.$this->widgetsJsName, '
-        var runner_'.$this->widgetsJsName.' = new PreviewModalScript("'.$this->widgetsJsName.'",'
-        .json_encode(array_merge($this->optionArray, [
-            'value' => $this->value,
-            'debugString' => $this->debugKeyCheck,
-            'debug' => $this->debug,
-            'viewType' => $this->view
-            ]))
-        .');
-        runner_'.$this->widgetsJsName.'.bind();',
-        LSYii_ClientScript::POS_POSTSCRIPT);
+        $oClientScript->registerScript(
+            'WIDGETSCRIPT--' . $this->widgetsJsName,
+            'var runner_' . $this->widgetsJsName . ' = new PreviewModalScript("' . $this->widgetsJsName . '",'
+            . json_encode(
+                array_merge(
+                    $this->optionArray,
+                    [
+                        'value' => $this->value,
+                        'debugString' => $this->debugKeyCheck,
+                        'debug' => $this->debug,
+                        'viewType' => $this->view
+                    ]
+                )
+            )
+            . '); runner_'.$this->widgetsJsName.'.bind();',
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
     }
 }
