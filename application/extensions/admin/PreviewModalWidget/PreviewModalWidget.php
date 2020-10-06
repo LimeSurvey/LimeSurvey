@@ -88,8 +88,8 @@ class PreviewModalWidget extends CWidget {
         $basePath = dirname(__FILE__) . '/assets/';
 
         //publish Assets
-        $sStyleFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.dist.css');
-        $sScriptFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.dist.js');
+        $sStyleFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.css');
+        $sScriptFile = App()->getAssetManager()->publish($basePath.'previewModalWidget.js');
         //register Assets
         $oClientScript->registerCssFile($sStyleFile);
         $oClientScript->registerScriptFile($sScriptFile, CClientScript::POS_BEGIN);

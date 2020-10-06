@@ -1,3 +1,5 @@
+"use strict";
+
 class PreviewModalScript {
     constructor(widgetsJsName, transOptions){
         this.widgetsJsName = widgetsJsName;
