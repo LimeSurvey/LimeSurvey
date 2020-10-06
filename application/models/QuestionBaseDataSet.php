@@ -2,7 +2,6 @@
 
 use LimeSurvey\Datavalueobjects\GeneralOption;
 use LimeSurvey\Datavalueobjects\SwitchOption;
-use LimeSurvey\Datavalueobjects\SwitchOptions;
 use LimeSurvey\Datavalueobjects\FormElement;
 
 /**

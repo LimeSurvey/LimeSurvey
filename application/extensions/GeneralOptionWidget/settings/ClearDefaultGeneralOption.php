@@ -18,12 +18,10 @@ class ClearDefaultGeneralOption extends GeneralOption
             '',
             [
                 'classes' => [],
-                'options' => new SwitchOptions(
-                    [
-                        new SwitchOption(gt('Off'), 'N'),
-                        new SwitchOption(gt('On'), 'Y'),
-                    ]
-                )
+                'options' => [
+                    new SwitchOption(gt('Off'), 'N'),
+                    new SwitchOption(gt('On'), 'Y'),
+                ]
             ]
         );
     }
