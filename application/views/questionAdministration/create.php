@@ -43,9 +43,9 @@
                             <?php $this->renderPartial(
                                 "textElements",
                                 [
-                                    'oSurvey'           => $oSurvey,
-                                    'aStructureArray'   => $aQuestionTypeGroups,
-                                    'questionTypes'     => $aQuestionTypeStateList,
+                                    'oSurvey'         => $oSurvey,
+                                    'aStructureArray' => $aQuestionTypeGroups,
+                                    'questionTypes'   => $aQuestionTypeStateList,
                                 ]
                             ); ?>
                         </div>

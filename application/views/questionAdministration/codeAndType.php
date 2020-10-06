@@ -1,11 +1,13 @@
 <?php
-    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+$oQuestionSelector = $this->beginWidget(
+    'ext.admin.PreviewModalWidget.PreviewModalWidget',
+    [
         'widgetsJsName' => "questionTypeSelector",
-        'renderType' =>  (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
-        'modalTitle' => "Select question type",
+        'renderType'    => isset($selectormodeclass) && $selectormodeclass == "none" ? "group-simple" : "group-modal",
+        'modalTitle'    => gT("Select question type"),
         'groupTitleKey' => "questionGroupName",
         'groupItemsKey' => "questionTypes",
-        'debugKeyCheck' => "Type: ",
+        'debugKeyCheck' => gT("Type:") . " ",
         'previewWindowTitle' => gT("Preview question type"),
         'groupStructureArray' => $aQuestionTypeGroups,
         'value' => $oQuestion->type,
@@ -15,10 +17,11 @@
             'selectedClass' => Question::getQuestionClass($oQuestion->type),
             'onUpdate' => [
                 'value',
-                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
+                "console.log(value); $('#question_type').val(value); updateQuestionAttributes(value); updateQuestionTemplateOptions(value);"
             ]
         ]
-    ));
+    ]
+);
 ?>
 <?= $oQuestionSelector->getModal(); ?>
 

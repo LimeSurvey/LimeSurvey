@@ -29,3 +29,33 @@ $(document).on("ready pjax:scriptcomplete", function () {
     // Hide help tips by default.
     $('.question-option-help').hide();
 });
+
+/**
+ * Update question attributes when selecting question type.
+ * @param {string} questionType
+ * @return {void}
+ */
+function updateQuestionAttributes(questionType) {
+    console.log(value);
+    // If same question type, do nothing.
+    // Else, fetch new HTML from server.
+    $.ajax({
+        url: url,
+        method: "POST",
+        data: {questionType: questionType},
+        dataType: "html"
+    });
+
+    request.done(function(html) {
+        console.log(html);
+        //$( "#log" ).html(msg);
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+        alert("Request failed: " + textStatus);
+    });
+}
+
+function updateQuestionTemplateOptions(value) {
+    console.log(value);
+}

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Used for question type select, display export options.
+ */
 class PreviewModalWidget extends CWidget
 {
     /**
@@ -127,7 +130,7 @@ class PreviewModalWidget extends CWidget
      */
     public function getButtonOrSelect($return = false)
     {
-        if(preg_match("/modal/",$this->renderType)){
+        if(preg_match("/modal/",$this->renderType)) {
             return $this->render("open_modal_button", null, $return);
         }
 
