@@ -362,7 +362,14 @@ class surveypermission extends Survey_Common_Action
 
                 if ($postuserid > 0) {
 
-                    $isrresult = Permission::model()->insertSomeRecords(array('entity_id' => $surveyid, 'entity'=>'survey', 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
+                    try {
+                        $isrresult = Permission::model()->insertSomeRecords(array('entity_id' => $surveyid, 'entity'=>'survey', 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
+                    } catch(CDbException $e) {
+                        // This database error happens usually if user already exists
+                        $isrresult=false;                            
+                    }
+
+
 
                     if ($isrresult) {
 
@@ -380,14 +387,14 @@ class surveypermission extends Survey_Common_Action
                         $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
                         $addsummary .= "<h2>".gT("Add user")."</h2>\n";
                         $addsummary .= "<p class='lead'>".gT("Failed to add user.")."</p>\n"
-                        . "<p>".gT("Username already exists.")."</p>";
+                        . "<p>".gT("User already has permissions for this survey.")."</p>";
                         $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/></p>\n";
                     }
                 } else {
                     $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
                     $addsummary .= "<h2>".gT("Add user")."</h2>\n";
                     $addsummary .= "<p class='lead'>".gT("Failed to add user.")."</p>\n"
-                    . "<p>".gT("No Username selected.")."</p>\n";
+                    . "<p>".gT("No username selected.")."</p>\n";
                     $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/></p>\n";
                 }
             } else {

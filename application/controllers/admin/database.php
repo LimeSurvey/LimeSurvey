@@ -768,8 +768,14 @@ class database extends Survey_Common_Action
                         foreach ($udata as $k => $v) {
                             $oQuestionL10n->$k = $v;
                         }
-
-                        $uqresult = $oQuestionL10n->save(); //($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
+                        try {
+                            $uqresult = $oQuestionL10n->save(); 
+                          } catch(CDbException $e) {
+                            $uqresult=false;                            
+                            if ($e->errorInfo[0]==22001) {  // This should only happen on MySQL
+                                Yii::app()->setFlashMessage(gT("Error: Question text length exceeds 64kb."), 'error');
+                            } 
+                        }
                         if (!$uqresult) {
                             $bOnError = true;
                             $aErrors = $oQuestion->getErrors();
@@ -1298,7 +1304,7 @@ class database extends Survey_Common_Action
 
             $oQuestion->relevance = Yii::app()->request->getPost('relevance');
             $oQuestion->question_order = (int) $iQuestionOrder;
-            $oQuestion->save();
+                $oQuestion->save(); 
             if ($oQuestion) {
                 $this->iQuestionID = $oQuestion->qid;
             }
@@ -1316,7 +1322,13 @@ class database extends Survey_Common_Action
             $oQuestionLS->question = $sQuestionText;
             $oQuestionLS->help = $sQuestionHelp;
             $oQuestionLS->qid = $oQuestion->qid;
-            $oQuestionLS->save();
+            try {
+                $oQuestionLS->save(); 
+              } catch(CDbException $e) {
+                if ($e->errorInfo[0]==22001) {  // This should only happen on MySQL
+                    Yii::app()->setFlashMessage(gT("Error: Question text length exceeds 64kb."), 'error');
+                }
+            } 
             
             $aErrors = $oQuestionLS->getErrors();
             if (count($aErrors)) {
@@ -1527,11 +1539,11 @@ class database extends Survey_Common_Action
         }
         //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        $redirectLink = $this->getController()->createUrl('questionAdministration/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
-        if (Yii::app()->request->getPost('saveandnew', '') != '') {
+        if (Yii::app()->request->getPost('saveandnew', '') != '' || !$this->iQuestionID) {
             $redirectLink = $this->getController()->createUrl('questionAdministration/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
+        } else {
+            $redirectLink = $this->getController()->createUrl('questionAdministration/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
         }
-
         $this->getController()->redirect($redirectLink);
     }
 
