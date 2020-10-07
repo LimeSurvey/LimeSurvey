@@ -31,34 +31,56 @@ $(document).on("ready pjax:scriptcomplete", function () {
 });
 
 /**
- * Update question attributes when selecting question type.
+ * Update question attributes (general and advanced settings) when selecting question type.
+ *
  * @param {string} questionType - One-letter string of question type
- * @param {string} url - URL to controller to fetch new HTML
+ * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
+ * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
  * @return {void}
  */
-function updateQuestionAttributes(questionType, url) {
-    console.log(questionType);
-    console.log(url);
+async function updateQuestionAttributes(questionType, generalSettingsUrl, advancedSettingsUrl) {
     // If same question type, do nothing.
     // Else, fetch new HTML from server.
-    const request = $.ajax({
-        url: url,
-        method: "GET",
-        data: {questionType: questionType},
-        dataType: "html"
-    });
     $('#ls-loading').show();
 
-    request.done(function(html) {
+    const generalSettingsPromise = new Promise((resolve, reject) => {
+        $.ajax({
+            url: generalSettingsUrl,
+            method: "GET",
+            data: {questionType: questionType},
+            dataType: "html",
+            success: (data) => {
+                resolve(data);
+            },
+            error: (data) => {
+                reject(data);
+            }
+        });
+    });
+    const advancedSettingsPromise = new Promise((resolve, reject) => {
+        $.ajax({
+            url: advancedSettingsUrl,
+            method: "GET",
+            data: {questionType: questionType},
+            dataType: "html",
+            success: (data) => {
+                resolve(data);
+            },
+            error: (data) => {
+                reject(data);
+            }
+        });
+    });
+    try {
+        const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
         $("#general-settings").replaceWith(html);
+        $("#advanced-settings").replaceWith(html2);
         $('.question-option-help').hide();
         $('#ls-loading').hide();
-    });
-
-    request.fail(function(jqXHR, textStatus) {
+    } catch (ex) {
         $('#ls-loading').hide();
-        alert("Internal error: Request failed: " + textStatus);
-    });
+        alert('Internal error: ' + ex);
+    }
 }
 
 function updateQuestionTemplateOptions(questionType) {

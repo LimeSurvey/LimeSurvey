@@ -1301,9 +1301,9 @@ class QuestionAdministrationController extends LSBaseController
      * Called with Ajax after question type is selected.
      *
      * @param int $surveyId
-     * @param int $questionId Null if new question is being created.
+     * @param string $questionType One-char string
+     * @param int $questionId Null or 0 if new question is being created.
      * @return void
-     * @todo Question type
      */
     public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, int $questionId = null)
     {
@@ -1329,6 +1329,40 @@ class QuestionAdministrationController extends LSBaseController
             'core'  // TODO: question_template
         );
         $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
+    }
+
+    /**
+     * Get HTML for advanced settings.
+     * Called with Ajax after question type is selected.
+     *
+     * @param int $surveyId
+     * @param string $questionType One-char string
+     * @param int $questionId Null or 0 if new question is being created.
+     * @return void
+     */
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, int $questionId = null)
+    {
+        if (empty($questionType)) {
+            throw new CHttpException(405, 'Internal error: No question type');
+        }
+        // TODO: Difference between create and update permissions?
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+        // NB: This works even when $questionId is null (get default question values).
+        $question = $this->getQuestionObject($questionId);
+        if ($questionId) {
+            // NB: Could happen if user manipulates request.
+            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT('No permission'));
+            }
+        }
+        $advancedSettings = $this->getAdvancedOptions(
+            $question->qid,
+            $questionType,
+            'core'  // TODO: question_template
+        );
+        $this->renderPartial("advancedSettings", ['advancedSettings'  => $advancedSettings]);
     }
 
     /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
