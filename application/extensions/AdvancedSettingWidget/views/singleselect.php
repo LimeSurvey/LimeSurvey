@@ -4,10 +4,10 @@
     id="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
 >
     <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option) : ?>
-        <?php if (isset($option['value'])) : ?>
+        <?php if (!empty($option['value'])) : ?>
             <option value="<?= $option['value']; ?>">
         <?php else : ?>
-            <option>
+            <option value="">
         <?php endif; ?>
             <?= $option['text']; ?>
         </option>
