@@ -768,14 +768,7 @@ class database extends Survey_Common_Action
                         foreach ($udata as $k => $v) {
                             $oQuestionL10n->$k = $v;
                         }
-                        try {
-                            $uqresult = $oQuestionL10n->save(); 
-                          } catch(CDbException $e) {
-                            $uqresult=false;                            
-                            if ($e->errorInfo[0]==22001) {  // This should only happen on MySQL
-                                Yii::app()->setFlashMessage(gT("Error: Question text length exceeds 64kb."), 'error');
-                            } 
-                        }
+                        $uqresult = $oQuestionL10n->save(); 
                         if (!$uqresult) {
                             $bOnError = true;
                             $aErrors = $oQuestion->getErrors();
@@ -1322,13 +1315,7 @@ class database extends Survey_Common_Action
             $oQuestionLS->question = $sQuestionText;
             $oQuestionLS->help = $sQuestionHelp;
             $oQuestionLS->qid = $oQuestion->qid;
-            try {
-                $oQuestionLS->save(); 
-              } catch(CDbException $e) {
-                if ($e->errorInfo[0]==22001) {  // This should only happen on MySQL
-                    Yii::app()->setFlashMessage(gT("Error: Question text length exceeds 64kb."), 'error');
-                }
-            } 
+            $oQuestionLS->save(); 
             
             $aErrors = $oQuestionLS->getErrors();
             if (count($aErrors)) {
