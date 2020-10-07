@@ -74,7 +74,8 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     try {
         const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
         $("#general-settings").replaceWith(html);
-        $("#advanced-settings").replaceWith(html2);
+        // TODO: Double check HTML injected here. Extra div?
+        $("#advanced-options-container").replaceWith(html2);
         $('.question-option-help').hide();
         $('#ls-loading').hide();
     } catch (ex) {
