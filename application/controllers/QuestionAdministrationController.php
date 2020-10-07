@@ -434,12 +434,6 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
 
-        // Store changes to the actual question data, by either storing it, or updating an old one
-        $oQuestion = Question::model()->find(
-            'sid = :sid AND qid = :qid',
-            [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
-        );
-
         /*
          * Setting up a try/catch scenario to delete a copied/created question,
          * in case the storing of the peripherals breaks
@@ -447,9 +441,15 @@ class QuestionAdministrationController extends LSBaseController
         try {
             $transaction = Yii::app()->db->beginTransaction();
 
-            if ($oQuestion == null) {
+            if ($questionData['question']['qid'] == 0) {
+                $questionData['question']['qid'] = null;
                 $oQuestion = $this->storeNewQuestionData($questionData['question']);
             } else {
+                // Store changes to the actual question data, by either storing it, or updating an old one
+                $oQuestion = Question::model()->find(
+                    'sid = :sid AND qid = :qid',
+                    [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
+                );
                 $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
             }
 
@@ -1856,6 +1856,7 @@ class QuestionAdministrationController extends LSBaseController
                     'language' => $sLanguage,
                     'question' => '',
                     'help'     => '',
+                    'script'   => '',
                 ],
                 false
             );
@@ -1922,6 +1923,9 @@ class QuestionAdministrationController extends LSBaseController
     {
         foreach ($dataSet as $sLanguage => $aI10NBlock) {
             $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);
+            if (empty($i10N)) {
+                throw new Exception('Found no L10n object');
+            }
             $i10N->setAttributes(
                 [
                     'question' => $aI10NBlock['question'],
@@ -1966,7 +1970,11 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         if (!$oQuestion->save()) {
-            throw new CHttpException(500, gT("Could not store general options"));
+            throw new CHttpException(
+                500,
+                gT("Could not store question after general options") . PHP_EOL
+                . print_r($oQuestion->getErrors(), true)
+            );
         }
 
         return true;
