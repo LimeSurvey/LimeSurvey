@@ -734,14 +734,8 @@ class database extends Survey_Common_Action
                         foreach ($udata as $k => $v) {
                             $oQuestion->$k = $v;
                         }
-                        try {
-                            $uqresult = $oQuestion->save(); 
-                          } catch(CDbException $e) {
-                            $uqresult=false;                            
-                            if ($e->errorInfo[0]==22001) {  // This should only happen on MySQL
-                                Yii::app()->setFlashMessage(gT("Error: Question text length exceeds 64kb."), 'error');
-                            } 
-                        }
+
+                        $uqresult = $oQuestion->save(); //($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                         if (!$uqresult) {
                             $bOnError = true;
                             $aErrors = $oQuestion->getErrors();
@@ -1291,15 +1285,7 @@ class database extends Survey_Common_Action
             $oQuestion->relevance = Yii::app()->request->getPost('relevance');
             $oQuestion->question_order = (int) $iQuestionOrder;
             $oQuestion->language = $sBaseLanguage;
-
-            try {
-                $oQuestion->save(); 
-              } catch(CDbException $e) {
-                if ($e->errorInfo[0]==22001) {  // This should only happen on MySQL
-                    Yii::app()->setFlashMessage(gT("Error: Question text length exceeds 64kb."), 'error');
-                }
-            } 
-
+            $oQuestion->save();
             if ($oQuestion) {
                 $this->iQuestionID = $oQuestion->qid;
             }
@@ -1518,12 +1504,11 @@ class database extends Survey_Common_Action
         }
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-
-        if (Yii::app()->request->getPost('saveandnew', '') != '' || !$this->iQuestionID) {
+        $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
+        if (Yii::app()->request->getPost('saveandnew', '') != '') {
             $redirectLink = $this->getController()->createUrl('admin/questions/sa/newquestion/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
-        } else {
-            $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
         }
+
         $this->getController()->redirect($redirectLink);
     }
 

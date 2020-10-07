@@ -16,17 +16,18 @@
 - Never use models in the upgrade process - never ever!
 - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
 - Never use foreign keys
-- Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii which are:
+- Use only the field types listed here:
 
     pk: auto-incremental primary key type (“int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY”).
     string: string type (“varchar(255)”).
-    text: a long string type (“text”).
+    text: a long string type (“text”) - MySQL: max size 64kb - Postgres: unlimited - MSSQL: max size 2.1GB 
+    mediumtext: a long string type (“text”) - MySQL: max size 16MB - Postgres: unlimited - MSSQL: max size 2.1GB
+    longtext: a long string type (“text”) - MySQL: max size 2.1 GB - Postgres: unlimited - MSSQL: max size 2.1GB
     integer: integer type (“int(11)”).
     boolean: boolean type (“tinyint(1)”).
     float: float number type (“float”).
     decimal: decimal number type (“decimal”).
     datetime: datetime type (“datetime”).
-    timestamp: timestamp type (“timestamp”).
     time: time type (“time”).
     date: date type (“date”).
     binary: binary data type (“blob”).
@@ -2480,6 +2481,51 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>363], "stg_name='DBVersion'");
             $oTransaction->commit();
         }        
+
+        /*
+         * Extend text datafield lengths for MySQL
+         * Extend datafield length for additional languages in survey table
+         */
+        if ($iOldDBVersion < 364) {
+            $oTransaction = $oDB->beginTransaction();
+            if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqi') {
+                alterColumn('{{answers}}','answer',"mediumtext",false);
+                alterColumn('{{assessments}}','message',"mediumtext",false);
+                alterColumn('{{groups}}','description',"mediumtext");
+                alterColumn('{{notifications}}','message',"mediumtext",false);
+                alterColumn('{{participant_attribute_values}}','value',"mediumtext",false);
+                alterColumn('{{plugin_settings}}','value',"mediumtext");
+                alterColumn('{{questions}}','question',"mediumtext",false);
+                alterColumn('{{questions}}','help',"mediumtext");
+                alterColumn('{{question_attributes}}','value',"mediumtext");
+                alterColumn('{{quota_languagesettings}}','quotals_message',"mediumtext",false);
+                alterColumn('{{settings_global}}','stg_value',"mediumtext",false);
+                alterColumn('{{settings_user}}','stg_value',"mediumtext");
+                alterColumn('{{surveymenu_entries}}','data',"mediumtext");
+                alterColumn('{{surveys}}','attributedescriptions',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_description',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_policy_notice',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','email_admin_notification',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','email_admin_responses',"mediumtext");
+                alterColumn('{{templates}}','license',"mediumtext");
+                alterColumn('{{templates}}','description',"mediumtext");
+                alterColumn('{{template_configuration}}','cssframework_css',"mediumtext");
+                alterColumn('{{template_configuration}}','cssframework_js',"mediumtext");
+                alterColumn('{{tutorials}}','settings',"mediumtext");
+                alterColumn('{{tutorial_entries}}','content',"mediumtext");
+                alterColumn('{{tutorial_entries}}','settings',"mediumtext");
+            }
+            alterColumn('{{surveys}}','additional_languages',"text");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>364], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }        
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

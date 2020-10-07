@@ -12,6 +12,8 @@ class PgsqlSchema extends CPgsqlSchema
         $this->columnTypes['autoincrement'] = 'serial';
         $this->columnTypes['longbinary'] = 'bytea';
         $this->columnTypes['decimal'] = 'numeric (10,0)'; // Same default than MySql (not used)
+        $this->columnTypes['mediumtext'] = 'text';
+        $this->columnTypes['longtext'] = 'text';
     }
 
     /**

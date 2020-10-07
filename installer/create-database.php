@@ -6,9 +6,13 @@ function createDatabase($oDB){
     * Rules:
     * - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
     * - Never use foreign keys
-    * - Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
+    * - Only use the database field types provided by Yii as they are guaranteed to be cross-DB compatible
+    * - You may also use: text / mediumtext/ longtext
+    *       - MySQL is differentiating here: text - max size 64kb, mediumtext - max size 16MB , longtext - max size 2.1 GB
+    *       - MSSQL: all three types use text (max size 2.1 GB)
+    *       - Postgres: all three types use text (max size unlimited)
     * - If you want to use database functions make sure they exist on all three supported database types
-    * - Always prefix key/index names by using curly brackets {{ }}*
+    * - Always prefix key/index names by using curly brackets {{ }}
     */
 
     ////// Current database version: //////
@@ -28,7 +32,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{answers}}', array(
             'qid' => 'integer NOT NULL',
             'code' => 'string(5) NOT NULL',
-            'answer' => 'text NOT NULL',
+            'answer' => 'mediumtext NOT NULL',
             'sortorder' => 'integer NOT NULL',
             'assessment_value' => 'integer NOT NULL DEFAULT 0',
             'language' => "string(20) NOT NULL DEFAULT 'en'",
@@ -47,7 +51,7 @@ function createDatabase($oDB){
             'name' =>       'text NOT NULL',
             'minimum' =>    'string(50) NOT NULL',
             'maximum' =>    'string(50) NOT NULL',
-            'message' =>    'text NOT NULL',
+            'message' =>    'mediumtext NOT NULL',
             'language' =>   "string(20) NOT NULL DEFAULT 'en'",
             'composite_pk' => array('id', 'language')
         ));
@@ -125,7 +129,7 @@ function createDatabase($oDB){
             'sid' =>  "integer NOT NULL default '0'",
             'group_name' =>  "string(100) NOT NULL default ''",
             'group_order' =>  "integer NOT NULL default '0'",
-            'description' =>  "text",
+            'description' =>  "mediumtext",
             'language' =>  "string(20) default 'en' NOT NULL",
             'randomization_group' =>  "string(20) NOT NULL default ''",
             'grelevance' =>  "text NULL",
@@ -166,7 +170,7 @@ function createDatabase($oDB){
             'entity' =>  "string(15) NOT NULL ",
             'entity_id' =>  "integer NOT NULL",
             'title' =>  "string(255) NOT NULL",
-            'message' =>  "text NOT NULL",
+            'message' =>  "mediumtext NOT NULL",
             'status' =>  "string(15) NOT NULL DEFAULT 'new' ",
             'importance' =>  "integer NOT NULL DEFAULT 1",
             'display_class' =>  "string(31) DEFAULT 'default' ",
@@ -236,7 +240,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{participant_attribute_values}}', array(
             'value_id' => "pk",
             'attribute_id' => "integer NOT NULL",
-            'value' => "text NOT NULL",
+            'value' => "mediumtext NOT NULL",
         ));
 
 
@@ -286,7 +290,7 @@ function createDatabase($oDB){
             'model' => "string(50) NULL",
             'model_id' => "integer NULL",
             'key' => "string(50) NOT NULL",
-            'value' => "text NULL",
+            'value' => "mediumtext NULL",
         ));
 
 
@@ -298,9 +302,9 @@ function createDatabase($oDB){
             'gid' =>  "integer NOT NULL default '0'",
             'type' =>  "string(1) NOT NULL default 'T'",
             'title' =>  "string(20) NOT NULL default ''",
-            'question' =>  "text NOT NULL",
+            'question' =>  "mediumtext NOT NULL",
             'preg' =>  "text",
-            'help' =>  "text",
+            'help' =>  "mediumtext",
             'other' =>  "string(1) NOT NULL default 'N'",
             'mandatory' =>  "string(1) NULL",
             'question_order' =>  "integer NOT NULL",
@@ -325,7 +329,7 @@ function createDatabase($oDB){
             'qaid' => "pk",
             'qid' => "integer NOT NULL default '0'",
             'attribute' => "string(50) NULL",
-            'value' => "text NULL",
+            'value' => "mediumtext NULL",
             'language' => "string(20) NULL",
         ));
 
@@ -353,7 +357,7 @@ function createDatabase($oDB){
             'quotals_quota_id' => "integer NOT NULL default '0'",
             'quotals_language' => "string(45) NOT NULL default 'en'",
             'quotals_name' => "string(255) NULL",
-            'quotals_message' => "text NOT NULL",
+            'quotals_message' => "mediumtext NOT NULL",
             'quotals_url' => "string(255)",
             'quotals_urldescrip' => "string(255)",
         ));
@@ -406,7 +410,7 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->createTable('{{settings_global}}', array(
             'stg_name' =>  "string(50) NOT NULL default ''",
-            'stg_value' =>  "text NOT NULL",
+            'stg_value' =>  "mediumtext NOT NULL",
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
@@ -421,7 +425,7 @@ function createDatabase($oDB){
             'entity' => "string(15) NULL",
             'entity_id' => "string(31) NULL",
             'stg_name' => "string(63) NOT NULL",
-            'stg_value' => "text NULL",
+            'stg_value' => "mediumtext NULL",
         ));
 
         $oDB->createCommand()->createIndex('{{idx1_settings_user}}', '{{settings_user}}', 'uid', false);
@@ -485,7 +489,7 @@ function createDatabase($oDB){
             'classes' =>  "string(192)  NOT NULL DEFAULT ''",
             'permission' =>  "string(192)  NOT NULL DEFAULT ''",
             'permission_grade' =>  "string(192)  NULL",
-            'data' =>  "text ",
+            'data' =>  "mediumtext",
             'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
             'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
             'showincollapse' => 'integer DEFAULT 0',
@@ -524,7 +528,7 @@ function createDatabase($oDB){
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
             'language' => "string(50) NULL",
-            'additional_languages' => "string(255) NULL",
+            'additional_languages' => "text NULL",
             'datestamp' => "string(1) NOT NULL default 'N'",
             'usecookie' => "string(1) NOT NULL default 'N'",
             'allowregister' => "string(1) NOT NULL default 'N'",
@@ -547,7 +551,7 @@ function createDatabase($oDB){
             'usecaptcha' => "string(1) NOT NULL default 'N'",
             'usetokens' => "string(1) NOT NULL default 'N'",
             'bounce_email' => "string(254) NULL",
-            'attributedescriptions' => "text",
+            'attributedescriptions' => "mediumtext",
             'emailresponseto' => "text NULL",
             'emailnotificationto' => "text NULL",
             'tokenlength' => "integer NOT NULL default '15'",
@@ -606,28 +610,28 @@ function createDatabase($oDB){
             'surveyls_survey_id' => "integer NOT NULL",
             'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
             'surveyls_title' => "string(200) NOT NULL",
-            'surveyls_description' => "text NULL",
-            'surveyls_welcometext' => "text NULL",
-            'surveyls_endtext' => "text NULL",
-            'surveyls_policy_notice' => "text NULL",
+            'surveyls_description' => "mediumtext NULL",
+            'surveyls_welcometext' => "mediumtext NULL",
+            'surveyls_endtext' => "mediumtext NULL",
+            'surveyls_policy_notice' => "mediumtext NULL",
             'surveyls_policy_error' => "text NULL",
             'surveyls_policy_notice_label' => 'string(192) NULL',
             'surveyls_url' => "text NULL",
             'surveyls_urldescription' => "string(255) NULL",
             'surveyls_email_invite_subj' => "string(255) NULL",
-            'surveyls_email_invite' => "text NULL",
+            'surveyls_email_invite' => "mediumtext NULL",
             'surveyls_email_remind_subj' => "string(255) NULL",
-            'surveyls_email_remind' => "text NULL",
+            'surveyls_email_remind' => "mediumtext NULL",
             'surveyls_email_register_subj' => "string(255) NULL",
-            'surveyls_email_register' => "text NULL",
+            'surveyls_email_register' => "mediumtext NULL",
             'surveyls_email_confirm_subj' => "string(255) NULL",
-            'surveyls_email_confirm' => "text NULL",
+            'surveyls_email_confirm' => "mediumtext NULL",
             'surveyls_dateformat' => "integer NOT NULL DEFAULT 1",
             'surveyls_attributecaptions' => "text NULL",
             'email_admin_notification_subj' => "string(255) NULL",
-            'email_admin_notification' => "text NULL",
+            'email_admin_notification' => "mediumtext NULL",
             'email_admin_responses_subj' => "string(255) NULL",
-            'email_admin_responses' => "text NULL",
+            'email_admin_responses' => "mediumtext NULL",
             'surveyls_numberformat' => "integer NOT NULL DEFAULT 0",
             'attachments' => "text NULL",
         ));
@@ -673,12 +677,12 @@ function createDatabase($oDB){
             'author_email' =>  "string(255) NULL",
             'author_url' =>  "string(255) NULL",
             'copyright' =>  "text ",
-            'license' =>  "text ",
+            'license' =>  "mediumtext",
             'version' =>  "string(45) NULL",
             'api_version' =>  "string(45) NOT NULL",
             'view_folder' =>  "string(45) NOT NULL",
             'files_folder' =>  "string(45) NOT NULL",
-            'description' =>  "text ",
+            'description' =>  "mediumtext",
             'last_update' =>  "datetime NULL",
             'owner_id' =>  "integer NULL",
             'extends' =>  "string(150)  NULL",
@@ -709,8 +713,8 @@ function createDatabase($oDB){
             'files_print_css' => "text",
             'options' => "text ",
             'cssframework_name' => "string(45) NULL",
-            'cssframework_css' => "text",
-            'cssframework_js' => "text",
+            'cssframework_css' => "mediumtext",
+            'cssframework_js' => "mediumtext",
             'packages_to_load' => "text",
             'packages_ltr' => "text",
             'packages_rtl' => "text",
@@ -734,7 +738,7 @@ function createDatabase($oDB){
                 'icon' =>  'string(64)',
                 'description' =>  'text',
                 'active' =>  'integer DEFAULT 0',
-                'settings' => 'text',
+                'settings' => 'mediumtext',
                 'permission' =>  'string(128) NOT NULL',
                 'permission_grade' =>  'string(128) NOT NULL'
             ]
@@ -768,8 +772,8 @@ function createDatabase($oDB){
                 'teid' =>  'pk',
                 'ordering' =>  'integer',
                 'title' =>  'text',
-                'content' =>  'text',
-                'settings' => 'text'
+                'content' =>  'mediumtext',
+                'settings' => 'mediumtext'
             ]
         );
 
@@ -829,33 +833,4 @@ function createDatabase($oDB){
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }
-
-    
-    // $oTransaction = $oDB->beginTransaction();
-    // try{  
-    //     $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-    //     foreach ($surveyMenuRowData as $surveyMenuRow) {
-    //         switchMSSQLIdentityInsert("surveymenu", true, $oDB);
-    //         $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
-    //         switchMSSQLIdentityInsert("surveymenu", false, $oDB);
-    //     }
-    //     $oTransaction->commit();
-    // }catch(Exception $e){
-    //     $oTransaction->rollback();
-    //     throw new CHttpException(500, $e->getMessage());
-    // }
-
-    // $oTransaction = $oDB->beginTransaction();
-    // try{  
-    //     foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
-    //         switchMSSQLIdentityInsert("surveymenu_entries", true, $oDB);
-    //         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
-    //         switchMSSQLIdentityInsert("surveymenu_entries", false, $oDB);
-    //     }
-    //     $oTransaction->commit();
-    // }catch(Exception $e){
-    //     $oTransaction->rollback();
-    //     throw new CHttpException(500, $e->getMessage());
-    // }
-    // return true;
 }
