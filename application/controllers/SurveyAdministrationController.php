@@ -1791,7 +1791,7 @@ class SurveyAdministrationController extends LSBaseController
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
         // For Text Elemnts Tab.
-        if ($menuaction = 'surveytexts') {
+        if ($menuaction === 'surveytexts') {
             $temp = [];
             $languages = $survey->allLanguages;
             foreach ($languages as $i => $language) {
