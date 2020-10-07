@@ -50,7 +50,7 @@ class translate extends Survey_Common_Action
         $langs = $oSurvey->additionalLanguages;
 
         Yii::app()->loadHelper("database");
-        Yii::app()->loadHelper("admin/htmleditor");
+        Yii::app()->loadHelper("admin.htmleditor");
 
         if (empty($tolang) && count($langs) > 0) {
             $tolang = $langs[0];

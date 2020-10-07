@@ -214,7 +214,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
         $esrow = $this->_fetchSurveyInfo('newsurvey');
-        Yii::app()->loadHelper('admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
 
         //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData                = $this->_generalTabNewSurvey();
@@ -1644,7 +1644,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _getDataSecurityEditData($survey)
     {
-        Yii::app()->loadHelper("admin/htmleditor");
+        Yii::app()->loadHelper("admin.htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
 
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());

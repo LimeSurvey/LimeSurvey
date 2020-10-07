@@ -215,7 +215,7 @@ class Assessments extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $aData['action'] = $action;
         
-        Yii::app()->loadHelper('admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
 
         $this->prepareDataArray($aData);
 
