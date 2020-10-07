@@ -314,8 +314,8 @@ class QuestionEditorController extends LSBaseController
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
-            // If set, store subquestions
-            if (isset($questionData['scaledSubquestions'])) {
+            // If set, and the question type allows it, store subquestions
+            if (isset($questionData['scaledSubquestions']) && $oQuestion->getQuestionType()->subquestions) {
                 if (!($questionCopy === true && $questionCopySettings['copySubquestions'] == false)) {
                     $setApplied['scaledSubquestions'] = $this->storeSubquestions(
                         $oQuestion,
