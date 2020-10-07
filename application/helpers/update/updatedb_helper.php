@@ -3393,7 +3393,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>433], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }   
+        }
+
+        /**
+         * Implemented default value for user administration global settings
+         */
+        if ($iOldDBVersion < 434) {
+
+            $oTransaction = $oDB->beginTransaction();
+            $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'sendadmincreationemail',
+                "stg_value" => $defaultSetting['sendadmincreationemail'],
+            ]);
+
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'admincreationemailsubject',
+                "stg_value" => $defaultSetting['admincreationemailsubject'],
+            ]);
+
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'admincreationemailtemplate',
+                "stg_value" => $defaultSetting['admincreationemailtemplate'],
+            ]);
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 434], "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
