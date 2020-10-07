@@ -5,6 +5,9 @@ class QuestionCreate extends Question
     public static function getInstance($iSurveyId, $type)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
+        if (empty($oSurvey)) {
+            throw new Exception('Found no survey with id ' . json_encode($iSurveyId));
+        }
         $gid = Yii::app()->request->getParam('gid', 0);
         if($gid == 0) {
             $gid = array_values($oSurvey->groups)[0]->gid;

@@ -1305,23 +1305,26 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @todo Question type
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, int $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, int $questionId = null)
     {
+        if (empty($questionType)) {
+            throw new CHttpException(405, 'Internal error: No question type');
+        }
         // TODO: Difference between create and update permissions?
-        if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
         // NB: This works even when $questionId is null (get default question values).
         $question = $this->getQuestionObject($questionId);
-        if ($questionId !== null) {
-            // Can only happen if parameters are manipulated.
-            if ($question->sid !== $surveyId) {
-                throw new CHttpException(405, gT('Invalid action'));
+        if ($questionId) {
+            // NB: Could happen if user manipulates request.
+            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT('No permission'));
             }
         }
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
-            $question->type,
+            $questionType,
             $question->gid,
             'core'  // TODO: question_template
         );
@@ -1607,7 +1610,9 @@ class QuestionAdministrationController extends LSBaseController
     private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
     {
         //todo: this should be done in the action directly
-        $iSurveyId = App()->request->getParam('sid') ?? App()->request->getParam('surveyid');
+        $iSurveyId = App()->request->getParam('sid') ??
+            App()->request->getParam('surveyid') ??
+            App()->request->getParam('surveyId');
         //$oQuestion = Question::model()->findByPk($iQuestionId);
         $oQuestion = Question::model()->find(
             'sid = :sid AND qid = :qid',

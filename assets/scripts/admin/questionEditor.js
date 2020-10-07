@@ -47,13 +47,17 @@ function updateQuestionAttributes(questionType, url) {
         data: {questionType: questionType},
         dataType: "html"
     });
+    $('#ls-loading').show();
 
     request.done(function(html) {
         $("#general-settings").replaceWith(html);
+        $('.question-option-help').hide();
+        $('#ls-loading').hide();
     });
 
     request.fail(function(jqXHR, textStatus) {
-        alert("Request failed: " + textStatus);
+        $('#ls-loading').hide();
+        alert("Internal error: Request failed: " + textStatus);
     });
 }
 
