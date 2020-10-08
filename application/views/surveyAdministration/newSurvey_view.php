@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('createSurvey');
 <!-- new survey view -->
 <?php
     extract($arrayed_data);
-    //Yii::app()->loadHelper('admin/htmleditor');
+    //Yii::app()->loadHelper('admin.htmleditor');
     //PrepareEditorScript(false, $this);
     $active = Yii::app()->request->getParam('tab', 'create');
 ?>
