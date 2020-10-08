@@ -788,4 +788,14 @@ window.addEventListener('message', function(event) {
         }
         return $this->_twig->getLoader()->getSourceContext($twigView)->getPath();
     }
+
+    /**
+     * This is used to add paths in controller views.
+     *
+     * @return FileLoader
+     */
+    public function getLoader()
+    {
+        return $this->_twig->getLoader();
+    }
 }

@@ -21,6 +21,16 @@
             -->
             <!-- Advanced settings tabs -->
             <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
+                <li role="presentation">
+                    <a
+                        href="#subquestions"
+                        aria-controls="subquestions"
+                        role="tab"
+                        data-toggle="tab"
+                    >
+                        Subquestions
+                    </a>
+                </li>
                 <?php foreach ($advancedSettings as $category => $_) : ?>
                     <?php if ($category === 'Display'): ?>
                         <li role="presentation" class="active">
@@ -39,6 +49,26 @@
                 <?php endforeach; ?>
             </ul>
             <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="subquestions">
+                    <!-- TODO: Add path in controller. -->
+                    <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
+                    <?= Yii::app()->twigRenderer->renderViewFromFile(
+                        '/application/views/questionAdministration/subquestions.twig',
+                        [
+                            'anslang'    => 'en',
+                            'viewType'   => 'subQuestions',
+                            'scalecount' => 1,
+                            'results'     => [
+                                'en' => [
+                                    [
+                                        'position' => 1
+                                    ]
+                                ]
+                            ]
+                        ],
+                        true
+                    ); ?>
+                </div>
             <?php foreach ($advancedSettings as $category => $settings): ?>
                 <?php if ($category === 'Display'): ?>
                     <div role="tabpanel" class="tab-pane active" id="<?= $category; ?>">
