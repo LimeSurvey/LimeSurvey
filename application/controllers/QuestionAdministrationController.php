@@ -1305,7 +1305,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, int $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1340,7 +1340,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, int $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
