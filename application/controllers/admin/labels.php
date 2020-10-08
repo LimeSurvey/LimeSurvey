@@ -266,7 +266,7 @@ class labels extends Survey_Common_Action
             // Make languages array from the current row
             $lslanguages = explode(" ", trim($model->languages));
 
-            Yii::app()->loadHelper("admin/htmleditor");
+            Yii::app()->loadHelper("admin.htmleditor");
 
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 

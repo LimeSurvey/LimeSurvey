@@ -10,7 +10,7 @@
 <?php
 extract($data);
 
-Yii::app()->loadHelper('admin/htmleditor');
+Yii::app()->loadHelper('admin.htmleditor');
 
 $cs = Yii::app()->getClientScript();
 $cs->registerPackage('bootstrap-select2');

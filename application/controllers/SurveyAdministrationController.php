@@ -354,7 +354,7 @@ class SurveyAdministrationController extends LSBaseController
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
         Yii::app()->loadHelper('surveytranslator');
-        Yii::app()->loadHelper('admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
 
         $esrow = $this->fetchSurveyInfo('newsurvey');
 
@@ -2820,7 +2820,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     private function getDataSecurityEditData($survey)
     {
-        Yii::app()->loadHelper("admin/htmleditor");
+        Yii::app()->loadHelper("admin.htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
 
         $aData['scripts'] = PrepareEditorScript(false, $this);
