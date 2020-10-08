@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Datavalueobjects;
 
+/**
+ * @todo Is this class needed, or can it be included in widget DVOs?
+ * @todo $name is always null, always === $id.
+ */
 class FormElement
 {
     /** @var string */

@@ -202,6 +202,10 @@ abstract class QuestionBaseDataSet extends StaticModel
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
             if ($userSetting !== null) {
                 $advancedOptionsArray = (array) json_decode($userSetting, true);
+                // TODO: Hack to set empty value. Why isn't it saved?
+                if (!isset($advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'])) {
+                    $advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'] = '';
+                }
             }
         }
 
