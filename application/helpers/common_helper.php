@@ -4333,7 +4333,9 @@ function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
 
 
 /**
-* This function fixes the group ID and type on all subquestions
+* This function fixes the group ID and type on all subquestions,
+* or removes the subquestions if the parent question's type doesn't
+* allow them.
 * Optimized for minimum memory usage even on huge databases
 */
 function fixSubquestions()
@@ -4346,9 +4348,21 @@ function fixSubquestions()
     ->limit(10000)
     ->query();
     $aRecords = $surveyidresult->readAll();
+
+    $aQuestionTypes = QuestionType::modelsAttributes();
     while (count($aRecords) > 0) {
         foreach ($aRecords as $sv) {
-            Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+            if ($aQuestionTypes[$sv['type']]['subquestions']) {
+                // If the question type allows subquestions, set the type in each subquestion
+                Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
+            } else {
+                // If the question type doesn't allow subquestions, delete each subquestion
+                // Model is used because more tables are involved.
+                $oSubquestion = Question::model()->find("qid=:qid", array("qid"=>$sv['qid']));
+                if (!empty($oSubquestion)) {
+                    $oSubquestion->delete();
+                }
+            }
         }
         $surveyidresult = Yii::app()->db->createCommand()
         ->select('sq.qid, q.gid , q.type ')
