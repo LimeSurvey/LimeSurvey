@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-05 06:24:37+00:00\n"
+"POT-Creation-Date: 2020-10-08 07:36:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -299,7 +299,7 @@ msgid "Further settings for application administrator"
 msgstr ""
 
 #: application/controllers/InstallerController.php:538
-#: application/controllers/admin/surveypermission.php:570
+#: application/controllers/admin/surveypermission.php:577
 #: application/controllers/admin/useraction.php:334
 #: application/controllers/admin/useraction.php:417
 #: application/controllers/admin/useraction.php:427
@@ -422,10 +422,10 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:48
 #: application/controllers/admin/surveypermission.php:225
 #: application/controllers/admin/surveypermission.php:328
-#: application/controllers/admin/surveypermission.php:403
-#: application/controllers/admin/surveypermission.php:522
-#: application/controllers/admin/surveypermission.php:584
-#: application/controllers/admin/surveypermission.php:680
+#: application/controllers/admin/surveypermission.php:410
+#: application/controllers/admin/surveypermission.php:529
+#: application/controllers/admin/surveypermission.php:591
+#: application/controllers/admin/surveypermission.php:687
 #: application/controllers/admin/tokens.php:54
 #: application/controllers/admin/tokens.php:353
 #: application/controllers/admin/tokens.php:636
@@ -593,7 +593,7 @@ msgstr ""
 
 #: application/controllers/QuestionEditorController.php:164
 #: application/controllers/UserGroupController.php:280
-#: application/controllers/admin/PluginManagerController.php:277
+#: application/controllers/admin/PluginManagerController.php:316
 #: application/controllers/admin/dataentry.php:1210
 #: application/controllers/admin/labels.php:223
 #: application/controllers/admin/surveyadmin.php:1775
@@ -639,6 +639,7 @@ msgstr ""
 #: application/views/admin/surveymenu_entries/_form.php:212
 #: application/views/admin/themeoptions/update.php:33
 #: application/views/admin/themeoptions/update.php:83
+#: application/views/admin/themeoptions/update.php:274
 #: application/views/admin/themes/templateeditorbar_view.php:188
 #: application/views/admin/token/browse.php:98
 #: application/views/admin/token/managetokenattributes.php:168
@@ -667,7 +668,7 @@ msgstr ""
 #: application/controllers/QuestionEditorController.php:166
 #: application/controllers/UploaderController.php:316
 #: application/controllers/admin/surveypermission.php:133
-#: application/controllers/admin/surveypermission.php:468
+#: application/controllers/admin/surveypermission.php:475
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/models/Assessment.php:110 application/models/Permission.php:812
 #: application/models/Question.php:632 application/models/SavedControl.php:144
@@ -849,7 +850,7 @@ msgid "Scale"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:181
-#: application/controllers/admin/PluginManagerController.php:282
+#: application/controllers/admin/PluginManagerController.php:321
 #: application/views/admin/conditions/conditionshead_view.php:40
 #: application/views/admin/emailtemplates/emailtemplates_view.php:63
 #: application/views/admin/super/fullpagebar_view.php:29
@@ -1255,7 +1256,7 @@ msgid "Could not delete user group."
 msgstr ""
 
 #: application/controllers/UserGroupController.php:341
-#: application/controllers/admin/surveypermission.php:371
+#: application/controllers/admin/surveypermission.php:378
 msgid "User added."
 msgstr ""
 
@@ -1462,7 +1463,7 @@ msgstr ""
 #: application/controllers/UserManagementController.php:959
 #: application/controllers/UserManagementController.php:1005
 #: application/controllers/admin/surveypermission.php:67
-#: application/controllers/admin/surveypermission.php:569
+#: application/controllers/admin/surveypermission.php:576
 #: application/controllers/admin/useraction.php:147
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:365
 #: application/core/plugins/Authdb/Authdb.php:124
@@ -2148,12 +2149,12 @@ msgstr ""
 
 #: application/controllers/admin/PluginManagerController.php:69
 #: application/controllers/admin/PluginManagerController.php:93
-#: application/controllers/admin/PluginManagerController.php:145
-#: application/controllers/admin/PluginManagerController.php:186
-#: application/controllers/admin/PluginManagerController.php:228
-#: application/controllers/admin/PluginManagerController.php:254
-#: application/controllers/admin/PluginManagerController.php:334
-#: application/controllers/admin/PluginManagerController.php:672
+#: application/controllers/admin/PluginManagerController.php:184
+#: application/controllers/admin/PluginManagerController.php:225
+#: application/controllers/admin/PluginManagerController.php:267
+#: application/controllers/admin/PluginManagerController.php:293
+#: application/controllers/admin/PluginManagerController.php:373
+#: application/controllers/admin/PluginManagerController.php:711
 #: application/controllers/admin/dataentry.php:257
 #: application/controllers/admin/participantsaction.php:58
 #: application/controllers/admin/participantsaction.php:2555
@@ -2162,55 +2163,71 @@ msgstr ""
 msgid "No permission"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:102
+#: application/controllers/admin/PluginManagerController.php:115
 msgid "Found %s plugins in file system"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:123
+#: application/controllers/admin/PluginManagerController.php:136
 msgid "Return to plugin manager"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:163
+#: application/controllers/admin/PluginManagerController.php:155
+msgid "Plugin folder does not exist."
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:160
+msgid "Plugin files cannot be deleted due to permissions problem."
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:165
+msgid "Could not remove plugin files."
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:168
+msgid "Plugin files successfully deleted."
+msgstr ""
+
+#: application/controllers/admin/PluginManagerController.php:202
 msgid "Plugin was activated."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:169
+#: application/controllers/admin/PluginManagerController.php:208
 msgid "Failed to activate the plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:174
+#: application/controllers/admin/PluginManagerController.php:213
 msgid "Found no plugin, or plugin already active."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:199
+#: application/controllers/admin/PluginManagerController.php:238
 msgid "Plugin was deactivated."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:205
+#: application/controllers/admin/PluginManagerController.php:244
 msgid "Failed to deactivate the plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:210
+#: application/controllers/admin/PluginManagerController.php:249
 msgid "Found no plugin, or plugin not active."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:236
+#: application/controllers/admin/PluginManagerController.php:275
 msgid "Could not load plugin"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:241
+#: application/controllers/admin/PluginManagerController.php:280
 msgid "Found no configuration file for this plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:246
+#: application/controllers/admin/PluginManagerController.php:285
 msgid "The plugin was not found."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:263
+#: application/controllers/admin/PluginManagerController.php:302
 msgid "The plugin settings were saved."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:288
+#: application/controllers/admin/PluginManagerController.php:327
 #: application/controllers/admin/SurveysGroupsController.php:67
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:52
@@ -2291,71 +2308,71 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:300
+#: application/controllers/admin/PluginManagerController.php:339
 msgid "Return to plugin list"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:345
+#: application/controllers/admin/PluginManagerController.php:384
 msgid "Reset load error for plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:347
+#: application/controllers/admin/PluginManagerController.php:386
 msgid "Could not update plugin %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:351
+#: application/controllers/admin/PluginManagerController.php:390
 msgid "Found no plugin with id %d"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:374
+#: application/controllers/admin/PluginManagerController.php:413
 msgid "Found no plugin with name %s"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:387
+#: application/controllers/admin/PluginManagerController.php:426
 msgid "Plugin was installed."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:419
+#: application/controllers/admin/PluginManagerController.php:458
 msgid "Found no plugin with id %d."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:427
+#: application/controllers/admin/PluginManagerController.php:466
 msgid "Plugin uninstalled."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:429
+#: application/controllers/admin/PluginManagerController.php:468
 msgid "Could not uninstall plugin."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:453
+#: application/controllers/admin/PluginManagerController.php:492
 msgid "Could not fetch files."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:485
+#: application/controllers/admin/PluginManagerController.php:524
 msgid "Could not read plugin configuration file."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:490
+#: application/controllers/admin/PluginManagerController.php:529
 msgid "The plugin is not compatible with your version of LimeSurvey."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:538
+#: application/controllers/admin/PluginManagerController.php:577
 msgid "The plugin was successfully updated. You might need to deactivate it and activate it again to apply changes."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:544
+#: application/controllers/admin/PluginManagerController.php:583
 msgid "The plugin was successfully installed. You need to activate it before you can use it."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:551
+#: application/controllers/admin/PluginManagerController.php:590
 msgid "The plugin could not be installed or updated:"
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:571
+#: application/controllers/admin/PluginManagerController.php:610
 msgid "Installation aborted."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:602
+#: application/controllers/admin/PluginManagerController.php:641
 #: application/controllers/admin/labels.php:73
 #: application/controllers/admin/surveyadmin.php:285
 #: application/controllers/admin/surveyadmin.php:2579
@@ -2363,11 +2380,11 @@ msgstr ""
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:613
+#: application/controllers/admin/PluginManagerController.php:652
 msgid "Plugin '%s' does already exist."
 msgstr ""
 
-#: application/controllers/admin/PluginManagerController.php:629
+#: application/controllers/admin/PluginManagerController.php:668
 msgid "Demo mode: Uploading plugins is disabled."
 msgstr ""
 
@@ -3593,62 +3610,62 @@ msgstr ""
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."
 msgstr ""
 
-#: application/controllers/admin/database.php:777
+#: application/controllers/admin/database.php:776
 msgid "Question could not be updated with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:781
+#: application/controllers/admin/database.php:780
 msgid "Question could not be updated."
 msgstr ""
 
-#: application/controllers/admin/database.php:818
+#: application/controllers/admin/database.php:817
 msgid "Question was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:821
+#: application/controllers/admin/database.php:820
 #: application/views/admin/database/database_view.php:4
 #: application/views/admin/database/database_view.php:58
 #: application/views/admin/database/database_view.php:71
 msgid "Question could not be updated"
 msgstr ""
 
-#: application/controllers/admin/database.php:1042
-#: application/controllers/admin/database.php:1197
+#: application/controllers/admin/database.php:1041
+#: application/controllers/admin/database.php:1196
 msgid "Survey settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/database.php:1044
-#: application/controllers/admin/database.php:1199
+#: application/controllers/admin/database.php:1043
+#: application/controllers/admin/database.php:1198
 msgid "Survey could not be updated, please fix the following error:"
 msgstr ""
 
-#: application/controllers/admin/database.php:1179
+#: application/controllers/admin/database.php:1178
 msgid "Survey language could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:1256
+#: application/controllers/admin/database.php:1255
 msgid "You can't insert a new question when the survey is active."
 msgstr ""
 
-#: application/controllers/admin/database.php:1262
+#: application/controllers/admin/database.php:1261
 msgid "The question could not be added. You must enter at least a question code."
 msgstr ""
 
-#: application/controllers/admin/database.php:1305
-#: application/controllers/admin/database.php:1321
+#: application/controllers/admin/database.php:1304
+#: application/controllers/admin/database.php:1320
 msgid "Question could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:1340
+#: application/controllers/admin/database.php:1339
 msgid "Question in language %s could not be created with error on %s: %s"
 msgstr ""
 
-#: application/controllers/admin/database.php:1350
+#: application/controllers/admin/database.php:1349
 #: application/views/admin/database/database_view.php:46
 msgid "Question could not be created."
 msgstr ""
 
-#: application/controllers/admin/database.php:1519
+#: application/controllers/admin/database.php:1518
 msgid "Question was successfully added."
 msgstr ""
 
@@ -4858,7 +4875,7 @@ msgstr ""
 
 #: application/controllers/admin/questiongroups.php:140
 #: application/controllers/admin/questions.php:58
-#: application/controllers/admin/surveypermission.php:469
+#: application/controllers/admin/surveypermission.php:476
 #: application/models/Permission.php:813
 #: application/views/admin/dataentry/vvimport.php:12
 #: application/views/admin/dataentry/vvimport.php:135
@@ -5937,9 +5954,9 @@ msgid "User"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:207
-#: application/controllers/admin/surveypermission.php:370
-#: application/controllers/admin/surveypermission.php:381
+#: application/controllers/admin/surveypermission.php:377
 #: application/controllers/admin/surveypermission.php:388
+#: application/controllers/admin/surveypermission.php:395
 #: application/controllers/admin/useraction.php:182
 #: application/views/admin/user/editusers.php:12
 #: application/views/userGroup/viewUserGroup_view.php:97
@@ -5985,10 +6002,10 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:297
 #: application/controllers/admin/surveypermission.php:306
 #: application/controllers/admin/surveypermission.php:315
-#: application/controllers/admin/surveypermission.php:384
 #: application/controllers/admin/surveypermission.php:391
-#: application/controllers/admin/surveypermission.php:574
-#: application/controllers/admin/surveypermission.php:672
+#: application/controllers/admin/surveypermission.php:398
+#: application/controllers/admin/surveypermission.php:581
+#: application/controllers/admin/surveypermission.php:679
 #: application/controllers/admin/tokens.php:2532
 #: application/controllers/admin/tokens.php:2573
 #: application/controllers/admin/useraction.php:841
@@ -6017,32 +6034,35 @@ msgid "Continue"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:313
-#: application/controllers/admin/surveypermission.php:390
 msgid "No Username selected."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:374
+#: application/controllers/admin/surveypermission.php:381
 msgid "Set survey permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:382
 #: application/controllers/admin/surveypermission.php:389
+#: application/controllers/admin/surveypermission.php:396
 msgid "Failed to add user."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:383
-msgid "Username already exists."
+#: application/controllers/admin/surveypermission.php:390
+msgid "User already has permissions for this survey."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:451
+#: application/controllers/admin/surveypermission.php:397
+msgid "No username selected."
+msgstr ""
+
+#: application/controllers/admin/surveypermission.php:458
 msgid "Edit survey permissions for user %s"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:455
+#: application/controllers/admin/surveypermission.php:462
 msgid "Edit survey permissions for group %s"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:463
+#: application/controllers/admin/surveypermission.php:470
 #: application/models/SurveymenuEntries.php:198
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:33
 #: application/views/admin/permissiontemplates/partials/_permissions.php:19
@@ -6053,7 +6073,7 @@ msgstr ""
 msgid "Permission"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:465
+#: application/controllers/admin/surveypermission.php:472
 #: application/models/Permission.php:809
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:35
 #: application/views/admin/permissiontemplates/partials/_permissions.php:21
@@ -6063,6 +6083,7 @@ msgstr ""
 #: application/views/admin/surveymenu_entries/_form.php:212
 #: application/views/admin/surveymenu_entries/create.php:7
 #: application/views/admin/themeoptions/update.php:83
+#: application/views/admin/themeoptions/update.php:274
 #: application/views/admin/user/setuserpermissions.php:26
 #: application/views/layouts/adminmenu.php:83
 #: application/views/userManagement/massiveAction/_updatepermissions.php:31
@@ -6071,7 +6092,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:466
+#: application/controllers/admin/surveypermission.php:473
 #: application/models/Permission.php:810
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:36
 #: application/views/admin/permissiontemplates/partials/_permissions.php:22
@@ -6081,7 +6102,7 @@ msgstr ""
 msgid "View/read"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:467
+#: application/controllers/admin/surveypermission.php:474
 #: application/models/Permission.php:811
 #: application/views/admin/labels/editlabel_view.php:77
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:37
@@ -6093,7 +6114,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:470
+#: application/controllers/admin/surveypermission.php:477
 #: application/helpers/userstatistics_helper.php:2768
 #: application/models/Permission.php:814
 #: application/views/admin/export/exportresults_view.php:35
@@ -6122,35 +6143,35 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:504
+#: application/controllers/admin/surveypermission.php:511
 #: application/views/survey/frontpage/saveForm/form.php:72
 #: tmp/runtime/twig_cache/39/3978dda68666d9ad2d12e4e1d4e196445ff80f9e88e93c20240891e7d3ca9c11.php:481
 msgid "Save Now"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:563
+#: application/controllers/admin/surveypermission.php:570
 msgid "Deleting User"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:572
+#: application/controllers/admin/surveypermission.php:579
 #: application/controllers/admin/useraction.php:227
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:621
+#: application/controllers/admin/surveypermission.php:628
 #: application/core/LsDefaultDataSets.php:31
 msgid "Edit survey permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:659
+#: application/controllers/admin/surveypermission.php:666
 msgid "Survey permissions for all users in this group were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:663
+#: application/controllers/admin/surveypermission.php:670
 msgid "Survey permissions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:665
+#: application/controllers/admin/surveypermission.php:672
 msgid "Failed to update survey permissions!"
 msgstr ""
 
@@ -7328,13 +7349,13 @@ msgid "List questions"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:25
-#: application/helpers/update/updatedb_helper.php:2924
-#: application/helpers/update/updatedb_helper.php:2925
+#: application/helpers/update/updatedb_helper.php:2980
+#: application/helpers/update/updatedb_helper.php:2981
 msgid "Group list"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:25
-#: application/helpers/update/updatedb_helper.php:2926
+#: application/helpers/update/updatedb_helper.php:2982
 msgid "List question groups"
 msgstr ""
 
@@ -10203,151 +10224,151 @@ msgstr ""
 msgid "SQL command failed: %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:4403
+#: application/helpers/common_helper.php:4417
 msgid "ARMSCII-8 Armenian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4404
+#: application/helpers/common_helper.php:4418
 msgid "US ASCII"
 msgstr ""
 
-#: application/helpers/common_helper.php:4405
+#: application/helpers/common_helper.php:4419
 msgid "Big5 Traditional Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4406
+#: application/helpers/common_helper.php:4420
 msgid "Binary pseudo charset"
 msgstr ""
 
-#: application/helpers/common_helper.php:4407
+#: application/helpers/common_helper.php:4421
 msgid "Windows Central European (Windows-1250)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4408
+#: application/helpers/common_helper.php:4422
 msgid "Windows Cyrillic (Windows-1251)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4409
+#: application/helpers/common_helper.php:4423
 msgid "Windows Arabic (Windows-1256)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4410
+#: application/helpers/common_helper.php:4424
 msgid "Windows Baltic (Windows-1257)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4411
+#: application/helpers/common_helper.php:4425
 msgid "DOS West European (cp850)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4412
+#: application/helpers/common_helper.php:4426
 msgid "DOS Central European (cp852)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4413
+#: application/helpers/common_helper.php:4427
 msgid "DOS Cyrillic (cp866)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4414
+#: application/helpers/common_helper.php:4428
 msgid "Windows-31J - SJIS for Windows Japanese (cp932)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4415
+#: application/helpers/common_helper.php:4429
 msgid "DEC West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4416
+#: application/helpers/common_helper.php:4430
 msgid "UJIS for Windows Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4417
+#: application/helpers/common_helper.php:4431
 msgid "EUC-KR Korean"
 msgstr ""
 
-#: application/helpers/common_helper.php:4418
+#: application/helpers/common_helper.php:4432
 msgid "GB2312 Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4419
+#: application/helpers/common_helper.php:4433
 msgid "GBK Simplified Chinese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4420
+#: application/helpers/common_helper.php:4434
 msgid "GEOSTD8 Georgian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4421
+#: application/helpers/common_helper.php:4435
 msgid "ISO 8859-7 Greek"
 msgstr ""
 
-#: application/helpers/common_helper.php:4422
+#: application/helpers/common_helper.php:4436
 msgid "ISO 8859-8 Hebrew"
 msgstr ""
 
-#: application/helpers/common_helper.php:4423
+#: application/helpers/common_helper.php:4437
 msgid "HP West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4424
+#: application/helpers/common_helper.php:4438
 msgid "DOS Kamenicky Czech-Slovak (cp895)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4425
+#: application/helpers/common_helper.php:4439
 msgid "KOI8-R Relcom Russian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4426
+#: application/helpers/common_helper.php:4440
 msgid "KOI8-U Ukrainian"
 msgstr ""
 
-#: application/helpers/common_helper.php:4427
+#: application/helpers/common_helper.php:4441
 msgid "ISO 8859-1 West European (latin1)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4428
+#: application/helpers/common_helper.php:4442
 msgid "ISO 8859-2 Central European (latin2)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4429
+#: application/helpers/common_helper.php:4443
 msgid "ISO 8859-9 Turkish (latin5)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4430
+#: application/helpers/common_helper.php:4444
 msgid "ISO 8859-13 Baltic (latin7)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4431
+#: application/helpers/common_helper.php:4445
 msgid "Mac Central European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4432
+#: application/helpers/common_helper.php:4446
 msgid "Mac West European"
 msgstr ""
 
-#: application/helpers/common_helper.php:4433
+#: application/helpers/common_helper.php:4447
 msgid "Shift-JIS Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4434
+#: application/helpers/common_helper.php:4448
 msgid "7bit Swedish"
 msgstr ""
 
-#: application/helpers/common_helper.php:4435
+#: application/helpers/common_helper.php:4449
 msgid "TIS620 Thai"
 msgstr ""
 
-#: application/helpers/common_helper.php:4436
+#: application/helpers/common_helper.php:4450
 msgid "UCS-2 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4437
+#: application/helpers/common_helper.php:4451
 msgid "EUC-JP Japanese"
 msgstr ""
 
-#: application/helpers/common_helper.php:4438
+#: application/helpers/common_helper.php:4452
 msgid "UTF-8 Unicode"
 msgstr ""
 
-#: application/helpers/common_helper.php:4442
+#: application/helpers/common_helper.php:4456
 msgid "(Automatic)"
 msgstr ""
 
@@ -13296,23 +13317,23 @@ msgstr ""
 msgid "An internal error occured during the database upgrade. Please go back to the %smain menu%s. Contact support if the error persists."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:283
+#: application/helpers/update/updatedb_helper.php:284
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3184
+#: application/helpers/update/updatedb_helper.php:3225
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3188
+#: application/helpers/update/updatedb_helper.php:3229
 msgid "File %s, line %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3231
+#: application/helpers/update/updatedb_helper.php:3272
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3232
+#: application/helpers/update/updatedb_helper.php:3273
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
@@ -14241,7 +14262,7 @@ msgstr ""
 
 #: application/models/QuestionTheme.php:270
 #: application/models/TemplateManifest.php:674
-#: application/views/admin/pluginmanager/scanFilesResult.php:28
+#: application/views/admin/pluginmanager/scanFilesResult.php:31
 #: application/views/admin/pluginmanager/uploadConfirm.php:76
 msgid "Install"
 msgstr ""
@@ -18423,23 +18444,27 @@ msgstr ""
 msgid "Plugin manager - scanned files"
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:26
+#: application/views/admin/pluginmanager/scanFilesResult.php:25
+msgid "Missing configuration file."
+msgstr ""
+
+#: application/views/admin/pluginmanager/scanFilesResult.php:29
 msgid "Install this plugin"
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:35
-msgid "Plugin is not compatible with your LimeSurvey version."
-msgstr ""
-
 #: application/views/admin/pluginmanager/scanFilesResult.php:38
-msgid "Missing configuration file."
+msgid "Plugin is not compatible with your LimeSurvey version."
 msgstr ""
 
 #: application/views/admin/pluginmanager/scanFilesResult.php:41
 msgid "Load error. Please contact the plugin author."
 msgstr ""
 
-#: application/views/admin/pluginmanager/scanFilesResult.php:44
+#: application/views/admin/pluginmanager/scanFilesResult.php:45
+msgid "Are you sure you want to delete this plugin from the file system?"
+msgstr ""
+
+#: application/views/admin/pluginmanager/scanFilesResult.php:47
 msgid "Delete this plugin from the file system"
 msgstr ""
 
