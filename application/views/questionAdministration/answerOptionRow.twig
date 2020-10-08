@@ -1,0 +1,136 @@
+{#
+ * answer option row view
+ *
+ * @var $position
+ * @var $first
+ * @var $assessmentvisible
+ * @var $scale_id
+ * @var $title
+ * @var $surveyid
+ * @var $gid
+ * @var $qid
+ * @var $language
+ * @var $assessment_value
+ * @var $sortorder
+ * @var $answer
+ *
+ *
+ * NB : !!! If you edit this view, remember to check if subquestion row view need also to be updated !!!
+ */
+#}
+
+<tr class='row-container row_{{ position }}' id='row_{{ language }}_{{ position }}_{{ qid }}_{{ scale_id }}' data-common-id="{{ position }}_{{ qid }}_{{ scale_id }}">
+
+    {% if first %} {# If survey is not activated and first language #}
+
+        {% set sPattern = (title)?"^([a-zA-Z0-9]*|"~title~")$":"^[a-zA-Z0-9]*$" %}
+
+        <!-- Move icon -->
+        <td class="move-icon" >
+            <span class="fa fa-bars bigIcons"></span>
+        </td>
+
+        <!-- Code (title) -->
+        <td  class="code-title" style="vertical-align: middle;">
+
+            {% if oldCode %}
+            <input
+                type='hidden'
+                class='oldcode code-title'
+                id='oldcode_{{ position }}_{{ scale_id }}'
+                name='oldcode_{{ position }}_{{ scale_id }}'
+                value="{{ title }}"
+            />
+            {% endif %}
+
+            <input
+                type='text'
+                class="code form-control input"
+                id='code_{{ position }}_{{ scale_id }}'
+                class='code code-title'
+                name='code_{{ position }}_{{ scale_id }}'
+                value="{{ title }}"
+                maxlength='5'
+                pattern='{{ sPattern }}'
+                required='required'
+            />
+        </td>
+        {# If survey is not active, and it's not the first language : no move button, code not editable #}
+    {% else %}
+
+        <!-- Move icon -->
+        <td class="move-icon-disable">
+            &nbsp;
+        </td>
+
+        <!-- Code (title) -->
+        <td  class="code-title" style="vertical-align: middle;">
+            {{ title }}
+        </td>
+    {% endif %}
+
+
+    <!-- Assessment Value -->
+    {% if assessmentvisible and first %}
+        <td class="assessment-value">
+            <input
+                type='text'
+                class='assessment form-control input'
+                id='assessment_{{ position }}_{{ scale_id }}'
+                name='assessment_{{ position }}_{{ scale_id }}'
+                value="{{ assessment_value }}"
+                maxlength='5'
+                size='5'
+                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
+            />
+        </td>
+    {% elseif first %}
+        <td style='display:none;' class="assessment-value">
+            <input
+                type='text'
+                class='assessment'
+                id='assessment_{{ position }}_{{ scale_id }}'
+                name='assessment_{{ position }}_{{ scale_id }}'
+                value="{{ assessment_value }}" maxlength='5' size='5'
+                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
+            />
+        </td>
+    {% elseif assessmentvisible %}
+        <td class="assessment-value">
+            {{ assessment_value }}
+        </td>
+    {% else %}
+        <td style='display:none;' class="assessment-value">
+        </td>
+    {% endif %}
+
+    <!-- Answer (Subquestion Text) -->
+    <td  class="subquestion-text" style="vertical-align: middle;">
+        <div class="input-group">
+            <input
+                type='text'
+                size='20'
+                class='answer form-control input'
+                id='answer_{{ language }}_{{ sortorder }}_{{ scale_id }}'
+                name='answer_{{ language }}_{{ sortorder }}_{{ scale_id }}'
+                placeholder='{{ gT("Some example answer option") }}'
+                value="{{ answer }}"
+                onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
+            />
+            <span class="input-group-addon">
+                {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
+            </span>
+        </div>
+    </td>
+
+    <!-- No relevance equation for answer options -->
+
+
+    <!-- Icons edit/delete -->
+    <td style="vertical-align: middle;" class="subquestion-actions">
+        {% if first %}
+            <button type="button" class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success " data-assessmentvisible='{{ assessmentvisible }}' data-position="{{ position }}" data-code="{{ title }}" data-scale-id="{{ scale_id }}" data-toggle="tooltip" data-placement="bottom" title="{{ gT("Add another record") }}"></i></button>
+            <button type="button" class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger " data-toggle="tooltip" data-placement="bottom"  title="{{ gT("Delete this entry") }}"></i></button>
+        {% endif %}
+    </td>
+</tr>

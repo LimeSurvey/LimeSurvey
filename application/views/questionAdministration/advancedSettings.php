@@ -31,6 +31,16 @@
                         Subquestions
                     </a>
                 </li>
+                <li role="presentation">
+                    <a
+                        href="#answeroptions"
+                        aria-controls="answeroptions"
+                        role="tab"
+                        data-toggle="tab"
+                    >
+                        Answer options
+                    </a>
+                </li>
                 <?php foreach ($advancedSettings as $category => $_) : ?>
                     <?php if ($category === 'Display'): ?>
                         <li role="presentation" class="active">
@@ -69,17 +79,37 @@
                         true
                     ); ?>
                 </div>
-            <?php foreach ($advancedSettings as $category => $settings): ?>
-                <?php if ($category === 'Display'): ?>
-                    <div role="tabpanel" class="tab-pane active" id="<?= $category; ?>">
-                <?php else: ?>
-                    <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
-                <?php endif; ?>
-                    <?php foreach ($settings as $setting): ?>
-                        <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
-                    <?php endforeach; ?>
+                <div role="tabpanel" class="tab-pane" id="answeroptions">
+                    <!-- TODO: Add path in controller. -->
+                    <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
+                    <?= Yii::app()->twigRenderer->renderViewFromFile(
+                        '/application/views/questionAdministration/subquestions.twig',
+                        [
+                            'anslang'    => 'en',
+                            'viewType'   => 'answerOptions',
+                            'scalecount' => 1,
+                            'results'     => [
+                                'en' => [
+                                    [
+                                        'position' => 1
+                                    ]
+                                ]
+                            ]
+                        ],
+                        true
+                    ); ?>
                 </div>
-            <?php endforeach; ?>
+                <?php foreach ($advancedSettings as $category => $settings): ?>
+                    <?php if ($category === 'Display'): ?>
+                        <div role="tabpanel" class="tab-pane active" id="<?= $category; ?>">
+                    <?php else: ?>
+                        <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
+                    <?php endif; ?>
+                        <?php foreach ($settings as $setting): ?>
+                            <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

@@ -127,7 +127,7 @@
                         } %}
 
                     {% elseif viewType=='answerOptions' %}
-                        {% include '/admin/survey/Question/subquestionsAndAnswers/_answer_option.twig' with {
+                        {% include 'answerOptionRow.twig' with {
                             'position'          : position,
                             'first'             : first,
                             'assessmentvisible' : assessmentvisible,
