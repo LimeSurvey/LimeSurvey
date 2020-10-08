@@ -7,6 +7,7 @@
         class="form-control"
         name="question[<?= $this->generalOption->name; ?>]" 
         id="<?= $this->generalOption->name; ?>"
+        value="<?= $this->generalOption->formElement->value; ?>"
     />
     <?php if (isset($this->generalOption->formElement->options['inputGroup']['suffix'])) : ?>
         <div class="input-group-addon">
