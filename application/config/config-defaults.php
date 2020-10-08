@@ -404,6 +404,9 @@ $config['quexmlusequestiontitleasid'] = false;
 // QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
 $config['quexmlkeepsurveydateformat'] = false;
 
+// QueXML: Width of the question title column in MM
+$config['quexmlquestiontitlewidth'] = 14;
+
 $config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
 $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
 

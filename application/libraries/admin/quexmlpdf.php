@@ -800,6 +800,16 @@ class quexmlpdf extends pdf
     protected $cornerLines = true;
 
     /**
+     * Initialize from config
+     *
+     */
+    public function __construct()
+    {
+        $this->questionTitleWidth = Yii::app()->getConfig('quexmlquestiontitlewidth', $this->questionTitleWidth);
+        parent::__construct();
+    }
+
+    /**
      * Return the length of the longest word
      *
      * @param mixed $txt
