@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-05 06:24:20+00:00\n"
+"POT-Creation-Date: 2020-10-08 07:35:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -236,7 +236,7 @@ msgid "Further settings for application administrator"
 msgstr ""
 
 #: application/controllers/InstallerController.php:632
-#: application/controllers/admin/surveypermission.php:569
+#: application/controllers/admin/surveypermission.php:576
 #: application/controllers/admin/useraction.php:317
 #: application/controllers/admin/useraction.php:392
 #: application/controllers/admin/useraction.php:403
@@ -434,10 +434,10 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:48
 #: application/controllers/admin/surveypermission.php:225
 #: application/controllers/admin/surveypermission.php:328
-#: application/controllers/admin/surveypermission.php:403
-#: application/controllers/admin/surveypermission.php:521
-#: application/controllers/admin/surveypermission.php:583
-#: application/controllers/admin/surveypermission.php:679
+#: application/controllers/admin/surveypermission.php:410
+#: application/controllers/admin/surveypermission.php:528
+#: application/controllers/admin/surveypermission.php:590
+#: application/controllers/admin/surveypermission.php:686
 #: application/controllers/admin/tokens.php:54
 #: application/controllers/admin/tokens.php:354
 #: application/controllers/admin/tokens.php:640
@@ -699,7 +699,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:315
 #: application/controllers/admin/surveypermission.php:133
-#: application/controllers/admin/surveypermission.php:468
+#: application/controllers/admin/surveypermission.php:475
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/helpers/qanda_helper.php:2307
 #: application/models/Assessment.php:99 application/models/Permission.php:759
@@ -3535,7 +3535,7 @@ msgstr ""
 
 #: application/controllers/admin/questiongroups.php:124
 #: application/controllers/admin/questions.php:154
-#: application/controllers/admin/surveypermission.php:469
+#: application/controllers/admin/surveypermission.php:476
 #: application/models/Permission.php:760
 #: application/views/admin/dataentry/vvimport.php:120
 #: application/views/admin/participants/participantsPanel_view.php:82
@@ -4275,7 +4275,7 @@ msgid "Survey permissions"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:67
-#: application/controllers/admin/surveypermission.php:568
+#: application/controllers/admin/surveypermission.php:575
 #: application/controllers/admin/useraction.php:134
 #: application/controllers/admin/useraction.php:154
 #: application/core/plugins/AuthLDAP/AuthLDAP.php:365
@@ -4317,9 +4317,9 @@ msgid "User"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:207
-#: application/controllers/admin/surveypermission.php:370
-#: application/controllers/admin/surveypermission.php:381
+#: application/controllers/admin/surveypermission.php:377
 #: application/controllers/admin/surveypermission.php:388
+#: application/controllers/admin/surveypermission.php:395
 #: application/controllers/admin/useraction.php:166
 #: application/views/admin/user/editusers.php:12
 #: application/views/admin/usergroup/viewUserGroup_view.php:99
@@ -4360,10 +4360,10 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:297
 #: application/controllers/admin/surveypermission.php:306
 #: application/controllers/admin/surveypermission.php:315
-#: application/controllers/admin/surveypermission.php:384
 #: application/controllers/admin/surveypermission.php:391
-#: application/controllers/admin/surveypermission.php:573
-#: application/controllers/admin/surveypermission.php:671
+#: application/controllers/admin/surveypermission.php:398
+#: application/controllers/admin/surveypermission.php:580
+#: application/controllers/admin/surveypermission.php:678
 #: application/controllers/admin/tokens.php:2545
 #: application/controllers/admin/tokens.php:2586
 #: application/controllers/admin/useraction.php:810
@@ -4392,44 +4392,47 @@ msgid "Continue"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:313
-#: application/controllers/admin/surveypermission.php:390
 msgid "No Username selected."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:371
+#: application/controllers/admin/surveypermission.php:378
 #: application/controllers/admin/usergroups.php:373
 msgid "User added."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:374
+#: application/controllers/admin/surveypermission.php:381
 msgid "Set survey permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:382
 #: application/controllers/admin/surveypermission.php:389
+#: application/controllers/admin/surveypermission.php:396
 #: application/controllers/admin/usergroups.php:375
 msgid "Failed to add user."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:383
-msgid "Username already exists."
+#: application/controllers/admin/surveypermission.php:390
+msgid "User already has permissions for this survey."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:451
+#: application/controllers/admin/surveypermission.php:397
+msgid "No username selected."
+msgstr ""
+
+#: application/controllers/admin/surveypermission.php:458
 msgid "Edit survey permissions for user %s"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:455
+#: application/controllers/admin/surveypermission.php:462
 msgid "Edit survey permissions for group %s"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:463
+#: application/controllers/admin/surveypermission.php:470
 #: application/models/SurveymenuEntries.php:198
 #: application/views/admin/user/setuserpermissions.php:24
 msgid "Permission"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:465
+#: application/controllers/admin/surveypermission.php:472
 #: application/models/Permission.php:756
 #: application/views/admin/survey/subview/tab_survey_view.php:47
 #: application/views/admin/surveymenu/_form.php:92
@@ -4440,20 +4443,20 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:466
+#: application/controllers/admin/surveypermission.php:473
 #: application/models/Permission.php:757
 #: application/views/admin/user/setuserpermissions.php:27
 msgid "View/read"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:467
+#: application/controllers/admin/surveypermission.php:474
 #: application/models/Permission.php:758
 #: application/views/admin/labels/editlabel_view.php:77
 #: application/views/admin/user/setuserpermissions.php:28
 msgid "Update"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:470
+#: application/controllers/admin/surveypermission.php:477
 #: application/helpers/userstatistics_helper.php:2802
 #: application/models/Permission.php:761
 #: application/views/admin/participants/massive_actions/_selector.php:66
@@ -4473,35 +4476,35 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:504
+#: application/controllers/admin/surveypermission.php:511
 #: application/views/survey/frontpage/saveForm/form.php:72
 #: tmp/runtime/twig_cache/39/3978dda68666d9ad2d12e4e1d4e196445ff80f9e88e93c20240891e7d3ca9c11.php:481
 msgid "Save Now"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:562
+#: application/controllers/admin/surveypermission.php:569
 msgid "Deleting User"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:571
+#: application/controllers/admin/surveypermission.php:578
 #: application/controllers/admin/useraction.php:206
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:620
+#: application/controllers/admin/surveypermission.php:627
 #: application/core/LsDefaultDataSets.php:31
 msgid "Edit survey permissions"
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:658
+#: application/controllers/admin/surveypermission.php:665
 msgid "Survey permissions for all users in this group were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:662
+#: application/controllers/admin/surveypermission.php:669
 msgid "Survey permissions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:664
+#: application/controllers/admin/surveypermission.php:671
 msgid "Failed to update survey permissions!"
 msgstr ""
 
@@ -11832,23 +11835,23 @@ msgstr ""
 msgid "An internal error occured during the database upgrade. Please go back to the %smain menu%s. Contact support if the error persists."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:277
+#: application/helpers/update/updatedb_helper.php:278
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2498
+#: application/helpers/update/updatedb_helper.php:2544
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2502
+#: application/helpers/update/updatedb_helper.php:2548
 msgid "File %s, line %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2545
+#: application/helpers/update/updatedb_helper.php:2591
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2546
+#: application/helpers/update/updatedb_helper.php:2592
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
