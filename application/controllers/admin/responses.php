@@ -624,6 +624,12 @@ class responses extends Survey_Common_Action
         $iResponseId = (int) $iResponseId;
         $iQID = (int) $iQID;
 
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!$oSurvey->isActive) {
+            Yii::app()->setFlashMessage(gT("Sorry, this file was not found."), 'error');
+            $this->getController()->redirect(array("admin/survey", "sa"=>"view", "surveyid"=>$iSurveyId));
+        }
+
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
             $oResponse = Response::model($iSurveyId)->findByPk($iResponseId);
             $aQuestionFiles = $oResponse->getFiles($iQID);
@@ -649,6 +655,8 @@ class responses extends Survey_Common_Action
             }
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."), 'error');
             $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
+        } else {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
     }
@@ -665,6 +673,11 @@ class responses extends Survey_Common_Action
     {
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            if (!$oSurvey->isActive) {
+                Yii::app()->setFlashMessage(gT("Sorry, this file was not found."), 'error');
+                $this->getController()->redirect(array("admin/survey", "sa"=>"view", "surveyid"=>$iSurveyId));
+            }            
             if (!$sResponseId) {
 // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
@@ -690,6 +703,8 @@ class responses extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."), 'error');
                 $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
             }
+        } else {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
     }
 
