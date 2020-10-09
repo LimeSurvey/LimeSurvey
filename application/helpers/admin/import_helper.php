@@ -39,6 +39,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $results['conditions'] = 0;
     $results['groups'] = 0;
 
+    if ($iDBVersion>=400) {
+        $results['fatalerror'] = gT("The file is not compatible with this LimeSurvey version.");
+        return $results;
+    } 
+
     $importlanguages = array();
     foreach ($xml->languages->language as $language) {
         $importlanguages[] = (string) $language;
@@ -348,6 +353,12 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
         safeDie('This is not a valid LimeSurvey question structure XML file.');
     }
     $iDBVersion = (int) $xml->DBVersion;
+
+    if ($iDBVersion>=400) {
+        $results['error'] = gT("The file is not compatible with this LimeSurvey version.");
+        return $results;
+    } 
+
     $aQIDReplacements = array();
     $aSQIDReplacements = array(0=>0);
 
@@ -791,6 +802,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         return $results;
     }
 
+
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
     $aQuestionCodeReplacements = array();
@@ -813,6 +825,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['theme_options_original_data'] = '';
     $results['theme_options_differences'] = array();
     $sTemplateName = '';
+
+    if ($iDBVersion>=400) {
+        $results['error'] = gT("The file is not compatible with this LimeSurvey version.");
+        return $results;
+    } 
+
 
 
     $aLanguagesSupported = array();
