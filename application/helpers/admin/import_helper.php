@@ -355,7 +355,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
     $iDBVersion = (int) $xml->DBVersion;
 
     if ($iDBVersion>=400) {
-        $results['error'] = gT("The file is not compatible with this LimeSurvey version.");
+        $results['fatalerror'] = gT("The file is not compatible with this LimeSurvey version.");
         return $results;
     } 
 
