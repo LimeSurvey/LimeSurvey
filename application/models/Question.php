@@ -277,23 +277,26 @@ class Question extends LSActiveRecord
      * This function returns an array of the advanced attributes for the particular question
      * including their values set in the database
      *
-     * @access public
-     * @param int $iQuestionID  The question ID - if 0 then all settings will use the default value
-     * @param string $sQuestionType  The question type
-     * @param int $iSurveyID
-     * @param string $sLanguage  If you give a language then only the attributes for that language are returned
+     * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
      * @return array
      */
-    public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage = null)
+    public function getAdvancedSettingsWithValues($sLanguage = null)
     {
+        $oSurvey = $this->survey;
+        if (empty($oSurvey)) {
+            throw new Exception('This question has no survey - qid = ' . json_encode($this->qid));
+        }
         if (is_null($sLanguage)) {
-            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            $aLanguages = array_merge(
+                [$oSurvey->language],
+                $oSurvey->additionalLanguages
+            );
         } else {
             $aLanguages = array($sLanguage);
         }
-        $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
+        $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($this->qid, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($this->type);
 
         // If the question has a custom template, we first check if it provides custom attributes
         $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $this);
@@ -318,6 +321,23 @@ class Question extends LSActiveRecord
         }
 
         return $aAttributeNames;
+    }
+
+    /**
+     * As getAdvancedSettingsWithValues but with category as array key.
+     * Used by advanced settings widget.
+     *
+     * @param string|null $sLanguage
+     * @return array
+     */
+    public function getAdvancedSettingsWithValuesByCategory($sLanguage = null)
+    {
+        $aAttributeNames = $this->getAdvancedSettingsWithValues($sLanguage);
+        $aByCategory = [];
+        foreach ($aAttributeNames as $aAttribute) {
+            $aByCategory[$aAttribute['category']][] = $aAttribute;
+        }
+        return $aByCategory;
     }
 
     /**

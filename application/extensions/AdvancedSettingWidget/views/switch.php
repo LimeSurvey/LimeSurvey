@@ -1,10 +1,10 @@
 <div class="inputtype--toggle-container">
     <div class="btn-group" role="group" data-toggle="buttons">
-        <?php if ($this->setting['formElementValue'] == 'Y') : ?>
+        <?php if ($this->setting['value'] == 'Y') : ?>
             <label class="btn btn-default active">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
                     value="Y"
                     checked
                     />
@@ -13,7 +13,7 @@
             <label class="btn btn-default">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
                     value="N"
                     />
                 <?= gT('Off'); ?>
@@ -22,7 +22,7 @@
             <label class="btn btn-default">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
                     value="Y"
                     />
                 <?= gT('On'); ?>
@@ -30,7 +30,7 @@
             <label class="btn btn-default active">
                 <input
                     type="radio"
-                    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
                     value="N"
                     checked
                     />

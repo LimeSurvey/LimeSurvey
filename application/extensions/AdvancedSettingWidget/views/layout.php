@@ -9,7 +9,7 @@
             title="<?= gT("See help"); ?>"
         ></i>
         <!-- TODO: Object method $setting->isLocalized(). -->
-        <?php if (isset($this->setting['aFormElementOptions']['i18n']) && $this->setting['aFormElementOptions']['i18n'] == 1): ?>
+        <?php if (isset($this->setting['i18n']) && $this->setting['i18n'] == 1): ?>
             <i
                 class="fa fa-globe pull-right"
                 data-toggle="tooltip"
@@ -17,14 +17,14 @@
             ></i>
         <?php endif; ?>
         <label class="form-label" :for="elId">
-            <?= $this->setting['title']; ?>
+            <?= $this->setting['caption']; ?>
         </label>
         <?= $content; ?>
         <div
             id="general-setting-help-<?= $this->setting['name']; ?>"
             class="question-option-help well"
             >
-            <?= $this->setting['formElementHelp']; ?>
+            <?= $this->setting['help']; ?>
         </div>
     </div>
 </div>

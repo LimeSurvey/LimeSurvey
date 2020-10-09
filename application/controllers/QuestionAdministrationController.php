@@ -293,6 +293,9 @@ class QuestionAdministrationController extends LSBaseController
             $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
         $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
+        $advancedSettings = $this->getAdvancedOptions(0, 'T', 'core');  // TODO: question_template
+        // Remove general settings from this array.
+        unset($advancedSettings['Attribute']);
 
         $this->render(
             'create',
@@ -301,7 +304,7 @@ class QuestionAdministrationController extends LSBaseController
                 'oQuestion'              => $oQuestion,
                 'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
                 'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
-                'advancedSettings'       => $this->getAdvancedOptions(0, 'T', 'core'),  // TODO: question_template
+                'advancedSettings'       => $advancedSettings,
                 'generalSettings'        => $this->getGeneralOptions(0, 'T', 0, 'core')  // TODO: question_template
             ]
         );
@@ -1773,12 +1776,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-
-        $result = $oQuestion->getDataSetObject()->getPreformattedBlockOfAdvancedSettings(
-            $oQuestion,
-            $question_template
-        );
-        return $result;
+        return $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
     }
 
     /**

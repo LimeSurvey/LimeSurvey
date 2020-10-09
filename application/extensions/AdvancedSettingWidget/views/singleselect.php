@@ -1,15 +1,15 @@
 <select 
     class="form-control" 
-    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
-    id="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
+    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+    id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
 >
-    <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option) : ?>
-        <?php if ($this->setting['formElementValue'] == $option['value']): ?>
-            <option selected="selected" value="<?= $option['value']; ?>">
+    <?php foreach ($this->setting['options'] as $value => $text) : ?>
+        <?php if ($this->setting['value'] == $value): ?>
+            <option selected="selected" value="<?= $value; ?>">
         <?php else: ?>
-            <option value="<?= $option['value']; ?>">
+            <option value="<?= $value; ?>">
         <?php endif; ?>
-        <?= $option['text']; ?>
+        <?= $text; ?>
         </option>
     <?php endforeach; ?>
 </select>
