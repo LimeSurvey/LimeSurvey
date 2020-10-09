@@ -9,6 +9,8 @@ class MssqlSchema extends CMssqlSchema
          * Recommended practice.
          */
         $this->columnTypes['text'] = 'nvarchar(max)';
+        $this->columnTypes['mediumtext'] = 'nvarchar(max)';
+        $this->columnTypes['longtext'] = 'nvarchar(max)';
         /**
          * DbLib bugs if no explicit NOT NULL is specified.
          */

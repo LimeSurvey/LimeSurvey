@@ -1113,10 +1113,10 @@ function getLanguageCodefromLanguage($languagetosearch)
 /**
 * Returns a language name from the code
 * 
-* @param string $codetosearch
+* @param string  $codetosearch
 * @param boolean $withnative
-* @param string $sTranslationLanguage
-* @returns string|array
+* @param string  $sTranslationLanguage
+* @return string|array
 * @todo Should not give back different data types
 */
 function getLanguageNameFromCode($codetosearch, $withnative = true, $sTranslationLanguage = null)

@@ -124,23 +124,24 @@
     }
 
     /**
-     * @param ? $fieldtype
-     * @param string $fieldname
-     * @param string $fieldtext
-     * @param int $surveyID
-     * @param int $gID
-     * @param int $qID
-     * @param string $action
+     * Returns Editor.
+     * 
+     * @param string   $fieldtype Field Type
+     * @param string   $fieldname Field Name
+     * @param int|null $surveyID  Survey ID
+     * @param int|null $gID       Group ID
+     * @param int|null $qID       Question ID
+     * @param string   $action    Action
      * @return string
      */
     function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
             $surveyID = 'uniq';
         }
 
         initKcfinder();
-        //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
+
         $session = &Yii::app()->session;
 
         if ($session['htmleditormode'] && $session['htmleditormode'] == 'none') {

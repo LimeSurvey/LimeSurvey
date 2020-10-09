@@ -10,17 +10,19 @@ class UserManagementController extends LSBaseController
         return array(
             array(
                 'allow',
-                'actions'=>array(),
-                'users'=>array('*'), //everybody
+                'actions' => array(),
+                'users' => array('*'), //everybody
             ),
             array(
                 'allow',
-                'actions'=>array('index', 'addEditUser', 'applyEdit','addDummyUser',
+                'actions' => array(
+                    'index', 'addEditUser', 'applyEdit', 'addDummyUser',
                     'runAddDummyUser', 'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
                     'renderSelectedItems', 'renderUserImport', 'runAddDummyUser', 'saveRole', 'saveThemePermissions',
-                    'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'),
-                'users'=>array('@'), //only login users
+                    'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
+                ),
+                'users' => array('@'), //only login users
             ),
             array('deny'),
         );
@@ -81,7 +83,8 @@ class UserManagementController extends LSBaseController
     public function actionAddEditUser($userid = null)
     {
         if (($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
-            || ($userid !== null && !Permission::model()->hasGlobalPermission('users', 'update'))) {
+            || ($userid !== null && !Permission::model()->hasGlobalPermission('users', 'update'))
+        ) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")]]
@@ -113,7 +116,9 @@ class UserManagementController extends LSBaseController
         if (isset($aUser['full_name'])) {
             $aUser['full_name'] = flattenText($aUser['full_name'], false, true);
         }
+
         $passwordTest = Yii::app()->request->getParam('password_repeat', false);
+
         if (!empty($passwordTest)) {
             if ($passwordTest !== $aUser['password']) {
                 return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ["data" => [
@@ -153,6 +158,15 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         } else {
+            
+            //generate random password when password is empty
+            if (empty($aUser['password'])) {
+                $newPassword = $this->getRandomPassword(8);
+                $aUser['password'] =  $newPassword;
+            }
+            
+            //retrive the raw password to show up in registration email
+            $aUser['rawPassword'] = $aUser['password'];
             $this->createAdminUser($aUser);
         }
     }
@@ -238,7 +252,7 @@ class UserManagementController extends LSBaseController
 
         $message = '';
         $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
-        
+
         if (empty($transferTo)) {
             // If $transferTo is empty, check if user owns a survey. 
             // If so, render the "transfer to" selection screen
@@ -267,10 +281,10 @@ class UserManagementController extends LSBaseController
             }
         } else {
             // If $transferTo is not null, transfer the surveys
-            $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transferTo), 'owner_id='.$userId);
+            $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transferTo), 'owner_id=' . $userId);
             if ($iSurveysTransferred) {
                 $sTransferredTo = User::model()->findByPk($transferTo)->users_name;
-                $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo)." ";
+                $message = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferredTo) . " ";
             }
         }
 
@@ -360,14 +374,18 @@ class UserManagementController extends LSBaseController
             $aFilteredPermissions = array();
             foreach ($aBasePermissions as $PermissionName => $aPermission) {
                 foreach ($aPermission as $sPermissionKey => &$sPermissionValue) {
-                    if ($sPermissionKey != 'title' && $sPermissionKey != 'img' &&
-                        !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                    if (
+                        $sPermissionKey != 'title' && $sPermissionKey != 'img' &&
+                        !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)
+                    ) {
                         $sPermissionValue = false;
                     }
                 }
                 // Only show a row for that permission if there is at least one permission he may give to other users
-                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update']
-                    || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
+                if (
+                    $aPermission['create'] || $aPermission['read'] || $aPermission['update']
+                    || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']
+                ) {
                     $aFilteredPermissions[$PermissionName] = $aPermission;
                 }
             }
@@ -565,7 +583,7 @@ class UserManagementController extends LSBaseController
         $allowFileType = ".csv";
 
         if ($importFormat == 'json') {
-            $importNote = sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>','<b>full_name</b>','<b>email</b>','<b>lang</b>','<b>password</b>');
+            $importNote = sprintf(gT("Wrong definition! Please make sure that your JSON arrays contains the fields '%s', '%s', '%s', '%s', and '%s'"), '<b>users_name</b>', '<b>full_name</b>', '<b>email</b>', '<b>lang</b>', '<b>password</b>');
             $allowFileType = ".json,application/json";
         }
 
@@ -1057,7 +1075,7 @@ class UserManagementController extends LSBaseController
         if (Permission::isForcedSuperAdmin($uid)) {
             return false;
         }
-        
+
         $oUser = User::model()->findByPk($uid);
         return $oUser->delete();
     }
@@ -1112,7 +1130,8 @@ class UserManagementController extends LSBaseController
         //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
         //Therefore we need to make sure no non-superadmin can modify superadmin accounts
         //Since this should NEVER be the case without hacking the software, this will silently just do nothing.
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
+        if (
+            !Permission::model()->hasGlobalPermission('superadmin', 'read', Yii::app()->user->id)
             && Permission::model()->hasGlobalPermission('superadmin', 'read', $oUser->uid)
         ) {
             throw new CException("This action is not allowed, and should never happen", 500);
@@ -1141,12 +1160,12 @@ class UserManagementController extends LSBaseController
     private function createAdminUser($aUser)
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
-            $sendMail = (bool) Yii::app()->request->getPost('preset_password', false);
+
             $newUser = $this->createNewUser($aUser);
             $sReturnMessage = gT('User successfully created');
             $success = true;
 
-            if ($sendMail) {
+            if (Yii::app()->getConfig("sendadmincreationemail")) {
                 $mailer = $this->sendAdminMail($aUser, 'registration');
 
                 if ($mailer->getError()) {
@@ -1161,9 +1180,6 @@ class UserManagementController extends LSBaseController
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
             }
-
-            $displayUserPasswordInHtml = Yii::app()->getConfig("display_user_password_in_html");
-            $sReturnMessage .= $displayUserPasswordInHtml ? CHtml::tag("p", array('class' => 'alert alert-danger'), 'New password set: <b>' . $aUser['password'] . '</b>') : '';
 
             if ($success) {
                 $data = [
@@ -1259,6 +1275,10 @@ class UserManagementController extends LSBaseController
      */
     public function sendAdminMail($aUser, $type = 'registration')
     {
+        //Get email template from globalSettings
+        $aAdminEmail = $this->generateAdminCreationEmail($aUser['full_name'], $aUser['users_name'], $aUser['password'],  $aUser['uid']);
+
+        $body = "";
         switch ($type) {
             case "resetPassword":
                 $renderArray = [
@@ -1276,28 +1296,16 @@ class UserManagementController extends LSBaseController
                 ];
                 $subject = "[" . Yii::app()->getConfig("sitename") . "] " . gT("Your login credentials have been reset");
                 $emailType = "addadminuser";
+                $body = Yii::app()->getController()->renderPartial('partial/usernotificationemail', $renderArray, true);
                 break;
             case 'registration':
             default:
-                $renderArray = [
-                    'surveyapplicationname' => Yii::app()->getConfig("sitename"),
-                    'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
-                        . sprintf(gT("This is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename")),
-                    'credentialsText' => gT("You can use now the following credentials to log into the site:"),
-                    'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
-                    'linkToAdminpanel' => $this->createAbsoluteUrl("/admin"),
-                    'username' => $aUser['users_name'],
-                    'password' => $aUser['password'],
-                    'mainLogoFile' => LOGO_URL,
-                    'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
-                    'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
-                ];
-                $subject = "[" . Yii::app()->getConfig("sitename") . "] " . gT("An account has been created for you");
+                $subject = $aAdminEmail["subject"];
+                $body = $aAdminEmail["body"];
                 $emailType = "addadminuser";
                 break;
         }
 
-        $body = Yii::app()->getController()->renderPartial('partial/usernotificationemail', $renderArray, true);
 
         $oCurrentlyLoggedInUser = User::model()->findByPk(Yii::app()->user->id);
 
@@ -1389,6 +1397,50 @@ class UserManagementController extends LSBaseController
             $uiq = decbin(rand(1000000, 9999999) * (rand(100, 999) . rand(100, 999) . rand(100, 999) . rand(100, 999)));
         }
         return hash('sha256', bin2hex($uiq));
+    }
+
+
+    /**
+     * 
+     * This function prepare the email template to send to the new created user
+     * @param string $fullname 
+     * @param string $username 
+     * @param string $password 
+     * @return mixed $aAdminEmail array with subject and email nody
+     */
+    public function generateAdminCreationEmail($fullname, $username, $password, $iNewUID)
+    {
+        $aAdminEmail = [];
+        $siteName = Yii::app()->getConfig("sitename");
+        $loginUrl = $this->createAbsoluteUrl("/admin");
+        $siteAdminEmail = Yii::app()->getConfig("siteadminemail");
+        $emailSubject = Yii::app()->getConfig("admincreationemailsubject");
+        $emailTemplate = Yii::app()->getConfig("admincreationemailtemplate");
+
+        // authent is not delegated to web server or LDAP server
+        if (Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $iNewUID)) {
+            // send password (if authorized by config)
+            if (!Yii::app()->getConfig("display_user_password_in_email") === true) {
+                $password = "<p>" . gT("Please contact your LimeSurvey administrator for your password.") . "</p>";
+            }
+        }
+
+        //Replace placeholder in Email subject
+        $emailSubject = str_replace("{SITENAME}", $siteName, $emailSubject);
+        $emailSubject = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailSubject);
+
+        //Replace placeholder in Email body
+        $emailTemplate = str_replace("{SITENAME}", $siteName, $emailTemplate);
+        $emailTemplate = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailTemplate);
+        $emailTemplate = str_replace("{FULLNAME}", $fullname, $emailTemplate);
+        $emailTemplate = str_replace("{USERNAME}", $username, $emailTemplate);
+        $emailTemplate = str_replace("{PASSWORD}", $password, $emailTemplate);
+        $emailTemplate = str_replace("{LOGINURL}", $loginUrl, $emailTemplate);
+
+        $aAdminEmail['subject'] = $emailSubject;
+        $aAdminEmail['body'] = $emailTemplate;
+
+        return $aAdminEmail;
     }
 
     /**

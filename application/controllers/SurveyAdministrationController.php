@@ -1790,14 +1790,49 @@ class SurveyAdministrationController extends LSBaseController
 
         $templateData = array_merge($this->getGeneralTemplateData($iSurveyID), $templateData);
 
+        // For Text Elemnts Tab.
+        if ($menuaction === 'surveytexts') {
+            $temp = [];
+            $languages = $survey->allLanguages;
+            foreach ($languages as $i => $language) {
+                $temp = $this->getGeneralTemplateData($iSurveyID);
+
+                App()->loadHelper('database');
+                App()->loadHelper('surveytranslator');
+                App()->loadHelper('admin.htmleditor');
+
+                $surveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(
+                    array(
+                        'surveyls_survey_id' => $iSurveyID,
+                        'surveyls_language' => $language)
+                    )->getAttributes();
+                $aTabTitles[$language] = getLanguageNameFromCode($surveyLanguageSetting['surveyls_language'], false);
+
+                if ($surveyLanguageSetting['surveyls_language'] == $survey->language) {
+                    $aTabTitles[$language] .= ' ('.gT("Base language").')';
+                }
+
+                $temp['aSurveyLanguageSettings'] = $surveyLanguageSetting;
+                $temp['action'] = "surveygeneralsettings";
+                $temp['i'] = $i;
+                $temp['dateformatdetails'] = getDateFormatData(App()->session['dateformat']);
+                $temp['oSurvey'] = $survey;
+                $aTabContents[$language] = $this->renderPartial('/admin/survey/editLocalSettings_view', $temp, true);
+            }
+
+            $aData['aTabContents'] = $aTabContents;
+            $aData['aTabTitles']   = $aTabTitles;
+            $aData['moreInfo'] = $temp;
+        }
+
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
         // override survey settings if global settings exist
-        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !=='choose'?getGlobalSetting('showqnumcode'):$survey->showqnumcode;
-        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !=='choose'?getGlobalSetting('shownoanswer'):$survey->shownoanswer;
-        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !=='2'?getGlobalSetting('showgroupinfo'):$survey->showgroupinfo;
-        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose'?getGlobalSetting('showxquestions'):$survey->showxquestions;
+        $templateData['showqnumcode']   = getGlobalSetting('showqnumcode') !=='choose' ? getGlobalSetting('showqnumcode') : $survey->showqnumcode;
+        $templateData['shownoanswer']   = getGlobalSetting('shownoanswer') !=='choose' ? getGlobalSetting('shownoanswer') : $survey->shownoanswer;
+        $templateData['showgroupinfo']  = getGlobalSetting('showgroupinfo') !=='2' ? getGlobalSetting('showgroupinfo') : $survey->showgroupinfo;
+        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose' ? getGlobalSetting('showxquestions') : $survey->showxquestions;
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;

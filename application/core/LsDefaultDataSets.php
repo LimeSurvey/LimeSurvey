@@ -2853,4 +2853,28 @@ class LsDefaultDataSets
 
         ];
     }
+
+    /**
+     * Default user administration global configuration settings
+     *  
+     * @return array with user administration default setting
+     */
+    public static function getDefaultUserAdministrationSettings()
+    {
+        $default =  [];
+        $template = "<p>" . gT("Hello") . " {FULLNAME}, </p>";
+        $template .= "<p>" . gT("this is an automated email to notify that a user has been created for you on the website") . "<strong> '{SITENAME}'</strong>.</p>";
+        $template .= "<p></p><p>" . gT("You can use now the following credentials to log in") . ":</p>";
+        $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
+        $template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
+        $template .= '<p><a href="{LOGINURL}">'.gT("Click here to login").'</a></p>';
+        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
+        $template .= "<p>" . gT("Thank you") . "!</p>";
+
+        $default['sendadmincreationemail'] = 1;
+        $default['admincreationemailsubject'] = gT("User registration at") . " {SITENAME}";
+        $default['admincreationemailtemplate'] = $template;
+
+        return $default;
+    }
 }

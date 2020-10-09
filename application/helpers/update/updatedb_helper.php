@@ -16,17 +16,18 @@
 - Never use models in the upgrade process - never ever!
 - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
 - Never use foreign keys
-- Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii which are:
+- Use only the field types listed here:
 
     pk: auto-incremental primary key type (“int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY”).
     string: string type (“varchar(255)”).
-    text: a long string type (“text”).
+    text: a long string type (“text”) - MySQL: max size 64kb - Postgres: unlimited - MSSQL: max size 2.1GB 
+    mediumtext: a long string type (“text”) - MySQL: max size 16MB - Postgres: unlimited - MSSQL: max size 2.1GB
+    longtext: a long string type (“text”) - MySQL: max size 2.1 GB - Postgres: unlimited - MSSQL: max size 2.1GB
     integer: integer type (“int(11)”).
     boolean: boolean type (“tinyint(1)”).
     float: float number type (“float”).
     decimal: decimal number type (“decimal”).
     datetime: datetime type (“datetime”).
-    timestamp: timestamp type (“timestamp”).
     time: time type (“time”).
     date: date type (“date”).
     binary: binary data type (“blob”).
@@ -2431,8 +2432,63 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{user_groups}}','description',"text",false);
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>359], "stg_name='DBVersion'");
             $oTransaction->commit();
+        }
+        /**
+         * Correct permission for survey menu Survey Participants (tokens, not surveysettings).
+         */
+        if ($iOldDBVersion < 360) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [
+                    'permission' => 'tokens',
+                ],
+                'name=\'participants\''
+            );
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>360], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        /*
+        * DBVersion 361 & 362 were intentionally left out to sync with Cloud Hosting
+        */
+
+        /*
+         * Speed up token tables import/search by setting indexes
+         */
+        if ($iOldDBVersion < 363) {
+            $oTransaction = $oDB->beginTransaction();
+            $aTableNames = dbGetTablesLike("tokens%");
+            $oDB = Yii::app()->getDb();
+            foreach ($aTableNames as $sTableName) {
+                try { 
+                        setTransactionBookmark(); 
+                        switch (Yii::app()->db->driverName){
+                            case 'mysql':
+                            case 'mysqli':
+                                $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                                break;
+                            case 'pgsql':
+                                $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
+                                break;
+                            // MSSQL does not support indexes on text fields so no dice
+                        }
+                    } catch (Exception $e) { rollBackToTransactionBookmark(); }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>363], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }        
 
+        /*
+         * Extend text datafield lengths for MySQL
+         * Extend datafield length for additional languages in survey table
+         */
+        if ($iOldDBVersion < 364) {
+            $oTransaction = $oDB->beginTransaction();
+            extendDatafields364($oDB);
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>364], "stg_name='DBVersion'");
+            $oTransaction->commit();
+  		}   
+                
         if ($iOldDBVersion < 400) {
             // Fix database default collation, again
             if (Yii::app()->db->driverName == 'mysql') {
@@ -2932,36 +2988,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         
-        /*
-        * DBVersion 361 & 362 were intentionally left out to sync with Cloud Hosting
-        */
 
-        /*
-         * Correct permission for survey menu Survey Participants (tokens, not surveysettings).
-         */
-        if ($iOldDBVersion < 363) {
-            $oTransaction = $oDB->beginTransaction();
-            $aTableNames = dbGetTablesLike("tokens%");
-            $oDB = Yii::app()->getDb();
-            foreach ($aTableNames as $sTableName) {
-                try { 
-                        setTransactionBookmark(); 
-                        switch (Yii::app()->db->driverName){
-                            case 'mysql':
-                            case 'mysqli':
-                                $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
-                                break;
-                            case 'pgsql':
-                                $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
-                                break;
-                            // MSSQL does not support indexes on text fields so no dice
-                        }
-                    } catch (Exception $e) { rollBackToTransactionBookmark(); }
-            }
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>363], "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }        
-
+        
         if($iOldDBVersion < 421) {
             $oTransaction = $oDB->beginTransaction();
             // question_themes
@@ -3161,6 +3189,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 429) {
             // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
             $oTransaction = $oDB->beginTransaction();
+            extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
@@ -3335,6 +3364,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         /*
          * Correct permission for survey menu Survey Participants (tokens, not surveysettings).
+         * This is a copy of DBVersion 363 so this might have been already set
          */
         if ($iOldDBVersion < 433) {
             $oTransaction = $oDB->beginTransaction();
@@ -3346,18 +3376,52 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         switch (Yii::app()->db->driverName){
                             case 'mysql':
                             case 'mysqli':
-                                $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
-                                break;
+                                try { 
+                                    setTransactionBookmark(); 
+                                    $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                                } catch(Exception $e) { rollBackToTransactionBookmark(); }
+                            break;
                             case 'pgsql':
-                                $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
-                                break;
+                                try { 
+                                    setTransactionBookmark(); 
+                                    $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
+                                } catch(Exception $e) { rollBackToTransactionBookmark(); }
+                            break;
                             // MSSQL does not support indexes on text fields so no dice
                         }
                     } catch (Exception $e) { rollBackToTransactionBookmark(); }
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>433], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }   
+        }
+
+        /**
+         * Implemented default value for user administration global settings
+         */
+        if ($iOldDBVersion < 434) {
+
+            $oTransaction = $oDB->beginTransaction();
+            $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'sendadmincreationemail',
+                "stg_value" => $defaultSetting['sendadmincreationemail'],
+            ]);
+
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'admincreationemailsubject',
+                "stg_value" => $defaultSetting['admincreationemailsubject'],
+            ]);
+
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'admincreationemailtemplate',
+                "stg_value" => $defaultSetting['admincreationemailtemplate'],
+            ]);
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 434], "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -3431,6 +3495,46 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 }
 
 
+
+function extendDatafields429($oDB)
+{
+            if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqi') {
+                alterColumn('{{answer_l10ns}}','answer',"mediumtext",false);
+                alterColumn('{{assessments}}','message',"mediumtext",false);
+                alterColumn('{{group_l10ns}}','description',"mediumtext");
+                alterColumn('{{notifications}}','message',"mediumtext",false);
+                alterColumn('{{participant_attribute_values}}','value',"mediumtext",false);
+                alterColumn('{{plugin_settings}}','value',"mediumtext");
+                alterColumn('{{question_l10ns}}','question',"mediumtext",false);
+                alterColumn('{{question_l10ns}}','help',"mediumtext");
+                alterColumn('{{question_attributes}}','value',"mediumtext");
+                alterColumn('{{quota_languagesettings}}','quotals_message',"mediumtext",false);
+                alterColumn('{{settings_global}}','stg_value',"mediumtext",false);
+                alterColumn('{{settings_user}}','stg_value',"mediumtext");
+                alterColumn('{{surveymenu_entries}}','data',"mediumtext");
+                alterColumn('{{surveys}}','attributedescriptions',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_description',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_policy_notice',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','email_admin_notification',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','email_admin_responses',"mediumtext");
+                alterColumn('{{templates}}','license',"mediumtext");
+                alterColumn('{{templates}}','description',"mediumtext");
+                alterColumn('{{template_configuration}}','cssframework_css',"mediumtext");
+                alterColumn('{{template_configuration}}','cssframework_js',"mediumtext");
+                alterColumn('{{tutorials}}','settings',"mediumtext");
+                alterColumn('{{tutorial_entries}}','content',"mediumtext");
+                alterColumn('{{tutorial_entries}}','settings',"mediumtext");
+            }
+            alterColumn('{{surveys}}','additional_languages',"text");
+}
+
+
 /**
  * @param string $sMySQLCollation
  */
@@ -3487,6 +3591,45 @@ function upgradeTokenTables402($sMySQLCollation)
         }
     }
 }
+
+function extendDatafields364($oDB)
+{
+            if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqi') {
+                alterColumn('{{answers}}','answer',"mediumtext",false);
+                alterColumn('{{assessments}}','message',"mediumtext",false);
+                alterColumn('{{groups}}','description',"mediumtext");
+                alterColumn('{{notifications}}','message',"mediumtext",false);
+                alterColumn('{{participant_attribute_values}}','value',"mediumtext",false);
+                alterColumn('{{plugin_settings}}','value',"mediumtext");
+                alterColumn('{{questions}}','question',"mediumtext",false);
+                alterColumn('{{questions}}','help',"mediumtext");
+                alterColumn('{{question_attributes}}','value',"mediumtext");
+                alterColumn('{{quota_languagesettings}}','quotals_message',"mediumtext",false);
+                alterColumn('{{settings_global}}','stg_value',"mediumtext",false);
+                alterColumn('{{settings_user}}','stg_value',"mediumtext");
+                alterColumn('{{surveymenu_entries}}','data',"mediumtext");
+                alterColumn('{{surveys}}','attributedescriptions',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_description',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_policy_notice',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','email_admin_notification',"mediumtext");
+                alterColumn('{{surveys_languagesettings}}','email_admin_responses',"mediumtext");
+                alterColumn('{{templates}}','license',"mediumtext");
+                alterColumn('{{templates}}','description',"mediumtext");
+                alterColumn('{{template_configuration}}','cssframework_css',"mediumtext");
+                alterColumn('{{template_configuration}}','cssframework_js',"mediumtext");
+                alterColumn('{{tutorials}}','settings',"mediumtext");
+                alterColumn('{{tutorial_entries}}','content',"mediumtext");
+                alterColumn('{{tutorial_entries}}','settings',"mediumtext");
+            }
+            alterColumn('{{surveys}}','additional_languages',"text");
+}
+
 function upgradeSurveyTimings350()
 {
     $aTables = dbGetTablesLike("%timings");
