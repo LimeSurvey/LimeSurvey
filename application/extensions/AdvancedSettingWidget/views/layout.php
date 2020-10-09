@@ -7,7 +7,15 @@
             onclick="jQuery('#general-setting-help-<?= $this->setting['name']; ?>').slideToggle()"
             data-toggle="tooltip"
             title="<?= gT("See help"); ?>"
+        ></i>
+        <!-- TODO: Object method $setting->isLocalized(). -->
+        <?php if (isset($this->setting['aFormElementOptions']['i18n']) && $this->setting['aFormElementOptions']['i18n'] == 1): ?>
+            <i
+                class="fa fa-globe pull-right"
+                data-toggle="tooltip"
+                title="<?= gT("This setting is localized"); ?>"
             ></i>
+        <?php endif; ?>
         <label class="form-label" :for="elId">
             <?= $this->setting['title']; ?>
         </label>
